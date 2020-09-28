@@ -7982,7 +7982,7 @@
 		
 		"1"
 		{
-			"command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_fortifications\barricade_gate001_64_reference.mdl; show_menu ObjectsBarricadeFence"
+			"command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_fortifications/barricade_gate001_64_reference.mdl; show_menu ObjectsBarricadeFence"
 			"label"		" Barricade Gate"
 		}
 		"2"
@@ -8339,17 +8339,17 @@
 		
 		"1"
 		{
-			"command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_urban\fence_cover001_128.mdl; show_menu ObjectsWallBarricade"
+			"command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_urban/fence_cover001_128.mdl; show_menu ObjectsWallBarricade"
 			"label"		" Fence Cover"
 		}
 		"2"
 		{
-			"command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_exteriors\wood_railing001.mdl; show_menu ObjectsWallBarricade"
+			"command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_exteriors/wood_railing001.mdl; show_menu ObjectsWallBarricade"
 			"label"		" Wood Railing" 
 		}
 		"3"
 		{
-			"command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_fortifications\concrete_barrier001_128_reference.mdl; show_menu ObjectsWallBarricade"
+			"command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_fortifications/concrete_barrier001_128_reference.mdl; show_menu ObjectsWallBarricade"
 			"label"		" Concrete" 
 		}
 		"4"
@@ -8415,7 +8415,7 @@
 		}	
 		"5"
 		{
-			"command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_downtown\bar.mdl; show_menu ObjectsTablet"
+			"command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_downtown/bar.mdl; show_menu ObjectsTablet"
 			"label"		" Bar Table"
 		}	
 		"7"
@@ -8466,7 +8466,7 @@
 		}
 		"5"
 		{
-			"command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_fortifications\guard_tower.mdl; show_menu ObjectsTowerPoles"
+			"command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_fortifications/guard_tower.mdl; show_menu ObjectsTowerPoles"
 			"label"		" Guard Tower"
 		}
 		"6"
@@ -8512,7 +8512,7 @@
 		}
 		"3"
 		{
-			"command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_swamp\boardwalk_128.mdl; show_menu ObjectsOther"
+			"command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_swamp/boardwalk_128.mdl; show_menu ObjectsOther"
 			"label"		" Boardwalk" 
 		}
 		"4"
@@ -8527,7 +8527,7 @@
 		}
 		"6"		
 		{
-			"command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_swamp\ferry.mdl; show_menu ObjectsOther"
+			"command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_swamp/ferry.mdl; show_menu ObjectsOther"
 			"label"		" Ferry"
 		}
 		"7"
@@ -19699,10 +19699,15 @@
 			}
 			"2"
 			{
+				"command"		"play buttons/button14;show_menu ent_spin_menu1"
+				"label"			" Spin"
+			}
+			"3"
+			{
 				"command"		"play buttons/button14;show_menu ent_rotate_menu1"
 				"label"			" Rotate"
 			}
-			"3"
+			"4"
 			{
 				"command"		"play buttons/button14;show_menu ent_move_menu1"
 				"label"			" Move"
@@ -20123,6 +20128,362 @@
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu ent_push_menu1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ent_spin_menu1"
+	{
+			"Title"		" Apply angular impulse to entity"
+			"1"
+			{
+				"command"		"play buttons/button14;show_menu ent_spin_menu_forward1"
+				"label"			" Forward"
+			}
+			"2"
+			{
+				"command"		"play buttons/button14;show_menu ent_spin_menu_backward1"
+				"label"			" Backward"
+			}
+			"3"
+			{
+				"command"		"play buttons/button14;show_menu ent_spin_menu_left1"
+				"label"			" Left"
+			}
+			"4"
+			{
+				"command"		"play buttons/button14;show_menu ent_spin_menu_right1"
+				"label"			" Right"
+			}
+			"5"
+			{
+				"command"		"play buttons/button14;show_menu ent_spin_menu_up1"
+				"label"			" Up"
+			}
+			"6"
+			{
+				"command"		"play buttons/button14;show_menu ent_spin_menu_down1"
+				"label"			" Down"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_forces_menu1"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button11;show_menu ent_push_menu1"
+					"label"      " ...More directions will be added"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ent_spin_menu_forward1"
+	{
+			"Title"		"Spin forward"
+
+			"1"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,50,forward;show_menu ent_spin_menu_forward1"
+				"label"			" Weakest (Scale factor 50)"
+			}
+			"2"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,200,forward;show_menu ent_spin_menu_forward1"
+				"label"			" Weaker (Scale factor 200)"
+			}
+			"3"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,500,forward;show_menu ent_spin_menu_forward1"
+				"label"			" Weak (Scale factor 500)"
+			}
+			"4"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,1000,forward;show_menu ent_spin_menu_forward1"
+				"label"			" Average (Scale factor 1000)"
+			}
+			"5"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,2500,forward;show_menu ent_spin_menu_forward1"
+				"label"			" Strong (Scale factor 2500)"
+			}
+			"6"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,7500,forward;show_menu ent_spin_menu_forward1"
+				"label"			" Stronger (Scale factor 7500)"
+			}
+			"7"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,25000,forward;show_menu ent_spin_menu_forward1"
+				"label"			" Strongest (Scale factor 25000)"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_spin_menu1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ent_spin_menu_backward1"
+	{
+			"Title"		"Spin backward"
+
+			"1"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,50,backward;show_menu ent_spin_menu_backward1"
+				"label"			" Weakest (Scale factor 50)"
+			}
+			"2"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,200,backward;show_menu ent_spin_menu_backward1"
+				"label"			" Weaker (Scale factor 200)"
+			}
+			"3"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,500,backward;show_menu ent_spin_menu_backward1"
+				"label"			" Weak (Scale factor 500)"
+			}
+			"4"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,1000,backward;show_menu ent_spin_menu_backward1"
+				"label"			" Average (Scale factor 1000)"
+			}
+			"5"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,2500,backward;show_menu ent_spin_menu_backward1"
+				"label"			" Strong (Scale factor 2500)"
+			}
+			"6"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,7500,backward;show_menu ent_spin_menu_backward1"
+				"label"			" Stronger (Scale factor 7500)"
+			}
+			"7"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,25000,backward;show_menu ent_spin_menu_backward1"
+				"label"			" Strongest (Scale factor 25000)"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_spin_menu1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ent_spin_menu_left1"
+	{
+			"Title"		"Spin left"
+
+			"1"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,50,left;show_menu ent_spin_menu_left1"
+				"label"			" Weakest (Scale factor 50)"
+			}
+			"2"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,200,left;show_menu ent_spin_menu_left1"
+				"label"			" Weaker (Scale factor 200)"
+			}
+			"3"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,500,left;show_menu ent_spin_menu_left1"
+				"label"			" Weak (Scale factor 500)"
+			}
+			"4"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,1000,left;show_menu ent_spin_menu_left1"
+				"label"			" Average (Scale factor 1000)"
+			}
+			"5"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,2500,left;show_menu ent_spin_menu_left1"
+				"label"			" Strong (Scale factor 2500)"
+			}
+			"6"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,7500,left;show_menu ent_spin_menu_left1"
+				"label"			" Stronger (Scale factor 7500)"
+			}
+			"7"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,25000,left;show_menu ent_spin_menu_left1"
+				"label"			" Strongest (Scale factor 25000)"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_spin_menu1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"ent_spin_menu_right1"
+	{
+			"Title"		"Spin right"
+
+			"1"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,50,right;show_menu ent_spin_menu_right1"
+				"label"			" Weakest (Scale factor 50)"
+			}
+			"2"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,200,right;show_menu ent_spin_menu_right1"
+				"label"			" Weaker (Scale factor 200)"
+			}
+			"3"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,500,right;show_menu ent_spin_menu_right1"
+				"label"			" Weak (Scale factor 500)"
+			}
+			"4"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,1000,right;show_menu ent_spin_menu_right1"
+				"label"			" Average (Scale factor 1000)"
+			}
+			"5"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,2500,right;show_menu ent_spin_menu_right1"
+				"label"			" Strong (Scale factor 2500)"
+			}
+			"6"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,7500,right;show_menu ent_spin_menu_right1"
+				"label"			" Stronger (Scale factor 7500)"
+			}
+			"7"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,25000;show_menu ent_spin_menu_right1"
+				"label"			" Strongest (Scale factor 25000)"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_spin_menu1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"ent_spin_menu_up1"
+	{
+			"Title"		"Spin up"
+
+			"1"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,50,up;show_menu ent_spin_menu_up1"
+				"label"			" Weakest (Scale factor 50)"
+			}
+			"2"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,200,up;show_menu ent_spin_menu_up1"
+				"label"			" Weaker (Scale factor 200)"
+			}
+			"3"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,500,up;show_menu ent_spin_menu_up1"
+				"label"			" Weak (Scale factor 500)"
+			}
+			"4"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,1000,up;show_menu ent_spin_menu_up1"
+				"label"			" Average (Scale factor 1000)"
+			}
+			"5"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,2500,up;show_menu ent_spin_menu_up1"
+				"label"			" Strong (Scale factor 2500)"
+			}
+			"6"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,7500,up;show_menu ent_spin_menu_up1"
+				"label"			" Stronger (Scale factor 7500)"
+			}
+			"7"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,25000,up;show_menu ent_spin_menu_up1"
+				"label"			" Strongest (Scale factor 25000)"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_spin_menu1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"ent_spin_menu_down1"
+	{
+			"Title"		"Spin down"
+
+			"1"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,50,down;show_menu ent_spin_menu_down1"
+				"label"			" Weakest (Scale factor 50)"
+			}
+			"2"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,200,down;show_menu ent_spin_menu_down1"
+				"label"			" Weaker (Scale factor 200)"
+			}
+			"3"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,500,down;show_menu ent_spin_menu_down1"
+				"label"			" Weak (Scale factor 500)"
+			}
+			"4"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,1000,down;show_menu ent_spin_menu_down1"
+				"label"			" Average (Scale factor 1000)"
+			}
+			"5"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,2500,down;show_menu ent_spin_menu_down1"
+				"label"			" Strong (Scale factor 2500)"
+			}
+			"6"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,7500,down;show_menu ent_spin_menu_down1"
+				"label"			" Stronger (Scale factor 7500)"
+			}
+			"7"
+			{
+				"command"		"play buttons/button14;scripted_user_func ent_spin,25000,down;show_menu ent_spin_menu_down1"
+				"label"			" Strongest (Scale factor 25000)"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_spin_menu1"
 					"label"      " << Back"
 			}
 			"0"
@@ -22764,6 +23125,11 @@
 					"command"    "play buttons/button14; show_menu props_street1"
 					"label"      " More exterior stuff"
 			}
+			"5"
+			{
+					"command"    "play buttons/button14; show_menu props_rooftop1"
+					"label"      " Rooftop stuff"
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu prop_menu_start3"
@@ -23624,12 +23990,22 @@
 			"3"
 			{
 					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_debris/concrete_debris256pile001a.mdl;show_menu props_debris1"
-					"label"      " Concrete debris"
+					"label"      " Concrete debris 1"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_interiors/sawhorse.mdl;show_menu props_debris1"
-					"label"      " Sawhorse"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_debris/concrete_debris256barricade001a.mdl;show_menu props_debris1"
+					"label"      " Concrete debris 2"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_debris/concrete_debris128pile001b.mdl;show_menu props_debris1"
+					"label"      " Concrete debris 3"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_debris/concrete_debris128pile001a.mdl;show_menu props_debris1"
+					"label"      " Concrete debris 4"
 			}
 			"7"
 			{
@@ -23713,7 +24089,16 @@
 					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_crates/static_crate_40.mdl;show_menu props_barrels2"
 					"label"      " Green crate"
 			}
-
+			"2"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props/de_nuke/crate_small.mdl;show_menu props_barrels2"
+					"label"      " Medium crate"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props/de_nuke/crate_extralarge.mdl;show_menu props_barrels2"
+					"label"      " Big crate"
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func cleanup;show_menu props_barrels2"
@@ -24929,8 +25314,8 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_street/awning_mainstreet.mdl;show_menu props_street1"
-					"label"      " Concrete catwalk"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_debris/burnt_building_chimney_01.mdl;show_menu props_street1"
+					"label"      " Big chimney"
 			}
 			"6"
 			{
@@ -24973,6 +25358,26 @@
 					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_pipes/pipeset32d_corner128r_001a.mdl;show_menu props_street2"
 					"label"      " L shaped pipe"
 			}
+			"3"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/lighthouse/props/junkyard_big_pipe.mdl;show_menu props_street2"
+					"label"      " Big cylinder"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_docks/marina_dock.mdl;show_menu props_street2"
+					"label"      " Big marina dock"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_docks/dock_broken01a_256.mdl;show_menu props_street2"
+					"label"      " Broken dock "
+			}
+			"6"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_docks/dock01_polecluster01d_256.mdl;show_menu props_street2"
+					"label"      " Dock poles "
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func cleanup;show_menu props_street2"
@@ -24981,6 +25386,107 @@
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu props_street1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"props_rooftop1"
+	{
+			"Title"     "Rooftop stuff 1"
+			"1"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_rooftop/train_signalbox_01.mdl;show_menu props_rooftop1"
+					"label"      " Signal box"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_rooftop/satellitedish_large01.mdl;show_menu props_rooftop1"
+					"label"      " Sattelite dish"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_rooftop/rooftank01.mdl;show_menu props_rooftop1"
+					"label"      " Roof tank"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_rooftop/hotel_rooftop_equip001.mdl;show_menu props_rooftop1"
+					"label"      " Cooler unit "
+			}
+			"5"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_rooftop/foghorn01.mdl;show_menu props_rooftop1"
+					"label"      " Fog horn"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;show_menu props_rooftop_ac1"
+					"label"      " AC Vents and Units"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_rooftop1"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu prop_menu_start3"
+					"label"      " << Back"
+			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"props_rooftop_ac1"
+	{
+			"Title"     "AC Vents and Units "
+			"1"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_rooftop/acvent01.mdl;show_menu props_rooftop_ac1"
+					"label"      " AC Vent 1"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_rooftop/acvent02.mdl;show_menu props_rooftop_ac1"
+					"label"      " AC Vent 2"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_rooftop/acvent03.mdl;show_menu props_rooftop_ac1"
+					"label"      " AC Vent 3"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_rooftop/acvent04.mdl;show_menu props_rooftop_ac1"
+					"label"      " AC Vent 4"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_rooftop/acvent05.mdl;show_menu props_rooftop_ac1"
+					"label"      " AC Vent 5"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_rooftop/acunit01.mdl;show_menu props_rooftop_ac1"
+					"label"      " AC Unit 1"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_rooftop/acunit2.mdl;show_menu props_rooftop_ac1"
+					"label"      " AC Unit 2"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu props_rooftop1"
 					"label"      " << Back"
 			}
 			"0"
@@ -25001,14 +25507,34 @@
 			"2"
 			{
 					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_unique/wooden_barricade_gascans.mdl;show_menu props_equipment1"
-					"label"      " Grouped gas cans"
+					"label"      " Grouped gascans"
 			}
-
+			"3"
+			{
+					"command"	"play buttons/button14; scripted_user_func gascan; show_menu props_equipment1"
+					"label"		" Gascan"
+			}
+			"4"		
+			{
+					"command"	"play buttons/button14; scripted_user_func propanetank; show_menu props_equipment1"
+					"label"		" Propanetank"
+			}
+			"5"
+			{
+					"command"	"play buttons/button14; scripted_user_func oxygentank; show_menu props_equipment1"
+					"label"		" Oxygentank"
+			}
+			"6"
+			{
+					"command"	"play buttons/button14; scripted_user_func fireworkcrate; show_menu props_equipment1"
+					"label"		" Firework"
+			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func cleanup;show_menu props_equipment1"
-					"label"      " Remove all"
-			}
+					"command"	"play buttons/button14; scripted_user_func barrel; show_menu props_equipment1"
+					"label"		" Barrel"
+			}		
+
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu prop_menu_start1"
@@ -25145,7 +25671,11 @@
 					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_mill/tank_medium03.mdl;show_menu milltanksmenu"
 					"label"      " Tank 3"
 			}
-			
+			"4"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props/cs_militia/silo_01.mdl;show_menu milltanksmenu"
+					"label"      " Silo 1"
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu milltanksmenu"
@@ -25601,6 +26131,11 @@
 					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/lostcoast/props_wasteland/boat_wooden03a.mdl;show_menu props_foliage3"
 					"label"      " Wooden boat"
 			}
+			"5"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/lostcoast/props_wasteland/boat_drydock01a.mdl;show_menu props_foliage3"
+					"label"      " Rust big boat"
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func cleanup;show_menu props_foliage3"
@@ -25623,33 +26158,23 @@
 			"Title"     "Cemetery stuff 1"
 			"1"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/grave_01.mdl;show_menu props_cemetery1"
-					"label"      " Grave 1"
+					"command"    "play buttons/button14;show_menu props_cemetery_graves1"
+					"label"      " Graves"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/grave_02.mdl;show_menu props_cemetery1"
-					"label"      " Grave 2"
+					"command"    "play buttons/button14;show_menu props_cemetery_crypts1"
+					"label"      " Crypts"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/grave_03.mdl;show_menu props_cemetery1"
-					"label"      " Grave 3"
+					"command"    "play buttons/button14;show_menu props_cemetery_fences1"
+					"label"      " Fences"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/grave_04.mdl;show_menu props_cemetery1"
-					"label"      " Grave 4"
-			}
-			"5"
-			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/grave_06.mdl;show_menu props_cemetery1"
-					"label"      " Grave 5"
-			}
-			"6"
-			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/grave_07.mdl;show_menu props_cemetery1"
-					"label"      " Grave 6"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_cemetery/cemetery_column.mdl;show_menu props_cemetery1"
+					"label"      " Column"
 			}
 			"7"
 			{
@@ -25661,9 +26186,60 @@
 					"command"    "play buttons/button14;show_menu prop_menu_start3"
 					"label"      " << Back"
 			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"props_cemetery_graves1"
+	{
+			"Title"     "Graves 1"
+			"1"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/grave_01.mdl;show_menu props_cemetery_graves1"
+					"label"      " Grave 1"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/grave_02.mdl;show_menu props_cemetery_graves1"
+					"label"      " Grave 2"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/grave_03.mdl;show_menu props_cemetery_graves1"
+					"label"      " Grave 3"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/grave_04.mdl;show_menu props_cemetery_graves1"
+					"label"      " Grave 4"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/grave_05.mdl;show_menu props_cemetery_graves1"
+					"label"      " Grave 5"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/grave_06.mdl;show_menu props_cemetery_graves1"
+					"label"      " Grave 6"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_cemetery_graves1"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu props_cemetery1"
+					"label"      " << Back"
+			}
 			"9"
 			{
-					"command"    "play buttons/button14;show_menu props_cemetery2"
+					"command"    "play buttons/button14;show_menu props_cemetery_graves2"
 					"label"      " >> Next"
 			}
 			"0"
@@ -25672,29 +26248,119 @@
 					"label"      " Exit"
 			}
 	}
-
-	"props_cemetery2"
+	
+	"props_cemetery_graves2"
 	{
-			"Title"     "Cemetery stuff 2"
+			"Title"     "Graves 2"
 			"1"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/cemetery_gate_32.mdl;show_menu props_cemetery2"
-					"label"      " Cemetery gate small"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/grave_07.mdl;show_menu props_cemetery_graves2"
+					"label"      " Grave 7"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/cemetery_gate_64.mdl;show_menu props_cemetery2"
-					"label"      " Cemetery gate medium"
-			}
-			"3"
-			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/cemetery_gate_128.mdl;show_menu props_cemetery2"
-					"label"      " Cemetery gate big"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/grave_08.mdl;show_menu props_cemetery_graves2"
+					"label"      " Grave 8"
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func cleanup;show_menu props_cemetery2"
-					"label"      " Remove all"
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_cemetery_graves2"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu props_cemetery_graves1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"props_cemetery_crypts1"
+	{
+			"Title"     "Crypts 1"
+			"1"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/crypts_wall.mdl;show_menu props_cemetery_crypts1"
+					"label"      " Crypts Wall"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/crypts_oneoff01.mdl;show_menu props_cemetery_crypts1"
+					"label"      " Crypts single 1"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/crypts_oneoff02.mdl;show_menu props_cemetery_crypts1"
+					"label"      " Crypts single 2"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/crypts_oneoff03.mdl;show_menu props_cemetery_crypts1"
+					"label"      " Crypts single 3"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/crypts_top02.mdl;show_menu props_cemetery_crypts1"
+					"label"      " Crypts Top"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/crypts_roof02.mdl;show_menu props_cemetery_crypts1"
+					"label"      " Crypts Roof"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/crypts_bodyfront04.mdl;show_menu props_cemetery_crypts1"
+					"label"      " Crypts Front"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu props_cemetery1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"props_cemetery_fences1"
+	{
+			"Title"     "Fences 1"
+			"1"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/cemetery_gate_32.mdl;show_menu props_cemetery_fences1"
+					"label"      " Cemetery fence small"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/cemetery_gate_64.mdl;show_menu props_cemetery_fences1"
+					"label"      " Cemetery fence medium"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/cemetery_gate_128.mdl;show_menu props_cemetery_fences1"
+					"label"      " Cemetery fence big"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/cemetery_gate.mdl;show_menu props_cemetery_fences1"
+					"label"      " Cemetery fence gate"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_cemetery/cemetery_sign.mdl;show_menu props_cemetery_fences1"
+					"label"      " Cemetery gate sign"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_cemetery_fences1"
+					"label"      " Delete object"
 			}
 			"8"
 			{
@@ -26085,10 +26751,15 @@
 			}
 			"2"
 			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_interiors/sawhorse.mdl;show_menu props_junk1"
+					"label"      " Sawhorse"
+			}
+			"3"
+			{
 					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_junk/garbage_plasticbottle001a.mdl;show_menu props_junk1"
 					"label"      " Plastic bottle"
 			}
-			"3"
+			"4"
 			{
 					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_junk/metalbucket01a.mdl;show_menu props_junk1"
 					"label"      " Metal bucket"
@@ -26496,7 +27167,7 @@
 			"Title"     "Doors 1"
 			"1"
 			{
-					"command"    "play buttons/button14; scripted_user_func door,models/props_doors/shackwall01.mdl;show_menu props_doors1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_doors/shackwall01.mdl;show_menu props_doors1"
 					"label"      " Wooden barn door"
 			}
 			"2"
@@ -26551,7 +27222,7 @@
 			"Title"     "Doors 2"
 			"1"
 			{
-					"command"    "play buttons/button14; scripted_user_func door,models/props_interiors/door_sliding_breakable01.mdl;show_menu props_doors2"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_interiors/door_sliding_breakable01.mdl;show_menu props_doors2"
 					"label"      " Sliding metal door"
 			}
 			"2"
@@ -26895,8 +27566,8 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_signs/raisedbillboard.mdl;show_menu props_signs1"
-					"label"      " High billboard"
+					"command"    "play buttons/button14;show_menu props_signs_bills1"
+					"label"      " Billboards"
 			}
 			"7"
 			{
@@ -26906,6 +27577,47 @@
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu prop_menu_start7"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"props_signs_bills1"
+	{
+			"Title"     "Billboards"
+			"1"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_rooftop/billboard01.mdl;show_menu props_signs_bills1"
+					"label"      " Billboard 1"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_rooftop/billboard03.mdl;show_menu props_signs_bills1"
+					"label"      " Billboard 2"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_rooftop/billboard06.mdl;show_menu props_signs_bills1"
+					"label"      " Billboard 3"
+			}
+			
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_signs/raisedbillboard.mdl;show_menu props_signs_bills1"
+					"label"      " High Billboard"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_signs_bills1"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu props_signs1"
 					"label"      " << Back"
 			}
 			"0"
@@ -27027,32 +27739,32 @@
             "Title"     "Trains 1"
             "1"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\train_enginecar.mdl; show_menu props_vehicles_trains1"
+                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/train_enginecar.mdl; show_menu props_vehicles_trains1"
                     "label"		" Engine car"
             }
             "2"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\train_engine_military.mdl; show_menu props_vehicles_trains1"
+                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/train_engine_military.mdl; show_menu props_vehicles_trains1"
                     "label"		" Engine car, military"
             }
             "3"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\train_box.mdl; show_menu props_vehicles_trains1"
+                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/train_box.mdl; show_menu props_vehicles_trains1"
                     "label"		" Box "
             }
             "4"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\train_box_open.mdl; show_menu props_vehicles_trains1"
+                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/train_box_open.mdl; show_menu props_vehicles_trains1"
                     "label"		" Box, open"
             }
             "5"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\train_box_small.mdl; show_menu props_vehicles_trains1"
+                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/train_box_small.mdl; show_menu props_vehicles_trains1"
                     "label"		" Box, small"
             }
             "6"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\train_boxwreck.mdl; show_menu props_vehicles_trains1"
+                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/train_boxwreck.mdl; show_menu props_vehicles_trains1"
                     "label"		" Box, wrecked"
             }
             
@@ -27083,27 +27795,27 @@
             "Title"     "Trains 2"
             "1"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\train_orecar.mdl; show_menu props_vehicles_trains2"
+                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/train_orecar.mdl; show_menu props_vehicles_trains2"
                     "label"		" Ore car"
             }
             "2"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\train_flatcar.mdl; show_menu props_vehicles_trains2"
+                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/train_flatcar.mdl; show_menu props_vehicles_trains2"
                     "label"		" Flat car"
             }
             "3"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\train_flatcar_small.mdl; show_menu props_vehicles_trains2"
+                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/train_flatcar_small.mdl; show_menu props_vehicles_trains2"
                     "label"		" Flat car,small "
             }
             "4"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\train_tank.mdl; show_menu props_vehicles_trains2"
+                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/train_tank.mdl; show_menu props_vehicles_trains2"
                     "label"		" Tank car"
             }
             "5"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\train_tank_small.mdl; show_menu props_vehicles_trains2"
+                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/train_tank_small.mdl; show_menu props_vehicles_trains2"
                     "label"		" Tank car, small"
             }
 
@@ -27362,7 +28074,7 @@
 			}
 			"5"
 			{
-					"command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\boat_cabin35ft.mdl; show_menu props_vehicles6"
+					"command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/boat_cabin35ft.mdl; show_menu props_vehicles6"
                     "label"		 " Boat 35ft2" 
 			}
 			"7"
@@ -27387,32 +28099,32 @@
 			"Title"     "Junkyard cars 1"
 			"1"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\car001a_hatchback.mdl; show_menu props_vehicles_junk1"
+                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/car001a_hatchback.mdl; show_menu props_vehicles_junk1"
                     "label"		" Hatchback 1" 
             }
 			"2"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\car001b_hatchback.mdl; show_menu props_vehicles_junk1"
+                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/car001b_hatchback.mdl; show_menu props_vehicles_junk1"
                     "label"		" Hatchback 2" 
             }
 			"3"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\car002a.mdl; show_menu props_vehicles_junk1"
+                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/car002a.mdl; show_menu props_vehicles_junk1"
                     "label"		" Old car 1" 
             }
 			"4"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\car002b.mdl; show_menu props_vehicles_junk1"
+                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/car002b.mdl; show_menu props_vehicles_junk1"
                     "label"		" Old car 2" 
             }
 			"5"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\car003a.mdl; show_menu props_vehicles_junk1"
+                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/car003a.mdl; show_menu props_vehicles_junk1"
                     "label"		" Sedan 1" 
             }
 			"6"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\car003b.mdl; show_menu props_vehicles_junk1"
+                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/car003b.mdl; show_menu props_vehicles_junk1"
                     "label"		" Sedan 2" 
             }
 			"7"
@@ -27442,22 +28154,22 @@
 			"Title"     "Junkyard cars 2"
 			"1"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\car004a.mdl; show_menu props_vehicles_junk2"
+                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/car004a.mdl; show_menu props_vehicles_junk2"
                     "label"		" Sedan 3" 
             }
 			"2"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\car004b.mdl; show_menu props_vehicles_junk2"
+                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/car004b.mdl; show_menu props_vehicles_junk2"
                     "label"		" Sedan 4" 
             }
 			"3"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\car005a.mdl; show_menu props_vehicles_junk2"
+                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/car005a.mdl; show_menu props_vehicles_junk2"
                     "label"		" Sedan 5"  
             }
 			"4"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models\props_vehicles\car005b.mdl; show_menu props_vehicles_junk2"
+                    "command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_vehicles/car005b.mdl; show_menu props_vehicles_junk2"
                     "label"		" Sedan 6"  
             }
            
@@ -27610,6 +28322,11 @@
 			{
 					"command"    "play buttons/button14; show_menu phys_props_street1"
 					"label"      " More exterior stuff"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14; show_menu phys_props_rooftop1"
+					"label"      " Rooftop stuff"
 			}
 			"7"
 			{
@@ -28466,13 +29183,24 @@
 			"3"
 			{
 					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_debris/concrete_debris256pile001a.mdl;show_menu phys_props_debris1"
-					"label"      " Concrete debris"
+					"label"      " Concrete debris 1"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_interiors/sawhorse.mdl;show_menu phys_props_debris1"
-					"label"      " Sawhorse"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_debris/concrete_debris256barricade001a.mdl;show_menu phys_props_debris1"
+					"label"      " Concrete debris 2"
 			}
+			"5"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_debris/concrete_debris128pile001b.mdl;show_menu phys_props_debris1"
+					"label"      " Concrete debris 3"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_debris/concrete_debris128pile001a.mdl;show_menu phys_props_debris1"
+					"label"      " Concrete debris 4"
+			}
+
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func cleanup;show_menu phys_props_debris1"
@@ -28555,7 +29283,16 @@
 					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_crates/static_crate_40.mdl;show_menu phys_props_barrels2"
 					"label"      " Green crate"
 			}
-
+			"2"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props/de_nuke/crate_small.mdl;show_menu phys_props_barrels2"
+					"label"      " Medium crate"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props/de_nuke/crate_extralarge.mdl;show_menu phys_props_barrels2"
+					"label"      " Big crate"
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func cleanup;show_menu phys_props_barrels2"
@@ -29772,8 +30509,8 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_street/awning_mainstreet.mdl;show_menu phys_props_street1"
-					"label"      " Concrete catwalk"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_debris/burnt_building_chimney_01.mdl;show_menu phys_props_street1"
+					"label"      " Big chimney"
 			}
 			"6"
 			{
@@ -29816,6 +30553,26 @@
 					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_pipes/pipeset32d_corner128r_001a.mdl;show_menu phys_props_street2"
 					"label"      " L shaped pipe"
 			}
+			"3"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/lighthouse/props/junkyard_big_pipe.mdl;show_menu phys_props_street2"
+					"label"      " Big cylinder"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_docks/marina_dock.mdl;show_menu phys_props_street2"
+					"label"      " Big marina dock"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_docks/dock_broken01a_256.mdl;show_menu phys_props_street2"
+					"label"      " Broken dock "
+			}
+			"6"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_docks/dock01_polecluster01d_256.mdl;show_menu phys_props_street2"
+					"label"      " Dock poles "
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func cleanup;show_menu phys_props_street2"
@@ -29824,6 +30581,107 @@
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu phys_props_street1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"phys_props_rooftop1"
+	{
+			"Title"     "Rooftop stuff 1"
+			"1"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_rooftop/train_signalbox_01.mdl;show_menu phys_props_rooftop1"
+					"label"      " Signal box"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_rooftop/satellitedish_large01.mdl;show_menu phys_props_rooftop1"
+					"label"      " Sattelite dish"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_rooftop/rooftank01.mdl;show_menu phys_props_rooftop1"
+					"label"      " Roof tank"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_rooftop/hotel_rooftop_equip001.mdl;show_menu phys_props_rooftop1"
+					"label"      " Cooler unit "
+			}
+			"5"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_rooftop/foghorn01.mdl;show_menu phys_props_rooftop1"
+					"label"      " Fog horn"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_rooftop_ac1"
+					"label"      " AC Vents and Units"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_rooftop1"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu phys_prop_menu_start3"
+					"label"      " << Back"
+			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"phys_props_rooftop_ac1"
+	{
+			"Title"     "AC Vents and Units "
+			"1"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_rooftop/acvent01.mdl;show_menu phys_props_rooftop_ac1"
+					"label"      " AC Vent 1"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_rooftop/acvent02.mdl;show_menu phys_props_rooftop_ac1"
+					"label"      " AC Vent 2"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_rooftop/acvent03.mdl;show_menu phys_props_rooftop_ac1"
+					"label"      " AC Vent 3"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_rooftop/acvent04.mdl;show_menu phys_props_rooftop_ac1"
+					"label"      " AC Vent 4"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_rooftop/acvent05.mdl;show_menu phys_props_rooftop_ac1"
+					"label"      " AC Vent 5"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_rooftop/acunit01.mdl;show_menu phys_props_rooftop_ac1"
+					"label"      " AC Unit 1"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_rooftop/acunit2.mdl;show_menu phys_props_rooftop_ac1"
+					"label"      " AC Unit 2"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_rooftop1"
 					"label"      " << Back"
 			}
 			"0"
@@ -29846,12 +30704,32 @@
 					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_unique/wooden_barricade_gascans.mdl;show_menu phys_props_equipment1"
 					"label"      " Grouped gas cans"
 			}
-
+			"3"
+			{
+					"command"	"play buttons/button14; scripted_user_func gascan; show_menu phys_props_equipment1"
+					"label"		" Gascan"
+			}
+			"4"		
+			{
+					"command"	"play buttons/button14; scripted_user_func propanetank; show_menu phys_props_equipment1"
+					"label"		" Propanetank"
+			}
+			"5"
+			{
+					"command"	"play buttons/button14; scripted_user_func oxygentank; show_menu phys_props_equipment1"
+					"label"		" Oxygentank"
+			}
+			"6"
+			{
+					"command"	"play buttons/button14; scripted_user_func fireworkcrate; show_menu phys_props_equipment1"
+					"label"		" Firework"
+			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func cleanup;show_menu phys_props_equipment1"
-					"label"      " Remove all"
-			}
+					"command"	"play buttons/button14; scripted_user_func barrel; show_menu phys_props_equipment1"
+					"label"		" Barrel"
+			}		
+
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu phys_prop_menu_start1"
@@ -29990,7 +30868,11 @@
 					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_mill/tank_medium03.mdl;show_menu phys_milltanksmenu"
 					"label"      " Tank 3"
 			}
-			
+			"4"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props/cs_militia/silo_01.mdl;show_menu phys_milltanksmenu"
+					"label"      " Silo 1"
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_milltanksmenu"
@@ -30445,6 +31327,11 @@
 					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/lostcoast/props_wasteland/boat_wooden03a.mdl;show_menu phys_props_foliage3"
 					"label"      " Wooden boat"
 			}
+			"5"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/lostcoast/props_wasteland/boat_drydock01a.mdl;show_menu phys_props_foliage3"
+					"label"      " Rust big boat"
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func cleanup;show_menu phys_props_foliage3"
@@ -30462,38 +31349,29 @@
 			}
 	}
 
+	
 	"phys_props_cemetery1"
 	{
 			"Title"     "Cemetery stuff 1"
 			"1"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/grave_01.mdl;show_menu phys_props_cemetery1"
-					"label"      " Grave 1"
+					"command"    "play buttons/button14;show_menu phys_props_cemetery_graves1"
+					"label"      " Graves"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/grave_02.mdl;show_menu phys_props_cemetery1"
-					"label"      " Grave 2"
+					"command"    "play buttons/button14;show_menu phys_props_cemetery_crypts1"
+					"label"      " Crypts"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/grave_03.mdl;show_menu phys_props_cemetery1"
-					"label"      " Grave 3"
+					"command"    "play buttons/button14;show_menu phys_props_cemetery_fences1"
+					"label"      " Fences"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/grave_04.mdl;show_menu phys_props_cemetery1"
-					"label"      " Grave 4"
-			}
-			"5"
-			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/grave_06.mdl;show_menu phys_props_cemetery1"
-					"label"      " Grave 5"
-			}
-			"6"
-			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/grave_07.mdl;show_menu phys_props_cemetery1"
-					"label"      " Grave 6"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_cemetery/cemetery_column.mdl;show_menu phys_props_cemetery1"
+					"label"      " Column"
 			}
 			"7"
 			{
@@ -30502,12 +31380,63 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu phys_prop_menu_start3"
+					"command"    "play buttons/button14;show_menu prop_menu_start3"
+					"label"      " << Back"
+			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"phys_props_cemetery_graves1"
+	{
+			"Title"     "Graves 1"
+			"1"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/grave_01.mdl;show_menu phys_props_cemetery_graves1"
+					"label"      " Grave 1"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/grave_02.mdl;show_menu phys_props_cemetery_graves1"
+					"label"      " Grave 2"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/grave_03.mdl;show_menu phys_props_cemetery_graves1"
+					"label"      " Grave 3"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/grave_04.mdl;show_menu phys_props_cemetery_graves1"
+					"label"      " Grave 4"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/grave_05.mdl;show_menu phys_props_cemetery_graves1"
+					"label"      " Grave 5"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/grave_06.mdl;show_menu phys_props_cemetery_graves1"
+					"label"      " Grave 6"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_cemetery_graves1"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_cemetery1"
 					"label"      " << Back"
 			}
 			"9"
 			{
-					"command"    "play buttons/button14;show_menu phys_props_cemetery2"
+					"command"    "play buttons/button14;show_menu phys_props_cemetery_graves2"
 					"label"      " >> Next"
 			}
 			"0"
@@ -30516,29 +31445,119 @@
 					"label"      " Exit"
 			}
 	}
-
-	"phys_props_cemetery2"
+	
+	"phys_props_cemetery_graves2"
 	{
-			"Title"     "Cemetery stuff 2"
+			"Title"     "Graves 2"
 			"1"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/cemetery_gate_32.mdl;show_menu phys_props_cemetery2"
-					"label"      " Cemetery gate small"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/grave_07.mdl;show_menu phys_props_cemetery_graves2"
+					"label"      " Grave 7"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/cemetery_gate_64.mdl;show_menu phys_props_cemetery2"
-					"label"      " Cemetery gate medium"
-			}
-			"3"
-			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/cemetery_gate_128.mdl;show_menu phys_props_cemetery2"
-					"label"      " Cemetery gate big"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/grave_08.mdl;show_menu phys_props_cemetery_graves2"
+					"label"      " Grave 8"
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func cleanup;show_menu phys_props_cemetery2"
-					"label"      " Remove all"
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_cemetery_graves2"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_cemetery_graves1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"phys_props_cemetery_crypts1"
+	{
+			"Title"     "Crypts 1"
+			"1"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/crypts_wall.mdl;show_menu phys_props_cemetery_crypts1"
+					"label"      " Crypts Wall"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/crypts_oneoff01.mdl;show_menu phys_props_cemetery_crypts1"
+					"label"      " Crypts single 1"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/crypts_oneoff02.mdl;show_menu phys_props_cemetery_crypts1"
+					"label"      " Crypts single 2"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/crypts_oneoff03.mdl;show_menu phys_props_cemetery_crypts1"
+					"label"      " Crypts single 3"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/crypts_top02.mdl;show_menu phys_props_cemetery_crypts1"
+					"label"      " Crypts Top"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/crypts_roof02.mdl;show_menu phys_props_cemetery_crypts1"
+					"label"      " Crypts Roof"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/crypts_bodyfront04.mdl;show_menu phys_props_cemetery_crypts1"
+					"label"      " Crypts Front"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_cemetery1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"phys_props_cemetery_fences1"
+	{
+			"Title"     "Fences 1"
+			"1"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/cemetery_gate_32.mdl;show_menu phys_props_cemetery_fences1"
+					"label"      " Cemetery fence small"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/cemetery_gate_64.mdl;show_menu phys_props_cemetery_fences1"
+					"label"      " Cemetery fence medium"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/cemetery_gate_128.mdl;show_menu phys_props_cemetery_fences1"
+					"label"      " Cemetery fence big"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/cemetery_gate.mdl;show_menu phys_props_cemetery_fences1"
+					"label"      " Cemetery fence gate"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_cemetery/cemetery_sign.mdl;show_menu phys_props_cemetery_fences1"
+					"label"      " Cemetery gate sign"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_cemetery_fences1"
+					"label"      " Delete object"
 			}
 			"8"
 			{
@@ -30928,10 +31947,15 @@
 			}
 			"2"
 			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_interiors/sawhorse.mdl;show_menu phys_props_junk1"
+					"label"      " Sawhorse"
+			}
+			"3"
+			{
 					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_junk/garbage_plasticbottle001a.mdl;show_menu phys_props_junk1"
 					"label"      " Plastic bottle"
 			}
-			"3"
+			"4"
 			{
 					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_junk/metalbucket01a.mdl;show_menu phys_props_junk1"
 					"label"      " Metal bucket"
@@ -31738,8 +32762,8 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_signs/raisedbillboard.mdl;show_menu phys_props_signs1"
-					"label"      " High billboard"
+					"command"    "play buttons/button14;show_menu phys_props_signs_bills1"
+					"label"      " Billboards"
 			}
 			"7"
 			{
@@ -31749,6 +32773,47 @@
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu phys_prop_menu_start7"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"phys_props_signs_bills1"
+	{
+			"Title"     "Billboards"
+			"1"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_rooftop/billboard01.mdl;show_menu phys_props_signs_bills1"
+					"label"      " Billboard 1"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_rooftop/billboard03.mdl;show_menu phys_props_signs_bills1"
+					"label"      " Billboard 2"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_rooftop/billboard06.mdl;show_menu phys_props_signs_bills1"
+					"label"      " Billboard 3"
+			}
+			
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_signs/raisedbillboard.mdl;show_menu phys_props_signs_bills1"
+					"label"      " High Billboard"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_signs_bills1"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_signs1"
 					"label"      " << Back"
 			}
 			"0"
@@ -31871,32 +32936,32 @@
             "Title"     "Trains 1"
             "1"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\train_enginecar.mdl; show_menu phys_props_vehicles_trains1"
+                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/train_enginecar.mdl; show_menu phys_props_vehicles_trains1"
                     "label"		" Engine car"
             }
             "2"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\train_engine_military.mdl; show_menu phys_props_vehicles_trains1"
+                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/train_engine_military.mdl; show_menu phys_props_vehicles_trains1"
                     "label"		" Engine car, military"
             }
             "3"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\train_box.mdl; show_menu phys_props_vehicles_trains1"
+                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/train_box.mdl; show_menu phys_props_vehicles_trains1"
                     "label"		" Box "
             }
             "4"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\train_box_open.mdl; show_menu phys_props_vehicles_trains1"
+                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/train_box_open.mdl; show_menu phys_props_vehicles_trains1"
                     "label"		" Box, open"
             }
             "5"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\train_box_small.mdl; show_menu phys_props_vehicles_trains1"
+                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/train_box_small.mdl; show_menu phys_props_vehicles_trains1"
                     "label"		" Box, small"
             }
             "6"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\train_boxwreck.mdl; show_menu phys_props_vehicles_trains1"
+                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/train_boxwreck.mdl; show_menu phys_props_vehicles_trains1"
                     "label"		" Box, wrecked"
             }
             
@@ -31927,27 +32992,27 @@
             "Title"     "Trains 2"
             "1"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\train_orecar.mdl; show_menu phys_props_vehicles_trains2"
+                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/train_orecar.mdl; show_menu phys_props_vehicles_trains2"
                     "label"		" Ore car"
             }
             "2"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\train_flatcar.mdl; show_menu phys_props_vehicles_trains2"
+                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/train_flatcar.mdl; show_menu phys_props_vehicles_trains2"
                     "label"		" Flat car"
             }
             "3"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\train_flatcar_small.mdl; show_menu phys_props_vehicles_trains2"
+                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/train_flatcar_small.mdl; show_menu phys_props_vehicles_trains2"
                     "label"		" Flat car,small "
             }
             "4"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\train_tank.mdl; show_menu phys_props_vehicles_trains2"
+                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/train_tank.mdl; show_menu phys_props_vehicles_trains2"
                     "label"		" Tank car"
             }
             "5"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\train_tank_small.mdl; show_menu phys_props_vehicles_trains2"
+                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/train_tank_small.mdl; show_menu phys_props_vehicles_trains2"
                     "label"		" Tank car, small"
             }
 
@@ -32206,7 +33271,7 @@
 			}
 			"5"
 			{
-					"command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\boat_cabin35ft.mdl; show_menu phys_props_vehicles6"
+					"command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/boat_cabin35ft.mdl; show_menu phys_props_vehicles6"
                     "label"		 " Boat 35ft2" 
 			}
 			"7"
@@ -32231,32 +33296,32 @@
 			"Title"     "Junkyard cars 1"
 			"1"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\car001a_hatchback.mdl; show_menu phys_props_vehicles_junk1"
+                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/car001a_hatchback.mdl; show_menu phys_props_vehicles_junk1"
                     "label"		" Hatchback 1" 
             }
 			"2"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\car001b_hatchback.mdl; show_menu phys_props_vehicles_junk1"
+                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/car001b_hatchback.mdl; show_menu phys_props_vehicles_junk1"
                     "label"		" Hatchback 2" 
             }
 			"3"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\car002a.mdl; show_menu phys_props_vehicles_junk1"
+                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/car002a.mdl; show_menu phys_props_vehicles_junk1"
                     "label"		" Old car 1" 
             }
 			"4"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\car002b.mdl; show_menu phys_props_vehicles_junk1"
+                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/car002b.mdl; show_menu phys_props_vehicles_junk1"
                     "label"		" Old car 2" 
             }
 			"5"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\car003a.mdl; show_menu phys_props_vehicles_junk1"
+                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/car003a.mdl; show_menu phys_props_vehicles_junk1"
                     "label"		" Sedan 1" 
             }
 			"6"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\car003b.mdl; show_menu phys_props_vehicles_junk1"
+                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/car003b.mdl; show_menu phys_props_vehicles_junk1"
                     "label"		" Sedan 2" 
             }
 			"7"
@@ -32286,22 +33351,22 @@
 			"Title"     "Junkyard cars 2"
 			"1"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\car004a.mdl; show_menu phys_props_vehicles_junk2"
+                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/car004a.mdl; show_menu phys_props_vehicles_junk2"
                     "label"		" Sedan 3" 
             }
 			"2"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\car004b.mdl; show_menu phys_props_vehicles_junk2"
+                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/car004b.mdl; show_menu phys_props_vehicles_junk2"
                     "label"		" Sedan 4" 
             }
 			"3"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\car005a.mdl; show_menu phys_props_vehicles_junk2"
+                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/car005a.mdl; show_menu phys_props_vehicles_junk2"
                     "label"		" Sedan 5"  
             }
 			"4"
             {
-                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models\props_vehicles\car005b.mdl; show_menu phys_props_vehicles_junk2"
+                    "command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_vehicles/car005b.mdl; show_menu phys_props_vehicles_junk2"
                     "label"		" Sedan 6"  
             }
            
