@@ -1,0 +1,27 @@
+"AddonInfo"
+{
+	AddonTitle          "project_smok"
+	AddonVersion        "01"
+	AddonDescription    "A menu for spawning dynamic and physics objects"
+	AddonAuthor         "rhino"
+	AddonAuthorSteamID  "https://steamcommunity.com/id/rhinothemonstertruckfan"
+	AddonURL0           ""
+
+	AddonSteamAppID  550
+
+	AddonContent_BackgroundMovie 0
+	AddonContent_BossInfected    0
+	AddonContent_Campaign        0
+	AddonContent_CommonInfected  0
+	AddonContent_Map     		 0
+	AddonContent_Music    		 0
+	AddonContent_Prefab 		 0
+	AddonContent_Prop     		 0 
+	AddonContent_Script   		 1
+	AddonContent_Skin     		 0
+	AddonContent_Sound    		 0
+	AddonContent_Spray    		 0
+	AddonContent_Survivor 		 0
+	AddonContent_Weapon      	 0 
+	AddonContent_WeaponModel 	 0
+}
