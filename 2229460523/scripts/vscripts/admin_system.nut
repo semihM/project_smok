@@ -929,9 +929,19 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.EntMoveCmd(player,args);
 			break;
 		}
+		case "ent_spin":
+		{
+			AdminSystem.EntSpinCmd(player,args);
+			break;
+		}
 		case "entity":
 		{
 			AdminSystem.EntityCmd( player, args );
+			break;
+		}
+		case "ent":
+		{
+			AdminSystem.EntityWithTableCmd( player, args );
 			break;
 		}
 		case "survivor":
@@ -1385,6 +1395,11 @@ function ChatTriggers::entity( player, args, text )
 	AdminSystem.EntityCmd( player, args );
 }
 
+function ChatTriggers::ent( player, args, text )
+{
+	AdminSystem.EntityWithTableCmd( player, args );
+}
+
 function ChatTriggers::prop( player, args, text )
 {
 	AdminSystem.PropCmd( player, args );
@@ -1438,6 +1453,11 @@ function ChatTriggers::ent_push( player, args, text )
 function ChatTriggers::ent_move( player, args, text )
 {
 	AdminSystem.EntMoveCmd( player, args );
+}
+
+function ChatTriggers::ent_spin( player, args, text )
+{
+	AdminSystem.EntSpinCmd( player, args );
 }
 
 function ChatTriggers::script( player, args, text )
@@ -3551,14 +3571,108 @@ if ( Director.GetGameMode() == "holdout" )
 
 ::AdminSystem.EntityCmd <- function ( player, args )
 {
-	local Entity = GetArgument(1);
-	local EyePosition = player.GetLookingLocation();
-
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
+
+	local classname = GetArgument(1);
+	local pos = GetArgument(2);
+	if(pos == null)
+		pos = player.GetLookingLocation();
+
+	local ang = GetArgument(3);
+	if(ang == null)
+		ang = QAngle(0,0,0)
+
+	local keyvals = GetArgument(4);
+	if(keyvals == null)
+		keyvals = {}
+
+	Msg("\n"+player.GetCharacterName().tolower()+" ->Created entity("+classname+"):\nposition = "+pos+"\nangles = "+ang+"\nkeyvals = "+"\n");
+	Utils.PrintTable(keyvals);
 	
-	Utils.CreateEntity(Entity, EyePosition);
+	Utils.CreateEntity(classname,pos,ang,keyvals);
 }
+
+/**
+ * Creates entity with given class and table of key-value pairs 
+ *
+ * @param classname Class name of the entity
+ * @param keyvals Key-value pairs in the format: "key1->val1&key2->val2.1|val2.2|val2.3&..." 
+ *
+ * @return void
+*/
+::AdminSystem.EntityWithTableCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local cname = GetArgument(1);
+	local keyvals = GetArgument(2);
+	
+	if(keyvals == null)
+	{
+		keyvals = {};
+	}
+	else
+	{
+		local kvpairs = split(keyvals,"&");
+
+		keyvals = 
+		{
+			classname = cname,
+			origin = player.GetLookingLocation(),
+			angles = QAngle(0,0,0),
+		};
+		
+		if(cname == "prop_dynamic")
+		{
+			keyvals.classname = "prop_dynamic_override",
+			keyvals.StartDisabled <- "false",
+			keyvals.Solid <- "6",
+			keyvals.spawnflags <- "8"
+		}
+
+		local pairsplit = [];
+		foreach(pair in kvpairs)
+		{	
+			pairsplit = split(pair,"->");
+
+			if(pairsplit.len()!=2)
+			{
+				Msg(player.GetCharacterName().tolower()+" ->Invalid entity key value pair: \n");
+				foreach(i,v in pairsplit)
+				{
+					Msg((i+1)+": "+v+"\n");
+				}
+				return;
+			}
+			// Multi-valued term
+			if(pairsplit[1].find("|") != null)
+			{	
+				local str = split(pairsplit[1],"|");
+				if(str.len()!=3)
+				{
+					Msg(player.GetCharacterName().tolower()+" ->Invalid entity value for "+pairsplit[0]+": \n");
+					foreach(i,v in pairsplit[1])
+					{
+						Msg((i+1)+": "+v+"\n");
+					}
+					return;
+				}
+				pairsplit[1] = format("%f %f %f",str[0].tofloat(),str[1].tofloat(),str[2].tofloat())
+			}
+
+			keyvals[pairsplit[0]] <- pairsplit[1];
+		}
+		
+
+	}
+	Msg("\n"+player.GetCharacterName().tolower()+" ->Created entity("+cname+") with table:\n");
+	Utils.PrintTable(keyvals);
+
+	Utils.CreateEntityWithTable(keyvals);
+}
+
 
 ::AdminSystem.PropCmd <- function ( player, args )
 {
@@ -3598,9 +3712,9 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		// +++++++++++++++ SETTINGS END 
 
-		if ( Aimed )
+		if ( Aimed != null )
 		{
-			GroundPosition.y += 180;
+			EyePosition.z += Aimed.tofloat();
 			Utils.SpawnPhysicsProp( MDL, EyePosition, GroundPosition );
 		}
 		else
@@ -4239,9 +4353,10 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 			
 		fwvec = fwvec.Scale(scalefactor/fwvec.Length());
+
 		entlooked.Push(fwvec);
-		
 		Msg(player.GetCharacterName().tolower()+"->Push("+scalefactor+","+direction+","+pitchofeye+"), Entity index: "+entlooked.GetIndex()+"\n");
+		
 	}
 }
 
@@ -4322,6 +4437,72 @@ if ( Director.GetGameMode() == "holdout" )
 		entlooked.SetOrigin(Vector(entpos.x+fwvec.x,entpos.y+fwvec.y,entpos.z+fwvec.z));
 
 		Msg(player.GetCharacterName().tolower()+" ->Move("+units+","+direction+","+pitchofeye+"), Entity index: "+entlooked.GetIndex()+"\n");
+	}
+}
+
+::AdminSystem.EntSpinCmd <- function ( player, args )
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local scalefactor = GetArgument(1);
+	local direction = GetArgument(2);
+
+	if(scalefactor == null)
+	{
+		scalefactor = 10;
+	}
+	else
+	{
+		scalefactor = scalefactor.tofloat();
+	}
+
+	if(direction == null)
+	{
+		direction == "forward";
+	}
+
+	local entlooked = player.GetLookingEntity();
+	if(entlooked)
+	{	
+		local fwvec = player.GetEyeAngles().Forward();
+		local temp = Vector(fwvec.x,fwvec.y,fwvec.z);
+
+		if(direction == "backward")
+		{	
+			fwvec.z *= -1;
+			fwvec.y *= -1;
+			fwvec.x *= -1;
+		}
+		else if(direction == "left")
+		{	
+			fwvec.x = -temp.y;
+			fwvec.y = temp.x;
+			fwvec.z = 0;
+		}
+		else if(direction == "right")
+		{
+			fwvec.x = temp.y;
+			fwvec.y = -temp.x;
+			fwvec.z = 0;
+		}
+		else if(direction == "up")
+		{
+			fwvec.z = 1;
+			fwvec.y = 0;
+			fwvec.x = 0;
+		}
+		else if(direction == "down")
+		{
+			fwvec.z = -1;
+			fwvec.y = 0;
+			fwvec.x = 0;
+		}
+			
+		fwvec = fwvec.Scale(scalefactor/fwvec.Length());
+
+		entlooked.Spin(fwvec);
+		Msg(player.GetCharacterName().tolower()+"->Spin("+scalefactor+","+direction+"), Entity index: "+entlooked.GetIndex()+"\n");
 	}
 }
 

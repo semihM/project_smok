@@ -1704,7 +1704,6 @@ function VSLib::Entity::SetColor(red, green, blue, alpha)
 		printl("VSLib Warning: Entity " + _idx + " is invalid.");
 		return;
 	}
-	
 	_ent.__KeyValueFromString("rendercolor", red + " " + green + " " + blue + " " + alpha);
 }
 

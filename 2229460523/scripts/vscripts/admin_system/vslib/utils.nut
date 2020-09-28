@@ -581,11 +581,37 @@ function VSLib::Utils::_sayfunc(args)
  * @return A VSLib entity object
  */
 function VSLib::Utils::CreateEntity(_classname, pos = Vector(0,0,0), ang = QAngle(0,0,0), kvs = {})
-{
+{	
 	kvs.classname <- _classname;
 	kvs.origin <- pos;
 	kvs.angles <- ang;
 	
+	local ent = g_ModeScript.CreateSingleSimpleEntityFromTable(kvs);
+	if ( !ent )
+		return null;
+	
+	ent.ValidateScriptScope();
+	
+	return ::VSLib.Entity(ent);
+}
+
+/**
+ * Spawns a new entity with the key-value pairs.
+ *
+ * @param kvs Other keyvalues you may want it to have
+ * @return A VSLib entity object
+ */
+function VSLib::Utils::CreateEntityWithTable(kvs = {})
+{	
+	foreach(key,val in kvs)
+	{
+		if(key == "model")
+		{
+			::VSLib.Utils.PrecacheModel(val);
+			break;
+		}
+	}
+
 	local ent = g_ModeScript.CreateSingleSimpleEntityFromTable(kvs);
 	if ( !ent )
 		return null;
