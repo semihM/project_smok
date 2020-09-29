@@ -9,13 +9,13 @@ IncludeScript("Voice_paths/paths/producer.nut");
 
 ::Survivorlines <- {
     Paths = {
-        "bill" : ::Namvet.bill,
-        "francis" : ::Biker.francis,
-        "louis" : ::Manager.louis,
-        "zoey" : ::Teengirl.zoey,
-        "nick" : ::Gambler.nick,
-        "ellis" : ::Mechanic.ellis,
-        "coach" : ::Coach.coach,
-        "rochelle" : ::Producer.rochelle
+        bill = ::Namvet.bill,
+        francis = ::Biker.francis,
+        louis = ::Manager.louis,
+        zoey = ::Teengirl.zoey,
+        nick = ::Gambler.nick,
+        ellis = ::Mechanic.ellis,
+        coach = ::Coach.coach,
+        rochelle = ::Producer.rochelle
     }
 }

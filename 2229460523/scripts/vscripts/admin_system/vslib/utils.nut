@@ -601,7 +601,7 @@ function VSLib::Utils::CreateEntity(_classname, pos = Vector(0,0,0), ang = QAngl
  * @param kvs Other keyvalues you may want it to have
  * @return A VSLib entity object
  */
-function VSLib::Utils::CreateEntityWithTable(kvs = {})
+function VSLib::Utils::CreateEntityWithTable(kvs = {},baseent = null)
 {	
 	foreach(key,val in kvs)
 	{
@@ -612,7 +612,7 @@ function VSLib::Utils::CreateEntityWithTable(kvs = {})
 		}
 	}
 
-	local ent = g_ModeScript.CreateSingleSimpleEntityFromTable(kvs);
+	local ent = g_ModeScript.CreateSingleSimpleEntityFromTable(kvs,baseent);
 	if ( !ent )
 		return null;
 	

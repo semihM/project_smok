@@ -5579,11 +5579,12 @@ function VSLib::EasyLogic::Objects::AliveAroundRadius(pos, radius)
 	local t = AroundRadius(pos, radius);
 	
 	foreach (idx, ent in t)
+	{
 		if (ent.GetClassname() != "player" && ent.GetClassname() != "infected")
-			delete t[idx];
+			{delete t[idx];}
 		else if (::VSLib.Player(ent).IsDead()) // tag on a branched if statement
-			delete t[idx];
-	
+			{delete t[idx];}
+	}
 	return t;
 }
 
