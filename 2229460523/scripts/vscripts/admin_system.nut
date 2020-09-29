@@ -22,6 +22,9 @@ if ( SessionState.ModeName == "coop" || SessionState.ModeName == "realism" || Se
 }
 
 Utils.PrecacheCSSWeapons();
+
+::VSLib.Utils.PrecacheModel("models/props_industrial/wire_spool_01.mdl"); // temp model
+
 Convars.SetValue( "precache_all_survivors", "1" );
 
 // The admin list
@@ -56,45 +59,45 @@ Convars.SetValue( "precache_all_survivors", "1" );
 	}
 	ZombieModels =
 	[
-		"common_female_tankTop_jeans"
-		"common_female_tankTop_jeans_rain"
-		"common_female_tshirt_skirt"
-		"common_female_tshirt_skirt_swamp"
-		"common_female_formal"
-		"common_male_dressShirt_jeans"
-		"common_male_polo_jeans"
-		"common_male_tankTop_jeans"
-		"common_male_tankTop_jeans_rain"
-		"common_male_tankTop_jeans_swamp"
-		"common_male_tankTop_overalls"
-		"common_male_tankTop_overalls_rain"
-		"common_male_tankTop_overalls_swamp"
-		"common_male_tshirt_cargos"
-		"common_male_tshirt_cargos_swamp"
-		"common_male_formal"
-		"common_male_biker"
-		"common_male_ceda"
-		"common_male_mud"
-		"common_male_roadcrew"
-		"common_male_roadcrew_rain"
-		"common_male_fallen_survivor"
-		"common_male_riot"
-		"common_male_clown"
-		"common_male_jimmy"
-		"common_patient_male01_l4d2"
-		"common_female_nurse01"
-		"common_female_rural01"
-		"common_female01"
-		"common_male_baggagehandler_01"
-		"common_male_pilot"
-		"common_male_rural01"
-		"common_male_suit"
-		"common_male01"
-		"common_military_male01"
+		"common_female_tankTop_jeans",
+		"common_female_tankTop_jeans_rain",
+		"common_female_tshirt_skirt",
+		"common_female_tshirt_skirt_swamp",
+		"common_female_formal",
+		"common_male_dressShirt_jeans",
+		"common_male_polo_jeans",
+		"common_male_tankTop_jeans",
+		"common_male_tankTop_jeans_rain",
+		"common_male_tankTop_jeans_swamp",
+		"common_male_tankTop_overalls",
+		"common_male_tankTop_overalls_rain",
+		"common_male_tankTop_overalls_swamp",
+		"common_male_tshirt_cargos",
+		"common_male_tshirt_cargos_swamp",
+		"common_male_formal",
+		"common_male_biker",
+		"common_male_ceda",
+		"common_male_mud",
+		"common_male_roadcrew",
+		"common_male_roadcrew_rain",
+		"common_male_fallen_survivor",
+		"common_male_riot",
+		"common_male_clown",
+		"common_male_jimmy",
+		"common_patient_male01_l4d2",
+		"common_female_nurse01",
+		"common_female_rural01",
+		"common_female01",
+		"common_male_baggagehandler_01",
+		"common_male_pilot",
+		"common_male_rural01",
+		"common_male_suit",
+		"common_male01",
+		"common_military_male01",
 		//"common_patient_male01"
-		"common_police_male01"
-		"common_surgeon_male01"
-		"common_tsaagent_male01"
+		"common_police_male01",
+		"common_surgeon_male01",
+		"common_tsaagent_male01",
 		"common_worker_male01"
 		//"common_female_tankTop_jeans_swamp"
 	]
@@ -593,7 +596,7 @@ if ( ( SessionState.MapName == "c2m5_concert" ) && ( SessionState.ModeName == "c
 		
 		if ( ( !player.IsSurvivor() ) && ( player.GetType() == Z_TANK ) )
 		{
-			local function StopTankMusic( args )
+			function StopTankMusic( args )
 			{
 				local world = Entity("worldspawn");
 				if ( world )
@@ -3108,7 +3111,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	local function RemoveInfectedChase()
+	function RemoveInfectedChase()
 	{
 		while( ( InfectedChase = Entities.FindByName( InfectedChase, "admin_chase" ) ) != null )
 		{
@@ -3574,6 +3577,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
+	local name = player.GetCharacterName().tolower();
 	local classname = GetArgument(1);
 	local pos = GetArgument(2);
 	if(pos == null)
@@ -3587,18 +3591,22 @@ if ( Director.GetGameMode() == "holdout" )
 	if(keyvals == null)
 		keyvals = {}
 
-	Msg("\n"+player.GetCharacterName().tolower()+" ->Created entity("+classname+"):\nposition = "+pos+"\nangles = "+ang+"\nkeyvals = "+"\n");
+	Msg(name+" ->Created entity("+classname+"):\nposition = "+pos+"\nangles = "+ang+"\nkeyvals = "+"\n");
 	Utils.PrintTable(keyvals);
 	
-	Utils.CreateEntity(classname,pos,ang,keyvals);
+	local ent = Utils.CreateEntity(classname,pos,ang,keyvals);
+
 }
 
 /**
  * Creates entity with given class and table of key-value pairs 
  *
  * @param classname Class name of the entity
- * @param keyvals Key-value pairs in the format: "key1->val1&key2->val2.1|val2.2|val2.3&..." 
- *
+ * @param keyvals Key-value pairs in the format: "key1->val1&key2->TYPE|val2.1|val2.2|val2.3&key3->TYPE|val3&..."
+ * 3 arguments for value: TYPE = {ang,pos,str} -> QAngle(val2.1.tofloat(),val2.2.tofloat(),val2.3.tofloat())
+ * 												| Vector(val2.1.tofloat(),val2.2.tofloat(),val2.3.tofloat())
+ * 												| "val2.1 val2.2 val2.3"
+ * 1 argument for value: TYPE = {float,int,str} -> val3.tofloat() | val3.tointeger() | val3
  * @return void
 */
 ::AdminSystem.EntityWithTableCmd <- function ( player, args )
@@ -3607,8 +3615,20 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 
 	local cname = GetArgument(1);
+	if(cname == "prop_dynamic")
+	{
+		cname = "prop_dynamic_override";
+	}
+	//local baseEnt = Utils.CreateEntity(cname,Vector(0,0,0),QAngle(0,0,0),{model="models/props_industrial/wire_spool_01.mdl"});
 	local keyvals = GetArgument(2);
-	
+	local name = player.GetCharacterName().tolower();
+
+	local pairsplit = [null,null];
+	local found = false;
+
+	local spawnflags = null;
+	local effects = null;
+
 	if(keyvals == null)
 	{
 		keyvals = {};
@@ -3621,56 +3641,130 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			classname = cname,
 			origin = player.GetLookingLocation(),
-			angles = QAngle(0,0,0),
+			angles = QAngle(0,0,0)
 		};
 		
-		if(cname == "prop_dynamic")
+		if(cname == "prop_dynamic_override")
 		{
-			keyvals.classname = "prop_dynamic_override",
-			keyvals.StartDisabled <- "false",
-			keyvals.Solid <- "6",
-			keyvals.spawnflags <- "8"
+			keyvals["Solid"] <- "6";
+			keyvals["spawnflags"] <- "8";
+			keyvals["StartDisabled"] <- "false";
 		}
 
-		local pairsplit = [];
 		foreach(pair in kvpairs)
 		{	
+			found = false;
 			pairsplit = split(pair,"->");
 
 			if(pairsplit.len()!=2)
 			{
-				Msg(player.GetCharacterName().tolower()+" ->Invalid entity key value pair: \n");
+				Msg(name+" ->Invalid entity key value pair: \n");
 				foreach(i,v in pairsplit)
 				{
 					Msg((i+1)+": "+v+"\n");
 				}
 				return;
 			}
-			// Multi-valued term
+			// Manually type casting
 			if(pairsplit[1].find("|") != null)
 			{	
 				local str = split(pairsplit[1],"|");
-				if(str.len()!=3)
+				// Three values, Possible position, angle, rgb value
+				if(str.len()==4)
 				{
-					Msg(player.GetCharacterName().tolower()+" ->Invalid entity value for "+pairsplit[0]+": \n");
-					foreach(i,v in pairsplit[1])
+					if(str[0] == "ang")
 					{
-						Msg((i+1)+": "+v+"\n");
+						pairsplit[1] = QAngle(str[1].tofloat(),str[2].tofloat(),str[3].tofloat());
 					}
-					return;
+					else if(str[0]=="pos")
+					{
+						pairsplit[1] = Vector(str[1].tofloat(),str[2].tofloat(),str[3].tofloat());
+					}
+					else if(str[0]=="str")
+					{
+						pairsplit[1] = str[1]+" "+str[2]+" "+str[3];
+					}
+					else
+					{
+						Msg(name+" -> Unrecognized TYPE("+str[0]+") for Key:"+pairsplit[0]+"\n");
+						return;
+					}
+					//Msg("Split Complete: "+pairsplit[1]+"\n");
 				}
-				pairsplit[1] = format("%f %f %f",str[0].tofloat(),str[1].tofloat(),str[2].tofloat())
+				// Single value
+				else if(str.len()==2)
+				{
+					if(str[0] == "float")
+					{
+						pairsplit[1] = str[1].tofloat();
+					}
+					else if(str[0]=="int")
+					{
+						pairsplit[1] = str[1].tointeger();
+					}
+					else if(str[0]=="str")
+					{
+						pairsplit[1] = str[1];
+					}
+					else
+					{
+						Msg(name+" -> Unrecognized TYPE("+str[0]+") for Key:"+pairsplit[0]+"\n");
+						return;
+					}
+					//Msg("Split Complete: "+pairsplit[1]+"\n");
+				}
+			}
+			// Store to apply after spawn
+			if(pairsplit[0]=="spawnflags")
+			{
+				spawnflags = pairsplit[1];
+			}
+			else if(pairsplit[0]=="effects")
+			{
+				effects = pairsplit[1];
 			}
 
-			keyvals[pairsplit[0]] <- pairsplit[1];
+			// Tables are dumb
+			foreach(k,v in keyvals)
+			{
+				if(pairsplit[0]==k)
+				{
+					//Msg("Attempt to update existing key: "+pairsplit[0]+" and val: "+keyvals[pairsplit[0]]+"\n");
+					keyvals[pairsplit[0]] = pairsplit[1];
+					found = true;
+					//Msg("Updated existing key: "+pairsplit[0]+" and val: "+keyvals[pairsplit[0]]+"\n\n");
+					break;
+				}
+			}
+
+			if (!found)
+			{
+				//Msg("Attemp to create new key: "+pairsplit[0]+" and val: "+pairsplit[1]+"\n");
+				keyvals[pairsplit[0]] <- pairsplit[1];
+				//Msg("Created new key: "+pairsplit[0]+" and val: "+keyvals[pairsplit[0]]+"\n\n");
+			}
 		}
 		
 
 	}
-	Msg("\n"+player.GetCharacterName().tolower()+" ->Created entity("+cname+") with table:\n");
+
+	local newEntity = Utils.CreateEntityWithTable(keyvals);
+
+	Msg("\n"+name+" ->Created "+cname+" entity named "+newEntity.GetName()+" with table:\n");
 	Utils.PrintTable(keyvals);
 
-	Utils.CreateEntityWithTable(keyvals);
+	// Apply flags and effects after spawning
+	// TO DO : DOESNT WORK
+	if(spawnflags!=null)
+	{
+		newEntity.SetSpawnFlags(spawnflags);
+	}
+
+	if(effects!=null)
+	{
+		newEntity.SetEffects(effects);
+	}
+
 }
 
 
@@ -3691,6 +3785,8 @@ if ( Director.GetGameMode() == "holdout" )
 	local propspawnsettings = ::VSLib.EntData._prop_spawn_settings[name];
 
 	GroundPosition.y = EyeAngles.y;
+
+	local createdent = null;
 
 	if ( Entity == "physics" )
 	{	
@@ -3715,10 +3811,10 @@ if ( Director.GetGameMode() == "holdout" )
 		if ( Aimed != null )
 		{
 			EyePosition.z += Aimed.tofloat();
-			Utils.SpawnPhysicsProp( MDL, EyePosition, GroundPosition );
+			createdent = Utils.SpawnPhysicsProp( MDL, EyePosition, GroundPosition );
 		}
 		else
-			Utils.SpawnPhysicsProp( MDL, EyePosition, GroundPosition );
+			createdent = Utils.SpawnPhysicsProp( MDL, EyePosition, GroundPosition );
 	}
 	else if ( Entity == "physicsM" )
 	{
@@ -3739,7 +3835,7 @@ if ( Director.GetGameMode() == "holdout" )
 			EyePosition.z += spawn_height.tofloat();
 		}
 		// +++++++++++++++ SETTINGS END 
-		Utils.SpawnPhysicsMProp( MDL, EyePosition, GroundPosition );
+		createdent = Utils.SpawnPhysicsMProp( MDL, EyePosition, GroundPosition );
 	}
 	else if ( Entity == "ragdoll" )
 	{
@@ -3764,45 +3860,45 @@ if ( Director.GetGameMode() == "holdout" )
 		EyePosition.z += 10;
 		GroundPosition.y += 180;
 		if ( MDL == "nick" )
-			Utils.SpawnRagdoll( "models/survivors/survivor_gambler.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_gambler.mdl", EyePosition, GroundPosition );
 		else if ( MDL == "rochelle" )
-			Utils.SpawnRagdoll( "models/survivors/survivor_producer.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_producer.mdl", EyePosition, GroundPosition );
 		else if ( MDL == "coach" )
-			Utils.SpawnRagdoll( "models/survivors/survivor_coach.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_coach.mdl", EyePosition, GroundPosition );
 		else if ( MDL == "ellis" )
-			Utils.SpawnRagdoll( "models/survivors/survivor_mechanic.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_mechanic.mdl", EyePosition, GroundPosition );
 		else if ( MDL == "bill" )
-			Utils.SpawnRagdoll( "models/survivors/survivor_namvet.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_namvet.mdl", EyePosition, GroundPosition );
 		else if ( MDL == "zoey" )
-			Utils.SpawnRagdoll( "models/survivors/survivor_teenangst.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_teenangst.mdl", EyePosition, GroundPosition );
 		else if ( MDL == "francis" )
-			Utils.SpawnRagdoll( "models/survivors/survivor_biker.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_biker.mdl", EyePosition, GroundPosition );
 		else if ( MDL == "louis" )
-			Utils.SpawnRagdoll( "models/survivors/survivor_manager.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_manager.mdl", EyePosition, GroundPosition );
 		else if ( MDL == "smoker" )
-			Utils.SpawnRagdoll( "models/infected/smoker.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/smoker.mdl", EyePosition, GroundPosition );
 		else if ( MDL == "boomer" )
-			Utils.SpawnRagdoll( "models/infected/boomer.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/boomer.mdl", EyePosition, GroundPosition );
 		else if ( MDL == "boomette" )
-			Utils.SpawnRagdoll( "models/infected/boomette.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/boomette.mdl", EyePosition, GroundPosition );
 		else if ( MDL == "hunter" )
-			Utils.SpawnRagdoll( "models/infected/hunter.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/hunter.mdl", EyePosition, GroundPosition );
 		else if ( MDL == "spitter" )
-			Utils.SpawnRagdoll( "models/infected/spitter.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/spitter.mdl", EyePosition, GroundPosition );
 		else if ( MDL == "jockey" )
-			Utils.SpawnRagdoll( "models/infected/jockey.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/jockey.mdl", EyePosition, GroundPosition );
 		else if ( MDL == "charger" )
-			Utils.SpawnRagdoll( "models/infected/charger.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/charger.mdl", EyePosition, GroundPosition );
 		else if ( MDL == "witch" )
-			Utils.SpawnRagdoll( "models/infected/witch.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/witch.mdl", EyePosition, GroundPosition );
 		else if ( MDL == "witch_bride" )
-			Utils.SpawnRagdoll( "models/infected/witch_bride.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/witch_bride.mdl", EyePosition, GroundPosition );
 		else if ( MDL == "tank" )
-			Utils.SpawnRagdoll( "models/infected/hulk.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/hulk.mdl", EyePosition, GroundPosition );
 		else if ( MDL == "tank_dlc3" )
-			Utils.SpawnRagdoll( "models/infected/hulk_dlc3.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/hulk_dlc3.mdl", EyePosition, GroundPosition );
 		else
-			Utils.SpawnRagdoll( MDL, EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( MDL, EyePosition, GroundPosition );
 	}
 	else
 	{	
@@ -3827,37 +3923,41 @@ if ( Director.GetGameMode() == "holdout" )
 		if ( Aimed )
 		{
 			GroundPosition.z += 180;
-			Utils.SpawnDynamicProp( MDL, EyePosition, GroundPosition );
+			createdent = Utils.SpawnDynamicProp( MDL, EyePosition, GroundPosition );
 		}
 		else
 		{
-			Utils.SpawnDynamicProp( MDL, EyePosition, GroundPosition );
+			createdent = Utils.SpawnDynamicProp( MDL, EyePosition, GroundPosition );
 		}
 	}
+	Msg(name+" ->Created "+Entity+" entity named "+createdent.GetName()+"\n");
 }
 
 ::AdminSystem.DoorCmd <- function ( player, args )
 {
+	local name = player.GetCharacterName().tolower();
 	local DoorModel = GetArgument(1);
 	local EyePosition = player.GetLookingLocation();
 	local EyeAngles = player.GetEyeAngles();
 	local GroundPosition = QAngle(0,0,0);
-
+	local ent = null;
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
 	GroundPosition.y = EyeAngles.y;
 	
 	if ( !DoorModel )
-		Utils.SpawnDoor("models/props_downtown/door_interior_112_01.mdl", EyePosition, GroundPosition);
+		ent = Utils.SpawnDoor("models/props_downtown/door_interior_112_01.mdl", EyePosition, GroundPosition);
 	else
 	{
 		EyePosition.z += 52;
 		if ( DoorModel == "saferoom" || DoorModel == "checkpoint" )
-			Utils.SpawnDoor("models/props_doors/checkpoint_door_02.mdl", EyePosition, GroundPosition);
+			ent = Utils.SpawnDoor("models/props_doors/checkpoint_door_02.mdl", EyePosition, GroundPosition);
 		else
-			Utils.SpawnDoor(DoorModel, EyePosition, GroundPosition);
+			ent = Utils.SpawnDoor(DoorModel, EyePosition, GroundPosition);
 	}
+
+	Msg(name+" ->Created a Door entity named "+ent.GetName()+"\n");
 }
 
 ::AdminSystem.GiveCmd <- function ( player, args )
@@ -4099,7 +4199,7 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 	}
 	
-	local function FakeZoeyResponses( args )
+	function FakeZoeyResponses( args )
 	{
 		local zoey = Utils.GetPlayerFromName("Survivor");
 		if (!zoey)
@@ -6544,7 +6644,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local newstate = ::VSLib.EntData._outputsEnabled[name];
 	newstate = !newstate;
 	::VSLib.EntData._outputsEnabled[name] = newstate;
-	Utils.SayToAll("Random line path output state for "+name+":"+( newstate ? " Enabled":" Disabled"));
+	Utils.SayToAll("Printing output state for "+name+":"+( newstate ? " Enabled":" Disabled"));
 	
 }
 
