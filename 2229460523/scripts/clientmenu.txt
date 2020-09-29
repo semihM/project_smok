@@ -23347,7 +23347,7 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_interiors\tv_cabinet.mdl;show_menu props_furniture1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_interiors/tv_cabinet.mdl;show_menu props_furniture1"
 					"label"      " TV Cabinet"
 			}
 			"4"
@@ -23394,17 +23394,17 @@
 			
 			"1"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_interiors\bed.mdl;show_menu props_furniture_beds1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_interiors/bed.mdl;show_menu props_furniture_beds1"
 					"label"      " Bed 1"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_interiors\bed_motel.mdl;show_menu props_furniture_beds1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_interiors/bed_motel.mdl;show_menu props_furniture_beds1"
 					"label"      " Motel bed 1"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_interiors\bed_houseboat.mdl;show_menu props_furniture_beds1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_interiors/bed_houseboat.mdl;show_menu props_furniture_beds1"
 					"label"      " Boathouse bed 1"
 			}
 			"7"
@@ -23519,7 +23519,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_interiors\refrigerator03.mdl;show_menu props_furniture2"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_interiors/refrigerator03.mdl;show_menu props_furniture2"
 					"label"      " Refrigerator"
 			}
 			"3"
@@ -23529,12 +23529,12 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_interiors\stove02.mdl;show_menu props_furniture2"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_interiors/stove02.mdl;show_menu props_furniture2"
 					"label"      " Stove"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_interiors\magazine_rack.mdl;show_menu props_furniture2"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_interiors/magazine_rack.mdl;show_menu props_furniture2"
 					"label"      " Magazine rack"
 			}
 			"6"
@@ -23569,18 +23569,23 @@
 			"Title"     "Stairs"
 			"1"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_interiors\stair_metal_02.mdl;show_menu props_furniture_stairs1"
-					"label"      " Metal stairs single"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_interiors/stair_metal_02.mdl;show_menu props_furniture_stairs1"
+					"label"      " Metal single"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_interiors\stair_metal_02.mdl;show_menu props_furniture_stairs1"
-					"label"      " Metal stairs double"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_interiors/stair_metal_01.mdl;show_menu props_furniture_stairs1"
+					"label"      " Metal double"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_fairgrounds\stair_cascade.mdl;show_menu props_furniture_stairs1"
-					"label"      " Metal stairs double"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_fairgrounds/stair_cascade.mdl;show_menu props_furniture_stairs1"
+					"label"      " Metal triple, no steps"
+			}
+			"4"
+			{
+					"command"	"play buttons/button14; scripted_user_func prop,dynamic,models/props_buildings/barn_steps.mdl; show_menu props_furniture_stairs1"
+					"label"		" Wooden single" 
 			}
 			"7"
 			{
@@ -23620,17 +23625,17 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_interiors\bathtub01a.mdl;show_menu props_furniture3"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_interiors/bathtub01a.mdl;show_menu props_furniture3"
 					"label"      " Bathtub"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_interiors\washer.mdl;show_menu props_furniture3"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_interiors/washer.mdl;show_menu props_furniture3"
 					"label"      " Washer"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_interiors\toilet_d.mdl;show_menu props_furniture3"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_interiors/toilet_d.mdl;show_menu props_furniture3"
 					"label"      " Toilet"
 			}
 			"7"
@@ -24206,7 +24211,7 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_junk\barrel_fire.mdl;show_menu props_barrels1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_junk/barrel_fire.mdl;show_menu props_barrels1"
 					"label"      " Fire Barrel"
 			}
 			"5"
@@ -25485,7 +25490,7 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_street\bus_stop.mdl;show_menu props_street1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_street/bus_stop.mdl;show_menu props_street1"
 					"label"      " Bus stop"
 			}
 
@@ -25516,22 +25521,22 @@
 			"Title"     "Concrete tracks"
 			"1"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_fairgrounds\track_straight_192.mdl;show_menu props_street_tracks1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_fairgrounds/track_straight_192.mdl;show_menu props_street_tracks1"
 					"label"      " Straight short"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_fairgrounds\track_straight_512.mdl;show_menu props_street_tracks1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_fairgrounds/track_straight_512.mdl;show_menu props_street_tracks1"
 					"label"      " Straight long"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_fairgrounds\track_curve_01.mdl;show_menu props_street_tracks1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_fairgrounds/track_curve_01.mdl;show_menu props_street_tracks1"
 					"label"      " Curve short"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_fairgrounds\track_curve_02.mdl;show_menu props_street_tracks1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_fairgrounds/track_curve_02.mdl;show_menu props_street_tracks1"
 					"label"      " Curve long"
 			}
 			"7"
@@ -25612,17 +25617,17 @@
 			
 			"1"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_mill\pipeset32d_128a.mdl;show_menu props_street_pipeset1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_mill/pipeset32d_128a.mdl;show_menu props_street_pipeset1"
 					"label"      " Straight short"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_mill\pipeset32d_512a.mdl;show_menu props_street_pipeset1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_mill/pipeset32d_512a.mdl;show_menu props_street_pipeset1"
 					"label"      " Straight long"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_pipes\pipeset32d_bend256u_001a.mdl;show_menu props_street_pipeset1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_pipes/pipeset32d_bend256u_001a.mdl;show_menu props_street_pipeset1"
 					"label"      " Diagonal upwards"
 			}
 			"4"
@@ -25662,17 +25667,17 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_street\bridge_ironwork_01.mdl;show_menu props_street3"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_street/bridge_ironwork_01.mdl;show_menu props_street3"
 					"label"      " Giant iron bridge"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_mill\elevator01_framework.mdl;show_menu props_street3"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_mill/elevator01_framework.mdl;show_menu props_street3"
 					"label"      " Elevator framework"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_exteriors\oil_tank_large01.mdl;show_menu props_street3"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_exteriors/oil_tank_large01.mdl;show_menu props_street3"
 					"label"      " Giant oil tank"
 			}
 			"7"
@@ -26870,7 +26875,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_fairgrounds\slide.mdl;show_menu props_fairgrounds1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_fairgrounds/slide.mdl;show_menu props_fairgrounds1"
 					"label"      " Slide"
 			}
 			"3"
@@ -26920,27 +26925,27 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_fairgrounds\kiddyland_riderocket_small.mdl;show_menu props_fairgrounds_rides1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_fairgrounds/kiddyland_riderocket_small.mdl;show_menu props_fairgrounds_rides1"
 					"label"      " Rocket 2"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_fairgrounds\kiddyland_ridecar.mdl;show_menu props_fairgrounds_rides1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_fairgrounds/kiddyland_ridecar.mdl;show_menu props_fairgrounds_rides1"
 					"label"      " Car"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_fairgrounds\kiddyland_ridetrain.mdl;show_menu props_fairgrounds_rides1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_fairgrounds/kiddyland_ridetrain.mdl;show_menu props_fairgrounds_rides1"
 					"label"      " Train"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_fairgrounds\swan_boat.mdl;show_menu props_fairgrounds_rides1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_fairgrounds/swan_boat.mdl;show_menu props_fairgrounds_rides1"
 					"label"      " Swan boat"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_fairgrounds\kiddyland_ridestructure.mdl;show_menu props_fairgrounds_rides1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_fairgrounds/kiddyland_ridestructure.mdl;show_menu props_fairgrounds_rides1"
 					"label"      " Ride base"
 			}
 			"7"
@@ -26990,7 +26995,7 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models\props_highway\highway_sign_post001.mdl;show_menu props_highway1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_highway/highway_sign_post001.mdl;show_menu props_highway1"
 					"label"      " Sign post"
 			}
 			"7"
@@ -27015,22 +27020,22 @@
 			"Title"     "Guardrails"
 			"1"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_exteriors\guardrail128b.mdl;show_menu props_highway_guards1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_exteriors/guardrail128b.mdl;show_menu props_highway_guards1"
 					"label"      " Short"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_exteriors\guardrail512.mdl;show_menu props_highway_guards1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_exteriors/guardrail512.mdl;show_menu props_highway_guards1"
 					"label"      " Long"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_exteriors\guardrail_end_l.mdl;show_menu props_highway_guards1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_exteriors/guardrail_end_l.mdl;show_menu props_highway_guards1"
 					"label"      " Corner left"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models\props_exteriors\guardrail_end_r.mdl;show_menu props_highway_guards1"
+					"command"    "play buttons/button14; scripted_user_func prop,dynamic,models/props_exteriors/guardrail_end_r.mdl;show_menu props_highway_guards1"
 					"label"      " Corner right"
 			}
 			"7"
@@ -28875,7 +28880,7 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_interiors\tv_cabinet.mdl;show_menu phys_props_furniture1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_interiors/tv_cabinet.mdl;show_menu phys_props_furniture1"
 					"label"      " TV Cabinet"
 			}
 			"4"
@@ -28922,17 +28927,17 @@
 			
 			"1"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_interiors\bed.mdl;show_menu phys_props_furniture_beds1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_interiors/bed.mdl;show_menu phys_props_furniture_beds1"
 					"label"      " Bed 1"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_interiors\bed_motel.mdl;show_menu phys_props_furniture_beds1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_interiors/bed_motel.mdl;show_menu phys_props_furniture_beds1"
 					"label"      " Motel bed 1"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_interiors\bed_houseboat.mdl;show_menu phys_props_furniture_beds1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_interiors/bed_houseboat.mdl;show_menu phys_props_furniture_beds1"
 					"label"      " Boathouse bed 1"
 			}
 			"7"
@@ -29047,7 +29052,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_interiors\refrigerator03.mdl;show_menu phys_props_furniture2"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_interiors/refrigerator03.mdl;show_menu phys_props_furniture2"
 					"label"      " Refrigerator"
 			}
 			"3"
@@ -29057,12 +29062,12 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_interiors\stove02.mdl;show_menu phys_props_furniture2"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_interiors/stove02.mdl;show_menu phys_props_furniture2"
 					"label"      " Stove"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_interiors\magazine_rack.mdl;show_menu phys_props_furniture2"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_interiors/magazine_rack.mdl;show_menu phys_props_furniture2"
 					"label"      " Magazine rack"
 			}
 			"6"
@@ -29097,18 +29102,23 @@
 			"Title"     "Stairs"
 			"1"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_interiors\stair_metal_02.mdl;show_menu phys_props_furniture_stairs1"
-					"label"      " Metal stairs single"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_interiors/stair_metal_02.mdl;show_menu phys_props_furniture_stairs1"
+					"label"      " Metal single"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_interiors\stair_metal_02.mdl;show_menu phys_props_furniture_stairs1"
-					"label"      " Metal stairs double"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_interiors/stair_metal_01.mdl;show_menu phys_props_furniture_stairs1"
+					"label"      " Metal double"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_fairgrounds\stair_cascade.mdl;show_menu phys_props_furniture_stairs1"
-					"label"      " Metal stairs triple"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_fairgrounds/stair_cascade.mdl;show_menu phys_props_furniture_stairs1"
+					"label"      " Metal triple, no steps"
+			}
+			"4"
+			{
+					"command"	"play buttons/button14; scripted_user_func prop,physicsM,models/props_buildings/barn_steps.mdl; show_menu phys_props_furniture_stairs1"
+					"label"		" Wooden single" 
 			}
 			"7"
 			{
@@ -29148,17 +29158,17 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_interiors\bathtub01a.mdl;show_menu phys_props_furniture3"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_interiors/bathtub01a.mdl;show_menu phys_props_furniture3"
 					"label"      " Bathtub"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_interiors\washer.mdl;show_menu phys_props_furniture3"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_interiors/washer.mdl;show_menu phys_props_furniture3"
 					"label"      " Washer"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_interiors\toilet_d.mdl;show_menu phys_props_furniture3"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_interiors/toilet_d.mdl;show_menu phys_props_furniture3"
 					"label"      " Toilet"
 			}
 			"7"
@@ -29730,7 +29740,7 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_junk\barrel_fire.mdl;show_menu phys_props_barrels1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_junk/barrel_fire.mdl;show_menu phys_props_barrels1"
 					"label"      " Fire Barrel"
 			}
 			"5"
@@ -31011,7 +31021,7 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_street\bus_stop.mdl;show_menu phys_props_street1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_street/bus_stop.mdl;show_menu phys_props_street1"
 					"label"      " Bus stop"
 			}
 
@@ -31042,22 +31052,22 @@
 			"Title"     "Concrete tracks"
 			"1"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_fairgrounds\track_straight_192.mdl;show_menu phys_props_street_tracks1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_fairgrounds/track_straight_192.mdl;show_menu phys_props_street_tracks1"
 					"label"      " Straight short"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_fairgrounds\track_straight_512.mdl;show_menu phys_props_street_tracks1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_fairgrounds/track_straight_512.mdl;show_menu phys_props_street_tracks1"
 					"label"      " Straight long"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_fairgrounds\track_curve_01.mdl;show_menu phys_props_street_tracks1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_fairgrounds/track_curve_01.mdl;show_menu phys_props_street_tracks1"
 					"label"      " Curve short"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_fairgrounds\track_curve_02.mdl;show_menu phys_props_street_tracks1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_fairgrounds/track_curve_02.mdl;show_menu phys_props_street_tracks1"
 					"label"      " Curve long"
 			}
 			"7"
@@ -31138,17 +31148,17 @@
 			
 			"1"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_mill\pipeset32d_128a.mdl;show_menu phys_props_street_pipeset1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_mill/pipeset32d_128a.mdl;show_menu phys_props_street_pipeset1"
 					"label"      " Straight short"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_mill\pipeset32d_512a.mdl;show_menu phys_props_street_pipeset1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_mill/pipeset32d_512a.mdl;show_menu phys_props_street_pipeset1"
 					"label"      " Straight long"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_pipes\pipeset32d_bend256u_001a.mdl;show_menu phys_props_street_pipeset1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_pipes/pipeset32d_bend256u_001a.mdl;show_menu phys_props_street_pipeset1"
 					"label"      " Diagonal upwards"
 			}
 			"4"
@@ -31188,17 +31198,17 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_street\bridge_ironwork_01.mdl;show_menu phys_props_street3"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_street/bridge_ironwork_01.mdl;show_menu phys_props_street3"
 					"label"      " Giant iron bridge"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_mill\elevator01_framework.mdl;show_menu phys_props_street3"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_mill/elevator01_framework.mdl;show_menu phys_props_street3"
 					"label"      " Elevator framework"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_exteriors\oil_tank_large01.mdl;show_menu phys_props_street3"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_exteriors/oil_tank_large01.mdl;show_menu phys_props_street3"
 					"label"      " Giant oil tank"
 			}
 			"7"
@@ -32399,7 +32409,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_fairgrounds\slide.mdl;show_menu phys_props_fairgrounds1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_fairgrounds/slide.mdl;show_menu phys_props_fairgrounds1"
 					"label"      " Slide"
 			}
 			"3"
@@ -32449,27 +32459,27 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_fairgrounds\kiddyland_riderocket_small.mdl;show_menu phys_props_fairgrounds_rides1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_fairgrounds/kiddyland_riderocket_small.mdl;show_menu phys_props_fairgrounds_rides1"
 					"label"      " Rocket 2"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_fairgrounds\kiddyland_ridecar.mdl;show_menu phys_props_fairgrounds_rides1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_fairgrounds/kiddyland_ridecar.mdl;show_menu phys_props_fairgrounds_rides1"
 					"label"      " Car"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_fairgrounds\kiddyland_ridetrain.mdl;show_menu phys_props_fairgrounds_rides1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_fairgrounds/kiddyland_ridetrain.mdl;show_menu phys_props_fairgrounds_rides1"
 					"label"      " Train"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_fairgrounds\swan_boat.mdl;show_menu phys_props_fairgrounds_rides1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_fairgrounds/swan_boat.mdl;show_menu phys_props_fairgrounds_rides1"
 					"label"      " Swan boat"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_fairgrounds\kiddyland_ridestructure.mdl;show_menu phys_props_fairgrounds_rides1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_fairgrounds/kiddyland_ridestructure.mdl;show_menu phys_props_fairgrounds_rides1"
 					"label"      " Ride base"
 			}
 			"7"
@@ -32519,7 +32529,7 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models\props_highway\highway_sign_post001.mdl;show_menu phys_props_highway1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_highway/highway_sign_post001.mdl;show_menu phys_props_highway1"
 					"label"      " Sign post"
 			}
 			"7"
@@ -32544,22 +32554,22 @@
 			"Title"     "Guardrails"
 			"1"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_exteriors\guardrail128b.mdl;show_menu phys_props_highway_guards1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_exteriors/guardrail128b.mdl;show_menu phys_props_highway_guards1"
 					"label"      " Short"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_exteriors\guardrail512.mdl;show_menu phys_props_highway_guards1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_exteriors/guardrail512.mdl;show_menu phys_props_highway_guards1"
 					"label"      " Long"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_exteriors\guardrail_end_l.mdl;show_menu phys_props_highway_guards1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_exteriors/guardrail_end_l.mdl;show_menu phys_props_highway_guards1"
 					"label"      " Corner left"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models\props_exteriors\guardrail_end_r.mdl;show_menu phys_props_highway_guards1"
+					"command"    "play buttons/button14; scripted_user_func prop,physicsM,models/props_exteriors/guardrail_end_r.mdl;show_menu phys_props_highway_guards1"
 					"label"      " Corner right"
 			}
 			"7"
