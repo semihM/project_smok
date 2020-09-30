@@ -103,6 +103,12 @@ Convars.SetValue( "precache_all_survivors", "1" );
 	]
 	
 	IgnoreDeletingPlayers = true
+
+	CustomResponses = true
+
+	CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle"]
+	
+	PrintIndexedNames = function() {foreach(i,name in ::AdminSystem.CharacterNames){Utils.SayToAll(i+"->"+name);}}
 }
 
 ::AdminSystem.LoadAdmins <- function ()
