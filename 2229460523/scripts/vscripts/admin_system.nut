@@ -3775,7 +3775,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	local Entity = GetArgument(1);
 	local MDL = GetArgument(2);
-	local Aimed = GetArgument(3);
+	local raise = GetArgument(3);
 	local EyePosition = player.GetLookingLocation();
 	local EyeAngles = player.GetEyeAngles();
 	local GroundPosition = QAngle(0,0,0);
@@ -3808,13 +3808,16 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		// +++++++++++++++ SETTINGS END 
 
-		if ( Aimed != null )
+		if ( raise != null )
 		{
-			EyePosition.z += Aimed.tofloat();
+			EyePosition.z += raise.tofloat();
 			createdent = Utils.SpawnPhysicsProp( MDL, EyePosition, GroundPosition );
 		}
 		else
+		{
+			EyePosition.z += 0.5;
 			createdent = Utils.SpawnPhysicsProp( MDL, EyePosition, GroundPosition );
+		}
 	}
 	else if ( Entity == "physicsM" )
 	{
@@ -3834,8 +3837,17 @@ if ( Director.GetGameMode() == "holdout" )
 		{	
 			EyePosition.z += spawn_height.tofloat();
 		}
-		// +++++++++++++++ SETTINGS END 
-		createdent = Utils.SpawnPhysicsMProp( MDL, EyePosition, GroundPosition );
+		// +++++++++++++++ SETTINGS END
+		if ( raise != null )
+		{
+			EyePosition.z += raise.tofloat();
+			createdent = Utils.SpawnPhysicsMProp( MDL, EyePosition, GroundPosition );
+		}
+		else
+		{
+			EyePosition.z += 0.5;
+			createdent = Utils.SpawnPhysicsMProp( MDL, EyePosition, GroundPosition );
+		}
 	}
 	else if ( Entity == "ragdoll" )
 	{
@@ -3857,7 +3869,7 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		// +++++++++++++++ SETTINGS END 
 
-		EyePosition.z += 10;
+		EyePosition.z += 2;
 		GroundPosition.y += 180;
 		if ( MDL == "nick" )
 			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_gambler.mdl", EyePosition, GroundPosition );
@@ -3920,9 +3932,9 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		// +++++++++++++++ SETTINGS END 
 		
-		if ( Aimed )
+		if ( raise )
 		{
-			GroundPosition.z += 180;
+			EyePosition.z += raise.tofloat();
 			createdent = Utils.SpawnDynamicProp( MDL, EyePosition, GroundPosition );
 		}
 		else
