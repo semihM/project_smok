@@ -27,7 +27,174 @@
 if (!("EasyLogic" in ::VSLib))
 {
 	::VSLib.EasyLogic <-
-	{
+	{	
+		_responses =
+		{
+			"Francis" :
+				{
+					"left_saferoom_state" : 0
+				}
+			"Bill" :
+				{
+					"left_saferoom_state" : 0
+				}
+			"Louis" :
+				{
+					"left_saferoom_state" : 0
+				}
+			"Zoey" :
+				{
+					"left_saferoom_state" : 0
+				}
+			"Nick" :
+				{
+					"left_saferoom_state" : 0
+				}
+			"Ellis" :
+				{
+					"left_saferoom_state" : 0
+				}
+			"Coach" :
+				{
+					"left_saferoom_state" : 0
+				}
+			"Rochelle" :
+				{
+					"left_saferoom_state" : 0
+				}
+		}
+
+		_friendlyfirelines = 
+		{
+			"Nick" :
+				[
+					"friendlyfire01.vcd","friendlyfire02.vcd",
+					"friendlyfire03.vcd","friendlyfire04.vcd",
+					"friendlyfire05.vcd","friendlyfire06.vcd",
+					"friendlyfire07.vcd",
+					"friendlyfire08.vcd","friendlyfire09.vcd",
+					"friendlyfire10.vcd", "friendlyfire11.vcd",
+					"friendlyfire12.vcd", "friendlyfire13.vcd",
+					"friendlyfire14.vcd", "friendlyfire15.vcd", 
+					"friendlyfire16.vcd", "friendlyfire17.vcd",
+					"friendlyfire18.vcd", "friendlyfire19.vcd",
+					"friendlyfire20.vcd", "friendlyfire21.vcd",
+					"friendlyfire22.vcd", "friendlyfire23.vcd", 
+					"friendlyfire24.vcd", "friendlyfire25.vcd",
+					"friendlyfire26.vcd", "friendlyfire27.vcd",
+					"friendlyfire28.vcd", "friendlyfire29.vcd",
+					"friendlyfire30.vcd", "friendlyfire31.vcd"
+				]
+
+			"Coach" :
+				[
+					"friendlyfire01.vcd","friendlyfire02.vcd",
+					"friendlyfire03.vcd","friendlyfire04.vcd",
+					"friendlyfire05.vcd","friendlyfire06.vcd",
+					"friendlyfire07.vcd",
+					"friendlyfire08.vcd","friendlyfire09.vcd",
+					"friendlyfire10.vcd", "friendlyfire11.vcd",
+					"friendlyfire12.vcd", "friendlyfire13.vcd",
+					"friendlyfire14.vcd", "friendlyfire15.vcd", 
+					"friendlyfire16.vcd", "friendlyfire17.vcd",
+					"friendlyfire18.vcd", "friendlyfire19.vcd",
+					"friendlyfire20.vcd", "friendlyfire21.vcd",
+					"friendlyfire22.vcd", "friendlyfire23.vcd", 
+					"friendlyfire24.vcd", "friendlyfire25.vcd",
+					"friendlyfire26.vcd", "friendlyfire27.vcd",
+					"friendlyfire28.vcd", "friendlyfire29.vcd",
+				]
+
+			"Ellis" :
+				[
+					"friendlyfire01.vcd","friendlyfire02.vcd",
+					"friendlyfire03.vcd","friendlyfire04.vcd",
+					"friendlyfire05.vcd","friendlyfire06.vcd",
+					"friendlyfire07.vcd",
+					"friendlyfire08.vcd","friendlyfire09.vcd",
+					"friendlyfire10.vcd", "friendlyfire11.vcd",
+					"friendlyfire12.vcd", "friendlyfire13.vcd",
+					"friendlyfire14.vcd", "friendlyfire15.vcd", 
+					"friendlyfire16.vcd", "friendlyfire17.vcd",
+					"friendlyfire18.vcd", "friendlyfire19.vcd",
+					"friendlyfire20.vcd", "friendlyfire21.vcd",
+					"friendlyfire22.vcd", "friendlyfire23.vcd", 
+					"friendlyfire24.vcd", "friendlyfire25.vcd",
+					"friendlyfire26.vcd", "friendlyfire27.vcd",
+					"friendlyfire28.vcd", "friendlyfire29.vcd",
+					"friendlyfire30.vcd", "friendlyfire31.vcd",
+					"friendlyfire32.vcd", "friendlyfire33.vcd"
+				]
+
+			"Rochelle" :
+				[
+					"friendlyfire01.vcd","friendlyfire02.vcd",
+					"friendlyfire03.vcd","friendlyfire04.vcd",
+					"friendlyfire05.vcd","friendlyfire06.vcd",
+					"friendlyfire07.vcd",
+					"friendlyfire08.vcd","friendlyfire09.vcd",
+					"friendlyfire10.vcd", "friendlyfire11.vcd",
+					"friendlyfire12.vcd", "friendlyfire13.vcd",
+					"friendlyfire14.vcd", "friendlyfire15.vcd", 
+					"friendlyfire16.vcd", "friendlyfire17.vcd",
+					"friendlyfire18.vcd", "friendlyfire19.vcd",
+					"friendlyfire20.vcd", "friendlyfire21.vcd",
+					"friendlyfire22.vcd", "friendlyfire23.vcd", 
+					"friendlyfire24.vcd", "friendlyfire25.vcd",
+					"friendlyfire26.vcd"
+				]
+
+			"Francis" :
+				[
+					"friendlyfire01.vcd","friendlyfire02.vcd",
+					"friendlyfire03.vcd","friendlyfire04.vcd",
+					"friendlyfire05.vcd","friendlyfire06.vcd",
+					"friendlyfire07.vcd","friendlyfire08.vcd",
+					"friendlyfire09.vcd","friendlyfire10.vcd",
+					"friendlyfire11.vcd","friendlyfire12.vcd",
+				    "friendlyfire13.vcd","friendlyfire14.vcd", 
+					"friendlyfire15.vcd","friendlyfire16.vcd",
+					"friendlyfire18.vcd", "friendlyfire19.vcd"
+				]
+
+			"Louis" :
+				[
+					"friendlyfire01.vcd","friendlyfire02.vcd",
+					"friendlyfire03.vcd","friendlyfire04.vcd",
+					"friendlyfire05.vcd","friendlyfire06.vcd",
+					"friendlyfire07.vcd","friendlyfire08.vcd",
+					"friendlyfire09.vcd","friendlyfire10.vcd",
+					"friendlyfire11.vcd","friendlyfire12.vcd",
+				    "friendlyfire13.vcd","friendlyfire14.vcd"
+				]
+			
+			"Bill" :
+				[
+					"friendlyfire01.vcd","friendlyfire02.vcd",
+					"friendlyfire03.vcd","friendlyfire04.vcd",
+					"friendlyfire05.vcd","friendlyfire06.vcd",
+					"friendlyfire07.vcd","friendlyfire08.vcd",
+					"friendlyfire09.vcd","friendlyfire10.vcd",
+					"friendlyfire11.vcd","friendlyfire12.vcd",
+				    "friendlyfire13.vcd","friendlyfire14.vcd", 
+					"friendlyfire15.vcd","friendlyfire16.vcd",
+					"friendlyfire17.vcd"
+				]
+
+			"Zoey" :
+				[
+					"friendlyfire02.vcd","friendlyfire03.vcd",
+					"friendlyfire05.vcd","friendlyfire06.vcd",
+					"friendlyfire07.vcd","friendlyfire08.vcd",
+					"friendlyfire10.vcd", "friendlyfire11.vcd",
+					"friendlyfire12.vcd", "friendlyfire13.vcd",
+					"friendlyfire14.vcd", "friendlyfire17.vcd",
+					"friendlyfire18.vcd", "friendlyfire19.vcd",
+					"friendlyfire22.vcd", "friendlyfire23.vcd", 
+					"friendlyfire24.vcd"
+				]
+		}
+
 		// Chat triggers
 		_itChatFunction = {}
 		_itChatTextIndex = {}
@@ -1830,6 +1997,41 @@ g_MapScript.ScriptMode_AddCriteria <- function ( )
 	
 	foreach (func in ::VSLib.EasyLogic.Notifications.OnLeaveSaferoom)
 		func(ents.entity, params);
+	
+	if(!::AdminSystem.CustomResponses)
+		return;
+
+	if(ents.entity.GetCharacterName()!="Francis")
+		return;
+
+	// Ignore first 2 calls from map loading
+	switch(::VSLib.EasyLogic._responses["Francis"]["left_saferoom_state"])
+	{
+		case 0:
+		{
+			::VSLib.EasyLogic._responses["Francis"]["left_saferoom_state"] = 1;
+			break;
+		}
+		case 1:
+		{
+			::VSLib.EasyLogic._responses["Francis"]["left_saferoom_state"] = 2;
+			break;
+		}
+		case 3:
+		{
+			break;
+		}
+		case 2:
+		{	
+			::VSLib.EasyLogic._responses["Francis"]["left_saferoom_state"] = 3;
+			ents.entity.Speak("warnboomer03.vcd",3.3);
+			ents.entity.Speak("warnsmoker03.vcd",2.7);
+			ents.entity.Speak("followme08.vcd",1);
+			printl("Francis spoken: left_saferoom");
+			break;
+		}
+	}
+
 }
 
 ::VSLib.EasyLogic.Events.OnGameEvent_player_jump <- function (params)
@@ -2085,7 +2287,35 @@ g_MapScript.ScriptMode_AddCriteria <- function ( )
 	local ents = ::VSLib.EasyLogic.GetPlayersFromEvent(params);
 	
 	foreach (func in ::VSLib.EasyLogic.Notifications.OnEntityShoved)
+	{
 		func(ents.entity, ents.attacker, params);
+	}
+	
+	if(!::AdminSystem.CustomResponses)
+		return;
+
+	if(ents.entity == null)
+	{
+		ents.entity = ents.attacker.GetLookingEntity();
+		if(ents.entity == null)
+		{
+			return;
+		}
+		else if(!ents.entity.IsSurvivor())
+		{
+			return;
+		}
+	}
+	else if(!ents.entity.IsSurvivor())
+	{
+		return;
+	}
+
+	local line = Utils.GetRandValueFromArray(::VSLib.EasyLogic._friendlyfirelines[ents.entity.GetCharacterName()]);
+	ents.entity.Speak(line);
+	
+	printl(ents.attacker.GetCharacterName()+" shoved "+ents.entity.GetCharacterName()+":"+line);
+
 }
 
 ::VSLib.EasyLogic.Events.OnGameEvent_waiting_checkpoint_button_used <- function (params)
@@ -2451,6 +2681,7 @@ g_MapScript.ScriptMode_AddCriteria <- function ( )
 	
 	foreach (func in ::VSLib.EasyLogic.Notifications.FirstSurvLeftStartArea)
 		func(ents.entity, params);
+
 }
 
 
