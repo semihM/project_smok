@@ -20233,7 +20233,7 @@
 			}
 			"9"
 			{
-					"command"    "play buttons/button11;show_menu ent_push_menu1"
+					"command"    "play buttons/button11;show_menu ent_spin_menu1"
 					"label"      " ...More directions will be added"
 			}
 			"0"
