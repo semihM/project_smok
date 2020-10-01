@@ -32,35 +32,35 @@ if (!("EasyLogic" in ::VSLib))
 		{
 			"Francis" :
 				{
-					"left_saferoom_state" : 0
+					"left_saferoom_state" : false
 				}
 			"Bill" :
 				{
-					"left_saferoom_state" : 0
+					"left_saferoom_state" : false
 				}
 			"Louis" :
 				{
-					"left_saferoom_state" : 0
+					"left_saferoom_state" : false
 				}
 			"Zoey" :
 				{
-					"left_saferoom_state" : 0
+					"left_saferoom_state" : false
 				}
 			"Nick" :
 				{
-					"left_saferoom_state" : 0
+					"left_saferoom_state" : false
 				}
 			"Ellis" :
 				{
-					"left_saferoom_state" : 0
+					"left_saferoom_state" : false
 				}
 			"Coach" :
 				{
-					"left_saferoom_state" : 0
+					"left_saferoom_state" : false
 				}
 			"Rochelle" :
 				{
-					"left_saferoom_state" : 0
+					"left_saferoom_state" : false
 				}
 		}
 
@@ -1982,6 +1982,7 @@ g_MapScript.ScriptMode_AddCriteria <- function ( )
 	
 	foreach (func in ::VSLib.EasyLogic.Notifications.OnEnterSaferoom)
 		func(ents.entity, params);
+
 }
 
 ::VSLib.EasyLogic.Events.OnGameEvent_player_left_checkpoint <- function (params)
@@ -1997,41 +1998,31 @@ g_MapScript.ScriptMode_AddCriteria <- function ( )
 	
 	foreach (func in ::VSLib.EasyLogic.Notifications.OnLeaveSaferoom)
 		func(ents.entity, params);
-	
+
 	if(!::AdminSystem.CustomResponses)
 		return;
 
 	if(ents.entity.GetCharacterName()!="Francis")
 		return;
 
-	// Ignore first 2 calls from map loading
-	switch(::VSLib.EasyLogic._responses["Francis"]["left_saferoom_state"])
-	{
-		case 0:
-		{
-			::VSLib.EasyLogic._responses["Francis"]["left_saferoom_state"] = 1;
-			break;
-		}
-		case 1:
-		{
-			::VSLib.EasyLogic._responses["Francis"]["left_saferoom_state"] = 2;
-			break;
-		}
-		case 3:
-		{
-			break;
-		}
-		case 2:
-		{	
-			::VSLib.EasyLogic._responses["Francis"]["left_saferoom_state"] = 3;
-			ents.entity.Speak("warnboomer03.vcd",3.3);
-			ents.entity.Speak("warnsmoker03.vcd",2.7);
-			ents.entity.Speak("followme08.vcd",1);
-			printl("Francis spoken: left_saferoom");
-			break;
-		}
-	}
+	// Add timer to ignore changes during map loading
+	if(!::VSLib.EasyLogic._responses["Francis"]["left_saferoom_state"])
+		::VSLib.Timers.AddTimer(1, false, _SpeakIfFrancisLeftSafeRoom, ents.entity);
 
+}
+
+::_SpeakIfFrancisLeftSafeRoom <- function(ent)
+{
+	if(!::VSLib.EasyLogic.Cache[ent.GetIndex()]._inSafeRoom && !::VSLib.EasyLogic._responses["Francis"]["left_saferoom_state"])
+	{
+		ent.Speak("warnboomer03.vcd",2.3);
+		ent.Speak("warnsmoker03.vcd",1.7);
+		ent.Speak("followme08.vcd");
+		printl("Francis spoken: left_saferoom");
+		::VSLib.EasyLogic._responses["Francis"]["left_saferoom_state"] = true;
+	}
+	
+	
 }
 
 ::VSLib.EasyLogic.Events.OnGameEvent_player_jump <- function (params)
@@ -2280,16 +2271,7 @@ g_MapScript.ScriptMode_AddCriteria <- function ( )
 	
 	foreach (func in ::VSLib.EasyLogic.Notifications.OnPlayerShoved)
 		func(ents.entity, ents.attacker, params);
-}
-
-::VSLib.EasyLogic.Events.OnGameEvent_entity_shoved <- function (params)
-{
-	local ents = ::VSLib.EasyLogic.GetPlayersFromEvent(params);
 	
-	foreach (func in ::VSLib.EasyLogic.Notifications.OnEntityShoved)
-	{
-		func(ents.entity, ents.attacker, params);
-	}
 	
 	if(!::AdminSystem.CustomResponses)
 		return;
@@ -2315,6 +2297,16 @@ g_MapScript.ScriptMode_AddCriteria <- function ( )
 	ents.entity.Speak(line);
 	
 	printl(ents.attacker.GetCharacterName()+" shoved "+ents.entity.GetCharacterName()+":"+line);
+}
+
+::VSLib.EasyLogic.Events.OnGameEvent_entity_shoved <- function (params)
+{
+	local ents = ::VSLib.EasyLogic.GetPlayersFromEvent(params);
+	
+	foreach (func in ::VSLib.EasyLogic.Notifications.OnEntityShoved)
+	{
+		func(ents.entity, ents.attacker, params);
+	}
 
 }
 
@@ -2683,8 +2675,6 @@ g_MapScript.ScriptMode_AddCriteria <- function ( )
 		func(ents.entity, params);
 
 }
-
-
 
 ::VSLib.EasyLogic.Events.OnGameEvent_revive_begin <- function (params)
 {
