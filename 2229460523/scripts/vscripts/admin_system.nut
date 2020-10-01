@@ -3756,7 +3756,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	local newEntity = Utils.CreateEntityWithTable(keyvals);
 
-	Msg("\n"+name+" ->Created "+cname+" entity named "+newEntity.GetName()+" with table:\n");
+	Msg(""+name+" ->Created "+cname+" entity named "+newEntity.GetName()+" with table:\n");
 	Utils.PrintTable(keyvals);
 
 	// Apply flags and effects after spawning
@@ -6701,7 +6701,7 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{
-		SendToServerConsole("echo --------------------------------------;echo Saved for "+name+" ->scripted_user_func speak,"+targetname+","+linesource);
+		Msg("--------------------------------------\nSaved for "+name+" ->scripted_user_func speak,"+targetname+","+linesource+"\n");
 	}
 }
 
@@ -6722,12 +6722,12 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		else
 		{
-			SendToServerConsole("echo --------------------------------------;echo "+name+" ->scripted_user_func speak,"+lineinfo.target+","+lineinfo.source);
+			Msg("--------------------------------------\n"+name+" ->scripted_user_func speak,"+lineinfo.target+","+lineinfo.source+"\n");
 		}
 	}
 	else
 	{
-		SendToServerConsole("echo --------------------------------------;echo No saved line was found for "+name);
+		Msg("--------------------------------------\nNo saved line was found for "+name+"\n");
 	}
 	
 }
@@ -6768,7 +6768,7 @@ if ( Director.GetGameMode() == "holdout" )
 		local ent = player.GetLookingEntity();
 		if (ent == null)
 		{
-			SendToServerConsole("echo No entity found");
+			Msg("No entity found\n");
 			return;
 		}
 		
@@ -6776,7 +6776,7 @@ if ( Director.GetGameMode() == "holdout" )
 		SendToServerConsole("echo Name: "+ ent.GetName() + ", Global name: "+ ent.GetGlobalName() + ";echo Index: "+ ent.GetIndex() + ", Base index: "+ ent.GetBaseIndex() + ";echo Type: "+ ent.GetType() + ";echo Parent: "+ ent.GetParent() +";echo Scale: " + ent.GetModelScale()+";echo ==================flags======================");
 		SendToServerConsole("echo SpawnFlags: "+ ent.GetSpawnFlags() +";echo Flags: "+ ent.GetFlags() +";echo EFlags: " + ent.GetEFlags()+";echo Sense flags: "+ ent.GetSenseFlags());
 		SendToServerConsole("echo ================positional====================");
-		SendToServerConsole("echo Location(Origin): "+ent.GetLocation() + ";echo Position: "+ ent.GetPosition() +";echo Angles: " + ent.GetAngles());
+		SendToServerConsole("echo Location(Origin): "+ent.GetLocation() +";echo Angles: " + ent.GetAngles());
 		SendToServerConsole("echo ================physics_debug=================;physics_debug_entity");
 		SendToServerConsole("echo ==================ent_dump====================;ent_dump !picker");
 		SendToServerConsole("ent_script_dump");
@@ -6935,11 +6935,11 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			::VSLib.EntData._savedLine[name].target = targetname;
 			::VSLib.EntData._savedLine[name].source = randomline_path;
-			SendToServerConsole("echo Saved for "+name+" ->scripted_user_func speak,"+targetname+","+randomline_path);
+			Msg("Saved for "+name+" ->scripted_user_func speak,"+targetname+","+randomline_path+"\n");
 		}
 		else
 		{
-			SendToServerConsole("echo --------------------------------------;echo "+name+" ->scripted_user_func speak,"+targetname+","+randomline_path);
+			Msg("--------------------------------------\n"+name+" ->scripted_user_func speak,"+targetname+","+randomline_path+"\n");
 		}
 		
 	}
@@ -6971,9 +6971,9 @@ if ( Director.GetGameMode() == "holdout" )
 
 	ent.SetColor(red,green,blue,alpha);
 	if (::VSLib.EntData._outputsEnabled[name])
-	{Utils.SayToAll(name+"->Changed color:("+red+","+green+","+blue+","+alpha+") of "+ent.GetName() + " | " + ent.GetGlobalName());}
+	{Utils.SayToAll(name+"->Changed color:("+red+","+green+","+blue+","+alpha+") of "+ent.GetName());}
 	else
-	{SendToServerConsole("echo --------------------------------------;echo "+name+"-> Changed color:("+red+","+green+","+blue+","+alpha+") of "+ent.GetName() + " | " + ent.GetGlobalName());}
+	{Msg("--------------------------------------\n"+name+"-> Changed color:("+red+","+green+","+blue+","+alpha+") of "+ent.GetName()+"\n");}
 
 }
 
@@ -6995,9 +6995,9 @@ if ( Director.GetGameMode() == "holdout" )
 	
 	ent.SetKeyValue(key,val);
 	if (::VSLib.EntData._outputsEnabled[name])
-	{Utils.SayToAll(name+"->Changed key:"+key+" value to:"+val+" of "+ent.GetName() + " | " + ent.GetGlobalName());}
+	{Utils.SayToAll(name+"->Changed key:"+key+" value to:"+val+" of "+ent.GetName());}
 	else
-	{SendToServerConsole("echo --------------------------------------;echo "+name+" ->Changed key:"+key+" value to:"+val+" of "+ent.GetName() + " | " + ent.GetGlobalName());}
+	{Msg("--------------------------------------\n"+name+" ->Changed key:"+key+" value to:"+val+" of "+ent.GetName()+"\n");}
 
 }
 
@@ -7030,7 +7030,7 @@ if ( Director.GetGameMode() == "holdout" )
 		else
 			::VSLib.EntData._prop_spawn_settings[name][typename][setting] = val;
 
-		SendToServerConsole("echo --------------------------------------;echo "+name +" Updated prop("+typename+") setting "+setting+" to: "+val);
+		Msg("--------------------------------------\n"+name +" Updated prop("+typename+") setting "+setting+" to: "+val+"\n");
 	}
 	else
 	{	
@@ -7051,7 +7051,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (typename != null)
 	{	
 		::VSLib.EntData._prop_spawn_settings_menu_type[name] = typename;
-		SendToServerConsole("echo --------------------------------------;echo "+name +" Updated prop menu type :"+typename);
+		Msg("--------------------------------------\n"+name +" Updated prop menu type :"+typename+"\n");
 	}
 	else
 	{	
@@ -7119,7 +7119,7 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{
-		SendToServerConsole("echo --------------------------------------;echo Saved for "+name+" ->scripted_user_func attach_particle,"+source+","+duration);
+		Msg("--------------------------------------\nSaved for "+name+" ->scripted_user_func attach_particle,"+source+","+duration+"\n");
 	}
 }
 
@@ -7155,9 +7155,9 @@ if ( Director.GetGameMode() == "holdout" )
 
 	ent.AttachParticle(particle, duration);
 	if (::VSLib.EntData._outputsEnabled[name])
-	{Utils.SayToAll(name+"->Attached particle("+duration+" sec):"+particle+" to:"+ent.GetName() + " | " + ent.GetGlobalName());}
+	{Utils.SayToAll(name+"->Attached particle("+duration+" sec):"+particle+" to:"+ent.GetName());}
 	else
-	{SendToServerConsole("echo --------------------------------------;echo "+name+" ->Attached particle("+duration+" sec):"+particle+" to:"+ent.GetName() + " | " + ent.GetGlobalName());}
+	{Msg("--------------------------------------\n"+name+" ->Attached particle("+duration+" sec):"+particle+" to:"+ent.GetName()+"\n");}
 
 	
 }
@@ -7190,7 +7190,7 @@ if ( Director.GetGameMode() == "holdout" )
 		duration = duration.tofloat();
 	}
 	::VSLib.EntData._preferred_duration[name] = duration;
-	SendToServerConsole("echo --------------------------------------;echo "+name +" Updated attachment duration:"+duration);
+	Msg("--------------------------------------\n"+name +" Updated attachment duration:"+duration+"\n");
 
 }
 
@@ -7233,12 +7233,12 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		else
 		{
-			SendToServerConsole("echo --------------------------------------;echo "+name+" ->scripted_user_func particle,"+particleinfo.source);
+			Msg("--------------------------------------\n"+name+" ->scripted_user_func particle,"+particleinfo.source+"\n");
 		}
 	}
 	else
 	{
-		SendToServerConsole("echo --------------------------------------;echo No saved particle was found for "+name);
+		Msg("--------------------------------------\nNo saved particle was found for "+name+"\n");
 	}
 }
 
@@ -7266,12 +7266,12 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		else
 		{
-			SendToServerConsole("echo --------------------------------------;echo "+name+" ->scripted_user_func attach_particle,"+particleinfo.source+","+particleinfo.duration);
+			Msg("--------------------------------------\n"+name+" ->scripted_user_func attach_particle,"+particleinfo.source+","+particleinfo.duration+"\n");
 		}
 	}
 	else
 	{
-		SendToServerConsole("echo --------------------------------------;echo No saved particle was found for "+name);
+		Msg("--------------------------------------\nNo saved particle was found for "+name+"\n");
 	}
 }
 
@@ -7289,7 +7289,7 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		Convars.SetValue("sv_cheats",0);
 	}
-	SendToServerConsole("echo --------------------------------------;echo "+name +" Updated sv_cheats:"+(1-oldval));
+	Msg("--------------------------------------cho "+name +" Updated sv_cheats:"+(1-oldval)+"\n");
 
 }
 
