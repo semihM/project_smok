@@ -31,11 +31,12 @@
  * Options for custom responses
  */
 ::_CustomResponseOptions <-
-{
+{	
+	// Options for OnPlayerShoved._SpeakWhenShoved
 	_SpeakWhenShoved = 
 	{
 		prob = 0.66
-		delay = 0.1
+		startdelay = 0.1
 		lastspoken = 
 		{
 			Bill = ""
@@ -49,11 +50,97 @@
 		}
 	}
 
-	_SpeakIfFrancisLeftSafeRoom = 
+	// Options for OnLeaveSaferoom._SpeakIfLeftSafeRoom
+	_SpeakIfLeftSafeRoom = 
 	{
-		prob = 0.9
-		delay = 2.5
-		alreadytalked = false
+		Bill = 
+		{	
+			enabled = false
+			prob = 0.9
+			startdelay = 2.5
+			alreadytalked = false
+			sequence = {}
+		}
+		
+		Francis = 
+		{
+			enabled = true
+			prob = 0.9
+			startdelay = 2.5
+			alreadytalked = false
+			sequence = 
+			{
+				scenes=["warnboomer03.vcd","warnsmoker03.vcd","followme08.vcd"]
+				delays=[2.45,1.7,0]
+			}
+		}
+
+		Zoey = 
+		{
+			enabled = false
+			prob = 0.9
+			startdelay = 2.5
+			alreadytalked = false
+			sequence = {}
+		}
+
+		Louis = 
+		{
+			enabled = false
+			prob = 0.9
+			startdelay = 2.5
+			alreadytalked = false
+			sequence = {}
+		}
+
+		Nick = 
+		{
+			enabled = false
+			prob = 0.9
+			startdelay = 2.5
+			alreadytalked = false
+			sequence = {}
+		}
+
+		Ellis = 
+		{
+			enabled = true
+			prob = 0.9
+			startdelay = 2.5
+			alreadytalked = false
+			sequence = 
+			{
+				scenes=["meleeresponse08.vcd","boomerjar17.vcd"]
+				delays=[2.55,0]
+			}
+		}
+
+		Rochelle = 
+		{
+			enabled = false
+			prob = 0.9
+			startdelay = 2.5
+			alreadytalked = false
+			sequence = {}
+		}
+
+		Coach = 
+		{
+			enabled = false
+			prob = 0.9
+			startdelay = 2.5
+			alreadytalked = false
+			sequence = {}
+		}
+	}
+
+}
+
+::_SceneSequencer <- function(player,scene_delay_table)
+{
+	foreach(i,scene in scene_delay_table.scenes)
+	{
+		player.Speak(scene,scene_delay_table.delays[i]);
 	}
 }
 
@@ -67,45 +154,51 @@
 		return;
 	
 	if(rand().tofloat()/RAND_MAX <= _CustomResponseOptions._SpeakWhenShoved.prob)
-		::VSLib.Timers.AddTimer(_CustomResponseOptions._SpeakWhenShoved.delay, false, _SpeakWhenShovedResult,{target=target,attacker=attacker});
+		::VSLib.Timers.AddTimer(_CustomResponseOptions._SpeakWhenShoved.startdelay, false, _SpeakWhenShovedResult,{target=target,attacker=attacker});
 	
 }
 
 ::_SpeakWhenShovedResult <- function(ents)
 {
-	local line = Utils.GetRandValueFromArray(::Survivorlines.FriendlyFire[ents.target.GetCharacterName()]);
+	local targetname = ents.target.GetCharacterName();
+	local line = Utils.GetRandValueFromArray(::Survivorlines.FriendlyFire[targetname]);
 	ents.target.Speak(line);
-	_CustomResponseOptions._SpeakWhenShoved[ents.target.GetCharacterName()] = line;
-	printl(ents.attacker.GetCharacterName()+" shoved "+ents.target.GetCharacterName()+":"+line);
+	_CustomResponseOptions._SpeakWhenShoved.lastspoken[targetname] = line;
+	printl(ents.attacker.GetCharacterName()+" shoved "+targetname+":"+line);
 }
 
 /////////////////////////////////////////////////////////////////
 /*
- * Speak a friendly fire line when shoved with given options in _CustomResponseOptions
+ * Sequences to speak for each player upon leaving saferoom
+ *
+ *** Make Francis say "Well hell, let's all- Smok- Booooomer!" with given options in _CustomResponseOptions
+ *** Make Ellis say "Man I hate them zombies but I loooooove- Crack!"
  */
-::_SpeakIfFrancisLeftSafeRoomCondition <- function(ent,args=null)
+::_SpeakIfLeftSafeRoomCondition <- function(ent,args=null)
 {
 	if(ent.GetName() == "" || !::AdminSystem.AllowCustomResponses)
 		return;
-
-	if(ent.GetCharacterName()!="Francis")
+	
+	local name = ent.GetCharacterName();
+	if(name == "")
+		return;
+		
+	if(!_CustomResponseOptions._SpeakIfLeftSafeRoom[name].enabled)
 		return;	
-
+	
 	// Add timer to ignore changes during map loading
-	if(rand().tofloat()/RAND_MAX <= _CustomResponseOptions._SpeakIfFrancisLeftSafeRoom.prob && !_CustomResponseOptions._SpeakIfFrancisLeftSafeRoom.alreadytalked)
-		::VSLib.Timers.AddTimer(_CustomResponseOptions._SpeakIfFrancisLeftSafeRoom.delay, false, _SpeakIfFrancisLeftSafeRoomResult, ent);
+	if(rand().tofloat()/RAND_MAX <= _CustomResponseOptions._SpeakIfLeftSafeRoom[name].prob && !_CustomResponseOptions._SpeakIfLeftSafeRoom[name].alreadytalked)
+		::VSLib.Timers.AddTimer(_CustomResponseOptions._SpeakIfLeftSafeRoom[name].startdelay, false, _SpeakIfLeftSafeRoomResult, {player=ent,name=name});
 	return;
 }
 
-::_SpeakIfFrancisLeftSafeRoomResult <- function(ent)
+::_SpeakIfLeftSafeRoomResult <- function(ent_table)
 {
-	if(!::VSLib.EasyLogic.Cache[ent.GetIndex()]._inSafeRoom && !_CustomResponseOptions._SpeakIfFrancisLeftSafeRoom.alreadytalked)
-	{
-		ent.Speak("warnboomer03.vcd",2.45);
-		ent.Speak("warnsmoker03.vcd",1.7);
-		ent.Speak("followme08.vcd");
-		printl("Francis spoken: LeftSafeRoom");
-		_CustomResponseOptions._SpeakIfFrancisLeftSafeRoom.alreadytalked = true;
+	if(!::VSLib.EasyLogic.Cache[ent_table.player.GetIndex()]._inSafeRoom && !_CustomResponseOptions._SpeakIfLeftSafeRoom[ent_table.name].alreadytalked)
+	{	
+		_SceneSequencer(ent_table.player,_CustomResponseOptions._SpeakIfLeftSafeRoom[ent_table.name].sequence);
+		printl(ent_table.name+" spoken: LeftSafeRoom");
+		_CustomResponseOptions._SpeakIfLeftSafeRoom[ent_table.name].alreadytalked = true;
 	}
 	return;
 }
@@ -335,7 +428,7 @@ if (!("Notifications" in ::VSLib.EasyLogic))
 		OnMeleeKill = {}
 		OnEnterStartArea = {}
 		OnEnterSaferoom = {}
-		OnLeaveSaferoom = {_SpeakIfFrancisLeftSafeRoomCondition = _SpeakIfFrancisLeftSafeRoomCondition}
+		OnLeaveSaferoom = {_SpeakIfLeftSafeRoomCondition = _SpeakIfLeftSafeRoomCondition}
 		OnHurt = {}
 		OnHurtConcise = {}
 		OnFallDamage = {}
