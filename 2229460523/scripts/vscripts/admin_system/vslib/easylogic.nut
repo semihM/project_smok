@@ -56,7 +56,7 @@
 		Bill = 
 		{	
 			enabled = false
-			prob = 0.9
+			prob = 0.8
 			startdelay = 2.5
 			alreadytalked = false
 			sequence = {}
@@ -65,11 +65,11 @@
 		Francis = 
 		{
 			enabled = true
-			prob = 0.9
+			prob = 0.8
 			startdelay = 2.5
 			alreadytalked = false
 			sequence = 
-			{
+			{   // "Well hell, let's all- Smok- Booooomer!"
 				scenes=["warnboomer03.vcd","warnsmoker03.vcd","followme08.vcd"]
 				delays=[2.45,1.7,0]
 			}
@@ -78,7 +78,7 @@
 		Zoey = 
 		{
 			enabled = false
-			prob = 0.9
+			prob = 0.8
 			startdelay = 2.5
 			alreadytalked = false
 			sequence = {}
@@ -87,7 +87,7 @@
 		Louis = 
 		{
 			enabled = false
-			prob = 0.9
+			prob = 0.8
 			startdelay = 2.5
 			alreadytalked = false
 			sequence = {}
@@ -96,7 +96,7 @@
 		Nick = 
 		{
 			enabled = false
-			prob = 0.9
+			prob = 0.8
 			startdelay = 2.5
 			alreadytalked = false
 			sequence = {}
@@ -105,11 +105,11 @@
 		Ellis = 
 		{
 			enabled = true
-			prob = 0.9
+			prob = 0.8
 			startdelay = 2.5
 			alreadytalked = false
 			sequence = 
-			{
+			{	// "Man I hate them zombies but I loooooove- Crack!"
 				scenes=["meleeresponse08.vcd","boomerjar17.vcd"]
 				delays=[2.55,0]
 			}
@@ -118,7 +118,7 @@
 		Rochelle = 
 		{
 			enabled = false
-			prob = 0.9
+			prob = 0.8
 			startdelay = 2.5
 			alreadytalked = false
 			sequence = {}
@@ -127,15 +127,34 @@
 		Coach = 
 		{
 			enabled = false
-			prob = 0.9
+			prob = 0.8
 			startdelay = 2.5
 			alreadytalked = false
 			sequence = {}
 		}
 	}
 
+	// Options for OnAdrenalineUsed._SpeakWhenUsedAdrenaline
+	_SpeakWhenUsedAdrenaline = 
+	{
+		prob = 0.95
+		startdelay = 1
+		lastspoken = 
+		{
+			Bill = ""
+			Francis = ""
+			Zoey = ""
+			Louis = ""
+			Nick = ""
+			Ellis = ""
+			Rochelle = ""
+			Coach = ""
+		}
+	}
 }
 
+
+/////////////////////////////////////////////////////////////////
 ::_SceneSequencer <- function(player,scene_delay_table)
 {
 	foreach(i,scene in scene_delay_table.scenes)
@@ -164,15 +183,12 @@
 	local line = Utils.GetRandValueFromArray(::Survivorlines.FriendlyFire[targetname]);
 	ents.target.Speak(line);
 	_CustomResponseOptions._SpeakWhenShoved.lastspoken[targetname] = line;
-	printl(ents.attacker.GetCharacterName()+" shoved "+targetname+":"+line);
+	printl(ents.attacker.GetCharacterName()+" is bullying "+targetname+": "+line);
 }
 
 /////////////////////////////////////////////////////////////////
 /*
- * Sequences to speak for each player upon leaving saferoom
- *
- *** Make Francis say "Well hell, let's all- Smok- Booooomer!" with given options in _CustomResponseOptions
- *** Make Ellis say "Man I hate them zombies but I loooooove- Crack!"
+ * Sequences to speak for each player upon leaving saferoom with given options in _CustomResponseOptions
  */
 ::_SpeakIfLeftSafeRoomCondition <- function(ent,args=null)
 {
@@ -204,7 +220,29 @@
 }
 
 /////////////////////////////////////////////////////////////////
+/*
+ * Speak an excited line with given options in _CustomResponseOptions
+ */
+::_SpeakWhenUsedAdrenalineCondition <- function(ent,args=null)
+{
+	if(!::AdminSystem.AllowCustomResponses)
+		return;
+	
+	if(rand().tofloat()/RAND_MAX <= _CustomResponseOptions._SpeakWhenUsedAdrenaline.prob)
+		::VSLib.Timers.AddTimer(_CustomResponseOptions._SpeakWhenUsedAdrenaline.startdelay, false, _SpeakWhenUsedAdrenalineResult,ent);
+	
+}
 
+::_SpeakWhenUsedAdrenalineResult <- function(ent)
+{
+	local name = ent.GetCharacterName();
+	local line = Utils.GetRandValueFromArray(::Survivorlines.Excited[name]);
+	ent.Speak(line);
+	_CustomResponseOptions._SpeakWhenUsedAdrenaline.lastspoken[name] = line;
+	printl(name+" has gone crazy after using an adrenaline shot: "+line);
+}
+
+/////////////////////////////////////////////////////////////////
 if (!("EasyLogic" in ::VSLib))
 {
 	::VSLib.EasyLogic <-
@@ -485,7 +523,7 @@ if (!("Notifications" in ::VSLib.EasyLogic))
 		OnDefibSuccess = {}
 		OnDefibFailed = {}
 		OnScriptDefib = {} // Called when a player is revived using Defib().
-		OnAdrenalineUsed = {}
+		OnAdrenalineUsed = {_SpeakWhenUsedAdrenalineCondition = _SpeakWhenUsedAdrenalineCondition}
 		OnHealStart = {}
 		OnHealEnd = {}
 		OnHealInterrupted = {}
