@@ -24,6 +24,83 @@
  *
  * \todo @TODO some of these can be moved to Utils table
  */
+
+
+/////////////////////////////////////////////////////////////////
+/*
+ * Options for custom responses
+ */
+::_CustomResponseOptions <-
+{
+	_SpeakWhenShovedCondition = 
+	{
+		prob = 0.66
+		delay = 0.1
+	}
+
+	_SpeakIfFrancisLeftSafeRoomCondition = 
+	{
+		prob = 1.0
+		delay = 1.0	
+	}
+}
+
+/////////////////////////////////////////////////////////////////
+/*
+ * Speak a friendly fire line when shoved with given options in _CustomResponseOptions
+ */
+::_SpeakWhenShovedCondition <- function(target,attacker,args=null)
+{
+	if(!::AdminSystem.AllowCustomResponses)
+		return;
+	
+	if(rand().tofloat()/RAND_MAX <= _CustomResponseOptions._SpeakWhenShovedCondition.prob)
+		::VSLib.Timers.AddTimer(_CustomResponseOptions._SpeakWhenShovedCondition.delay, false, _SpeakWhenShovedResult,{target=target,attacker=attacker});
+	
+}
+
+::_SpeakWhenShovedResult <- function(ents)
+{
+	local line = Utils.GetRandValueFromArray(::Survivorlines.FriendlyFire[ents.target.GetCharacterName()]);
+	ents.target.Speak(line);
+	
+	printl(ents.attacker.GetCharacterName()+" shoved "+ents.target.GetCharacterName()+":"+line);
+}
+
+/////////////////////////////////////////////////////////////////
+/*
+ * Speak a friendly fire line when shoved with given options in _CustomResponseOptions
+ */
+::_SpeakIfFrancisLeftSafeRoomCondition <- function(ent,args=null)
+{
+	if(!::AdminSystem.AllowCustomResponses)
+		return;
+
+	if(ent.GetCharacterName()!="Francis")
+		return;
+
+	// Add timer to ignore changes during map loading
+	if(rand().tofloat()/RAND_MAX <= _CustomResponseOptions._SpeakIfFrancisLeftSafeRoomCondition.prob && !::VSLib.EasyLogic._responses["Francis"]["left_saferoom_state"])
+		::VSLib.Timers.AddTimer(_CustomResponseOptions._SpeakIfFrancisLeftSafeRoomCondition.delay, false, _SpeakIfFrancisLeftSafeRoomResult, ent);
+	
+	return;
+}
+
+::_SpeakIfFrancisLeftSafeRoomResult <- function(ent)
+{
+	if(!::VSLib.EasyLogic.Cache[ent.GetIndex()]._inSafeRoom && !::VSLib.EasyLogic._responses["Francis"]["left_saferoom_state"])
+	{
+		ent.Speak("warnboomer03.vcd",2.35);
+		ent.Speak("warnsmoker03.vcd",1.7);
+		ent.Speak("followme08.vcd");
+		printl("Francis spoken: LeftSafeRoom");
+		::VSLib.EasyLogic._responses["Francis"]["left_saferoom_state"] = true;
+	}
+	return;
+}
+
+/////////////////////////////////////////////////////////////////
+
 if (!("EasyLogic" in ::VSLib))
 {
 	::VSLib.EasyLogic <-
@@ -62,137 +139,6 @@ if (!("EasyLogic" in ::VSLib))
 				{
 					"left_saferoom_state" : false
 				}
-		}
-
-		_friendlyfirelines = 
-		{
-			"Nick" :
-				[
-					"friendlyfire01.vcd","friendlyfire02.vcd",
-					"friendlyfire03.vcd","friendlyfire04.vcd",
-					"friendlyfire05.vcd","friendlyfire06.vcd",
-					"friendlyfire07.vcd",
-					"friendlyfire08.vcd","friendlyfire09.vcd",
-					"friendlyfire10.vcd", "friendlyfire11.vcd",
-					"friendlyfire12.vcd", "friendlyfire13.vcd",
-					"friendlyfire14.vcd", "friendlyfire15.vcd", 
-					"friendlyfire16.vcd", "friendlyfire17.vcd",
-					"friendlyfire18.vcd", "friendlyfire19.vcd",
-					"friendlyfire20.vcd", "friendlyfire21.vcd",
-					"friendlyfire22.vcd", "friendlyfire23.vcd", 
-					"friendlyfire24.vcd", "friendlyfire25.vcd",
-					"friendlyfire26.vcd", "friendlyfire27.vcd",
-					"friendlyfire28.vcd", "friendlyfire29.vcd",
-					"friendlyfire30.vcd", "friendlyfire31.vcd"
-				]
-
-			"Coach" :
-				[
-					"friendlyfire01.vcd","friendlyfire02.vcd",
-					"friendlyfire03.vcd","friendlyfire04.vcd",
-					"friendlyfire05.vcd","friendlyfire06.vcd",
-					"friendlyfire07.vcd",
-					"friendlyfire08.vcd","friendlyfire09.vcd",
-					"friendlyfire10.vcd", "friendlyfire11.vcd",
-					"friendlyfire12.vcd", "friendlyfire13.vcd",
-					"friendlyfire14.vcd", "friendlyfire15.vcd", 
-					"friendlyfire16.vcd", "friendlyfire17.vcd",
-					"friendlyfire18.vcd", "friendlyfire19.vcd",
-					"friendlyfire20.vcd", "friendlyfire21.vcd",
-					"friendlyfire22.vcd", "friendlyfire23.vcd", 
-					"friendlyfire24.vcd", "friendlyfire25.vcd",
-					"friendlyfire26.vcd", "friendlyfire27.vcd",
-					"friendlyfire28.vcd", "friendlyfire29.vcd",
-				]
-
-			"Ellis" :
-				[
-					"friendlyfire01.vcd","friendlyfire02.vcd",
-					"friendlyfire03.vcd","friendlyfire04.vcd",
-					"friendlyfire05.vcd","friendlyfire06.vcd",
-					"friendlyfire07.vcd",
-					"friendlyfire08.vcd","friendlyfire09.vcd",
-					"friendlyfire10.vcd", "friendlyfire11.vcd",
-					"friendlyfire12.vcd", "friendlyfire13.vcd",
-					"friendlyfire14.vcd", "friendlyfire15.vcd", 
-					"friendlyfire16.vcd", "friendlyfire17.vcd",
-					"friendlyfire18.vcd", "friendlyfire19.vcd",
-					"friendlyfire20.vcd", "friendlyfire21.vcd",
-					"friendlyfire22.vcd", "friendlyfire23.vcd", 
-					"friendlyfire24.vcd", "friendlyfire25.vcd",
-					"friendlyfire26.vcd", "friendlyfire27.vcd",
-					"friendlyfire28.vcd", "friendlyfire29.vcd",
-					"friendlyfire30.vcd", "friendlyfire31.vcd",
-					"friendlyfire32.vcd", "friendlyfire33.vcd"
-				]
-
-			"Rochelle" :
-				[
-					"friendlyfire01.vcd","friendlyfire02.vcd",
-					"friendlyfire03.vcd","friendlyfire04.vcd",
-					"friendlyfire05.vcd","friendlyfire06.vcd",
-					"friendlyfire07.vcd",
-					"friendlyfire08.vcd","friendlyfire09.vcd",
-					"friendlyfire10.vcd", "friendlyfire11.vcd",
-					"friendlyfire12.vcd", "friendlyfire13.vcd",
-					"friendlyfire14.vcd", "friendlyfire15.vcd", 
-					"friendlyfire16.vcd", "friendlyfire17.vcd",
-					"friendlyfire18.vcd", "friendlyfire19.vcd",
-					"friendlyfire20.vcd", "friendlyfire21.vcd",
-					"friendlyfire22.vcd", "friendlyfire23.vcd", 
-					"friendlyfire24.vcd", "friendlyfire25.vcd",
-					"friendlyfire26.vcd"
-				]
-
-			"Francis" :
-				[
-					"friendlyfire01.vcd","friendlyfire02.vcd",
-					"friendlyfire03.vcd","friendlyfire04.vcd",
-					"friendlyfire05.vcd","friendlyfire06.vcd",
-					"friendlyfire07.vcd","friendlyfire08.vcd",
-					"friendlyfire09.vcd","friendlyfire10.vcd",
-					"friendlyfire11.vcd","friendlyfire12.vcd",
-				    "friendlyfire13.vcd","friendlyfire14.vcd", 
-					"friendlyfire15.vcd","friendlyfire16.vcd",
-					"friendlyfire18.vcd", "friendlyfire19.vcd"
-				]
-
-			"Louis" :
-				[
-					"friendlyfire01.vcd","friendlyfire02.vcd",
-					"friendlyfire03.vcd","friendlyfire04.vcd",
-					"friendlyfire05.vcd","friendlyfire06.vcd",
-					"friendlyfire07.vcd","friendlyfire08.vcd",
-					"friendlyfire09.vcd","friendlyfire10.vcd",
-					"friendlyfire11.vcd","friendlyfire12.vcd",
-				    "friendlyfire13.vcd","friendlyfire14.vcd"
-				]
-			
-			"Bill" :
-				[
-					"friendlyfire01.vcd","friendlyfire02.vcd",
-					"friendlyfire03.vcd","friendlyfire04.vcd",
-					"friendlyfire05.vcd","friendlyfire06.vcd",
-					"friendlyfire07.vcd","friendlyfire08.vcd",
-					"friendlyfire09.vcd","friendlyfire10.vcd",
-					"friendlyfire11.vcd","friendlyfire12.vcd",
-				    "friendlyfire13.vcd","friendlyfire14.vcd", 
-					"friendlyfire15.vcd","friendlyfire16.vcd",
-					"friendlyfire17.vcd"
-				]
-
-			"Zoey" :
-				[
-					"friendlyfire02.vcd","friendlyfire03.vcd",
-					"friendlyfire05.vcd","friendlyfire06.vcd",
-					"friendlyfire07.vcd","friendlyfire08.vcd",
-					"friendlyfire10.vcd", "friendlyfire11.vcd",
-					"friendlyfire12.vcd", "friendlyfire13.vcd",
-					"friendlyfire14.vcd", "friendlyfire17.vcd",
-					"friendlyfire18.vcd", "friendlyfire19.vcd",
-					"friendlyfire22.vcd", "friendlyfire23.vcd", 
-					"friendlyfire24.vcd"
-				]
 		}
 
 		// Chat triggers
@@ -414,7 +360,7 @@ if (!("Notifications" in ::VSLib.EasyLogic))
 		OnMeleeKill = {}
 		OnEnterStartArea = {}
 		OnEnterSaferoom = {}
-		OnLeaveSaferoom = {}
+		OnLeaveSaferoom = {_SpeakIfFrancisLeftSafeRoomCondition = _SpeakIfFrancisLeftSafeRoomCondition}
 		OnHurt = {}
 		OnHurtConcise = {}
 		OnFallDamage = {}
@@ -425,7 +371,7 @@ if (!("Notifications" in ::VSLib.EasyLogic))
 		OnFirstSpawn = {}
 		OnTransitioned = {}
 		OnEntityShoved = {}
-		OnPlayerShoved = {}
+		OnPlayerShoved = {_SpeakWhenShovedCondition = _SpeakWhenShovedCondition}
 		OnEntityVisible = {}
 		OnWeaponSpawnVisible = {}
 		OnDeadSurvivorVisible = {}
@@ -1999,30 +1945,6 @@ g_MapScript.ScriptMode_AddCriteria <- function ( )
 	foreach (func in ::VSLib.EasyLogic.Notifications.OnLeaveSaferoom)
 		func(ents.entity, params);
 
-	if(!::AdminSystem.CustomResponses)
-		return;
-
-	if(ents.entity.GetCharacterName()!="Francis")
-		return;
-
-	// Add timer to ignore changes during map loading
-	if(!::VSLib.EasyLogic._responses["Francis"]["left_saferoom_state"])
-		::VSLib.Timers.AddTimer(1, false, _SpeakIfFrancisLeftSafeRoom, ents.entity);
-
-}
-
-::_SpeakIfFrancisLeftSafeRoom <- function(ent)
-{
-	if(!::VSLib.EasyLogic.Cache[ent.GetIndex()]._inSafeRoom && !::VSLib.EasyLogic._responses["Francis"]["left_saferoom_state"])
-	{
-		ent.Speak("warnboomer03.vcd",2.3);
-		ent.Speak("warnsmoker03.vcd",1.7);
-		ent.Speak("followme08.vcd");
-		printl("Francis spoken: left_saferoom");
-		::VSLib.EasyLogic._responses["Francis"]["left_saferoom_state"] = true;
-	}
-	
-	
 }
 
 ::VSLib.EasyLogic.Events.OnGameEvent_player_jump <- function (params)
@@ -2270,33 +2192,7 @@ g_MapScript.ScriptMode_AddCriteria <- function ( )
 		::VSLib.EasyLogic.Cache[_id]._lastShovedBy <- ents.attacker;
 	
 	foreach (func in ::VSLib.EasyLogic.Notifications.OnPlayerShoved)
-		func(ents.entity, ents.attacker, params);
-	
-	
-	if(!::AdminSystem.CustomResponses)
-		return;
-
-	if(ents.entity == null)
-	{
-		ents.entity = ents.attacker.GetLookingEntity();
-		if(ents.entity == null)
-		{
-			return;
-		}
-		else if(!ents.entity.IsSurvivor())
-		{
-			return;
-		}
-	}
-	else if(!ents.entity.IsSurvivor())
-	{
-		return;
-	}
-
-	local line = Utils.GetRandValueFromArray(::VSLib.EasyLogic._friendlyfirelines[ents.entity.GetCharacterName()]);
-	ents.entity.Speak(line);
-	
-	printl(ents.attacker.GetCharacterName()+" shoved "+ents.entity.GetCharacterName()+":"+line);
+		func(ents.entity, ents.attacker, params);	
 }
 
 ::VSLib.EasyLogic.Events.OnGameEvent_entity_shoved <- function (params)
@@ -2304,9 +2200,7 @@ g_MapScript.ScriptMode_AddCriteria <- function ( )
 	local ents = ::VSLib.EasyLogic.GetPlayersFromEvent(params);
 	
 	foreach (func in ::VSLib.EasyLogic.Notifications.OnEntityShoved)
-	{
 		func(ents.entity, ents.attacker, params);
-	}
 
 }
 
