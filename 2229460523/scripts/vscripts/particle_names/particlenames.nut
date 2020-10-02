@@ -1476,7 +1476,6 @@
     "aircraft_navred",
     "aircraft_navred_crash",
     "aircraft_navred_dst",
-    "aircraft_strobe_core_white",
     "aircraft_strobe_orange",
     "aircraft_strobe_orange_crash",
     "aircraft_strobe_orange_dst",
