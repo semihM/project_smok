@@ -7,9 +7,9 @@ Msg("Activating Admin System\n");
 
 // Include the VScript Library
 IncludeScript("Admin_System/VSLib");
-
+// Include custom settings for unused lines
 IncludeScript("Voice_Paths/Survivorlines");
-
+// Include particle names table
 IncludeScript("Particle_Names/Particlenames");
 
 if ( SessionState.ModeName == "coop" || SessionState.ModeName == "realism" || SessionState.ModeName == "survival" || SessionState.ModeName == "versus" || SessionState.ModeName == "scavenge" )
@@ -22,8 +22,6 @@ if ( SessionState.ModeName == "coop" || SessionState.ModeName == "realism" || Se
 }
 
 Utils.PrecacheCSSWeapons();
-
-::VSLib.Utils.PrecacheModel("models/props_industrial/wire_spool_01.mdl"); // temp model
 
 Convars.SetValue( "precache_all_survivors", "1" );
 
@@ -104,11 +102,289 @@ Convars.SetValue( "precache_all_survivors", "1" );
 	
 	IgnoreDeletingPlayers = true
 
-	CustomResponses = true
+	AllowCustomResponses = true
 
 	CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle"]
 	
 	PrintIndexedNames = function() {foreach(i,name in ::AdminSystem.CharacterNames){Utils.SayToAll(i+"->"+name);}}
+
+	// Chat output state
+	_outputsEnabled = 
+	{
+		"bill":false,
+		"francis":false,
+		"louis":false,
+		"zoey":false,
+		"nick":false,
+		"coach":false,
+		"ellis":false,
+		"rochelle":false
+	}
+
+	// Randomline stuff
+	_saveLastLine = 
+	{
+		"bill":true,
+		"francis":true,
+		"louis":true,
+		"zoey":true,
+		"nick":true,
+		"coach":true,
+		"ellis":true,
+		"rochelle":true
+	}
+
+	_savedLine =
+	{
+		"bill":
+		{
+			target="",
+			source=""
+		},
+		"francis":
+		{
+			target="",
+			source=""
+		},
+		"louis":
+		{
+			target="",
+			source=""
+		},
+		"zoey":
+		{
+			target="",
+			source=""
+		},
+		"nick":
+		{
+			target="",
+			source=""
+		},
+		"coach":
+		{
+			target="",
+			source=""
+		},
+		"ellis":
+		{
+			target="",
+			source=""
+		},
+		"rochelle":
+		{
+			target="",
+			source=""
+		}
+	}
+
+	// Particle stuff
+	_saveLastParticle = 
+	{
+		"bill":true,
+		"francis":true,
+		"louis":true,
+		"zoey":true,
+		"nick":true,
+		"coach":true,
+		"ellis":true,
+		"rochelle":true
+	}
+
+	_savedParticle =
+	{
+		"bill":
+		{
+			duration=30,
+			source=""
+		},
+		"francis":
+		{
+			duration=30,
+			source=""
+		},
+		"louis":
+		{
+			duration=30,
+			source=""
+		},
+		"zoey":
+		{
+			duration=30,
+			source=""
+		},
+		"nick":
+		{
+			duration=30,
+			source=""
+		},
+		"coach":
+		{
+			duration=30,
+			source=""
+		},
+		"ellis":
+		{
+			duration=30,
+			source=""
+		},
+		"rochelle":
+		{
+			duration=30,
+			source=""
+		}
+	}
+
+	// To reduce menu amount
+	_preferred_duration =
+	{
+		"bill":30,
+		"francis":30,
+		"louis":30,
+		"zoey":30,
+		"nick":30,
+		"coach":30,
+		"ellis":30,
+		"rochelle":30
+	}
+
+	// Prop spawn_settings
+	_prop_spawn_settings_menu_type =
+	{
+		"bill":"all",
+		"francis":"all",
+		"louis":"all",
+		"zoey":"all",
+		"nick":"all",
+		"coach":"all",
+		"ellis":"all",
+		"rochelle":"all"
+	}
+
+	_prop_spawn_settings =
+	{
+		"bill":
+		{
+			"dynamic":	
+			{
+				spawn_height=0
+			},
+			"physics":
+			{
+				spawn_height=0
+			},
+			"ragdoll":
+			{
+				spawn_height=0
+			}
+		}
+		"francis":
+		{
+			"dynamic":
+			{
+				spawn_height=0
+			},
+			"physics":
+			{
+				spawn_height=0
+			},
+			"ragdoll":
+			{
+				spawn_height=0
+			}
+		},
+		"louis":
+		{
+			"dynamic":
+			{
+				spawn_height=0
+			},
+			"physics":
+			{
+				spawn_height=0
+			},
+			"ragdoll":
+			{
+				spawn_height=0
+			}
+		},
+		"zoey":
+		{
+			"dynamic":
+			{
+				spawn_height=0
+			},
+			"physics":
+			{
+				spawn_height=0
+			},
+			"ragdoll":
+			{
+				spawn_height=0
+			}
+		},
+		"nick":
+		{
+			"dynamic":
+			{
+				spawn_height=0
+			},
+			"physics":
+			{
+				spawn_height=0
+			},
+			"ragdoll":
+			{
+				spawn_height=0
+			}
+		},
+		"coach":
+		{
+			"dynamic":
+			{
+				spawn_height=0
+			},
+			"physics":
+			{
+				spawn_height=0
+			},
+			"ragdoll":
+			{
+				spawn_height=0
+			}
+		},
+		"ellis":
+		{
+			"dynamic":
+			{
+				spawn_height=0
+			},
+			"physics":
+			{
+				spawn_height=0
+			},
+			"ragdoll":
+			{
+				spawn_height=0
+			}
+		},
+		"rochelle":
+		{
+			"dynamic":
+			{
+				spawn_height=0
+			},
+			"physics":
+			{
+				spawn_height=0
+			},
+			"ragdoll":
+			{
+				spawn_height=0
+			}
+		}
+	}
+
 }
 
 ::AdminSystem.LoadAdmins <- function ()
@@ -858,9 +1134,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.RandomlineCmd(player, args);
 			break;
 		}
-		case "randomline_output_state":
+		case "update_print_output_state":
 		{
-			AdminSystem.Randomline_output_stateCmd(player, args);
+			AdminSystem.Update_print_output_stateCmd(player, args);
 			break;
 		}
 		case "randomline_save_last":
@@ -896,6 +1172,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		case "save_particle":
 		{
 			AdminSystem.Save_particleCmd(player, args);
+			break;
+		}
+		case "update_custom_response_preference":
+		{
+			AdminSystem.Update_custom_response_preferenceCmd(player, args);
 			break;
 		}
 		case "velocity":
@@ -1688,9 +1969,9 @@ function ChatTriggers::randomline(player,args,text)
 	AdminSystem.RandomlineCmd(player, args);
 }
 
-function ChatTriggers::randomline_output_state(player,args,text)
+function ChatTriggers::update_print_output_state(player,args,text)
 {
-	AdminSystem.Randomline_output_stateCmd(player, args);
+	AdminSystem.Update_print_output_stateCmd(player, args);
 }
 
 function ChatTriggers::randomline_save_last(player,args,text)
@@ -1726,6 +2007,11 @@ function ChatTriggers::save_line(player,args,text)
 function ChatTriggers::save_particle(player,args,text)
 {
 	AdminSystem.Save_particleCmd(player, args);
+}
+
+function ChatTriggers::update_custom_response_preference(player,args,text)
+{
+	AdminSystem.Update_custom_response_preferenceCmd(player, args);
 }
 
 function ChatTriggers::velocity( player, args, text )
@@ -3339,16 +3625,16 @@ if ( Director.GetGameMode() == "holdout" )
 	if (Particle == "random")
 	{
 		Particle = Utils.GetRandValueFromArray(::Particlenames.names);
-		if(::VSLib.EntData._saveLastParticle[name])
+		if(AdminSystem._saveLastParticle[name])
 		{
-			::VSLib.EntData._savedParticle[name].source = Particle;
+			AdminSystem._savedParticle[name].source = Particle;
 		}
 	}
 
 	local EyePosition = player.GetLookingLocation();
 	
 	g_ModeScript.CreateParticleSystemAt( null, EyePosition, Particle, true );
-	if (::VSLib.EntData._outputsEnabled[name])
+	if (AdminSystem._outputsEnabled[name])
 	{Utils.SayToAll(name+"->Spawned particle:"+Particle+" at:"+EyePosition.x+","+EyePosition.y+","+EyePosition.z);}
 	else
 	{Msg(name+"->Spawned particle:"+Particle+" at:"+EyePosition.x+","+EyePosition.y+","+EyePosition.z+"\n");}
@@ -3788,7 +4074,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	local name = player.GetCharacterName().tolower();
 	
-	local propspawnsettings = ::VSLib.EntData._prop_spawn_settings[name];
+	local propspawnsettings = AdminSystem._prop_spawn_settings[name];
 
 	GroundPosition.y = EyeAngles.y;
 
@@ -6653,15 +6939,15 @@ if ( Director.GetGameMode() == "holdout" )
 	Msg(player.GetCharacterName().tolower()+"->Rainbow("+duration+","+intervals+"), Entity index: "+entlooked.GetIndex()+"\n");
 }
 
-::AdminSystem.Randomline_output_stateCmd <- function(player, args)
+::AdminSystem.Update_print_output_stateCmd <- function(player, args)
 {	
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
 	local name = player.GetCharacterName().tolower();
-	local newstate = ::VSLib.EntData._outputsEnabled[name];
-	newstate = !newstate;
-	::VSLib.EntData._outputsEnabled[name] = newstate;
+	local newstate = !AdminSystem._outputsEnabled[name];
+	AdminSystem._outputsEnabled[name] = newstate;
+
 	Utils.SayToAll("Printing output state for "+name+":"+( newstate ? " Enabled":" Disabled"));
 	
 }
@@ -6672,9 +6958,9 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 
 	local name = player.GetCharacterName().tolower();
-	local newstate = ::VSLib.EntData._saveLastLine[name];
-	newstate = !newstate;
-	::VSLib.EntData._saveLastLine[name] = newstate;
+	local newstate = !AdminSystem._saveLastLine[name];
+	AdminSystem._saveLastLine[name] = newstate;
+
 	Utils.SayToAll("Random line saving for "+name+" is"+( newstate ? " Enabled":" Disabled"));
 	
 }
@@ -6692,10 +6978,10 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 	}
 	
-	::VSLib.EntData._savedLine[name].target = targetname;
-	::VSLib.EntData._savedLine[name].source = linesource;
+	AdminSystem._savedLine[name].target = targetname;
+	AdminSystem._savedLine[name].source = linesource;
 
-	if (::VSLib.EntData._outputsEnabled[name])
+	if (AdminSystem._outputsEnabled[name])
 	{
 		Utils.SayToAll("Saved for "+name+" ->scripted_user_func speak,"+targetname+","+linesource);
 	}
@@ -6711,12 +6997,12 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 	
 	local name = player.GetCharacterName().tolower();
-	local lineinfo = ::VSLib.EntData._savedLine[name];
+	local lineinfo = AdminSystem._savedLine[name];
 	if (lineinfo.target != "")
 	{
 		Utils.GetPlayerFromName(lineinfo.target).Speak(lineinfo.source);
 
-		if (::VSLib.EntData._outputsEnabled[name])
+		if (AdminSystem._outputsEnabled[name])
 		{
 			Utils.SayToAll(name+" ->scripted_user_func speak,"+lineinfo.target+","+lineinfo.source);
 		}
@@ -6738,9 +7024,9 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 	
 	local name = player.GetCharacterName().tolower();
-	if (::VSLib.EntData._saveLastLine[name])
+	if (AdminSystem._saveLastLine[name])
 	{	
-		local lineinfo = ::VSLib.EntData._savedLine[name];
+		local lineinfo = AdminSystem._savedLine[name];
 		if (lineinfo.target != "")
 		{
 			Utils.SayToAll(name+" ->scripted_user_func speak,"+lineinfo.target+","+lineinfo.source);
@@ -6916,12 +7202,12 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	
 
-	if (::VSLib.EntData._outputsEnabled[name])
+	if (AdminSystem._outputsEnabled[name])
 	{	
-		if (::VSLib.EntData._saveLastLine[name])
+		if (AdminSystem._saveLastLine[name])
 		{
-			::VSLib.EntData._savedLine[name].target = targetname;
-			::VSLib.EntData._savedLine[name].source = randomline_path;
+			AdminSystem._savedLine[name].target = targetname;
+			AdminSystem._savedLine[name].source = randomline_path;
 			Utils.SayToAll("Saved for "+name+" ->scripted_user_func speak,"+targetname+","+randomline_path);
 		}
 		else
@@ -6931,10 +7217,10 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{	
-		if (::VSLib.EntData._saveLastLine[name])
+		if (AdminSystem._saveLastLine[name])
 		{
-			::VSLib.EntData._savedLine[name].target = targetname;
-			::VSLib.EntData._savedLine[name].source = randomline_path;
+			AdminSystem._savedLine[name].target = targetname;
+			AdminSystem._savedLine[name].source = randomline_path;
 			Msg("Saved for "+name+" ->scripted_user_func speak,"+targetname+","+randomline_path+"\n");
 		}
 		else
@@ -6970,7 +7256,7 @@ if ( Director.GetGameMode() == "holdout" )
 		alpha = 1.0;
 
 	ent.SetColor(red,green,blue,alpha);
-	if (::VSLib.EntData._outputsEnabled[name])
+	if (AdminSystem._outputsEnabled[name])
 	{Utils.SayToAll(name+"->Changed color:("+red+","+green+","+blue+","+alpha+") of "+ent.GetName());}
 	else
 	{Msg("--------------------------------------\n"+name+"-> Changed color:("+red+","+green+","+blue+","+alpha+") of "+ent.GetName()+"\n");}
@@ -6994,7 +7280,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local val = GetArgument(2);
 	
 	ent.SetKeyValue(key,val);
-	if (::VSLib.EntData._outputsEnabled[name])
+	if (AdminSystem._outputsEnabled[name])
 	{Utils.SayToAll(name+"->Changed key:"+key+" value to:"+val+" of "+ent.GetName());}
 	else
 	{Msg("--------------------------------------\n"+name+" ->Changed key:"+key+" value to:"+val+" of "+ent.GetName()+"\n");}
@@ -7018,17 +7304,17 @@ if ( Director.GetGameMode() == "holdout" )
 	{	
 		if(typename=="ptr")
 		{
-			typename = ::VSLib.EntData._prop_spawn_settings_menu_type[name];
+			typename = AdminSystem._prop_spawn_settings_menu_type[name];
 		}
 
 		if(typename=="all")
 		{
-			::VSLib.EntData._prop_spawn_settings[name]["physics"][setting] = val;
-			::VSLib.EntData._prop_spawn_settings[name]["dynamic"][setting] = val;
-			::VSLib.EntData._prop_spawn_settings[name]["ragdoll"][setting] = val;
+			AdminSystem._prop_spawn_settings[name]["physics"][setting] = val;
+			AdminSystem._prop_spawn_settings[name]["dynamic"][setting] = val;
+			AdminSystem._prop_spawn_settings[name]["ragdoll"][setting] = val;
 		}
 		else
-			::VSLib.EntData._prop_spawn_settings[name][typename][setting] = val;
+			AdminSystem._prop_spawn_settings[name][typename][setting] = val;
 
 		Msg("--------------------------------------\n"+name +" Updated prop("+typename+") setting "+setting+" to: "+val+"\n");
 	}
@@ -7050,7 +7336,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local typename = GetArgument(1);
 	if (typename != null)
 	{	
-		::VSLib.EntData._prop_spawn_settings_menu_type[name] = typename;
+		AdminSystem._prop_spawn_settings_menu_type[name] = typename;
 		Msg("--------------------------------------\n"+name +" Updated prop menu type :"+typename+"\n");
 	}
 	else
@@ -7072,7 +7358,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if(typename == null || typename == "all")
 	{
 		infostr += "\nProp spawn settings for: "+name+"\n";
-		foreach(typename,setting_val in ::VSLib.EntData._prop_spawn_settings[name])
+		foreach(typename,setting_val in AdminSystem._prop_spawn_settings[name])
 		{
 			infostr += "Type("+typename+"):\n";
 			foreach(setting,val in setting_val)
@@ -7085,11 +7371,11 @@ if ( Director.GetGameMode() == "holdout" )
 	else 
 	{	
 		if(typename == "ptr")
-			typename = ::VSLib.EntData._prop_spawn_settings_menu_type[name];
+			typename = AdminSystem._prop_spawn_settings_menu_type[name];
 
 		infostr += "\nProp spawn settings for: "+name+"\n";
 		infostr += "Type("+typename+"):\n";
-		foreach(setting,val in ::VSLib.EntData._prop_spawn_settings[name][typename])
+		foreach(setting,val in AdminSystem._prop_spawn_settings[name][typename])
 		{
 			infostr += " 	 " + setting + ": " + val + "\n";
 		}
@@ -7107,13 +7393,13 @@ if ( Director.GetGameMode() == "holdout" )
 	local duration = GetArgument(2);
 	if ( duration == null)
 	{
-		duration = ::VSLib.EntData._preferred_duration[name];
+		duration = AdminSystem._preferred_duration[name];
 	}
 	
-	::VSLib.EntData._savedParticle[name].source = source;
-	::VSLib.EntData._savedParticle[name].duration = duration;
+	AdminSystem._savedParticle[name].source = source;
+	AdminSystem._savedParticle[name].duration = duration;
 
-	if (::VSLib.EntData._outputsEnabled[name])
+	if (AdminSystem._outputsEnabled[name])
 	{
 		Utils.SayToAll("Saved for "+name+" ->scripted_user_func attach_particle,"+source+","+duration);
 	}
@@ -7140,21 +7426,21 @@ if ( Director.GetGameMode() == "holdout" )
 	local duration = GetArgument(2);
 	if (duration == null)
 	{
-		duration = ::VSLib.EntData._preferred_duration[name];
+		duration = AdminSystem._preferred_duration[name];
 	}
 	
 	if (particle == "random")
 	{	
 		particle = Utils.GetRandValueFromArray(::Particlenames.names);
-		if(::VSLib.EntData._saveLastParticle[name])
+		if(AdminSystem._saveLastParticle[name])
 		{
-			::VSLib.EntData._savedParticle[name].duration = duration;
-			::VSLib.EntData._savedParticle[name].source = particle;
+			AdminSystem._savedParticle[name].duration = duration;
+			AdminSystem._savedParticle[name].source = particle;
 		}
 	}
 
 	ent.AttachParticle(particle, duration);
-	if (::VSLib.EntData._outputsEnabled[name])
+	if (AdminSystem._outputsEnabled[name])
 	{Utils.SayToAll(name+"->Attached particle("+duration+" sec):"+particle+" to:"+ent.GetName());}
 	else
 	{Msg("--------------------------------------\n"+name+" ->Attached particle("+duration+" sec):"+particle+" to:"+ent.GetName()+"\n");}
@@ -7168,9 +7454,9 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 
 	local name = player.GetCharacterName().tolower();
-	local newstate = ::VSLib.EntData._saveLastParticle[name];
-	newstate = !newstate;
-	::VSLib.EntData._saveLastParticle[name] = newstate;
+	local newstate = !AdminSystem._saveLastParticle[name];
+	AdminSystem._saveLastParticle[name] = newstate;
+
 	Utils.SayToAll("Random particle saving for "+name+" is"+( newstate ? " Enabled":" Disabled"));
 }
 
@@ -7189,7 +7475,7 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		duration = duration.tofloat();
 	}
-	::VSLib.EntData._preferred_duration[name] = duration;
+	AdminSystem._preferred_duration[name] = duration;
 	Msg("--------------------------------------\n"+name +" Updated attachment duration:"+duration+"\n");
 
 }
@@ -7200,9 +7486,9 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 	
 	local name = player.GetCharacterName().tolower();
-	if (::VSLib.EntData._saveLastLine[name])
+	if (AdminSystem._saveLastLine[name])
 	{	
-		local particleinfo = ::VSLib.EntData._savedParticle[name];
+		local particleinfo = AdminSystem._savedParticle[name];
 		if (particleinfo.source != "")
 		{
 			Utils.SayToAll(name+" ->scripted_user_func particle,"+particleinfo.source);
@@ -7221,13 +7507,13 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 	
 	local name = player.GetCharacterName().tolower();
-	local particleinfo = ::VSLib.EntData._savedParticle[name];
+	local particleinfo = AdminSystem._savedParticle[name];
 	if (particleinfo.source != "")
 	{
 		local EyePosition = player.GetLookingLocation();
 		g_ModeScript.CreateParticleSystemAt( null, EyePosition, particleinfo.source, true );
 
-		if (::VSLib.EntData._outputsEnabled[name])
+		if (AdminSystem._outputsEnabled[name])
 		{
 			Utils.SayToAll(name+" ->scripted_user_func particle,"+particleinfo.source);
 		}
@@ -7255,12 +7541,12 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 		
 	local name = player.GetCharacterName().tolower();
-	local particleinfo = ::VSLib.EntData._savedParticle[name];
+	local particleinfo = AdminSystem._savedParticle[name];
 	if (particleinfo.source != "")
 	{
 		ent.AttachParticle(particleinfo.source, particleinfo.duration)
 
-		if (::VSLib.EntData._outputsEnabled[name])
+		if (AdminSystem._outputsEnabled[name])
 		{
 			Utils.SayToAll(name+" ->scripted_user_func attach_particle,"+particleinfo.source+","+particleinfo.duration);
 		}
@@ -7289,8 +7575,19 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		Convars.SetValue("sv_cheats",0);
 	}
-	Msg("--------------------------------------cho "+name +" Updated sv_cheats:"+(1-oldval)+"\n");
+	Msg("--------------------------------------\n"+name +" Updated sv_cheats:"+(1-oldval)+"\n");
 
+}
+
+::AdminSystem.Update_custom_response_preferenceCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local newstate = !::AdminSystem.AllowCustomResponses;
+	::AdminSystem.AllowCustomResponses = newstate;
+
+	Utils.SayToAll(player.GetCharacterName()+" set custom responses to:"+( newstate ? " Enabled":" Disabled"));
 }
 
 ::AdminSystem.GravityCmd <- function ( player, args )
