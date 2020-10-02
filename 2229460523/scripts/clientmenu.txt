@@ -17850,7 +17850,7 @@
 	// SMOK_MENU_START
 	"smok_menu"
 	{	
-        "Title"     "Smok Main Menu"
+        "Title"     "Smok Menu 1"
     
 		"1"
 		{
@@ -17906,23 +17906,27 @@
 	
 	"smok_menu2"
 	{	
-			"Title"     "Smok Menu Page 2"
+			"Title"     "Smok Menu 2"
 			"1"
 			{
-				"command"	"play buttons/button14;scripted_user_func randomline_output_state;show_menu smok_menu2"
+				"command"	"play buttons/button14;scripted_user_func update_print_output_state;show_menu smok_menu2"
 				"label"		" Enable/Disable output messages"
 			}
 			"2"
 			{
+				"command"	"play buttons/button14;scripted_user_func update_custom_response_preference;show_menu smok_menu2"
+				"label"		" Enable/Disable custom responses"
+			}
+			"3"
+			{
 				"command"	"play buttons/button14;show_menu prop_settings_typemenu1"
 				"label"		" Prop spawn settings"
 			}
-			"3"
+			"4"
 			{
 				"command"	"play buttons/button14;show_menu debug_info_menu1"
 				"label"		" Debug settings menu"
 			}
-			
 			"8"
 			{
 					"command"	"play buttons/button14;show_menu smok_menu"
