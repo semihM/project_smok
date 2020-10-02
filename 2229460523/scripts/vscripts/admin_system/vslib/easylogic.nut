@@ -32,16 +32,28 @@
  */
 ::_CustomResponseOptions <-
 {
-	_SpeakWhenShovedCondition = 
+	_SpeakWhenShoved = 
 	{
 		prob = 0.66
 		delay = 0.1
+		lastspoken = 
+		{
+			Bill = ""
+			Francis = ""
+			Zoey = ""
+			Louis = ""
+			Nick = ""
+			Ellis = ""
+			Rochelle = ""
+			Coach = ""
+		}
 	}
 
-	_SpeakIfFrancisLeftSafeRoomCondition = 
+	_SpeakIfFrancisLeftSafeRoom = 
 	{
-		prob = 1.0
-		delay = 1.0	
+		prob = 0.9
+		delay = 2.5
+		alreadytalked = false
 	}
 }
 
@@ -54,8 +66,8 @@
 	if(!::AdminSystem.AllowCustomResponses)
 		return;
 	
-	if(rand().tofloat()/RAND_MAX <= _CustomResponseOptions._SpeakWhenShovedCondition.prob)
-		::VSLib.Timers.AddTimer(_CustomResponseOptions._SpeakWhenShovedCondition.delay, false, _SpeakWhenShovedResult,{target=target,attacker=attacker});
+	if(rand().tofloat()/RAND_MAX <= _CustomResponseOptions._SpeakWhenShoved.prob)
+		::VSLib.Timers.AddTimer(_CustomResponseOptions._SpeakWhenShoved.delay, false, _SpeakWhenShovedResult,{target=target,attacker=attacker});
 	
 }
 
@@ -63,7 +75,7 @@
 {
 	local line = Utils.GetRandValueFromArray(::Survivorlines.FriendlyFire[ents.target.GetCharacterName()]);
 	ents.target.Speak(line);
-	
+	_CustomResponseOptions._SpeakWhenShoved[ents.target.GetCharacterName()] = line;
 	printl(ents.attacker.GetCharacterName()+" shoved "+ents.target.GetCharacterName()+":"+line);
 }
 
@@ -73,28 +85,27 @@
  */
 ::_SpeakIfFrancisLeftSafeRoomCondition <- function(ent,args=null)
 {
-	if(!::AdminSystem.AllowCustomResponses)
+	if(ent.GetName() == "" || !::AdminSystem.AllowCustomResponses)
 		return;
 
 	if(ent.GetCharacterName()!="Francis")
-		return;
+		return;	
 
 	// Add timer to ignore changes during map loading
-	if(rand().tofloat()/RAND_MAX <= _CustomResponseOptions._SpeakIfFrancisLeftSafeRoomCondition.prob && !::VSLib.EasyLogic._responses["Francis"]["left_saferoom_state"])
-		::VSLib.Timers.AddTimer(_CustomResponseOptions._SpeakIfFrancisLeftSafeRoomCondition.delay, false, _SpeakIfFrancisLeftSafeRoomResult, ent);
-	
+	if(rand().tofloat()/RAND_MAX <= _CustomResponseOptions._SpeakIfFrancisLeftSafeRoom.prob && !_CustomResponseOptions._SpeakIfFrancisLeftSafeRoom.alreadytalked)
+		::VSLib.Timers.AddTimer(_CustomResponseOptions._SpeakIfFrancisLeftSafeRoom.delay, false, _SpeakIfFrancisLeftSafeRoomResult, ent);
 	return;
 }
 
 ::_SpeakIfFrancisLeftSafeRoomResult <- function(ent)
 {
-	if(!::VSLib.EasyLogic.Cache[ent.GetIndex()]._inSafeRoom && !::VSLib.EasyLogic._responses["Francis"]["left_saferoom_state"])
+	if(!::VSLib.EasyLogic.Cache[ent.GetIndex()]._inSafeRoom && !_CustomResponseOptions._SpeakIfFrancisLeftSafeRoom.alreadytalked)
 	{
-		ent.Speak("warnboomer03.vcd",2.35);
+		ent.Speak("warnboomer03.vcd",2.45);
 		ent.Speak("warnsmoker03.vcd",1.7);
 		ent.Speak("followme08.vcd");
 		printl("Francis spoken: LeftSafeRoom");
-		::VSLib.EasyLogic._responses["Francis"]["left_saferoom_state"] = true;
+		_CustomResponseOptions._SpeakIfFrancisLeftSafeRoom.alreadytalked = true;
 	}
 	return;
 }
@@ -105,42 +116,6 @@ if (!("EasyLogic" in ::VSLib))
 {
 	::VSLib.EasyLogic <-
 	{	
-		_responses =
-		{
-			"Francis" :
-				{
-					"left_saferoom_state" : false
-				}
-			"Bill" :
-				{
-					"left_saferoom_state" : false
-				}
-			"Louis" :
-				{
-					"left_saferoom_state" : false
-				}
-			"Zoey" :
-				{
-					"left_saferoom_state" : false
-				}
-			"Nick" :
-				{
-					"left_saferoom_state" : false
-				}
-			"Ellis" :
-				{
-					"left_saferoom_state" : false
-				}
-			"Coach" :
-				{
-					"left_saferoom_state" : false
-				}
-			"Rochelle" :
-				{
-					"left_saferoom_state" : false
-				}
-		}
-
 		// Chat triggers
 		_itChatFunction = {}
 		_itChatTextIndex = {}
