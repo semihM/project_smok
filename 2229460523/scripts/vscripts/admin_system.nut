@@ -54,7 +54,295 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		EnabledGodSI = false
 		DirectorDisabled = false
 		AllowAdminsOnly = true
+
+		IgnoreDeletingPlayers = true
+
+		AllowCustomResponses = true
+
+		CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle"]
+		
+		CharacterNamesLower = ["bill","francis","louis","zoey","nick","ellis","coach","rochelle"]
+
+		PrintIndexedNames = function() {foreach(i,name in ::AdminSystem.CharacterNames){Utils.SayToAll(i+"->"+name);}}
+
+		// Chat output state
+	    _outputsEnabled = 
+		{
+			"bill":false,
+			"francis":false,
+			"louis":false,
+			"zoey":false,
+			"nick":false,
+			"coach":false,
+			"ellis":false,
+			"rochelle":false
+		}
+
+		// Randomline stuff
+		_saveLastLine = 
+		{
+			"bill":true,
+			"francis":true,
+			"louis":true,
+			"zoey":true,
+			"nick":true,
+			"coach":true,
+			"ellis":true,
+			"rochelle":true
+		}
+
+		_savedLine =
+		{
+			"bill":
+			{
+				target="",
+				source=""
+			},
+			"francis":
+			{
+				target="",
+				source=""
+			},
+			"louis":
+			{
+				target="",
+				source=""
+			},
+			"zoey":
+			{
+				target="",
+				source=""
+			},
+			"nick":
+			{
+				target="",
+				source=""
+			},
+			"coach":
+			{
+				target="",
+				source=""
+			},
+			"ellis":
+			{
+				target="",
+				source=""
+			},
+			"rochelle":
+			{
+				target="",
+				source=""
+			}
+		}
+
+		// Particle stuff
+		_saveLastParticle = 
+		{
+			"bill":true,
+			"francis":true,
+			"louis":true,
+			"zoey":true,
+			"nick":true,
+			"coach":true,
+			"ellis":true,
+			"rochelle":true
+		}
+
+		_savedParticle =
+		{
+			"bill":
+			{
+				duration=30,
+				source=""
+			},
+			"francis":
+			{
+				duration=30,
+				source=""
+			},
+			"louis":
+			{
+				duration=30,
+				source=""
+			},
+			"zoey":
+			{
+				duration=30,
+				source=""
+			},
+			"nick":
+			{
+				duration=30,
+				source=""
+			},
+			"coach":
+			{
+				duration=30,
+				source=""
+			},
+			"ellis":
+			{
+				duration=30,
+				source=""
+			},
+			"rochelle":
+			{
+				duration=30,
+				source=""
+			}
+		}
+
+		// To reduce menu amount
+		_preferred_duration =
+		{
+			"bill":30,
+			"francis":30,
+			"louis":30,
+			"zoey":30,
+			"nick":30,
+			"coach":30,
+			"ellis":30,
+			"rochelle":30
+		}
+
+		// Prop spawn_settings
+	 	_prop_spawn_settings_menu_type =
+		{
+			"bill":"all",
+			"francis":"all",
+			"louis":"all",
+			"zoey":"all",
+			"nick":"all",
+			"coach":"all",
+			"ellis":"all",
+			"rochelle":"all"
+		}
+
+		_prop_spawn_settings =
+		{
+			"bill":
+			{
+				"dynamic":	
+				{
+					spawn_height=0
+				},
+				"physics":
+				{
+					spawn_height=0
+				},
+				"ragdoll":
+				{
+					spawn_height=0
+				}
+			}
+			"francis":
+			{
+				"dynamic":
+				{
+					spawn_height=0
+				},
+				"physics":
+				{
+					spawn_height=0
+				},
+				"ragdoll":
+				{
+					spawn_height=0
+				}
+			},
+			"louis":
+			{
+				"dynamic":
+				{
+					spawn_height=0
+				},
+				"physics":
+				{
+					spawn_height=0
+				},
+				"ragdoll":
+				{
+					spawn_height=0
+				}
+			},
+			"zoey":
+			{
+				"dynamic":
+				{
+					spawn_height=0
+				},
+				"physics":
+				{
+					spawn_height=0
+				},
+				"ragdoll":
+				{
+					spawn_height=0
+				}
+			},
+			"nick":
+			{
+				"dynamic":
+				{
+					spawn_height=0
+				},
+				"physics":
+				{
+					spawn_height=0
+				},
+				"ragdoll":
+				{
+					spawn_height=0
+				}
+			},
+			"coach":
+			{
+				"dynamic":
+				{
+					spawn_height=0
+				},
+				"physics":
+				{
+					spawn_height=0
+				},
+				"ragdoll":
+				{
+					spawn_height=0
+				}
+			},
+			"ellis":
+			{
+				"dynamic":
+				{
+					spawn_height=0
+				},
+				"physics":
+				{
+					spawn_height=0
+				},
+				"ragdoll":
+				{
+					spawn_height=0
+				}
+			},
+			"rochelle":
+			{
+				"dynamic":
+				{
+					spawn_height=0
+				},
+				"physics":
+				{
+					spawn_height=0
+				},
+				"ragdoll":
+				{
+					spawn_height=0
+				}
+			}
+		}
 	}
+	
 	ZombieModels =
 	[
 		"common_female_tankTop_jeans",
@@ -99,291 +387,6 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		"common_worker_male01"
 		//"common_female_tankTop_jeans_swamp"
 	]
-	
-	IgnoreDeletingPlayers = true
-
-	AllowCustomResponses = true
-
-	CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle"]
-	
-	PrintIndexedNames = function() {foreach(i,name in ::AdminSystem.CharacterNames){Utils.SayToAll(i+"->"+name);}}
-
-	// Chat output state
-	_outputsEnabled = 
-	{
-		"bill":false,
-		"francis":false,
-		"louis":false,
-		"zoey":false,
-		"nick":false,
-		"coach":false,
-		"ellis":false,
-		"rochelle":false
-	}
-
-	// Randomline stuff
-	_saveLastLine = 
-	{
-		"bill":true,
-		"francis":true,
-		"louis":true,
-		"zoey":true,
-		"nick":true,
-		"coach":true,
-		"ellis":true,
-		"rochelle":true
-	}
-
-	_savedLine =
-	{
-		"bill":
-		{
-			target="",
-			source=""
-		},
-		"francis":
-		{
-			target="",
-			source=""
-		},
-		"louis":
-		{
-			target="",
-			source=""
-		},
-		"zoey":
-		{
-			target="",
-			source=""
-		},
-		"nick":
-		{
-			target="",
-			source=""
-		},
-		"coach":
-		{
-			target="",
-			source=""
-		},
-		"ellis":
-		{
-			target="",
-			source=""
-		},
-		"rochelle":
-		{
-			target="",
-			source=""
-		}
-	}
-
-	// Particle stuff
-	_saveLastParticle = 
-	{
-		"bill":true,
-		"francis":true,
-		"louis":true,
-		"zoey":true,
-		"nick":true,
-		"coach":true,
-		"ellis":true,
-		"rochelle":true
-	}
-
-	_savedParticle =
-	{
-		"bill":
-		{
-			duration=30,
-			source=""
-		},
-		"francis":
-		{
-			duration=30,
-			source=""
-		},
-		"louis":
-		{
-			duration=30,
-			source=""
-		},
-		"zoey":
-		{
-			duration=30,
-			source=""
-		},
-		"nick":
-		{
-			duration=30,
-			source=""
-		},
-		"coach":
-		{
-			duration=30,
-			source=""
-		},
-		"ellis":
-		{
-			duration=30,
-			source=""
-		},
-		"rochelle":
-		{
-			duration=30,
-			source=""
-		}
-	}
-
-	// To reduce menu amount
-	_preferred_duration =
-	{
-		"bill":30,
-		"francis":30,
-		"louis":30,
-		"zoey":30,
-		"nick":30,
-		"coach":30,
-		"ellis":30,
-		"rochelle":30
-	}
-
-	// Prop spawn_settings
-	_prop_spawn_settings_menu_type =
-	{
-		"bill":"all",
-		"francis":"all",
-		"louis":"all",
-		"zoey":"all",
-		"nick":"all",
-		"coach":"all",
-		"ellis":"all",
-		"rochelle":"all"
-	}
-
-	_prop_spawn_settings =
-	{
-		"bill":
-		{
-			"dynamic":	
-			{
-				spawn_height=0
-			},
-			"physics":
-			{
-				spawn_height=0
-			},
-			"ragdoll":
-			{
-				spawn_height=0
-			}
-		}
-		"francis":
-		{
-			"dynamic":
-			{
-				spawn_height=0
-			},
-			"physics":
-			{
-				spawn_height=0
-			},
-			"ragdoll":
-			{
-				spawn_height=0
-			}
-		},
-		"louis":
-		{
-			"dynamic":
-			{
-				spawn_height=0
-			},
-			"physics":
-			{
-				spawn_height=0
-			},
-			"ragdoll":
-			{
-				spawn_height=0
-			}
-		},
-		"zoey":
-		{
-			"dynamic":
-			{
-				spawn_height=0
-			},
-			"physics":
-			{
-				spawn_height=0
-			},
-			"ragdoll":
-			{
-				spawn_height=0
-			}
-		},
-		"nick":
-		{
-			"dynamic":
-			{
-				spawn_height=0
-			},
-			"physics":
-			{
-				spawn_height=0
-			},
-			"ragdoll":
-			{
-				spawn_height=0
-			}
-		},
-		"coach":
-		{
-			"dynamic":
-			{
-				spawn_height=0
-			},
-			"physics":
-			{
-				spawn_height=0
-			},
-			"ragdoll":
-			{
-				spawn_height=0
-			}
-		},
-		"ellis":
-		{
-			"dynamic":
-			{
-				spawn_height=0
-			},
-			"physics":
-			{
-				spawn_height=0
-			},
-			"ragdoll":
-			{
-				spawn_height=0
-			}
-		},
-		"rochelle":
-		{
-			"dynamic":
-			{
-				spawn_height=0
-			},
-			"physics":
-			{
-				spawn_height=0
-			},
-			"ragdoll":
-			{
-				spawn_height=0
-			}
-		}
-	}
 
 }
 
@@ -3615,6 +3618,9 @@ if ( Director.GetGameMode() == "holdout" )
 	g_ModeScript.SpawnMeleeWeapon( Melee, EyePosition, Vector(0,0,90) );
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.ParticleCmd <- function ( player, args )
 {	
 	if (!AdminSystem.IsPrivileged( player ))
@@ -3625,16 +3631,16 @@ if ( Director.GetGameMode() == "holdout" )
 	if (Particle == "random")
 	{
 		Particle = Utils.GetRandValueFromArray(::Particlenames.names);
-		if(AdminSystem._saveLastParticle[name])
+		if(AdminSystem.Vars._saveLastParticle[name])
 		{
-			AdminSystem._savedParticle[name].source = Particle;
+			AdminSystem.Vars._savedParticle[name].source = Particle;
 		}
 	}
 
 	local EyePosition = player.GetLookingLocation();
 	
 	g_ModeScript.CreateParticleSystemAt( null, EyePosition, Particle, true );
-	if (AdminSystem._outputsEnabled[name])
+	if (AdminSystem.Vars._outputsEnabled[name])
 	{Utils.SayToAll(name+"->Spawned particle:"+Particle+" at:"+EyePosition.x+","+EyePosition.y+","+EyePosition.z);}
 	else
 	{Msg(name+"->Spawned particle:"+Particle+" at:"+EyePosition.x+","+EyePosition.y+","+EyePosition.z+"\n");}
@@ -3864,6 +3870,9 @@ if ( Director.GetGameMode() == "holdout" )
 		Utils.SpawnCommentaryDummy(MDL, Weapons, Animation, EyePosition);
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.EntityCmd <- function ( player, args )
 {
 	if (!AdminSystem.IsPrivileged( player ))
@@ -3900,7 +3909,9 @@ if ( Director.GetGameMode() == "holdout" )
  * 												| "val2.1 val2.2 val2.3"
  * 1 argument for value: TYPE = {float,int,str} -> val3.tofloat() | val3.tointeger() | val3
  * @return void
-*/
+ *
+ * @authors rhino
+ */
 ::AdminSystem.EntityWithTableCmd <- function ( player, args )
 {
 	if (!AdminSystem.IsPrivileged( player ))
@@ -4059,7 +4070,9 @@ if ( Director.GetGameMode() == "holdout" )
 
 }
 
-
+/*
+ * @authors rhino
+ */
 ::AdminSystem.PropCmd <- function ( player, args )
 {
 	if (!AdminSystem.IsPrivileged( player ))
@@ -4074,7 +4087,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	local name = player.GetCharacterName().tolower();
 	
-	local propspawnsettings = AdminSystem._prop_spawn_settings[name];
+	local propspawnsettings = AdminSystem.Vars._prop_spawn_settings[name];
 
 	GroundPosition.y = EyeAngles.y;
 
@@ -4619,7 +4632,7 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		if ( Entity )
 		{
-			if (Entity.GetClassname() == "player" && Action == "kill" && Entity.GetSteamID() !="BOT" && AdminSystem.IgnoreDeletingPlayers)
+			if (Entity.GetClassname() == "player" && Action == "kill" && Entity.GetSteamID() !="BOT" && AdminSystem.Vars.IgnoreDeletingPlayers)
 			{
 				Msg(player.GetCharacterName().tolower()+"->Ignore attemp to kick player:"+Entity.GetName()+"\n");
 				return;
@@ -4644,6 +4657,9 @@ if ( Director.GetGameMode() == "holdout" )
 
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.EntRotateCmd <- function ( player, args )
 {	
 	if (!AdminSystem.IsPrivileged( player ))
@@ -4683,10 +4699,12 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 }
 
-/***
-	Pushes the looked entity in the given direction
-	Directions are relative to the eyes of the player
-***/
+/*
+ * Pushes the looked entity in the given direction
+ * Directions are relative to the eyes of the player
+ *
+ * @authors rhino
+ */
 ::AdminSystem.EntPushCmd <- function ( player, args )
 {	
 	if (!AdminSystem.IsPrivileged( player ))
@@ -4764,6 +4782,9 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.EntMoveCmd <- function ( player, args )
 {	
 	if (!AdminSystem.IsPrivileged( player ))
@@ -4844,6 +4865,9 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.EntSpinCmd <- function ( player, args )
 {	
 	if (!AdminSystem.IsPrivileged( player ))
@@ -6873,6 +6897,9 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.RainbowCmd <- function(player, args)
 {	
 	//// ARGUMENT CHECKS
@@ -6939,32 +6966,41 @@ if ( Director.GetGameMode() == "holdout" )
 	Msg(player.GetCharacterName().tolower()+"->Rainbow("+duration+","+intervals+"), Entity index: "+entlooked.GetIndex()+"\n");
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.Update_print_output_stateCmd <- function(player, args)
 {	
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
 	local name = player.GetCharacterName().tolower();
-	local newstate = !AdminSystem._outputsEnabled[name];
-	AdminSystem._outputsEnabled[name] = newstate;
+	local newstate = !AdminSystem.Vars._outputsEnabled[name];
+	AdminSystem.Vars._outputsEnabled[name] = newstate;
 
 	Utils.SayToAll("Printing output state for "+name+":"+( newstate ? " Enabled":" Disabled"));
 	
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.Randomline_save_lastCmd <- function(player, args)
 {	
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
 	local name = player.GetCharacterName().tolower();
-	local newstate = !AdminSystem._saveLastLine[name];
-	AdminSystem._saveLastLine[name] = newstate;
+	local newstate = !AdminSystem.Vars._saveLastLine[name];
+	AdminSystem.Vars._saveLastLine[name] = newstate;
 
 	Utils.SayToAll("Random line saving for "+name+" is"+( newstate ? " Enabled":" Disabled"));
 	
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.Save_lineCmd <- function(player, args)
 {	
 	if (!AdminSystem.IsPrivileged( player ))
@@ -6978,10 +7014,10 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 	}
 	
-	AdminSystem._savedLine[name].target = targetname;
-	AdminSystem._savedLine[name].source = linesource;
+	AdminSystem.Vars._savedLine[name].target = targetname;
+	AdminSystem.Vars._savedLine[name].source = linesource;
 
-	if (AdminSystem._outputsEnabled[name])
+	if (AdminSystem.Vars._outputsEnabled[name])
 	{
 		Utils.SayToAll("Saved for "+name+" ->scripted_user_func speak,"+targetname+","+linesource);
 	}
@@ -6991,18 +7027,21 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.Speak_savedCmd <- function(player, args)
 {	
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
 	local name = player.GetCharacterName().tolower();
-	local lineinfo = AdminSystem._savedLine[name];
+	local lineinfo = AdminSystem.Vars._savedLine[name];
 	if (lineinfo.target != "")
 	{
 		Utils.GetPlayerFromName(lineinfo.target).Speak(lineinfo.source);
 
-		if (AdminSystem._outputsEnabled[name])
+		if (AdminSystem.Vars._outputsEnabled[name])
 		{
 			Utils.SayToAll(name+" ->scripted_user_func speak,"+lineinfo.target+","+lineinfo.source);
 		}
@@ -7018,15 +7057,18 @@ if ( Director.GetGameMode() == "holdout" )
 	
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.Display_saved_lineCmd <- function(player, args)
 {	
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
 	local name = player.GetCharacterName().tolower();
-	if (AdminSystem._saveLastLine[name])
+	if (AdminSystem.Vars._saveLastLine[name])
 	{	
-		local lineinfo = AdminSystem._savedLine[name];
+		local lineinfo = AdminSystem.Vars._savedLine[name];
 		if (lineinfo.target != "")
 		{
 			Utils.SayToAll(name+" ->scripted_user_func speak,"+lineinfo.target+","+lineinfo.source);
@@ -7039,6 +7081,9 @@ if ( Director.GetGameMode() == "holdout" )
 	
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.Debug_infoCmd <- function(player, args)
 {	
 	if (!AdminSystem.IsPrivileged( player ))
@@ -7078,6 +7123,9 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.Server_execCmd <- function(player, args)
 {	
 	if (!AdminSystem.IsPrivileged( player ))
@@ -7096,6 +7144,9 @@ if ( Director.GetGameMode() == "holdout" )
 	SendToServerConsole(command);
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.RandomlineCmd <- function(player, args)
 {	
 	if (!AdminSystem.IsPrivileged( player ))
@@ -7105,7 +7156,8 @@ if ( Director.GetGameMode() == "holdout" )
 	local targetname = GetArgument(1);
 	local linesource = GetArgument(2);
 	local randomline_path = "";
-
+	local speaker = null;
+	
 	if(targetname==null)
 	{
 		targetname = name;
@@ -7114,100 +7166,53 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		targetname = targetname.tolower();
 	}
+
+	// Line source is random
 	if(linesource == "random")
 	{
-		linesource = Utils.GetRandValueFromArray(["bill","zoey","louis","francis","ellis","nick","rochelle","coach"]);
+		linesource = Utils.GetRandValueFromArray(AdminSystem.Vars.CharacterNamesLower);
 	}
-	switch(targetname)
-	{	
-		case "random":
-		{
-			targetname = Utils.GetRandValueFromArray(["bill","zoey","louis","francis","ellis","nick","rochelle","coach"]);
 
-			randomline_path = (linesource == null) ? Utils.GetRandValueFromArray(::Survivorlines.Paths[targetname]) : Utils.GetRandValueFromArray(::Survivorlines.Paths[linesource.tolower()]);
-
-			Utils.GetPlayerFromName(targetname).Speak(randomline_path);
-			break;
-		}
-		case "self":
-		{	
-			targetname = name;
-			randomline_path = (linesource == null) ? Utils.GetRandValueFromArray(::Survivorlines.Paths[targetname]) : Utils.GetRandValueFromArray(::Survivorlines.Paths[linesource.tolower()]);
-			player.Speak(randomline_path);
-			break;
-		}
-		case "picker":
-		{	
-			targetname = player.GetLookingEntity();
-			if ( targetname != null && targetname.GetClassname() == "player" )
-			{
-				targetname = targetname.GetCharacterName().tolower();
-			}
-			else
-			{
-				return;
-			}
-			randomline_path = (linesource == null) ? Utils.GetRandValueFromArray(::Survivorlines.Paths[targetname]) : Utils.GetRandValueFromArray(::Survivorlines.Paths[linesource.tolower()]);
-			Utils.GetPlayerFromName(targetname).Speak(randomline_path);
-			break;
-		}
-		case "nick":
-		{
-			randomline_path = (linesource == null) ? Utils.GetRandValueFromArray(::Survivorlines.Paths[targetname]) : Utils.GetRandValueFromArray(::Survivorlines.Paths[linesource.tolower()]);
-			Utils.GetPlayerFromName(targetname).Speak(randomline_path);
-			break;
-		}
-		case "bill":
-		{	
-			randomline_path = (linesource == null) ? Utils.GetRandValueFromArray(::Survivorlines.Paths[targetname]) : Utils.GetRandValueFromArray(::Survivorlines.Paths[linesource.tolower()]);
-			Utils.GetPlayerFromName(targetname).Speak(randomline_path);
-			break;
-		}
-		case "ellis":
-		{	
-			randomline_path = (linesource == null) ? Utils.GetRandValueFromArray(::Survivorlines.Paths[targetname]) : Utils.GetRandValueFromArray(::Survivorlines.Paths[linesource.tolower()]);
-			Utils.GetPlayerFromName(targetname).Speak(randomline_path);
-			break;
-		}
-		case "francis":
-		{	
-			randomline_path = (linesource == null) ? Utils.GetRandValueFromArray(::Survivorlines.Paths[targetname]) : Utils.GetRandValueFromArray(::Survivorlines.Paths[linesource.tolower()]);
-			Utils.GetPlayerFromName(targetname).Speak(randomline_path);
-			break;
-		}
-		case "coach":
-		{	
-			randomline_path = (linesource == null) ? Utils.GetRandValueFromArray(::Survivorlines.Paths[targetname]) : Utils.GetRandValueFromArray(::Survivorlines.Paths[linesource.tolower()]);
-			Utils.GetPlayerFromName(targetname).Speak(randomline_path);
-			break;
-		}
-		case "louis":
-		{	
-			randomline_path = (linesource == null) ? Utils.GetRandValueFromArray(::Survivorlines.Paths[targetname]) : Utils.GetRandValueFromArray(::Survivorlines.Paths[linesource.tolower()]);
-			Utils.GetPlayerFromName(targetname).Speak(randomline_path);
-			break;
-		}
-		case "rochelle":
-		{	
-			randomline_path = (linesource == null) ? Utils.GetRandValueFromArray(::Survivorlines.Paths[targetname]) : Utils.GetRandValueFromArray(::Survivorlines.Paths[linesource.tolower()]);
-			Utils.GetPlayerFromName(targetname).Speak(randomline_path);
-			break;
-		}
-		case "zoey":
-		{	
-			randomline_path = (linesource == null) ? Utils.GetRandValueFromArray(::Survivorlines.Paths[targetname]) : Utils.GetRandValueFromArray(::Survivorlines.Paths[linesource.tolower()]);
-			Utils.GetPlayerFromName(targetname).Speak(randomline_path);
-			break;
-		}
+	// Speaker selection
+	if(targetname == "random")
+	{
+		targetname = Utils.GetRandValueFromArray(AdminSystem.Vars.CharacterNamesLower);
+		speaker = Utils.GetPlayerFromName(targetname);
 	}
+	else if(targetname == "self")
+	{
+		targetname = name;
+		speaker = player;
+	}
+	else if(targetname == "picker")
+	{
+		targetname = player.GetLookingEntity();
+
+		if(targetname == null){return;}
+		if(targetname.GetClassname() != "player"){return;}
 	
+		targetname = targetname.GetCharacterName().tolower();
+		speaker = Utils.GetPlayerFromName(targetname);
+	}
+	else if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,targetname) != -1)
+	{
+		speaker = Utils.GetPlayerFromName(targetname);
+	}
+	else
+	{
+		printl(GetArgument(1)+" is not a character name");return;
+	}
 
-	if (AdminSystem._outputsEnabled[name])
+	randomline_path = (linesource == null) ? Utils.GetRandValueFromArray(::Survivorlines.Paths[targetname]) : Utils.GetRandValueFromArray(::Survivorlines.Paths[linesource.tolower()]);
+	speaker.Speak(randomline_path);
+	
+	//Output messages
+	if (AdminSystem.Vars._outputsEnabled[name])
 	{	
-		if (AdminSystem._saveLastLine[name])
+		if (AdminSystem.Vars._saveLastLine[name])
 		{
-			AdminSystem._savedLine[name].target = targetname;
-			AdminSystem._savedLine[name].source = randomline_path;
+			AdminSystem.Vars._savedLine[name].target = targetname;
+			AdminSystem.Vars._savedLine[name].source = randomline_path;
 			Utils.SayToAll("Saved for "+name+" ->scripted_user_func speak,"+targetname+","+randomline_path);
 		}
 		else
@@ -7217,10 +7222,10 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{	
-		if (AdminSystem._saveLastLine[name])
+		if (AdminSystem.Vars._saveLastLine[name])
 		{
-			AdminSystem._savedLine[name].target = targetname;
-			AdminSystem._savedLine[name].source = randomline_path;
+			AdminSystem.Vars._savedLine[name].target = targetname;
+			AdminSystem.Vars._savedLine[name].source = randomline_path;
 			Msg("Saved for "+name+" ->scripted_user_func speak,"+targetname+","+randomline_path+"\n");
 		}
 		else
@@ -7232,6 +7237,9 @@ if ( Director.GetGameMode() == "holdout" )
 	
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.ColorCmd <- function ( player, args )
 {
 	if (!AdminSystem.IsPrivileged( player ))
@@ -7256,13 +7264,16 @@ if ( Director.GetGameMode() == "holdout" )
 		alpha = 1.0;
 
 	ent.SetColor(red,green,blue,alpha);
-	if (AdminSystem._outputsEnabled[name])
+	if (AdminSystem.Vars._outputsEnabled[name])
 	{Utils.SayToAll(name+"->Changed color:("+red+","+green+","+blue+","+alpha+") of "+ent.GetName());}
 	else
 	{Msg("--------------------------------------\n"+name+"-> Changed color:("+red+","+green+","+blue+","+alpha+") of "+ent.GetName()+"\n");}
 
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.SetkeyvalCmd <- function ( player, args )
 {
 	if (!AdminSystem.IsPrivileged( player ))
@@ -7280,7 +7291,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local val = GetArgument(2);
 	
 	ent.SetKeyValue(key,val);
-	if (AdminSystem._outputsEnabled[name])
+	if (AdminSystem.Vars._outputsEnabled[name])
 	{Utils.SayToAll(name+"->Changed key:"+key+" value to:"+val+" of "+ent.GetName());}
 	else
 	{Msg("--------------------------------------\n"+name+" ->Changed key:"+key+" value to:"+val+" of "+ent.GetName()+"\n");}
@@ -7288,9 +7299,11 @@ if ( Director.GetGameMode() == "holdout" )
 }
 
 /*
-	Update prop spawn settings
-	Argument 1 = "ptr" to use _prop_spawn_settings_menu_type of player
-*/
+ * Update prop spawn settings
+ * Argument 1 = "ptr" to use _prop_spawn_settings_menu_type of player
+ *
+ * @authors rhino
+ */
 ::AdminSystem.Update_prop_spawn_settingCmd <- function ( player, args )
 {
 	if (!AdminSystem.IsPrivileged( player ))
@@ -7304,17 +7317,17 @@ if ( Director.GetGameMode() == "holdout" )
 	{	
 		if(typename=="ptr")
 		{
-			typename = AdminSystem._prop_spawn_settings_menu_type[name];
+			typename = AdminSystem.Vars._prop_spawn_settings_menu_type[name];
 		}
 
 		if(typename=="all")
 		{
-			AdminSystem._prop_spawn_settings[name]["physics"][setting] = val;
-			AdminSystem._prop_spawn_settings[name]["dynamic"][setting] = val;
-			AdminSystem._prop_spawn_settings[name]["ragdoll"][setting] = val;
+			AdminSystem.Vars._prop_spawn_settings[name]["physics"][setting] = val;
+			AdminSystem.Vars._prop_spawn_settings[name]["dynamic"][setting] = val;
+			AdminSystem.Vars._prop_spawn_settings[name]["ragdoll"][setting] = val;
 		}
 		else
-			AdminSystem._prop_spawn_settings[name][typename][setting] = val;
+			AdminSystem.Vars._prop_spawn_settings[name][typename][setting] = val;
 
 		Msg("--------------------------------------\n"+name +" Updated prop("+typename+") setting "+setting+" to: "+val+"\n");
 	}
@@ -7325,8 +7338,10 @@ if ( Director.GetGameMode() == "holdout" )
 }
 
 /*
-	Prop type for menu to apply settings to
-*/
+ * Prop type for menu to apply settings to
+ *
+ * @authors rhino
+ */
 ::AdminSystem.Update_prop_spawn_menu_typeCmd <- function ( player, args )
 {
 	if (!AdminSystem.IsPrivileged( player ))
@@ -7336,7 +7351,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local typename = GetArgument(1);
 	if (typename != null)
 	{	
-		AdminSystem._prop_spawn_settings_menu_type[name] = typename;
+		AdminSystem.Vars._prop_spawn_settings_menu_type[name] = typename;
 		Msg("--------------------------------------\n"+name +" Updated prop menu type :"+typename+"\n");
 	}
 	else
@@ -7346,6 +7361,9 @@ if ( Director.GetGameMode() == "holdout" )
 
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.Display_prop_spawn_settingsCmd <- function(player, args)
 {	
 	if (!AdminSystem.IsPrivileged( player ))
@@ -7358,7 +7376,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if(typename == null || typename == "all")
 	{
 		infostr += "\nProp spawn settings for: "+name+"\n";
-		foreach(typename,setting_val in AdminSystem._prop_spawn_settings[name])
+		foreach(typename,setting_val in AdminSystem.Vars._prop_spawn_settings[name])
 		{
 			infostr += "Type("+typename+"):\n";
 			foreach(setting,val in setting_val)
@@ -7371,11 +7389,11 @@ if ( Director.GetGameMode() == "holdout" )
 	else 
 	{	
 		if(typename == "ptr")
-			typename = AdminSystem._prop_spawn_settings_menu_type[name];
+			typename = AdminSystem.Vars._prop_spawn_settings_menu_type[name];
 
 		infostr += "\nProp spawn settings for: "+name+"\n";
 		infostr += "Type("+typename+"):\n";
-		foreach(setting,val in AdminSystem._prop_spawn_settings[name][typename])
+		foreach(setting,val in AdminSystem.Vars._prop_spawn_settings[name][typename])
 		{
 			infostr += " 	 " + setting + ": " + val + "\n";
 		}
@@ -7383,6 +7401,9 @@ if ( Director.GetGameMode() == "holdout" )
 	Utils.SayToAll(infostr);
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.Save_particleCmd <- function(player, args)
 {	
 	if (!AdminSystem.IsPrivileged( player ))
@@ -7393,13 +7414,13 @@ if ( Director.GetGameMode() == "holdout" )
 	local duration = GetArgument(2);
 	if ( duration == null)
 	{
-		duration = AdminSystem._preferred_duration[name];
+		duration = AdminSystem.Vars._preferred_duration[name];
 	}
 	
-	AdminSystem._savedParticle[name].source = source;
-	AdminSystem._savedParticle[name].duration = duration;
+	AdminSystem.Vars._savedParticle[name].source = source;
+	AdminSystem.Vars._savedParticle[name].duration = duration;
 
-	if (AdminSystem._outputsEnabled[name])
+	if (AdminSystem.Vars._outputsEnabled[name])
 	{
 		Utils.SayToAll("Saved for "+name+" ->scripted_user_func attach_particle,"+source+","+duration);
 	}
@@ -7409,6 +7430,9 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.Attach_particleCmd <- function ( player, args )
 {
 	if (!AdminSystem.IsPrivileged( player ))
@@ -7426,21 +7450,21 @@ if ( Director.GetGameMode() == "holdout" )
 	local duration = GetArgument(2);
 	if (duration == null)
 	{
-		duration = AdminSystem._preferred_duration[name];
+		duration = AdminSystem.Vars._preferred_duration[name];
 	}
 	
 	if (particle == "random")
 	{	
 		particle = Utils.GetRandValueFromArray(::Particlenames.names);
-		if(AdminSystem._saveLastParticle[name])
+		if(AdminSystem.Vars._saveLastParticle[name])
 		{
-			AdminSystem._savedParticle[name].duration = duration;
-			AdminSystem._savedParticle[name].source = particle;
+			AdminSystem.Vars._savedParticle[name].duration = duration;
+			AdminSystem.Vars._savedParticle[name].source = particle;
 		}
 	}
 
 	ent.AttachParticle(particle, duration);
-	if (AdminSystem._outputsEnabled[name])
+	if (AdminSystem.Vars._outputsEnabled[name])
 	{Utils.SayToAll(name+"->Attached particle("+duration+" sec):"+particle+" to:"+ent.GetName());}
 	else
 	{Msg("--------------------------------------\n"+name+" ->Attached particle("+duration+" sec):"+particle+" to:"+ent.GetName()+"\n");}
@@ -7448,18 +7472,24 @@ if ( Director.GetGameMode() == "holdout" )
 	
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.Randomparticle_save_stateCmd <- function(player, args)
 {	
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
 	local name = player.GetCharacterName().tolower();
-	local newstate = !AdminSystem._saveLastParticle[name];
-	AdminSystem._saveLastParticle[name] = newstate;
+	local newstate = !AdminSystem.Vars._saveLastParticle[name];
+	AdminSystem.Vars._saveLastParticle[name] = newstate;
 
 	Utils.SayToAll("Random particle saving for "+name+" is"+( newstate ? " Enabled":" Disabled"));
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.Update_attachment_preferenceCmd <- function ( player, args )
 {
 	if (!AdminSystem.IsPrivileged( player ))
@@ -7475,20 +7505,23 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		duration = duration.tofloat();
 	}
-	AdminSystem._preferred_duration[name] = duration;
+	AdminSystem.Vars._preferred_duration[name] = duration;
 	Msg("--------------------------------------\n"+name +" Updated attachment duration:"+duration+"\n");
 
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.Display_saved_particleCmd <- function(player, args)
 {	
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
 	local name = player.GetCharacterName().tolower();
-	if (AdminSystem._saveLastLine[name])
+	if (AdminSystem.Vars._saveLastLine[name])
 	{	
-		local particleinfo = AdminSystem._savedParticle[name];
+		local particleinfo = AdminSystem.Vars._savedParticle[name];
 		if (particleinfo.source != "")
 		{
 			Utils.SayToAll(name+" ->scripted_user_func particle,"+particleinfo.source);
@@ -7501,19 +7534,22 @@ if ( Director.GetGameMode() == "holdout" )
 	
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.Spawn_particle_savedCmd <- function ( player, args )
 {
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
 	local name = player.GetCharacterName().tolower();
-	local particleinfo = AdminSystem._savedParticle[name];
+	local particleinfo = AdminSystem.Vars._savedParticle[name];
 	if (particleinfo.source != "")
 	{
 		local EyePosition = player.GetLookingLocation();
 		g_ModeScript.CreateParticleSystemAt( null, EyePosition, particleinfo.source, true );
 
-		if (AdminSystem._outputsEnabled[name])
+		if (AdminSystem.Vars._outputsEnabled[name])
 		{
 			Utils.SayToAll(name+" ->scripted_user_func particle,"+particleinfo.source);
 		}
@@ -7528,6 +7564,9 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.Attach_particle_savedCmd <- function ( player, args )
 {
 	if (!AdminSystem.IsPrivileged( player ))
@@ -7541,12 +7580,12 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 		
 	local name = player.GetCharacterName().tolower();
-	local particleinfo = AdminSystem._savedParticle[name];
+	local particleinfo = AdminSystem.Vars._savedParticle[name];
 	if (particleinfo.source != "")
 	{
 		ent.AttachParticle(particleinfo.source, particleinfo.duration)
 
-		if (AdminSystem._outputsEnabled[name])
+		if (AdminSystem.Vars._outputsEnabled[name])
 		{
 			Utils.SayToAll(name+" ->scripted_user_func attach_particle,"+particleinfo.source+","+particleinfo.duration);
 		}
@@ -7561,31 +7600,31 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.Update_svcheatsCmd <- function ( player, args )
 {
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
 	local oldval = Convars.GetFloat("sv_cheats");
-	if (oldval == 0)
-	{
-		Convars.SetValue("sv_cheats",1);
-	}
-	else
-	{
-		Convars.SetValue("sv_cheats",0);
-	}
-	Msg("--------------------------------------\n"+name +" Updated sv_cheats:"+(1-oldval)+"\n");
+	Convars.SetValue("sv_cheats",(1-oldval).tointeger());
+
+	Msg("--------------------------------------\n"+player.GetCharacterName() +" Updated sv_cheats:"+(1-oldval).tointeger()+"\n");
 
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.Update_custom_response_preferenceCmd <- function ( player, args )
 {
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	local newstate = !::AdminSystem.AllowCustomResponses;
-	::AdminSystem.AllowCustomResponses = newstate;
+	local newstate = !::AdminSystem.Vars.AllowCustomResponses;
+	::AdminSystem.Vars.AllowCustomResponses = newstate;
 
 	Utils.SayToAll(player.GetCharacterName()+" set custom responses to:"+( newstate ? " Enabled":" Disabled"));
 }

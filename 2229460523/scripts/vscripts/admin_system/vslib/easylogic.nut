@@ -29,6 +29,7 @@
 /////////////////////////////////////////////////////////////////
 /*
  * Options for custom responses
+ * @authors rhino
  */
 ::_CustomResponseOptions <-
 {	
@@ -155,6 +156,9 @@
 
 
 /////////////////////////////////////////////////////////////////
+/*
+ * @authors rhino
+ */
 ::_SceneSequencer <- function(player,scene_delay_table)
 {
 	foreach(i,scene in scene_delay_table.scenes)
@@ -166,10 +170,12 @@
 /////////////////////////////////////////////////////////////////
 /*
  * Speak a friendly fire line when shoved with given options in _CustomResponseOptions
+ *
+ * @authors rhino
  */
 ::_SpeakWhenShovedCondition <- function(target,attacker,args=null)
 {
-	if(!::AdminSystem.AllowCustomResponses)
+	if(!::AdminSystem.Vars.AllowCustomResponses)
 		return;
 	
 	if(rand().tofloat()/RAND_MAX <= _CustomResponseOptions._SpeakWhenShoved.prob)
@@ -177,6 +183,9 @@
 	
 }
 
+/*
+ * @authors rhino
+ */
 ::_SpeakWhenShovedResult <- function(ents)
 {
 	local targetname = ents.target.GetCharacterName();
@@ -189,10 +198,12 @@
 /////////////////////////////////////////////////////////////////
 /*
  * Sequences to speak for each player upon leaving saferoom with given options in _CustomResponseOptions
+ *
+ * @authors rhino
  */
 ::_SpeakIfLeftSafeRoomCondition <- function(ent,args=null)
 {
-	if(ent.GetName() == "" || !::AdminSystem.AllowCustomResponses)
+	if(ent.GetName() == "" || !::AdminSystem.Vars.AllowCustomResponses)
 		return;
 	
 	local name = ent.GetCharacterName();
@@ -208,6 +219,9 @@
 	return;
 }
 
+/*
+ * @authors rhino
+ */
 ::_SpeakIfLeftSafeRoomResult <- function(ent_table)
 {
 	if(!::VSLib.EasyLogic.Cache[ent_table.player.GetIndex()]._inSafeRoom && !_CustomResponseOptions._SpeakIfLeftSafeRoom[ent_table.name].alreadytalked)
@@ -222,10 +236,12 @@
 /////////////////////////////////////////////////////////////////
 /*
  * Speak an excited line with given options in _CustomResponseOptions
+ *
+ * @authors rhino
  */
 ::_SpeakWhenUsedAdrenalineCondition <- function(ent,args=null)
 {
-	if(!::AdminSystem.AllowCustomResponses)
+	if(!::AdminSystem.Vars.AllowCustomResponses)
 		return;
 	
 	if(rand().tofloat()/RAND_MAX <= _CustomResponseOptions._SpeakWhenUsedAdrenaline.prob)
@@ -233,6 +249,9 @@
 	
 }
 
+/*
+ * @authors rhino
+ */
 ::_SpeakWhenUsedAdrenalineResult <- function(ent)
 {
 	local name = ent.GetCharacterName();

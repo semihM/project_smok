@@ -23,43 +23,43 @@ IncludeScript("Voice_paths/paths/producer.nut");
     {		
 		Nick =
 				[
-					"friendlyfire01.vcd","friendlyfire02.vcd",
-					"friendlyfire03.vcd","friendlyfire04.vcd",
-					"friendlyfire05.vcd","friendlyfire06.vcd",
-					"friendlyfire07.vcd",
-					"friendlyfire08.vcd","friendlyfire09.vcd",
-					"friendlyfire10.vcd", "friendlyfire11.vcd",
-					"friendlyfire12.vcd", "friendlyfire13.vcd",
-					"friendlyfire14.vcd", "friendlyfire15.vcd", 
-					"friendlyfire16.vcd", "friendlyfire17.vcd",
-					"friendlyfire18.vcd", "friendlyfire19.vcd",
-					"friendlyfire20.vcd", "friendlyfire21.vcd",
-					"friendlyfire22.vcd", "friendlyfire23.vcd", 
-					"friendlyfire24.vcd", "friendlyfire25.vcd",
-					"friendlyfire26.vcd", "friendlyfire27.vcd",
-					"friendlyfire28.vcd", "friendlyfire29.vcd",
-					"friendlyfire30.vcd", "friendlyfire31.vcd",
+					"friendlyfire01","friendlyfire02",
+					"friendlyfire03","friendlyfire04",
+					"friendlyfire05","friendlyfire06",
+					"friendlyfire07",
+					"friendlyfire08","friendlyfire09",
+					"friendlyfire10", "friendlyfire11",
+					"friendlyfire12", "friendlyfire13",
+					"friendlyfire14", "friendlyfire15", 
+					"friendlyfire16", "friendlyfire17",
+					"friendlyfire18", "friendlyfire19",
+					"friendlyfire20", "friendlyfire21",
+					"friendlyfire22", "friendlyfire23", 
+					"friendlyfire24", "friendlyfire25",
+					"friendlyfire26", "friendlyfire27",
+					"friendlyfire28", "friendlyfire29",
+					"friendlyfire30", "friendlyfire31",
 					"teamkillaccident01","teamkillaccident02",
 					"teamkillaccident03"
 				]
 		
 		Coach =
 				[
-					"friendlyfire01.vcd","friendlyfire02.vcd",
-					"friendlyfire03.vcd","friendlyfire04.vcd",
-					"friendlyfire05.vcd","friendlyfire06.vcd",
-					"friendlyfire07.vcd",
-					"friendlyfire08.vcd","friendlyfire09.vcd",
-					"friendlyfire10.vcd", "friendlyfire11.vcd",
-					"friendlyfire12.vcd", "friendlyfire13.vcd",
-					"friendlyfire14.vcd", "friendlyfire15.vcd", 
-					"friendlyfire16.vcd", "friendlyfire17.vcd",
-					"friendlyfire18.vcd", "friendlyfire19.vcd",
-					"friendlyfire20.vcd", "friendlyfire21.vcd",
-					"friendlyfire22.vcd", "friendlyfire23.vcd", 
-					"friendlyfire24.vcd", "friendlyfire25.vcd",
-					"friendlyfire26.vcd", "friendlyfire27.vcd",
-					"friendlyfire28.vcd", "friendlyfire29.vcd",
+					"friendlyfire01","friendlyfire02",
+					"friendlyfire03","friendlyfire04",
+					"friendlyfire05","friendlyfire06",
+					"friendlyfire07",
+					"friendlyfire08","friendlyfire09",
+					"friendlyfire10", "friendlyfire11",
+					"friendlyfire12", "friendlyfire13",
+					"friendlyfire14", "friendlyfire15", 
+					"friendlyfire16", "friendlyfire17",
+					"friendlyfire18", "friendlyfire19",
+					"friendlyfire20", "friendlyfire21",
+					"friendlyfire22", "friendlyfire23", 
+					"friendlyfire24", "friendlyfire25",
+					"friendlyfire26", "friendlyfire27",
+					"friendlyfire28", "friendlyfire29",
 					"teamkillaccident01","teamkillaccident02",
 					"teamkillaccident03","teamkillaccident04",
 					"teamkillaccident05","teamkillaccident06",
@@ -69,23 +69,23 @@ IncludeScript("Voice_paths/paths/producer.nut");
 		
 		Ellis =
 				[
-					"friendlyfire01.vcd","friendlyfire02.vcd",
-					"friendlyfire03.vcd","friendlyfire04.vcd",
-					"friendlyfire05.vcd","friendlyfire06.vcd",
-					"friendlyfire07.vcd",
-					"friendlyfire08.vcd","friendlyfire09.vcd",
-					"friendlyfire10.vcd", "friendlyfire11.vcd",
-					"friendlyfire12.vcd", "friendlyfire13.vcd",
-					"friendlyfire14.vcd", "friendlyfire15.vcd", 
-					"friendlyfire16.vcd", "friendlyfire17.vcd",
-					"friendlyfire18.vcd", "friendlyfire19.vcd",
-					"friendlyfire20.vcd", "friendlyfire21.vcd",
-					"friendlyfire22.vcd", "friendlyfire23.vcd", 
-					"friendlyfire24.vcd", "friendlyfire25.vcd",
-					"friendlyfire26.vcd", "friendlyfire27.vcd",
-					"friendlyfire28.vcd", "friendlyfire29.vcd",
-					"friendlyfire30.vcd", "friendlyfire31.vcd",
-					"friendlyfire32.vcd", "friendlyfire33.vcd",
+					"friendlyfire01","friendlyfire02",
+					"friendlyfire03","friendlyfire04",
+					"friendlyfire05","friendlyfire06",
+					"friendlyfire07",
+					"friendlyfire08","friendlyfire09",
+					"friendlyfire10", "friendlyfire11",
+					"friendlyfire12", "friendlyfire13",
+					"friendlyfire14", "friendlyfire15", 
+					"friendlyfire16", "friendlyfire17",
+					"friendlyfire18", "friendlyfire19",
+					"friendlyfire20", "friendlyfire21",
+					"friendlyfire22", "friendlyfire23", 
+					"friendlyfire24", "friendlyfire25",
+					"friendlyfire26", "friendlyfire27",
+					"friendlyfire28", "friendlyfire29",
+					"friendlyfire30", "friendlyfire31",
+					"friendlyfire32", "friendlyfire33",
 					"teamkillaccident01","teamkillaccident02",
 					"teamkillaccident03","teamkillaccident04",
 					"teamkillaccident05"
@@ -93,35 +93,35 @@ IncludeScript("Voice_paths/paths/producer.nut");
 		
 		Rochelle =
 				[
-					"friendlyfire01.vcd","friendlyfire02.vcd",
-					"friendlyfire03.vcd","friendlyfire04.vcd",
-					"friendlyfire05.vcd","friendlyfire06.vcd",
-					"friendlyfire07.vcd",
-					"friendlyfire08.vcd","friendlyfire09.vcd",
-					"friendlyfire10.vcd", "friendlyfire11.vcd",
-					"friendlyfire12.vcd", "friendlyfire13.vcd",
-					"friendlyfire14.vcd", "friendlyfire15.vcd", 
-					"friendlyfire16.vcd", "friendlyfire17.vcd",
-					"friendlyfire18.vcd", "friendlyfire19.vcd",
-					"friendlyfire20.vcd", "friendlyfire21.vcd",
-					"friendlyfire22.vcd", "friendlyfire23.vcd", 
-					"friendlyfire24.vcd", "friendlyfire25.vcd",
-					"friendlyfire26.vcd",
+					"friendlyfire01","friendlyfire02",
+					"friendlyfire03","friendlyfire04",
+					"friendlyfire05","friendlyfire06",
+					"friendlyfire07",
+					"friendlyfire08","friendlyfire09",
+					"friendlyfire10", "friendlyfire11",
+					"friendlyfire12", "friendlyfire13",
+					"friendlyfire14", "friendlyfire15", 
+					"friendlyfire16", "friendlyfire17",
+					"friendlyfire18", "friendlyfire19",
+					"friendlyfire20", "friendlyfire21",
+					"friendlyfire22", "friendlyfire23", 
+					"friendlyfire24", "friendlyfire25",
+					"friendlyfire26",
 					"teamkillaccident01","teamkillaccident02",
 					"teamkillaccident03","teamkillaccident04"
 				]
 		
 		Francis =
 				[
-					"friendlyfire01.vcd","friendlyfire02.vcd",
-					"friendlyfire03.vcd","friendlyfire04.vcd",
-					"friendlyfire05.vcd","friendlyfire06.vcd",
-					"friendlyfire07.vcd","friendlyfire08.vcd",
-					"friendlyfire09.vcd","friendlyfire10.vcd",
-					"friendlyfire11.vcd","friendlyfire12.vcd",
-				    "friendlyfire13.vcd","friendlyfire14.vcd", 
-					"friendlyfire15.vcd","friendlyfire16.vcd",
-					"friendlyfire18.vcd", "friendlyfire19.vcd",
+					"friendlyfire01","friendlyfire02",
+					"friendlyfire03","friendlyfire04",
+					"friendlyfire05","friendlyfire06",
+					"friendlyfire07","friendlyfire08",
+					"friendlyfire09","friendlyfire10",
+					"friendlyfire11","friendlyfire12",
+				    "friendlyfire13","friendlyfire14", 
+					"friendlyfire15","friendlyfire16",
+					"friendlyfire18", "friendlyfire19",
 					"teamkillaccident01","teamkillaccident02",
 					"teamkillaccident03","teamkillaccident04",
 					"teamkillaccident05","teamkillaccident06",
@@ -130,43 +130,44 @@ IncludeScript("Voice_paths/paths/producer.nut");
 		
 		Louis =
 				[
-					"friendlyfire01.vcd","friendlyfire02.vcd",
-					"friendlyfire03.vcd","friendlyfire04.vcd",
-					"friendlyfire05.vcd","friendlyfire06.vcd",
-					"friendlyfire07.vcd","friendlyfire08.vcd",
-					"friendlyfire09.vcd","friendlyfire10.vcd",
-					"friendlyfire11.vcd","friendlyfire12.vcd",
-				    "friendlyfire13.vcd","friendlyfire14.vcd",
+					"friendlyfire01","friendlyfire02",
+					"friendlyfire03","friendlyfire04",
+					"friendlyfire05","friendlyfire06",
+					"friendlyfire07","friendlyfire08",
+					"friendlyfire09","friendlyfire10",
+					"friendlyfire11","friendlyfire12",
+				    "friendlyfire13","friendlyfire14",
 					"teamkillaccident01","teamkillaccident02",
-					"teamkillaccident03","teamkillaccident04"
+					"teamkillaccident03","teamkillaccident04",
+					"manager_friendlyfirebill06",
 				]
 					
 					Bill =
 				[
-					"friendlyfire01.vcd","friendlyfire02.vcd",
-					"friendlyfire03.vcd","friendlyfire04.vcd",
-					"friendlyfire05.vcd","friendlyfire06.vcd",
-					"friendlyfire07.vcd","friendlyfire08.vcd",
-					"friendlyfire09.vcd","friendlyfire10.vcd",
-					"friendlyfire11.vcd","friendlyfire12.vcd",
-				    "friendlyfire13.vcd","friendlyfire14.vcd", 
-					"friendlyfire15.vcd","friendlyfire16.vcd",
-					"friendlyfire17.vcd","teamkillaccident01",
+					"friendlyfire01","friendlyfire02",
+					"friendlyfire03","friendlyfire04",
+					"friendlyfire05","friendlyfire06",
+					"friendlyfire07","friendlyfire08",
+					"friendlyfire09","friendlyfire10",
+					"friendlyfire11","friendlyfire12",
+				    "friendlyfire13","friendlyfire14", 
+					"friendlyfire15","friendlyfire16",
+					"friendlyfire17","teamkillaccident01",
 					"teamkillaccident02","teamkillaccident03",
 					"teamkillaccident04"
 				]
 		
 		Zoey =
 				[
-					"friendlyfire02.vcd","friendlyfire03.vcd",
-					"friendlyfire05.vcd","friendlyfire06.vcd",
-					"friendlyfire07.vcd","friendlyfire08.vcd",
-					"friendlyfire10.vcd", "friendlyfire11.vcd",
-					"friendlyfire12.vcd", "friendlyfire13.vcd",
-					"friendlyfire14.vcd", "friendlyfire17.vcd",
-					"friendlyfire18.vcd", "friendlyfire19.vcd",
-					"friendlyfire22.vcd", "friendlyfire23.vcd", 
-					"friendlyfire24.vcd","teamkillaccident03",
+					"friendlyfire02","friendlyfire03",
+					"friendlyfire05","friendlyfire06",
+					"friendlyfire07","friendlyfire08",
+					"friendlyfire10", "friendlyfire11",
+					"friendlyfire12", "friendlyfire13",
+					"friendlyfire14", "friendlyfire17",
+					"friendlyfire18", "friendlyfire19",
+					"friendlyfire22", "friendlyfire23", 
+					"friendlyfire24","teamkillaccident03",
 					"teamkillaccident05","teamkillaccident06",
 					"teamkillaccident08"
 				]
@@ -176,89 +177,89 @@ IncludeScript("Voice_paths/paths/producer.nut");
 		{		
 			Nick =
 			[
-				"battlecry01.vcd",
-				"battlecry02.vcd",
-				"battlecry03.vcd",
-				"battlecry04.vcd"
+				"battlecry01",
+				"battlecry02",
+				"battlecry03",
+				"battlecry04"
 			]
 		
 			Coach =
 			[
-				"battlecry01.vcd",
-				"battlecry02.vcd",
-				"battlecry03.vcd",
-				"battlecry04.vcd",
-				"battlecry05.vcd",
-				"battlecry06.vcd",
-				"battlecry07.vcd",
-				"battlecry08.vcd",
-				"battlecry09.vcd"
+				"battlecry01",
+				"battlecry02",
+				"battlecry03",
+				"battlecry04",
+				"battlecry05",
+				"battlecry06",
+				"battlecry07",
+				"battlecry08",
+				"battlecry09"
 			]
 		
 			Ellis =
 			[
-				"battlecry01.vcd",
-				"battlecry02.vcd",
-				"battlecry03.vcd",
-				"battlecry04.vcd"
+				"battlecry01",
+				"battlecry02",
+				"battlecry03",
+				"battlecry04"
 			]
 		
 			Rochelle =
 			[
-				"battlecry01.vcd",
-				"battlecry02.vcd"
+				"battlecry01",
+				"battlecry02"
 			]
 			
 			Francis =
 			[
-				"taunt01.vcd",
-				"taunt02.vcd",
-				"taunt03.vcd",
-				"taunt04.vcd",
-				"taunt05.vcd",
-				"taunt06.vcd",
-				"taunt07.vcd",
-				"taunt08.vcd",
-				"taunt09.vcd",
-				"taunt10.vcd"
+				"taunt01",
+				"taunt02",
+				"taunt03",
+				"taunt04",
+				"taunt05",
+				"taunt06",
+				"taunt07",
+				"taunt08",
+				"taunt09",
+				"taunt10"
 			]
 		
 			Louis =
 			[
-				"taunt03.vcd",
-				"taunt04.vcd",
-				"taunt05.vcd",
-				"taunt06.vcd",
-				"taunt07.vcd",
-				"taunt08.vcd",
-				"taunt09.vcd",
-				"taunt10.vcd"
+				"taunt03",
+				"taunt04",
+				"taunt05",
+				"taunt06",
+				"taunt07",
+				"taunt08",
+				"taunt09",
+				"taunt10"
 			]
 					
 			Bill =
 			[
-				"taunt01.vcd",
-				"taunt02.vcd"
+				"taunt01",
+				"taunt02"
 			]
 
 			Zoey =
 			[
-				"taunt02.vcd",
-				"taunt13.vcd",
-				"taunt18.vcd",
-				"taunt19.vcd",
-				"taunt20.vcd",
-				"taunt21.vcd",
-				"taunt24.vcd",
-				"taunt25.vcd",
-				"taunt26.vcd",
-				"taunt28.vcd",
-				"taunt29.vcd",
-				"taunt30.vcd",
-				"taunt31.vcd",
-				"taunt34.vcd",
-				"taunt35.vcd",
-				"taunt39.vcd"
+				"taunt02",
+				"taunt13",
+				"taunt18",
+				"taunt19",
+				"taunt20",
+				"taunt21",
+				"taunt24",
+				"taunt25",
+				"taunt26",
+				"taunt28",
+				"taunt29",
+				"taunt30",
+				"taunt31",
+				"taunt34",
+				"taunt35",
+				"taunt39"
 			]
 		}
 	

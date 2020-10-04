@@ -28472,28 +28472,28 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/c130.mdl;show_menu props_vehicles4"
-					"label"      " c130"
+					"command"	"play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/boat_cabin35ft.mdl,35;show_menu props_vehicles4"
+                    "label"		 " Boat 35ft2" 
 			}
 			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models\props_vehicles\boat_trailer35ft.mdl,57;show_menu props_vehicles4"
+					"label"      " Boat trailer 35ft2"
+			}
+			"4"
             {
                     "command"	"play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/utility_truck.mdl;show_menu props_vehicles4"
                     "label"		" Utility Truck" 
             }
-			"4"
+			"5"
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/radio_generator.mdl;show_menu props_vehicles4"
 					"label"      " radio_generator"
 			}
-			"5"
+			"6"
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/racecar.mdl;show_menu props_vehicles4"
 					"label"      " Jimmy Gibbs Jr.'s race car"
-			}
-			"6"
-			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models\props_vehicles\boat_trailer35ft.mdl,57;show_menu props_vehicles4"
-					"label"      " Boat trailer 35ft"
 			}
 			"7"
 			{
@@ -28598,8 +28598,8 @@
 			}
 			"5"
 			{
-					"command"	"play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/boat_cabin35ft.mdl,35;show_menu props_vehicles6"
-                    "label"		 " Boat 35ft2" 
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/c130.mdl;show_menu props_vehicles6"
+					"label"      " c130"
 			}
 			"7"
 			{
@@ -34136,29 +34136,30 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/c130.mdl;show_menu phys_props_vehicles4"
-					"label"      " c130"
+					"command"	"play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/boat_cabin35ft.mdl,35;show_menu phys_props_vehicles4"
+                    "label"		 " Boat 35ft2" 
 			}
 			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models\props_vehicles\boat_trailer35ft.mdl,57;show_menu phys_props_vehicles4"
+					"label"      " Boat trailer 35ft2"
+			}
+			"4"
             {
                     "command"	"play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/utility_truck.mdl;show_menu phys_props_vehicles4"
                     "label"		" Utility Truck" 
             }
-			"4"
+			"5"
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/radio_generator.mdl;show_menu phys_props_vehicles4"
 					"label"      " radio_generator"
 			}
-			"5"
+			"6"
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/racecar.mdl;show_menu phys_props_vehicles4"
 					"label"      " Jimmy Gibbs Jr.'s race car"
 			}
-			"6"
-			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models\props_vehicles\boat_trailer35ft.mdl,57;show_menu phys_props_vehicles4"
-					"label"      " Boat trailer 35ft"
-			}
+			
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_vehicles4"
@@ -34262,8 +34263,8 @@
 			}
 			"5"
 			{
-					"command"	"play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/boat_cabin35ft.mdl,35;show_menu phys_props_vehicles6"
-                    "label"		 " Boat 35ft2" 
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/c130.mdl;show_menu phys_props_vehicles6"
+					"label"      " c130"
 			}
 			"7"
 			{
