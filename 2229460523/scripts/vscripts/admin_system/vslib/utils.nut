@@ -2140,6 +2140,116 @@ function VSLib::Utils::GetRandValueFromArray(arr, removeValue = false)
 	//return arr[ ::VSLib.Utils.GetRandNumber(0, arrlen - 1) ];
 }
 
+/*
+ * @author rhino
+ */
+function VSLib::Utils::ArraySum(arr)
+{
+	local total = 0;
+	foreach(val in arr)
+		total += val;
+
+	return total;
+}
+
+/*
+ * @author rhino
+ */
+function VSLib::Utils::ArrayAdd(arr,val)
+{
+	local copy = [];
+	local len = arr.len();
+
+	for(local i=0; i < len; i++)
+	{
+		copy.append(arr[i] + val);
+	}
+	return copy;
+}
+
+/*
+ * @author rhino
+ */
+function VSLib::Utils::TableCopy(tbl)
+{
+	local tablecopy = {}
+	foreach(key,val in tbl)
+	{	
+		if(typeof val == "array")
+		{
+			tablecopy[key] <- ArrayCopy(val);
+		}
+		else if(typeof val == "table")
+		{
+			tablecopy[key] <- TableCopy(val);
+		}
+		else
+		{tablecopy[key]<-val} 
+	}
+	return tablecopy;
+}
+
+/*
+ * @author rhino
+ */
+function VSLib::Utils::ArrayCopy(arr)
+{
+	local copy = [];
+	for(local i=0; i < arr.len(); i++)
+	{	
+		if(typeof arr[i] == "array")
+		{
+			foreach(val in ArrayCopy(arr[i]))
+			{
+				copy.append(val);
+			}
+		}
+		else if(typeof arr[i] == "table")
+		{	
+			copy.append(TableCopy(arr[i]));
+		}
+		else
+		{copy.append(arr[i]);}
+	}
+	return copy;
+}
+
+function VSLib::Utils::SceneTableToString(tbl)
+{	
+	//"\n\t\""+steamid+"\":\n\t{\n\t\t\"character\":\n\t\t{\n\t\t\t\"seq_name\":\n\t\t\t{\n\t\t\t\t\"scenes\":[\"blank\"],\n\t\t\t\t\"delays\":[0]\n\t\t\t}\n\t\t}\n\t}";
+	local str = "{\n"
+	foreach(steamid,chartable in tbl)
+	{	
+		str += "\t\""+steamid+"\":\n\t{";	//steamid
+		foreach(character,customs in chartable)
+		{
+			str += "\n\t\t\""+character+"\":\n\t\t{\n\t\t\t"; //character name
+			foreach(seq_name,seqtable in customs)
+			{	
+				str += "\""+seq_name+"\":\n\t\t\t{\n\t\t\t\t";	 //sequence name
+				str += "\"scenes\":\n\t\t\t\t["; //scenes
+				foreach(scene in seqtable.scenes)
+				{
+					str+="\n\t\t\t\t\""+scene+"\",";
+				}
+				str += "\n\t\t\t\t]\n\t\t\t"
+				str += "\"delays\":\n\t\t\t\t["; //delays
+				foreach(delay in seqtable.delays)
+				{
+					str+="\n\t\t\t\t\""+delay+"\",";
+				}
+				str += "\n\t\t\t\t]\n\t\t\t}\n\t\t"
+			}
+			str += "\n\t\t}";
+		}
+		str += "\n\t}\n";
+	}
+
+	str += "\n}";
+
+	return str;
+}
+
 /**
  * Returns a value of 1 or 2 depending on survivor set
  */
