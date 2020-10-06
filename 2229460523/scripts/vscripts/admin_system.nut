@@ -594,38 +594,17 @@ function EasyLogic::OnShutdown::AdminSaveData( reason, nextmap )
 	if ( reason > 0 && reason < 4 )
 	{
 		SaveTable( "admin_variable_data", ::AdminSystem.Vars );
-	}
-}
-
-function Notifications::OnRoundStart::AdminLoadData()
-{
-	RestoreTable( "admin_variable_data", ::AdminSystem.Vars );
-	
-	if (::AdminSystem.Vars == null)
-	{
-		::AdminSystem.Vars <-
+		foreach(character,customs in AdminSystem.Vars._CustomResponse)
 		{
-			IsBashDisabled = {}
-			IsBashLimited = {}
-			IsNoclipEnabled = {}
-			IsFlyingEnabled = {}
-			IsGodEnabled = {}
-			IsInfiniteAmmoEnabled = {}
-			IsUnlimitedAmmoEnabled = {}
-			IsInfiniteExplosiveAmmoEnabled = {}
-			IsInfiniteIncendiaryAmmoEnabled = {}
-			IsInfiniteLaserSightsEnabled = {}
-			EnabledGodInfected = false
-			EnabledGodSI = false
-			DirectorDisabled = false
-			AllowAdminsOnly = true
+			foreach(event,restable in customs)
+			{
+				restable.call_amount = 0;
+			}
 		}
+		SaveTable( "custom_response", ::AdminSystem.Vars._CustomResponse );
+		SaveTable( "custom_response_options", ::AdminSystem.Vars._CustomResponseOptions );
 	}
-	else
-	{
-		if ( AdminSystem.Vars.DirectorDisabled )
-			Utils.StopDirector();
-	}
+	
 }
 
 function Notifications::OnRoundStart::AdminLoadFiles()
@@ -654,6 +633,472 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 		settingList = "AdminsOnly = true\nDisplayMsgs = true\nEnableIdleKick = false\nIdleKickTime = 60\nAdminPassword = \"\"";
 		StringToFile("admin system/settings.txt", settingList);
 	}
+
+	RestoreTable( "admin_variable_data", ::AdminSystem.Vars );
+	
+	if (::AdminSystem.Vars == null)
+	{
+		::AdminSystem.Vars <-
+		{
+			IsBashDisabled = {}
+			IsBashLimited = {}
+			IsNoclipEnabled = {}
+			IsFlyingEnabled = {}
+			IsGodEnabled = {}
+			IsInfiniteAmmoEnabled = {}
+			IsUnlimitedAmmoEnabled = {}
+			IsInfiniteExplosiveAmmoEnabled = {}
+			IsInfiniteIncendiaryAmmoEnabled = {}
+			IsInfiniteLaserSightsEnabled = {}
+			EnabledGodInfected = false
+			EnabledGodSI = false
+			DirectorDisabled = false
+			AllowAdminsOnly = true
+
+			IgnoreDeletingPlayers = true
+
+			AllowCustomResponses = true
+
+			CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle"]
+			
+			CharacterNamesLower = ["bill","francis","louis","zoey","nick","ellis","coach","rochelle"]
+
+			PrintIndexedNames = function() {foreach(i,name in ::AdminSystem.CharacterNames){Utils.SayToAll(i+"->"+name);}}
+
+			// Chat output state
+			_outputsEnabled = 
+			{
+				"bill":false,
+				"francis":false,
+				"louis":false,
+				"zoey":false,
+				"nick":false,
+				"coach":false,
+				"ellis":false,
+				"rochelle":false
+			}
+
+			// Randomline stuff
+			_saveLastLine = 
+			{
+				"bill":true,
+				"francis":true,
+				"louis":true,
+				"zoey":true,
+				"nick":true,
+				"coach":true,
+				"ellis":true,
+				"rochelle":true
+			}
+
+			_savedLine =
+			{
+				"bill":
+				{
+					target="",
+					source=""
+				},
+				"francis":
+				{
+					target="",
+					source=""
+				},
+				"louis":
+				{
+					target="",
+					source=""
+				},
+				"zoey":
+				{
+					target="",
+					source=""
+				},
+				"nick":
+				{
+					target="",
+					source=""
+				},
+				"coach":
+				{
+					target="",
+					source=""
+				},
+				"ellis":
+				{
+					target="",
+					source=""
+				},
+				"rochelle":
+				{
+					target="",
+					source=""
+				}
+			}
+
+			// Particle stuff
+			_saveLastParticle = 
+			{
+				"bill":true,
+				"francis":true,
+				"louis":true,
+				"zoey":true,
+				"nick":true,
+				"coach":true,
+				"ellis":true,
+				"rochelle":true
+			}
+
+			_savedParticle =
+			{
+				"bill":
+				{
+					duration=30,
+					source=""
+				},
+				"francis":
+				{
+					duration=30,
+					source=""
+				},
+				"louis":
+				{
+					duration=30,
+					source=""
+				},
+				"zoey":
+				{
+					duration=30,
+					source=""
+				},
+				"nick":
+				{
+					duration=30,
+					source=""
+				},
+				"coach":
+				{
+					duration=30,
+					source=""
+				},
+				"ellis":
+				{
+					duration=30,
+					source=""
+				},
+				"rochelle":
+				{
+					duration=30,
+					source=""
+				}
+			}
+
+			// To reduce menu amount
+			_preferred_duration =
+			{
+				"bill":30,
+				"francis":30,
+				"louis":30,
+				"zoey":30,
+				"nick":30,
+				"coach":30,
+				"ellis":30,
+				"rochelle":30
+			}
+
+			// Prop spawn_settings
+			_prop_spawn_settings_menu_type =
+			{
+				"bill":"all",
+				"francis":"all",
+				"louis":"all",
+				"zoey":"all",
+				"nick":"all",
+				"coach":"all",
+				"ellis":"all",
+				"rochelle":"all"
+			}
+
+			_prop_spawn_settings =
+			{
+				"bill":
+				{
+					"dynamic":	
+					{
+						spawn_height=0
+					},
+					"physics":
+					{
+						spawn_height=0
+					},
+					"ragdoll":
+					{
+						spawn_height=0
+					}
+				}
+				"francis":
+				{
+					"dynamic":
+					{
+						spawn_height=0
+					},
+					"physics":
+					{
+						spawn_height=0
+					},
+					"ragdoll":
+					{
+						spawn_height=0
+					}
+				},
+				"louis":
+				{
+					"dynamic":
+					{
+						spawn_height=0
+					},
+					"physics":
+					{
+						spawn_height=0
+					},
+					"ragdoll":
+					{
+						spawn_height=0
+					}
+				},
+				"zoey":
+				{
+					"dynamic":
+					{
+						spawn_height=0
+					},
+					"physics":
+					{
+						spawn_height=0
+					},
+					"ragdoll":
+					{
+						spawn_height=0
+					}
+				},
+				"nick":
+				{
+					"dynamic":
+					{
+						spawn_height=0
+					},
+					"physics":
+					{
+						spawn_height=0
+					},
+					"ragdoll":
+					{
+						spawn_height=0
+					}
+				},
+				"coach":
+				{
+					"dynamic":
+					{
+						spawn_height=0
+					},
+					"physics":
+					{
+						spawn_height=0
+					},
+					"ragdoll":
+					{
+						spawn_height=0
+					}
+				},
+				"ellis":
+				{
+					"dynamic":
+					{
+						spawn_height=0
+					},
+					"physics":
+					{
+						spawn_height=0
+					},
+					"ragdoll":
+					{
+						spawn_height=0
+					}
+				},
+				"rochelle":
+				{
+					"dynamic":
+					{
+						spawn_height=0
+					},
+					"physics":
+					{
+						spawn_height=0
+					},
+					"ragdoll":
+					{
+						spawn_height=0
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		if ( AdminSystem.Vars.DirectorDisabled )
+			Utils.StopDirector();
+	}
+
+	RestoreTable( "custom_response", ::AdminSystem.Vars._CustomResponse );
+	RestoreTable( "custom_response_options", ::AdminSystem.Vars._CustomResponseOptions );
+	
+
+	foreach(name,optiontable in AdminSystem.Vars._CustomResponseOptions)
+	{
+		foreach(event,settings in optiontable)
+		{
+			if(event.find("STEAM")!=null)
+			{
+				continue;
+			}
+			else
+			{
+				foreach(setting,value in settings)
+				{
+					AdminSystem.Vars._CustomResponse[name][event][setting] = value;
+				}
+			}
+			
+		}
+	}
+	printl("[Custom] Loaded default custom responses");
+	printl("[Custom] Loading admin custom responses...")
+	// Fixes for tables
+	try
+	{
+		// Have to do this because squirrel is fuckin stupid and restores "coach" as "Coach"
+		if("Coach" in ::AdminSystem.Vars._CustomResponseOptions)
+		{	
+			printl("[Custom] Applying table restore fixes...");
+			::AdminSystem.Vars._CustomResponseOptions.coach <- Utils.TableCopy(::AdminSystem.Vars._CustomResponseOptions.Coach);
+			delete ::AdminSystem.Vars._CustomResponseOptions.Coach;
+			::AdminSystem.Vars._CustomResponse.coach <- Utils.TableCopy(::AdminSystem.Vars._CustomResponse.Coach);
+			delete ::AdminSystem.Vars._CustomResponse.Coach;
+		}
+		else
+		{	
+			// Apply options created by admins
+			AdminSystem.LoadCustomSequences()
+			throw("No need for fixes");
+		}
+		///////////////////////////////////////////////
+		/* RestoreTable is also bad
+		 * Have to manually update : sequence, lastspoken, randomlinepaths 
+		 */
+
+		local newsequence = {scenes=[],delays=[]};
+		local newlastspoken = [];
+		local newrandomlinepaths = [];
+		local i = 0;
+
+		// BASE
+		foreach(charname,restable in AdminSystem.Vars._CustomResponse)
+		{
+			foreach(eventname,basetable in restable)
+			{	
+				//Sequence
+				foreach(seqname,seqtable in basetable.sequence)
+				{	
+					if( (typeof seqtable.scenes) != "table")
+					{
+						continue; // It's already fixed, check next one
+					}
+					newsequence = {scenes=[],delays=[]}
+					i = 0;
+					while(i.tostring() in seqtable.scenes)
+					{	
+						newsequence.scenes.append(seqtable.scenes[i.tostring()]);
+						newsequence.delays.append(seqtable.delays[i.tostring()]);
+						i += 1;
+					}
+
+					AdminSystem.Vars._CustomResponse[charname][eventname].sequence[seqname] = Utils.TableCopy(newsequence);
+				}
+				
+				//Lastspoken
+				if(("lastspoken" in basetable) && ((typeof basetable.lastspoken) != "table"))
+				{
+					newlastspoken = []
+					i = 0;
+					while(i.tostring() in basetable.lastspoken)
+					{
+						newlastspoken.append(basetable.lastspoken[i.tostring()]);
+						i += 1;
+					}
+					AdminSystem.Vars._CustomResponse[charname][eventname].lastspoken = Utils.ArrayCopy(newlastspoken);
+				}
+				
+				//randomlinepaths
+				if(("randomlinepaths" in basetable) && ((typeof basetable.randomlinepaths) != "table"))
+				{	
+					newrandomlinepaths = []
+					i = 0;
+					while(i.tostring() in basetable.randomlinepaths)
+					{
+						newrandomlinepaths.append(basetable.randomlinepaths[i.tostring()]);
+						i += 1;
+					}
+
+					AdminSystem.Vars._CustomResponse[charname][eventname].randomlinepaths = Utils.ArrayCopy(newrandomlinepaths);
+				}
+			}
+		}
+
+		// DEFAULT OPTIONS
+		foreach(charname,restable in AdminSystem.Vars._CustomResponseOptions)
+		{
+			foreach(eventname,basetable in restable)
+			{	
+				//Sequence
+				foreach(seqname,seqtable in basetable.sequence)
+				{	
+					if( (typeof seqtable.scenes) != "table")
+					{
+						continue; // It's already fixed, check next one
+					}
+					newsequence = {scenes=[],delays=[]}
+					i = 0;
+					while(i.tostring() in seqtable.scenes)
+					{	
+						newsequence.scenes.append(seqtable.scenes[i.tostring()]);
+						newsequence.delays.append(seqtable.delays[i.tostring()]);
+						i += 1;
+					}
+					
+					AdminSystem.Vars._CustomResponseOptions[charname][eventname].sequence[seqname] = Utils.TableCopy(newsequence);
+				}
+				
+				//randomlinepaths
+				if(("randomlinepaths" in basetable) && ((typeof basetable.randomlinepaths) != "table"))
+				{	
+					newrandomlinepaths = []
+					i = 0;
+					while(i.tostring() in basetable.randomlinepaths)
+					{
+						newrandomlinepaths.append(basetable.randomlinepaths[i.tostring()]);
+						i += 1;
+					}
+
+					AdminSystem.Vars._CustomResponseOptions[charname][eventname].randomlinepaths = Utils.ArrayCopy(newrandomlinepaths);
+				}
+				
+			}
+		}
+		
+	}
+	catch(e){printl("[Custom-Warning] OnRoundStart reported: "+e);}
+	
+	Msg("[Custom] Loaded custom responses created by admins\n");
 }
 
 function Notifications::OnModeStart::AdminLoadFiles( gamemode )
@@ -1522,11 +1967,759 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			}
 			
 			break;
+		
+		}
+		case "speak_test":
+		{
+			AdminSystem.Speak_testCmd( player, args );
+			break;
+		}
+		case "speak_custom":
+		{
+			AdminSystem.Speak_customCmd( player, args );
+			break;
+		}
+		case "show_custom_sequences":
+		{
+			AdminSystem.Show_custom_sequencesCmd( player, args );
+			break;
+		}
+		case "create_seq":
+		{
+			AdminSystem.CreateSequenceCmd( player, args );
+			break;
+		}
+		case "delete_seq":
+		{
+			AdminSystem.DeleteSequenceCmd( player, args );
+			break;
 		}
 		default:
 			break;
 	}
 }
+
+
+/////////////////////////////////////////////////////////////////
+/*
+ * Custom responses
+ *
+ * @authors rhino
+ */
+enum SCENES
+{
+	ORDERED = 0,
+	SHUFFLED = 1,
+	RANDOM = 2
+}
+
+/*
+ * @authors rhino
+ */
+::_CustomResponseBase <- function(_enabled,_prob,_startdelay,_userandom,_randomlinepaths,_lineamount,_mindelay,_offsetdelay,_order,_sequence) 
+{	
+	local restable = 
+	{
+		call_amount = 0
+		lastspoken = []
+		enabled = _enabled
+		prob = _prob
+		startdelay = _startdelay
+		userandom = _userandom
+		randomlinepaths = _randomlinepaths
+		lineamount = _lineamount
+		mindelay = _mindelay
+		offsetdelay = _offsetdelay
+		order = _order
+		sequence = _sequence
+	}
+	return restable
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.Vars._CustomResponse <-
+{
+	bill = 
+	{
+		_SpeakWhenShoved = _CustomResponseBase(true,0.66,0.1,true,::Survivorlines.FriendlyFire.bill,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		
+		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		
+		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.95,1.0,true,::Survivorlines.Excited.bill,5,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+	}
+
+	francis = 
+	{
+		_SpeakWhenShoved = _CustomResponseBase(true,0.66,0.1,true,::Survivorlines.FriendlyFire.francis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		
+		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+
+		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.95,1.0,true,::Survivorlines.Excited.francis,5,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+	}
+
+	louis = 
+	{
+		_SpeakWhenShoved = _CustomResponseBase(true,0.66,0.1,true,::Survivorlines.FriendlyFire.louis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		
+		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		
+		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.95,1.0,true,::Survivorlines.Excited.louis,5,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+	}
+
+	zoey = 
+	{
+		_SpeakWhenShoved = _CustomResponseBase(true,0.66,0.1,true,::Survivorlines.FriendlyFire.zoey,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		
+		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		
+		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.95,1.0,true,::Survivorlines.Excited.zoey,5,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+	}
+
+	nick = 
+	{
+		_SpeakWhenShoved = _CustomResponseBase(true,0.66,0.1,true,::Survivorlines.FriendlyFire.nick,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		
+		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		
+		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.95,1.0,true,::Survivorlines.Excited.nick,5,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+	}
+
+	ellis = 
+	{
+		_SpeakWhenShoved = _CustomResponseBase(true,0.66,0.1,true,::Survivorlines.FriendlyFire.ellis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		
+		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		
+		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.95,1.0,true,::Survivorlines.Excited.ellis,5,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+	}
+
+	coach = 
+	{
+		_SpeakWhenShoved = _CustomResponseBase(true,0.66,0.1,true,::Survivorlines.FriendlyFire.coach,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		
+		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		
+		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.95,1.0,true,::Survivorlines.Excited.coach,5,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+	}
+
+	rochelle = 
+	{
+		_SpeakWhenShoved = _CustomResponseBase(true,0.66,0.1,true,::Survivorlines.FriendlyFire.rochelle,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		
+		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		
+		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.95,1.0,true,::Survivorlines.Excited.rochelle,5,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.Vars._CustomResponseOptions <-
+{	
+	bill = {}
+	
+	francis = 
+	{
+		_SpeakWhenLeftSaferoom = 
+		{
+			enabled = true
+			sequence =
+			{
+				"smokboomer1":	
+				{   // "Well hell, let's all- Smok- Booooomer!"
+					scenes=["warnboomer03.vcd","warnsmoker03.vcd","followme08.vcd"]
+					delays=[2.45,1.7,0]
+				}
+			}
+		}
+	}
+
+	louis = {}
+
+	zoey = {}
+
+	nick = {}	
+	
+	ellis = 
+	{
+		_SpeakWhenLeftSaferoom = 
+		{
+			enabled = true
+			sequence =
+			{	
+				"ilovecrack1":
+				{   // "Man I hate them zombies but I loooooove- Crack!"
+					scenes=["meleeresponse08.vcd","boomerjar17.vcd"]
+					delays=[2.55,0]
+				}
+			}
+		}
+	}
+
+	coach = {}
+
+	rochelle = {}
+}
+
+/*
+ * @authors rhino
+ * Speak the given line for given length
+ * @param character = Speaker
+ * @param scene_name = Scene name
+ * @param trimend = How long to speak, null to speak all
+ */
+::AdminSystem.Speak_testCmd <- function (player,args)
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local character = GetArgument(1);
+	if(character==null)
+	{return;}
+
+	character = character.tolower();
+
+	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
+	{Utils.SayToAll(character+" is not a character name");return;}
+
+	local scene_name = GetArgument(2);
+	if(scene_name==null)
+	{return;}
+
+	local trimend = GetArgument(3)
+	if(trimend==null)
+	{
+		trimend = 0.1; // make it play after the blank == play it full
+	}
+	else
+	{trimend = trimend.tofloat();}
+	
+	_SceneSequencer(Utils.GetPlayerFromName(character),{scenes=["blank",scene_name],delays=[trimend,0.15]});
+
+	printl(player.GetCharacterName()+" ->Speak test "+character+" "+scene_name+" "+trimend);
+}
+
+/*
+ * @authors rhino
+ * Speak the given custom sequence
+ * @param character = Speaker
+ * @param seq_name = Custom sequence name
+ */
+::AdminSystem.Speak_customCmd <- function (player,args)
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local character = GetArgument(1);
+	local seq_name = GetArgument(2);
+	if(character==null)
+	{return;}
+
+	// Single arguments == character = self , seq_name = arg1
+	if(seq_name==null)
+	{
+		seq_name = character;
+		character = player.GetCharacterName().tolower();
+	}
+	else
+	{
+		character = character.tolower();
+	}
+
+	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
+	{Utils.SayToAll(character+" is not a character name");return;}
+
+	try
+	{
+		_SceneSequencer(Utils.GetPlayerFromName(character),AdminSystem.Vars._CustomResponseOptions[character][player.GetSteamID()].sequence[seq_name]);
+	}
+	catch(e)
+	{
+		Utils.SayToAll("No custom sequence found for "+character+" named:"+seq_name);return;
+	}
+	printl(player.GetCharacterName()+" ->Speak custom "+character+" "+seq_name);
+}
+
+/*
+ * @authors rhino
+ * Show saved custom sequences for given character
+ * @param character = Speaker, null for all saved sequences
+ */
+::AdminSystem.Show_custom_sequencesCmd <- function (player,args)
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local character = GetArgument(1);
+	local seqnames = "";
+	local steamid = player.GetSteamID();
+	if(character == null)
+	{
+		foreach(charname in AdminSystem.Vars.CharacterNamesLower)
+		{
+			try
+			{	
+				seqnames += charname + ":("
+				foreach(seq_name,seqtable in AdminSystem.Vars._CustomResponseOptions[charname][steamid].sequence)
+				{
+					seqnames += seq_name + ", ";
+				}
+				seqnames += ") \n";
+			}
+			catch(e)
+			{seqnames += ") \n";continue;}
+		}
+		character = "all characters";
+	}
+	else
+	{	
+		character = character.tolower();
+		if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
+		{Utils.SayToAll(character+" is not a character name");return;}
+
+		try
+		{
+			foreach(seq_name,seqtable in AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence)
+			{
+				seqnames += seq_name + ", ";
+			}
+		}
+		catch(e)
+		{
+			Utils.SayToAll("No custom sequence found for "+character);return;
+		}
+
+	}
+	
+	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+	{Utils.SayToAll(player.GetCharacterName()+" -> Saved custom responses for "+character+": "+seqnames);}
+	else
+	{printl(player.GetCharacterName()+" -> Saved custom responses for "+character+": "+seqnames);}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.LoadCustomSequences <- function (...)
+{
+	local contents = FileToString("admin system/custom_responses.json");
+	// First time
+	if(contents == null)
+	{	
+		Msg("[Custom] Creating custom response file for the first time...\n");
+		contents = "{";
+		foreach(admin,val in AdminSystem.Admins)
+		{
+			if(val)
+				contents += "\n\t\""+admin+"\":\n\t{\n\t\t\"character_name\":\n\t\t{\n\t\t\t\"sequence_name\":\n\t\t\t{\n\t\t\t\t\"scenes\":[\"blank\"],\n\t\t\t\t\"delays\":[0]\n\t\t\t}\n\t\t}\n\t}"; 
+		}
+		contents += "\n}";
+		StringToFile("admin system/custom_responses.json", contents);
+	}
+
+	local responsetable = compilestring( "return " + contents )();
+
+	// Check admins
+	foreach(admin,val in AdminSystem.Admins)
+	{	
+		if(!(admin in responsetable))
+		{
+			printl("[Custom] Creating default response table for new admin: "+admin);
+			responsetable[admin] <- {"character_name":{"sequence_name":{"scenes":["blank"],"delays":[0]}}};
+		}
+	}
+
+	foreach(steamid,chartable in responsetable)
+	{	
+		foreach(character,customs in chartable)
+		{	
+			if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1){continue;} // Ignore wrong character names
+
+			// Add steamid to each character
+			foreach(charname in AdminSystem.Vars.CharacterNamesLower)
+				AdminSystem.Vars._CustomResponseOptions[charname][steamid] <- {enabled=true,sequence={}}
+
+			// Add custom sequences
+			foreach(seq_name,seqtable in customs)
+			{	
+				AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence[seq_name] <- {scenes=seqtable.scenes,delays=seqtable.delays}
+			}
+		}
+		
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.CreateSequenceCmd <- function ( player, args )
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local arguments = ::VSLib.EasyLogic.LastArgs;
+	local arglen = arguments.len();
+	try
+	{
+		local test = arguments[-1];
+		arglen -= 1;
+	}
+	catch(e)
+	{	// called from chat
+		if(arguments.len() % 2 || arguments.len()<4)
+		{
+			Utils.SayToAll(player.GetCharacterName()+"->Arguments should be follow the format: character sequence_name scene1 delay1 scene2 delay2 ...");return;
+		}
+		
+	}
+	
+	local contents = FileToString("admin system/custom_responses.json");
+
+	// Somehow response file wasn't created
+	if(contents == null)
+	{
+		Utils.SayToAll("No custom respose file found.");
+		return;
+	}
+
+	local steamid = player.GetSteamID();
+	local responsetable = compilestring( "return " + contents )();
+
+	local character = arguments[0];
+	if(character==null)
+	{return;}
+	character = character.tolower();
+	
+	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
+	{Utils.SayToAll(character+" is not a character name");return;}
+
+	local sequencename = arguments[1];
+
+	try
+	{
+		foreach(seqname,seqtable in responsetable[steamid][character]) // Throws if character name doesnt exist
+		{
+			foreach(i,arg in arguments)
+			{
+				if(i%2 == 0 && sequencename == seqname)
+				{	
+					Utils.SayToAll("Sequence name "+sequencename+" already exists!");
+					return;
+				}
+			}
+		}
+		responsetable[steamid][character][sequencename] <- {"scenes":[],"delays":[]}
+	}
+	catch(e)	// Character didnt exist
+	{
+		responsetable[steamid][character] <- {};
+		responsetable[steamid][character][sequencename] <- {"scenes":[],"delays":[]}
+	}
+
+	// Arguments were valid
+	local i = 2
+	while(i<arglen)
+	{
+		responsetable[steamid][character][sequencename].scenes.append(arguments[i]);
+		responsetable[steamid][character][sequencename].delays.append(arguments[i+1]);
+		i+=2;
+	}
+	printl(player.GetCharacterName()+" ->Created sequence for "+character+" named "+sequencename);
+	StringToFile("admin system/custom_responses.json", Utils.SceneTableToString(responsetable));
+	AdminSystem.LoadCustomSequences();
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.DeleteSequenceCmd <- function ( player, args )
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local character = GetArgument(1);
+	if(character==null)
+	{return;}
+	character = character.tolower();
+	
+	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
+	{Utils.SayToAll(character+" is not a character name");return;}
+
+	local sequencename = GetArgument(2);
+	local contents = FileToString("admin system/custom_responses.json");
+
+	// Somehow response file wasn't created
+	if(contents == null)
+	{
+		Utils.SayToAll("No custom respose file found.");
+		return;
+	}
+
+	local responsetable = compilestring( "return " + contents )();
+	local found = false;
+
+	try
+	{
+		if(sequencename in responsetable[player.GetSteamID()][character])
+		{	
+			Utils.SayToAll("Deleted custom response for "+character+": "+sequencename+"");
+			delete responsetable[player.GetSteamID()][character][sequencename];
+			found = true;
+		}
+	}
+	catch(e){Utils.SayToAll("No custom responses found for "+character);return;}
+
+	if(!found)
+	{
+		Utils.SayToAll("No custom response found for "+character+" named: "+sequencename+"");return;
+	}
+
+	StringToFile("admin system/custom_responses.json", Utils.SceneTableToString(responsetable));
+	AdminSystem.LoadCustomSequences();
+}
+
+/////////////////////////////////////////////////////////////////
+/*
+ * @authors rhino
+ * @param scene_delay_table = {scenes = [],
+ *							   delays = []}
+ */
+::_SceneSequencer <- function(player,scene_delay_table)
+{
+	foreach(i,scene in scene_delay_table.scenes)
+	{
+		player.Speak(scene,scene_delay_table.delays[i]);
+	}
+}
+
+/*
+ * @authors rhino
+ * @param optiontable = AdminSystem.Vars._CustomResponseOptions[{EventName}][player.GetCharacterName().tolower()]
+ */
+::_SceneDecider <- function(player,optiontable)
+{	
+	switch(optiontable.order)
+	{
+		case SCENES.ORDERED: // ordered
+		{	
+			local prev_total_delay = 0;
+			local scenes = [];
+
+			foreach(seqname,seq in optiontable.sequence)
+			{
+				_SceneSequencer(player,{scenes=seq.scenes,delays=Utils.ArrayAdd(seq.delays,prev_total_delay)});
+
+				scenes.extend(seq.scenes);
+
+				prev_total_delay += Utils.ArraySum(seq.delays);
+				prev_total_delay += optiontable.mindelay + rand()%optiontable.offsetdelay	// Add delay between each sequence
+			}
+			optiontable.lastspoken = scenes;
+			break;
+		}
+		case SCENES.SHUFFLED: // shuffled
+		{
+			local prev_total_delay = 0;
+			local scenes = [];
+			local picked_seq = {scenes=[],delays=[]};
+			
+			local seq_copy = Utils.TableCopy(optiontable.sequence);
+
+			// TODO : Find a better way instead of looping twice
+			local seq_names = []
+			foreach(seqname,seq in optiontable.sequence)
+			{
+				seq_names.append(seqname);
+			}
+
+			foreach(seqname,seq in optiontable.sequence)
+			{	
+				picked_seq = optiontable.sequence[Utils.GetRandValueFromArray(seq_names,true)];
+				_SceneSequencer(player,{scenes=picked_seq.scenes,delays=Utils.ArrayAdd(picked_seq.delays,prev_total_delay)});
+
+				scenes.extend(picked_seq.scenes);
+
+				prev_total_delay += Utils.ArraySum(picked_seq.delays);
+				prev_total_delay += optiontable.mindelay + rand()%optiontable.offsetdelay	// Add delay between each sequence
+			}
+			optiontable.lastspoken = scenes;
+			break;
+		}
+		case SCENES.RANDOM:	// random pick
+		{	
+			local seq_names = []
+			foreach(seqname,seq in optiontable.sequence)
+			{
+				seq_names.append(seqname);
+			}
+			seq_names = Utils.GetRandValueFromArray(seq_names);
+
+			local randseq = optiontable.sequence[seq_names];
+			_SceneSequencer(player,randseq);
+
+			optiontable.lastspoken = [seq_names];
+			break;
+		}
+	}
+}
+
+/////////////////////////////////////////////////////////////////
+/*
+ * Speak a friendly fire line when shoved with given options in AdminSystem.Vars._CustomResponseOptions
+ *
+ * @authors rhino
+ */
+function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacker,args=null)
+{
+	if(!AdminSystem.Vars.AllowCustomResponses)
+		return;
+
+	local targetname = target.GetCharacterName().tolower();
+
+	if(targetname == "") // Was special infected
+	{return;}
+	
+	if(!AdminSystem.Vars._CustomResponse[targetname]._SpeakWhenShoved.enabled)
+	{return;}
+
+	if(rand().tofloat()/RAND_MAX <= AdminSystem.Vars._CustomResponse[targetname]._SpeakWhenShoved.prob)
+		::VSLib.Timers.AddTimer(AdminSystem.Vars._CustomResponse[targetname]._SpeakWhenShoved.startdelay, false, _SpeakWhenShovedResult,{targetname=targetname,target=target,attacker=attacker});
+	
+}
+
+/*
+ * @authors rhino
+ */
+::_SpeakWhenShovedResult <- function(ents)
+{
+	local targetname = ents.targetname;
+	
+	// Random line
+	if(AdminSystem.Vars._CustomResponse[targetname]._SpeakWhenShoved.userandom)
+	{
+		local line = Utils.GetRandValueFromArray(::Survivorlines.FriendlyFire[targetname]);
+
+		ents.target.Speak(line);
+		AdminSystem.Vars._CustomResponse[targetname]._SpeakWhenShoved.lastspoken = [line];
+		printl(ents.attacker.GetCharacterName()+" is bullying "+targetname+": "+line);
+	}
+	else // Speak from given sequences
+	{	
+		_SceneDecider(ents.target,AdminSystem.Vars._CustomResponse[targetname]._SpeakWhenShoved);
+	}
+	AdminSystem.Vars._CustomResponse[targetname]._SpeakWhenShoved.call_amount += 1;
+}
+
+/////////////////////////////////////////////////////////////////
+/*
+ * Sequences to speak for each player upon leaving saferoom with given options in AdminSystem.Vars._CustomResponse
+ *
+ * @authors rhino
+ */
+function Notifications::OnLeaveSaferoom::_SpeakWhenLeftSaferoomCondition(ent,args=null)
+{
+	if(ent.GetName() == "" || !::AdminSystem.Vars.AllowCustomResponses)
+		return;
+	
+	local name = ent.GetCharacterName().tolower();
+	if(name == "")
+		return;
+		
+	if(!AdminSystem.Vars._CustomResponse[name]._SpeakWhenLeftSaferoom.enabled)
+		return;	
+	
+	// Add timer to ignore changes during map loading
+	if(rand().tofloat()/RAND_MAX <= AdminSystem.Vars._CustomResponse[name]._SpeakWhenLeftSaferoom.prob && AdminSystem.Vars._CustomResponse[name]._SpeakWhenLeftSaferoom.call_amount == 0)
+		::VSLib.Timers.AddTimer(AdminSystem.Vars._CustomResponse[name]._SpeakWhenLeftSaferoom.startdelay, false, _SpeakWhenLeftSaferoomResult, {player=ent,name=name});
+	return;
+}
+
+/*
+ * @authors rhino
+ */
+::_SpeakWhenLeftSaferoomResult <- function(ent_table)
+{
+	if(!::VSLib.EasyLogic.Cache[ent_table.player.GetIndex()]._inSafeRoom && AdminSystem.Vars._CustomResponse[ent_table.name]._SpeakWhenLeftSaferoom.call_amount == 0)
+	{	
+		_SceneDecider(ent_table.player,AdminSystem.Vars._CustomResponse[ent_table.name]._SpeakWhenLeftSaferoom);
+		printl(ent_table.name+" spoken: LeftSafeRoom");
+		AdminSystem.Vars._CustomResponse[ent_table.name]._SpeakWhenLeftSaferoom.call_amount += 1;
+	}
+}
+
+/////////////////////////////////////////////////////////////////
+/*
+ * Speak an excited line with given options in AdminSystem.Vars._CustomResponse
+ *
+ * @authors rhino
+ */
+function Notifications::OnAdrenalineUsed::_SpeakWhenUsedAdrenalineCondition(ent,args=null)
+{
+	if(!AdminSystem.Vars.AllowCustomResponses)
+		return;
+
+	local name = ent.GetCharacterName().tolower();
+	if(rand().tofloat()/RAND_MAX <= AdminSystem.Vars._CustomResponse[name]._SpeakWhenUsedAdrenaline.prob)
+		::VSLib.Timers.AddTimer(AdminSystem.Vars._CustomResponse[name]._SpeakWhenUsedAdrenaline.startdelay, false, _SpeakWhenUsedAdrenalineResult,ent);
+}
+
+/*
+ * @authors rhino
+ */
+::_SpeakWhenUsedAdrenalineResult <- function(ent)
+{
+	local name = ent.GetCharacterName().tolower();
+	
+	if(AdminSystem.Vars._CustomResponse[name]._SpeakWhenUsedAdrenaline.userandom)
+	{
+		local scenes = [];
+		local delays = [];
+		local prev_delay = 0;
+		local mindelay = AdminSystem.Vars._CustomResponse[name]._SpeakWhenUsedAdrenaline.mindelay;
+		local offsetdelay = AdminSystem.Vars._CustomResponse[name]._SpeakWhenUsedAdrenaline.offsetdelay;
+		for (local i = 0 ;i < AdminSystem.Vars._CustomResponse[name]._SpeakWhenUsedAdrenaline.lineamount; i++)
+		{
+			scenes.append(Utils.GetRandValueFromArray(::Survivorlines.Excited[name]));
+			prev_delay += mindelay + rand()%offsetdelay;
+			delays.append(prev_delay);
+		}
+		_SceneSequencer(ent,{scenes=scenes,delays=delays});
+		
+		AdminSystem.Vars._CustomResponse[name]._SpeakWhenUsedAdrenaline.lastspoken = scenes
+	}
+	else
+	{
+		_SceneDecider(ent,AdminSystem.Vars._CustomResponse[name]._SpeakWhenUsedAdrenaline);
+	}
+	printl(name+" has gone crazy after using an adrenaline shot!");
+	AdminSystem.Vars._CustomResponse[name]._SpeakWhenUsedAdrenaline.call_amount += 1;
+}
+
+/////////////////////////////////////////////////////////////////
+function ChatTriggers::speak_test( player, args, text )
+{
+	AdminSystem.Speak_testCmd( player, args );
+}
+function ChatTriggers::speak_custom( player, args, text )
+{
+	AdminSystem.Speak_customCmd( player, args );
+}
+function ChatTriggers::show_custom_sequences( player, args, text )
+{
+	AdminSystem.Show_custom_sequencesCmd( player, args );
+}
+function ChatTriggers::create_seq( player, args, text )
+{
+	AdminSystem.CreateSequenceCmd( player, args );
+}
+function ChatTriggers::delete_seq( player, args, text )
+{
+	AdminSystem.DeleteSequenceCmd( player, args );
+}
+/////////////////////////////////////////////////////////////////
 
 function ChatTriggers::adminmode( player, args, text )
 {
@@ -2146,6 +3339,7 @@ if ( Director.GetGameMode() == "holdout" )
 		Utils.SayToAllDel("%s has been given Admin control.", Target.GetName());
 	StringToFile("admin system/admins.txt", admins);
 	AdminSystem.LoadAdmins();
+	AdminSystem.LoadCustomSequences();
 }
 
 ::AdminSystem.RemoveAdminCmd <- function ( player, args )
@@ -3992,7 +5186,6 @@ if ( Director.GetGameMode() == "holdout" )
 						Msg(name+" -> Unrecognized TYPE("+str[0]+") for Key:"+pairsplit[0]+"\n");
 						return;
 					}
-					//Msg("Split Complete: "+pairsplit[1]+"\n");
 				}
 				// Single value
 				else if(str.len()==2)
@@ -4014,7 +5207,6 @@ if ( Director.GetGameMode() == "holdout" )
 						Msg(name+" -> Unrecognized TYPE("+str[0]+") for Key:"+pairsplit[0]+"\n");
 						return;
 					}
-					//Msg("Split Complete: "+pairsplit[1]+"\n");
 				}
 			}
 			// Store to apply after spawn
@@ -4027,24 +5219,13 @@ if ( Director.GetGameMode() == "holdout" )
 				effects = pairsplit[1];
 			}
 
-			// Tables are dumb
-			foreach(k,v in keyvals)
+			if(pairsplit[0] in keyvals)
 			{
-				if(pairsplit[0]==k)
-				{
-					//Msg("Attempt to update existing key: "+pairsplit[0]+" and val: "+keyvals[pairsplit[0]]+"\n");
-					keyvals[pairsplit[0]] = pairsplit[1];
-					found = true;
-					//Msg("Updated existing key: "+pairsplit[0]+" and val: "+keyvals[pairsplit[0]]+"\n\n");
-					break;
-				}
+				keyvals[pairsplit[0]] = pairsplit[1];
 			}
-
-			if (!found)
+			else
 			{
-				//Msg("Attemp to create new key: "+pairsplit[0]+" and val: "+pairsplit[1]+"\n");
 				keyvals[pairsplit[0]] <- pairsplit[1];
-				//Msg("Created new key: "+pairsplit[0]+" and val: "+keyvals[pairsplit[0]]+"\n\n");
 			}
 		}
 		
@@ -7194,14 +8375,16 @@ if ( Director.GetGameMode() == "holdout" )
 		targetname = targetname.GetCharacterName().tolower();
 		speaker = Utils.GetPlayerFromName(targetname);
 	}
-	else if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,targetname) != -1)
-	{
-		speaker = Utils.GetPlayerFromName(targetname);
-	}
-	else
+	else if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,targetname) == -1)
 	{
 		printl(GetArgument(1)+" is not a character name");return;
 	}
+	else
+	{
+		speaker = Utils.GetPlayerFromName(targetname);
+	}
+
+	if(speaker==null){printl(name+" ->No person found as speaker");return;}
 
 	randomline_path = (linesource == null) ? Utils.GetRandValueFromArray(::Survivorlines.Paths[targetname]) : Utils.GetRandValueFromArray(::Survivorlines.Paths[linesource.tolower()]);
 	speaker.Speak(randomline_path);

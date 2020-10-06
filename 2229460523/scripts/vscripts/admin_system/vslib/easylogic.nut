@@ -25,243 +25,6 @@
  * \todo @TODO some of these can be moved to Utils table
  */
 
-
-/////////////////////////////////////////////////////////////////
-/*
- * Options for custom responses
- * @authors rhino
- */
-::_CustomResponseOptions <-
-{	
-	// Options for OnPlayerShoved._SpeakWhenShoved
-	_SpeakWhenShoved = 
-	{
-		prob = 0.66
-		startdelay = 0.1
-		lastspoken = 
-		{
-			Bill = ""
-			Francis = ""
-			Zoey = ""
-			Louis = ""
-			Nick = ""
-			Ellis = ""
-			Rochelle = ""
-			Coach = ""
-		}
-	}
-
-	// Options for OnLeaveSaferoom._SpeakIfLeftSafeRoom
-	_SpeakIfLeftSafeRoom = 
-	{
-		Bill = 
-		{	
-			enabled = false
-			prob = 0.8
-			startdelay = 2.5
-			alreadytalked = false
-			sequence = {}
-		}
-		
-		Francis = 
-		{
-			enabled = true
-			prob = 0.8
-			startdelay = 2.5
-			alreadytalked = false
-			sequence = 
-			{   // "Well hell, let's all- Smok- Booooomer!"
-				scenes=["warnboomer03.vcd","warnsmoker03.vcd","followme08.vcd"]
-				delays=[2.45,1.7,0]
-			}
-		}
-
-		Zoey = 
-		{
-			enabled = false
-			prob = 0.8
-			startdelay = 2.5
-			alreadytalked = false
-			sequence = {}
-		}
-
-		Louis = 
-		{
-			enabled = false
-			prob = 0.8
-			startdelay = 2.5
-			alreadytalked = false
-			sequence = {}
-		}
-
-		Nick = 
-		{
-			enabled = false
-			prob = 0.8
-			startdelay = 2.5
-			alreadytalked = false
-			sequence = {}
-		}
-
-		Ellis = 
-		{
-			enabled = true
-			prob = 0.8
-			startdelay = 2.5
-			alreadytalked = false
-			sequence = 
-			{	// "Man I hate them zombies but I loooooove- Crack!"
-				scenes=["meleeresponse08.vcd","boomerjar17.vcd"]
-				delays=[2.55,0]
-			}
-		}
-
-		Rochelle = 
-		{
-			enabled = false
-			prob = 0.8
-			startdelay = 2.5
-			alreadytalked = false
-			sequence = {}
-		}
-
-		Coach = 
-		{
-			enabled = false
-			prob = 0.8
-			startdelay = 2.5
-			alreadytalked = false
-			sequence = {}
-		}
-	}
-
-	// Options for OnAdrenalineUsed._SpeakWhenUsedAdrenaline
-	_SpeakWhenUsedAdrenaline = 
-	{
-		prob = 0.95
-		startdelay = 1
-		lastspoken = 
-		{
-			Bill = ""
-			Francis = ""
-			Zoey = ""
-			Louis = ""
-			Nick = ""
-			Ellis = ""
-			Rochelle = ""
-			Coach = ""
-		}
-	}
-}
-
-
-/////////////////////////////////////////////////////////////////
-/*
- * @authors rhino
- */
-::_SceneSequencer <- function(player,scene_delay_table)
-{
-	foreach(i,scene in scene_delay_table.scenes)
-	{
-		player.Speak(scene,scene_delay_table.delays[i]);
-	}
-}
-
-/////////////////////////////////////////////////////////////////
-/*
- * Speak a friendly fire line when shoved with given options in _CustomResponseOptions
- *
- * @authors rhino
- */
-::_SpeakWhenShovedCondition <- function(target,attacker,args=null)
-{
-	if(!::AdminSystem.Vars.AllowCustomResponses)
-		return;
-	
-	if(rand().tofloat()/RAND_MAX <= _CustomResponseOptions._SpeakWhenShoved.prob)
-		::VSLib.Timers.AddTimer(_CustomResponseOptions._SpeakWhenShoved.startdelay, false, _SpeakWhenShovedResult,{target=target,attacker=attacker});
-	
-}
-
-/*
- * @authors rhino
- */
-::_SpeakWhenShovedResult <- function(ents)
-{
-	local targetname = ents.target.GetCharacterName();
-	local line = Utils.GetRandValueFromArray(::Survivorlines.FriendlyFire[targetname]);
-	ents.target.Speak(line);
-	_CustomResponseOptions._SpeakWhenShoved.lastspoken[targetname] = line;
-	printl(ents.attacker.GetCharacterName()+" is bullying "+targetname+": "+line);
-}
-
-/////////////////////////////////////////////////////////////////
-/*
- * Sequences to speak for each player upon leaving saferoom with given options in _CustomResponseOptions
- *
- * @authors rhino
- */
-::_SpeakIfLeftSafeRoomCondition <- function(ent,args=null)
-{
-	if(ent.GetName() == "" || !::AdminSystem.Vars.AllowCustomResponses)
-		return;
-	
-	local name = ent.GetCharacterName();
-	if(name == "")
-		return;
-		
-	if(!_CustomResponseOptions._SpeakIfLeftSafeRoom[name].enabled)
-		return;	
-	
-	// Add timer to ignore changes during map loading
-	if(rand().tofloat()/RAND_MAX <= _CustomResponseOptions._SpeakIfLeftSafeRoom[name].prob && !_CustomResponseOptions._SpeakIfLeftSafeRoom[name].alreadytalked)
-		::VSLib.Timers.AddTimer(_CustomResponseOptions._SpeakIfLeftSafeRoom[name].startdelay, false, _SpeakIfLeftSafeRoomResult, {player=ent,name=name});
-	return;
-}
-
-/*
- * @authors rhino
- */
-::_SpeakIfLeftSafeRoomResult <- function(ent_table)
-{
-	if(!::VSLib.EasyLogic.Cache[ent_table.player.GetIndex()]._inSafeRoom && !_CustomResponseOptions._SpeakIfLeftSafeRoom[ent_table.name].alreadytalked)
-	{	
-		_SceneSequencer(ent_table.player,_CustomResponseOptions._SpeakIfLeftSafeRoom[ent_table.name].sequence);
-		printl(ent_table.name+" spoken: LeftSafeRoom");
-		_CustomResponseOptions._SpeakIfLeftSafeRoom[ent_table.name].alreadytalked = true;
-	}
-	return;
-}
-
-/////////////////////////////////////////////////////////////////
-/*
- * Speak an excited line with given options in _CustomResponseOptions
- *
- * @authors rhino
- */
-::_SpeakWhenUsedAdrenalineCondition <- function(ent,args=null)
-{
-	if(!::AdminSystem.Vars.AllowCustomResponses)
-		return;
-	
-	if(rand().tofloat()/RAND_MAX <= _CustomResponseOptions._SpeakWhenUsedAdrenaline.prob)
-		::VSLib.Timers.AddTimer(_CustomResponseOptions._SpeakWhenUsedAdrenaline.startdelay, false, _SpeakWhenUsedAdrenalineResult,ent);
-	
-}
-
-/*
- * @authors rhino
- */
-::_SpeakWhenUsedAdrenalineResult <- function(ent)
-{
-	local name = ent.GetCharacterName();
-	local line = Utils.GetRandValueFromArray(::Survivorlines.Excited[name]);
-	ent.Speak(line);
-	_CustomResponseOptions._SpeakWhenUsedAdrenaline.lastspoken[name] = line;
-	printl(name+" has gone crazy after using an adrenaline shot: "+line);
-}
-
-/////////////////////////////////////////////////////////////////
 if (!("EasyLogic" in ::VSLib))
 {
 	::VSLib.EasyLogic <-
@@ -485,7 +248,7 @@ if (!("Notifications" in ::VSLib.EasyLogic))
 		OnMeleeKill = {}
 		OnEnterStartArea = {}
 		OnEnterSaferoom = {}
-		OnLeaveSaferoom = {_SpeakIfLeftSafeRoomCondition = _SpeakIfLeftSafeRoomCondition}
+		OnLeaveSaferoom = {}
 		OnHurt = {}
 		OnHurtConcise = {}
 		OnFallDamage = {}
@@ -496,7 +259,7 @@ if (!("Notifications" in ::VSLib.EasyLogic))
 		OnFirstSpawn = {}
 		OnTransitioned = {}
 		OnEntityShoved = {}
-		OnPlayerShoved = {_SpeakWhenShovedCondition = _SpeakWhenShovedCondition}
+		OnPlayerShoved = {}
 		OnEntityVisible = {}
 		OnWeaponSpawnVisible = {}
 		OnDeadSurvivorVisible = {}
@@ -542,7 +305,7 @@ if (!("Notifications" in ::VSLib.EasyLogic))
 		OnDefibSuccess = {}
 		OnDefibFailed = {}
 		OnScriptDefib = {} // Called when a player is revived using Defib().
-		OnAdrenalineUsed = {_SpeakWhenUsedAdrenalineCondition = _SpeakWhenUsedAdrenalineCondition}
+		OnAdrenalineUsed = {}
 		OnHealStart = {}
 		OnHealEnd = {}
 		OnHealInterrupted = {}
