@@ -21,7 +21,7 @@ IncludeScript("Voice_paths/paths/producer.nut");
     
     FriendlyFire =
     {		
-		Nick =
+		nick =
 				[
 					"friendlyfire01","friendlyfire02",
 					"friendlyfire03","friendlyfire04",
@@ -43,7 +43,7 @@ IncludeScript("Voice_paths/paths/producer.nut");
 					"teamkillaccident03"
 				]
 		
-		Coach =
+		coach =
 				[
 					"friendlyfire01","friendlyfire02",
 					"friendlyfire03","friendlyfire04",
@@ -67,7 +67,7 @@ IncludeScript("Voice_paths/paths/producer.nut");
 					
 				]
 		
-		Ellis =
+		ellis =
 				[
 					"friendlyfire01","friendlyfire02",
 					"friendlyfire03","friendlyfire04",
@@ -91,7 +91,7 @@ IncludeScript("Voice_paths/paths/producer.nut");
 					"teamkillaccident05"
 				]
 		
-		Rochelle =
+		rochelle =
 				[
 					"friendlyfire01","friendlyfire02",
 					"friendlyfire03","friendlyfire04",
@@ -111,7 +111,7 @@ IncludeScript("Voice_paths/paths/producer.nut");
 					"teamkillaccident03","teamkillaccident04"
 				]
 		
-		Francis =
+		francis =
 				[
 					"friendlyfire01","friendlyfire02",
 					"friendlyfire03","friendlyfire04",
@@ -128,7 +128,7 @@ IncludeScript("Voice_paths/paths/producer.nut");
 					"teamkillonpurpose09"
 				]
 		
-		Louis =
+		louis =
 				[
 					"friendlyfire01","friendlyfire02",
 					"friendlyfire03","friendlyfire04",
@@ -142,7 +142,7 @@ IncludeScript("Voice_paths/paths/producer.nut");
 					"manager_friendlyfirebill06",
 				]
 					
-					Bill =
+		bill =
 				[
 					"friendlyfire01","friendlyfire02",
 					"friendlyfire03","friendlyfire04",
@@ -157,7 +157,7 @@ IncludeScript("Voice_paths/paths/producer.nut");
 					"teamkillaccident04"
 				]
 		
-		Zoey =
+		zoey =
 				[
 					"friendlyfire02","friendlyfire03",
 					"friendlyfire05","friendlyfire06",
@@ -175,7 +175,7 @@ IncludeScript("Voice_paths/paths/producer.nut");
 		
 		Excited = 
 		{		
-			Nick =
+			nick =
 			[
 				"battlecry01",
 				"battlecry02",
@@ -183,7 +183,7 @@ IncludeScript("Voice_paths/paths/producer.nut");
 				"battlecry04"
 			]
 		
-			Coach =
+			coach =
 			[
 				"battlecry01",
 				"battlecry02",
@@ -196,7 +196,7 @@ IncludeScript("Voice_paths/paths/producer.nut");
 				"battlecry09"
 			]
 		
-			Ellis =
+			ellis =
 			[
 				"battlecry01",
 				"battlecry02",
@@ -204,13 +204,13 @@ IncludeScript("Voice_paths/paths/producer.nut");
 				"battlecry04"
 			]
 		
-			Rochelle =
+			rochelle =
 			[
 				"battlecry01",
 				"battlecry02"
 			]
 			
-			Francis =
+			francis =
 			[
 				"taunt01",
 				"taunt02",
@@ -224,7 +224,7 @@ IncludeScript("Voice_paths/paths/producer.nut");
 				"taunt10"
 			]
 		
-			Louis =
+			louis =
 			[
 				"taunt03",
 				"taunt04",
@@ -236,13 +236,13 @@ IncludeScript("Voice_paths/paths/producer.nut");
 				"taunt10"
 			]
 					
-			Bill =
+			bill =
 			[
 				"taunt01",
 				"taunt02"
 			]
 
-			Zoey =
+			zoey =
 			[
 				"taunt02",
 				"taunt13",
