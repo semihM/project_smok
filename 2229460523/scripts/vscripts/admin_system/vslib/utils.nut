@@ -2155,6 +2155,39 @@ function VSLib::Utils::ArraySum(arr)
 /*
  * @author rhino
  */
+function VSLib::Utils::ArrayMin(arr)
+{
+	if(arr.len()<1){return;}
+	else if(arr.len()==1){return arr[0].tofloat();}
+	else
+	{
+		local min = arr[0].tofloat();	
+		foreach(val in arr)
+			min = (val.tofloat()<min) ? val.tofloat() : min;
+	}
+	return min;
+}
+
+/*
+ * @author rhino
+ */
+function VSLib::Utils::ArrayMax(arr)
+{
+	if(arr.len()<1){return;}
+	else if(arr.len()==1){return arr[0].tofloat();}
+	else
+	{
+		local max = arr[0].tofloat();	
+		foreach(val in arr)
+			max = (val.tofloat()>max) ? val.tofloat() : max;
+
+		return max;
+	}
+}
+
+/*
+ * @author rhino
+ */
 function VSLib::Utils::ArrayAdd(arr,val)
 {
 	local copy = [];
@@ -2167,6 +2200,25 @@ function VSLib::Utils::ArrayAdd(arr,val)
 	return copy;
 }
 
+/*
+ * @author rhino
+ */
+function VSLib::Utils::ArrayString(arr)
+{
+	local str = "[";
+	local len = arr.len();
+
+	for(local i=0; i < len; i++)
+	{
+		str += arr[i].tostring();
+		
+		if(i!=len-1){str+=",";}
+	}
+
+	str += "]";
+
+	return str;
+}
 /*
  * @author rhino
  */
@@ -2223,10 +2275,10 @@ function VSLib::Utils::SceneTableToString(tbl)
 		str += "\t\""+steamid+"\":\n\t{";	//steamid
 		foreach(character,customs in chartable)
 		{
-			str += "\n\t\t\""+character+"\":\n\t\t{\n\t\t\t"; //character name
+			str += "\n\t\t\""+character+"\":\n\t\t{"; //character name
 			foreach(seq_name,seqtable in customs)
 			{	
-				str += "\""+seq_name+"\":\n\t\t\t{\n\t\t\t\t";	 //sequence name
+				str += "\n\t\t\t\""+seq_name+"\":\n\t\t\t{\n\t\t\t";	 //sequence name
 				str += "\"scenes\":\n\t\t\t\t["; //scenes
 				foreach(scene in seqtable.scenes)
 				{
