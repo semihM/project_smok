@@ -616,17 +616,15 @@ Convars.SetValue( "precache_all_survivors", "1" );
 function EasyLogic::OnShutdown::AdminSaveData( reason, nextmap )
 {
 	if ( reason > 0 && reason < 4 )
-	{
-		SaveTable( "admin_variable_data", ::AdminSystem.Vars );
-		foreach(character,customs in AdminSystem.Vars._CustomResponse)
+	{	
+		foreach(character,customs in AdminSystem.Vars._CustomResponse) // Reset call_amounts
 		{
 			foreach(event,restable in customs)
 			{
 				restable.call_amount = 0;
 			}
 		}
-		SaveTable( "custom_response", ::AdminSystem.Vars._CustomResponse );
-		SaveTable( "custom_response_options", ::AdminSystem.Vars._CustomResponseOptions );
+		SaveTable( "admin_variable_data", ::AdminSystem.Vars );
 	}
 	
 }
@@ -996,6 +994,13 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 		if ( AdminSystem.Vars.DirectorDisabled )
 			Utils.StopDirector();
 
+		
+		AdminSystem.Vars.CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle"]
+			
+		AdminSystem.Vars.CharacterNamesLower = ["bill","francis","louis","zoey","nick","ellis","coach","rochelle"]
+
+		AdminSystem.Vars.PrintIndexedNames = function() {foreach(i,name in ::AdminSystem.CharacterNames){Utils.SayToAll(i+"->"+name);}}
+
 		AdminSystem.Vars._looping =
 		{
 			"bill":false,
@@ -1007,12 +1012,20 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			"ellis":false,
 			"rochelle":false
 		}
-
+		
+		AdminSystem.Vars._loopingTable =
+		{
+			"bill":{timername="",character="",sequence={}},
+			"francis":{timername="",character="",sequence={}},
+			"louis":{timername="",character="",sequence={}},
+			"zoey":{timername="",character="",sequence={}},
+			"nick":{timername="",character="",sequence={}},
+			"coach":{timername="",character="",sequence={}},
+			"ellis":{timername="",character="",sequence={}},
+			"rochelle":{timername="",character="",sequence={}}
+		}
 		printl("[Custom-Loop] Stopped all custom loops");
 	}
-
-	RestoreTable( "custom_response", ::AdminSystem.Vars._CustomResponse );
-	RestoreTable( "custom_response_options", ::AdminSystem.Vars._CustomResponseOptions );
 	
 	foreach(name,optiontable in AdminSystem.Vars._CustomResponseOptions)
 	{
@@ -1036,21 +1049,69 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	printl("[Custom] Loading admin custom responses...")
 	// Fixes for tables
 	try
-	{
+	{	
 		// Have to do this because squirrel is fuckin stupid and restores "coach" as "Coach"
-		if("Coach" in ::AdminSystem.Vars._CustomResponseOptions)
+		if("Coach" in AdminSystem.Vars._outputsEnabled)
+		{
+			printl("[Custom-Fix] Applying fixes to outputs table...");
+			AdminSystem.Vars._outputsEnabled.coach <- AdminSystem.Vars._outputsEnabled.Coach;
+			delete AdminSystem.Vars._outputsEnabled.Coach;
+		}
+		if("Coach" in AdminSystem.Vars._saveLastLine)
+		{
+			printl("[Custom-Fix] Applying fixes to LastLine table...");
+			AdminSystem.Vars._saveLastLine.coach <- AdminSystem.Vars._saveLastLine.Coach;
+			delete AdminSystem.Vars._saveLastLine.Coach;
+		}
+		if("Coach" in AdminSystem.Vars._savedLine)
+		{
+			printl("[Custom-Fix] Applying fixes to SavedLine table...");
+			AdminSystem.Vars._savedLine.coach <- Utils.TableCopy(AdminSystem.Vars._savedLine.Coach);
+			delete AdminSystem.Vars._savedLine.Coach;
+		}
+		if("Coach" in AdminSystem.Vars._savedParticle)
+		{
+			printl("[Custom-Fix] Applying fixes to SavedParticle table...");
+			AdminSystem.Vars._savedParticle.coach <- Utils.TableCopy(AdminSystem.Vars._savedParticle.Coach);
+			delete AdminSystem.Vars._savedParticle.Coach;
+		}
+		if("Coach" in AdminSystem.Vars._saveLastParticle)
+		{
+			printl("[Custom-Fix] Applying fixes to LastParticle table...");
+			AdminSystem.Vars._saveLastParticle.coach <- AdminSystem.Vars._saveLastParticle.Coach;
+			delete AdminSystem.Vars._saveLastParticle.Coach;
+		}
+		if("Coach" in AdminSystem.Vars._preferred_duration)
+		{
+			printl("[Custom-Fix] Applying fixes to preferred_duration table...");
+			AdminSystem.Vars._preferred_duration.coach <- AdminSystem.Vars._preferred_duration.Coach;
+			delete AdminSystem.Vars._preferred_duration.Coach;
+		}
+		if("Coach" in AdminSystem.Vars._prop_spawn_settings_menu_type)
+		{
+			printl("[Custom-Fix] Applying fixes to prop_spawn_settings_menu_type table...");
+			AdminSystem.Vars._prop_spawn_settings_menu_type.coach <- AdminSystem.Vars._prop_spawn_settings_menu_type.Coach;
+			delete AdminSystem.Vars._prop_spawn_settings_menu_type.Coach;
+		}
+		if("Coach" in AdminSystem.Vars._prop_spawn_settings)
+		{
+			printl("[Custom-Fix] Applying fixes to prop_spawn_settings table...");
+			AdminSystem.Vars._prop_spawn_settings.coach <- Utils.TableCopy(AdminSystem.Vars._prop_spawn_settings.Coach);
+			delete AdminSystem.Vars._prop_spawn_settings.Coach;
+		}
+		if("Coach" in AdminSystem.Vars._CustomResponseOptions)
 		{	
-			printl("[Custom] Applying table restore fixes...");
-			::AdminSystem.Vars._CustomResponseOptions.coach <- Utils.TableCopy(::AdminSystem.Vars._CustomResponseOptions.Coach);
-			delete ::AdminSystem.Vars._CustomResponseOptions.Coach;
-			::AdminSystem.Vars._CustomResponse.coach <- Utils.TableCopy(::AdminSystem.Vars._CustomResponse.Coach);
-			delete ::AdminSystem.Vars._CustomResponse.Coach;
+			printl("[Custom-Fix] Applying fixes to CustomResponse table...");
+			AdminSystem.Vars._CustomResponseOptions.coach <- Utils.TableCopy(AdminSystem.Vars._CustomResponseOptions.Coach);
+			delete AdminSystem.Vars._CustomResponseOptions.Coach;
+			AdminSystem.Vars._CustomResponse.coach <- Utils.TableCopy(AdminSystem.Vars._CustomResponse.Coach);
+			delete AdminSystem.Vars._CustomResponse.Coach;
 		}
 		else
 		{	
 			// Apply options created by admins
-			AdminSystem.LoadCustomSequences()
-			throw("No need for fixes");
+			AdminSystem.LoadCustomSequences();
+			throw("No need for fixes in CustomRespose tables");
 		}
 		///////////////////////////////////////////////
 		/* RestoreTable is also bad
@@ -1087,30 +1148,35 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 				}
 				
 				//Lastspoken
-				if(("lastspoken" in basetable) && ((typeof basetable.lastspoken) != "table"))
-				{
-					newlastspoken = []
-					i = 0;
-					while(i.tostring() in basetable.lastspoken)
+				if("lastspoken" in basetable)
+				{	
+					if((typeof basetable.lastspoken) == "table")
 					{
-						newlastspoken.append(basetable.lastspoken[i.tostring()]);
-						i += 1;
+						newlastspoken = []
+						i = 0;
+						while(i.tostring() in basetable.lastspoken)
+						{
+							newlastspoken.append(basetable.lastspoken[i.tostring()]);
+							i += 1;
+						}
+						AdminSystem.Vars._CustomResponse[charname][eventname].lastspoken = Utils.ArrayCopy(newlastspoken);
 					}
-					AdminSystem.Vars._CustomResponse[charname][eventname].lastspoken = Utils.ArrayCopy(newlastspoken);
 				}
 				
 				//randomlinepaths
-				if(("randomlinepaths" in basetable) && ((typeof basetable.randomlinepaths) != "table"))
+				if("randomlinepaths" in basetable)
 				{	
-					newrandomlinepaths = []
-					i = 0;
-					while(i.tostring() in basetable.randomlinepaths)
+					if((typeof basetable.randomlinepaths) == "table")
 					{
-						newrandomlinepaths.append(basetable.randomlinepaths[i.tostring()]);
-						i += 1;
+						newrandomlinepaths = []
+						i = 0;
+						while(i.tostring() in basetable.randomlinepaths)
+						{
+							newrandomlinepaths.append(basetable.randomlinepaths[i.tostring()]);
+							i += 1;
+						}
+						AdminSystem.Vars._CustomResponse[charname][eventname].randomlinepaths = Utils.ArrayCopy(newrandomlinepaths);
 					}
-
-					AdminSystem.Vars._CustomResponse[charname][eventname].randomlinepaths = Utils.ArrayCopy(newrandomlinepaths);
 				}
 			}
 		}
@@ -1154,25 +1220,6 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 				}
 				
 			}
-		}
-
-		//Loop table
-		foreach(charname,looptbl in AdminSystem.Vars._loopingTable)
-		{
-			if( (typeof looptbl.sequence.scenes) != "table")
-			{
-				continue; // It's already fixed, check next one
-			}
-			newsequence = {scenes=[],delays=[]}
-			i = 0;
-			while(i.tostring() in looptbl.sequence.scenes)
-			{	
-				newsequence.scenes.append(looptbl.sequence.scenes[i.tostring()]);
-				newsequence.delays.append(looptbl.sequence.delays[i.tostring()]);
-				i += 1;
-			}
-
-			AdminSystem.Vars._loopingTable[charname].sequence = Utils.TableCopy(newsequence);
 		}
 		
 	}
