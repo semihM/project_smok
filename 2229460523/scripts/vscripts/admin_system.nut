@@ -341,6 +341,30 @@ Convars.SetValue( "precache_all_survivors", "1" );
 				}
 			}
 		}
+		
+		_looping =
+		{
+			"bill":false,
+			"francis":false,
+			"louis":false,
+			"zoey":false,
+			"nick":false,
+			"coach":false,
+			"ellis":false,
+			"rochelle":false
+		}
+		
+		_loopingTable =
+		{
+			"bill":{timername="",character="",sequence={}},
+			"francis":{timername="",character="",sequence={}},
+			"louis":{timername="",character="",sequence={}},
+			"zoey":{timername="",character="",sequence={}},
+			"nick":{timername="",character="",sequence={}},
+			"coach":{timername="",character="",sequence={}},
+			"ellis":{timername="",character="",sequence={}},
+			"rochelle":{timername="",character="",sequence={}}
+		}
 	}
 	
 	ZombieModels =
@@ -941,18 +965,55 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 					}
 				}
 			}
+
+			_looping =
+			{
+				"bill":false,
+				"francis":false,
+				"louis":false,
+				"zoey":false,
+				"nick":false,
+				"coach":false,
+				"ellis":false,
+				"rochelle":false
+			}
+
+			_loopingTable =
+			{
+				"bill":{timername="",character="",sequence={}},
+				"francis":{timername="",character="",sequence={}},
+				"louis":{timername="",character="",sequence={}},
+				"zoey":{timername="",character="",sequence={}},
+				"nick":{timername="",character="",sequence={}},
+				"coach":{timername="",character="",sequence={}},
+				"ellis":{timername="",character="",sequence={}},
+				"rochelle":{timername="",character="",sequence={}}
+			}
 		}
 	}
 	else
 	{
 		if ( AdminSystem.Vars.DirectorDisabled )
 			Utils.StopDirector();
+
+		AdminSystem.Vars._looping =
+		{
+			"bill":false,
+			"francis":false,
+			"louis":false,
+			"zoey":false,
+			"nick":false,
+			"coach":false,
+			"ellis":false,
+			"rochelle":false
+		}
+
+		printl("[Custom-Loop] Stopped all custom loops");
 	}
 
 	RestoreTable( "custom_response", ::AdminSystem.Vars._CustomResponse );
 	RestoreTable( "custom_response_options", ::AdminSystem.Vars._CustomResponseOptions );
 	
-
 	foreach(name,optiontable in AdminSystem.Vars._CustomResponseOptions)
 	{
 		foreach(event,settings in optiontable)
@@ -1093,6 +1154,25 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 				}
 				
 			}
+		}
+
+		//Loop table
+		foreach(charname,looptbl in AdminSystem.Vars._loopingTable)
+		{
+			if( (typeof looptbl.sequence.scenes) != "table")
+			{
+				continue; // It's already fixed, check next one
+			}
+			newsequence = {scenes=[],delays=[]}
+			i = 0;
+			while(i.tostring() in looptbl.sequence.scenes)
+			{	
+				newsequence.scenes.append(looptbl.sequence.scenes[i.tostring()]);
+				newsequence.delays.append(looptbl.sequence.delays[i.tostring()]);
+				i += 1;
+			}
+
+			AdminSystem.Vars._loopingTable[charname].sequence = Utils.TableCopy(newsequence);
 		}
 		
 	}
@@ -1969,6 +2049,16 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			break;
 		
 		}
+		case "loop":
+		{
+			AdminSystem.Speak_loopCmd( player, args );
+			break;
+		}
+		case "loop_stop":
+		{
+			AdminSystem.Speak_loop_stopCmd( player, args );
+			break;
+		}
 		case "speak_test":
 		{
 			AdminSystem.Speak_testCmd( player, args );
@@ -1982,6 +2072,16 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		case "show_custom_sequences":
 		{
 			AdminSystem.Show_custom_sequencesCmd( player, args );
+			break;
+		}
+		case "seq_info":
+		{
+			AdminSystem.Sequence_infoCmd( player, args );
+			break;
+		}
+		case "seq_edit":
+		{
+			AdminSystem.Sequence_editCmd( player, args );
 			break;
 		}
 		case "create_seq":
@@ -2169,7 +2269,9 @@ enum SCENES
  * Speak the given line for given length
  * @param character = Speaker
  * @param scene_name = Scene name
- * @param trimend = How long to speak, null to speak all
+ * @param trimend = How long to speak, null to speak all *
+ * Example:
+ *			!speak_test zoey warnboomer01 0.5		//Zoey speaks first 0.5 seconds of warnboomer01
  */
 ::AdminSystem.Speak_testCmd <- function (player,args)
 {	
@@ -2206,7 +2308,9 @@ enum SCENES
  * @authors rhino
  * Speak the given custom sequence
  * @param character = Speaker
- * @param seq_name = Custom sequence name
+ * @param seq_name = Custom sequence name *
+ * Example:
+ *			!speak_custom bill mysequence	// Bill speaks his mysequence
  */
 ::AdminSystem.Speak_customCmd <- function (player,args)
 {	
@@ -2243,10 +2347,166 @@ enum SCENES
 	printl(player.GetCharacterName()+" ->Speak custom "+character+" "+seq_name);
 }
 
+
+/*
+ * @authors rhino
+ */
+::_TimedLooper <- function(argtable)
+{
+	if(AdminSystem.Vars._looping[argtable.character])
+	{	
+		_SceneSequencer(Utils.GetPlayerFromName(argtable.character),argtable.sequence);
+	}
+	else
+	{
+		if (argtable.timername in ::VSLib.Timers.TimersID)
+		{
+			::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[argtable.timername]);
+			delete ::VSLib.Timers.TimersID[argtable.timername];
+		}
+
+		_SceneSequencer(Utils.GetPlayerFromName(argtable.character),{scenes=["blank"],delays=[0]}); // Interrupt the last spoken line
+	}
+}
+
+/*
+ * @authors rhino
+ * Stops the looping character
+ */
+::AdminSystem.Speak_loop_stopCmd <- function (player,args)
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local character = GetArgument(1);
+	if(character==null)
+	{character = player.GetCharacterName();}
+	character = character.tolower();
+
+	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
+	{Utils.SayToAll(character+" is not a character name");return;}
+
+	if(AdminSystem.Vars._looping[character])
+	{
+		printl(player.GetCharacterName()+" ->Stopped loop for "+character);
+		AdminSystem.Vars._looping[character] = false;
+	}
+	
+}
+
+/*
+ * @authors rhino
+ * Start speaking given lines with given delays in a loop
+ * TO USE SEQUENCE NAMES ADD ">" TO BEGINNING 
+ * Argument format:  character sequence|line loop_length
+ *
+ * Example:
+ *			!loop nick >mysequence 10	// Speak nick's custom sequence mysequence every 10 seconds 
+ *			!loop coach battlecry02 5	// Speak coach's battlecry02 every 5 seconds 
+ */
+::AdminSystem.Speak_loopCmd <- function (player,args)
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	local arguments = ::VSLib.EasyLogic.LastArgs;
+	local arglen = arguments.len();
+
+	if(-1 in arguments)
+	{arglen -= 1;}
+	else// called from chat
+	{
+		if(arglen < 2)
+		{
+			Utils.SayToAll(player.GetCharacterName()+"->Arguments should be in one of the following formats: \n1){character} >{sequence} {length} \n2){character} {line} {length} ");return;
+		}
+	}
+ 	local steamid = player.GetSteamID();
+	
+	local character = arguments[0];
+	if(character==null)
+	{return;}
+	character = character.tolower();
+
+	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
+	{Utils.SayToAll(character+" is not a character name");return;}
+	
+	//Return if already in a loop
+	if(AdminSystem.Vars._looping[character])
+	{Utils.SayToAll(character+" is already in a talking loop.");return;}
+
+	local sequencename = arguments[1];
+	local looplength = arguments[2].tofloat();
+	
+	// Decide if a sequence or a scene was given
+	if(sequencename.find(">") != null) // Sequence
+	{	
+		sequencename = split(sequencename,">")[0];
+		
+		if(!(steamid in AdminSystem.Vars._CustomResponseOptions[character]))
+		{Utils.SayToAll(player.GetCharacterName()+" -> No custom responses created for "+character);return;}
+		else
+		{
+			if(!(sequencename in AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence))
+			{Utils.SayToAll(player.GetCharacterName()+" ->"+sequencename+" doesn't exist for "+character);return;}
+
+			local seqtable = AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence[sequencename];
+			local blanksec = looplength-Utils.ArrayMax(seqtable.delays);
+			// Loop length is shorter
+			if(blanksec<0)
+			{printl("[Loop-Warning] length is "+blanksec*-1+"seconds shorter than sequence: "+player.GetCharacterName()+" ->"+sequencename+" "+looplength);}
+			
+			AdminSystem.Vars._looping[character] = true;
+			
+			//First loop base
+			local loopseq = {scenes=[],delays=[]};
+			if(blanksec<0)
+			{
+				foreach(i,delay in seqtable.delays)
+				{
+					if(delay<looplength) // Filter out scenes after blanktime
+					{
+						loopseq.scenes.append(seqtable.scenes[i]);
+						loopseq.delays.append(delay);
+					}
+				}
+			}
+			else
+			{
+				loopseq = Utils.TableCopy(seqtable);
+			}
+			loopseq.scenes.append("blank");
+			loopseq.delays.append(looplength);
+			//First loop call
+			_SceneSequencer(Utils.GetPlayerFromName(character),loopseq)
+
+			AdminSystem.Vars._loopingTable[character].timername = player.GetCharacterName()+"_"+character+"_"+sequencename;
+			AdminSystem.Vars._loopingTable[character].character = character;
+			AdminSystem.Vars._loopingTable[character].sequence = loopseq;
+
+			//On repeat rest of the calls
+			::VSLib.Timers.AddTimerByName(AdminSystem.Vars._loopingTable[character].timername,looplength+0.1, true, _TimedLooper,AdminSystem.Vars._loopingTable[character]);
+		
+		}
+	}
+	else	// Scene
+	{	
+		AdminSystem.Vars._looping[character] = true;
+		
+		AdminSystem.Vars._loopingTable[character].timername = player.GetCharacterName()+"_"+character+"_"+sequencename;
+		AdminSystem.Vars._loopingTable[character].character = character;
+		AdminSystem.Vars._loopingTable[character].sequence = {scenes=[sequencename],delays=[0]};
+
+		_SceneSequencer(Utils.GetPlayerFromName(character),{scenes=[sequencename],delays=[0]})
+		::VSLib.Timers.AddTimerByName(AdminSystem.Vars._loopingTable[character].timername,looplength+0.1, true, _TimedLooper,AdminSystem.Vars._loopingTable[character]);
+	}
+	printl(player.GetCharacterName()+" ->Started loop for "+character+" named "+sequencename);
+
+}
+
 /*
  * @authors rhino
  * Show saved custom sequences for given character
- * @param character = Speaker, null for all saved sequences
+ * @param character = Speaker, null | all for saved sequences for all characters
  */
 ::AdminSystem.Show_custom_sequencesCmd <- function (player,args)
 {	
@@ -2256,21 +2516,19 @@ enum SCENES
 	local character = GetArgument(1);
 	local seqnames = "";
 	local steamid = player.GetSteamID();
-	if(character == null)
+	if(character == null || character == "all")
 	{
 		foreach(charname in AdminSystem.Vars.CharacterNamesLower)
-		{
-			try
-			{	
-				seqnames += charname + ":("
+		{	
+			seqnames += charname + ":("
+			if(steamid in AdminSystem.Vars._CustomResponseOptions[charname])
+			{
 				foreach(seq_name,seqtable in AdminSystem.Vars._CustomResponseOptions[charname][steamid].sequence)
 				{
 					seqnames += seq_name + ", ";
 				}
-				seqnames += ") \n";
 			}
-			catch(e)
-			{seqnames += ") \n";continue;}
+			seqnames += ") \n";
 		}
 		character = "all characters";
 	}
@@ -2280,18 +2538,14 @@ enum SCENES
 		if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
 		{Utils.SayToAll(character+" is not a character name");return;}
 
-		try
-		{
-			foreach(seq_name,seqtable in AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence)
-			{
-				seqnames += seq_name + ", ";
-			}
-		}
-		catch(e)
+		if(!(steamid in AdminSystem.Vars._CustomResponseOptions[character]))
 		{
 			Utils.SayToAll("No custom sequence found for "+character);return;
 		}
-
+		foreach(seq_name,seqtable in AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence)
+		{
+			seqnames += seq_name + ", ";
+		}
 	}
 	
 	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
@@ -2302,6 +2556,184 @@ enum SCENES
 
 /*
  * @authors rhino
+ * Show scenes and delays from a saved sequence *
+ * Example:
+ *			!seq_info nick mysequence
+ */
+::AdminSystem.Sequence_infoCmd <- function (player,args)
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local character = GetArgument(1);
+	if(character==null)
+	{return;}
+
+	local sequencename = GetArgument(2);
+	if(sequencename==null)
+	{
+		sequencename = character;
+		character = player.GetCharacterName().tolower();
+	}
+	else
+	{
+		character = character.tolower();
+	}
+
+	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
+	{Utils.SayToAll(character+" is not a character name");return;}
+
+	local str = "\n";
+	local steamid = player.GetSteamID();
+
+	if(!(steamid in AdminSystem.Vars._CustomResponseOptions[character]))
+	{
+		Utils.SayToAll("No custom sequence found for "+character);return;
+	}
+
+	if(!(sequencename in AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence))
+	{
+		Utils.SayToAll("No custom sequence found for "+character+" named "+sequencename);return;
+	}
+	
+	str += Utils.ArrayString(AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence[sequencename].scenes)
+	str += "\n"
+	str += Utils.ArrayString(AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence[sequencename].delays)
+
+	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+	{Utils.SayToAll(player.GetCharacterName()+" -> Sequence info "+character+"."+sequencename+str);}
+	else
+	{printl(player.GetCharacterName()+" -> Sequence info "+character+"."+sequencename+str);}
+}
+
+/*
+ * @authors rhino
+ * Show scenes and delays from a saved sequence
+ * @param character = character
+ * @param sequencename = sequence name
+ * @param scene = scene name OR index,  use ">x" for scene at index x
+ * @param setting = format this as "scene>new_scene" OR "delay>x"
+ *
+ * Example:
+ *			!seq_edit nick mysequence >1 delay>4				// Change scene at index 1's delay to 4 seconds
+ *			!seq_edit nick mysequence hurrah01 scene>hurrah02   // Change first appearence of hurrah1 to hurrah2
+ */
+::AdminSystem.Sequence_editCmd <- function (player,args)
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local character = GetArgument(1);
+	if(character==null)
+	{return;}
+
+	local sequencename = GetArgument(2);
+	if(sequencename==null)
+	{return;}
+	
+	local scene = GetArgument(3);
+	local setting = GetArgument(4);
+	
+	character = character.tolower();
+	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
+	{Utils.SayToAll(character+" is not a character name");return;}
+
+	local steamid = player.GetSteamID();
+	
+	if(!(steamid in AdminSystem.Vars._CustomResponseOptions[character]))
+	{
+		Utils.SayToAll("No custom sequence found for "+character);return;
+	}
+
+	if(!(sequencename in AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence))
+	{
+		Utils.SayToAll("No custom sequence found for "+character+" named "+sequencename);return;
+	}
+	
+	local scene_index = -1;
+	local oldvalue = "";
+
+	printl(character+" "+sequencename+" "+scene+" "+setting);
+	// Which scene
+	if(scene.find(">") != null) // index is given
+	{
+		scene_index = split(scene,">")[0].tointeger();
+	}
+	else
+	{
+		scene_index = Utils.GetIDFromArray(AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence[sequencename].scenes,scene);
+	}
+
+	local newval = null;
+	// Change which one
+	if(scene_index != -1)
+	{	
+		if(setting.find(">") != null)
+		{	
+			setting = split(setting,">");
+			if(setting.len() != 2)
+			{
+				Utils.SayToAll("Setting should be in format scene>new_name OR delay>x");return;
+			}
+
+			newval = setting[1];
+			setting = setting[0];
+
+			if(setting == "scene")
+			{
+				oldvalue = AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence[sequencename].scenes[scene_index];
+				AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence[sequencename].scenes[scene_index] = newval;
+			}
+			else if(setting == "delay")
+			{
+				oldvalue = AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence[sequencename].delays[scene_index];
+				AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence[sequencename].delays[scene_index] = newval;
+			}
+			else
+			{
+				Utils.SayToAll("Setting should be in format scene>new_name OR delay>x");return;
+			}
+		}
+		else
+		{
+			Utils.SayToAll("Setting should be in format scene>new_name OR delay>x");return;
+		}
+		
+	}
+	else
+	{
+		Utils.SayToAll("No scene named "+scene+" was found");return;
+	}
+
+	// Output messages
+	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+	{Utils.SayToAll(player.GetCharacterName()+" -> Changed "+character+"."+sequencename+"."+setting+"s["+scene_index+"]:\n "+oldvalue+"->"+newval.tostring());}
+	else
+	{printl(player.GetCharacterName()+" -> Sequence info "+character+"."+sequencename+"."+setting+"s["+scene_index+"]: "+oldvalue+"->"+newval.tostring());}
+	
+	// Save to custom file
+	local contents = FileToString("admin system/custom_responses.json");
+	if(contents == null)
+	{Utils.SayToAll("custom_responses.json file is missing, changes will only be applied for current session cache!");return;}
+
+	local responsetable = compilestring( "return " + contents )();
+
+	if (setting == "scene")
+	{
+		responsetable[steamid][character][sequencename].scenes[scene_index] = AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence[sequencename].scenes[scene_index];
+	}
+	else
+	{
+		responsetable[steamid][character][sequencename].delays[scene_index] = AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence[sequencename].delays[scene_index];
+	}
+
+	StringToFile("admin system/custom_responses.json", Utils.SceneTableToString(responsetable));
+	AdminSystem.LoadCustomSequences();
+}
+
+/*
+ * @authors rhino
+ * Load sequences from custom_responses.json
  */
 ::AdminSystem.LoadCustomSequences <- function (...)
 {
@@ -2354,6 +2786,9 @@ enum SCENES
 
 /*
  * @authors rhino
+ * @param charachter = character name | all
+ * @param sequencename = name for the sequence
+ * Rest of the parameters should be given as: ... scene1 delay1 scene2 delay2 ...
  */
 ::AdminSystem.CreateSequenceCmd <- function ( player, args )
 {	
@@ -2362,18 +2797,15 @@ enum SCENES
 
 	local arguments = ::VSLib.EasyLogic.LastArgs;
 	local arglen = arguments.len();
-	try
+	
+	if(-1 in arguments)
+	{arglen -= 1;}
+	else// called from chat
 	{
-		local test = arguments[-1];
-		arglen -= 1;
-	}
-	catch(e)
-	{	// called from chat
-		if(arguments.len() % 2 || arguments.len()<4)
+		if(arglen % 2 || arglen<4)
 		{
 			Utils.SayToAll(player.GetCharacterName()+"->Arguments should be follow the format: character sequence_name scene1 delay1 scene2 delay2 ...");return;
 		}
-		
 	}
 	
 	local contents = FileToString("admin system/custom_responses.json");
@@ -2393,41 +2825,68 @@ enum SCENES
 	{return;}
 	character = character.tolower();
 	
-	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
+	if(character != "all" && Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1 )
 	{Utils.SayToAll(character+" is not a character name");return;}
 
 	local sequencename = arguments[1];
 
-	try
+	if(character == "all")
 	{
-		foreach(seqname,seqtable in responsetable[steamid][character]) // Throws if character name doesnt exist
+		foreach(charname in AdminSystem.Vars.CharacterNamesLower)
 		{
-			foreach(i,arg in arguments)
+			
+			if(!(charname in responsetable[steamid]))
 			{
-				if(i%2 == 0 && sequencename == seqname)
-				{	
-					Utils.SayToAll("Sequence name "+sequencename+" already exists!");
-					return;
-				}
+				responsetable[steamid][charname] <- {};
+			}
+
+			if(sequencename in responsetable[steamid][charname])
+			{
+				Utils.SayToAll("Skipping creating sequence "+sequencename+" for "+charname+": Sequence already exists!");continue;
+			}
+			else
+			{
+				responsetable[steamid][charname][sequencename] <- {"scenes":[],"delays":[]}
+			}	
+
+			local i = 2
+			while(i<arglen)
+			{
+				responsetable[steamid][charname][sequencename].scenes.append(arguments[i]);
+				responsetable[steamid][charname][sequencename].delays.append(arguments[i+1]);
+				i+=2;
 			}
 		}
-		responsetable[steamid][character][sequencename] <- {"scenes":[],"delays":[]}
+		printl(player.GetCharacterName()+" ->Created sequence for all characters named "+sequencename);
 	}
-	catch(e)	// Character didnt exist
+	else
 	{
-		responsetable[steamid][character] <- {};
-		responsetable[steamid][character][sequencename] <- {"scenes":[],"delays":[]}
+		if(!(character in responsetable[steamid]))
+		{
+			responsetable[steamid][character] <- {};
+		}
+
+		if(sequencename in responsetable[steamid][character])
+		{
+			Utils.SayToAll("Sequence "+sequencename+" already exists for "+character+"!");return;
+		}
+		else
+		{
+			responsetable[steamid][character][sequencename] <- {"scenes":[],"delays":[]}
+		}	
+
+		local i = 2
+		while(i<arglen)
+		{
+			responsetable[steamid][character][sequencename].scenes.append(arguments[i]);
+			responsetable[steamid][character][sequencename].delays.append(arguments[i+1]);
+			i+=2;
+		}
+		
+		printl(player.GetCharacterName()+" ->Created sequence for "+character+" named "+sequencename);
+
 	}
 
-	// Arguments were valid
-	local i = 2
-	while(i<arglen)
-	{
-		responsetable[steamid][character][sequencename].scenes.append(arguments[i]);
-		responsetable[steamid][character][sequencename].delays.append(arguments[i+1]);
-		i+=2;
-	}
-	printl(player.GetCharacterName()+" ->Created sequence for "+character+" named "+sequencename);
 	StringToFile("admin system/custom_responses.json", Utils.SceneTableToString(responsetable));
 	AdminSystem.LoadCustomSequences();
 }
@@ -2460,19 +2919,17 @@ enum SCENES
 
 	local responsetable = compilestring( "return " + contents )();
 	local found = false;
+	local steamid = player.GetSteamID();
+	
+	if(!(character in responsetable[steamid]))
+	{Utils.SayToAll("No custom responses found for "+character);return;}
 
-	try
-	{
-		if(sequencename in responsetable[player.GetSteamID()][character])
-		{	
-			Utils.SayToAll("Deleted custom response for "+character+": "+sequencename+"");
-			delete responsetable[player.GetSteamID()][character][sequencename];
-			found = true;
-		}
+	if(sequencename in responsetable[steamid][character])
+	{	
+		Utils.SayToAll("Deleted custom response for "+character+": "+sequencename+"");
+		delete responsetable[steamid][character][sequencename];
 	}
-	catch(e){Utils.SayToAll("No custom responses found for "+character);return;}
-
-	if(!found)
+	else
 	{
 		Utils.SayToAll("No custom response found for "+character+" named: "+sequencename+"");return;
 	}
@@ -2699,6 +3156,14 @@ function Notifications::OnAdrenalineUsed::_SpeakWhenUsedAdrenalineCondition(ent,
 }
 
 /////////////////////////////////////////////////////////////////
+function ChatTriggers::loop( player, args, text )
+{
+	AdminSystem.Speak_loopCmd( player, args );
+}
+function ChatTriggers::loop_stop( player, args, text )
+{
+	AdminSystem.Speak_loop_stopCmd( player, args );
+}
 function ChatTriggers::speak_test( player, args, text )
 {
 	AdminSystem.Speak_testCmd( player, args );
@@ -2710,6 +3175,14 @@ function ChatTriggers::speak_custom( player, args, text )
 function ChatTriggers::show_custom_sequences( player, args, text )
 {
 	AdminSystem.Show_custom_sequencesCmd( player, args );
+}
+function ChatTriggers::seq_info( player, args, text )
+{
+	AdminSystem.Sequence_infoCmd( player, args );
+}
+function ChatTriggers::seq_edit( player, args, text )
+{
+	AdminSystem.Sequence_editCmd( player, args );
 }
 function ChatTriggers::create_seq( player, args, text )
 {
