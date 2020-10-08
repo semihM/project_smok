@@ -68,67 +68,67 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		// Chat output state
 	    _outputsEnabled = 
 		{
-			"bill":false,
-			"francis":false,
-			"louis":false,
-			"zoey":false,
-			"nick":false,
-			"coach":false,
-			"ellis":false,
-			"rochelle":false
+			bill=false,
+			francis=false,
+			louis=false,
+			zoey=false,
+			nick=false,
+			coach=false,
+			ellis=false,
+			rochelle=false
 		}
 
 		// Randomline stuff
 		_saveLastLine = 
 		{
-			"bill":true,
-			"francis":true,
-			"louis":true,
-			"zoey":true,
-			"nick":true,
-			"coach":true,
-			"ellis":true,
-			"rochelle":true
+			bill=true,
+			francis=true,
+			louis=true,
+			zoey=true,
+			nick=true,
+			coach=true,
+			ellis=true,
+			rochelle=true
 		}
 
 		_savedLine =
 		{
-			"bill":
+			bill=
 			{
 				target="",
 				source=""
 			},
-			"francis":
+			francis=
 			{
 				target="",
 				source=""
 			},
-			"louis":
+			louis=
 			{
 				target="",
 				source=""
 			},
-			"zoey":
+			zoey=
 			{
 				target="",
 				source=""
 			},
-			"nick":
+			nick=
 			{
 				target="",
 				source=""
 			},
-			"coach":
+			coach=
 			{
 				target="",
 				source=""
 			},
-			"ellis":
+			ellis=
 			{
 				target="",
 				source=""
 			},
-			"rochelle":
+			rochelle=
 			{
 				target="",
 				source=""
@@ -138,54 +138,54 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		// Particle stuff
 		_saveLastParticle = 
 		{
-			"bill":true,
-			"francis":true,
-			"louis":true,
-			"zoey":true,
-			"nick":true,
-			"coach":true,
-			"ellis":true,
-			"rochelle":true
+			bill=true,
+			francis=true,
+			louis=true,
+			zoey=true,
+			nick=true,
+			coach=true,
+			ellis=true,
+			rochelle=true
 		}
 
 		_savedParticle =
 		{
-			"bill":
+			bill=
 			{
 				duration=30,
 				source=""
 			},
-			"francis":
+			francis=
 			{
 				duration=30,
 				source=""
 			},
-			"louis":
+			louis=
 			{
 				duration=30,
 				source=""
 			},
-			"zoey":
+			zoey=
 			{
 				duration=30,
 				source=""
 			},
-			"nick":
+			nick=
 			{
 				duration=30,
 				source=""
 			},
-			"coach":
+			coach=
 			{
 				duration=30,
 				source=""
 			},
-			"ellis":
+			ellis=
 			{
 				duration=30,
 				source=""
 			},
-			"rochelle":
+			rochelle=
 			{
 				duration=30,
 				source=""
@@ -195,147 +195,147 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		// To reduce menu amount
 		_preferred_duration =
 		{
-			"bill":30,
-			"francis":30,
-			"louis":30,
-			"zoey":30,
-			"nick":30,
-			"coach":30,
-			"ellis":30,
-			"rochelle":30
+			bill=30,
+			francis=30,
+			louis=30,
+			zoey=30,
+			nick=30,
+			coach=30,
+			ellis=30,
+			rochelle=30
 		}
 
 		// Prop spawn_settings
 	 	_prop_spawn_settings_menu_type =
 		{
-			"bill":"all",
-			"francis":"all",
-			"louis":"all",
-			"zoey":"all",
-			"nick":"all",
-			"coach":"all",
-			"ellis":"all",
-			"rochelle":"all"
+			bill="all",
+			francis="all",
+			louis="all",
+			zoey="all",
+			nick="all",
+			coach="all",
+			ellis="all",
+			rochelle="all"
 		}
 
 		_prop_spawn_settings =
 		{
-			"bill":
+			bill=
 			{
-				"dynamic":	
+				dynamic=	
 				{
 					spawn_height=0
 				},
-				"physics":
+				physics=
 				{
 					spawn_height=0
 				},
-				"ragdoll":
+				ragdoll=
 				{
 					spawn_height=0
 				}
 			}
-			"francis":
+			francis=
 			{
-				"dynamic":
+				dynamic=
 				{
 					spawn_height=0
 				},
-				"physics":
+				physics=
 				{
 					spawn_height=0
 				},
-				"ragdoll":
+				ragdoll=
 				{
 					spawn_height=0
 				}
 			},
-			"louis":
+			louis=
 			{
-				"dynamic":
+				dynamic=
 				{
 					spawn_height=0
 				},
-				"physics":
+				physics=
 				{
 					spawn_height=0
 				},
-				"ragdoll":
+				ragdoll=
 				{
 					spawn_height=0
 				}
 			},
-			"zoey":
+			zoey=
 			{
-				"dynamic":
+				dynamic=
 				{
 					spawn_height=0
 				},
-				"physics":
+				physics=
 				{
 					spawn_height=0
 				},
-				"ragdoll":
+				ragdoll=
 				{
 					spawn_height=0
 				}
 			},
-			"nick":
+			nick=
 			{
-				"dynamic":
+				dynamic=
 				{
 					spawn_height=0
 				},
-				"physics":
+				physics=
 				{
 					spawn_height=0
 				},
-				"ragdoll":
+				ragdoll=
 				{
 					spawn_height=0
 				}
 			},
-			"coach":
+			coach=
 			{
-				"dynamic":
+				dynamic=
 				{
 					spawn_height=0
 				},
-				"physics":
+				physics=
 				{
 					spawn_height=0
 				},
-				"ragdoll":
+				ragdoll=
 				{
 					spawn_height=0
 				}
 			},
-			"ellis":
+			ellis=
 			{
-				"dynamic":
+				dynamic=
 				{
 					spawn_height=0
 				},
-				"physics":
+				physics=
 				{
 					spawn_height=0
 				},
-				"ragdoll":
+				ragdoll=
 				{
 					spawn_height=0
 				}
 			},
-			"rochelle":
+			rochelle=
 			{
-				"dynamic":
+				dynamic=
 				{
 					spawn_height=0
 				},
-				"physics":
+				physics=
 				{
 					spawn_height=0
 				},
-				"ragdoll":
+				ragdoll=
 				{
 					spawn_height=0
 				}
@@ -344,26 +344,26 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		
 		_looping =
 		{
-			"bill":false,
-			"francis":false,
-			"louis":false,
-			"zoey":false,
-			"nick":false,
-			"coach":false,
-			"ellis":false,
-			"rochelle":false
+			bill=false,
+			francis=false,
+			louis=false,
+			zoey=false,
+			nick=false,
+			coach=false,
+			ellis=false,
+			rochelle=false
 		}
 		
 		_loopingTable =
 		{
-			"bill":{timername="",character="",sequence={}},
-			"francis":{timername="",character="",sequence={}},
-			"louis":{timername="",character="",sequence={}},
-			"zoey":{timername="",character="",sequence={}},
-			"nick":{timername="",character="",sequence={}},
-			"coach":{timername="",character="",sequence={}},
-			"ellis":{timername="",character="",sequence={}},
-			"rochelle":{timername="",character="",sequence={}}
+			bill={timername="",character="",sequence={}},
+			francis={timername="",character="",sequence={}},
+			louis={timername="",character="",sequence={}},
+			zoey={timername="",character="",sequence={}},
+			nick={timername="",character="",sequence={}},
+			coach={timername="",character="",sequence={}},
+			ellis={timername="",character="",sequence={}},
+			rochelle={timername="",character="",sequence={}}
 		}
 	}
 	
@@ -690,67 +690,67 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			// Chat output state
 			_outputsEnabled = 
 			{
-				"bill":false,
-				"francis":false,
-				"louis":false,
-				"zoey":false,
-				"nick":false,
-				"coach":false,
-				"ellis":false,
-				"rochelle":false
+				bill=false,
+				francis=false,
+				louis=false,
+				zoey=false,
+				nick=false,
+				coach=false,
+				ellis=false,
+				rochelle=false
 			}
 
 			// Randomline stuff
 			_saveLastLine = 
 			{
-				"bill":true,
-				"francis":true,
-				"louis":true,
-				"zoey":true,
-				"nick":true,
-				"coach":true,
-				"ellis":true,
-				"rochelle":true
+				bill=true,
+				francis=true,
+				louis=true,
+				zoey=true,
+				nick=true,
+				coach=true,
+				ellis=true,
+				rochelle=true
 			}
 
 			_savedLine =
 			{
-				"bill":
+				bill=
 				{
 					target="",
 					source=""
 				},
-				"francis":
+				francis=
 				{
 					target="",
 					source=""
 				},
-				"louis":
+				louis=
 				{
 					target="",
 					source=""
 				},
-				"zoey":
+				zoey=
 				{
 					target="",
 					source=""
 				},
-				"nick":
+				nick=
 				{
 					target="",
 					source=""
 				},
-				"coach":
+				coach=
 				{
 					target="",
 					source=""
 				},
-				"ellis":
+				ellis=
 				{
 					target="",
 					source=""
 				},
-				"rochelle":
+				rochelle=
 				{
 					target="",
 					source=""
@@ -760,54 +760,54 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			// Particle stuff
 			_saveLastParticle = 
 			{
-				"bill":true,
-				"francis":true,
-				"louis":true,
-				"zoey":true,
-				"nick":true,
-				"coach":true,
-				"ellis":true,
-				"rochelle":true
+				bill=true,
+				francis=true,
+				louis=true,
+				zoey=true,
+				nick=true,
+				coach=true,
+				ellis=true,
+				rochelle=true
 			}
 
 			_savedParticle =
 			{
-				"bill":
+				bill=
 				{
 					duration=30,
 					source=""
 				},
-				"francis":
+				francis=
 				{
 					duration=30,
 					source=""
 				},
-				"louis":
+				louis=
 				{
 					duration=30,
 					source=""
 				},
-				"zoey":
+				zoey=
 				{
 					duration=30,
 					source=""
 				},
-				"nick":
+				nick=
 				{
 					duration=30,
 					source=""
 				},
-				"coach":
+				coach=
 				{
 					duration=30,
 					source=""
 				},
-				"ellis":
+				ellis=
 				{
 					duration=30,
 					source=""
 				},
-				"rochelle":
+				rochelle=
 				{
 					duration=30,
 					source=""
@@ -817,147 +817,147 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			// To reduce menu amount
 			_preferred_duration =
 			{
-				"bill":30,
-				"francis":30,
-				"louis":30,
-				"zoey":30,
-				"nick":30,
-				"coach":30,
-				"ellis":30,
-				"rochelle":30
+				bill=30,
+				francis=30,
+				louis=30,
+				zoey=30,
+				nick=30,
+				coach=30,
+				ellis=30,
+				rochelle=30
 			}
 
 			// Prop spawn_settings
 			_prop_spawn_settings_menu_type =
 			{
-				"bill":"all",
-				"francis":"all",
-				"louis":"all",
-				"zoey":"all",
-				"nick":"all",
-				"coach":"all",
-				"ellis":"all",
-				"rochelle":"all"
+				bill="all",
+				francis="all",
+				louis="all",
+				zoey="all",
+				nick="all",
+				coach="all",
+				ellis="all",
+				rochelle="all"
 			}
 
 			_prop_spawn_settings =
 			{
-				"bill":
+				bill=
 				{
-					"dynamic":	
+					dynamic=	
 					{
 						spawn_height=0
 					},
-					"physics":
+					physics=
 					{
 						spawn_height=0
 					},
-					"ragdoll":
+					ragdoll=
 					{
 						spawn_height=0
 					}
 				}
-				"francis":
+				francis=
 				{
-					"dynamic":
+					dynamic=
 					{
 						spawn_height=0
 					},
-					"physics":
+					physics=
 					{
 						spawn_height=0
 					},
-					"ragdoll":
+					ragdoll=
 					{
 						spawn_height=0
 					}
 				},
-				"louis":
+				louis=
 				{
-					"dynamic":
+					dynamic=
 					{
 						spawn_height=0
 					},
-					"physics":
+					physics=
 					{
 						spawn_height=0
 					},
-					"ragdoll":
+					ragdoll=
 					{
 						spawn_height=0
 					}
 				},
-				"zoey":
+				zoey=
 				{
-					"dynamic":
+					dynamic=
 					{
 						spawn_height=0
 					},
-					"physics":
+					physics=
 					{
 						spawn_height=0
 					},
-					"ragdoll":
+					ragdoll=
 					{
 						spawn_height=0
 					}
 				},
-				"nick":
+				nick=
 				{
-					"dynamic":
+					dynamic=
 					{
 						spawn_height=0
 					},
-					"physics":
+					physics=
 					{
 						spawn_height=0
 					},
-					"ragdoll":
+					ragdoll=
 					{
 						spawn_height=0
 					}
 				},
-				"coach":
+				coach=
 				{
-					"dynamic":
+					dynamic=
 					{
 						spawn_height=0
 					},
-					"physics":
+					physics=
 					{
 						spawn_height=0
 					},
-					"ragdoll":
+					ragdoll=
 					{
 						spawn_height=0
 					}
 				},
-				"ellis":
+				ellis=
 				{
-					"dynamic":
+					dynamic=
 					{
 						spawn_height=0
 					},
-					"physics":
+					physics=
 					{
 						spawn_height=0
 					},
-					"ragdoll":
+					ragdoll=
 					{
 						spawn_height=0
 					}
 				},
-				"rochelle":
+				rochelle=
 				{
-					"dynamic":
+					dynamic=
 					{
 						spawn_height=0
 					},
-					"physics":
+					physics=
 					{
 						spawn_height=0
 					},
-					"ragdoll":
+					ragdoll=
 					{
 						spawn_height=0
 					}
@@ -966,26 +966,43 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 
 			_looping =
 			{
-				"bill":false,
-				"francis":false,
-				"louis":false,
-				"zoey":false,
-				"nick":false,
-				"coach":false,
-				"ellis":false,
-				"rochelle":false
+				bill=false,
+				francis=false,
+				louis=false,
+				zoey=false,
+				nick=false,
+				coach=false,
+				ellis=false,
+				rochelle=false
 			}
 
 			_loopingTable =
 			{
-				"bill":{timername="",character="",sequence={}},
-				"francis":{timername="",character="",sequence={}},
-				"louis":{timername="",character="",sequence={}},
-				"zoey":{timername="",character="",sequence={}},
-				"nick":{timername="",character="",sequence={}},
-				"coach":{timername="",character="",sequence={}},
-				"ellis":{timername="",character="",sequence={}},
-				"rochelle":{timername="",character="",sequence={}}
+				bill={timername="",character="",sequence={}},
+				francis={timername="",character="",sequence={}},
+				louis={timername="",character="",sequence={}},
+				zoey={timername="",character="",sequence={}},
+				nick={timername="",character="",sequence={}},
+				coach={timername="",character="",sequence={}},
+				ellis={timername="",character="",sequence={}},
+				rochelle={timername="",character="",sequence={}}
+			}
+
+			_propageddon_state = 0
+
+			_propageddon_args =
+			{
+				maxradius = 850				// maximum radius to apply forces
+				updaterate = 0.7			// how often to update entity list in seconds
+				mindelay = 0.5				// minimum delay to apply the velocity vector
+				maxdelayoffset = 2.5   		// maximum delay to apply the velocity vector
+				minspeed = 800				// minimum speed
+				maxspeed = 20000    		// maximum speed
+				phys_dmgmin = 5			    // minimum damage done to physics and door objects
+				phys_dmgmax = 100			// maximum damage done to physics and door objects
+				dmgprob = 0.3				// probability of entity getting damaged
+				entprob = 0.65				// probability of an entity being chosen within the radius
+				debug = 1					// Print which entities are effected
 			}
 		}
 	}
@@ -1003,26 +1020,26 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 
 		AdminSystem.Vars._looping =
 		{
-			"bill":false,
-			"francis":false,
-			"louis":false,
-			"zoey":false,
-			"nick":false,
-			"coach":false,
-			"ellis":false,
-			"rochelle":false
+			bill=false,
+			francis=false,
+			louis=false,
+			zoey=false,
+			nick=false,
+			coach=false,
+			ellis=false,
+			rochelle=false
 		}
 		
 		AdminSystem.Vars._loopingTable =
 		{
-			"bill":{timername="",character="",sequence={}},
-			"francis":{timername="",character="",sequence={}},
-			"louis":{timername="",character="",sequence={}},
-			"zoey":{timername="",character="",sequence={}},
-			"nick":{timername="",character="",sequence={}},
-			"coach":{timername="",character="",sequence={}},
-			"ellis":{timername="",character="",sequence={}},
-			"rochelle":{timername="",character="",sequence={}}
+			bill={timername="",character="",sequence={}},
+			francis={timername="",character="",sequence={}},
+			louis={timername="",character="",sequence={}},
+			zoey={timername="",character="",sequence={}},
+			nick={timername="",character="",sequence={}},
+			coach={timername="",character="",sequence={}},
+			ellis={timername="",character="",sequence={}},
+			rochelle={timername="",character="",sequence={}}
 		}
 		printl("[Custom-Loop] Stopped all custom loops");
 	}
@@ -1226,6 +1243,12 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	catch(e){printl("[Custom-Warning] OnRoundStart reported: "+e);}
 	
 	printl("[Custom] Loaded custom responses created by admins");
+
+	if(AdminSystem.Vars._propageddon_state == 1)
+	{
+		::VSLib.Timers.AddTimer(3,false,Utils.SayToAll,"Madness continues...");
+		::VSLib.Timers.AddTimerByName("propageddon",AdminSystem.Vars._propageddon_args.updaterate, true, _ApocalypseTimer,{});	
+	}
 }
 
 function Notifications::OnModeStart::AdminLoadFiles( gamemode )
@@ -2096,6 +2119,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			break;
 		
 		}
+		case "admin_var":
+		{
+			AdminSystem.Admin_varCmd( player, args );
+			break;
+		}
 		case "loop":
 		{
 			AdminSystem.Speak_loopCmd( player, args );
@@ -2141,6 +2169,16 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.DeleteSequenceCmd( player, args );
 			break;
 		}
+		case "start_the_apocalypse":
+		{
+			AdminSystem.Start_the_apocalypseCmd(player,args);
+			break;
+		}
+		case "pause_the_apocalypse":
+		{
+			AdminSystem.Pause_the_apocalypseCmd(player,args);
+			break;
+		}
 		default:
 			break;
 	}
@@ -2155,8 +2193,8 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
  */
 enum SCENES
 {
-	ORDERED = 0,
-	SHUFFLED = 1,
+	ORDERED = 0
+	SHUFFLED = 1
 	RANDOM = 2
 }
 
@@ -2275,7 +2313,7 @@ enum SCENES
 			enabled = true
 			sequence =
 			{
-				"smokboomer1":	
+				smokboomer1=
 				{   // "Well hell, let's all- Smok- Booooomer!"
 					scenes=["warnboomer03.vcd","warnsmoker03.vcd","followme08.vcd"]
 					delays=[2.45,1.7,0]
@@ -2297,7 +2335,7 @@ enum SCENES
 			enabled = true
 			sequence =
 			{	
-				"ilovecrack1":
+				ilovecrack1=
 				{   // "Man I hate them zombies but I loooooove- Crack!"
 					scenes=["meleeresponse08.vcd","boomerjar17.vcd"]
 					delays=[2.55,0]
@@ -2311,6 +2349,242 @@ enum SCENES
 	rochelle = {}
 }
 
+/*
+ * @authors rhino
+ * View or Update vars in AdminSystem.Vars (BE CAREFUL WITH THIS!)
+ */
+::AdminSystem.Admin_varCmd <- function (player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local varname = GetArgument(1); 
+	if(varname == null)
+		return;
+
+	if(varname.find(".") != null)
+	{
+		local var_array = split(varname,".");;
+		local val = AdminSystem.Vars;
+		local currpath = "AdminSystem.Vars";
+		foreach(key in var_array)
+		{
+			if(key in val)
+			{val = val[key];currpath += "."+key;}
+			else
+			{Utils.SayToAll("Cant find key: "+key+" in "+currpath+", creating one...");val[key] <- null;return;}
+		}
+		local newval = GetArgument(2);
+		if(newval == null)
+		{	
+			if(typeof val == "table")
+			{
+				Utils.SayToAll(varname+" is a table... Printed in console");
+				Utils.PrintTable(val);
+				return;
+			}
+			else if(typeof val == "array")
+			{
+				Utils.SayToAll(varname+" is "+Utils.ArrayString(val));
+				return;
+			}
+			else
+			{
+				Utils.SayToAll(varname+" is "+val);return;	
+			}
+		}
+		else
+		{
+			Utils.SayToAll("Executing: AdminSystem.Vars."+varname+"="+newval);
+			compilestring("AdminSystem.Vars."+varname+"="+newval)();
+		}
+	}
+	else
+	{
+		if(varname in AdminSystem.Vars)
+		{
+			local newval = GetArgument(2);
+			if(newval == null)
+			{	
+				if(typeof AdminSystem.Vars[varname] == "table")
+				{
+					Utils.SayToAll(varname+" is a table... Printed in console");
+					Utils.PrintTable(AdminSystem.Vars[varname]);
+					return;
+				}
+				else if(typeof AdminSystem.Vars[varname] == "array")
+				{
+					Utils.SayToAll(varname+" is "+Utils.ArrayString(AdminSystem.Vars[varname]));
+					return;
+				}
+				else
+				{
+					Utils.SayToAll(varname+" is "+AdminSystem.Vars[varname]);return;	
+				}
+			}
+			else
+			{
+				Utils.SayToAll("Executing: AdminSystem.Vars."+varname+"="+newval);
+				compilestring("AdminSystem.Vars."+varname+"="+newval)();
+			}
+		}
+		else
+		{Utils.SayToAll("Cant find key: "+key+" in AdminSystem.Vars, creating one...");AdminSystem.Vars[varname] <- null;return;}
+	}
+}
+
+
+::AdminSystem.Vars._propageddon_state <- 0;
+
+::AdminSystem.Vars._propageddon_args <-
+{
+	maxradius = 850				// maximum radius to apply forces
+	updaterate = 0.7			// how often to update entity list in seconds
+	mindelay = 0.5				// minimum delay to apply propageddon function
+	maxdelayoffset = 2.5  		// maximum delay to apply propageddon function
+	minspeed = 800				// minimum speed
+	maxspeed = 24000    		// maximum speed
+	phys_dmgmin = 5			    // minimum damage done to entity
+	phys_dmgmax = 100			// maximum damage done to entity
+	dmgprob = 0.3				// probability of entity getting damaged
+	entprob = 0.65				// probability of an entity being chosen within the radius
+	debug = 1					// Print which entities are effected
+}
+
+/*
+ * @authors rhino
+ * Execute each apocalypse tick
+ */
+::_ApocalypseTimer <- function (...)
+{	
+	if(AdminSystem.Vars._propageddon_state == 1)
+	{	
+		local unluckyone = null;
+		foreach(survivor in Players.AliveSurvivors())
+		{
+			if((rand().tofloat()/RAND_MAX) < 0.25)
+			{
+				unluckyone = survivor;
+				break;
+			}
+		}
+		if(unluckyone != null)
+		{
+			local apocargs = AdminSystem.Vars._propageddon_args;
+			local entites = VSLib.EasyLogic.Objects.AroundRadius(unluckyone.GetPosition(),apocargs.maxradius);
+
+			::VSLib.Timers.AddTimer(apocargs.mindelay+rand()%apocargs.maxdelayoffset, false, _Propageddon,entites);
+		}
+	}
+	else
+	{
+		if ("propageddon" in ::VSLib.Timers.TimersID)
+		{
+			::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID["propageddon"]);
+			delete ::VSLib.Timers.TimersID["propageddon"];
+		}
+		local endmsg = "Apocalypse has been postponed..."+(((rand()%4) == 1)?" or has it ?":" ");
+		Utils.SayToAll(endmsg);
+	}
+
+}
+
+/* @authors rhino
+ * Apply forces to random entites from the table
+ */
+::_Propageddon <- function (enttbl)
+{	
+	local apocargs = AdminSystem.Vars._propageddon_args;
+	local prob = apocargs.entprob;
+	local dmgprob = apocargs.dmgprob;
+	local minspeed = apocargs.minspeed;
+	local maxspeed = (apocargs.maxspeed - minspeed);
+	local mindmg = apocargs.phys_dmgmin;
+	local maxdmg = (apocargs.phys_dmgmax - mindmg);
+	local pushvec = null;
+	local entclass = null;
+	local pushedents = [];
+	local brokenents = [];
+	local useddoors = [];
+	local debug = apocargs.debug;
+	
+	foreach(id,ent in enttbl)
+	{	
+		if((rand().tofloat()/RAND_MAX) < prob)
+		{	
+			entclass = ent.GetClassname();
+			if(entclass == "prop_physics" || entclass == "prop_physics_multiplayer" || entclass == "func_physbox" || entclass == "prop_car_alarm")
+			{ 	
+				if((rand().tofloat()/RAND_MAX) < dmgprob)
+					ent.Hurt(mindmg+rand()%maxdmg);
+
+				pushvec = QAngle(rand()%360,rand()%360,rand()%360).Forward();
+				pushvec = pushvec.Scale((minspeed+rand()%maxspeed).tofloat()/pushvec.Length())
+				pushedents.append(ent.GetIndex())
+				ent.Push(pushvec);
+			}
+			else if(entclass == "func_breakable" || entclass == "func_breakable_surf")
+			{	
+				if((rand().tofloat()/RAND_MAX) < dmgprob)
+					ent.Hurt(mindmg+rand()%maxdmg);
+
+				ent.Break();
+				brokenents.append(ent.GetIndex())
+			}
+			else if(entclass == "prop_door_rotating" || entclass == "prop_door_rotating_checkpoint")
+			{		
+				if((rand().tofloat()/RAND_MAX) < dmgprob)
+					ent.Hurt(mindmg+rand()%maxdmg);
+
+				ent.Input("use","");
+				useddoors.append(ent.GetIndex())
+			}
+		}
+	}
+
+	if(debug == 1)
+	{
+		if(pushedents.len() != 0)
+			printl("PUSHED\n"+Utils.ArrayString(pushedents));
+
+		if(brokenents.len() != 0)
+			printl("BROKEN\n"+Utils.ArrayString(brokenents));
+
+		if(useddoors.len() != 0)
+			printl("OPENED\n"+Utils.ArrayString(useddoors));
+	}
+	
+} 
+
+/* @authors rhino
+ * monkaOMEGA
+ */
+::AdminSystem.Start_the_apocalypseCmd <- function (player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	if(AdminSystem.Vars._propageddon_state == 0)
+	{
+		Utils.SayToAll("Something doesn't feel right...");
+		AdminSystem.Vars._propageddon_state = 1;
+		::VSLib.Timers.AddTimerByName("propageddon",AdminSystem.Vars._propageddon_args.updaterate, true, _ApocalypseTimer,{});	
+	}
+}
+
+/* @authors rhino
+ * Pauses the apocalypse... or does it ?
+ */
+::AdminSystem.Pause_the_apocalypseCmd <- function (player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	if(AdminSystem.Vars._propageddon_state == 1)
+	{
+		AdminSystem.Vars._propageddon_state = 0;
+	}
+}
 /*
  * @authors rhino
  * Speak the given line for given length
@@ -2807,7 +3081,7 @@ enum SCENES
 		if(!(admin in responsetable))
 		{
 			printl("[Custom] Creating default response table for new admin: "+admin);
-			responsetable[admin] <- {"character_name":{"sequence_name":{"scenes":["blank"],"delays":[0]}}};
+			responsetable[admin] <- {character_name={sequence_name={scenes=["blank"],delays=[0]}}};
 		}
 	}
 
@@ -2893,7 +3167,7 @@ enum SCENES
 			}
 			else
 			{
-				responsetable[steamid][charname][sequencename] <- {"scenes":[],"delays":[]}
+				responsetable[steamid][charname][sequencename] <- {scenes=[],delays=[]}
 			}	
 
 			local i = 2
@@ -2919,7 +3193,7 @@ enum SCENES
 		}
 		else
 		{
-			responsetable[steamid][character][sequencename] <- {"scenes":[],"delays":[]}
+			responsetable[steamid][character][sequencename] <- {scenes=[],delays=[]}
 		}	
 
 		local i = 2
@@ -3203,6 +3477,11 @@ function Notifications::OnAdrenalineUsed::_SpeakWhenUsedAdrenalineCondition(ent,
 }
 
 /////////////////////////////////////////////////////////////////
+function ChatTriggers::admin_var( player, args, text )
+{
+	AdminSystem.Admin_varCmd( player, args );
+}
+/////////////////////////////////////////////////////////////////
 function ChatTriggers::loop( player, args, text )
 {
 	AdminSystem.Speak_loopCmd( player, args );
@@ -3238,6 +3517,15 @@ function ChatTriggers::create_seq( player, args, text )
 function ChatTriggers::delete_seq( player, args, text )
 {
 	AdminSystem.DeleteSequenceCmd( player, args );
+}
+/////////////////////////////////////////////////////////////////
+function ChatTriggers::start_the_apocalypse( player, args, text )
+{
+	AdminSystem.Start_the_apocalypseCmd( player, args );
+}
+function ChatTriggers::pause_the_apocalypse( player, args, text )
+{
+	AdminSystem.Pause_the_apocalypseCmd( player, args );
 }
 /////////////////////////////////////////////////////////////////
 
