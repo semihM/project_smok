@@ -154,4 +154,9 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
        seq_edit Nick test_seq >0 scene>hurrah01
 ```
 
+
+- **start_the_apocalypse** : Uh oh
+
+- **pause_the_apocalypse** : Let the world have a break from the madness
+
 - **and more...**
