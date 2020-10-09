@@ -6176,10 +6176,9 @@ if ( Director.GetGameMode() == "holdout" )
 	Utils.PrintTable(keyvals);
 
 	// Apply flags and effects after spawning
-	// TO DO : DOESNT WORK
 	if(spawnflags!=null)
 	{
-		newEntity.SetSpawnFlags(spawnflags);
+		newEntity.SetFlags(spawnflags);
 	}
 
 	if(effects!=null)
@@ -9411,7 +9410,13 @@ if ( Director.GetGameMode() == "holdout" )
 	local key = GetArgument(1);
 	local val = GetArgument(2);
 	
-	ent.SetKeyValue(key,val);
+	if(key == "effects")
+		ent.SetEffects(val);
+	else if(key == "spawnflags")
+		ent.SetFlags(val);
+	else
+		ent.SetKeyValue(key,val);
+		
 	if (AdminSystem.Vars._outputsEnabled[name])
 	{Utils.SayToAll(name+"->Changed key:"+key+" value to:"+val+" of "+ent.GetName());}
 	else
