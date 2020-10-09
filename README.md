@@ -159,4 +159,12 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
 
 - **pause_the_apocalypse** : Let the world have a break from the madness
 
+- **ladder_team** : Change teams of ladders
+```cpp
+       //Overloads:
+       // "reset" to reset ladders back to their default teams
+       ladder_team {team : (all,survivor,infected,spectator,l4d1) | reset}
+    
+```
+
 - **and more...**
