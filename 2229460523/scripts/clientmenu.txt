@@ -25246,6 +25246,11 @@
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_downtown/ironing_board.mdl;show_menu props_urban3"
 					"label"      " Ironing board"
 			}
+			"4"
+			{
+					"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/big_wheel001.mdl;show_menu props_urban3"
+                    "label"		 " Tricycle" 
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func cleanup;show_menu props_urban3"
@@ -28651,8 +28656,8 @@
             }
 			"3"
 			{
-					"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/big_wheel001.mdl;show_menu props_vehicles6"
-                    "label"		 " Tricycle" 
+					"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_waterfront/tour_bus.mdl;show_menu props_vehicles6"
+                    "label"		 " Midnight Riders Tour Bus" 
 			}
             "4"
 			{
@@ -30976,6 +30981,11 @@
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_downtown/ironing_board.mdl;show_menu phys_props_urban3"
 					"label"      " Ironing board"
+			}
+			"4"
+			{
+					"command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/big_wheel001.mdl;show_menu phys_props_urban3"
+                    "label"		 " Tricycle" 
 			}
 			"7"
 			{
@@ -34385,8 +34395,8 @@
             }
 			"3"
 			{
-					"command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/big_wheel001.mdl;show_menu phys_props_vehicles6"
-                    "label"		 " Tricycle" 
+					"command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_waterfront/tour_bus.mdl;show_menu phys_props_vehicles6"
+                    "label"		 " Midnight Riders Tour Bus" 
 			}
             "4"
 			{
