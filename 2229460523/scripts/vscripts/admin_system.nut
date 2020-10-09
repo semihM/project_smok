@@ -993,17 +993,21 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			_propageddon_args =
 			{
 				maxradius = 850				// maximum radius to apply forces
-				updaterate = 0.7			// how often to update entity list in seconds
-				mindelay = 0.5				// minimum delay to apply the velocity vector
-				maxdelayoffset = 2.5   		// maximum delay to apply the velocity vector
+				updaterate = 1				// how often to update entity list in seconds
+				mindelay = 0.3				// minimum delay to apply the velocity vector
+				maxdelayoffset = 2   		// maximum delay to apply the velocity vector
 				minspeed = 800				// minimum speed
 				maxspeed = 20000    		// maximum speed
-				phys_dmgmin = 5			    // minimum damage done to physics and door objects
-				phys_dmgmax = 100			// maximum damage done to physics and door objects
+				dmgmin = 5			    // minimum damage done to physics and door objects
+				dmgmax = 100			// maximum damage done to physics and door objects
 				dmgprob = 0.3				// probability of entity getting damaged
+				breakprob = 0.1				// probability of entity being broken
 				entprob = 0.65				// probability of an entity being chosen within the radius
 				debug = 1					// Print which entities are effected
 			}
+
+			_ladderteams = {}
+
 		}
 	}
 	else
@@ -1042,6 +1046,11 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			rochelle={timername="",character="",sequence={}}
 		}
 		printl("[Custom-Loop] Stopped all custom loops");
+
+		if(!("_ladderteams" in AdminSystem.Vars))
+			AdminSystem.Vars._ladderteams <- {};
+		else
+			AdminSystem.Vars._ladderteams = {};
 	}
 	
 	foreach(name,optiontable in AdminSystem.Vars._CustomResponseOptions)
@@ -2119,6 +2128,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			break;
 		
 		}
+		case "ladder_team":
+		{
+			AdminSystem.Ladder_teamCmd( player, args );
+			break;
+		}
 		case "admin_var":
 		{
 			AdminSystem.Admin_varCmd( player, args );
@@ -2433,20 +2447,83 @@ enum SCENES
 	}
 }
 
+::AdminSystem.Ladder_teamCmd <- function (player,arg)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local team = GetArgument(1);
+	if(team==null)
+		return;
+
+	local teamtable =
+	{	
+		all = "0"
+		spectator = "1"
+		survivor = "2"
+		infected = "3"
+		l4d1 = "4"
+	}
+
+	// Reset teams back to defaults
+	if(team == "reset")	
+	{	
+		// No reset needed
+		if(!("_ladderteams" in AdminSystem.Vars))
+			return;
+
+		// Reset teams
+		foreach(ldr in ::VSLib.EasyLogic.Objects.OfClassname("func_simpleladder"))
+		{	
+			ldr.Input("setteam",AdminSystem.Vars._ladderteams[ldr.GetIndex()]);
+		}
+		printl("Resetting ladder teams");
+		return;
+	}
+
+	// Set new team to all ladders
+	if(!(team in teamtable))
+		return;
+
+	team = teamtable[team];
+	
+	// Cache if first time then change teams
+	if(!("_ladderteams" in AdminSystem.Vars))
+	{	
+		AdminSystem.Vars._ladderteams <- {};
+		foreach(ldr in ::VSLib.EasyLogic.Objects.OfClassname("func_simpleladder"))
+		{	
+			AdminSystem.Vars._ladderteams[ldr.GetIndex()] <- ldr.GetTeam().tostring();
+			ldr.Input("setteam",team)
+		}
+		printl("Caching ladder teams...");
+	}
+	else
+	{
+		foreach(ldr in ::VSLib.EasyLogic.Objects.OfClassname("func_simpleladder"))
+		{
+			ldr.Input("setteam",team)
+		}
+	}
+	printl("Changed ladder teams to "+team);
+	
+	
+}
 
 ::AdminSystem.Vars._propageddon_state <- 0;
 
 ::AdminSystem.Vars._propageddon_args <-
 {
 	maxradius = 850				// maximum radius to apply forces
-	updaterate = 0.7			// how often to update entity list in seconds
-	mindelay = 0.5				// minimum delay to apply propageddon function
-	maxdelayoffset = 2.5  		// maximum delay to apply propageddon function
+	updaterate = 1				// how often to update entity list in seconds
+	mindelay = 0.3				// minimum delay to apply propageddon function
+	maxdelayoffset = 2  		// maximum delay to apply propageddon function
 	minspeed = 800				// minimum speed
 	maxspeed = 24000    		// maximum speed
-	phys_dmgmin = 5			    // minimum damage done to entity
-	phys_dmgmax = 100			// maximum damage done to entity
+	dmgmin = 5			    	// minimum damage done to entity
+	dmgmax = 100				// maximum damage done to entity
 	dmgprob = 0.3				// probability of entity getting damaged
+	breakprob = 0.1				// probability of entity being broken
 	entprob = 0.65				// probability of an entity being chosen within the radius
 	debug = 1					// Print which entities are effected
 }
@@ -2459,22 +2536,16 @@ enum SCENES
 {	
 	if(AdminSystem.Vars._propageddon_state == 1)
 	{	
-		local unluckyone = null;
-		foreach(survivor in Players.AliveSurvivors())
+		local unluckyone = Utils.GetRandValueFromArray(Players.AliveSurvivors());
+		
+		if(unluckyone == null)
 		{
-			if((rand().tofloat()/RAND_MAX) < 0.25)
-			{
-				unluckyone = survivor;
-				break;
-			}
+			return;
 		}
-		if(unluckyone != null)
-		{
-			local apocargs = AdminSystem.Vars._propageddon_args;
-			local entites = VSLib.EasyLogic.Objects.AroundRadius(unluckyone.GetPosition(),apocargs.maxradius);
+		local apocargs = AdminSystem.Vars._propageddon_args;
+		local entites = VSLib.EasyLogic.Objects.AroundRadius(unluckyone.GetPosition(),apocargs.maxradius);
 
-			::VSLib.Timers.AddTimer(apocargs.mindelay+rand()%apocargs.maxdelayoffset, false, _Propageddon,entites);
-		}
+		::VSLib.Timers.AddTimer(apocargs.mindelay+rand()%apocargs.maxdelayoffset, false, _Propageddon,entites);
 	}
 	else
 	{
@@ -2497,62 +2568,116 @@ enum SCENES
 	local apocargs = AdminSystem.Vars._propageddon_args;
 	local prob = apocargs.entprob;
 	local dmgprob = apocargs.dmgprob;
+	local breakprob = apocargs.breakprob;
 	local minspeed = apocargs.minspeed;
 	local maxspeed = (apocargs.maxspeed - minspeed);
-	local mindmg = apocargs.phys_dmgmin;
-	local maxdmg = (apocargs.phys_dmgmax - mindmg);
+	local mindmg = apocargs.dmgmin;
+	local maxdmg = (apocargs.dmgmax - mindmg);
+
 	local pushvec = null;
 	local entclass = null;
-	local pushedents = [];
-	local brokenents = [];
-	local useddoors = [];
+	local entindex = null;
+
+	local pushedents = {};
+	local brokenents = {};
+	local useddoors = {};
+	local damagedents = {};
+	local animatedents = {};
+
 	local debug = apocargs.debug;
 	
-	foreach(id,ent in enttbl)
-	{	
-		if((rand().tofloat()/RAND_MAX) < prob)
+	try
+	{
+		foreach(id,ent in enttbl)
 		{	
-			entclass = ent.GetClassname();
-			if(entclass == "prop_physics" || entclass == "prop_physics_multiplayer" || entclass == "func_physbox" || entclass == "prop_car_alarm")
-			{ 	
-				if((rand().tofloat()/RAND_MAX) < dmgprob)
-					ent.Hurt(mindmg+rand()%maxdmg);
-
-				pushvec = QAngle(rand()%360,rand()%360,rand()%360).Forward();
-				pushvec = pushvec.Scale((minspeed+rand()%maxspeed).tofloat()/pushvec.Length())
-				pushedents.append(ent.GetIndex())
-				ent.Push(pushvec);
-			}
-			else if(entclass == "func_breakable" || entclass == "func_breakable_surf")
+			if((rand().tofloat()/RAND_MAX) < prob )
 			{	
-				if((rand().tofloat()/RAND_MAX) < dmgprob)
-					ent.Hurt(mindmg+rand()%maxdmg);
+				if(!ent.IsEntityValid())
+				{
+					continue;
+				}
 
-				ent.Break();
-				brokenents.append(ent.GetIndex())
-			}
-			else if(entclass == "prop_door_rotating" || entclass == "prop_door_rotating_checkpoint")
-			{		
-				if((rand().tofloat()/RAND_MAX) < dmgprob)
-					ent.Hurt(mindmg+rand()%maxdmg);
+				entclass = ent.GetClassname();
+				entindex = ent.GetIndex();
 
-				ent.Input("use","");
-				useddoors.append(ent.GetIndex())
+				if(entclass == "prop_physics" || entclass == "prop_physics_multiplayer"  || entclass == "prop_car_alarm" || entclass == "prop_vehicle" || entclass == "prop_physics_override" || entclass == "func_physbox" ||  entclass == "func_physbox_multiplayer" || entclass == "prop_ragdoll" )
+				{ 	
+					if((rand().tofloat()/RAND_MAX) < dmgprob)
+					{
+						if(ent.GetHealth() > 0)
+						{
+							ent.Hurt(mindmg+rand()%maxdmg);
+							damagedents[entindex] <- entclass;
+						}
+					}	
+
+					pushvec = QAngle(rand()%360,rand()%360,rand()%360).Forward();
+					pushvec = pushvec.Scale((minspeed+rand()%maxspeed).tofloat()/pushvec.Length())
+					
+					ent.Push(pushvec);
+
+					pushedents[entindex] <- entclass;
+				}
+				else if(entclass == "func_breakable" || entclass == "func_breakable_surf" || entclass == "prop_wall_breakable" )
+				{	
+					if((rand().tofloat()/RAND_MAX) < dmgprob)
+					{	
+						if(ent.GetHealth() > 0)
+						{
+							ent.Hurt(mindmg+rand()%maxdmg);
+							damagedents[entindex] <- entclass;
+						}
+					}
+					else if((rand().tofloat()/RAND_MAX) < breakprob)
+					{
+						ent.Break();
+						brokenents[entindex] <- entclass;
+					}	
+				}
+				else if(entclass == "prop_door_rotating" || entclass == "prop_door_rotating_checkpoint" || entclass == "func_door" || entclass == "func_door_rotating" || entclass == "func_rotating")
+				{		
+					if((rand().tofloat()/RAND_MAX) < dmgprob)
+					{
+						if(ent.GetHealth() > 0)
+						{
+							ent.Hurt(mindmg+rand()%maxdmg);
+							damagedents[entindex] <- entclass;
+						}
+					}	
+					ent.Input("toggle","");
+					useddoors[entindex] <- entclass;
+				}
+				else if(entclass == "prop_health_cabinet")
+				{		
+					if((rand().tofloat()/RAND_MAX) < 0.5)
+						ent.Input("setanimation","idle");	
+					else
+						ent.Input("setanimation","open");
+
+					animatedents[entindex] <- entclass;
+				}
 			}
 		}
+
+		if(debug == 1)
+		{	
+			printl("-----------------------------");
+			if(pushedents.len() != 0)
+				{printl("PUSHED\n");Utils.PrintTable(pushedents);}
+
+			if(brokenents.len() != 0)
+				{printl("BROKEN\n");Utils.PrintTable(brokenents);}
+
+			if(useddoors.len() != 0)
+				{printl("OPENED\n");Utils.PrintTable(useddoors);}
+
+			if(damagedents.len() != 0)
+				{printl("DAMAGED\n");Utils.PrintTable(damagedents);}
+		}
+	
 	}
-
-	if(debug == 1)
-	{
-		if(pushedents.len() != 0)
-			printl("PUSHED\n"+Utils.ArrayString(pushedents));
-
-		if(brokenents.len() != 0)
-			printl("BROKEN\n"+Utils.ArrayString(brokenents));
-
-		if(useddoors.len() != 0)
-			printl("OPENED\n"+Utils.ArrayString(useddoors));
-	}
+	catch(e)
+	{printl("ERROR:" +e);}
 	
 } 
 
@@ -3737,6 +3862,11 @@ function ChatTriggers::ent_fire( player, args, text )
 function ChatTriggers::ent_rotate( player, args, text )
 {
 	AdminSystem.EntRotateCmd( player, args );
+}
+
+function ChatTriggers::ladder_team( player, args, text )
+{
+	AdminSystem.Ladder_teamCmd( player, args );
 }
 
 function ChatTriggers::ent_push( player, args, text )
