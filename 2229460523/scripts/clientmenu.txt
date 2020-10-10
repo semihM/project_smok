@@ -20841,37 +20841,37 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_move,50,backward;show_menu ent_move_menu_backward1"
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1,backward;show_menu ent_move_menu_backward1"
 				"label"			" 1 unit"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_move,200,backward;show_menu ent_move_menu_backward1"
+				"command"		 "play buttons/button14;scripted_user_func ent_move,5,backward;show_menu ent_move_menu_backward1"
 				"label"			" 5 units"
 			}
 			"3"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_move,500,backward;show_menu ent_move_menu_backward1"
+				"command"		 "play buttons/button14;scripted_user_func ent_move,25,backward;show_menu ent_move_menu_backward1"
 				"label"			" 25 units"
 			}
 			"4"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_move,1000,backward;show_menu ent_move_menu_backward1"
+				"command"		 "play buttons/button14;scripted_user_func ent_move,100,backward;show_menu ent_move_menu_backward1"
 				"label"			" 100 units"
 			}
 			"5"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_move,2500,backward;show_menu ent_move_menu_backward1"
+				"command"		 "play buttons/button14;scripted_user_func ent_move,250,backward;show_menu ent_move_menu_backward1"
 				"label"			" 250 units"
 			}
 			"6"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_move,7500,backward;show_menu ent_move_menu_backward1"
+				"command"		 "play buttons/button14;scripted_user_func ent_move,500,backward;show_menu ent_move_menu_backward1"
 				"label"			" 500 units"
 			}
 			"7"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_move,25000,backward;show_menu ent_move_menu_backward1"
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1000,backward;show_menu ent_move_menu_backward1"
 				"label"			" 1000 units"
 			}
 			"8"
