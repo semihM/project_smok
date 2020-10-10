@@ -365,6 +365,8 @@ Convars.SetValue( "precache_all_survivors", "1" );
 			ellis={timername="",character="",sequence={}},
 			rochelle={timername="",character="",sequence={}}
 		}
+		
+		_spawnedPianoKeys = {}
 	}
 	
 	ZombieModels =
@@ -1047,10 +1049,21 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 		}
 		printl("[Custom-Loop] Stopped all custom loops");
 
+		// Ladder teams
 		if(!("_ladderteams" in AdminSystem.Vars))
 			AdminSystem.Vars._ladderteams <- {};
 		else
 			AdminSystem.Vars._ladderteams = {};
+		
+		printl("[Custom-Loop] Reset all ladder teams");
+
+		// Piano keys
+		if(!("_spawnedPianoKeys" in AdminSystem.Vars))
+			AdminSystem.Vars._spawnedPianoKeys <- {};
+		else
+			AdminSystem.Vars._spawnedPianoKeys = {};
+		
+		printl("[Custom-Loop] Reset all spawned piano keys");
 	}
 	
 	foreach(name,optiontable in AdminSystem.Vars._CustomResponseOptions)
@@ -1899,6 +1912,16 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		case "particle":
 		{
 			AdminSystem.ParticleCmd( player, args );
+			break;
+		}
+		case "piano_keys":
+		{
+			AdminSystem.Piano_keysCmd( player, args );
+			break;
+		}
+		case "remove_piano_keys":
+		{
+			AdminSystem.Remove_piano_keysCmd( player, args );
 			break;
 		}
 		case "timescale":
@@ -3762,6 +3785,16 @@ function ChatTriggers::melee( player, args, text )
 function ChatTriggers::particle( player, args, text )
 {
 	AdminSystem.ParticleCmd( player, args );
+}
+
+function ChatTriggers::piano_keys( player, args, text )
+{
+	AdminSystem.Piano_keysCmd( player, args );
+}
+
+function ChatTriggers::remove_piano_keys( player, args, text )
+{
+	AdminSystem.Remove_piano_keysCmd( player, args );
 }
 
 function ChatTriggers::barrel( player, args, text )
@@ -5779,6 +5812,89 @@ if ( Director.GetGameMode() == "holdout" )
 	
 }
 
+/*
+ * @authors rhino
+ * Remove all spawned piano keys
+ */
+::AdminSystem.Remove_piano_keysCmd <- function ( player, args )
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local name = player.GetCharacterName().tolower();
+
+	foreach(index,name in Utils.TableCopy(AdminSystem.Vars._spawnedPianoKeys))
+	{
+		Entities.FindByName(null, name).Kill();
+		delete AdminSystem.Vars._spawnedPianoKeys[index];
+	}
+
+	if (AdminSystem.Vars._outputsEnabled[name])
+	{Utils.SayToAll(name+"->Deleted all piano keys");}
+	else
+	{printl(name+"->Deleted all piano keys");}
+	
+}
+
+/*
+ * @authors rhino
+ * Spawn 25 piano keys perpendecular to the player, spawns them to the right of the look location
+ */
+::AdminSystem.Piano_keysCmd <- function ( player, args )
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local name = player.GetCharacterName().tolower();
+
+	local lookedloc = player.GetLookingLocation();
+	local eyeforward= player.GetEyeAngles().Forward();
+	local ang = null;
+	
+	local keys = [44,1,2,3,5,6,7,8,9,15,16,17,18,19,20,31,33,34,35,36,41,42,45,46]
+	local horizontal_space = 70.0/25;
+
+	local keyvaltable = 
+	{	
+		classname = "func_button"
+		origin = lookedloc
+		movedir = Vector(0,0,0)
+		spawnflags = 1025
+		wait = 0.01
+		sounds = 43
+	}
+
+	local startkey = Utils.CreateEntityWithTable(keyvaltable);
+	
+	if(startkey == null)
+	{Utils.SayToAll(name+"-> Couldn't spawn piano keys");return;}
+	
+	printl("43(#"+startkey.GetIndex()+") pos:"+lookedloc);
+	AdminSystem.Vars._spawnedPianoKeys[startkey.GetIndex()] <- startkey.GetName();
+
+	local ent = null;
+	local temp = player.GetEyeAngles().Forward();
+
+	eyeforward.x = temp.y;
+	eyeforward.y = -temp.x;
+	eyeforward.z = 0;
+	eyeforward = eyeforward.Scale(1.0/eyeforward.Length());
+	foreach(i,key in keys)
+	{	
+		keyvaltable.origin = lookedloc + eyeforward.Scale(horizontal_space*(i+1));
+		keyvaltable.sounds = key
+		ent = Utils.CreateEntityWithTable(keyvaltable);
+		printl(key.tostring()+"(#"+ent.GetIndex()+") pos:"+keyvaltable.origin);
+		AdminSystem.Vars._spawnedPianoKeys[ent.GetIndex()] <- ent.GetName();
+	}
+	
+	if (AdminSystem.Vars._outputsEnabled[name])
+	{Utils.SayToAll(name+"->Spawned piano keys starting at(ent#"+startkey.GetIndex()+"):"+startkey.GetLocation());}
+	else
+	{printl(name+"->Spawned piano keys starting at(ent#"+startkey.GetIndex()+"):"+startkey.GetLocation());}
+	
+}
+
 ::AdminSystem.BarrelCmd <- function ( player, args )
 {
 	local Amount = GetArgument(1);
@@ -6892,7 +7008,7 @@ if ( Director.GetGameMode() == "holdout" )
 			fwvec.x = 0;
 		}
 			
-		fwvec = fwvec.Scale(scalefactor/fwvec.Length());
+		fwvec = fwvec.Scale(scalefactor.tofloat()/fwvec.Length());
 
 		entlooked.Push(fwvec);
 		printl(player.GetCharacterName().tolower()+"->Push("+scalefactor+","+direction+","+pitchofeye+"), Entity index: "+entlooked.GetIndex());
@@ -6941,9 +7057,6 @@ if ( Director.GetGameMode() == "holdout" )
 		local fwvec = RotateOrientation(player.GetEyeAngles(),QAngle(pitchofeye,0,0)).Forward();
 		local temp = Vector(fwvec.x,fwvec.y,0);
 
-		fwvec = fwvec.Scale(units/fwvec.Length());
-		temp = temp.Scale(units/temp.Length());
-
 		local entpos = entlooked.GetPosition();
 
 		if(direction == "backward")
@@ -6976,7 +7089,9 @@ if ( Director.GetGameMode() == "holdout" )
 			fwvec.y = 0;
 			fwvec.x = 0;
 		}
-			
+		
+		fwvec = fwvec.Scale(units/fwvec.Length());
+		
 		entlooked.SetOrigin(Vector(entpos.x+fwvec.x,entpos.y+fwvec.y,entpos.z+fwvec.z));
 
 		printl(player.GetCharacterName().tolower()+" ->Move("+units+","+direction+","+pitchofeye+"), Entity index: "+entlooked.GetIndex());
