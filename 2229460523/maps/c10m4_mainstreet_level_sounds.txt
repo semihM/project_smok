@@ -1,3 +1,203 @@
+Buttons.snd43
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/a2.wav"
+}
+Buttons.snd44
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/b2.wav"
+}
+Buttons.snd1
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/c3.wav"
+}
+Buttons.snd2
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/d3.wav"
+}
+Buttons.snd3
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/e3.wav"
+}
+Buttons.snd5
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/f3.wav"
+}
+Buttons.snd6
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/g3.wav"
+}
+Buttons.snd7
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/a3.wav"
+}
+Buttons.snd8
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/b3.wav"
+}
+Buttons.snd9
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/c4.wav"
+}
+Buttons.snd15
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/d4.wav"
+}
+Buttons.snd16
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/e4.wav"
+}
+Buttons.snd17
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/f4.wav"
+}
+Buttons.snd18
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/g4.wav"
+}
+Buttons.snd19
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/a4.wav"
+}
+Buttons.snd20
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/b4.wav"
+}
+Buttons.snd31
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/c5.wav"
+}
+Buttons.snd33
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/d5.wav"
+}
+Buttons.snd34
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/e5.wav"
+}
+Buttons.snd35
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/f5.wav"
+}
+Buttons.snd36
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/g5.wav"
+}
+Buttons.snd41
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/a5.wav"
+}
+Buttons.snd42
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/b5.wav"
+}
+Buttons.snd45
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/c6.wav"
+}
+Buttons.snd46
+{ 
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"pitch"	"PITCH_NORM"
+	"soundlevel"	"SNDLVL_80dB"
+	"wave"	"piano/d6.wav"
+}
 "gambler_boomerjar05"
 { 
 	"channel"	"CHAN_VOICE"
@@ -20606,4 +20806,3 @@
 	"soundlevel"	"SNDLVL_80dB"
 	"wave"	"player/survivor/voice/producer/worldsigns05.wav"
 }
-w

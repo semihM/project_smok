@@ -1,0 +1,35 @@
+Macho only, from 88 keys, 4th,5th,6th parts
+
+#  filename  key
+
+43- combine_button3= a2
+44- combine_button4= b2
+
+1- button1= c3
+2- button2= d3
+3- button3= e3
+5- button5= f3
+6- button6= g3
+7- button7= a3
+8- button8= b3
+
+9- button9= c4
+15- button15= d4
+16- button16= e4
+17- button17= f4
+18- button18= g4
+19- button19= a4
+20- button20= b4
+
+31- button21= c5
+33- button23= d5
+34- button24= e5
+35- button12= f5
+36- button13= g5
+41- combine_button1= a5
+42- combine_button2= b5
+
+45- combine_button5= c6
+46- combine_button6= d6
+
+
