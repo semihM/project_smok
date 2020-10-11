@@ -3020,7 +3020,7 @@ enum SCENES
 	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
 	{Utils.SayToAll(player.GetCharacterName()+" -> Saved custom responses for "+character+": "+seqnames);}
 	else
-	{printl(player.GetCharacterName()+" -> Saved custom responses for "+character+": "+seqnames);}
+	{printB(player.GetCharacterName(),player.GetCharacterName()+" -> Saved custom responses for "+character+"-> "+seqnames,true,"info",true,true);}
 }
 
 /*
@@ -3072,7 +3072,7 @@ enum SCENES
 	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
 	{Utils.SayToAll(player.GetCharacterName()+" -> Sequence info "+character+"."+sequencename+str);}
 	else
-	{printl(player.GetCharacterName()+" -> Sequence info "+character+"."+sequencename+str);}
+	{printB(player.GetCharacterName(),player.GetCharacterName()+" -> Sequence info "+character+"."+sequencename+str,true,"info",true,true);}
 }
 
 /*
@@ -3178,7 +3178,7 @@ enum SCENES
 	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
 	{Utils.SayToAll(player.GetCharacterName()+" -> Changed "+character+"."+sequencename+"."+setting+"s["+scene_index+"]:\n "+oldvalue+"->"+newval.tostring());}
 	else
-	{printl(player.GetCharacterName()+" -> Sequence info "+character+"."+sequencename+"."+setting+"s["+scene_index+"]: "+oldvalue+"->"+newval.tostring());}
+	{printB(player.GetCharacterName(),player.GetCharacterName()+" -> Sequence info "+character+"."+sequencename+"."+setting+"s["+scene_index+"]-> "+oldvalue+"->"+newval.tostring(),true,"info",true,true);}
 	
 	// Save to custom file
 	local contents = FileToString("admin system/custom_responses.json");
@@ -3326,7 +3326,14 @@ enum SCENES
 				i+=2;
 			}
 		}
-		printl(player.GetCharacterName()+" ->Created sequence for all characters named "+sequencename);
+		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+		{
+			Utils.SayToAll(player.GetCharacterName()+" ->Created sequence for all characters named "+sequencename);
+		}
+		else
+		{
+			printB(player.GetCharacterName(),player.GetCharacterName()+" ->Created sequence for all characters named "+sequencename,true,"info",true,true);
+		}
 	}
 	else
 	{
@@ -3351,9 +3358,15 @@ enum SCENES
 			responsetable[steamid][character][sequencename].delays.append(arguments[i+1]);
 			i+=2;
 		}
-		
-		printl(player.GetCharacterName()+" ->Created sequence for "+character+" named "+sequencename);
 
+		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+		{
+			Utils.SayToAll(player.GetCharacterName()+" ->Created sequence for "+character+" named "+sequencename);
+		}
+		else
+		{
+			printB(player.GetCharacterName(),player.GetCharacterName()+" ->Created sequence for "+character+" named "+sequencename,true,"info",true,true);
+		}
 	}
 
 	StringToFile("admin system/custom_responses.json", Utils.SceneTableToString(responsetable));
@@ -5808,7 +5821,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (AdminSystem.Vars._outputsEnabled[name])
 	{Utils.SayToAll(name+"->Spawned particle:"+Particle+" at:"+EyePosition.x+","+EyePosition.y+","+EyePosition.z);}
 	else
-	{printl(name+"->Spawned particle:"+Particle+" at:"+EyePosition.x+","+EyePosition.y+","+EyePosition.z);}
+	{printB(player.GetCharacterName(),name+"->Spawned particle->"+Particle+" at->"+EyePosition.x+" "+EyePosition.y+" "+EyePosition.z,true,"info",true,true);}
 	
 }
 
@@ -5832,7 +5845,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (AdminSystem.Vars._outputsEnabled[name])
 	{Utils.SayToAll(name+"->Deleted all piano keys");}
 	else
-	{printl(name+"->Deleted all piano keys");}
+	{printB(player.GetCharacterName(),name+"->Deleted all piano keys",true,"info",true,true);}
 	
 }
 
@@ -5849,7 +5862,6 @@ if ( Director.GetGameMode() == "holdout" )
 
 	local lookedloc = player.GetLookingLocation();
 	local eyeforward= player.GetEyeAngles().Forward();
-	local ang = null;
 	
 	local keys = [44,1,2,3,5,6,7,8,9,15,16,17,18,19,20,31,33,34,35,36,41,42,45,46]
 	local horizontal_space = 70.0/25;
@@ -5869,29 +5881,34 @@ if ( Director.GetGameMode() == "holdout" )
 	if(startkey == null)
 	{Utils.SayToAll(name+"-> Couldn't spawn piano keys");return;}
 	
-	printl("43(#"+startkey.GetIndex()+") pos:"+lookedloc);
-	AdminSystem.Vars._spawnedPianoKeys[startkey.GetIndex()] <- startkey.GetName();
+	local entindex = startkey.GetIndex();
+
+	printl("43(#"+entindex+") pos:"+lookedloc);
+	AdminSystem.Vars._spawnedPianoKeys[entindex] <- startkey.GetName();
 
 	local ent = null;
 	local temp = player.GetEyeAngles().Forward();
 
+	// Unit vector perpendecular to player
 	eyeforward.x = temp.y;
 	eyeforward.y = -temp.x;
 	eyeforward.z = 0;
 	eyeforward = eyeforward.Scale(1.0/eyeforward.Length());
+
 	foreach(i,key in keys)
 	{	
 		keyvaltable.origin = lookedloc + eyeforward.Scale(horizontal_space*(i+1));
 		keyvaltable.sounds = key
 		ent = Utils.CreateEntityWithTable(keyvaltable);
-		printl(key.tostring()+"(#"+ent.GetIndex()+") pos:"+keyvaltable.origin);
-		AdminSystem.Vars._spawnedPianoKeys[ent.GetIndex()] <- ent.GetName();
+		entindex = ent.GetIndex();
+		//printl(key.tostring()+"(#"+entindex+") pos:"+keyvaltable.origin);
+		AdminSystem.Vars._spawnedPianoKeys[entindex] <- ent.GetName();
 	}
 	
 	if (AdminSystem.Vars._outputsEnabled[name])
-	{Utils.SayToAll(name+"->Spawned piano keys starting at(ent#"+startkey.GetIndex()+"):"+startkey.GetLocation());}
+	{Utils.SayToAll(name+"->Spawned piano keys starting with #"+startkey.GetIndex()+" at:"+startkey.GetLocation());}
 	else
-	{printl(name+"->Spawned piano keys starting at(ent#"+startkey.GetIndex()+"):"+startkey.GetLocation());}
+	{printB(player.GetCharacterName(),name+"->Spawned piano keys starting with #"+startkey.GetIndex()+" at->"+startkey.GetLocation(),true,"info",true,true);}
 	
 }
 
@@ -6140,7 +6157,15 @@ if ( Director.GetGameMode() == "holdout" )
 	if(keyvals == null)
 		keyvals = {}
 
-	printl(name+" ->Created entity("+classname+"):\nposition = "+pos+"\nangles = "+ang+"\nkeyvals = ");
+	if (AdminSystem.Vars._outputsEnabled[name])
+	{
+		Utils.SayToAll(name+" ->Created entity(#"+ent.GetIndex()+"):\nclass = "+classname+"\nposition = "+pos+"\nangles = "+ang+"\nkeyvals = ");
+	}
+	else
+	{
+		printB(player.GetCharacterName(),name+" ->Created entity(#"+ent.GetIndex()+"):\nclass = "+classname+"\nposition = "+pos+"\nangles = "+ang+"\nkeyvals = ",true,"info",true,true);
+	}
+
 	Utils.PrintTable(keyvals);
 	
 	local ent = Utils.CreateEntity(classname,pos,ang,keyvals);
@@ -6209,11 +6234,12 @@ if ( Director.GetGameMode() == "holdout" )
 
 			if(pairsplit.len()!=2)
 			{
-				printl(name+" ->Invalid entity key value pair: ");
+				printB(player.GetCharacterName(),name+" ->Invalid entity key value pair-> ",true,"error",true,false);
 				foreach(i,v in pairsplit)
 				{
-					printl((i+1)+": "+v);
+					printB(player.GetCharacterName(),(i+1)+"-> "+v,true,"error",false,false);
 				}
+				printB(player.GetCharacterName(),"",false,"",false,true);
 				return;
 			}
 			// Manually type casting
@@ -6237,7 +6263,7 @@ if ( Director.GetGameMode() == "holdout" )
 					}
 					else
 					{
-						printl(name+" -> Unrecognized TYPE("+str[0]+") for Key:"+pairsplit[0]);
+						printB(player.GetCharacterName(),name+" -> Unrecognized TYPE("+str[0]+") for Key->"+pairsplit[0],true,"error",true,true);
 						return;
 					}
 				}
@@ -6258,7 +6284,7 @@ if ( Director.GetGameMode() == "holdout" )
 					}
 					else
 					{
-						printl(name+" -> Unrecognized TYPE("+str[0]+") for Key:"+pairsplit[0]);
+						printB(player.GetCharacterName(),name+" -> Unrecognized TYPE("+str[0]+") for Key->"+pairsplit[0],true,"error",true,true);
 						return;
 					}
 				}
@@ -6287,8 +6313,21 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 
 	local newEntity = Utils.CreateEntityWithTable(keyvals);
+	if (newEntity == null)
+	{
+		printB(player.GetCharacterName(),name+" ->Couldn't create the entity",true,"error",true,true);
+		return;
+	}
 
-	printl(name+" ->Created "+cname+" entity named "+newEntity.GetName()+" with table:");
+	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+	{
+		Utils.SayToAll(name+" ->Created "+cname+" entity named "+newEntity.GetName()+" with table:");
+	}
+	else
+	{
+		printB(player.GetCharacterName(),name+" ->Created "+cname+" entity named "+newEntity.GetName()+" with table:",true,"info",true,true);
+	}
+
 	Utils.PrintTable(keyvals);
 
 	// Apply flags and effects after spawning
@@ -6481,7 +6520,15 @@ if ( Director.GetGameMode() == "holdout" )
 			createdent = Utils.SpawnDynamicProp( MDL, EyePosition, GroundPosition );
 		}
 	}
-	printl(name+" ->Created "+Entity+" entity named "+createdent.GetName());
+
+	if (AdminSystem.Vars._outputsEnabled[name])
+	{
+		Utils.SayToAll(name+" ->Created "+Entity+" entity(#"+createdent.GetIndex().tostring()+") named "+createdent.GetName());
+	}
+	else
+	{
+		printB(player.GetCharacterName(),name+" ->Created "+Entity+" entity(#"+createdent.GetIndex().tostring()+") named "+createdent.GetName(),true,"info",true,true);
+	}
 }
 
 ::AdminSystem.DoorCmd <- function ( player, args )
@@ -6508,7 +6555,14 @@ if ( Director.GetGameMode() == "holdout" )
 			ent = Utils.SpawnDoor(DoorModel, EyePosition, GroundPosition);
 	}
 
-	printl(name+" ->Created a Door entity named "+ent.GetName());
+	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+	{
+		Utils.SayToAll(name+" ->Created a Door entity(#"+ent.GetIndex().tostring()+") named "+ent.GetName());
+	}
+	else
+	{
+		printB(player.GetCharacterName(),name+" ->Created a Door entity(#"+ent.GetIndex().tostring()+") named "+ent.GetName(),true,"info",true,true);
+	}
 }
 
 ::AdminSystem.GiveCmd <- function ( player, args )
@@ -6879,15 +6933,27 @@ if ( Director.GetGameMode() == "holdout" )
 		player.Input( Action, val );
 	}
 	else
-	{
-		if ( Target )
+	{	
+		if(Ent.find("#") != -1 || Ent.find("_") != -1)
+		{
+			g_MapScript.EntFire( Ent, Action, val );
+		}
+		else if ( Target )
 		{
 			Target.Input( Action, val );
 		}
 		else
 			g_MapScript.EntFire( Ent, Action, val );
 	}
-	printl(player.GetCharacterName().tolower()+"->scripted_user_func ent_fire,"+(Entity == null ? Ent : Entity.GetName())+","+Action+","+val);
+
+	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+	{
+		Utils.SayToAll(player.GetCharacterName().tolower()+"-> ent_fire "+(Entity == null ? Ent : Entity.GetName())+" "+Action+" "+val);
+	}
+	else
+	{
+		printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"-> ent_fire "+(Entity == null ? Ent : Entity.GetName())+" "+Action+" "+val,true,"info",true,true);
+	}
 
 }
 
@@ -7011,7 +7077,15 @@ if ( Director.GetGameMode() == "holdout" )
 		fwvec = fwvec.Scale(scalefactor.tofloat()/fwvec.Length());
 
 		entlooked.Push(fwvec);
-		printl(player.GetCharacterName().tolower()+"->Push("+scalefactor+","+direction+","+pitchofeye+"), Entity index: "+entlooked.GetIndex());
+		
+		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+		{
+			Utils.SayToAll(player.GetCharacterName().tolower()+"->Push("+scalefactor+","+direction+","+pitchofeye+"), Entity index: "+entlooked.GetIndex());
+		}
+		else
+		{
+			printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->Push("+scalefactor+","+direction+","+pitchofeye+"), Entity index: "+entlooked.GetIndex(),true,"info",true,true);
+		}
 		
 	}
 }
@@ -7094,7 +7168,15 @@ if ( Director.GetGameMode() == "holdout" )
 		
 		entlooked.SetOrigin(Vector(entpos.x+fwvec.x,entpos.y+fwvec.y,entpos.z+fwvec.z));
 
-		printl(player.GetCharacterName().tolower()+" ->Move("+units+","+direction+","+pitchofeye+"), Entity index: "+entlooked.GetIndex());
+		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+		{
+			Utils.SayToAll(player.GetCharacterName().tolower()+" ->Move("+units+","+direction+","+pitchofeye+"), Entity index: "+entlooked.GetIndex());
+		}
+		else
+		{
+			printB(player.GetCharacterName(),player.GetCharacterName().tolower()+" ->Move("+units+","+direction+","+pitchofeye+"), Entity index: "+entlooked.GetIndex(),true,"info",true,true);
+		}
+
 	}
 }
 
@@ -7163,7 +7245,16 @@ if ( Director.GetGameMode() == "holdout" )
 		fwvec = fwvec.Scale(scalefactor/fwvec.Length());
 
 		entlooked.Spin(fwvec);
-		printl(player.GetCharacterName().tolower()+"->Spin("+scalefactor+","+direction+"), Entity index: "+entlooked.GetIndex());
+
+		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+		{
+			Utils.SayToAll(player.GetCharacterName().tolower()+"->Spin("+scalefactor+","+direction+"), Entity index: "+entlooked.GetIndex());
+		}
+		else
+		{
+			printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->Spin("+scalefactor+","+direction+"), Entity index: "+entlooked.GetIndex(),true,"info",true,true);
+		}
+
 	}
 }
 
@@ -9196,7 +9287,14 @@ if ( Director.GetGameMode() == "holdout" )
 
 	color_seq();	// Loop starter
 
-	printl(player.GetCharacterName().tolower()+"->Rainbow("+duration+","+intervals+"), Entity index: "+entlooked.GetIndex());
+	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+	{
+		Utils.SayToAll(player.GetCharacterName().tolower()+"->Rainbow("+duration+","+intervals+"), Entity index: "+entlooked.GetIndex());
+	}
+	else
+	{
+		printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->Rainbow("+duration+","+intervals+"), Entity index: "+entlooked.GetIndex(),true,"info",true,true);
+	}
 }
 
 /*
@@ -9252,11 +9350,11 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if (AdminSystem.Vars._outputsEnabled[name])
 	{
-		Utils.SayToAll("Saved for "+name+" ->scripted_user_func speak,"+targetname+","+linesource);
+		Utils.SayToAll("Saved for "+name+" -> speak "+targetname+" "+linesource,true,"info",true,true);
 	}
 	else
 	{
-		printl("Saved for "+name+" ->scripted_user_func speak,"+targetname+","+linesource);
+		printB(player.GetCharacterName(),"Saved for "+name+" -> speak "+targetname+" "+linesource,true,"info",true,true);
 	}
 }
 
@@ -9276,16 +9374,16 @@ if ( Director.GetGameMode() == "holdout" )
 
 		if (AdminSystem.Vars._outputsEnabled[name])
 		{
-			Utils.SayToAll(name+" ->scripted_user_func speak,"+lineinfo.target+","+lineinfo.source);
+			Utils.SayToAll(name+" -> speak "+lineinfo.target+" "+lineinfo.source);
 		}
 		else
 		{
-			printl(name+" ->scripted_user_func speak,"+lineinfo.target+","+lineinfo.source);
+			printB(player.GetCharacterName(),name+" -> speak "+lineinfo.target+" "+lineinfo.source,true,"info",true,true);
 		}
 	}
 	else
 	{
-		printl("No saved line was found for "+name);
+		printB(player.GetCharacterName(),"No saved line was found for "+name,true,"error",true,true);
 	}
 	
 }
@@ -9304,7 +9402,7 @@ if ( Director.GetGameMode() == "holdout" )
 		local lineinfo = AdminSystem.Vars._savedLine[name];
 		if (lineinfo.target != "")
 		{
-			Utils.SayToAll(name+" ->scripted_user_func speak,"+lineinfo.target+","+lineinfo.source);
+			Utils.SayToAll(name+" -> speak "+lineinfo.target+" "+lineinfo.source);
 		}
 		else
 		{
@@ -9327,37 +9425,138 @@ if ( Director.GetGameMode() == "holdout" )
 	*/
 	local arg = GetArgument(1);
 
+	local playername = player.GetCharacterName();
+
+	local svcheatsval = Convars.GetFloat("sv_cheats");
+
 	if(arg == null)
 	{	
 		local ent = player.GetLookingEntity();
 		if (ent == null)
 		{
-			printl("No entity found");
+			printB(playername,"No looked entity found",true,"error",true,true);
 			return;
 		}
-		
-		printl("+++++++++++++++++++debug_info++++++++++++++++++++");
-		SendToServerConsole("echo Name: "+ ent.GetName() + ", Global name: "+ ent.GetGlobalName() + ";echo Index: "+ ent.GetIndex() + ", Base index: "+ ent.GetBaseIndex() + ";echo Type: "+ ent.GetType() + ";echo Parent: "+ ent.GetParent() +";echo Scale: " + ent.GetModelScale()+";echo ==================flags======================");
-		SendToServerConsole("echo SpawnFlags: "+ ent.GetSpawnFlags() +";echo Flags: "+ ent.GetFlags() +";echo EFlags: " + ent.GetEFlags()+";echo Sense flags: "+ ent.GetSenseFlags());
-		SendToServerConsole("echo ================positional====================");
-		SendToServerConsole("echo Location(Origin): "+ent.GetLocation() +";echo Angles: " + ent.GetAngles());
-		SendToServerConsole("echo ================physics_debug=================;physics_debug_entity");
-		SendToServerConsole("echo ==================ent_dump====================;ent_dump !picker");
-		SendToServerConsole("ent_script_dump");
-			
+
+		printB(playername,"",true,"",true,false);
+		printB(playername,"Name-> "+ ent.GetName() + "| Global name-> "+ ent.GetGlobalName(),true,"debug",false,false);
+		printB(playername,"Index-> "+ ent.GetIndex() + "| Base index-> "+ ent.GetBaseIndex(),true,"debug",false,false);
+		printB(playername,"Type-> "+ ent.GetType(),true,"debug",false,false);
+		printB(playername,"Parent-> "+ ent.GetParent(),true,"debug",false,false);
+		printB(playername,"Scale-> " + ent.GetModelScale(),true,"debug",false,false);
+
+		printB(playername,"==================flags======================",true,"debug",false,false);
+		printB(playername,"SpawnFlags-> "+ ent.GetSpawnFlags(),true,"debug",false,false);
+		printB(playername,"Flags-> "+ ent.GetFlags() +"| EFlags-> " + ent.GetEFlags()+"| Sense flags-> "+ ent.GetSenseFlags(),true,"debug",false,false);
+
+		printB(playername,"================positional====================",true,"debug",false,false);
+		printB(playername,"Location(Origin)-> "+ent.GetLocation(),true,"debug",false,false);
+		printB(playername,"Angles-> " + ent.GetAngles(),true,"debug",false,false);
+
+		printB(playername,"================physics_debug=================",true,"debug",false,false);
+		AdminSystem._Clientbroadcast(playername,"physics_debug_entity",1,false);
+		if(svcheatsval==1.0)
+		{
+			printB(playername,"==================ent_dump====================",true,"debug",false,false);
+			AdminSystem._Clientbroadcast(playername,"ent_dump !picker",1,false);
+			AdminSystem._Clientbroadcast(playername,"ent_script_dump",1,false);
+		}
+
+		printB(playername,"",false,"",false,true);
 	}
 	else if(arg == "player")
 	{
-		printl("+++++++++++++++++++Positional++++++++++++++++++++");
-		SendToServerConsole("echo Looked location: "+player.GetLookingLocation());
-		SendToServerConsole("echo Eye angles: "+player.GetEyeAngles());
-		SendToServerConsole("echo Player position: "+player.GetPosition());
-		//SendToServerConsole("cl_dumpplayer 1"); // client only
+		printB(playername,"",true,"",true,false);
+		printB(playername,"Looked location-> "+player.GetLookingLocation(),true,"debug",false,false);
+		printB(playername,"Eye angles-> "+player.GetEyeAngles(),true,"debug",false,false);
+		printB(playername,"Player position-> "+player.GetPosition(),true,"debug",false,false);
+
+		if(svcheatsval==1.0)
+		{
+			AdminSystem._Clientbroadcast(playername,"cl_dumpplayer "+player.GetIndex().tostring(),1,false);
+		}
+
+		printB(playername,"",false,"",false,true);
 	}
 }
 
 /*
  * @authors rhino
+ * Execute commands in other's client
+ */
+::AdminSystem._Clientbroadcast <- function(client_character,command,kill=0,report2host=true)
+{	
+	local client_ent = Utils.GetPlayerFromName(client_character)
+	local point_clientcommand = Utils.CreateEntityWithTable({classname = "point_clientcommand", origin = Vector(0,0,0) });
+	
+	// VSLib::Entity::Input(input, value = "", delay = 0, activator = null)
+	// Same as : ent_fire #ID Addoutput "OnUser1 #ID,Command,params,0.1,-1" 
+	point_clientcommand.Input("Addoutput","OnUser1 #"+point_clientcommand.GetIndex()+",Command,"+command+",0,-1",0,null);
+	point_clientcommand.Input("FireUser1","",0,client_ent);
+
+	if(kill.tointeger() != 0)
+		point_clientcommand.Input("Kill","",0.5);
+
+	if(report2host)
+		printl("[Client-broadcast]Executing client command on "+client_character+"->"+command);	
+}
+
+/*
+ * @authors rhino
+ * Broadcast a message to given character's console
+ */
+::printB <- function(character,message,reporttohost=true,msgtype="info",startmsg=true,endmsg=true)
+{
+	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character.tolower())==-1)
+	{Utils.SayToAll(character+" is not a character name");return;}
+
+	if(startmsg)
+		AdminSystem._Clientbroadcast(character,"echo +++++++++++++SCRIPT_REPORT_START+++++++++++++++",1,!reporttohost);
+
+	local fixedmsg = "";
+	local temp = "";
+
+	if(message.find(",") != -1)
+	{
+		if(message.find(":") != -1)
+		{
+			foreach(txt in split(message,":"))
+				fixedmsg += txt;
+
+			foreach(txt in split(fixedmsg,","))
+				temp += txt;
+			
+			message = temp;
+		}
+		else
+		{
+			foreach(txt in split(message,","))
+				fixedmsg += txt;
+			
+			message = fixedmsg;
+		}
+	}
+
+	// Actual message
+	if(msgtype=="info")
+		AdminSystem._Clientbroadcast(character,"echo [Info]"+message,1,!reporttohost);
+	else if(msgtype=="error")
+		AdminSystem._Clientbroadcast(character,"echo [Error]"+message,1,!reporttohost);
+	else if(msgtype=="debug")
+		AdminSystem._Clientbroadcast(character,"echo [Debug]"+message,1,false);
+	else	
+		AdminSystem._Clientbroadcast(character,"echo "+message,1,!reporttohost);
+
+	if(endmsg)
+		AdminSystem._Clientbroadcast(character,"echo ++++++++++++++SCRIPT_REPORT_END++++++++++++++++",1,!reporttohost);
+
+	if(reporttohost && msgtype!="debug")
+		printl("[Broadcast] printB for "+character+" with "+msgtype+" message:"+message);
+}
+
+/*
+ * @authors rhino
+ * Execute commands in host's client
  */
 ::AdminSystem.Server_execCmd <- function(player, args)
 {	
@@ -9373,7 +9572,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if(arg2 == null){arg2="";}
 	if(arg1 == null){arg1="";}
 	local command = cmd+" "+arg1+" "+arg2+" "+arg3+" "+arg4;
-	printl(player.GetCharacterName().tolower()+"->Executing command:"+command);	
+	printl(player.GetCharacterName().tolower()+"->Executing command->"+command);	
 	SendToServerConsole(command);
 }
 
@@ -9448,11 +9647,11 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			AdminSystem.Vars._savedLine[name].target = targetname;
 			AdminSystem.Vars._savedLine[name].source = randomline_path;
-			Utils.SayToAll("Saved for "+name+" ->scripted_user_func speak,"+targetname+","+randomline_path);
+			Utils.SayToAll("Saved for "+name+" -> speak "+targetname+" "+randomline_path);
 		}
 		else
 		{
-			Utils.SayToAll(name+" ->scripted_user_func speak,"+targetname+","+randomline_path);
+			Utils.SayToAll(name+" -> speak "+targetname+" "+randomline_path);
 		}
 	}
 	else
@@ -9461,11 +9660,11 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			AdminSystem.Vars._savedLine[name].target = targetname;
 			AdminSystem.Vars._savedLine[name].source = randomline_path;
-			printl("Saved for "+name+" ->scripted_user_func speak,"+targetname+","+randomline_path);
+			printB(player.GetCharacterName(),"Saved for "+name+" -> speak "+targetname+" "+randomline_path,true,"info",true,true);
 		}
 		else
 		{
-			printl(name+" ->scripted_user_func speak,"+targetname+","+randomline_path);
+			printB(player.GetCharacterName(),name+" -> speak "+targetname+" "+randomline_path,true,"info",true,true);
 		}
 		
 	}
@@ -9502,7 +9701,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (AdminSystem.Vars._outputsEnabled[name])
 	{Utils.SayToAll(name+"->Changed color:("+red+","+green+","+blue+","+alpha+") of "+ent.GetName());}
 	else
-	{printl(name+"-> Changed color:("+red+","+green+","+blue+","+alpha+") of "+ent.GetName());}
+	{printB(player.GetCharacterName(),name+"-> Changed color:("+red+" "+green+" "+blue+" "+alpha+") of "+ent.GetName(),true,"info",true,true);}
 
 }
 
@@ -9535,7 +9734,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (AdminSystem.Vars._outputsEnabled[name])
 	{Utils.SayToAll(name+"->Changed key:"+key+" value to:"+val+" of "+ent.GetName());}
 	else
-	{printl(name+" ->Changed key:"+key+" value to:"+val+" of "+ent.GetName());}
+	{printB(player.GetCharacterName(),name+" ->Changed key->"+key+" value to->"+val+" of "+ent.GetName(),true,"info",true,true);}
 
 }
 
@@ -9663,11 +9862,11 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if (AdminSystem.Vars._outputsEnabled[name])
 	{
-		Utils.SayToAll("Saved for "+name+" ->scripted_user_func attach_particle,"+source+","+duration);
+		Utils.SayToAll("Saved for "+name+" -> attach_particle "+source+" "+duration);
 	}
 	else
 	{
-		printl("Saved for "+name+" ->scripted_user_func attach_particle,"+source+","+duration);
+		printB(player.GetCharacterName(),"Saved for "+name+" -> attach_particle "+source+" "+duration,true,"info",true,true);
 	}
 }
 
@@ -9708,7 +9907,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (AdminSystem.Vars._outputsEnabled[name])
 	{Utils.SayToAll(name+"->Attached particle("+duration+" sec):"+particle+" to:"+ent.GetName());}
 	else
-	{printl(name+" ->Attached particle("+duration+" sec):"+particle+" to:"+ent.GetName());}
+	{printB(player.GetCharacterName(),name+" ->Attached particle("+duration+" sec)->"+particle+" to->"+ent.GetName(),true,"info",true,true);}
 
 	
 }
@@ -9765,7 +9964,7 @@ if ( Director.GetGameMode() == "holdout" )
 		local particleinfo = AdminSystem.Vars._savedParticle[name];
 		if (particleinfo.source != "")
 		{
-			Utils.SayToAll(name+" ->scripted_user_func particle,"+particleinfo.source);
+			Utils.SayToAll(name+" -> particle "+particleinfo.source);
 		}
 		else
 		{
@@ -9792,16 +9991,16 @@ if ( Director.GetGameMode() == "holdout" )
 
 		if (AdminSystem.Vars._outputsEnabled[name])
 		{
-			Utils.SayToAll(name+" ->scripted_user_func particle,"+particleinfo.source);
+			Utils.SayToAll(name+" -> particle "+particleinfo.source);
 		}
 		else
 		{
-			printl(name+" ->scripted_user_func particle,"+particleinfo.source);
+			printB(player.GetCharacterName(),name+" -> particle "+particleinfo.source,true,"info",true,true);
 		}
 	}
 	else
 	{
-		printl("No saved particle was found for "+name);
+		printB(player.GetCharacterName(),"No saved particle was found for "+name,true,"error",true,true);
 	}
 }
 
@@ -9828,16 +10027,16 @@ if ( Director.GetGameMode() == "holdout" )
 
 		if (AdminSystem.Vars._outputsEnabled[name])
 		{
-			Utils.SayToAll(name+" ->scripted_user_func attach_particle,"+particleinfo.source+","+particleinfo.duration);
+			Utils.SayToAll(name+" -> attach_particle "+particleinfo.source+","+particleinfo.duration);
 		}
 		else
 		{
-			printl(name+" ->scripted_user_func attach_particle,"+particleinfo.source+","+particleinfo.duration);
+			printB(player.GetCharacterName(),name+" -> attach_particle "+particleinfo.source+" "+particleinfo.duration,true,"info",true,true);
 		}
 	}
 	else
 	{
-		printl("No saved particle was found for "+name);
+		printB(player.GetCharacterName(),"No saved particle was found for "+name,true,"error",true,true);
 	}
 }
 
