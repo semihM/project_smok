@@ -167,4 +167,8 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
     
 ```
 
+- **piano_keys** : Place 25 piano keys starting at looked location placing them to the right
+
+- **remove_piano_keys** : Removes all piano key spawns
+
 - **and more...**
