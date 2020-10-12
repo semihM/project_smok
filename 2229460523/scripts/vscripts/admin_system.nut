@@ -3,6 +3,7 @@ printl("Activating Admin System");
 
 /**
  * Admin System by Rayman1103
+ * Other authors : rhino
  */
 
 // Include the VScript Library
@@ -31,6 +32,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 	Admins = {}
 	BannedPlayers = {}
 	HostPlayer = {}
+	ScriptAuths = {}
 	SoundName = {}
 	AdminsOnly = true
 	DisplayMsgs = true
@@ -442,6 +444,29 @@ Convars.SetValue( "precache_all_survivors", "1" );
 	}
 }
 
+/*
+ * @authors rhino
+ */
+::AdminSystem.LoadScriptAuths <- function ()
+{
+	local fileContents = FileToString("admin system/scriptauths.txt");
+	local auths = split(fileContents, "\r\n");
+	
+	foreach (auth in auths)
+	{
+		if ( auth.find("//") != null )
+		{
+			auth = Utils.StringReplace(auth, "//" + ".*", "");
+			auth = rstrip(auth);
+		}
+		if ( auth.find("STEAM_0") != null )
+			auth = Utils.StringReplace(auth, "STEAM_0", "STEAM_1");
+		if ( auth != "" )
+			::AdminSystem.ScriptAuths[auth] <- true;
+		
+	}
+}
+
 ::AdminSystem.LoadBanned <- function ()
 {
 	local fileContents = FileToString("admin system/banned.txt");
@@ -568,6 +593,27 @@ Convars.SetValue( "precache_all_survivors", "1" );
 	return true;
 }
 
+/*
+ * @authors rhino
+ */
+::AdminSystem.HasScriptAuth <- function ( player )
+{
+	if ( Director.IsSinglePlayerGame() || player.IsServerHost() )
+		return true;
+	
+	local steamid = player.GetSteamID();
+	if (!steamid) return false;
+
+	if ( !(steamid in ::AdminSystem.ScriptAuths) )
+	{
+		if ( AdminSystem.DisplayMsgs )
+			Utils.SayToAllDel(player.GetCharacterName()+"("+steamid+") doesn't have script authorization");
+		return false;
+	}
+
+	return true;
+}
+
 ::AdminSystem.GetID <- function ( player )
 {
 	if (!player || !("IsPlayerEntityValid" in player))
@@ -634,6 +680,7 @@ function EasyLogic::OnShutdown::AdminSaveData( reason, nextmap )
 function Notifications::OnRoundStart::AdminLoadFiles()
 {
 	local adminList = FileToString("admin system/admins.txt");
+	local scriptauthList = FileToString("admin system/scriptauths.txt");
 	local banList = FileToString("admin system/banned.txt");
 	local settingList = FileToString("admin system/settings.txt");
 	
@@ -641,6 +688,11 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	{
 		printf("[Admins] Loading admin list...");
 		AdminSystem.LoadAdmins();
+	}
+	if ( scriptauthList != null )
+	{
+		printf("[Script-auth] Loading script authorization list...");
+		AdminSystem.LoadScriptAuths();
 	}
 	if ( banList != null )
 	{
@@ -1337,6 +1389,30 @@ function Notifications::OnPlayerJoined::AdminCheck( player, name, IPAddress, Ste
 	}
 }
 
+/*
+ * @authors rhino
+ */
+function Notifications::OnPlayerJoined::ScriptAuthCheck( player, name, IPAddress, SteamID, params )
+{
+	local authList = FileToString("admin system/scriptauths.txt");
+	if ( authList != null )
+		return;
+	
+	if ( player )
+	{
+		if ( player.IsBot() || !player.IsServerHost() )
+			return;
+		
+		local auths = FileToString("admin system/scriptauths.txt");
+		local steamid = player.GetSteamID();
+		if ( steamid == "" || steamid == "BOT" )
+			return;
+		auths = steamid + " //" + player.GetName();
+		StringToFile("admin system/scriptauths.txt", auths);
+		AdminSystem.LoadScriptAuths();
+	}
+}
+
 function Notifications::OnWeaponFire::AdminGiveUpgradeAmmo( player, classname, params )
 {
 	local ID = AdminSystem.GetID( player );
@@ -1522,6 +1598,16 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		case "adminmode":
 		{
 			AdminSystem.AdminModeCmd( player, args );
+			break;
+		}
+		case "add_script_auth":
+		{
+			AdminSystem.AddScriptAuthCmd( player, args );
+			break;
+		}
+		case "remove_script_auth":
+		{
+			AdminSystem.RemoveScriptAuthCmd( player, args );
 			break;
 		}
 		case "add_admin":
@@ -1970,7 +2056,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			break;
 		}
 		case "script":
-		{
+		{	
+			if(!(player.GetSteamID() in ::AdminSystem.ScriptAuths))
+			{
+				Utils.SayToAll(player.GetCharacterName()+"("+player.GetSteamID()+") doesn't have authority to execute scripts");return;
+			}
 			local Code = Utils.StringReplace(text, "script,", "");
 			Code = Utils.StringReplace(Code, "'", "\""); //"
 			local compiledscript = compilestring(Code);
@@ -2237,6 +2327,7 @@ enum SCENES
 
 /*
  * @authors rhino
+ * Base table definition for custom responses
  */
 ::_CustomResponseBase <- function(_enabled,_prob,_startdelay,_userandom,_randomlinepaths,_lineamount,_mindelay,_offsetdelay,_order,_sequence) 
 {	
@@ -2260,84 +2351,86 @@ enum SCENES
 
 /*
  * @authors rhino
+ * Base tables for custom responses
  */
 ::AdminSystem.Vars._CustomResponse <-
 {
 	bill = 
 	{
-		_SpeakWhenShoved = _CustomResponseBase(true,0.66,0.1,true,::Survivorlines.FriendlyFire.bill,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.bill,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
 		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
-		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.95,1.0,true,::Survivorlines.Excited.bill,5,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.bill,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 	}
 
 	francis = 
 	{
-		_SpeakWhenShoved = _CustomResponseBase(true,0.66,0.1,true,::Survivorlines.FriendlyFire.francis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.francis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
 		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 
-		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.95,1.0,true,::Survivorlines.Excited.francis,5,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.francis,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 	}
 
 	louis = 
 	{
-		_SpeakWhenShoved = _CustomResponseBase(true,0.66,0.1,true,::Survivorlines.FriendlyFire.louis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.louis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
 		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
-		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.95,1.0,true,::Survivorlines.Excited.louis,5,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.louis,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 	}
 
 	zoey = 
 	{
-		_SpeakWhenShoved = _CustomResponseBase(true,0.66,0.1,true,::Survivorlines.FriendlyFire.zoey,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.zoey,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
 		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
-		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.95,1.0,true,::Survivorlines.Excited.zoey,5,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.zoey,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 	}
 
 	nick = 
 	{
-		_SpeakWhenShoved = _CustomResponseBase(true,0.66,0.1,true,::Survivorlines.FriendlyFire.nick,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.nick,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
 		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
-		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.95,1.0,true,::Survivorlines.Excited.nick,5,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.nick,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 	}
 
 	ellis = 
 	{
-		_SpeakWhenShoved = _CustomResponseBase(true,0.66,0.1,true,::Survivorlines.FriendlyFire.ellis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.ellis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
 		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
-		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.95,1.0,true,::Survivorlines.Excited.ellis,5,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.ellis,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 	}
 
 	coach = 
 	{
-		_SpeakWhenShoved = _CustomResponseBase(true,0.66,0.1,true,::Survivorlines.FriendlyFire.coach,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.coach,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
 		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
-		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.95,1.0,true,::Survivorlines.Excited.coach,5,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.coach,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 	}
 
 	rochelle = 
 	{
-		_SpeakWhenShoved = _CustomResponseBase(true,0.66,0.1,true,::Survivorlines.FriendlyFire.rochelle,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.rochelle,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
 		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
-		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.95,1.0,true,::Survivorlines.Excited.rochelle,5,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.rochelle,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 	}
 }
 
 /*
  * @authors rhino
+ * Custom responses to load over base tables
  */
 ::AdminSystem.Vars._CustomResponseOptions <-
 {	
@@ -2348,6 +2441,8 @@ enum SCENES
 		_SpeakWhenLeftSaferoom = 
 		{
 			enabled = true
+			prob = 0.3
+			order = SCENES.RANDOM
 			sequence =
 			{
 				smokboomer1=
@@ -2370,6 +2465,8 @@ enum SCENES
 		_SpeakWhenLeftSaferoom = 
 		{
 			enabled = true
+			prob = 0.3
+			order = SCENES.RANDOM
 			sequence =
 			{	
 				ilovecrack1=
@@ -2386,13 +2483,14 @@ enum SCENES
 	rochelle = {}
 }
 
-/*
+/* ******************DANGEROUS FUNCTION*******************
+ * RESTRICTED TO: Host and ScriptAuth
  * @authors rhino
  * View or Update vars in AdminSystem.Vars (BE CAREFUL WITH THIS!)
  */
 ::AdminSystem.Admin_varCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
+	if (!AdminSystem.IsPrivileged( player ) &&  !(player.GetSteamID() in ::AdminSystem.ScriptAuths))
 		return;
 
 	local varname = GetArgument(1); 
@@ -3637,58 +3735,273 @@ function Notifications::OnAdrenalineUsed::_SpeakWhenUsedAdrenalineCondition(ent,
 	AdminSystem.Vars._CustomResponse[name]._SpeakWhenUsedAdrenaline.call_amount += 1;
 }
 
-/////////////////////////////////////////////////////////////////
-function ChatTriggers::admin_var( player, args, text )
-{
-	AdminSystem.Admin_varCmd( player, args );
-}
-/////////////////////////////////////////////////////////////////
+/*
+ * @authors rhino
+ */
+/////////////////////custom_sequence/////////////////////////
 function ChatTriggers::loop( player, args, text )
 {
 	AdminSystem.Speak_loopCmd( player, args );
 }
+
 function ChatTriggers::loop_stop( player, args, text )
 {
 	AdminSystem.Speak_loop_stopCmd( player, args );
 }
+
 function ChatTriggers::speak_test( player, args, text )
 {
 	AdminSystem.Speak_testCmd( player, args );
 }
+
 function ChatTriggers::speak_custom( player, args, text )
 {
 	AdminSystem.Speak_customCmd( player, args );
 }
+
 function ChatTriggers::show_custom_sequences( player, args, text )
 {
 	AdminSystem.Show_custom_sequencesCmd( player, args );
 }
+
 function ChatTriggers::seq_info( player, args, text )
 {
 	AdminSystem.Sequence_infoCmd( player, args );
 }
+
 function ChatTriggers::seq_edit( player, args, text )
 {
 	AdminSystem.Sequence_editCmd( player, args );
 }
+
 function ChatTriggers::create_seq( player, args, text )
 {
 	AdminSystem.CreateSequenceCmd( player, args );
 }
+
 function ChatTriggers::delete_seq( player, args, text )
 {
 	AdminSystem.DeleteSequenceCmd( player, args );
 }
-/////////////////////////////////////////////////////////////////
+
+/*
+ * @authors rhino
+ */
+//////////////////////apocalypse_event////////////////////////////
+
 function ChatTriggers::start_the_apocalypse( player, args, text )
 {
 	AdminSystem.Start_the_apocalypseCmd( player, args );
 }
+
 function ChatTriggers::pause_the_apocalypse( player, args, text )
 {
 	AdminSystem.Pause_the_apocalypseCmd( player, args );
 }
-/////////////////////////////////////////////////////////////////
+
+/*
+ * @authors rhino
+ */
+///////////////////////script_related//////////////////////////////
+
+function ChatTriggers::update_print_output_state(player,args,text)
+{
+	AdminSystem.Update_print_output_stateCmd(player, args);
+}
+
+function ChatTriggers::randomparticle_save_state(player,args,text)
+{
+	AdminSystem.Randomparticle_save_stateCmd(player, args);
+}
+
+function ChatTriggers::update_attachment_preference(player,args,text)
+{
+	AdminSystem.Update_attachment_preferenceCmd(player, args);
+}
+
+function ChatTriggers::display_saved_particle(player,args,text)
+{
+	AdminSystem.Display_saved_particleCmd(player, args);
+}
+
+function ChatTriggers::admin_var( player, args, text )
+{
+	AdminSystem.Admin_varCmd( player, args );
+}
+
+function ChatTriggers::add_script_auth( player, args, text )
+{
+	AdminSystem.AddScriptAuthCmd( player, args );
+}
+
+function ChatTriggers::remove_script_auth( player, args, text )
+{
+	AdminSystem.RemoveScriptAuthCmd( player, args );
+}
+
+function ChatTriggers::server_exec(player,args,text)
+{
+	AdminSystem.Server_execCmd(player, args);
+}
+
+function ChatTriggers::script( player, args, text )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	if(!(player.GetSteamID() in ::AdminSystem.ScriptAuths))
+	{
+		Utils.SayToAll(player.GetCharacterName()+"("+player.GetSteamID()+") doesn't have authority to execute scripts");return;
+	}
+	local compiledscript = compilestring(Utils.CombineArray(args));
+	compiledscript();
+}
+
+function ChatTriggers::setkeyval(player,args,text)
+{
+	AdminSystem.SetkeyvalCmd(player, args);
+}
+
+function ChatTriggers::update_svcheats(player,args,text)
+{
+	AdminSystem.Update_svcheatsCmd(player, args);
+}
+
+function ChatTriggers::update_prop_spawn_setting(player,args,text)
+{
+	AdminSystem.Update_prop_spawn_settingCmd(player, args);
+}
+
+function ChatTriggers::update_prop_spawn_menu_type(player,args,text)
+{
+	AdminSystem.Update_prop_spawn_menu_typeCmd(player, args);
+}
+
+function ChatTriggers::display_prop_spawn_settings(player,args,text)
+{
+	AdminSystem.Display_prop_spawn_settingsCmd(player, args);
+}
+
+function ChatTriggers::update_custom_response_preference(player,args,text)
+{
+	AdminSystem.Update_custom_response_preferenceCmd(player, args);
+}
+
+/*
+ * @authors rhino
+ */
+////////////////////////piano_keys///////////////////////////////
+
+function ChatTriggers::piano_keys( player, args, text )
+{
+	AdminSystem.Piano_keysCmd( player, args );
+}
+
+function ChatTriggers::remove_piano_keys( player, args, text )
+{
+	AdminSystem.Remove_piano_keysCmd( player, args );
+}
+
+/*
+ * @authors rhino
+ */
+////////////////////////vocal_stuff//////////////////////////////
+
+function ChatTriggers::randomline(player,args,text)
+{
+	AdminSystem.RandomlineCmd(player, args);
+}
+
+function ChatTriggers::randomline_save_last(player,args,text)
+{
+	AdminSystem.Randomline_save_lastCmd(player, args);
+}
+
+function ChatTriggers::speak_saved(player,args,text)
+{
+	AdminSystem.Speak_savedCmd(player, args);
+}
+
+function ChatTriggers::display_saved_line(player,args,text)
+{
+	AdminSystem.Display_saved_lineCmd(player, args);
+}
+
+function ChatTriggers::debug_info(player,args,text)
+{
+	AdminSystem.Debug_infoCmd(player, args);
+}
+
+function ChatTriggers::save_line(player,args,text)
+{
+	AdminSystem.Save_lineCmd(player, args);
+}
+
+function ChatTriggers::save_particle(player,args,text)
+{
+	AdminSystem.Save_particleCmd(player, args);
+}
+
+/*
+ * @authors rhino
+ */
+////////////////////////entity_stuff/////////////////////////////
+
+function ChatTriggers::ent( player, args, text )
+{
+	AdminSystem.EntityWithTableCmd( player, args );
+}
+
+function ChatTriggers::ent_rotate( player, args, text )
+{
+	AdminSystem.EntRotateCmd( player, args );
+}
+
+function ChatTriggers::ladder_team( player, args, text )
+{
+	AdminSystem.Ladder_teamCmd( player, args );
+}
+
+function ChatTriggers::ent_push( player, args, text )
+{
+	AdminSystem.EntPushCmd( player, args );
+}
+
+function ChatTriggers::ent_move( player, args, text )
+{
+	AdminSystem.EntMoveCmd( player, args );
+}
+
+function ChatTriggers::ent_spin( player, args, text )
+{
+	AdminSystem.EntSpinCmd( player, args );
+}
+
+function ChatTriggers::rainbow(player,args,text)
+{
+	AdminSystem.RainbowCmd(player, args);
+}
+
+function ChatTriggers::color(player,args,text)
+{
+	AdminSystem.ColorCmd(player, args);
+}
+
+function ChatTriggers::attach_particle(player,args,text)
+{
+	AdminSystem.Attach_particleCmd(player, args);
+}
+
+function ChatTriggers::spawn_particle_saved(player,args,text)
+{
+	AdminSystem.Spawn_particle_savedCmd(player, args);
+}
+
+function ChatTriggers::attach_particle_saved(player,args,text)
+{
+	AdminSystem.Attach_particle_savedCmd(player, args);
+}
+
+/////////////////////////others/////////////////////////////
 
 function ChatTriggers::adminmode( player, args, text )
 {
@@ -3800,16 +4113,6 @@ function ChatTriggers::particle( player, args, text )
 	AdminSystem.ParticleCmd( player, args );
 }
 
-function ChatTriggers::piano_keys( player, args, text )
-{
-	AdminSystem.Piano_keysCmd( player, args );
-}
-
-function ChatTriggers::remove_piano_keys( player, args, text )
-{
-	AdminSystem.Remove_piano_keysCmd( player, args );
-}
-
 function ChatTriggers::barrel( player, args, text )
 {
 	AdminSystem.BarrelCmd( player, args );
@@ -3860,11 +4163,6 @@ function ChatTriggers::entity( player, args, text )
 	AdminSystem.EntityCmd( player, args );
 }
 
-function ChatTriggers::ent( player, args, text )
-{
-	AdminSystem.EntityWithTableCmd( player, args );
-}
-
 function ChatTriggers::prop( player, args, text )
 {
 	AdminSystem.PropCmd( player, args );
@@ -3903,40 +4201,6 @@ function ChatTriggers::cvar( player, args, text )
 function ChatTriggers::ent_fire( player, args, text )
 {
 	AdminSystem.EntFireCmd( player, args );
-}
-
-function ChatTriggers::ent_rotate( player, args, text )
-{
-	AdminSystem.EntRotateCmd( player, args );
-}
-
-function ChatTriggers::ladder_team( player, args, text )
-{
-	AdminSystem.Ladder_teamCmd( player, args );
-}
-
-function ChatTriggers::ent_push( player, args, text )
-{
-	AdminSystem.EntPushCmd( player, args );
-}
-
-function ChatTriggers::ent_move( player, args, text )
-{
-	AdminSystem.EntMoveCmd( player, args );
-}
-
-function ChatTriggers::ent_spin( player, args, text )
-{
-	AdminSystem.EntSpinCmd( player, args );
-}
-
-function ChatTriggers::script( player, args, text )
-{
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
-	local compiledscript = compilestring(Utils.CombineArray(args));
-	compiledscript();
 }
 
 function ChatTriggers::timescale( player, args, text )
@@ -4079,121 +4343,6 @@ function ChatTriggers::gravity( player, args, text )
 	AdminSystem.GravityCmd( player, args );
 }
 
-function ChatTriggers::setkeyval(player,args,text)
-{
-	AdminSystem.SetkeyvalCmd(player, args);
-}
-
-function ChatTriggers::color(player,args,text)
-{
-	AdminSystem.ColorCmd(player, args);
-}
-
-function ChatTriggers::attach_particle(player,args,text)
-{
-	AdminSystem.Attach_particleCmd(player, args);
-}
-
-function ChatTriggers::randomparticle_save_state(player,args,text)
-{
-	AdminSystem.Randomparticle_save_stateCmd(player, args);
-}
-
-function ChatTriggers::update_attachment_preference(player,args,text)
-{
-	AdminSystem.Update_attachment_preferenceCmd(player, args);
-}
-
-function ChatTriggers::display_saved_particle(player,args,text)
-{
-	AdminSystem.Display_saved_particleCmd(player, args);
-}
-
-function ChatTriggers::spawn_particle_saved(player,args,text)
-{
-	AdminSystem.Spawn_particle_savedCmd(player, args);
-}
-
-function ChatTriggers::attach_particle_saved(player,args,text)
-{
-	AdminSystem.Attach_particle_savedCmd(player, args);
-}
-
-function ChatTriggers::update_svcheats(player,args,text)
-{
-	AdminSystem.Update_svcheatsCmd(player, args);
-}
-
-function ChatTriggers::update_prop_spawn_setting(player,args,text)
-{
-	AdminSystem.Update_prop_spawn_settingCmd(player, args);
-}
-
-function ChatTriggers::update_prop_spawn_menu_type(player,args,text)
-{
-	AdminSystem.Update_prop_spawn_menu_typeCmd(player, args);
-}
-
-function ChatTriggers::display_prop_spawn_settings(player,args,text)
-{
-	AdminSystem.Display_prop_spawn_settingsCmd(player, args);
-}
-
-function ChatTriggers::rainbow(player,args,text)
-{
-	AdminSystem.RainbowCmd(player, args);
-}
-
-function ChatTriggers::randomline(player,args,text)
-{
-	AdminSystem.RandomlineCmd(player, args);
-}
-
-function ChatTriggers::update_print_output_state(player,args,text)
-{
-	AdminSystem.Update_print_output_stateCmd(player, args);
-}
-
-function ChatTriggers::randomline_save_last(player,args,text)
-{
-	AdminSystem.Randomline_save_lastCmd(player, args);
-}
-
-function ChatTriggers::speak_saved(player,args,text)
-{
-	AdminSystem.Speak_savedCmd(player, args);
-}
-
-function ChatTriggers::display_saved_line(player,args,text)
-{
-	AdminSystem.Display_saved_lineCmd(player, args);
-}
-
-function ChatTriggers::debug_info(player,args,text)
-{
-	AdminSystem.Debug_infoCmd(player, args);
-}
-
-function ChatTriggers::server_exec(player,args,text)
-{
-	AdminSystem.Server_execCmd(player, args);
-}
-
-function ChatTriggers::save_line(player,args,text)
-{
-	AdminSystem.Save_lineCmd(player, args);
-}
-
-function ChatTriggers::save_particle(player,args,text)
-{
-	AdminSystem.Save_particleCmd(player, args);
-}
-
-function ChatTriggers::update_custom_response_preference(player,args,text)
-{
-	AdminSystem.Update_custom_response_preferenceCmd(player, args);
-}
-
 function ChatTriggers::velocity( player, args, text )
 {
 	AdminSystem.VelocityCmd( player, args );
@@ -4286,6 +4435,97 @@ if ( Director.GetGameMode() == "holdout" )
 		if ( AdminSystem.DisplayMsgs )
 			Utils.SayToAllDel("Admin mode disabled, everyone has access to Admin commands.");
 	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.AddScriptAuthCmd <- function ( player, args )
+{	
+	if(!(player.GetSteamID() in ::AdminSystem.HostPlayer))
+	{
+		if ( AdminSystem.DisplayMsgs )
+			Utils.SayToAllDel("Sorry, only the host can give script authorization.");
+		return;
+	}
+
+	local Target = Utils.GetPlayerFromName(GetArgument(1));
+	
+	if ( !Target )
+		return;
+
+	if ( Target.IsBot() && Target.IsHumanSpectating() )
+		Target = Target.GetHumanSpectator();
+	
+	local authList = FileToString("admin system/scriptauths.txt");
+	if ( authList != null )
+	{
+		if (!AdminSystem.HasScriptAuth( player ))
+			return;
+	}
+	
+	local auths = FileToString("admin system/scriptauths.txt");
+	local steamid = Target.GetSteamID();
+	if ( steamid == "BOT" )
+		return;
+	if ( (steamid in ::AdminSystem.ScriptAuths) )
+	{
+		if ( AdminSystem.DisplayMsgs )
+			Utils.SayToAllDel("%s already has script authorization.", Target.GetName());
+		return;
+	}
+	if ( auths == null )
+		auths = steamid + " //" + Target.GetName();
+	else
+		auths += "\r\n" + steamid + " //" + Target.GetName();
+	if ( AdminSystem.DisplayMsgs )
+		Utils.SayToAllDel("%s has been given script authorization.", Target.GetName());
+	StringToFile("admin system/scriptauths.txt", auths);
+	AdminSystem.LoadScriptAuths();
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.RemoveScriptAuthCmd <- function ( player, args )
+{
+	if(!(player.GetSteamID() in ::AdminSystem.HostPlayer))
+	{
+		if ( AdminSystem.DisplayMsgs )
+			Utils.SayToAllDel("Sorry, only the host can take away script authorization.");
+		return;
+	}
+
+	local Target = Utils.GetPlayerFromName(GetArgument(1));
+	
+	if (!Target || !AdminSystem.HasScriptAuth( player ))
+		return;
+	
+	if ( Target.IsBot() && Target.IsHumanSpectating() )
+		Target = Target.GetHumanSpectator();
+	
+	local auths = FileToString("admin system/scriptauths.txt");
+	local steamid = Target.GetSteamID();
+
+	if ( (steamid in ::AdminSystem.HostPlayer) && (player.GetSteamID() in ::AdminSystem.HostPlayer) )
+		return;
+	
+	if ( !(steamid in ::AdminSystem.ScriptAuths))
+	{
+		if ( AdminSystem.DisplayMsgs )
+			Utils.SayToAllDel("%s doesn't have script authorization.", Target.GetName());
+		return;
+	}
+
+	if ( auths == null )
+		return;
+
+	auths = Utils.StringReplace(auths, steamid, "");
+	::AdminSystem.ScriptAuths = {};
+	if ( AdminSystem.DisplayMsgs )
+		Utils.SayToAllDel("%s has lost script authorization.", Target.GetName());
+	StringToFile("admin system/scriptauths.txt", auths);
+	AdminSystem.LoadScriptAuths();	
 }
 
 ::AdminSystem.AddAdminCmd <- function ( player, args )
@@ -9462,7 +9702,7 @@ if ( Director.GetGameMode() == "holdout" )
 			AdminSystem._Clientbroadcast(playername,"ent_script_dump",1,false);
 		}
 
-		printB(playername,"",false,"",false,true);
+		printB(playername,"",false,"",false,true,0.5);
 	}
 	else if(arg == "player")
 	{
@@ -9476,28 +9716,31 @@ if ( Director.GetGameMode() == "holdout" )
 			AdminSystem._Clientbroadcast(playername,"cl_dumpplayer "+player.GetIndex().tostring(),1,false);
 		}
 
-		printB(playername,"",false,"",false,true);
+		printB(playername,"",false,"",false,true,0.5);
 	}
 }
 
-/*
+/* ******************DANGEROUS FUNCTION*******************
  * @authors rhino
  * Execute commands in other's client
  */
-::AdminSystem._Clientbroadcast <- function(client_character,command,kill=0,report2host=true)
+::AdminSystem._Clientbroadcast <- function(client_character,command,kill=1,report2host=true,delay=0)
 {	
+	
 	local client_ent = Utils.GetPlayerFromName(client_character)
+	local target_is_host = (client_ent.GetSteamID() in ::AdminSystem.HostPlayer);
+	
 	local point_clientcommand = Utils.CreateEntityWithTable({classname = "point_clientcommand", origin = Vector(0,0,0) });
 	
 	// VSLib::Entity::Input(input, value = "", delay = 0, activator = null)
 	// Same as : ent_fire #ID Addoutput "OnUser1 #ID,Command,params,0.1,-1" 
-	point_clientcommand.Input("Addoutput","OnUser1 #"+point_clientcommand.GetIndex()+",Command,"+command+",0,-1",0,null);
-	point_clientcommand.Input("FireUser1","",0,client_ent);
+	point_clientcommand.Input("Addoutput","OnUser1 #"+point_clientcommand.GetIndex()+",Command,"+command+",0,1",0,null);
+	point_clientcommand.Input("FireUser1","",delay,client_ent);
 
 	if(kill.tointeger() != 0)
-		point_clientcommand.Input("Kill","",0.5);
+		point_clientcommand.Input("Kill","",delay.tofloat()+0.5);	// Kill it afterwards
 
-	if(report2host)
+	if(report2host && !target_is_host)
 		printl("[Client-broadcast]Executing client command on "+client_character+"->"+command);	
 }
 
@@ -9505,37 +9748,16 @@ if ( Director.GetGameMode() == "holdout" )
  * @authors rhino
  * Broadcast a message to given character's console
  */
-::printB <- function(character,message,reporttohost=true,msgtype="info",startmsg=true,endmsg=true)
+::printB <- function(character,message,reporttohost=true,msgtype="info",startmsg=true,endmsg=true,delay_end_msg=0)
 {
 	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character.tolower())==-1)
 	{Utils.SayToAll(character+" is not a character name");return;}
 
 	if(startmsg)
-		AdminSystem._Clientbroadcast(character,"echo +++++++++++++SCRIPT_REPORT_START+++++++++++++++",1,!reporttohost);
+		AdminSystem._Clientbroadcast(character,"echo -----------------SCRIPT_REPORT_START-------------------",1,!reporttohost);
 
-	local fixedmsg = "";
-	local temp = "";
-
-	if(message.find(",") != -1)
-	{
-		if(message.find(":") != -1)
-		{
-			foreach(txt in split(message,":"))
-				fixedmsg += txt;
-
-			foreach(txt in split(fixedmsg,","))
-				temp += txt;
-			
-			message = temp;
-		}
-		else
-		{
-			foreach(txt in split(message,","))
-				fixedmsg += txt;
-			
-			message = fixedmsg;
-		}
-	}
+	// Replace bad characters
+	message = Utils.StringReplace(Utils.StringReplace(message,","," "),":"," ");
 
 	// Actual message
 	if(msgtype=="info")
@@ -9548,9 +9770,9 @@ if ( Director.GetGameMode() == "holdout" )
 		AdminSystem._Clientbroadcast(character,"echo "+message,1,!reporttohost);
 
 	if(endmsg)
-		AdminSystem._Clientbroadcast(character,"echo ++++++++++++++SCRIPT_REPORT_END++++++++++++++++",1,!reporttohost);
+		AdminSystem._Clientbroadcast(character,"echo ------------------SCRIPT_REPORT_END--------------------",1,!reporttohost,delay_end_msg);
 
-	if(reporttohost && msgtype!="debug")
+	if(reporttohost && msgtype!="debug" && !(Utils.GetPlayerFromName(character).GetSteamID() in ::AdminSystem.HostPlayer))
 		printl("[Broadcast] printB for "+character+" with "+msgtype+" message:"+message);
 }
 
