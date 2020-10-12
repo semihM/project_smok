@@ -2,12 +2,15 @@
 Repository for the workshop item [project_smok](https://steamcommunity.com/sharedfiles/filedetails/?id=2229460523) of L4D2
 
 ## Commands
+
+### Entities
+
  - **ent** : Create an entity of the given class with given key-values
  
 ```cpp
        //Overloads:
        // Class names and their keys and possible values can be
-       //      found through the Hammer World Editor
+       //      found through the Valve Developer Wikis and Hammer World Editor
        // value accepts following formats:
        //     For single values (int,float,str) :
        //           value = single_value
@@ -39,6 +42,8 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
        rainbow {total_duration<=300.0} 
 ```
 
+### Random and saved voices
+
 - **randomline** : Speak a line 
 ```cpp
        //Overloads:
@@ -55,7 +60,7 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
 
 - **speak_saved** : Speak the saved line
 
-- **debug_info** : Dump information about targeted entity to the console
+### Particle effects
 
 - **particle** : Spawn a particle
 ```cpp 
@@ -87,6 +92,8 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
 
 - **attach_particle_saved** : Attach the saved particle to targeted entity
 
+### Custom sequences
+
 - **speak_test** : Speak given line for given time
 ```cpp
        //Overloads:
@@ -108,13 +115,13 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
 - **delete_seq** : Delete a saved custom sequence
 ```cpp
        //Overloads:
-       delete_seq {speaker: character} {name: saved_name} 
+       delete_seq {speaker: character} {sequence} 
 ```
 
 - **speak_custom** : Execute a saved custom sequence
 ```cpp
        //Overloads:
-       speak_custom {speaker: character} {name: saved_name} 
+       speak_custom {speaker: character} {sequence} 
 ```
 
 - **show_custom_sequences** : Print out the saved custom sequences to console
@@ -154,10 +161,19 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
        seq_edit Nick test_seq >0 scene>hurrah01
 ```
 
+### Apocalypse event
 
 - **start_the_apocalypse** : Uh oh
 
 - **pause_the_apocalypse** : Let the world have a break from the madness
+
+### Piano
+
+- **piano_keys** : Place 25 piano keys starting at looked location placing them to the right
+
+- **remove_piano_keys** : Removes all piano key spawns
+
+### Other
 
 - **ladder_team** : Change teams of ladders
 ```cpp
@@ -167,8 +183,44 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
     
 ```
 
-- **piano_keys** : Place 25 piano keys starting at looked location placing them to the right
+### Debug and script related 
 
-- **remove_piano_keys** : Removes all piano key spawns
+- **debug_info** : Dump information about objects
+```cpp
+       //Overloads:
+       debug_info player      // Show information about whoever calls this function
+       debug_info             // Show information about targeted object
+    
+```
 
+- **add_script_auth** : Give authorization to an admin to use "script" command
+```cpp
+       //Overloads:
+       // ONLY THE HOST can give script authority to others
+       add_script_auth {character}
+    
+```
+
+- **remove_script_auth** : Take away the authorization from admin to use "script" command
+```cpp
+       //Overloads:
+       // Host's script authority can not be taken away
+       remove_script_auth {character}
+    
+```
 - **and more...**
+
+
+## Extra
+
+### Changing settings, adding custom responses without launching the game
+
+- AdminSystem keeps its configuration files in the **"..\Left 4 Dead 2\left4dead2\ems\admin system"** directory.
+
+- This directory contains **configurations(settings.txt)**, **admins(admins.txt)**, **banned players(banned.txt)**, **script authorizations(scriptauths.txt)** and **custom responses(custom_responses.json)**. Which can all be edited manually (Be careful while formatting! Keep a differently named copy before changing anything!)
+
+- **"custom_responses.json"** file can be opened with a text editor and new custom sequences can be defined  for each admin's steam ID with the example format given in the file.
+
+### Bug reports
+
+- Before creating an issue, please contact to the [developer](http://steamcommunity.com/profiles/76561198095804696)
