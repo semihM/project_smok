@@ -14483,25 +14483,45 @@
 
 		"1"
 		{
-			"command"	 "play buttons/button14;scripted_user_func add_admin,nick;show_menu AddAdminsAdd"
-			"label"		 " Nick / Bill"
+			"command"	 "play buttons/button14;scripted_user_func add_admin,bill;show_menu AddAdminsAdd"
+			"label"		 " Bill"
 		}
 		"2"
 		{
-			"command"	 "play buttons/button14;scripted_user_func add_admin,rochelle;show_menu AddAdminsAdd"
-			"label"		 " Rochelle / Zoey"
+			"command"	 "play buttons/button14;scripted_user_func add_admin,zoey;show_menu AddAdminsAdd"
+			"label"		 " Zoey"
 		}
 		"3"
 		{
-			"command"	 "play buttons/button14;scripted_user_func add_admin,coach;show_menu AddAdminsAdd"
-			"label"		 " Coach / Louis"
+			"command"	 "play buttons/button14;scripted_user_func add_admin,louis;show_menu AddAdminsAdd"
+			"label"		 " Louis"
 		}
 		"4"
 		{
-			"command"	 "play buttons/button14;scripted_user_func add_admin,ellis;show_menu AddAdminsAdd"
-			"label"		 " Ellis / Francis"
+			"command"	 "play buttons/button14;scripted_user_func add_admin,francis;show_menu AddAdminsAdd"
+			"label"		 " Francis"
+		}
+		"5"
+		{
+			"command"	 "play buttons/button14;scripted_user_func add_admin,nick;show_menu AddAdminsAdd"
+			"label"		 " Nick"
+		}
+		"6"
+		{
+			"command"	 "play buttons/button14;scripted_user_func add_admin,rochelle;show_menu AddAdminsAdd"
+			"label"		 " Rochelle"
+		}
+		"7"
+		{
+			"command"	 "play buttons/button14;scripted_user_func add_admin,coach;show_menu AddAdminsAdd"
+			"label"		 " Coach"
 		}
 		"8"
+		{
+			"command"	 "play buttons/button14;scripted_user_func add_admin,ellis;show_menu AddAdminsAdd"
+			"label"		 " Ellis"
+		}
+		"9"
 		{
 			"command"	 "play buttons/button14;show_menu AddAdmins"
 			"label"		 " << Back"
@@ -14519,25 +14539,45 @@
 
 		"1"
 		{
-			"command"	 "play buttons/button14;scripted_user_func remove_admin,nick;show_menu AddAdminsRemove"
-			"label"		 " Nick / Bill"
+			"command"	 "play buttons/button14;scripted_user_func remove_admin,bill;show_menu AddAdminsRemove"
+			"label"		 " Bill"
 		}
 		"2"
 		{
-			"command"	 "play buttons/button14;scripted_user_func remove_admin,rochelle;show_menu AddAdminsRemove"
-			"label"		 " Rochelle / Zoey"
+			"command"	 "play buttons/button14;scripted_user_func remove_admin,zoey;show_menu AddAdminsRemove"
+			"label"		 " Zoey"
 		}
 		"3"
 		{
-			"command"	 "play buttons/button14;scripted_user_func remove_admin,coach;show_menu AddAdminsRemove"
-			"label"		 " Coach / Louis"
+			"command"	 "play buttons/button14;scripted_user_func remove_admin,louis;show_menu AddAdminsRemove"
+			"label"		 " Louis"
 		}
 		"4"
 		{
-			"command"	 "play buttons/button14;scripted_user_func remove_admin,ellis;show_menu AddAdminsRemove"
-			"label"		 " Ellis / Francis"
+			"command"	 "play buttons/button14;scripted_user_func remove_admin,francis;show_menu AddAdminsRemove"
+			"label"		 " Francis"
+		}
+		"5"
+		{
+			"command"	 "play buttons/button14;scripted_user_func remove_admin,nick;show_menu AddAdminsRemove"
+			"label"		 " Nick"
+		}
+		"6"
+		{
+			"command"	 "play buttons/button14;scripted_user_func remove_admin,rochelle;show_menu AddAdminsRemove"
+			"label"		 " Rochelle"
+		}
+		"7"
+		{
+			"command"	 "play buttons/button14;scripted_user_func remove_admin,coach;show_menu AddAdminsRemove"
+			"label"		 " Coach"
 		}
 		"8"
+		{
+			"command"	 "play buttons/button14;scripted_user_func remove_admin,ellis;show_menu AddAdminsRemove"
+			"label"		 " Ellis"
+		}
+		"9"
 		{
 			"command"	 "play buttons/button14;show_menu AddAdmins"
 			"label"		 " << Back"
@@ -17927,6 +17967,11 @@
 				"command"	 "play buttons/button14;show_menu debug_info_menu1"
 				"label"		 " Debug settings menu"
 			}
+			"5"
+			{
+				"command"    "play buttons/button14;show_menu smok_script_auth_GT"
+				"label"		 " Give/Take away script authorization"
+			}
 			"8"
 			{
 					"command"	 "play buttons/button14;show_menu smok_menu"
@@ -18140,6 +18185,144 @@
 					"command"    "play buttons/button14"
 					"label"      " Exit"
 			}
+	}
+	
+	"smok_script_auth_GT"
+	{
+			"Title"		"Give/Take away script authorization"
+			"1"
+			{
+				"command"	 "play buttons/button14;show_menu smok_script_auth_give"
+				"label"		 " Give authorization"
+			}
+			"2"
+			{
+				"command"	 "play buttons/button14;show_menu smok_script_auth_take"
+				"label"		 " Take away authorization"
+			}
+			"8"
+			{
+					"command"	 "play buttons/button14;show_menu smok_menu2"
+					"label"		 " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+
+	}
+
+	"smok_script_auth_give"
+	{
+		"Title"			"Give script authorization to"
+
+		"1"
+		{
+			"command"	 "play buttons/button14;scripted_user_func add_script_auth,bill;show_menu smok_script_auth_give"
+			"label"		 " Bill"
+		}
+		"2"
+		{
+			"command"	 "play buttons/button14;scripted_user_func add_script_auth,zoey;show_menu smok_script_auth_give"
+			"label"		 " Zoey"
+		}
+		"3"
+		{
+			"command"	 "play buttons/button14;scripted_user_func add_script_auth,louis;show_menu smok_script_auth_give"
+			"label"		 " Louis"
+		}
+		"4"
+		{
+			"command"	 "play buttons/button14;scripted_user_func add_script_auth,francis;show_menu smok_script_auth_give"
+			"label"		 " Francis"
+		}
+		"5"
+		{
+			"command"	 "play buttons/button14;scripted_user_func add_script_auth,nick;show_menu smok_script_auth_give"
+			"label"		 " Nick"
+		}
+		"6"
+		{
+			"command"	 "play buttons/button14;scripted_user_func add_script_auth,rochelle;show_menu smok_script_auth_give"
+			"label"		 " Rochelle"
+		}
+		"7"
+		{
+			"command"	 "play buttons/button14;scripted_user_func add_script_auth,coach;show_menu smok_script_auth_give"
+			"label"		 " Coach"
+		}
+		"8"
+		{
+			"command"	 "play buttons/button14;scripted_user_func add_script_auth,ellis;show_menu smok_script_auth_give"
+			"label"		 " Ellis"
+		}
+		"9"
+		{
+			"command"	 "play buttons/button14;show_menu smok_script_auth_GT"
+			"label"		 " << Back"
+		}
+		"0"
+		{
+			"command"	 "play buttons/button14"
+			"label"		 " Exit"
+		}
+	}
+
+	"smok_script_auth_take"
+	{
+		"Title"			"Take away script authorization from"
+
+		"1"
+		{
+			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,bill;show_menu smok_script_auth_take"
+			"label"		 " Bill"
+		}
+		"2"
+		{
+			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,zoey;show_menu smok_script_auth_take"
+			"label"		 " Zoey"
+		}
+		"3"
+		{
+			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,louis;show_menu smok_script_auth_take"
+			"label"		 " Louis"
+		}
+		"4"
+		{
+			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,francis;show_menu smok_script_auth_take"
+			"label"		 " Francis"
+		}
+		"5"
+		{
+			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,nick;show_menu smok_script_auth_take"
+			"label"		 " Nick"
+		}
+		"6"
+		{
+			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,rochelle;show_menu smok_script_auth_take"
+			"label"		 " Rochelle"
+		}
+		"7"
+		{
+			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,coach;show_menu smok_script_auth_take"
+			"label"		 " Coach"
+		}
+		"8"
+		{
+			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,ellis;show_menu smok_script_auth_take"
+			"label"		 " Ellis"
+		}
+		"9"
+		{
+			"command"	 "play buttons/button14;show_menu smok_script_auth_GT"
+			"label"		 " << Back"
+		}
+		"0"
+		{
+			"command"	 "play buttons/button14"
+			"label"		 " Exit"
+		}
 	}
 
 	"random_line_menu"
