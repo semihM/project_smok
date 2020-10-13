@@ -31,8 +31,15 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
 - **ent_push** : Push the targeted entity in given direction
 ```cpp 
       //Overloads:
-      ent_push {scale} {direction: (forward,backward,left,up,...)} {pitch: degrees}
+      ent_push {scale} {direction: (forward,backward,left,up,right,left,random)} {pitch: degrees}
       ent_push   // scale = 10 , direction = forward , pitch = 0
+```
+
+- **ent_teleport** : Teleport the entity with the given name/ID to aimed location
+```cpp 
+      //Overloads:
+      ent_teleport {entity_name}
+      ent_teleport #{entity_ID}
 ```
 
 - **rainbow** : Apply rainbow effect to targeted entity
@@ -167,6 +174,15 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
 
 - **pause_the_apocalypse** : Let the world have a break from the madness
 
+- **show_apocalypse_settings** : Show apocalypse event's settings and values
+
+- **apocalypse_setting** : Change apocalypse event settings
+```cpp
+       //Overloads:
+       // Check out the settings and their values with show_apocalypse_settings
+       apocalypse_setting {setting : (entprob,dmgprob,maxradius,minspeed,maxspeed,...)} {new_value: float/integer}
+```
+
 ### Piano
 
 - **piano_keys** : Place 25 piano keys starting at looked location placing them to the right
@@ -182,6 +198,30 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
        ladder_team {team : (all,survivor,infected,spectator,l4d1) | reset}
     
 ```
+
+- **microphone** : Create an entity to be used as microphone 
+```cpp
+       //Overloads:
+       microphone {effect:(standard,no_effect,very_small,small,tiny,loud,loud_echo} {hearing_range} {connected_speaker}
+       microphone {effect:(standard,no_effect,very_small,small,tiny,loud,loud_echo} {hearing_range} // speaker can be connected later
+       microphone {effect:(standard,no_effect,very_small,small,tiny,loud,loud_echo} // hearing_range = 120
+       microphone         // effect = standard, hearing_range = 120
+    
+```
+
+- **speaker** : Creates an entity to be used as a speaker
+
+- **speaker2mic** : Connect a speaker to a microphone
+```cpp
+       //Overloads:
+       // These ID's and names can be found from the console summary or with display_mics_speakers command
+       // ID's need to be specified with a # before the number
+       speaker2mic #{speakerID} #{micID}
+       speaker2mic {speaker_name} {mic_name} 
+    
+```
+
+- **display_mics_speakers** : Get information about the spawned microphones and speakers
 
 ### Debug and script related 
 
