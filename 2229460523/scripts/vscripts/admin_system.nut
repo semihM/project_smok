@@ -154,57 +154,71 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		{
 			bill=
 			{
-				duration=30,
+				duration=-1,
 				source=""
 			},
 			francis=
 			{
-				duration=30,
+				duration=-1,
 				source=""
 			},
 			louis=
 			{
-				duration=30,
+				duration=-1,
 				source=""
 			},
 			zoey=
 			{
-				duration=30,
+				duration=-1,
 				source=""
 			},
 			nick=
 			{
-				duration=30,
+				duration=-1,
 				source=""
 			},
 			coach=
 			{
-				duration=30,
+				duration=-1,
 				source=""
 			},
 			ellis=
 			{
-				duration=30,
+				duration=-1,
 				source=""
 			},
 			rochelle=
 			{
-				duration=30,
+				duration=-1,
 				source=""
 			}
+		}
+
+		// Wheter to attach to looked location of the targeted entity
+		// if false then particle spawns at entity's origin
+	    _attachTargetedLocation = 
+		{
+			bill=true,
+			francis=true,
+			louis=true,
+			zoey=true,
+			nick=true,
+			coach=true,
+			ellis=true,
+			rochelle=true
 		}
 
 		// To reduce menu amount
 		_preferred_duration =
 		{
-			bill=30,
-			francis=30,
-			louis=30,
-			zoey=30,
-			nick=30,
-			coach=30,
-			ellis=30,
-			rochelle=30
+			bill=-1,
+			francis=-1,
+			louis=-1,
+			zoey=-1,
+			nick=-1,
+			coach=-1,
+			ellis=-1,
+			rochelle=-1
 		}
 
 		// Prop spawn_settings
@@ -369,6 +383,8 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		}
 		
 		_spawnedPianoKeys = {}
+
+		IgnoreSpeakerClass = true
 	}
 	
 	ZombieModels =
@@ -828,57 +844,71 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			{
 				bill=
 				{
-					duration=30,
+					duration=-1,
 					source=""
 				},
 				francis=
 				{
-					duration=30,
+					duration=-1,
 					source=""
 				},
 				louis=
 				{
-					duration=30,
+					duration=-1,
 					source=""
 				},
 				zoey=
 				{
-					duration=30,
+					duration=-1,
 					source=""
 				},
 				nick=
 				{
-					duration=30,
+					duration=-1,
 					source=""
 				},
 				coach=
 				{
-					duration=30,
+					duration=-1,
 					source=""
 				},
 				ellis=
 				{
-					duration=30,
+					duration=-1,
 					source=""
 				},
 				rochelle=
 				{
-					duration=30,
+					duration=-1,
 					source=""
 				}
+			}
+
+			// Wheter to attach to looked location of the targeted entity
+			// if false then particle spawns at entity's origin
+			_attachTargetedLocation = 
+			{
+				bill=true,
+				francis=true,
+				louis=true,
+				zoey=true,
+				nick=true,
+				coach=true,
+				ellis=true,
+				rochelle=true
 			}
 
 			// To reduce menu amount
 			_preferred_duration =
 			{
-				bill=30,
-				francis=30,
-				louis=30,
-				zoey=30,
-				nick=30,
-				coach=30,
-				ellis=30,
-				rochelle=30
+				bill=-1,
+				francis=-1,
+				louis=-1,
+				zoey=-1,
+				nick=-1,
+				coach=-1,
+				ellis=-1,
+				rochelle=-1
 			}
 
 			// Prop spawn_settings
@@ -1048,20 +1078,21 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			{
 				maxradius = 850				// maximum radius to apply forces
 				updaterate = 1				// how often to update entity list in seconds
-				mindelay = 0.3				// minimum delay to apply the velocity vector
-				maxdelayoffset = 2   		// maximum delay to apply the velocity vector
+				mindelay = 0.3				// minimum delay to apply propageddon function
+				maxdelayoffset = 2  		// maximum delay to apply propageddon function
 				minspeed = 800				// minimum speed
-				maxspeed = 20000    		// maximum speed
-				dmgmin = 5			    // minimum damage done to physics and door objects
-				dmgmax = 100			// maximum damage done to physics and door objects
+				maxspeed = 24000    		// maximum speed
+				dmgmin = 5			    	// minimum damage done to entity
+				dmgmax = 100				// maximum damage done to entity
 				dmgprob = 0.3				// probability of entity getting damaged
-				breakprob = 0.1				// probability of entity being broken
-				entprob = 0.65				// probability of an entity being chosen within the radius
+				breakprob = 0.075			// probability of entity being broken
+				doorlockprob = 0.1  		// probability of doors getting locked, saferoom doors excluded
+				ropebreakprob = 0.07		// probability of a cable or sorts to be broken from its connection point
+				entprob = 0.62				// probability of an entity being chosen within the radius
 				debug = 1					// Print which entities are effected
 			}
 
-			_ladderteams = {}
-
+			IgnoreSpeakerClass = true
 		}
 	}
 	else
@@ -1101,11 +1132,9 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 		}
 		printl("[Custom-Loop] Stopped all custom loops");
 
-		// Ladder teams
-		if(!("_ladderteams" in AdminSystem.Vars))
-			AdminSystem.Vars._ladderteams <- {};
-		else
-			AdminSystem.Vars._ladderteams = {};
+		// Remove ladder teams table
+		if(("_ladderteams" in AdminSystem.Vars))
+			delete AdminSystem.Vars._ladderteams;
 		
 		printl("[Custom-Loop] Reset all ladder teams");
 
@@ -1785,6 +1814,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.Attach_particleCmd(player, args);
 			break;
 		}
+		case "attach_to_targeted_position":
+		{
+			AdminSystem.Attach_to_targeted_positionCmd(player, args);
+			break;
+		}
 		case "randomparticle_save_state":
 		{
 			AdminSystem.Randomparticle_save_stateCmd(player, args);
@@ -1910,6 +1944,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.EntFireCmd( player, args );
 			break;
 		}
+		case "ent_teleport":
+		{
+			AdminSystem.EntTeleportCmd( player, args );
+			break;
+		}
 		case "ent_rotate":
 		{
 			AdminSystem.EntRotateCmd(player,args);
@@ -1998,6 +2037,26 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		case "particle":
 		{
 			AdminSystem.ParticleCmd( player, args );
+			break;
+		}
+		case "microphone":
+		{
+			AdminSystem.MicrophoneCmd( player, args );
+			break;
+		}
+		case "speaker":
+		{
+			AdminSystem.SpeakerCmd( player, args );
+			break;
+		}
+		case "speaker2mic":
+		{
+			AdminSystem.Speaker2micCmd( player, args );
+			break;
+		}
+		case "display_mics_speakers":
+		{
+			AdminSystem.Display_mics_speakersCmd( player, args );
 			break;
 		}
 		case "piano_keys":
@@ -2306,6 +2365,21 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.Pause_the_apocalypseCmd(player,args);
 			break;
 		}
+		case "apocalypse_debug":
+		{
+			AdminSystem.Apocalypse_debugCmd(player,args);
+			break;
+		}
+		case "apocalypse_setting":
+		{
+			AdminSystem.Apocalypse_settingCmd(player,args);
+			break;
+		}
+		case "show_apocalypse_settings":
+		{
+			AdminSystem.Show_apocalypse_settingsCmd(player,args);
+			break;
+		}
 		default:
 			break;
 	}
@@ -2430,7 +2504,7 @@ enum SCENES
 
 /*
  * @authors rhino
- * Custom responses to load over base tables
+ * Custom responses to load over base tables, overwrites the base values
  */
 ::AdminSystem.Vars._CustomResponseOptions <-
 {	
@@ -2579,17 +2653,17 @@ enum SCENES
 
 	local teamtable =
 	{	
-		all = "0"
-		spectator = "1"
-		survivor = "2"
-		infected = "3"
-		l4d1 = "4"
+		all = UNKNOWN
+		spectator = SPECTATORS
+		survivor = SURVIVORS
+		infected = INFECTED
+		l4d1 = L4D1_SURVIVORS
 	}
 
 	// Reset teams back to defaults
 	if(team == "reset")	
 	{	
-		// No reset needed
+		// No cache found, no reset needed
 		if(!("_ladderteams" in AdminSystem.Vars))
 			return;
 
@@ -2598,7 +2672,7 @@ enum SCENES
 		{	
 			ldr.Input("setteam",AdminSystem.Vars._ladderteams[ldr.GetIndex()]);
 		}
-		printl("Resetting ladder teams");
+		printB(player.GetCharacterName(),"Resetting ladder teams");
 		return;
 	}
 
@@ -2606,7 +2680,7 @@ enum SCENES
 	if(!(team in teamtable))
 		return;
 
-	team = teamtable[team];
+	team = teamtable[team].tostring();
 	
 	// Cache if first time then change teams
 	if(!("_ladderteams" in AdminSystem.Vars))
@@ -2617,7 +2691,7 @@ enum SCENES
 			AdminSystem.Vars._ladderteams[ldr.GetIndex()] <- ldr.GetTeam().tostring();
 			ldr.Input("setteam",team)
 		}
-		printl("Caching ladder teams...");
+		printl("[Cache] Caching ladder teams...");
 	}
 	else
 	{
@@ -2626,8 +2700,8 @@ enum SCENES
 			ldr.Input("setteam",team)
 		}
 	}
-	printl("Changed ladder teams to "+team);
-	
+
+	printB(player.GetCharacterName(),"Changed ladder teams to "+team);
 	
 }
 
@@ -2644,9 +2718,53 @@ enum SCENES
 	dmgmin = 5			    	// minimum damage done to entity
 	dmgmax = 100				// maximum damage done to entity
 	dmgprob = 0.3				// probability of entity getting damaged
-	breakprob = 0.1				// probability of entity being broken
-	entprob = 0.65				// probability of an entity being chosen within the radius
+	breakprob = 0.075			// probability of entity being broken
+	doorlockprob = 0.1  		// probability of doors getting locked, saferoom doors excluded
+	ropebreakprob = 0.07		// probability of a cable or sorts to be broken from its connection point
+	entprob = 0.62				// probability of an entity being chosen within the radius
 	debug = 1					// Print which entities are effected
+}
+
+/* @authors rhino
+ * Change how hellish you want the experience to be
+ */
+::AdminSystem.Apocalypse_settingCmd <- function (player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local setting = GetArgument(1);
+	local val = GetArgument(2);
+	if(!(setting in AdminSystem.Vars._propageddon_args))
+		return;
+	
+	try{val = val.tofloat();}catch(e){return;}
+
+	local name = player.GetCharacterName();
+
+	if (AdminSystem.Vars._outputsEnabled[name.tolower()])
+	{Utils.SayToAll(name+" -> Changed apocalypse parameter "+setting+": "+AdminSystem.Vars._propageddon_args[setting]+"->"+val);}
+	else
+	{printB(name,name+" -> Changed apocalypse parameter "+setting+": "+AdminSystem.Vars._propageddon_args[setting]+"->"+val,true,"info",true,true);}
+	
+	AdminSystem.Vars._propageddon_args[setting] = val
+	
+}
+
+/* @authors rhino
+ * Show apocalypse params
+ */
+::AdminSystem.Show_apocalypse_settingsCmd <- function (player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	printB(player.GetCharacterName(),"",false,"",true,false);
+	foreach(setting,val in AdminSystem.Vars._propageddon_args)
+	{
+		printB(player.GetCharacterName(),"[Apocalypse-Setting] "+setting+"->"+val.tostring(),false,"",false,false)
+	}
+	printB(player.GetCharacterName(),"",false,"",false,true,0.1);
 }
 
 /*
@@ -2687,9 +2805,12 @@ enum SCENES
 ::_Propageddon <- function (enttbl)
 {	
 	local apocargs = AdminSystem.Vars._propageddon_args;
+
 	local prob = apocargs.entprob;
 	local dmgprob = apocargs.dmgprob;
 	local breakprob = apocargs.breakprob;
+	local doorlockprob = apocargs.doorlockprob;
+	local ropebreakprob = apocargs.ropebreakprob;
 	local minspeed = apocargs.minspeed;
 	local maxspeed = (apocargs.maxspeed - minspeed);
 	local mindmg = apocargs.dmgmin;
@@ -2698,10 +2819,12 @@ enum SCENES
 	local pushvec = null;
 	local entclass = null;
 	local entindex = null;
+	local entmodel = null;
 
 	local pushedents = {};
 	local brokenents = {};
 	local useddoors = {};
+	local lockeddoors = {};
 	local damagedents = {};
 	local animatedents = {};
 
@@ -2719,6 +2842,7 @@ enum SCENES
 				}
 
 				entclass = ent.GetClassname();
+				entmodel = ent.GetModel();
 				entindex = ent.GetIndex();
 
 				if(entclass == "prop_physics" || entclass == "prop_physics_multiplayer"  || entclass == "prop_car_alarm" || entclass == "prop_vehicle" || entclass == "prop_physics_override" || entclass == "func_physbox" ||  entclass == "func_physbox_multiplayer" || entclass == "prop_ragdoll" )
@@ -2728,16 +2852,25 @@ enum SCENES
 						if(ent.GetHealth() > 0)
 						{
 							ent.Hurt(mindmg+rand()%maxdmg);
-							damagedents[entindex] <- entclass;
+							damagedents[entindex] <- entclass+", "+entmodel;
 						}
-					}	
+					}
+
+					else if(entmodel.find("forklift.mdl") != null)
+					{
+						if((rand().tofloat()/RAND_MAX) < breakprob)
+						{
+							ent.Break();
+							brokenents[entindex] <- entclass+", "+entmodel;
+						}
+					}
 
 					pushvec = QAngle(rand()%360,rand()%360,rand()%360).Forward();
 					pushvec = pushvec.Scale((minspeed+rand()%maxspeed).tofloat()/pushvec.Length())
 					
 					ent.Push(pushvec);
 
-					pushedents[entindex] <- entclass;
+					pushedents[entindex] <- entclass+", "+entmodel;
 				}
 				else if(entclass == "func_breakable" || entclass == "func_breakable_surf" || entclass == "prop_wall_breakable" )
 				{	
@@ -2746,27 +2879,49 @@ enum SCENES
 						if(ent.GetHealth() > 0)
 						{
 							ent.Hurt(mindmg+rand()%maxdmg);
-							damagedents[entindex] <- entclass;
+							damagedents[entindex] <- entclass+", "+entmodel;
 						}
 					}
 					else if((rand().tofloat()/RAND_MAX) < breakprob)
 					{
 						ent.Break();
-						brokenents[entindex] <- entclass;
+						brokenents[entindex] <- entclass+", "+entmodel;
 					}	
 				}
-				else if(entclass == "prop_door_rotating" || entclass == "prop_door_rotating_checkpoint" || entclass == "func_door" || entclass == "func_door_rotating" || entclass == "func_rotating")
+				else if(entclass == "move_rope" || entclass == "keyframe_rope")
+				{	
+					if((rand().tofloat()/RAND_MAX) < ropebreakprob)
+					{
+						ent.Break();
+						brokenents[entindex] <- entclass+", "+entmodel;
+					}	
+				}
+				else if(entclass == "prop_door_rotating" || entclass == "func_door" || entclass == "func_door_rotating" || entclass == "func_rotating")
 				{		
 					if((rand().tofloat()/RAND_MAX) < dmgprob)
 					{
 						if(ent.GetHealth() > 0)
 						{
 							ent.Hurt(mindmg+rand()%maxdmg);
-							damagedents[entindex] <- entclass;
+							damagedents[entindex] <- entclass+", "+entmodel;
 						}
 					}	
+					if((rand().tofloat()/RAND_MAX) < doorlockprob)
+					{	
+						ent.Input("close","");
+						ent.Input("lock","",0.5);
+						lockeddoors[entindex] <- entclass+", "+entmodel;
+					}
+					else
+					{
+						ent.Input("toggle","");
+						useddoors[entindex] <- entclass+", "+entmodel;
+					}
+				}
+				else if(entclass == "prop_door_rotating_checkpoint")
+				{		
 					ent.Input("toggle","");
-					useddoors[entindex] <- entclass;
+					useddoors[entindex] <- entclass+", "+entmodel;
 				}
 				else if(entclass == "prop_health_cabinet")
 				{		
@@ -2775,14 +2930,14 @@ enum SCENES
 					else
 						ent.Input("setanimation","open");
 
-					animatedents[entindex] <- entclass;
+					animatedents[entindex] <- entclass+", "+entmodel;
 				}
 			}
 		}
 
 		if(debug == 1)
 		{	
-			printl("-----------------------------");
+			printl("---------------------------------------------");
 			if(pushedents.len() != 0)
 				{printl("PUSHED\n");Utils.PrintTable(pushedents);}
 
@@ -2790,15 +2945,19 @@ enum SCENES
 				{printl("BROKEN\n");Utils.PrintTable(brokenents);}
 
 			if(useddoors.len() != 0)
-				{printl("OPENED\n");Utils.PrintTable(useddoors);}
+				{printl("OPENED/CLOSED\n");Utils.PrintTable(useddoors);}
+
+			if(lockeddoors.len() != 0)
+				{printl("LOCKED\n");Utils.PrintTable(lockeddoors);}
 
 			if(damagedents.len() != 0)
 				{printl("DAMAGED\n");Utils.PrintTable(damagedents);}
+
 		}
 	
 	}
 	catch(e)
-	{printl("ERROR:" +e);}
+	{printl("[Apocalypse-Error]" +e);}
 	
 } 
 
@@ -2816,6 +2975,10 @@ enum SCENES
 		AdminSystem.Vars._propageddon_state = 1;
 		::VSLib.Timers.AddTimerByName("propageddon",AdminSystem.Vars._propageddon_args.updaterate, true, _ApocalypseTimer,{});	
 	}
+	else
+	{
+		AdminSystem.Pause_the_apocalypseCmd(player,args);
+	}
 }
 
 /* @authors rhino
@@ -2831,6 +2994,20 @@ enum SCENES
 		AdminSystem.Vars._propageddon_state = 0;
 	}
 }
+
+/* @authors rhino
+ * Change debug message reporting state of the apocalypse
+ */
+::AdminSystem.Apocalypse_debugCmd <- function (player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ) || !player.IsServerHost())
+		return;
+
+	AdminSystem.Vars._propageddon_args.debug = 1 - AdminSystem.Vars._propageddon_args.debug;
+
+	printl("[Apocalypse-Debug] Apocalypse debug state :"+( AdminSystem.Vars._propageddon_args.debug == 1 ? " Enabled":" Disabled"));
+}
+
 /*
  * @authors rhino
  * Speak the given line for given length
@@ -2868,7 +3045,7 @@ enum SCENES
 	
 	_SceneSequencer(Utils.GetPlayerFromName(character),{scenes=["blank",scene_name],delays=[trimend,0.15]});
 
-	printl(player.GetCharacterName()+" ->Speak test "+character+" "+scene_name+" "+trimend);
+	printB(player.GetCharacterName(),player.GetCharacterName()+" ->Speak test "+character+" "+scene_name+" "+trimend);
 }
 
 /*
@@ -2911,7 +3088,7 @@ enum SCENES
 	{
 		Utils.SayToAll("No custom sequence found for "+character+" named:"+seq_name);return;
 	}
-	printl(player.GetCharacterName()+" ->Speak custom "+character+" "+seq_name);
+	printB(player.GetCharacterName(),player.GetCharacterName()+" ->Speak custom "+character+" "+seq_name);
 }
 
 
@@ -2955,7 +3132,7 @@ enum SCENES
 
 	if(AdminSystem.Vars._looping[character])
 	{
-		printl(player.GetCharacterName()+" ->Stopped loop for "+character);
+		printB(player.GetCharacterName(),player.GetCharacterName()+" ->Stopped loop for "+character);
 		AdminSystem.Vars._looping[character] = false;
 	}
 	
@@ -3020,7 +3197,7 @@ enum SCENES
 			local blanksec = looplength-Utils.ArrayMax(seqtable.delays);
 			// Loop length is shorter
 			if(blanksec<0)
-			{printl("[Loop-Warning] length is "+blanksec*-1+"seconds shorter than sequence: "+player.GetCharacterName()+" ->"+sequencename+" "+looplength);}
+			{printB(player.GetCharacterName(),"[Loop-Warning] length is "+blanksec*-1+"seconds shorter than sequence: "+player.GetCharacterName()+" ->"+sequencename+" "+looplength,true,"");}
 			
 			AdminSystem.Vars._looping[character] = true;
 			
@@ -3066,7 +3243,7 @@ enum SCENES
 		_SceneSequencer(Utils.GetPlayerFromName(character),{scenes=[sequencename],delays=[0]})
 		::VSLib.Timers.AddTimerByName(AdminSystem.Vars._loopingTable[character].timername,looplength+0.1, true, _TimedLooper,AdminSystem.Vars._loopingTable[character]);
 	}
-	printl(player.GetCharacterName()+" ->Started loop for "+character+" named "+sequencename);
+	printB(player.GetCharacterName(),player.GetCharacterName()+" ->Started loop for "+character+" named "+sequencename);
 
 }
 
@@ -3220,7 +3397,6 @@ enum SCENES
 	local scene_index = -1;
 	local oldvalue = "";
 
-	printl(character+" "+sequencename+" "+scene+" "+setting);
 	// Which scene
 	if(scene.find(">") != null) // index is given
 	{
@@ -3799,6 +3975,20 @@ function ChatTriggers::pause_the_apocalypse( player, args, text )
 	AdminSystem.Pause_the_apocalypseCmd( player, args );
 }
 
+function ChatTriggers::apocalypse_debug( player, args, text )
+{
+	AdminSystem.Apocalypse_debugCmd( player, args );
+}
+
+function ChatTriggers::show_apocalypse_settings( player, args, text )
+{
+	AdminSystem.Show_apocalypse_settingsCmd( player, args );
+}
+
+function ChatTriggers::apocalypse_setting( player, args, text )
+{
+	AdminSystem.Apocalypse_settingCmd( player, args );
+}
 /*
  * @authors rhino
  */
@@ -3807,6 +3997,11 @@ function ChatTriggers::pause_the_apocalypse( player, args, text )
 function ChatTriggers::update_print_output_state(player,args,text)
 {
 	AdminSystem.Update_print_output_stateCmd(player, args);
+}
+
+function ChatTriggers::attach_to_targeted_position(player,args,text)
+{
+	AdminSystem.Attach_to_targeted_positionCmd(player, args);
 }
 
 function ChatTriggers::randomparticle_save_state(player,args,text)
@@ -3889,7 +4084,7 @@ function ChatTriggers::update_custom_response_preference(player,args,text)
 /*
  * @authors rhino
  */
-////////////////////////piano_keys///////////////////////////////
+////////////////////piano_and_mic_stuff/////////////////////////
 
 function ChatTriggers::piano_keys( player, args, text )
 {
@@ -3899,6 +4094,26 @@ function ChatTriggers::piano_keys( player, args, text )
 function ChatTriggers::remove_piano_keys( player, args, text )
 {
 	AdminSystem.Remove_piano_keysCmd( player, args );
+}
+
+function ChatTriggers::display_mics_speakers( player, args, text )
+{
+	AdminSystem.Display_mics_speakersCmd( player, args );
+}
+
+function ChatTriggers::speaker2mic( player, args, text )
+{
+	AdminSystem.Speaker2micCmd( player, args );
+}
+
+function ChatTriggers::speaker( player, args, text )
+{
+	AdminSystem.SpeakerCmd( player, args );
+}
+
+function ChatTriggers::microphone( player, args, text )
+{
+	AdminSystem.MicrophoneCmd( player, args );
 }
 
 /*
@@ -3974,6 +4189,11 @@ function ChatTriggers::ent_move( player, args, text )
 function ChatTriggers::ent_spin( player, args, text )
 {
 	AdminSystem.EntSpinCmd( player, args );
+}
+
+function ChatTriggers::ent_teleport( player, args, text )
+{
+	AdminSystem.EntTeleportCmd( player, args );
 }
 
 function ChatTriggers::rainbow(player,args,text)
@@ -6065,6 +6285,211 @@ if ( Director.GetGameMode() == "holdout" )
 	
 }
 
+::MicEffects <-
+{
+	standard = "0"
+	no_effect = "50"
+	very_small = "56"
+	small = "58"
+	tiny = "59"
+	loud = "55"
+	loud_echo = "57"
+
+}
+
+/*
+ * @authors rhino
+ * Spawn a microphone
+ *
+ * Example ( Spawn a standard microphone with 100 units range and connect it to speaker #123 ):
+ * 		!microphone standard 100 #123
+ */
+::AdminSystem.MicrophoneCmd <- function ( player, args )
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local name = player.GetCharacterName().tolower();
+
+	local effect = GetArgument(1);
+	if(effect == null)
+		effect = "standard"
+
+	if(!(effect in MicEffects))
+	{
+		Utils.SayToAll("Available mic effects: no_effect,standard,very_small,small,tiny,loud,loud_echo");return;
+	}
+	else
+	{
+		effect = MicEffects[effect];
+	}
+	local maxrange = GetArgument(2);
+	local speakerIDorName = GetArgument(3);
+	local speaker = null;
+
+	if(maxrange == null)
+	{
+		maxrange = 120;
+	}
+	else
+	{	
+		maxrange = maxrange.tofloat();
+
+		if(speakerIDorName != null)
+		{
+			speaker = Ent(speakerIDorName);
+
+			if (speaker == null)
+			{
+				Utils.SayToAll("Invalid speaker index");return;
+			}
+
+			if(speaker.GetClassname() != "info_target" && !AdminSystem.Vars.IgnoreSpeakerClass)
+			{
+				Utils.SayToAll("Speaker's should be a \"info_target\" class entity");return;
+			}
+		}
+	}
+	
+	local keyvaltable = 
+	{	
+		classname = "env_microphone"
+		origin = player.GetLookingLocation()
+		spawnflags = 47
+		MaxRange = maxrange
+		Sensitivity = 1
+		SmoothFactor = 0
+		speaker_dsp_preset = effect
+		targetname = "spawnedmic"
+	}
+	
+	if(speaker != null)
+		keyvaltable.SpeakerName <- speaker.GetName();
+
+
+	local micent = Utils.CreateEntityWithTable(keyvaltable);
+
+	if(micent == null)
+	{Utils.SayToAll("Failed to create a mic with given values.");return;}
+
+	if (AdminSystem.Vars._outputsEnabled[name])
+	{Utils.SayToAll(name+"->Created a microphone(#"+micent.GetIndex()+") named "+micent.GetName());}
+	else
+	{printB(player.GetCharacterName(),name+"->Created a microphone(#"+micent.GetIndex()+") named "+micent.GetName(),true,"info",true,true);}
+
+}
+
+/*
+ * @authors rhino
+ * Spawn a speaker to connect to a microphone
+ */
+::AdminSystem.SpeakerCmd <- function ( player, args )
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local name = player.GetCharacterName().tolower();
+	
+	local keyvaltable = 
+	{	
+		classname = "info_target"
+		origin = player.GetLookingLocation()
+		spawnflags = 0
+		targetname = "spawnedspeaker"
+	}
+
+	local speakerent = Utils.CreateEntityWithTable(keyvaltable);
+
+	if(speakerent == null)
+	{Utils.SayToAll("Failed to create a speaker.");return;}
+
+	if (AdminSystem.Vars._outputsEnabled[name])
+	{Utils.SayToAll(name+"->Created a speaker(#"+speakerent.GetIndex()+") named "+speakerent.GetName());}
+	else
+	{printB(player.GetCharacterName(),name+"->Created a speaker(#"+speakerent.GetIndex()+") named "+speakerent.GetName(),true,"info",true,true);}
+
+}
+
+/*
+ * @authors rhino
+ * Connect a speaker to a mic
+ */
+::AdminSystem.Speaker2micCmd <- function ( player, args )
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local name = player.GetCharacterName().tolower();
+
+	local speaker = GetArgument(1);
+	local mic = GetArgument(2);
+
+	if(speaker == null || mic == null)
+		return;
+	
+	speaker = Ent(speaker);
+	mic = Ent(mic);
+	
+	if(speaker == null || mic == null)
+		return;
+	
+	if((speaker.GetClassname() != "info_target" || mic.GetClassname() != "env_microphone") && !AdminSystem.Vars.IgnoreSpeakerClass)
+	{
+		Utils.SayToAll("Speaker's class should be \"info_target\", mic's class should be \"env_microphone\"");return;
+	}
+
+	DoEntFire("!self","SetSpeakerName",speaker.GetName(),0,null,mic);
+
+	if (AdminSystem.Vars._outputsEnabled[name])
+	{Utils.SayToAll(name+"->Connected speaker(#"+speaker.GetEntityIndex()+") to mic(#"+mic.GetEntityIndex()+")");}
+	else
+	{printB(player.GetCharacterName(),name+"->Connected speaker(#"+speaker.GetEntityIndex()+") to mic(#"+mic.GetEntityIndex()+")",true,"info",true,true);}
+	
+}
+
+/*
+ * @authors rhino
+ * Display all mics' and speakers' IDs and how far away they are from the player
+ */
+::AdminSystem.Display_mics_speakersCmd <- function ( player, args )
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local name = player.GetCharacterName().tolower();
+	local pos = player.GetPosition();
+	local dist = null;
+	local entorigin = null;
+	local foundany = false;
+
+	printB(player.GetCharacterName(),"",false,"",true,false);
+
+	foreach(mic in ::VSLib.EasyLogic.Objects.OfClassname("env_microphone"))
+	{	
+		if(mic.GetName().find("spawnedmic") != null)
+		{	
+			foundany = true;
+			entorigin = mic.GetOrigin();
+			printB(player.GetCharacterName(),"Mic(#"+mic.GetIndex()+") at->("+entorigin.x+" "+entorigin.y+" "+entorigin.z+") distance->"+Utils.CalculateDistance(entorigin,pos),false,"info",false,false)
+		}
+	}
+
+	foreach(speaker in ::VSLib.EasyLogic.Objects.OfClassname("info_target"))
+	{
+		if(speaker.GetName().find("spawnedspeaker") != null)
+		{
+			foundany = true;
+			entorigin = speaker.GetOrigin();
+			printB(player.GetCharacterName(),"Speaker(#"+speaker.GetIndex()+") at->("+entorigin.x+" "+entorigin.y+" "+entorigin.z+") distance->"+Utils.CalculateDistance(entorigin,pos),false,"info",false,false)
+		}	
+	}
+	if(!foundany)
+	{
+		printB(player.GetCharacterName(),"No mic or speaker found",false,"info",false,false);
+	}
+	printB(player.GetCharacterName(),"",false,"",false,true,0.3);
+}
+
 /*
  * @authors rhino
  * Remove all spawned piano keys
@@ -6075,10 +6500,15 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 	
 	local name = player.GetCharacterName().tolower();
+	local entfound = null;
 
 	foreach(index,name in Utils.TableCopy(AdminSystem.Vars._spawnedPianoKeys))
-	{
-		Entities.FindByName(null, name).Kill();
+	{	
+		entfound = Entities.FindByName(null, name)
+
+		if(entfound != null)
+			entfound.Kill();
+
 		delete AdminSystem.Vars._spawnedPianoKeys[index];
 	}
 
@@ -6123,7 +6553,7 @@ if ( Director.GetGameMode() == "holdout" )
 	
 	local entindex = startkey.GetIndex();
 
-	printl("43(#"+entindex+") pos:"+lookedloc);
+	//printl("43(#"+entindex+") pos:"+lookedloc);
 	AdminSystem.Vars._spawnedPianoKeys[entindex] <- startkey.GetName();
 
 	local ent = null;
@@ -6442,8 +6872,10 @@ if ( Director.GetGameMode() == "holdout" )
 	local pairsplit = [null,null];
 	local found = false;
 
+	// Keys to be applied after spawning
 	local spawnflags = null;
 	local effects = null;
+	local targetname = null;
 
 	if(keyvals == null)
 	{
@@ -6538,6 +6970,10 @@ if ( Director.GetGameMode() == "holdout" )
 			{
 				effects = pairsplit[1];
 			}
+			else if(pairsplit[0]=="targetname")
+			{
+				targetname = pairsplit[1];
+			}
 
 			if(pairsplit[0] in keyvals)
 			{
@@ -6561,16 +6997,16 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
 	{
-		Utils.SayToAll(name+" ->Created "+cname+" entity named "+newEntity.GetName()+" with table:");
+		Utils.SayToAll(name+" ->Created "+cname+" entity(#"+newEntity.GetIndex()+") with table:");
 	}
 	else
 	{
-		printB(player.GetCharacterName(),name+" ->Created "+cname+" entity named "+newEntity.GetName()+" with table:",true,"info",true,true);
+		printB(player.GetCharacterName(),name+" ->Created "+cname+" entity(#"+newEntity.GetIndex()+") with table:",true,"info",true,true);
 	}
 
 	Utils.PrintTable(keyvals);
 
-	// Apply flags and effects after spawning
+	// Apply flags, effects and name after spawning
 	if(spawnflags!=null)
 	{
 		newEntity.SetFlags(spawnflags);
@@ -6581,6 +7017,10 @@ if ( Director.GetGameMode() == "holdout" )
 		newEntity.SetEffects(effects);
 	}
 
+	if(targetname!=null)
+	{
+		newEntity.SetName(targetname);
+	}
 }
 
 /*
@@ -7114,29 +7554,61 @@ if ( Director.GetGameMode() == "holdout" )
 
 ::AdminSystem.ConsoleCmd <- function ( player, args )
 {
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
 	local Command = GetArgument(1);
 	local Value = GetArgument(2);
 
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	SendToServerConsole(Utils.CombineArray(args));
 }
 
 ::AdminSystem.CvarCmd <- function ( player, args )
 {
-	local Cvar = GetArgument(1);
-	local Value = GetArgument(2);
-
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
+
+	local Cvar = GetArgument(1);
+	local Value = GetArgument(2);
 	
 	if ( Cvar && Value )
 		Convars.SetValue( Cvar, Value );
 }
 
+/*
+ * @authors rhino
+ * Teleport the entity from the given index to aimed location
+ */
+::AdminSystem.EntTeleportCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local id = GetArgument(1);
+	local ent = Ent(id);
+
+	if(ent != null)
+		ent.SetOrigin(player.GetLookingLocation());
+	else
+		return;
+
+	local name = player.GetCharacterName();
+
+	if (AdminSystem.Vars._outputsEnabled[name.tolower()])
+	{
+		Utils.SayToAll(name.tolower()+"-> ent_teleport "+id+" "+player.GetLookingLocation());
+	}
+	else
+	{
+		printB(name,name.tolower()+"-> ent_teleport "+id+" "+player.GetLookingLocation(),true,"info",true,true);
+	}
+}
+
 ::AdminSystem.EntFireCmd <- function ( player, args )
 {
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
 	local Ent = GetArgument(1);
 	local Action = GetArgument(2);
 	local Value = GetArgument(3);
@@ -7145,9 +7617,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Entity = player.GetLookingEntity();
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
 
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	local val = "";
 	if (Value && Value2 && Value3)
 		val = Value + " " + Value2 + " " + Value3;
@@ -7174,7 +7643,7 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{	
-		if(Ent.find("#") != -1 || Ent.find("_") != -1)
+		if(Ent.find("#") != null || Ent.find("_") != null)
 		{
 			g_MapScript.EntFire( Ent, Action, val );
 		}
@@ -7274,13 +7743,20 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{
-		pitchofeye = pitchofeye.tofloat()*-1;
+		if(pitchofeye != "random")
+			pitchofeye = pitchofeye.tofloat()*-1;
 	}
 
 	local entlooked = player.GetLookingEntity();
 	if(entlooked)
 	{	
-		local fwvec = RotateOrientation(player.GetEyeAngles(),QAngle(pitchofeye,0,0)).Forward();
+		local newangs = null
+		if(pitchofeye == "random" )
+			newangs = QAngle(rand()%360,rand()%360,rand()%360);
+		else
+			newangs = QAngle(pitchofeye,0,0);
+			
+		local fwvec = RotateOrientation(player.GetEyeAngles(),newangs).Forward();
 		local temp = Vector(fwvec.x,fwvec.y,fwvec.z);
 
 		if(direction == "backward")
@@ -9710,9 +10186,15 @@ if ( Director.GetGameMode() == "holdout" )
 		printB(playername,"Looked location-> "+player.GetLookingLocation(),true,"debug",false,false);
 		printB(playername,"Eye angles-> "+player.GetEyeAngles(),true,"debug",false,false);
 		printB(playername,"Player position-> "+player.GetPosition(),true,"debug",false,false);
+		printB(playername,"=================player_stats===================",true,"debug",false,false);
+		foreach(key,value in player.GetStats())
+		{
+			printB(playername,"[Stats] "+Utils.StringReplace(key,"m_","")+" -> "+value.tostring(),true,"debug",false,false);
+		}
 
 		if(svcheatsval==1.0)
-		{
+		{	
+			printB(playername,"==================dumpplayer====================",true,"debug",false,false);
 			AdminSystem._Clientbroadcast(playername,"cl_dumpplayer "+player.GetIndex().tostring(),1,false);
 		}
 
@@ -10125,13 +10607,36 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 	}
 
-	ent.AttachParticle(particle, duration);
+	local attachpos = null;
+	if(AdminSystem.Vars._attachTargetedLocation[name])
+		attachpos = player.GetLookingLocation();
+
+	local createdent = ent.AttachParticle(particle, duration, attachpos);
+
+	if(duration == -1.0)
+		duration = "infinite"
+
 	if (AdminSystem.Vars._outputsEnabled[name])
-	{Utils.SayToAll(name+"->Attached particle("+duration+" sec):"+particle+" to:"+ent.GetName());}
+	{Utils.SayToAll(name+"->Attached particle(#"+createdent.GetIndex()+")("+duration+" sec):"+particle+" to:"+ent.GetName());}
 	else
-	{printB(player.GetCharacterName(),name+" ->Attached particle("+duration+" sec)->"+particle+" to->"+ent.GetName(),true,"info",true,true);}
+	{printB(player.GetCharacterName(),name+" ->Attached particle(#"+createdent.GetIndex()+")("+duration+" sec)->"+particle+" to->"+ent.GetName(),true,"info",true,true);}
 
 	
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.Attach_to_targeted_positionCmd <- function(player, args)
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local name = player.GetCharacterName().tolower();
+	local newstate = !AdminSystem.Vars._attachTargetedLocation[name];
+	AdminSystem.Vars._attachTargetedLocation[name] = newstate;
+
+	Utils.SayToAll("Attach particles to targeted position state for "+name+" is"+( newstate ? " Enabled":" Disabled"));
 }
 
 /*
@@ -10244,8 +10749,12 @@ if ( Director.GetGameMode() == "holdout" )
 	local name = player.GetCharacterName().tolower();
 	local particleinfo = AdminSystem.Vars._savedParticle[name];
 	if (particleinfo.source != "")
-	{
-		ent.AttachParticle(particleinfo.source, particleinfo.duration)
+	{	
+		local attachpos = null;
+		if(AdminSystem.Vars._attachTargetedLocation[name])
+			attachpos = player.GetLookingLocation();
+
+		ent.AttachParticle(particleinfo.source, particleinfo.duration, attachpos)
 
 		if (AdminSystem.Vars._outputsEnabled[name])
 		{
