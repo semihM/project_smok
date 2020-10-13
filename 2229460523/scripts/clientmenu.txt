@@ -17977,7 +17977,11 @@
 					"command"	 "play buttons/button14;show_menu smok_menu"
 					"label"		 " << Back"
 			}
-
+			"9"
+			{
+					"command"	 "play piano/a2;show_menu secret_commands"
+					"label"		 ""
+			}
 			"0"
 			{
 					"command"    "play buttons/button14"
@@ -19942,15 +19946,20 @@
 			}
 			"2"
 			{
+				"command"		 "play buttons/button14;show_menu ent_push_menu_random1"
+				"label"			" Push randomly"
+			}
+			"3"
+			{
 				"command"		 "play buttons/button14;show_menu ent_spin_menu1"
 				"label"			" Spin"
 			}
-			"3"
+			"4"
 			{
 				"command"		 "play buttons/button14;show_menu ent_rotate_menu1"
 				"label"			" Rotate"
 			}
-			"4"
+			"5"
 			{
 				"command"		 "play buttons/button14;show_menu ent_move_menu1"
 				"label"			" Move"
@@ -19959,6 +19968,57 @@
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu ent_fire_menu1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ent_push_menu_random1"
+	{
+			"Title"		 "Push randomly"
+
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_push,50,forward,45;show_menu ent_push_menu_random1"
+				"label"			" Weakest (Scale factor 50)"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_push,200,forward,45;show_menu ent_push_menu_random1"
+				"label"			" Weaker (Scale factor 200)"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_push,500,forward,45;show_menu ent_push_menu_random1"
+				"label"			" Weak (Scale factor 500)"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_push,1000,forward,45;show_menu ent_push_menu_random1"
+				"label"			" Average (Scale factor 1000)"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_push,2500,forward,45;show_menu ent_push_menu_random1"
+				"label"			" Strong (Scale factor 2500)"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_push,7500,forward,45;show_menu ent_push_menu_random1"
+				"label"			" Stronger (Scale factor 7500)"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_push,25000,forward,45;show_menu ent_push_menu_random1"
+				"label"			" Strongest (Scale factor 25000)"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_forces_menu1"
 					"label"      " << Back"
 			}
 			"0"
@@ -21640,10 +21700,15 @@
 			}
 			"2"
 			{
+					"command"    "play buttons/button14;scripted_user_func attach_to_targeted_position;show_menu ent_particles_settings"
+					"label"      " Enable/Disable attaching to targeted location"
+			}
+			"3"
+			{
 					"command"    "play buttons/button14;scripted_user_func randomparticle_save_state;show_menu ent_particles_settings"
 					"label"      " Enable/Disable saving last particle spawn"
 			}
-			"3"
+			"4"
 			{		
 					"command"    "play buttons/button14;scripted_user_func display_saved_particle;show_menu ent_particles_settings"
 					"label"      " Display information of saved particle"
@@ -21667,25 +21732,30 @@
 			"Title"		 "Overwrite duration"
 			"1"
 			{
+					"command"    "play buttons/button14;scripted_user_func update_attachment_preference,-1;show_menu ent_particles_duration_settings"
+					"label"      " Infinite"
+			}
+			"2"
+			{
 					"command"    "play buttons/button14;scripted_user_func update_attachment_preference,15;show_menu ent_particles_duration_settings"
 					"label"      " 15 seconds"
 			}
-			"2"
+			"3"
 			{
 					"command"    "play buttons/button14;scripted_user_func update_attachment_preference,30;show_menu ent_particles_duration_settings"
 					"label"      " 30 seconds"
 			}
-			"3"
+			"4"
 			{
 					"command"    "play buttons/button14;scripted_user_func update_attachment_preference,60;show_menu ent_particles_duration_settings"
 					"label"      " 60 seconds"
 			}
-			"4"
+			"5"
 			{
 					"command"    "play buttons/button14;scripted_user_func update_attachment_preference,120;show_menu ent_particles_duration_settings"
 					"label"      " 120 seconds"
 			}
-			"5"
+			"6"
 			{
 					"command"    "play buttons/button14;scripted_user_func update_attachment_preference,300;show_menu ent_particles_duration_settings"
 					"label"      " 300 seconds"
@@ -21709,28 +21779,33 @@
 			"Title"		 "Attaching duration(overwrites previous)"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func update_attachment_preference,15;show_menu ent_particles_attach1"
-					"label"      "Shortest ( 15 seconds )"
+					"command"    "play buttons/button14;scripted_user_func update_attachment_preference,-1;show_menu ent_particles_attach1"
+					"label"      " Infinite"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func update_attachment_preference,30;show_menu ent_particles_attach1"
-					"label"      "Short ( 30 seconds )"
+					"command"    "play buttons/button14;scripted_user_func update_attachment_preference,15;show_menu ent_particles_attach1"
+					"label"      " Shortest ( 15 seconds )"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func update_attachment_preference,60;show_menu ent_particles_attach1"
-					"label"      "Average ( 60 seconds )"
+					"command"    "play buttons/button14;scripted_user_func update_attachment_preference,30;show_menu ent_particles_attach1"
+					"label"      " Short ( 30 seconds )"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func update_attachment_preference,180;show_menu ent_particles_attach1"
-					"label"      "Long ( 180 seconds )"
+					"command"    "play buttons/button14;scripted_user_func update_attachment_preference,60;show_menu ent_particles_attach1"
+					"label"      " Average ( 60 seconds )"
 			}
 			"5"
 			{
+					"command"    "play buttons/button14;scripted_user_func update_attachment_preference,180;show_menu ent_particles_attach1"
+					"label"      " Long ( 180 seconds )"
+			}
+			"6"
+			{
 					"command"    "play buttons/button14;scripted_user_func update_attachment_preference,300;show_menu ent_particles_attach1"
-					"label"      "Longest ( 300 seconds )"
+					"label"      " Longest ( 300 seconds )"
 			}
 			"8"
 			{
@@ -25957,7 +26032,7 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models\props_unique\rope_bridge.mdl,45;show_menu props_street3"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_unique/rope_bridge.mdl,45;show_menu props_street3"
 					"label"      " Rope bridge"
 			}
 			"7"
@@ -25987,27 +26062,27 @@
 			"Title"     "More exterior stuff 4"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models\props_highway\bridge_tower.mdl,-380;show_menu props_street4"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_highway/bridge_tower.mdl,-380;show_menu props_street4"
 					"label"      " Bridge tower"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models\props_highway\bridge_pier.mdl,390;show_menu props_street4"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_highway/bridge_pier.mdl,390;show_menu props_street4"
 					"label"      " Bridge pillar wide"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models\props_exteriors\train_truss01.mdl;show_menu props_street4"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_exteriors/train_truss01.mdl;show_menu props_street4"
 					"label"      " Train truss"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models\props_exteriors\concrete_plant01_maintanks.mdl,-33;show_menu props_street4"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_exteriors/concrete_plant01_maintanks.mdl,-33;show_menu props_street4"
 					"label"      " Concrete plant maintanks"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models\props_exteriors\concrete_plant01_conveyors02.mdl,3;show_menu props_street4"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_exteriors/concrete_plant01_conveyors02.mdl,3;show_menu props_street4"
 					"label"      " Concrete plant conveyor"
 			}
 			"7"
@@ -27097,13 +27172,49 @@
 					"command"    "play buttons/button14;show_menu prop_menu_start3"
 					"label"      " << Back"
 			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu props_industrial2"
+					"label"      " >> Next"
+			}
 			"0"
 			{
 					"command"    "play buttons/button14"
 					"label"      " Exit"
 			}
 	}
-	
+
+	"props_industrial2"
+	{
+			"Title"     "Industrial stuff 2"
+			
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/cs_assault/HandTruck.mdl;show_menu props_industrial2"
+					"label"      " HandTruck"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/cs_assault/forklift.mdl;show_menu props_industrial2"
+					"label"      " forklift"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_industrial2"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu props_industrial1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
 	"props_industrial_shelves1"
 	{
 			"Title"     "Shelves"
@@ -27500,23 +27611,23 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/cs_assault/HandTruck.mdl;show_menu props2"
-					"label"      " HandTruck"
-			}
-			"4"
-			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/cs_assault/forklift.mdl;show_menu props2"
-					"label"      " forklift"
-			}
-			"5"
-			{
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/cs_office/phone.mdl;show_menu props2"
 					"label"      " phone"
 			}
-			"6"
+			"4"
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/de_inferno/chairantique.mdl;show_menu props2"
 					"label"      " chairantique"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/cs_office/shelves_metal.mdl;show_menu props2"
+					"label"      " shelves_metal"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/cs_assault/pylon.mdl;show_menu props2"
+					"label"      " pylon"
 			}
 			"7"
 			{
@@ -27617,16 +27728,6 @@
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/cs_office/vending_machine.mdl;show_menu props4"
 					"label"      " vending_machine"
-			}
-			"5"
-			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/cs_office/shelves_metal.mdl;show_menu props4"
-					"label"      " shelves_metal"
-			}
-			"6"
-			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/cs_assault/pylon.mdl;show_menu props4"
-					"label"      " pylon"
 			}
 			"7"
 			{
@@ -31693,7 +31794,7 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models\props_unique\rope_bridge.mdl,45;show_menu phys_props_street3"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_unique/rope_bridge.mdl,45;show_menu phys_props_street3"
 					"label"      " Rope bridge"
 			}
 			"7"
@@ -31723,27 +31824,27 @@
 			"Title"     "More exterior stuff 4"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models\props_highway\bridge_tower.mdl,-380;show_menu phys_props_street4"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_highway/bridge_tower.mdl,-380;show_menu phys_props_street4"
 					"label"      " Bridge tower"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models\props_highway\bridge_pier.mdl,390;show_menu phys_props_street4"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_highway/bridge_pier.mdl,390;show_menu phys_props_street4"
 					"label"      " Bridge pillar wide"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models\props_exteriors\train_truss01.mdl;show_menu phys_props_street4"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_exteriors/train_truss01.mdl;show_menu phys_props_street4"
 					"label"      " Train truss"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models\props_exteriors\concrete_plant01_maintanks.mdl,-33;show_menu phys_props_street4"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_exteriors/concrete_plant01_maintanks.mdl,-33;show_menu phys_props_street4"
 					"label"      " Concrete plant maintanks"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models\props_exteriors\concrete_plant01_conveyors02.mdl,3;show_menu phys_props_street4"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_exteriors/concrete_plant01_conveyors02.mdl,3;show_menu phys_props_street4"
 					"label"      " Concrete plant conveyor"
 			}
 			"7"
@@ -32834,13 +32935,49 @@
 					"command"    "play buttons/button14;show_menu phys_prop_menu_start3"
 					"label"      " << Back"
 			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_industrial2"
+					"label"      " >> Next"
+			}
 			"0"
 			{
 					"command"    "play buttons/button14"
 					"label"      " Exit"
 			}
 	}
-	
+
+	"phys_props_industrial2"
+	{
+			"Title"     "Industrial stuff 2"
+			
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/cs_assault/HandTruck.mdl;show_menu phys_props_industrial2"
+					"label"      " HandTruck"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/cs_assault/forklift.mdl;show_menu phys_props_industrial2"
+					"label"      " forklift"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_industrial2"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_industrial1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
 	"phys_props_industrial_shelves1"
 	{
 			"Title"     "Shelves"
@@ -33237,23 +33374,23 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/cs_assault/HandTruck.mdl;show_menu phys_props2"
-					"label"      " HandTruck"
-			}
-			"4"
-			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/cs_assault/forklift.mdl;show_menu phys_props2"
-					"label"      " forklift"
-			}
-			"5"
-			{
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/cs_office/phone.mdl;show_menu phys_props2"
 					"label"      " phone"
 			}
-			"6"
+			"4"
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/de_inferno/chairantique.mdl;show_menu phys_props2"
 					"label"      " chairantique"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/cs_office/shelves_metal.mdl;show_menu phys_props2"
+					"label"      " shelves_metal"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/cs_assault/pylon.mdl;show_menu phys_props2"
+					"label"      " pylon"
 			}
 			"7"
 			{
@@ -34703,6 +34840,188 @@
 					"label"      " << Back"
 			}
 
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"secret_commands"
+	{
+			"Title"		"Secret commands 1"
+			"1"
+			{
+				"command"		 "play buttons/button14;show_menu apocalypse1"
+				"label"			" Apocalypse event"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;show_menu ladderteams1"
+				"label"			" Change ladders' team"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;show_menu pianokeys1"
+				"label"			" Piano keys"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;show_menu micspeaker1"
+				"label"			" Microphone and speaker"
+			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"apocalypse1"
+	{
+			"Title"		"Apocalypse menu"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func start_the_apocalypse;show_menu apocalypse1"
+				"label"			 " Start/Pause the event"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func show_apocalypse_settings;show_menu apocalypse1"
+				"label"			 " Show settings (use show_apocalypse_settings)"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button10;show_menu apocalypse1"
+				"label"			 " Change settings (In works...)(use apocalypse_setting,setting,val)"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func apocalypse_debug;show_menu apocalypse1"
+				"label"			 " Enable/Disable debug messages"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu secret_commands"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"ladderteams1"
+	{
+			"Title"		"Ladder team"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ladder_team,all;show_menu ladderteams1"
+				"label"			 " All"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ladder_team,spectator;show_menu ladderteams1"
+				"label"			 " Spectators"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ladder_team,survivor;show_menu ladderteams1"
+				"label"			 " Survivors"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ladder_team,infected;show_menu ladderteams1"
+				"label"			 " Infected"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ladder_team,l4d1;show_menu ladderteams1"
+				"label"			 " L4D1 survivors"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ladder_team,reset;show_menu ladderteams1"
+				"label"			 " Reset"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu secret_commands"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"pianokeys1"
+	{
+			"Title"		"Piano keys"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func piano_keys,all;show_menu pianokeys1"
+				"label"			 " Spawn 25 keys, starts at aimed place"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func remove_piano_keys,all;show_menu pianokeys1"
+				"label"			 " Remove all spawned keys"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu secret_commands"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	
+	"micspeaker1"
+	{
+			"Title"		"Piano keys"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func microphone;show_menu micspeaker1"
+				"label"			 " Spawn a microphone"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func speaker;show_menu micspeaker1"
+				"label"			 " Spawn a speaker"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func display_mics_speakers;show_menu micspeaker1"
+				"label"			 " Display ID's of mics and speakers"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button10;show_menu micspeaker1"
+				"label"			 " Connect speaker to mic with (!speaker2mic #{speakerID} #{micID})"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/mic_stand.mdl;show_menu micspeaker1"
+				"label"			 " Spawn a mic prop"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/amp_stack_small.mdl;show_menu micspeaker1"
+				"label"			 " Spawn a speaker prop"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu secret_commands"
+					"label"      " << Back"
+			}
 			"0"
 			{
 					"command"    "play buttons/button14"
