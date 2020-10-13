@@ -3085,7 +3085,7 @@ function VSLib::Entity::InputColor(red, green, blue, delay = 0)
  *
  * @authors shotgunefx - added optional delay for teleporting
  */
-function VSLib::Entity::AttachOther(otherEntity, teleportOther, delay = 0)
+function VSLib::Entity::AttachOther(otherEntity, teleportOther, delay = 0, targeted_loc = null)
 {
 	if (!IsEntityValid())
 	{
@@ -3095,7 +3095,9 @@ function VSLib::Entity::AttachOther(otherEntity, teleportOther, delay = 0)
 	
 	teleportOther = (teleportOther.tointeger() > 0) ? true : false;
 	
-	if (teleportOther)
+	if (targeted_loc != null)
+		otherEntity.SetLocation(targeted_loc);
+	else if (teleportOther)
 		otherEntity.SetLocation(GetLocation());
 	
 	DoEntFire("!self", "SetParent", "!activator", delay, _ent, otherEntity.GetBaseEntity());
@@ -3327,7 +3329,7 @@ function VSLib::Entity::Ignite(time)
  * particle system that was created, so if you need to attach it to a
  * specific attachment point or whatever, you can.
  */
-function VSLib::Entity::AttachParticle(particleName, duration)
+function VSLib::Entity::AttachParticle(particleName, duration, attachpos=null)
 {
 	if (!IsEntityValid())
 	{
@@ -3350,8 +3352,10 @@ function VSLib::Entity::AttachParticle(particleName, duration)
 	
 	local vsParticle = ::VSLib.Entity(particle);
 	
-	vsParticle.KillDelayed(duration);
-	AttachOther(vsParticle, true);
+	if(duration != -1.0)
+		vsParticle.KillDelayed(duration);
+		
+	AttachOther(vsParticle, true, 0, attachpos);
 	
 	return vsParticle;
 }
