@@ -19983,37 +19983,37 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_push,50,forward,45;show_menu ent_push_menu_random1"
+				"command"		 "play buttons/button14;scripted_user_func ent_push,50,random;show_menu ent_push_menu_random1"
 				"label"			" Weakest (Scale factor 50)"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_push,200,forward,45;show_menu ent_push_menu_random1"
+				"command"		 "play buttons/button14;scripted_user_func ent_push,200,random;show_menu ent_push_menu_random1"
 				"label"			" Weaker (Scale factor 200)"
 			}
 			"3"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_push,500,forward,45;show_menu ent_push_menu_random1"
+				"command"		 "play buttons/button14;scripted_user_func ent_push,500,random;show_menu ent_push_menu_random1"
 				"label"			" Weak (Scale factor 500)"
 			}
 			"4"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_push,1000,forward,45;show_menu ent_push_menu_random1"
+				"command"		 "play buttons/button14;scripted_user_func ent_push,1000,random;show_menu ent_push_menu_random1"
 				"label"			" Average (Scale factor 1000)"
 			}
 			"5"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_push,2500,forward,45;show_menu ent_push_menu_random1"
+				"command"		 "play buttons/button14;scripted_user_func ent_push,2500,random;show_menu ent_push_menu_random1"
 				"label"			" Strong (Scale factor 2500)"
 			}
 			"6"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_push,7500,forward,45;show_menu ent_push_menu_random1"
+				"command"		 "play buttons/button14;scripted_user_func ent_push,7500,random;show_menu ent_push_menu_random1"
 				"label"			" Stronger (Scale factor 7500)"
 			}
 			"7"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_push,25000,forward,45;show_menu ent_push_menu_random1"
+				"command"		 "play buttons/button14;scripted_user_func ent_push,25000,random;show_menu ent_push_menu_random1"
 				"label"			" Strongest (Scale factor 25000)"
 			}
 			"8"
