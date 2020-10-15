@@ -1077,19 +1077,23 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			_propageddon_args =
 			{
 				maxradius = 850				// maximum radius to apply forces
-				updaterate = 1				// how often to update entity list in seconds
-				mindelay = 0.3				// minimum delay to apply propageddon function
+				updaterate = 1.5			// how often to update entity list in seconds
+				mindelay = 0.5				// minimum delay to apply propageddon function
 				maxdelayoffset = 2  		// maximum delay to apply propageddon function
 				minspeed = 800				// minimum speed
 				maxspeed = 24000    		// maximum speed
 				dmgmin = 5			    	// minimum damage done to entity
 				dmgmax = 100				// maximum damage done to entity
 				dmgprob = 0.3				// probability of entity getting damaged
-				breakprob = 0.075			// probability of entity being broken
-				doorlockprob = 0.1  		// probability of doors getting locked, saferoom doors excluded
-				ropebreakprob = 0.07		// probability of a cable or sorts to be broken from its connection point
-				entprob = 0.62				// probability of an entity being chosen within the radius
-				debug = 1					// Print which entities are effected
+				expmaxradius = 300			// explosion radius maximum
+				expdmgmin = 5				// explosion damage minimum
+				expdmgmax = 40				// explosion damage maximum
+				expprob = 0.022				// probability of explosion
+				breakprob = 0.04			// probability of entity being broken
+				doorlockprob = 0.02  		// probability of doors getting locked, saferoom doors excluded
+				ropebreakprob = 0.05		// probability of a cable or sorts to be broken from its connection point
+				entprob = 0.6				// probability of an entity being chosen within the radius
+				debug = 0					// Print which entities are effected
 			}
 
 			IgnoreSpeakerClass = true
@@ -2433,7 +2437,7 @@ enum SCENES
 	{
 		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.bill,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
-		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
 		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.bill,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 	}
@@ -2442,7 +2446,7 @@ enum SCENES
 	{
 		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.francis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
-		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 
 		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.francis,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 	}
@@ -2451,7 +2455,7 @@ enum SCENES
 	{
 		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.louis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
-		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
 		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.louis,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 	}
@@ -2460,7 +2464,7 @@ enum SCENES
 	{
 		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.zoey,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
-		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
 		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.zoey,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 	}
@@ -2469,7 +2473,7 @@ enum SCENES
 	{
 		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.nick,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
-		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
 		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.nick,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 	}
@@ -2478,7 +2482,7 @@ enum SCENES
 	{
 		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.ellis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
-		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
 		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.ellis,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 	}
@@ -2487,7 +2491,7 @@ enum SCENES
 	{
 		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.coach,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
-		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
 		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.coach,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 	}
@@ -2496,7 +2500,7 @@ enum SCENES
 	{
 		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.rochelle,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
-		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.8,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 		
 		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.rochelle,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 	}
@@ -2515,7 +2519,7 @@ enum SCENES
 		_SpeakWhenLeftSaferoom = 
 		{
 			enabled = true
-			prob = 0.3
+			prob = 0.2
 			order = SCENES.RANDOM
 			sequence =
 			{
@@ -2539,7 +2543,7 @@ enum SCENES
 		_SpeakWhenLeftSaferoom = 
 		{
 			enabled = true
-			prob = 0.3
+			prob = 0.2
 			order = SCENES.RANDOM
 			sequence =
 			{	
@@ -2710,19 +2714,23 @@ enum SCENES
 ::AdminSystem.Vars._propageddon_args <-
 {
 	maxradius = 850				// maximum radius to apply forces
-	updaterate = 1				// how often to update entity list in seconds
-	mindelay = 0.3				// minimum delay to apply propageddon function
+	updaterate = 1.5			// how often to update entity list in seconds
+	mindelay = 0.5				// minimum delay to apply propageddon function
 	maxdelayoffset = 2  		// maximum delay to apply propageddon function
 	minspeed = 800				// minimum speed
 	maxspeed = 24000    		// maximum speed
 	dmgmin = 5			    	// minimum damage done to entity
 	dmgmax = 100				// maximum damage done to entity
 	dmgprob = 0.3				// probability of entity getting damaged
-	breakprob = 0.075			// probability of entity being broken
-	doorlockprob = 0.1  		// probability of doors getting locked, saferoom doors excluded
-	ropebreakprob = 0.07		// probability of a cable or sorts to be broken from its connection point
-	entprob = 0.62				// probability of an entity being chosen within the radius
-	debug = 1					// Print which entities are effected
+	expmaxradius = 300			// explosion radius maximum
+	expdmgmin = 5				// explosion damage minimum
+	expdmgmax = 40				// explosion damage maximum
+	expprob = 0.015				// probability of explosion
+	breakprob = 0.04			// probability of entity being broken
+	doorlockprob = 0.02  		// probability of doors getting locked, saferoom doors excluded
+	ropebreakprob = 0.05		// probability of a cable or sorts to be broken from its connection point
+	entprob = 0.6				// probability of an entity being chosen within the radius
+	debug = 0					// Print which entities are effected
 }
 
 /* @authors rhino
@@ -2810,16 +2818,25 @@ enum SCENES
 	local dmgprob = apocargs.dmgprob;
 	local breakprob = apocargs.breakprob;
 	local doorlockprob = apocargs.doorlockprob;
-	local ropebreakprob = apocargs.ropebreakprob;
+	local ropebreakprob = apocargs.ropebreakprob;				
+	local expprob = apocargs.expprob;
+
 	local minspeed = apocargs.minspeed;
 	local maxspeed = (apocargs.maxspeed - minspeed);
+
 	local mindmg = apocargs.dmgmin;
 	local maxdmg = (apocargs.dmgmax - mindmg);
+
+	local expmaxradius = apocargs.expmaxradius;			
+	local expdmgmin = apocargs.expdmgmin;			
+	local expdmgmax = (apocargs.expdmgmax - expdmgmin);	
 
 	local pushvec = null;
 	local entclass = null;
 	local entindex = null;
 	local entmodel = null;
+	local expent = null;
+	local expsoundent = null;
 
 	local pushedents = {};
 	local brokenents = {};
@@ -2827,10 +2844,11 @@ enum SCENES
 	local lockeddoors = {};
 	local damagedents = {};
 	local animatedents = {};
+	local explosions = {};
 
 	local debug = apocargs.debug;
-	
-	try
+
+	if(debug == 1)
 	{
 		foreach(id,ent in enttbl)
 		{	
@@ -2845,8 +2863,10 @@ enum SCENES
 				entmodel = ent.GetModel();
 				entindex = ent.GetIndex();
 
+				// Anything with physics
 				if(entclass == "prop_physics" || entclass == "prop_physics_multiplayer"  || entclass == "prop_car_alarm" || entclass == "prop_vehicle" || entclass == "prop_physics_override" || entclass == "func_physbox" ||  entclass == "func_physbox_multiplayer" || entclass == "prop_ragdoll" )
 				{ 	
+					//Damage
 					if((rand().tofloat()/RAND_MAX) < dmgprob)
 					{
 						if(ent.GetHealth() > 0)
@@ -2856,7 +2876,22 @@ enum SCENES
 						}
 					}
 
-					else if(entmodel.find("forklift.mdl") != null)
+					//Explosion
+					if((rand().tofloat()/RAND_MAX) < expprob)
+					{
+						if(ent.GetHealth() > 0)
+						{	
+							expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
+							expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
+							expsoundent.Input("ToggleSound","",0.2);
+							expent.Input("Explode","",0.25);
+							expsoundent.Input("Kill","",3.0);
+							explosions[entindex] <- entclass+", "+entmodel;
+						}
+					}
+					
+					//Break
+					if(entmodel.find("forklift") != null)
 					{
 						if((rand().tofloat()/RAND_MAX) < breakprob)
 						{
@@ -2865,15 +2900,17 @@ enum SCENES
 						}
 					}
 
+					//Push
 					pushvec = QAngle(rand()%360,rand()%360,rand()%360).Forward();
 					pushvec = pushvec.Scale((minspeed+rand()%maxspeed).tofloat()/pushvec.Length())
 					
 					ent.Push(pushvec);
-
+					
 					pushedents[entindex] <- entclass+", "+entmodel;
 				}
-				else if(entclass == "func_breakable" || entclass == "func_breakable_surf" || entclass == "prop_wall_breakable" )
+				else if(entclass == "func_breakable" || entclass == "func_breakable_surf" || entclass == "prop_wall_breakable" ) //Any breakable surface
 				{	
+					//Damage
 					if((rand().tofloat()/RAND_MAX) < dmgprob)
 					{	
 						if(ent.GetHealth() > 0)
@@ -2882,22 +2919,53 @@ enum SCENES
 							damagedents[entindex] <- entclass+", "+entmodel;
 						}
 					}
-					else if((rand().tofloat()/RAND_MAX) < breakprob)
+					
+					//Explosion
+					if((rand().tofloat()/RAND_MAX) < expprob)
+					{
+						if(ent.GetHealth() > 0)
+						{	
+							expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
+							expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
+							expsoundent.Input("ToggleSound","",0.2);
+							expent.Input("Explode","",0.25);
+							expsoundent.Input("Kill","",3.0);
+							explosions[entindex] <- entclass+", "+entmodel;
+						}
+					}
+
+					//Break
+					if((rand().tofloat()/RAND_MAX) < breakprob)
 					{
 						ent.Break();
 						brokenents[entindex] <- entclass+", "+entmodel;
-					}	
+					}
 				}
-				else if(entclass == "move_rope" || entclass == "keyframe_rope")
+				else if(entclass == "move_rope" || entclass == "keyframe_rope")		//Cables and ropes
 				{	
+					//Explosion
+					if((rand().tofloat()/RAND_MAX) < expprob)
+					{
+						if(ent.GetHealth() > 0)
+						{	
+							expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
+							expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
+							expsoundent.Input("ToggleSound","",0.2);
+							expent.Input("Explode","",0.25);
+							expsoundent.Input("Kill","",3.0);
+							explosions[entindex] <- entclass+", "+entmodel;
+						}
+					}
+
+					//Break
 					if((rand().tofloat()/RAND_MAX) < ropebreakprob)
 					{
 						ent.Break();
 						brokenents[entindex] <- entclass+", "+entmodel;
 					}	
 				}
-				else if(entclass == "prop_door_rotating" || entclass == "func_door" || entclass == "func_door_rotating" || entclass == "func_rotating")
-				{		
+				else if(entclass == "prop_door_rotating" || entclass == "func_door" || entclass == "func_door_rotating" || entclass == "func_rotating") //Any door except saferoom's
+				{	//Damage
 					if((rand().tofloat()/RAND_MAX) < dmgprob)
 					{
 						if(ent.GetHealth() > 0)
@@ -2905,26 +2973,44 @@ enum SCENES
 							ent.Hurt(mindmg+rand()%maxdmg);
 							damagedents[entindex] <- entclass+", "+entmodel;
 						}
-					}	
+					}
+					
+					//Explosion
+					if((rand().tofloat()/RAND_MAX) < expprob)
+					{
+						if(ent.GetHealth() > 0)
+						{	
+							expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
+							expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
+							expsoundent.Input("ToggleSound","",0.2);
+							expent.Input("Explode","",0.25);
+							expsoundent.Input("Kill","",3.0);
+							explosions[entindex] <- entclass+", "+entmodel;
+						}
+					}
+
+					//Close and Lock
 					if((rand().tofloat()/RAND_MAX) < doorlockprob)
 					{	
 						ent.Input("close","");
 						ent.Input("lock","",0.5);
 						lockeddoors[entindex] <- entclass+", "+entmodel;
 					}
-					else
+					else //Open or Close
 					{
 						ent.Input("toggle","");
 						useddoors[entindex] <- entclass+", "+entmodel;
 					}
 				}
-				else if(entclass == "prop_door_rotating_checkpoint")
-				{		
+				else if(entclass == "prop_door_rotating_checkpoint")	//Saferoom door
+				{	
+					//Open or Close	
 					ent.Input("toggle","");
 					useddoors[entindex] <- entclass+", "+entmodel;
 				}
-				else if(entclass == "prop_health_cabinet")
-				{		
+				else if(entclass == "prop_health_cabinet")	//Health cabinet
+				{	
+					//Open or Close animation
 					if((rand().tofloat()/RAND_MAX) < 0.5)
 						ent.Input("setanimation","idle");	
 					else
@@ -2935,29 +3021,183 @@ enum SCENES
 			}
 		}
 
-		if(debug == 1)
-		{	
-			printl("---------------------------------------------");
-			if(pushedents.len() != 0)
-				{printl("PUSHED\n");Utils.PrintTable(pushedents);}
+		printl("---------------------------------------------");
+		if(pushedents.len() != 0)
+			{printl("PUSHED\n");Utils.PrintTable(pushedents);}
 
-			if(brokenents.len() != 0)
-				{printl("BROKEN\n");Utils.PrintTable(brokenents);}
+		if(brokenents.len() != 0)
+			{printl("BROKEN\n");Utils.PrintTable(brokenents);}
 
-			if(useddoors.len() != 0)
-				{printl("OPENED/CLOSED\n");Utils.PrintTable(useddoors);}
+		if(useddoors.len() != 0)
+			{printl("OPENED/CLOSED\n");Utils.PrintTable(useddoors);}
 
-			if(lockeddoors.len() != 0)
-				{printl("LOCKED\n");Utils.PrintTable(lockeddoors);}
+		if(lockeddoors.len() != 0)
+			{printl("LOCKED\n");Utils.PrintTable(lockeddoors);}
 
-			if(damagedents.len() != 0)
-				{printl("DAMAGED\n");Utils.PrintTable(damagedents);}
+		if(damagedents.len() != 0)
+			{printl("DAMAGED\n");Utils.PrintTable(damagedents);}
 
-		}
-	
+		if(explosions.len() != 0)
+			{printl("EXPLODED\n");Utils.PrintTable(explosions);}
+
 	}
-	catch(e)
-	{printl("[Apocalypse-Error]" +e);}
+	else
+	{
+		foreach(id,ent in enttbl)
+		{	
+			if((rand().tofloat()/RAND_MAX) < prob )
+			{	
+				if(!ent.IsEntityValid())
+				{
+					continue;
+				}
+
+				entclass = ent.GetClassname();
+				entmodel = ent.GetModel();
+
+				// Anything with physics
+				if(entclass == "prop_physics" || entclass == "prop_physics_multiplayer"  || entclass == "prop_car_alarm" || entclass == "prop_vehicle" || entclass == "prop_physics_override" || entclass == "func_physbox" ||  entclass == "func_physbox_multiplayer" || entclass == "prop_ragdoll" )
+				{ 	
+					//Damage
+					if((rand().tofloat()/RAND_MAX) < dmgprob)
+					{
+						if(ent.GetHealth() > 0)
+						{
+							ent.Hurt(mindmg+rand()%maxdmg);
+						}
+					}
+
+					//Explosion
+					if((rand().tofloat()/RAND_MAX) < expprob)
+					{
+						if(ent.GetHealth() > 0)
+						{	
+							expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
+							expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
+							expsoundent.Input("ToggleSound","",0.2);
+							expent.Input("Explode","",0.25);
+							expsoundent.Input("Kill","",3.0);
+						}
+					}
+					
+					//Break
+					if(entmodel.find("forklift") != null)
+					{
+						if((rand().tofloat()/RAND_MAX) < breakprob)
+						{
+							ent.Break();
+						}
+					}
+
+					//Push
+					pushvec = QAngle(rand()%360,rand()%360,rand()%360).Forward();
+					pushvec = pushvec.Scale((minspeed+rand()%maxspeed).tofloat()/pushvec.Length())
+					
+					ent.Push(pushvec);
+					
+				}
+				else if(entclass == "func_breakable" || entclass == "func_breakable_surf" || entclass == "prop_wall_breakable" ) //Any breakable surface
+				{	
+					//Damage
+					if((rand().tofloat()/RAND_MAX) < dmgprob)
+					{	
+						if(ent.GetHealth() > 0)
+						{
+							ent.Hurt(mindmg+rand()%maxdmg);
+						}
+					}
+					
+					//Explosion
+					if((rand().tofloat()/RAND_MAX) < expprob)
+					{
+						if(ent.GetHealth() > 0)
+						{	
+							expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
+							expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
+							expsoundent.Input("ToggleSound","",0.2);
+							expent.Input("Explode","",0.25);
+							expsoundent.Input("Kill","",3.0);
+						}
+					}
+
+					//Break
+					if((rand().tofloat()/RAND_MAX) < breakprob)
+					{
+						ent.Break();
+					}
+				}
+				else if(entclass == "move_rope" || entclass == "keyframe_rope")		//Cables and ropes
+				{	
+					//Explosion
+					if((rand().tofloat()/RAND_MAX) < expprob)
+					{
+						if(ent.GetHealth() > 0)
+						{	
+							expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
+							expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
+							expsoundent.Input("ToggleSound","",0.2);
+							expent.Input("Explode","",0.25);
+							expsoundent.Input("Kill","",3.0);
+						}
+					}
+
+					//Break
+					if((rand().tofloat()/RAND_MAX) < ropebreakprob)
+					{
+						ent.Break();
+					}	
+				}
+				else if(entclass == "prop_door_rotating" || entclass == "func_door" || entclass == "func_door_rotating" || entclass == "func_rotating") //Any door except saferoom's
+				{	//Damage
+					if((rand().tofloat()/RAND_MAX) < dmgprob)
+					{
+						if(ent.GetHealth() > 0)
+						{
+							ent.Hurt(mindmg+rand()%maxdmg);
+						}
+					}
+					
+					//Explosion
+					if((rand().tofloat()/RAND_MAX) < expprob)
+					{
+						if(ent.GetHealth() > 0)
+						{	
+							expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
+							expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
+							expsoundent.Input("ToggleSound","",0.2);
+							expent.Input("Explode","",0.25);
+							expsoundent.Input("Kill","",3.0);
+						}
+					}
+
+					//Close and Lock
+					if((rand().tofloat()/RAND_MAX) < doorlockprob)
+					{	
+						ent.Input("close","");
+						ent.Input("lock","",0.5);
+					}
+					else //Open or Close
+					{
+						ent.Input("toggle","");
+					}
+				}
+				else if(entclass == "prop_door_rotating_checkpoint")	//Saferoom door
+				{	
+					//Open or Close	
+					ent.Input("toggle","");
+				}
+				else if(entclass == "prop_health_cabinet")	//Health cabinet
+				{	
+					//Open or Close animation
+					if((rand().tofloat()/RAND_MAX) < 0.5)
+						ent.Input("setanimation","idle");	
+					else
+						ent.Input("setanimation","open");
+
+				}
+			}
+		}
+	}
 	
 } 
 
@@ -7743,7 +7983,7 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{
-		if(pitchofeye != "random")
+		if(direction != "random")
 			pitchofeye = pitchofeye.tofloat()*-1;
 	}
 
@@ -7751,7 +7991,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if(entlooked)
 	{	
 		local newangs = null
-		if(pitchofeye == "random" )
+		if(direction == "random" )
 			newangs = QAngle(rand()%360,rand()%360,rand()%360);
 		else
 			newangs = QAngle(pitchofeye,0,0);
