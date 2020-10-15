@@ -20806,3 +20806,20 @@ Buttons.snd46
 	"soundlevel"	"SNDLVL_80dB"
 	"wave"	"player/survivor/voice/producer/worldsigns05.wav"
 }
+"randomexplosion"
+{
+	"channel"		"CHAN_STATIC"
+	"volume"		"1"
+	"pitch"			"92, 108"
+	"soundlevel"	    "SNDLVL_140dB"
+	"rndwave"
+	{
+		"wave"	"ambient/explosions/explode_1.wav"
+		"wave"	"ambient/explosions/explode_2.wav"
+		"wave"	"ambient/explosions/explode_3.wav"
+		"wave"	"weapons/hegrenade/explode3.wav"
+		"wave"	"weapons/hegrenade/explode5.wav"
+		"wave"  "weapons/grenade_launcher/grenadefire/grenade_launcher_explode_1.wav"
+		"wave"  "weapons/grenade_launcher/grenadefire/grenade_launcher_explode_2.wav"
+	}
+}
