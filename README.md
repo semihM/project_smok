@@ -16,7 +16,7 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
        //           value = single_value
        //     For multi-values (angle,position,array) :
        //           value = {type:(ang,pos,str)}|val1|val2|val3
-       ent {class} {key1}->{value1}&{key2}->{value2}...
+       ent {class} {key1}>{value1}&{key2}>{value2}...
        
        // Example (dynamic prop with Gift model with color rgb(90,30,60) and angles Pitch,Yaw,Roll->(-30,10,0) ): 
        ent prop_dynamic model>models\items\l4d_gift.mdl&rendercolor>str|90|30|60&angles>ang|-30|10|0
