@@ -526,7 +526,6 @@
     "fire_medium_03_brownsmoke",
     "fire_medium_base",
     "fire_medium_burst",
-    "fire_medium_heatwave",
     "fire_small_01",
     "fire_small_02",
     "fire_small_03",

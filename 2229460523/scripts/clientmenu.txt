@@ -34872,8 +34872,8 @@
 			}
 			"5"
 			{
-				"command"		 "play buttons/button14;scripted_user_func explosion;show_menu secret_commands"
-				"label"			" Created a delayed explosion"
+				"command"		 "play buttons/button14;show_menu explosion1"
+				"label"			" Explosion"
 			}
 			"0"
 			{
@@ -35032,4 +35032,121 @@
 					"label"      " Exit"
 			}
 	}
+	
+	"explosion1"
+	{
+			"Title"		"Explosions menu"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func explosion;show_menu explosion1"
+				"label"			 " Create a delayed explosion"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func show_explosion_settings;show_menu explosion1"
+				"label"			 " Show current settings"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;show_menu explosion_effects1"
+				"label"			 " Change particle effect"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button10;show_menu explosion1"
+				"label"			 " Change other settings(use !explosion_seting {setting} {value})"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu secret_commands"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"explosion_effects1"
+	{
+			"Title"		"Particle effects 1"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,flame_blue;show_menu explosion_effects1"
+				"label"			 " Blue flame"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,firework_crate_ground_primary_01;show_menu explosion_effects1"
+				"label"			 " Fireworks sparks"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,gas_explosion_smoking;show_menu explosion_effects1"
+				"label"			 " Black smoke"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,fire_medium_01;show_menu explosion_effects1"
+				"label"			 " Bigger red flame"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,env_fire_large_smoke;show_menu explosion_effects1"
+				"label"			 " Big red flame"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,fire_barrel_big;show_menu explosion_effects1"
+				"label"			 " Small red flame"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,burning_wood_02;show_menu explosion_effects1"
+				"label"			 " Smaller red flame"
+			}
+			
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu explosion1"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu explosion_effects2"
+					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"explosion_effects2"
+	{
+			"Title"		"Particle effects 2"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,fire_window_hotel_jet;show_menu explosion_effects2"
+				"label"			 " Less dense red flame"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,RPG_Smoke;show_menu explosion_effects2"
+				"label"			 " Intense smoke cloud(lags if spammed)"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu explosion_effects1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
 }

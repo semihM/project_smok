@@ -1144,7 +1144,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 
 			IgnoreSpeakerClass = true
 
-			_aimedExplosion_args =
+			_explosion_settings =
 			{
 				bill=
 				{
@@ -1359,6 +1359,12 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			printl("[Custom-Fix] Applying fixes to prop_spawn_settings table...");
 			AdminSystem.Vars._prop_spawn_settings.coach <- Utils.TableCopy(AdminSystem.Vars._prop_spawn_settings.Coach);
 			delete AdminSystem.Vars._prop_spawn_settings.Coach;
+		}
+		if("Coach" in AdminSystem.Vars._explosion_settings)
+		{
+			printl("[Custom-Fix] Applying fixes to explosion_settings table...");
+			AdminSystem.Vars._explosion_settings.coach <- Utils.TableCopy(AdminSystem.Vars._explosion_settings.Coach);
+			delete AdminSystem.Vars._explosion_settings.Coach;
 		}
 		if("Coach" in AdminSystem.Vars._CustomResponseOptions)
 		{	
@@ -2178,6 +2184,16 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		case "particle":
 		{
 			AdminSystem.ParticleCmd( player, args );
+			break;
+		}
+		case "explosion_setting":
+		{
+			AdminSystem.Explosion_settingCmd( player, args );
+			break;
+		}
+		case "show_explosion_settings":
+		{
+			AdminSystem.Show_explosion_settingsCmd( player, args );
 			break;
 		}
 		case "explosion":
@@ -4494,6 +4510,16 @@ function ChatTriggers::explosion( player, args, text )
 	AdminSystem._AimedExplosionCmd( player, args );
 }
 
+function ChatTriggers::show_explosion_settings( player, args, text )
+{
+	AdminSystem.Show_explosion_settingsCmd( player, args );
+}
+
+function ChatTriggers::explosion_setting( player, args, text )
+{
+	AdminSystem.Explosion_settingCmd( player, args );
+}
+
 /*
  * @authors rhino
  */
@@ -6698,8 +6724,53 @@ if ( Director.GetGameMode() == "holdout" )
 	
 }
 
+/* @authors rhino
+ * Show explosion params
+ */
+::AdminSystem.Show_explosion_settingsCmd <- function (player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
 
-::AdminSystem.Vars._aimedExplosion_args <-
+	printB(player.GetCharacterName(),"",false,"",true,false);
+	foreach(setting,val in AdminSystem.Vars._explosion_settings[player.GetCharacterName().tolower()])
+	{
+		printB(player.GetCharacterName(),"[Explosion-Setting] "+setting+"->"+val.tostring(),false,"",false,false)
+	}
+	printB(player.GetCharacterName(),"",false,"",false,true,0.1);
+}
+
+/* @authors rhino
+ * Change arguments of the delayed explosion
+ */
+::AdminSystem.Explosion_settingCmd <- function (player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local name = player.GetCharacterName();
+	local setting = GetArgument(1);
+	local val = GetArgument(2);
+	if(!(setting in AdminSystem.Vars._explosion_settings[name.tolower()]))
+		return;
+	
+	if(setting != "effect_name")
+		{try{val = val.tofloat();}catch(e){return;}}
+	else if(Utils.GetIDFromArray(::Particlenames.names,val) == null)
+		{Utils.SayToAll("No particle named "+val+" was found.");return;}
+
+	if (AdminSystem.Vars._outputsEnabled[name.tolower()])
+	{Utils.SayToAll(name+" -> Changed explosion setting "+setting+": "+AdminSystem.Vars._explosion_settings[name.tolower()][setting]+"->"+val);}
+	else
+	{printB(name,name+" -> Changed explosion setting "+setting+": "+AdminSystem.Vars._explosion_settings[name.tolower()][setting]+"->"+val,true,"info",true,true);}
+	
+	AdminSystem.Vars._explosion_settings[name.tolower()][setting] = val;
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.Vars._explosion_settings <-
 {
 	bill=
 	{
@@ -6800,7 +6871,7 @@ if ( Director.GetGameMode() == "holdout" )
 	
 	local name = player.GetCharacterName().tolower();
 	local aimedlocation = player.GetLookingLocation();
-	local argtable = AdminSystem.Vars._aimedExplosion_args[name];
+	local argtable = AdminSystem.Vars._explosion_settings[name];
 
 	local explosion_particle = argtable.effect_name;
 	local explosion_sound = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = aimedlocation});
@@ -6870,7 +6941,7 @@ if ( Director.GetGameMode() == "holdout" )
 			}
 		}
 	}
-	
+
 	DoEntFire("!self", "Start", "", 0, null, particle);
 	
 	local vsParticle = ::VSLib.Entity(particle);
