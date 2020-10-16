@@ -6888,8 +6888,9 @@ if ( Director.GetGameMode() == "holdout" )
 	local explosion = Utils.CreateEntityWithTable(explosion_table);
 
 	local delay = argtable.delay;
-	
-	local particle = g_ModeScript.CreateSingleSimpleEntityFromTable({ classname = "info_particle_system", targetname = "vslib_tmp_" + UniqueString(), origin = aimedlocation, angles = QAngle(-90,0,0), start_active = true, effect_name = explosion_particle });
+	local uniqname = "vslib_tmp_" + UniqueString();
+	local particletable = { classname = "info_particle_system", targetname = uniqname, origin = aimedlocation, angles = QAngle(-90,0,0), start_active = true, effect_name = explosion_particle };
+	local particle = Utils.CreateEntityWithTable(particletable);
 	
 	if (!particle)
 	{
@@ -6942,18 +6943,31 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 	}
 
-	DoEntFire("!self", "Start", "", 0, null, particle);
-	
-	local vsParticle = ::VSLib.Entity(particle);
+	if(explosion_particle=="fireworks_sparkshower_01" || explosion_particle=="fireworks_sparkshower_01b" || explosion_particle=="fireworks_sparkshower_01c")
+	{
+		particle.SetAngles(-90,0,0);
+		particle.SetOrigin(Vector(aimedlocation.x,aimedlocation.y,aimedlocation.z+5.0));
+		if(delay>7)
+			{printB(player.GetCharacterName(),"[Explosion-Warning] Fireworks disappear after 7 seconds",false,"");particle.KillDelayed(7);}
+		else
+			particle.KillDelayed(delay);
+		
+		DoEntFire("!self", "Start", "", 0, null, particle);
+	}
+	else
+	{
+		if(explosion_particle=="flame_blue")
+			particle.SetAngles(-70,30,-30);
+		else if(explosion_particle=="fireworks_sparkshower_01e")
+			{particle.SetAngles(-90,0,0);particle.SetOrigin(Vector(aimedlocation.x,aimedlocation.y,aimedlocation.z+5.0));}
 
-	//vsParticle.SetAngles(-90,0,0);
-	//vsParticle.SetColor(rand()%255,rand()%255,rand()%255,rand()%255);
-
-	vsParticle.KillDelayed(delay);
+		particle.KillDelayed(delay);
+		DoEntFire("!self", "Start", "", 0, null, particle);
+	}
 	
 	Timers.AddTimer(delay, false, _explosionPush, {explosion_sound=explosion_sound,explosion=explosion,ents=closebyents,pushspeed=argtable.maxpushspeed,origin=aimedlocation});
 
-	printl(name+"-> Created explosion at "+aimedlocation);
+	printl(name+"-> Created explosion with particle(#"+particle.GetIndex()+") "+explosion_particle+"  at "+aimedlocation);
 }
 
 /*

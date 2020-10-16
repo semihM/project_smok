@@ -35073,13 +35073,13 @@
 			"Title"		"Particle effects 1"
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,flame_blue;show_menu explosion_effects1"
-				"label"			 " Blue flame"
+				"command"		 "play buttons/button14;show_menu explosion_effects_flames1"
+				"label"			 " Flame effects"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,firework_crate_ground_primary_01;show_menu explosion_effects1"
-				"label"			 " Fireworks sparks"
+				"command"		 "play buttons/button14;show_menu explosion_effects_fireworks1"
+				"label"			 " Fireworks effects"
 			}
 			"3"
 			{
@@ -35088,34 +35088,13 @@
 			}
 			"4"
 			{
-				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,fire_medium_01;show_menu explosion_effects1"
-				"label"			 " Bigger red flame"
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,RPG_Smoke;show_menu explosion_effects1"
+				"label"			 " Intense smoke cloud(lags if spammed)"
 			}
-			"5"
-			{
-				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,env_fire_large_smoke;show_menu explosion_effects1"
-				"label"			 " Big red flame"
-			}
-			"6"
-			{
-				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,fire_barrel_big;show_menu explosion_effects1"
-				"label"			 " Small red flame"
-			}
-			"7"
-			{
-				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,burning_wood_02;show_menu explosion_effects1"
-				"label"			 " Smaller red flame"
-			}
-			
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu explosion1"
 					"label"      " << Back"
-			}
-			"9"
-			{
-					"command"    "play buttons/button14;show_menu explosion_effects2"
-					"label"      " >> Next"
 			}
 			"0"
 			{
@@ -35124,18 +35103,78 @@
 			}
 	}
 	
-	"explosion_effects2"
+	"explosion_effects_flames1"
 	{
-			"Title"		"Particle effects 2"
+			"Title"		"Flame particle effects 1"
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,fire_window_hotel_jet;show_menu explosion_effects2"
-				"label"			 " Less dense red flame"
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,flame_blue;show_menu explosion_effects_flames1"
+				"label"			 " Blue"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,RPG_Smoke;show_menu explosion_effects2"
-				"label"			 " Intense smoke cloud(lags if spammed)"
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,fire_medium_01;show_menu explosion_effects_flames1"
+				"label"			 " Bigger red"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,env_fire_large_smoke;show_menu explosion_effects_flames1"
+				"label"			 " Big red"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,fire_barrel_big;show_menu explosion_effects_flames1"
+				"label"			 " Small red"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,burning_wood_02;show_menu explosion_effects_flames1"
+				"label"			 " Smaller red"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,fire_window_hotel_jet;show_menu explosion_effects_flames1"
+				"label"			 " Less dense red"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu explosion_effects1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"explosion_effects_fireworks1"
+	{
+			"Title"		"Fireworks particle effects 1"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,firework_crate_ground_primary_01;show_menu explosion_effects_fireworks1"
+				"label"			 " Sparks wide"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,fireworks_sparkshower_01;show_menu explosion_effects_fireworks1"
+				"label"			 " Sparks long 1"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,fireworks_sparkshower_01b;show_menu explosion_effects_fireworks1"
+				"label"			 " Sparks long 2"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,fireworks_sparkshower_01c;show_menu explosion_effects_fireworks1"
+				"label"			 " Sparks short"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,fireworks_sparkshower_01e;show_menu explosion_effects_fireworks1"
+				"label"			 " Sparks ball"
 			}
 			"8"
 			{
