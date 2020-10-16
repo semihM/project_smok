@@ -1494,7 +1494,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	
 	printl("[Custom] Loaded custom responses created by admins");
 
-	if(AdminSystem._propageddon_state == 1)
+	if(AdminSystem.Vars._propageddon_state == 1)
 	{
 		::VSLib.Timers.AddTimer(3,false,Utils.SayToAll,"Madness continues...");
 		::VSLib.Timers.AddTimerByName("propageddon",AdminSystem._propageddon_args.updatedelay, true, _ApocalypseTimer,{});	
@@ -2867,7 +2867,7 @@ enum SCENES
 	
 }
 
-::AdminSystem._propageddon_state <- 0;
+::AdminSystem.Vars._propageddon_state <- 0;
 
 ::AdminSystem._propageddon_args <-
 {
@@ -2963,7 +2963,7 @@ enum SCENES
  */
 ::_ApocalypseTimer <- function (...)
 {	
-	if(AdminSystem._propageddon_state == 1)
+	if(AdminSystem.Vars._propageddon_state == 1)
 	{	
 		local unluckyone = Utils.GetRandValueFromArray(Players.AliveSurvivors());
 		
@@ -3391,11 +3391,11 @@ enum SCENES
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	if(AdminSystem._propageddon_state == 0)
+	if(AdminSystem.Vars._propageddon_state == 0)
 	{	
 		AdminSystem.LoadApocalypseSettings();
 		Utils.SayToAll("Something doesn't feel right...");
-		AdminSystem._propageddon_state = 1;
+		AdminSystem.Vars._propageddon_state = 1;
 		::VSLib.Timers.AddTimerByName("propageddon",AdminSystem._propageddon_args.updatedelay, true, _ApocalypseTimer,{});	
 	}
 	else
@@ -3413,9 +3413,9 @@ enum SCENES
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	if(AdminSystem._propageddon_state == 1)
+	if(AdminSystem.Vars._propageddon_state == 1)
 	{
-		AdminSystem._propageddon_state = 0;
+		AdminSystem.Vars._propageddon_state = 0;
 	}
 }
 
@@ -4222,7 +4222,7 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 	if(!AdminSystem.Vars._CustomResponse[targetname]._SpeakWhenShoved.enabled)
 	{return;}
 
-	if(rand().tofloat()/RAND_MAX <= AdminSystem.Vars._CustomResponse[targetname]._SpeakWhenShoved.prob)
+	if((rand().tofloat()/RAND_MAX) <= AdminSystem.Vars._CustomResponse[targetname]._SpeakWhenShoved.prob)
 		::VSLib.Timers.AddTimer(AdminSystem.Vars._CustomResponse[targetname]._SpeakWhenShoved.startdelay, false, _SpeakWhenShovedResult,{targetname=targetname,target=target,attacker=attacker});
 	
 }
@@ -4269,7 +4269,7 @@ function Notifications::OnLeaveSaferoom::_SpeakWhenLeftSaferoomCondition(ent,arg
 		return;	
 	
 	// Add timer to ignore changes during map loading
-	if(rand().tofloat()/RAND_MAX <= AdminSystem.Vars._CustomResponse[name]._SpeakWhenLeftSaferoom.prob && AdminSystem.Vars._CustomResponse[name]._SpeakWhenLeftSaferoom.call_amount == 0)
+	if((rand().tofloat()/RAND_MAX) <= AdminSystem.Vars._CustomResponse[name]._SpeakWhenLeftSaferoom.prob && AdminSystem.Vars._CustomResponse[name]._SpeakWhenLeftSaferoom.call_amount == 0)
 		::VSLib.Timers.AddTimer(AdminSystem.Vars._CustomResponse[name]._SpeakWhenLeftSaferoom.startdelay, false, _SpeakWhenLeftSaferoomResult, {player=ent,name=name});
 	return;
 }
@@ -4299,7 +4299,7 @@ function Notifications::OnAdrenalineUsed::_SpeakWhenUsedAdrenalineCondition(ent,
 		return;
 
 	local name = ent.GetCharacterName().tolower();
-	if(rand().tofloat()/RAND_MAX <= AdminSystem.Vars._CustomResponse[name]._SpeakWhenUsedAdrenaline.prob)
+	if((rand().tofloat()/RAND_MAX) <= AdminSystem.Vars._CustomResponse[name]._SpeakWhenUsedAdrenaline.prob)
 		::VSLib.Timers.AddTimer(AdminSystem.Vars._CustomResponse[name]._SpeakWhenUsedAdrenaline.startdelay, false, _SpeakWhenUsedAdrenalineResult,ent);
 }
 
