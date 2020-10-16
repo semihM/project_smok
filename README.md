@@ -225,6 +225,15 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
 
 - **explosion** : Create a delayed explosion at aimed location, with a particle effect until explosion
 
+- **show_explosion_settings** : Show *explosion* command settings
+
+- **explosion_setting** : Update *explosion* command settings
+```cpp
+       //Overloads:
+       // Check out the settings and their values with show_explosion_settings
+       explosion_setting {setting : (effect_name,delay,dmgmin,dmgmax,radiusmin,radiusmax,maxpushspeed)} {new_value}
+```
+
 ### Debug and script related 
 
 - **debug_info** : Dump information about objects
