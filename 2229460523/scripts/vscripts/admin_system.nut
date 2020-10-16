@@ -570,6 +570,45 @@ Convars.SetValue( "precache_all_survivors", "1" );
 	}
 }
 
+/*
+ *	@authors rhino
+ */
+::AdminSystem.LoadApocalypseSettings <- function ()
+{
+	local fileContents = FileToString("admin system/apocalypse_settings.txt");
+	local settings = split(fileContents, "\r\n");
+	
+	if(!("_propageddon_args" in AdminSystem))
+		AdminSystem._propageddon_args <- {};
+
+	foreach (setting in settings)
+	{
+		if ( setting != "" )
+		{	
+			if(!(setting in AdminSystem._propageddon_args))
+				compilestring("AdminSystem._propageddon_args." + Utils.StringReplace(setting, "=", "<-"))();
+			else
+				compilestring("AdminSystem._propageddon_args." + setting)();
+		}
+	}
+}
+
+/*
+ *	@authors rhino
+ */
+::AdminSystem.SaveApocalypseSettings <- function ()
+{
+	local fileContents = FileToString("admin system/apocalypse_settings.txt");
+	local filesettings = split(fileContents, "\r\n");
+
+	local newstring = "";
+	foreach (setting,val in AdminSystem._propageddon_args)
+	{	
+		newstring += setting + " = " + val.tostring() + " // " + AdminSystem._propageddon_args_comments[setting] + " \r\n";
+	}
+	StringToFile("admin system/apocalypse_settings.txt", newstring);
+}
+
 ::AdminSystem.IsPrivileged <- function ( player )
 {
 	if ( Director.IsSinglePlayerGame() || player.IsServerHost() )
@@ -699,7 +738,8 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	local scriptauthList = FileToString("admin system/scriptauths.txt");
 	local banList = FileToString("admin system/banned.txt");
 	local settingList = FileToString("admin system/settings.txt");
-	
+	local apocsettings = FileToString("admin system/apocalypse_settings.txt");
+
 	if ( adminList != null )
 	{
 		printf("[Admins] Loading admin list...");
@@ -724,6 +764,36 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	{
 		settingList = "AdminsOnly = true\nDisplayMsgs = true\nEnableIdleKick = false\nIdleKickTime = 60\nAdminPassword = \"\"";
 		StringToFile("admin system/settings.txt", settingList);
+	}
+
+	if ( apocsettings != null )
+	{
+		printf("[Apocalypse-Settings] Loading apocalypse settings...");
+		AdminSystem.LoadApocalypseSettings();
+	}
+	else
+	{	
+		printl("[Apocalypse-Settings] Creating the setting file for the first time...")
+		apocsettings  = "maxradius = 850 // maximum radius to apply forces\r\n";
+		apocsettings += "updatedelay = 1.5 // how often to update entity list in seconds\r\n";
+		apocsettings += "mindelay = 0.5 // minimum delay to apply propageddon function\r\n";
+		apocsettings += "maxdelay = 2 // maximum delay to apply propageddon function\r\n";
+		apocsettings += "minspeed = 800 // minimum speed of pushed entities\r\n";
+		apocsettings += "maxspeed = 24000 // maximum speed of pushed entities\r\n";
+		apocsettings += "dmgmin = 5 // minimum damage done to entity\r\n";
+		apocsettings += "dmgmax = 100 // maximum damage done to entity\r\n";
+		apocsettings += "dmgprob = 0.3 // probability of entity getting damaged\r\n";
+		apocsettings += "expmaxradius = 300 // explosion radius maximum\r\n";
+		apocsettings += "expdmgmin = 5 // explosion damage minimum\r\n";
+		apocsettings += "expdmgmax = 40 // explosion damage maximum\r\n";
+		apocsettings += "expprob = 0.022 // probability of explosion\r\n";
+		apocsettings += "breakprob = 0.04 // probability of entity being broken\r\n";
+		apocsettings += "doorlockprob = 0.02 // probability of doors getting locked, saferoom doors excluded\r\n";
+		apocsettings += "ropebreakprob = 0.05 // probability of a cable or sorts to be broken from its connection point\r\n";
+		apocsettings += "entprob = 0.6 // probability of an entity being chosen within the radius\r\n";
+		apocsettings += "debug = 0 // Print which entities are effected";
+
+		StringToFile("admin system/apocalypse_settings.txt", apocsettings);
 	}
 
 	RestoreTable( "admin_variable_data", ::AdminSystem.Vars );
@@ -1072,31 +1142,98 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 				rochelle={timername="",character="",sequence={}}
 			}
 
-			_propageddon_state = 0
-
-			_propageddon_args =
-			{
-				maxradius = 850				// maximum radius to apply forces
-				updaterate = 1.5			// how often to update entity list in seconds
-				mindelay = 0.5				// minimum delay to apply propageddon function
-				maxdelayoffset = 2  		// maximum delay to apply propageddon function
-				minspeed = 800				// minimum speed
-				maxspeed = 24000    		// maximum speed
-				dmgmin = 5			    	// minimum damage done to entity
-				dmgmax = 100				// maximum damage done to entity
-				dmgprob = 0.3				// probability of entity getting damaged
-				expmaxradius = 300			// explosion radius maximum
-				expdmgmin = 5				// explosion damage minimum
-				expdmgmax = 40				// explosion damage maximum
-				expprob = 0.022				// probability of explosion
-				breakprob = 0.04			// probability of entity being broken
-				doorlockprob = 0.02  		// probability of doors getting locked, saferoom doors excluded
-				ropebreakprob = 0.05		// probability of a cable or sorts to be broken from its connection point
-				entprob = 0.6				// probability of an entity being chosen within the radius
-				debug = 0					// Print which entities are effected
-			}
-
 			IgnoreSpeakerClass = true
+
+			_aimedExplosion_args =
+			{
+				bill=
+				{
+					delay=1
+					effect_name="flame_blue"
+					dmgmin = 10
+					dmgmax = 30
+					radiusmin = 300
+					radiusmax = 450
+					maxpushspeed = 10000
+				},
+				francis=
+				{
+					delay=1
+					effect_name="flame_blue"
+					dmgmin = 10
+					dmgmax = 30
+					radiusmin = 300
+					radiusmax = 450
+					maxpushspeed = 10000
+					
+				},
+				louis=
+				{
+					delay=1
+					effect_name="flame_blue"
+					dmgmin = 10
+					dmgmax = 30
+					radiusmin = 300
+					radiusmax = 450
+					maxpushspeed = 10000
+					
+				},
+				zoey=
+				{
+					delay=1
+					effect_name="flame_blue"
+					dmgmin = 10
+					dmgmax = 30
+					radiusmin = 300
+					radiusmax = 450
+					maxpushspeed = 10000
+					
+				},
+				nick=
+				{
+					delay=1
+					effect_name="flame_blue"
+					dmgmin = 10
+					dmgmax = 30
+					radiusmin = 300
+					radiusmax = 450
+					maxpushspeed = 10000
+					
+				},
+				coach=
+				{
+					delay=1
+					effect_name="flame_blue"
+					dmgmin = 10
+					dmgmax = 30
+					radiusmin = 300
+					radiusmax = 450
+					maxpushspeed = 10000
+					
+				},
+				ellis=
+				{
+					delay=1
+					effect_name="flame_blue"
+					dmgmin = 10
+					dmgmax = 30
+					radiusmin = 300
+					radiusmax = 450
+					maxpushspeed = 10000
+					
+				},
+				rochelle=
+				{
+					delay=1
+					effect_name="flame_blue"
+					dmgmin = 10
+					dmgmax = 30
+					radiusmin = 300
+					radiusmax = 450
+					maxpushspeed = 10000
+					
+				}
+			}
 		}
 	}
 	else
@@ -1351,10 +1488,10 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	
 	printl("[Custom] Loaded custom responses created by admins");
 
-	if(AdminSystem.Vars._propageddon_state == 1)
+	if(AdminSystem._propageddon_state == 1)
 	{
 		::VSLib.Timers.AddTimer(3,false,Utils.SayToAll,"Madness continues...");
-		::VSLib.Timers.AddTimerByName("propageddon",AdminSystem.Vars._propageddon_args.updaterate, true, _ApocalypseTimer,{});	
+		::VSLib.Timers.AddTimerByName("propageddon",AdminSystem._propageddon_args.updatedelay, true, _ApocalypseTimer,{});	
 	}
 }
 
@@ -2043,6 +2180,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.ParticleCmd( player, args );
 			break;
 		}
+		case "explosion":
+		{
+			AdminSystem._AimedExplosionCmd( player, args );
+			break;
+		}
 		case "microphone":
 		{
 			AdminSystem.MicrophoneCmd( player, args );
@@ -2709,14 +2851,14 @@ enum SCENES
 	
 }
 
-::AdminSystem.Vars._propageddon_state <- 0;
+::AdminSystem._propageddon_state <- 0;
 
-::AdminSystem.Vars._propageddon_args <-
+::AdminSystem._propageddon_args <-
 {
 	maxradius = 850				// maximum radius to apply forces
-	updaterate = 1.5			// how often to update entity list in seconds
+	updatedelay = 1.5			// how often to update entity list in seconds
 	mindelay = 0.5				// minimum delay to apply propageddon function
-	maxdelayoffset = 2  		// maximum delay to apply propageddon function
+	maxdelay = 2  				// maximum delay to apply propageddon function
 	minspeed = 800				// minimum speed
 	maxspeed = 24000    		// maximum speed
 	dmgmin = 5			    	// minimum damage done to entity
@@ -2733,6 +2875,28 @@ enum SCENES
 	debug = 0					// Print which entities are effected
 }
 
+::AdminSystem._propageddon_args_comments <-
+{
+	maxradius = "maximum radius to apply forces"
+	updatedelay = "how often to update entity list in seconds"
+	mindelay = "minimum delay to apply propageddon function"
+	maxdelay = "maximum delay to apply propageddon function"
+	minspeed = "minimum speed"
+	maxspeed = "maximum speed"
+	dmgmin = "minimum damage done to entity"
+	dmgmax = "maximum damage done to entity"
+	dmgprob = "probability of entity getting damaged"
+	expmaxradius = "explosion radius maximum"
+	expdmgmin = "explosion damage minimum"
+	expdmgmax = "explosion damage maximum"
+	expprob = "probability of explosion"
+	breakprob = "probability of entity being broken"
+	doorlockprob = "probability of doors getting locked, saferoom doors excluded"
+	ropebreakprob = "probability of a cable or sorts to be broken from its connection point"
+	entprob = "probability of an entity being chosen within the radius"
+	debug = "Print which entities are effected"
+}
+
 /* @authors rhino
  * Change how hellish you want the experience to be
  */
@@ -2743,7 +2907,7 @@ enum SCENES
 
 	local setting = GetArgument(1);
 	local val = GetArgument(2);
-	if(!(setting in AdminSystem.Vars._propageddon_args))
+	if(!(setting in AdminSystem._propageddon_args))
 		return;
 	
 	try{val = val.tofloat();}catch(e){return;}
@@ -2751,12 +2915,12 @@ enum SCENES
 	local name = player.GetCharacterName();
 
 	if (AdminSystem.Vars._outputsEnabled[name.tolower()])
-	{Utils.SayToAll(name+" -> Changed apocalypse parameter "+setting+": "+AdminSystem.Vars._propageddon_args[setting]+"->"+val);}
+	{Utils.SayToAll(name+" -> Changed apocalypse parameter "+setting+": "+AdminSystem._propageddon_args[setting]+"->"+val);}
 	else
-	{printB(name,name+" -> Changed apocalypse parameter "+setting+": "+AdminSystem.Vars._propageddon_args[setting]+"->"+val,true,"info",true,true);}
+	{printB(name,name+" -> Changed apocalypse parameter "+setting+": "+AdminSystem._propageddon_args[setting]+"->"+val,true,"info",true,true);}
 	
-	AdminSystem.Vars._propageddon_args[setting] = val
-	
+	AdminSystem._propageddon_args[setting] = val;
+	AdminSystem.SaveApocalypseSettings();
 }
 
 /* @authors rhino
@@ -2767,8 +2931,10 @@ enum SCENES
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
+	AdminSystem.LoadApocalypseSettings();
+
 	printB(player.GetCharacterName(),"",false,"",true,false);
-	foreach(setting,val in AdminSystem.Vars._propageddon_args)
+	foreach(setting,val in AdminSystem._propageddon_args)
 	{
 		printB(player.GetCharacterName(),"[Apocalypse-Setting] "+setting+"->"+val.tostring(),false,"",false,false)
 	}
@@ -2781,7 +2947,7 @@ enum SCENES
  */
 ::_ApocalypseTimer <- function (...)
 {	
-	if(AdminSystem.Vars._propageddon_state == 1)
+	if(AdminSystem._propageddon_state == 1)
 	{	
 		local unluckyone = Utils.GetRandValueFromArray(Players.AliveSurvivors());
 		
@@ -2789,10 +2955,10 @@ enum SCENES
 		{
 			return;
 		}
-		local apocargs = AdminSystem.Vars._propageddon_args;
+		local apocargs = AdminSystem._propageddon_args;
 		local entites = VSLib.EasyLogic.Objects.AroundRadius(unluckyone.GetPosition(),apocargs.maxradius);
 
-		::VSLib.Timers.AddTimer(apocargs.mindelay+rand()%apocargs.maxdelayoffset, false, _Propageddon,entites);
+		::VSLib.Timers.AddTimer(apocargs.mindelay+rand()%apocargs.maxdelay, false, _Propageddon,entites);
 	}
 	else
 	{
@@ -2812,7 +2978,7 @@ enum SCENES
  */
 ::_Propageddon <- function (enttbl)
 {	
-	local apocargs = AdminSystem.Vars._propageddon_args;
+	local apocargs = AdminSystem._propageddon_args;
 
 	local prob = apocargs.entprob;
 	local dmgprob = apocargs.dmgprob;
@@ -3209,14 +3375,16 @@ enum SCENES
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	if(AdminSystem.Vars._propageddon_state == 0)
-	{
+	if(AdminSystem._propageddon_state == 0)
+	{	
+		AdminSystem.LoadApocalypseSettings();
 		Utils.SayToAll("Something doesn't feel right...");
-		AdminSystem.Vars._propageddon_state = 1;
-		::VSLib.Timers.AddTimerByName("propageddon",AdminSystem.Vars._propageddon_args.updaterate, true, _ApocalypseTimer,{});	
+		AdminSystem._propageddon_state = 1;
+		::VSLib.Timers.AddTimerByName("propageddon",AdminSystem._propageddon_args.updatedelay, true, _ApocalypseTimer,{});	
 	}
 	else
-	{
+	{	
+		AdminSystem.SaveApocalypseSettings();
 		AdminSystem.Pause_the_apocalypseCmd(player,args);
 	}
 }
@@ -3229,9 +3397,9 @@ enum SCENES
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	if(AdminSystem.Vars._propageddon_state == 1)
+	if(AdminSystem._propageddon_state == 1)
 	{
-		AdminSystem.Vars._propageddon_state = 0;
+		AdminSystem._propageddon_state = 0;
 	}
 }
 
@@ -3243,9 +3411,9 @@ enum SCENES
 	if (!AdminSystem.IsPrivileged( player ) || !player.IsServerHost())
 		return;
 
-	AdminSystem.Vars._propageddon_args.debug = 1 - AdminSystem.Vars._propageddon_args.debug;
+	AdminSystem._propageddon_args.debug = 1 - AdminSystem._propageddon_args.debug;
 
-	printl("[Apocalypse-Debug] Apocalypse debug state :"+( AdminSystem.Vars._propageddon_args.debug == 1 ? " Enabled":" Disabled"));
+	printl("[Apocalypse-Debug] Apocalypse debug state :"+( AdminSystem._propageddon_args.debug == 1 ? " Enabled":" Disabled"));
 }
 
 /*
@@ -4319,6 +4487,11 @@ function ChatTriggers::display_prop_spawn_settings(player,args,text)
 function ChatTriggers::update_custom_response_preference(player,args,text)
 {
 	AdminSystem.Update_custom_response_preferenceCmd(player, args);
+}
+
+function ChatTriggers::explosion( player, args, text )
+{
+	AdminSystem._AimedExplosionCmd( player, args );
 }
 
 /*
@@ -6525,6 +6698,222 @@ if ( Director.GetGameMode() == "holdout" )
 	
 }
 
+
+::AdminSystem.Vars._aimedExplosion_args <-
+{
+	bill=
+	{
+		delay=1
+		effect_name="flame_blue"
+		dmgmin = 10
+		dmgmax = 30
+		radiusmin = 300
+		radiusmax = 450
+		maxpushspeed = 10000
+	},
+	francis=
+	{
+		delay=1
+		effect_name="flame_blue"
+		dmgmin = 10
+		dmgmax = 30
+		radiusmin = 300
+		radiusmax = 450
+		maxpushspeed = 10000
+		
+	},
+	louis=
+	{
+		delay=1
+		effect_name="flame_blue"
+		dmgmin = 10
+		dmgmax = 30
+		radiusmin = 300
+		radiusmax = 450
+		maxpushspeed = 10000
+		
+	},
+	zoey=
+	{
+		delay=1
+		effect_name="flame_blue"
+		dmgmin = 10
+		dmgmax = 30
+		radiusmin = 300
+		radiusmax = 450
+		maxpushspeed = 10000
+		
+	},
+	nick=
+	{
+		delay=1
+		effect_name="flame_blue"
+		dmgmin = 10
+		dmgmax = 30
+		radiusmin = 300
+		radiusmax = 450
+		maxpushspeed = 10000
+		
+	},
+	coach=
+	{
+		delay=1
+		effect_name="flame_blue"
+		dmgmin = 10
+		dmgmax = 30
+		radiusmin = 300
+		radiusmax = 450
+		maxpushspeed = 10000
+		
+	},
+	ellis=
+	{
+		delay=1
+		effect_name="flame_blue"
+		dmgmin = 10
+		dmgmax = 30
+		radiusmin = 300
+		radiusmax = 450
+		maxpushspeed = 10000
+		
+	},
+	rochelle=
+	{
+		delay=1
+		effect_name="flame_blue"
+		dmgmin = 10
+		dmgmax = 30
+		radiusmin = 300
+		radiusmax = 450
+		maxpushspeed = 10000
+	}
+}
+
+/*
+ * @authors rhino
+ * Create a delayed explosion with a particle effect until exploding
+ */
+::AdminSystem._AimedExplosionCmd <- function (player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local name = player.GetCharacterName().tolower();
+	local aimedlocation = player.GetLookingLocation();
+	local argtable = AdminSystem.Vars._aimedExplosion_args[name];
+
+	local explosion_particle = argtable.effect_name;
+	local explosion_sound = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = aimedlocation});
+
+	local explosion_table =
+	{
+		classname = "env_explosion",
+	    spawnflags = 0, 
+		origin = aimedlocation, 
+		iMagnitude = argtable.dmgmin+(rand()%(argtable.dmgmax-argtable.dmgmin)), 
+		iRadiusOverride = argtable.radiusmin+(rand()%(argtable.radiusmax-argtable.radiusmin))
+	}
+
+	local explosion = Utils.CreateEntityWithTable(explosion_table);
+
+	local delay = argtable.delay;
+	
+	local particle = g_ModeScript.CreateSingleSimpleEntityFromTable({ classname = "info_particle_system", targetname = "vslib_tmp_" + UniqueString(), origin = aimedlocation, angles = QAngle(-90,0,0), start_active = true, effect_name = explosion_particle });
+	
+	if (!particle)
+	{
+		printl("Warning: Could not create info_particle_system entity.");
+		return;
+	}
+	
+	local closebyents = VSLib.EasyLogic.Objects.AroundRadius(aimedlocation,argtable.radiusmax);
+
+	foreach(id,entity in VSLib.EasyLogic.Objects.AroundRadius(aimedlocation,argtable.radiusmax))
+	{
+		switch(entity.GetClassname())
+		{
+			case "prop_physics":
+			{
+				break;
+			}
+			case "prop_physics_multiplayer":
+			{
+				break;
+			}
+			case "prop_ragdoll":
+			{
+				break;
+			}
+			case "func_physbox_multiplayer":
+			{
+				break;
+			}
+			case "func_physbox":
+			{
+				break;
+			}
+			case "prop_physics_override":
+			{
+				break;
+			}
+			case "prop_vehicle":
+			{
+				break;
+			}
+			case "prop_car_alarm":
+			{
+				break;
+			}
+			default:
+			{
+				delete closebyents[id];
+			}
+		}
+	}
+	
+	DoEntFire("!self", "Start", "", 0, null, particle);
+	
+	local vsParticle = ::VSLib.Entity(particle);
+
+	//vsParticle.SetAngles(-90,0,0);
+	//vsParticle.SetColor(rand()%255,rand()%255,rand()%255,rand()%255);
+
+	vsParticle.KillDelayed(delay);
+	
+	Timers.AddTimer(delay, false, _explosionPush, {explosion_sound=explosion_sound,explosion=explosion,ents=closebyents,pushspeed=argtable.maxpushspeed,origin=aimedlocation});
+
+	printl(name+"-> Created explosion at "+aimedlocation);
+}
+
+/*
+ * @authors rhino
+ * Push entities away from an explosion with custom parameters
+ */
+::_explosionPush <- function(tbl)
+{
+	local ents = tbl.ents;
+	local pushspeed = tbl.pushspeed
+	local exporigin = tbl.origin;
+
+	local distvec = null;
+	local dist = null;
+
+	tbl.explosion_sound.Input("ToggleSound","",0.13);
+	tbl.explosion.Input("Explode","",0.1);
+	tbl.explosion_sound.Input("Kill","",1.0);
+
+	foreach(ent in ents)
+	{	
+		if (ent.GetOrigin() == null || !ent.GetOrigin())
+			continue;
+
+		distvec = ent.GetOrigin()-exporigin;
+		dist = distvec.Length();
+		distvec = distvec.Scale(pushspeed/dist);
+		ent.Push(distvec); 
+	}
+}
+
 ::MicEffects <-
 {
 	standard = "0"
@@ -7086,13 +7475,15 @@ if ( Director.GetGameMode() == "holdout" )
  * Creates entity with given class and table of key-value pairs 
  *
  * @param classname Class name of the entity
- * @param keyvals Key-value pairs in the format: "key1->val1&key2->TYPE|val2.1|val2.2|val2.3&key3->TYPE|val3&..."
+ * @param keyvals Key-value pairs in the format: "key1>val1&key2>TYPE|val2.1|val2.2|val2.3&key3>TYPE|val3&..."
  * 3 arguments for value: TYPE = {ang,pos,str} -> QAngle(val2.1.tofloat(),val2.2.tofloat(),val2.3.tofloat())
  * 												| Vector(val2.1.tofloat(),val2.2.tofloat(),val2.3.tofloat())
  * 												| "val2.1 val2.2 val2.3"
  * 1 argument for value: TYPE = {float,int,str} -> val3.tofloat() | val3.tointeger() | val3
  * @return void
- *
+ *	
+ * Example(dynamic prop with Gift model with color rgb(90,30,60) and angles -30 pitch, 10 yaw, 0 roll):
+ * 		ent prop_dynamic model>models\items\l4d_gift.mdl&rendercolor>str|90|30|60&angles>ang|-30|10|0
  * @authors rhino
  */
 ::AdminSystem.EntityWithTableCmd <- function ( player, args )
@@ -7142,7 +7533,7 @@ if ( Director.GetGameMode() == "holdout" )
 		foreach(pair in kvpairs)
 		{	
 			found = false;
-			pairsplit = split(pair,"->");
+			pairsplit = split(pair,">");
 
 			if(pairsplit.len()!=2)
 			{
@@ -7439,6 +7830,11 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			createdent = Utils.SpawnDynamicProp( MDL, EyePosition, GroundPosition );
 		}
+	}
+
+	if(createdent == null)
+	{
+		printl("Couldn't create "+Entity);return;
 	}
 
 	if (AdminSystem.Vars._outputsEnabled[name])

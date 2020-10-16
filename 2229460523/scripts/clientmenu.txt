@@ -34870,7 +34870,11 @@
 				"command"		 "play buttons/button14;show_menu micspeaker1"
 				"label"			" Microphone and speaker"
 			}
-
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func explosion;show_menu secret_commands"
+				"label"			" Created a delayed explosion"
+			}
 			"0"
 			{
 					"command"    "play buttons/button14"

@@ -18,8 +18,8 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
        //           value = {type:(ang,pos,str)}|val1|val2|val3
        ent {class} {key1}->{value1}&{key2}->{value2}...
        
-       // Example (dynamic prop with Gift model with color rgb(90,30,60) ): 
-       ent prop_dynamic model->models\items\l4d_gift.mdl&rendercolor->str|90|30|60
+       // Example (dynamic prop with Gift model with color rgb(90,30,60) and angles Pitch,Yaw,Roll->(-30,10,0) ): 
+       ent prop_dynamic model>models\items\l4d_gift.mdl&rendercolor>str|90|30|60&angles>ang|-30|10|0
 ```
 - **ent_rotate** : Rotate the targeted entity.
 ```cpp 
@@ -223,6 +223,8 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
 
 - **display_mics_speakers** : Get information about the spawned microphones and speakers
 
+- **explosion** : Create a delayed explosion at aimed location, with a particle effect until explosion
+
 ### Debug and script related 
 
 - **debug_info** : Dump information about objects
@@ -260,6 +262,8 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
 - This directory contains **configurations(settings.txt)**, **admins(admins.txt)**, **banned players(banned.txt)**, **script authorizations(scriptauths.txt)** and **custom responses(custom_responses.json)**. Which can all be edited manually (Be careful while formatting! Keep a differently named copy before changing anything!)
 
 - **"custom_responses.json"** file can be opened with a text editor and new custom sequences can be defined  for each admin's steam ID with the example format given in the file.
+
+- **apocalypse_settings.txt** file contains the settings to use for apocalypse event.
 
 ### Bug reports
 
