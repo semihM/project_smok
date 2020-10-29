@@ -2086,6 +2086,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.CvarCmd( player, args );
 			break;
 		}
+		case "entcvar":
+		{
+			AdminSystem.EntCvarCmd( player, args );
+			break;
+		}
 		case "ent_fire":
 		{
 			AdminSystem.EntFireCmd( player, args );
@@ -2467,6 +2472,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.Ladder_teamCmd( player, args );
 			break;
 		}
+		case "invisible_walls":
+		{
+			AdminSystem.BlockerStateCmd( player, args );
+			break;
+		}
 		case "admin_var":
 		{
 			AdminSystem.Admin_varCmd( player, args );
@@ -2804,6 +2814,49 @@ enum SCENES
 	}
 }
 
+/*
+ * @authors: rhino
+ */
+::AdminSystem.BlockerStateCmd <- function (player,arg)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local state = GetArgument(1);
+	local applytoPhysicsBlocker = GetArgument(2);
+
+	if(state == null || state == "disable" || state == "Disable")
+		state = "Disable"
+	else
+		state = "Enable"
+
+	if(applytoPhysicsBlocker != null)
+	{
+		foreach(obj in ::VSLib.EasyLogic.Objects.OfClassname("env_physics_blocker"))
+		{	
+			obj.Input(state);
+		}
+		foreach(obj in ::VSLib.EasyLogic.Objects.OfClassname("func_playerinfected_clip"))
+		{	
+			obj.Input(state);
+		}
+		foreach(obj in ::VSLib.EasyLogic.Objects.OfClassname("func_playerghostinfected_clip"))
+		{	
+			obj.Input(state);
+		}
+	}
+
+	foreach(obj in ::VSLib.EasyLogic.Objects.OfClassname("env_player_blocker"))
+	{	
+		obj.Input(state);
+	}
+
+	printB(player.GetCharacterName(),"Changed env_player_blocker states to "+state+ (applytoPhysicsBlocker !=null ? ", including env_physics_blocker and others": " "));
+}
+
+/*
+ * @authors: rhino
+ */
 ::AdminSystem.Ladder_teamCmd <- function (player,arg)
 {
 	if (!AdminSystem.IsPrivileged( player ))
@@ -4605,6 +4658,11 @@ function ChatTriggers::ent( player, args, text )
 	AdminSystem.EntityWithTableCmd( player, args );
 }
 
+function ChatTriggers::entcvar( player, args, text )
+{
+	AdminSystem.EntCvarCmd( player, args );
+}
+
 function ChatTriggers::ent_rotate( player, args, text )
 {
 	AdminSystem.EntRotateCmd( player, args );
@@ -4613,6 +4671,11 @@ function ChatTriggers::ent_rotate( player, args, text )
 function ChatTriggers::ladder_team( player, args, text )
 {
 	AdminSystem.Ladder_teamCmd( player, args );
+}
+
+function ChatTriggers::invisible_walls( player, args, text )
+{
+	AdminSystem.BlockerStateCmd( player, args );
 }
 
 function ChatTriggers::ent_push( player, args, text )
@@ -7750,6 +7813,9 @@ if ( Director.GetGameMode() == "holdout" )
 	local Entity = GetArgument(1);
 	local MDL = GetArgument(2);
 	local raise = GetArgument(3);
+	
+	local yaw = GetArgument(4);
+
 	local EyePosition = player.GetLookingLocation();
 	local EyeAngles = player.GetEyeAngles();
 	local GroundPosition = QAngle(0,0,0);
@@ -7929,6 +7995,14 @@ if ( Director.GetGameMode() == "holdout" )
 	else
 	{
 		printB(player.GetCharacterName(),name+" ->Created "+Entity+" entity(#"+createdent.GetIndex().tostring()+") named "+createdent.GetName(),true,"info",true,true);
+	}
+
+	if(yaw)
+	{
+		try{yaw = yaw.tofloat();}
+		catch(e){return;}
+
+		createdent.SetAngles(0,yaw,0);
 	}
 }
 
@@ -8284,16 +8358,157 @@ if ( Director.GetGameMode() == "holdout" )
 	SendToServerConsole(Utils.CombineArray(args));
 }
 
+/*
+ * @authors rhino
+ * Get or set convar of server
+ */
 ::AdminSystem.CvarCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
+	if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
 		return;
 
 	local Cvar = GetArgument(1);
 	local Value = GetArgument(2);
 	
+	if(Cvar == null)
+		return;
+
+	local oldval = "unknown";
+	try
+	{
+		oldval = Convars.GetFloat(Cvar);
+	}
+	catch(err1)
+	{
+		try
+		{
+			oldval = Convars.GetStr(Cvar);
+		}
+		catch(err2)
+		{
+			printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->Failed to get "+Cvar,true,"error",true,false);
+			printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->err1 "+err1,true,"error",false,false);
+			printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->err2 "+err2,true,"error",false,true);
+			return;
+		}
+	}
+
+	if(Value == null)
+	{
+		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+		{
+			Utils.SayToAll(player.GetCharacterName().tolower()+"->Current value of "+Cvar+" is "+oldval);
+		}
+		else
+		{
+			printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->Current value of "+Cvar+" is "+oldval,true,"info",true,true);
+		}
+		return;
+	}
+
+	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+	{
+		Utils.SayToAll(player.GetCharacterName().tolower()+"->Changed "+Cvar+" from "+oldval+" to "+Value);
+	}
+	else
+	{
+		printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->Changed "+Cvar+" from "+oldval+" to "+Value,true,"info",true,true);
+	}
+
 	if ( Cvar && Value )
 		Convars.SetValue( Cvar, Value );
+	
+}
+
+/*
+ * @authors rhino
+ * Get or set convar of an entity
+ */
+::AdminSystem.EntCvarCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
+		return;
+	
+	local ent = GetArgument(1);
+	local Cvar = GetArgument(2);
+	local Value = GetArgument(3);
+	
+	if(ent == null || Cvar == null)
+		return;
+
+	if(ent == "!picker")
+		ent = player.GetLookingEntity();
+	else if(ent == "!self")
+		ent = player;
+	else if(Ent(ent))
+		ent = Ent(ent);
+	else
+		return;
+
+	local oldval = "unknown";
+	local index = null;
+	try
+	{	
+		index = ent.GetEntityIndex().tointeger();
+		oldval = Convars.GetClientConvarValue(Cvar,index);
+		
+		if(oldval == null || oldval == "")
+			throw("Couldn't get as client convar");
+	}
+	catch(err1)
+	{
+		printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->Failed to get "+Cvar+" of ent(#"+index+")",true,"error",true,false);
+		printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->err1 "+err1,true,"error",false,true);
+		return;
+	}
+	
+
+	if(Value == null)
+	{
+		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+		{
+			Utils.SayToAll(player.GetCharacterName().tolower()+"->Current value of "+Cvar+" on ent(#"+index+") is "+oldval);
+		}
+		else
+		{
+			printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->Current value  of "+Cvar+" on ent(#"+index+") is "+oldval,true,"info",true,true);
+		}
+		return;
+	}
+
+	local playername = player.GetCharacterName();
+	try
+	{
+		AdminSystem._Clientbroadcast(playername,Cvar+" "+Value,1,false);
+
+		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+		{
+			Utils.SayToAll(player.GetCharacterName().tolower()+"->Attempting to change "+Cvar+" of ent(#"+index+") from "+oldval+" to "+Value);
+		}
+		else
+		{
+			printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->Attempting to change "+Cvar+" of ent(#"+index+") from "+oldval+" to "+Value,true,"info",true,true);
+		}
+	}
+	catch(err1)
+	{	
+		printB(playername,"==================debug======================",true,"debug",true,false);
+		printB(playername,"Name-> "+ ent.GetName(),true,"debug",false,false);
+		printB(playername,"Index-> "+ ent.GetEntityIndex(),true,"debug",false,false);
+		printB(playername,"Parent-> "+ ent.GetMoveParent(),true,"debug",false,false);
+
+		ent = ::VSLib.Entity(ent);
+
+		printB(playername,"==================flags======================",true,"debug",false,false);
+		printB(playername,"SpawnFlags-> "+ ent.GetNetProp( "m_spawnflags" ),true,"debug",false,false);
+		printB(playername,"Flags-> "+ ent.GetNetProp( "m_fFlags" ) +"| EFlags-> " + ent.GetNetProp( "m_iEFlags" )+"| Sense flags-> "+ ent.GetSenseFlags(),true,"debug",false,false);
+
+		printB(playername,"==================errors=====================",true,"debug",false,false);
+
+		printB(playername,playername.tolower()+"->Failed to change "+Cvar+" of ent(#"+index+") from "+oldval+" to "+Value,true,"error",false,false);
+		printB(playername,playername.tolower()+"->err1 "+err1,true,"error",false,true);
+	}
+	
 }
 
 /*
@@ -8731,6 +8946,15 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		Utils.ResumeTime();
 		Utils.SlowTime(DesiredTimeScale, 2.0, 1.0, 2.0, false);
+	}
+
+	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+	{
+		Utils.SayToAll(player.GetCharacterName().tolower()+"->Changed timescale to "+GetArgument(1));
+	}
+	else
+	{
+		printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->Changed timescale to "+GetArgument(1),true,"info",true,true);
 	}
 }
 

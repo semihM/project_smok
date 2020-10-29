@@ -7642,18 +7642,18 @@
 		}
 		"3"
 		{
-			"command"	 "play buttons/button14;scripted_user_func cvar,cl_phys_timescale,1.0;scripted_user_func timescale,1.0;show_menu Extras"
-			"label"		 " Normal Motion"
+			"command"	 "play buttons/button14;show_menu GameSpeed"
+			"label"		 " Change game speed"
 		}
 		"4"
 		{
-			"command"	 "play buttons/button14;scripted_user_func cvar,cl_phys_timescale,0.5;scripted_user_func timescale,0.5;show_menu Extras"
-			"label"		 " Slow Motion" 
-		}
+			"command"	 "play buttons/button14;show_menu Extras_currgamecmds"
+			"label"		 " Game Commands"
+		}	
 		"5"
 		{
-			"command"	 "play buttons/button14;scripted_user_func cvar,cl_phys_timescale,2.5;scripted_user_func timescale,2.5;show_menu Extras"
-			"label"		 " Fast Motion"
+			"command"	 "play buttons/button14;show_menu Cvars"
+			"label"		 " Cvar Commands"
 		}
 		"6"
 		{
@@ -7682,6 +7682,57 @@
 		}
 	}	
 	
+	"GameSpeed" 																						
+	{
+		"Title"			"Game speed"
+	
+		"1"
+		{
+			"command"	 "play buttons/button14;scripted_user_func timescale,1.0;show_menu GameSpeed"
+			"label"		 " Normal Speed (1.0)"
+		}
+		"2"
+		{
+			"command"	 "play buttons/button14;scripted_user_func timescale,0.13;show_menu GameSpeed"
+			"label"		 " Slowest (0.13)" 
+		}
+		"3"
+		{
+			"command"	 "play buttons/button14;scripted_user_func timescale,0.25;show_menu GameSpeed"
+			"label"		 " Slower (0.25)" 
+		}
+		"4"
+		{
+			"command"	 "play buttons/button14;scripted_user_func timescale,0.5;show_menu GameSpeed"
+			"label"		 " Slow (0.5)" 
+		}
+		"5"
+		{
+			"command"	 "play buttons/button14;scripted_user_func timescale,1.8;show_menu GameSpeed"
+			"label"		 " Fast (1.8)"
+		}
+		"6"
+		{
+			"command"	 "play buttons/button14;scripted_user_func timescale,3.6;show_menu GameSpeed"
+			"label"		 " Faster (3.6)"
+		}
+		"7"
+		{
+			"command"	 "play buttons/button14;scripted_user_func timescale,7.0;show_menu GameSpeed"
+			"label"		 " Fastest (7.0)"
+		}
+	    "8"
+		{
+			"command"	 "play buttons/button14;show_menu Extras"
+			"label"		 " << Back"
+		}
+		"0"
+		{
+			"command"	 "play buttons/button14"
+			"label"		 " Exit"
+		}
+	}
+
 	"Extras2" 																						
 	{
 		"Title"			"Extra Commands"
@@ -7700,16 +7751,6 @@
 		{
 			"command"	 "play buttons/button14;scripted_user_func cvar,fog_override,1;scripted_user_func cvar,fog_enable,0;scripted_user_func cvar,fog_start,-1;scripted_user_func cvar,fog_end,-1;scripted_user_func cvar,fog_startskybox,-1;scripted_user_func cvar,fog_endskybox,-1;scripted_user_func cvar,fog_enableskybox,0;show_menu Extras2"
 			"label"		 " No fog"
-		}
-		"4"
-		{
-			"command"	 "play buttons/button14;show_menu Extras_currgamecmds"
-			"label"		 " Game Commands"
-		}	
-		"5"
-		{
-			"command"	 "play buttons/button14;show_menu Cvars"
-			"label"		 " Cvar Commands"
 		}
 	    "8"
 		{
@@ -7753,7 +7794,7 @@
 			
 	    "8"
 		{
-			"command"	 "play buttons/button14;show_menu Extras2"
+			"command"	 "play buttons/button14;show_menu Extras"
 			"label"		 " << Back"
 		}
 		" "
@@ -7805,7 +7846,7 @@
 		}
 	    "8"
 		{
-			"command"	 "play buttons/button14;show_menu Extras2"
+			"command"	 "play buttons/button14;show_menu Extras"
 			"label"		 " << Back"
 		}
 		"9"
@@ -25987,7 +26028,7 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_street2"
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_street_pipeset1"
 					"label"      " Delete object"
 			}
 			"8"
@@ -34875,6 +34916,11 @@
 				"command"		 "play buttons/button14;show_menu explosion1"
 				"label"			" Explosion"
 			}
+			"6"
+			{
+				"command"		 "play buttons/button14;show_menu invwalls1"
+				"label"			" Enable/Disable all invisible walls"
+			}
 			"0"
 			{
 					"command"    "play buttons/button14"
@@ -34974,6 +35020,11 @@
 			{
 				"command"		 "play buttons/button14;scripted_user_func remove_piano_keys,all;show_menu pianokeys1"
 				"label"			 " Remove all spawned keys"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func prop,dynamic,models/props_furniture/piano.mdl;show_menu pianokeys1"
+				"label"			 " Spawn dynamic piano prop"
 			}
 			"8"
 			{
@@ -35188,4 +35239,28 @@
 			}
 	}
 
+	"invwalls1"
+	{
+			"Title"		"Enable/Disable invisible walls"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func invisible_walls,enable,1;show_menu invwalls1"
+				"label"			 " Enable"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func invisible_walls,disable,1;show_menu invwalls1"
+				"label"			 " Disable"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu secret_commands"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
 }
