@@ -3992,7 +3992,10 @@ enum SCENES
 
 			// Add steamid to each character
 			foreach(charname in AdminSystem.Vars.CharacterNamesLower)
-				AdminSystem.Vars._CustomResponseOptions[charname][steamid] <- {enabled=true,sequence={}}
+			{
+				if(!(steamid in AdminSystem.Vars._CustomResponseOptions[charname]))
+					AdminSystem.Vars._CustomResponseOptions[charname][steamid] <- {enabled=true,sequence={}}
+			}
 
 			// Add custom sequences
 			foreach(seq_name,seqtable in customs)
@@ -4002,6 +4005,7 @@ enum SCENES
 		}
 		
 	}
+	StringToFile("admin system/custom_responses.json", Utils.SceneTableToString(responsetable));
 }
 
 /*
@@ -4161,6 +4165,9 @@ enum SCENES
 	{	
 		Utils.SayToAll("Deleted custom response for "+character+": "+sequencename+"");
 		delete responsetable[steamid][character][sequencename];
+		
+		if(sequencename in AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence)
+			delete AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence[sequencename];
 	}
 	else
 	{
