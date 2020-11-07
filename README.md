@@ -251,7 +251,7 @@
 
 - **pause_the_apocalypse** : Let the world have a break from the madness
 
-- **show_apocalypse_settings** : Show apocalypse event's settings and values
+- **show_apocalypse_settings** : Show apocalypse event's settings and values. Probabilities normalized: (0 = 0% , 1 = 100%)
 
 Setting | Default Value | Description
 ------------ | ------------- | -------------
@@ -267,15 +267,13 @@ dmgprob | 0.3        | probability of entity getting damaged
 expmaxradius | 300   | explosion radius maximum
 expdmgmin | 5        | explosion damage minimum
 expdmgmax | 40       | explosion damage maximum
-expprob | 0.022      | probability of explosion
+expprob | 0.022      | probability of explosion 
 breakprob | 0.04     | probability of entity being broken
 doorlockprob | 0.02  | probability of doors getting locked, saferoom doors excluded
 ropebreakprob | 0.05 | probability of a cable or sorts to be broken from its connection point
 entprob | 0.6        | probability of an entity being chosen within the "maxradius" around a randomly chosen survivor
-debug | 0            | Print which entities are effected
-       
-```
-
+debug | 0            | Print which entities are effected (0 = off , 1 = on) 
+   
 - **apocalypse_setting** : Change apocalypse event settings
 ```cpp
        //Overloads:
@@ -328,11 +326,21 @@ debug | 0            | Print which entities are effected
 
 - **show_explosion_settings** : Show current *explosion* command settings in console
 
+Setting | Default Value | Description
+------------ | ------------- | -------------
+delay | 1 | delay for explosion in seconds
+effect_name | "flame_blue" | [particle effect name](https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/particle_names/particlenames.nut) to spawn until explosion. 
+radiusmin | 300 | explosion's minimum radius to damage and push entities in
+radiusmax | 450 | explosion's maximum radius to damage and push entities in
+dmgmin | 10 | minimum damage to give entities in the radius
+dmgmax | 30 | maximum damage to give entities in the radius
+maxpushspeed | 10000 | maximum speed an explosion can push and entity away 
+
 - **explosion_setting** : Update *explosion* command settings
 ```cpp
        //Overloads:
        // Check out the settings and their values with show_explosion_settings
-       explosion_setting {setting : (effect_name,delay,dmgmin,dmgmax,radiusmin,radiusmax,maxpushspeed)} {new_value}
+       explosion_setting {setting} {new_value}
        
        // Example: Change delay from 1s to 5s
        explosion_setting delay 5
@@ -399,3 +407,9 @@ debug | 0            | Print which entities are effected
 ### Bug reports
 ---
 - Before creating an issue, please contact to the [developer](http://steamcommunity.com/profiles/76561198095804696)
+---
+### Links
+---
+- [Admin System](https://steamcommunity.com/sharedfiles/filedetails/?id=214630948)
+- [Admin Menu 2.0](https://steamcommunity.com/sharedfiles/filedetails/?id=1229957234)
+- [VSLib](https://l4d2scripters.github.io/vslib/docs/index.html)
