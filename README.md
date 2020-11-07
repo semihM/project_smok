@@ -1,10 +1,48 @@
 # project_smok
-Repository for the workshop item [project_smok](https://steamcommunity.com/sharedfiles/filedetails/?id=2229460523) of L4D2
-
+ - Repository for the workshop item [project_smok](https://steamcommunity.com/sharedfiles/filedetails/?id=2229460523) of L4D2
+ 
+ - Following documentation is for the **new and updated commands**. Commands that aren't included in this documentation can be found in the [Admin System Guide](https://steamcommunity.com/sharedfiles/filedetails/?id=213591107). Be aware that **some of the commands that are not documented may behave differently** than the guide. 
+ 
 ## Commands
-
+ - Commands can be used:
+   + #### Via the menu:
+     + To start using the menu:
+       + Bind the menu to an unused key, for example **"k"**:
+     
+         <code>bind k "show_menu Menu"</code>
+     
+       + Open up the menu in-game by pressing the key bound in the previous step and use number keys to go throught the categorized sub-menus
+       
+       + Example: To make someone say a randomline originated by them, use the following key sequence: **k 6 4 1 1 1**
+         
+ 
+   + #### Via chat:
+     + Add **"!"** before the command and  seperate arguments with **" " space character**
+     + Chat has a **character limit**, in some cases its better to use the console
+     
+       <code>!command argument_1 argument_2 ...</code>
+      
+     + Example: Make Ellis say **"Humans 4, zombies nothin'!"**
+ 
+       <code>!speak ellis hurrah21</code>
+ 
+   + #### Via console:
+     + Add **"scripted_user_func "** before the command and seperate it and arguments with **"," commas**
+     + Allows pretty much unlimited amount of characters in a command
+     + This option **restricts usage of some special characters** such as : **quotation marks " | commas , | equals signs = **
+     
+       <code>scripted_user_func command,argument_1,argument_2,...</code>
+ 
+     + Example: Make Ellis say **"Humans 4, zombies nothin'!"**
+ 
+       <code>scripted_user_func speak,ellis,hurrah21</code>
+       
+     + Example: Bind the **"randomline"** command to key **"j"** for making your survivor say a random line from Francis
+     
+       <code>bind j "scripted_user_func randomline,self,francis"</code>
+---
 ### Entities
-
+---
  - **ent** : Create an entity of the given class with given key-values
  
 ```cpp
@@ -48,9 +86,9 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
        rainbow {total_duration<=300.0} {color_duration>=0.05}  
        rainbow {total_duration<=300.0} 
 ```
-
+---
 ### Random and saved voices
-
+---
 - **randomline** : Speak a line 
 ```cpp
        //Overloads:
@@ -66,9 +104,9 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
 ```
 
 - **speak_saved** : Speak the saved line
-
+---
 ### Particle effects
-
+---
 - **particle** : Spawn a particle
 ```cpp 
        //Overloads:
@@ -98,9 +136,9 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
 - **spawn_particle_saved** : Spawn the saved particle
 
 - **attach_particle_saved** : Attach the saved particle to targeted entity
-
+---
 ### Custom sequences
-
+---
 - **speak_test** : Speak given line for given time
 ```cpp
        //Overloads:
@@ -206,35 +244,58 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
        //Example: Change first scene's name to hurrah01 in test_seq sequence for Nick
        seq_edit Nick test_seq >0 scene>hurrah01
 ```
-
+---
 ### Apocalypse event
-
+---
 - **start_the_apocalypse** : Uh oh
 
 - **pause_the_apocalypse** : Let the world have a break from the madness
 
 - **show_apocalypse_settings** : Show apocalypse event's settings and values
 
+Setting | Default Value | Description
+------------ | ------------- | -------------
+maxradius | 850      | maximum radius to apply forces
+updatedelay | 1.5    | how often to update entity list in seconds
+mindelay | 0.5       | minimum delay to apply effects if entity is chosen
+maxdelay | 2         | maximum delay to apply effects if entity is chosen
+minspeed | 800       | minimum speed of pushed entities
+maxspeed | 24000     | maximum speed of pushed entities
+dmgmin | 5           | minimum damage done to entity
+dmgmax | 100         | maximum damage done to entity
+dmgprob | 0.3        | probability of entity getting damaged
+expmaxradius | 300   | explosion radius maximum
+expdmgmin | 5        | explosion damage minimum
+expdmgmax | 40       | explosion damage maximum
+expprob | 0.022      | probability of explosion
+breakprob | 0.04     | probability of entity being broken
+doorlockprob | 0.02  | probability of doors getting locked, saferoom doors excluded
+ropebreakprob | 0.05 | probability of a cable or sorts to be broken from its connection point
+entprob | 0.6        | probability of an entity being chosen within the "maxradius" around a randomly chosen survivor
+debug | 0            | Print which entities are effected
+       
+```
+
 - **apocalypse_setting** : Change apocalypse event settings
 ```cpp
        //Overloads:
        // Check out the settings and their values with show_apocalypse_settings
-       apocalypse_setting {setting : (entprob,dmgprob,maxradius,minspeed,maxspeed,...)} {new_value: float/integer}
+       apocalypse_setting {setting} {new_value: float/integer}
        
        // Example: Change the delay between each entity list update to 3 seconds
        // This delay means how often a list of props around players are taken to apply probabilistic effects afterwards
        // Default is 1.5 seconds
-       apocalypse_setting updaterate 3
+       apocalypse_setting updatedelay 3
 ```
-
+---
 ### Piano
-
+---
 - **piano_keys** : Place 25 piano keys starting at looked location placing them to the right
 
 - **remove_piano_keys** : Removes all piano key spawns
-
+---
 ### Microphones and speakers
-
+---
 - **microphone** : Create an entity to be used as microphone 
 ```cpp
        //Overloads:
@@ -260,9 +321,9 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
 ```
 
 - **display_mics_speakers** : Get information about the spawned microphones and speakers
-
+---
 ### Explosions
-
+---
 - **explosion** : Create a delayed explosion at aimed location, with a particle effect until explosion
 
 - **show_explosion_settings** : Show current *explosion* command settings in console
@@ -276,9 +337,9 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
        // Example: Change delay from 1s to 5s
        explosion_setting delay 5
 ```
-
+---
 ### Other
-
+---
 - **ladder_team** : Change teams of ladders
 ```cpp
        //Overloads:
@@ -295,9 +356,9 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
        //Example: Try disabling all invisible walls/clips
        invisible_walls disable all
 ```
-
+---
 ### Debug and script related 
-
+---
 - **debug_info** : Dump information about objects
 ```cpp
        //Overloads:
@@ -323,11 +384,10 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
 ```
 - **and more...**
 
-
 ## Extra
-
+---
 ### Changing settings, adding custom responses without launching the game
-
+---
 - AdminSystem keeps its configuration files in the **"..\Left 4 Dead 2\left4dead2\ems\admin system"** directory.
 
 - This directory contains **configurations(settings.txt)**, **admins(admins.txt)**, **banned players(banned.txt)**, **script authorizations(scriptauths.txt)** and **custom responses(custom_responses.json)**. Which can all be edited manually (Be careful while formatting! Keep a differently named copy before changing anything!)
@@ -335,7 +395,7 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
 - **"custom_responses.json"** file can be opened with a text editor and new custom sequences can be defined  for each admin's steam ID with the example format given in the file.
 
 - **apocalypse_settings.txt** file contains the settings to use for apocalypse event.
-
+---
 ### Bug reports
-
+---
 - Before creating an issue, please contact to the [developer](http://steamcommunity.com/profiles/76561198095804696)
