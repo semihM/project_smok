@@ -13,7 +13,7 @@
      
        + Open up the menu in-game by pressing the key bound in the previous step and use number keys to go throught the categorized sub-menus
        
-       + Example: To make someone say a randomline originated by them, use the following key sequence: **k 6 4 1 1 1**
+       + **Example:** To make your character say a randomline originated by them, use the following key sequence: **k 6 4 1 1 1**
          
  
    + #### Via chat:
@@ -22,7 +22,7 @@
      
        <code>!command argument_1 argument_2 ...</code>
       
-     + Example: Make Ellis say **"Humans 4, zombies nothin'!"**
+     + **Example:** Make Ellis say **"Humans 4, zombies nothin'!"**
  
        <code>!speak ellis hurrah21</code>
  
@@ -33,11 +33,11 @@
      
        <code>scripted_user_func command,argument_1,argument_2,...</code>
  
-     + Example: Make Ellis say **"Humans 4, zombies nothin'!"**
+     + **Example:** Make Ellis say **"Humans 4, zombies nothin'!"**
  
        <code>scripted_user_func speak,ellis,hurrah21</code>
        
-     + Example: Bind the **"randomline"** command to key **"j"** for making your survivor say a random line from Francis
+     + **Example:** Bind the **"randomline"** command to key **"j"** for making your survivor say a random line from Francis
      
        <code>bind j "scripted_user_func randomline,self,francis"</code>
 ---
