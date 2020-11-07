@@ -116,20 +116,50 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
        // line_{x} are the line names/paths to be used after delay_{x} seconds
        // lines and their delays HAVE TO be given in pairs
 
-       create_seq {speaker} {name} {line_1} {delay_1} {line_2} {delay_2} ...(>2) 
-```
-
-- **delete_seq** : Delete a saved custom sequence
-```cpp
-       //Overloads:
-       delete_seq {speaker: character} {sequence} 
+       create_seq {speaker} {name} {line_1} {delay_1} {line_2} {delay_2} ...(>2)
+       
+       // Note: speaker is decided while creating a sequence, but a speaker can speak lines from different people
+       
+       // Example: Create a custom sequence named "shootboy1" for coach to say "My name is Coach, and I know how to shoot a- Boooy!" with
+       // nameellis07: "Booooooy!"
+       // worldc1m1b122: "My name is Coach, and I know how to shoot a gun" : 2.85 seconds cuts the "gun" part 
+       // We want to hear just the 2.85 seconds of worldc1m1b122, so we add the delay to the line AFTER worldc1m1b122
+       create_seq coach shootboy1 worldc1m1b122 0 nameellis07 2.85
+       
+       // Being more specific with line paths helps making survivors talk other's lines
+       // For example following "shootboy2" sequence will be spoken by Louis if Coach is not present
+       create_seq coach shootboy2 scenes/coach/worldc1m1b122 0 scenes/coach/nameellis07 2.85
+       
+       // Example: Create a custom sequence named "yo" for francis to say a line "Yo" from ellis with
+       // taunt07: "Yo, who is your daddy!"
+       // blank: This is a blank sound file, can be used to cut the previously talked line!
+       // We want to hear just the "Yo" part, so 0.5 second delay for "blank" is good enough
+       create_seq francis yo scenes/mechanic/taunt07 0 blank 0.5
+       
+       // Example: Create a custom sequence named "gothit1" for every character to say 
+       //    their own friendlyfire02 and 2 seconds after friendlyfire03 line
+       create_seq all gothit1 friendlyfire02 0 friendlyfire03 2
+       
 ```
 
 - **speak_custom** : Execute a saved custom sequence
 ```cpp
        //Overloads:
-       speak_custom {speaker: character} {sequence} 
+       speak_custom {speaker: character} {sequence}
+       
+       // Example: Speak the custom sequence of coach named "shootboy2" from the previous examples
+       speak_custom coach shootboy2
 ```
+
+- **delete_seq** : Delete a saved custom sequence
+```cpp
+       //Overloads:
+       delete_seq {speaker: character} {sequence}
+       
+       // Example: Delete the sequence "shootboy1" from coach
+       delete_seq coach shootboy1
+```
+
 
 - **show_custom_sequences** : Print out the saved custom sequences to console
 ```cpp
@@ -143,6 +173,12 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
         //Overloads:
         loop {character} {line:name/path} {loop_length:seconds}
         loop {character} >{sequence:name} {loop_length:seconds}  // Add > before sequence name !
+        
+        // Example: Loop line "ledgehangfall03" for nick repeating every second
+        loop nick ledgehangfall03 1
+        
+        // Example: Loop custom sequence named "yo" for francis repeating every 0.7 seconds
+        loop francis >yo 0.7
 ```
 
 - **loop_stop** : Stop looping for given character
@@ -150,6 +186,9 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
        //Overloads:
        loop_stop {character}
        loop_stop    // character = self
+       
+       // Example: Stop nick's looping
+       loop_stop nick
 ```
 
 - **seq_info** : Get scene and delay info about a custom sequence
@@ -181,6 +220,11 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
        //Overloads:
        // Check out the settings and their values with show_apocalypse_settings
        apocalypse_setting {setting : (entprob,dmgprob,maxradius,minspeed,maxspeed,...)} {new_value: float/integer}
+       
+       // Example: Change the delay between each entity list update to 3 seconds
+       // This delay means how often a list of props around players are taken to apply probabilistic effects afterwards
+       // Default is 1.5 seconds
+       apocalypse_setting updaterate 3
 ```
 
 ### Piano
@@ -189,15 +233,7 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
 
 - **remove_piano_keys** : Removes all piano key spawns
 
-### Other
-
-- **ladder_team** : Change teams of ladders
-```cpp
-       //Overloads:
-       // "reset" to reset ladders back to their default teams
-       ladder_team {team : (all,survivor,infected,spectator,l4d1) | reset}
-    
-```
+### Microphones and speakers
 
 - **microphone** : Create an entity to be used as microphone 
 ```cpp
@@ -218,20 +254,46 @@ Repository for the workshop item [project_smok](https://steamcommunity.com/share
        // ID's need to be specified with a # before the number
        speaker2mic #{speakerID} #{micID}
        speaker2mic {speaker_name} {mic_name} 
-    
+     
+       // Example: Connect speaker at index 33 to microphone named "myMic"
+       speaker2mic #33 myMic
 ```
 
 - **display_mics_speakers** : Get information about the spawned microphones and speakers
 
+### Explosions
+
 - **explosion** : Create a delayed explosion at aimed location, with a particle effect until explosion
 
-- **show_explosion_settings** : Show *explosion* command settings
+- **show_explosion_settings** : Show current *explosion* command settings in console
 
 - **explosion_setting** : Update *explosion* command settings
 ```cpp
        //Overloads:
        // Check out the settings and their values with show_explosion_settings
        explosion_setting {setting : (effect_name,delay,dmgmin,dmgmax,radiusmin,radiusmax,maxpushspeed)} {new_value}
+       
+       // Example: Change delay from 1s to 5s
+       explosion_setting delay 5
+```
+
+### Other
+
+- **ladder_team** : Change teams of ladders
+```cpp
+       //Overloads:
+       // "reset" to reset ladders back to their default teams
+       ladder_team {team : (all,survivor,infected,spectator,l4d1) | reset}
+    
+```
+
+- **invisible_walls** : Enable/Disable **most** if not all of the invisible walls around. Some of them can not be disabled.
+```cpp
+       //Overloads:
+       invisible_walls {state: (disable, enable)} {apply_to_all_possible_walls}
+       
+       //Example: Try disabling all invisible walls/clips
+       invisible_walls disable all
 ```
 
 ### Debug and script related 
