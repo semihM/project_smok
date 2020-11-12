@@ -6675,7 +6675,7 @@ if ( Director.GetGameMode() == "holdout" )
 		foreach(obj in objects)
 		{	
 			if(obj.GetName().find("caralarm") != null)
-				obj.StopSound();
+				obj.Input("stopsound");
 		}
 
 		printB(player.GetCharacterName(),"Stopped all car alarms",true,"info",true,true);

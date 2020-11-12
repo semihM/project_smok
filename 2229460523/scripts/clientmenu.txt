@@ -18029,6 +18029,11 @@
 				"command"    "play buttons/button14;show_menu smok_script_auth_GT"
 				"label"		 " Give/Take away script authorization"
 			}
+			"6"
+			{
+				"command"    "play buttons/button14;scripted_user_func stop_car_alarms;show_menu smok_menu2"
+				"label"		 " Stop car alarms"
+			}
 			"8"
 			{
 					"command"	 "play buttons/button14;show_menu smok_menu"

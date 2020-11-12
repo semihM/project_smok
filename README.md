@@ -116,7 +116,7 @@
        yeet_setting grabHeightBelowEyes -30
 ```
 
-- **cleanup_car_alarms** : Remove all alarm cars and their annoying alarms
+- **stop_car_alarms** : Stops all car alarms playing
 
 ---
 ### Random and saved voices
