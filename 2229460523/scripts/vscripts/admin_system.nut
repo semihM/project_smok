@@ -67,6 +67,114 @@ Convars.SetValue( "precache_all_survivors", "1" );
 
 		PrintIndexedNames = function() {foreach(i,name in ::AdminSystem.CharacterNames){Utils.SayToAll(i+"->"+name);}}
 
+		// Grabbing parameters
+		_grabRadiusTolerance = 30
+
+		_grabAvailable = 
+		{
+			prop_dynamic = true,
+			prop_dynamic_override = true,
+			prop_physics = true,
+			prop_physics_override = true,
+			prop_physics_multiplayer = true,
+			prop_vehicle = true,
+			prop_car_alarm = true,
+			prop_door_rotating = true,
+			prop_door_rotating_checkpoint = true
+		}
+
+		_heldEntity =
+		{
+			bill=
+			{
+				entid="",
+				yeetSpeed = 1500.0,
+				yeetPitch = -10,
+				grabRange = 120,
+				grabHeightBelowEyes = 30,
+				grabDistMin = 50,
+				grabAttachPos = "forward",
+				grabByAimedPart = 1
+			},
+			francis=
+			{
+				entid="",
+				yeetSpeed = 1500.0,
+				yeetPitch = -10,
+				grabRange = 120,
+				grabHeightBelowEyes = 30,
+				grabDistMin = 50,
+				grabAttachPos = "forward",
+				grabByAimedPart = 1
+			},
+			louis=
+			{
+				entid="",
+				yeetSpeed = 1500.0,
+				yeetPitch = -10,
+				grabRange = 120,
+				grabHeightBelowEyes = 30,
+				grabDistMin = 50,
+				grabAttachPos = "forward",
+				grabByAimedPart = 1
+			},
+			zoey=
+			{
+				entid="",
+				yeetSpeed = 1500.0,
+				yeetPitch = -10,
+				grabRange = 120,
+				grabHeightBelowEyes = 30,
+				grabDistMin = 50,
+				grabAttachPos = "forward",
+				grabByAimedPart = 1
+			},
+			nick=
+			{
+				entid="",
+				yeetSpeed = 1500.0,
+				yeetPitch = -10,
+				grabRange = 120,
+				grabHeightBelowEyes = 30,
+				grabDistMin = 50,
+				grabAttachPos = "forward",
+				grabByAimedPart = 1
+			},
+			coach=
+			{
+				entid="",
+				yeetSpeed = 1500.0,
+				yeetPitch = -10,
+				grabRange = 120,
+				grabHeightBelowEyes = 30,
+				grabDistMin = 50,
+				grabAttachPos = "forward",
+				grabByAimedPart = 1
+			},
+			ellis=
+			{
+				entid="",
+				yeetSpeed = 1500.0,
+				yeetPitch = -10,
+				grabRange = 120,
+				grabHeightBelowEyes = 30,
+				grabDistMin = 50,
+				grabAttachPos = "forward",
+				grabByAimedPart = 1
+			},
+			rochelle=
+			{
+				entid="",
+				yeetSpeed = 1500.0,
+				yeetPitch = -10,
+				grabRange = 120,
+				grabHeightBelowEyes = 30,
+				grabDistMin = 50,
+				grabAttachPos = "forward",
+				grabByAimedPart = 1
+			}
+		}
+
 		// Chat output state
 	    _outputsEnabled = 
 		{
@@ -827,6 +935,115 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 
 			PrintIndexedNames = function() {foreach(i,name in ::AdminSystem.CharacterNames){Utils.SayToAll(i+"->"+name);}}
 
+			// Parameters for grabbing, letting go, yeeting entities
+
+			_grabRadiusTolerance = 30
+
+			_grabAvailable = 
+			{
+				prop_dynamic = true,
+				prop_dynamic_override = true,
+				prop_physics = true,
+				prop_physics_override = true,
+				prop_physics_multiplayer = true,
+				prop_vehicle = true,
+				prop_car_alarm = true,
+				prop_door_rotating = true,
+				prop_door_rotating_checkpoint = true
+			}
+
+			_heldEntity =
+			{
+				bill=
+				{
+					entid="",
+					yeetSpeed = 1500.0,
+					yeetPitch = -10,
+					grabRange = 120,
+					grabHeightBelowEyes = 30,
+					grabDistMin = 50,
+					grabAttachPos = "forward",
+					grabByAimedPart = 1
+				},
+				francis=
+				{
+					entid="",
+					yeetSpeed = 1500.0,
+					yeetPitch = -10,
+					grabRange = 120,
+					grabHeightBelowEyes = 30,
+					grabDistMin = 50,
+					grabAttachPos = "forward",
+					grabByAimedPart = 1
+				},
+				louis=
+				{
+					entid="",
+					yeetSpeed = 1500.0,
+					yeetPitch = -10,
+					grabRange = 120,
+					grabHeightBelowEyes = 30,
+					grabDistMin = 50,
+					grabAttachPos = "forward",
+					grabByAimedPart = 1
+				},
+				zoey=
+				{
+					entid="",
+					yeetSpeed = 1500.0,
+					yeetPitch = -10,
+					grabRange = 120,
+					grabHeightBelowEyes = 30,
+					grabDistMin = 50,
+					grabAttachPos = "forward",
+					grabByAimedPart = 1
+				},
+				nick=
+				{
+					entid="",
+					yeetSpeed = 1500.0,
+					yeetPitch = -10,
+					grabRange = 120,
+					grabHeightBelowEyes = 30,
+					grabDistMin = 50,
+					grabAttachPos = "forward",
+					grabByAimedPart = 1
+				},
+				coach=
+				{
+					entid="",
+					yeetSpeed = 1500.0,
+					yeetPitch = -10,
+					grabRange = 120,
+					grabHeightBelowEyes = 30,
+					grabDistMin = 50,
+					grabAttachPos = "forward",
+					grabByAimedPart = 1
+				},
+				ellis=
+				{
+					entid="",
+					yeetSpeed = 1500.0,
+					yeetPitch = -10,
+					grabRange = 120,
+					grabHeightBelowEyes = 30,
+					grabDistMin = 50,
+					grabAttachPos = "forward",
+					grabByAimedPart = 1
+				},
+				rochelle=
+				{
+					entid="",
+					yeetSpeed = 1500.0,
+					yeetPitch = -10,
+					grabRange = 120,
+					grabHeightBelowEyes = 30,
+					grabDistMin = 50,
+					grabAttachPos = "forward",
+					grabByAimedPart = 1
+				}
+			}
+
 			// Chat output state
 			_outputsEnabled = 
 			{
@@ -1365,6 +1582,12 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			printl("[Custom-Fix] Applying fixes to explosion_settings table...");
 			AdminSystem.Vars._explosion_settings.coach <- Utils.TableCopy(AdminSystem.Vars._explosion_settings.Coach);
 			delete AdminSystem.Vars._explosion_settings.Coach;
+		}
+		if("Coach" in AdminSystem.Vars._heldEntity)
+		{
+			printl("[Custom-Fix] Applying fixes to HeldEntity table...");
+			AdminSystem.Vars._heldEntity.coach <- Utils.TableCopy(AdminSystem.Vars._heldEntity.Coach);
+			delete AdminSystem.Vars._heldEntity.Coach;
 		}
 		if("Coach" in AdminSystem.Vars._CustomResponseOptions)
 		{	
@@ -2236,6 +2459,36 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.Remove_piano_keysCmd( player, args );
 			break;
 		}
+		case "grab":
+		{
+			AdminSystem.GrabCmd( player, args );
+			break;
+		}
+		case "letgo":
+		{
+			AdminSystem.LetgoCmd( player, args );
+			break;
+		}
+		case "yeet":
+		{
+			AdminSystem.YeetCmd( player, args );
+			break;
+		}
+		case "show_yeet_settings":
+		{
+			AdminSystem.ShowYeetSettingsCmd( player, args );
+			break;
+		}
+		case "yeet_setting":
+		{
+			AdminSystem.YeetSettingCmd( player, args );
+			break;
+		}
+		case "change_grab_method":
+		{
+			AdminSystem.GrabMethodCmd( player, args );
+			break;
+		}
 		case "timescale":
 		{
 			AdminSystem.TimescaleCmd( player, args );
@@ -2318,6 +2571,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		case "cleanup":
 		{
 			AdminSystem.CleanupCmd( player, args );
+			break;
+		}
+		case "cleanup_car_alarms":
+		{
+			AdminSystem.CleanupAlarmcarsCmd( player, args );
 			break;
 		}
 		case "sound":
@@ -3005,7 +3263,7 @@ enum SCENES
 	printB(player.GetCharacterName(),"",false,"",true,false);
 	foreach(setting,val in AdminSystem._propageddon_args)
 	{
-		printB(player.GetCharacterName(),"[Apocalypse-Setting] "+setting+"->"+val.tostring(),false,"",false,false)
+		printB(player.GetCharacterName(),"[Apocalypse-Setting] "+setting+" ----> "+val.tostring()+" ----> "+AdminSystem._propageddon_args_comments[setting],false,"",false,false)
 	}
 	printB(player.GetCharacterName(),"",false,"",false,true,0.1);
 }
@@ -4730,6 +4988,34 @@ function ChatTriggers::attach_particle_saved(player,args,text)
 	AdminSystem.Attach_particle_savedCmd(player, args);
 }
 
+function ChatTriggers::grab(player,args,text)
+{
+	AdminSystem.GrabCmd(player, args);
+}
+function ChatTriggers::letgo(player,args,text)
+{
+	AdminSystem.LetgoCmd(player, args);
+}
+function ChatTriggers::yeet(player,args,text)
+{
+	AdminSystem.YeetCmd(player, args);
+}
+function ChatTriggers::show_yeet_settings(player,args,text)
+{
+	AdminSystem.ShowYeetSettingsCmd(player, args);
+}
+function ChatTriggers::yeet_setting(player,args,text)
+{
+	AdminSystem.YeetSettingCmd(player, args);
+}
+function ChatTriggers::change_grab_method(player,args,text)
+{
+	AdminSystem.GrabMethodCmd(player, args);
+}
+function ChatTriggers::cleanup_car_alarms( player, args, text )
+{
+	AdminSystem.CleanupAlarmcarsCmd( player, args );
+}
 /////////////////////////others/////////////////////////////
 
 function ChatTriggers::adminmode( player, args, text )
@@ -6372,6 +6658,26 @@ if ( Director.GetGameMode() == "holdout" )
 			if ( AdminSystem.DisplayMsgs )
 				Utils.SayToAllDel("%s has disabled infinite upgrade ammo.", player.GetName());
 		}
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.CleanupAlarmcarsCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local objects = ::VSLib.EasyLogic.Objects.OfClassname("prop_car_alarm");
+	if(objects != null)
+	{
+		foreach(obj in objects)
+		{	
+			obj.Kill();
+		}
+
+		printB(player.GetCharacterName(),"Removed all alarm cars",true,"info",true,true);
 	}
 }
 
@@ -8552,7 +8858,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	local Ent = GetArgument(1);
+	local Entnameid = GetArgument(1);
 	local Action = GetArgument(2);
 	local Value = GetArgument(3);
 	local Value2 = GetArgument(4);
@@ -8568,7 +8874,7 @@ if ( Director.GetGameMode() == "holdout" )
 	else if (Value)
 		val = Value;
 	
-	if ( Ent == "!picker" )
+	if ( Entnameid == "!picker" )
 	{
 		if ( Entity )
 		{
@@ -8577,34 +8883,43 @@ if ( Director.GetGameMode() == "holdout" )
 				printl(player.GetCharacterName().tolower()+"->Ignore attemp to kick player:"+Entity.GetName());
 				return;
 			}
-			Entity.Input( Action, val );
+			else if (Entity.GetClassname() == "player" && Action == "becomeragdoll")
+			{
+				printl(player.GetCharacterName().tolower()+"->Ignore attemp to make player ragdoll:"+Entity.GetName());
+				return;
+			}
+			else
+				Entity.Input( Action, val );
 		}
 	}
-	else if ( Ent == "!self" )
+	else if ( Entnameid == "!self" )
 	{
+		Entity = player;
 		player.Input( Action, val );
 	}
 	else
 	{	
-		if(Ent.find("#") != null || Ent.find("_") != null)
+		if(Entnameid.find("#") != null || Entnameid.find("_") != null)
 		{
-			g_MapScript.EntFire( Ent, Action, val );
+			Entity = ::VSLib.Entity(Ent(Entnameid))
+			Entity.Input( Action, val );
 		}
 		else if ( Target )
 		{
+			printl("Applied ent_fire to self:"+player.GetCharacterName());
 			Target.Input( Action, val );
 		}
 		else
-			g_MapScript.EntFire( Ent, Action, val );
+			g_MapScript.EntFire( Entnameid, Action, val );
 	}
 
 	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
 	{
-		Utils.SayToAll(player.GetCharacterName().tolower()+"-> ent_fire "+(Entity == null ? Ent : Entity.GetName())+" "+Action+" "+val);
+		Utils.SayToAll(player.GetCharacterName().tolower()+"-> ent_fire "+(Entity == null ? Entnameid : ("#"+Entity.GetIndex()))+" "+Action+" "+val);
 	}
 	else
 	{
-		printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"-> ent_fire "+(Entity == null ? Ent : Entity.GetName())+" "+Action+" "+val,true,"info",true,true);
+		printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"-> ent_fire "+(Entity == null ? Entnameid : ("#"+Entity.GetIndex()))+" "+Action+" "+val,true,"info",true,true);
 	}
 
 }
@@ -11721,6 +12036,451 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		printB(player.GetCharacterName(),"No saved particle was found for "+name,true,"error",true,true);
 	}
+}
+
+/*
+ * @authors rhino
+ * Attach the targeted entity around players arms, make it look and move like player is holding it
+ */
+::AdminSystem.GrabCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local tbl_heldEnt = AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()];
+	local baseent = null;
+	if(tbl_heldEnt.entid != "")	// Already holding something, validate it
+	{
+		baseent = Ent("#"+tbl_heldEnt.entid);
+		if(baseent == null)						// it doesnt exist, remove it
+		{
+			AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+			return;
+		}
+
+		if(!VSLib.Entity(baseent).IsEntityValid())		// invalid entity, remove it
+		{
+			AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+			return;
+		}
+
+		// Player still is the parent
+		if(VSLib.Entity(baseent).GetParent() != null) // Let go when grab pressed another time
+		{
+			AdminSystem.LetgoCmd(player,args);
+			return;
+		}
+		// 
+	}
+
+	local ent = player.GetLookingEntity();
+	local lookedpoint = player.GetLookingLocation();
+
+	local entind = null;
+	local objtable = null;
+	local entclass = null;
+	local entmodel = null;
+	local taken = null
+	// TO-DO use masks instead
+	if(ent == null)
+	{
+		objtable = VSLib.EasyLogic.Objects.AroundRadius(lookedpoint,AdminSystem.Vars._grabRadiusTolerance);	// Get entities within radius
+		if(objtable != null)
+		{
+			foreach(obj in objtable)	// Loop through
+			{	
+				taken = false;		// Store state of the entity being held by someone else
+
+				entclass = obj.GetClassname();	
+				entmodel = obj.GetModel();
+
+				if(!(entclass in AdminSystem.Vars._grabAvailable) && (entclass.find("weapon_") == null))	// Validate class name
+					continue;
+				
+				if((entmodel.find("props_vehicles") != null) && (entmodel.find("_glass") != null)) // Vehicle glasses ignored
+					continue;
+
+				if((entmodel.find("hybridphysx") != null)) // Animation props etc ignored
+					continue;
+
+				entind = obj.GetIndex().tostring();
+
+				foreach(survivor in Players.AliveSurvivors())
+				{
+					foreach(helditem in survivor.GetHeldItems())
+					{
+						if(entind == helditem.GetIndex().tostring())
+						{
+							taken = true;
+							break;
+						}
+					}
+					
+					if(taken)		// Skip to next if its an item in somebody's inventory
+						break;
+				}
+				
+				if(taken)		// Skip to next if already held
+					continue;
+
+				foreach(info in AdminSystem.Vars._heldEntity)	// Check if its already being held
+				{
+					if(info.entid == entind)
+					{
+						taken = true;
+						break;
+					}	
+				}
+
+				if(taken)		// Skip to next if already held
+					continue;
+				
+				ent = obj;		// Available object, select and break out of the loop
+				printB(player.GetCharacterName(),"Grabbing closest prop at targeted location #"+entind+" "+entclass+" "+entmodel,true,"info",true,true)
+				break;
+			}
+
+			if(ent == null)	// No acceptable object was found
+				return;
+		}
+		else	// No entities withing given radius
+			return;
+	}
+	else	// Found entity with default masking
+	{
+		entclass = ent.GetClassname();
+
+		if(!(entclass in AdminSystem.Vars._grabAvailable) && (entclass.find("weapon_") == null))
+			return;
+		
+		if((entclass.find("props_vehicles") != null) && (entclass.find("_glass") != null)) // Vehicle glasses ignored
+			return;
+
+		entind = ent.GetIndex().tostring();
+
+		foreach(info in AdminSystem.Vars._heldEntity)
+		{
+			if(info.entid == entind)
+				return;
+		}
+
+	}
+	
+	local playerEyeLoc = player.GetEyePosition()
+	local entity_dist = Utils.CalculateDistance(playerEyeLoc,lookedpoint);
+
+	if(entity_dist < tbl_heldEnt.grabRange)
+	{
+		// THIS METHOD TELEPORTS ENTITY CLOSER TO PLAYER
+		// BUT SINCE IT DOES IT VIA ENTITY ORIGIN AND SOME MODELS
+		// HAVE THEIR ORIGIN ODDLY PLACED, PLAYER COULD GET STUCK IN
+		// THE ENTITY
+		if(tbl_heldEnt.grabByAimedPart.tointeger() != 1)
+		{
+			local angles = player.GetEyeAngles();
+			local newanglesF = QAngle(0,angles.Yaw(),angles.Roll()).Forward();
+			local holdingLoc = playerEyeLoc + newanglesF.Scale(tbl_heldEnt.grabDistMin/newanglesF.Length());
+			holdingLoc.z = player.GetEyePosition().z - tbl_heldEnt.grabHeightBelowEyes;
+			ent.SetOrigin(holdingLoc);
+		}
+		else
+		{
+			local moveback = entity_dist-tbl_heldEnt.grabDistMin;
+			local fwvec = player.GetEyeAngles().Forward();
+			local entpos = ent.GetPosition();
+			fwvec.z *= -1;
+			fwvec.y *= -1;
+			fwvec.x *= -1;
+			fwvec = fwvec.Scale(moveback/fwvec.Length());
+			
+			ent.SetOrigin(Vector(entpos.x+fwvec.x,entpos.y+fwvec.y,entpos.z+fwvec.z));
+
+		}
+
+		player.AttachOther(ent,false,0,null);
+		player.SetAttachmentPoint(ent,tbl_heldEnt.grabAttachPos,true,0.1);
+
+		printB(player.GetCharacterName(),"Grabbed #"+entind,true,"info",true,true)
+
+		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = entind;
+	}
+	
+}
+
+/*
+ * @authors rhino
+ * Drops the entity held by player
+ */
+::AdminSystem.LetgoCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	if(AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid == "")
+		return;
+
+	local baseent = Ent("#"+AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid);
+	if(baseent == null)
+	{
+		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+		return;
+	}
+
+	local ent = ::VSLib.Entity(baseent);
+
+	if(!ent.IsEntityValid())
+	{
+		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+		return;
+	}
+
+	if(ent.GetParent() == null)
+	{
+		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+		return;
+	}
+
+	local keyvals = 
+	{
+		classname = "prop_physics_multiplayer",
+		model = ent.GetModel(),
+		origin = ent.GetOrigin(),
+		angles = ent.GetAngles(),
+	};
+	
+	local entclass = ent.GetClassname();
+	local new_ent = null;
+
+	if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics")
+	{	
+		keyvals["spawnflags"] <- ent.GetSpawnFlags();
+		if((ent.GetSpawnFlags()% 2) == 1)	// Disable start asleep flag
+			keyvals["spawnflags"] -= 1;
+
+		if((ent.GetSpawnFlags()>>3) % 2 == 1)	// Disable motion disabled flag
+			keyvals["spawnflags"] -= 8;
+		
+	}
+	
+	else if(entclass.find("weapon_") != null) // a weapon spawner entity
+	{
+		player.RemoveAttached(ent);
+		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+		printB(player.GetCharacterName(),"Let go the held entity spawner #"+ent.GetIndex(),true,"info",true,true)
+		return;
+	}
+	else if(entclass == "prop_door_rotating" || entclass == "prop_door_rotating_checkpoint")
+	{
+		keyvals["classname"] = entclass;
+		keyvals["spawnflags"] <- ent.GetSpawnFlags();
+	}
+	
+	new_ent = Utils.CreateEntityWithTable(keyvals);
+
+	ent.Kill();
+	player.RemoveAttached(ent);
+
+	AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+
+	if(new_ent == null)
+	{
+		printB(player.GetCharacterName(),"Failed to create new entity after letting go the held item",true,"error",true,true)
+		
+		keyvals["classname"] = "prop_physics_multiplayer"
+		keyvals["model"] = "models/items/l4d_gift.mdl"
+		new_ent = Utils.CreateEntityWithTable(keyvals);
+	}
+	else
+	{
+		printB(player.GetCharacterName(),"Let go the held entity created new entity #"+new_ent.GetIndex(),true,"info",true,true)
+	}
+	
+}
+
+/*
+ * @authors rhino
+ * YEET
+ */
+::AdminSystem.YeetCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	if(AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid == "")
+		return;
+	
+	local baseent = Ent("#"+AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid);
+	if(baseent == null)
+	{
+		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+		return;
+	}
+	
+	local ent = ::VSLib.Entity(baseent);
+	if(!ent.IsEntityValid())
+	{
+		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+		return;
+	}
+
+	if(ent.GetParent() == null)
+	{
+		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+		return;
+	}
+
+	local keyvals = 
+	{
+		classname = "prop_physics_multiplayer",
+		model = ent.GetModel(),
+		origin = ent.GetOrigin(),
+		angles = ent.GetAngles(),
+	};
+
+	local entclass = ent.GetClassname();
+	local new_ent = null;
+
+	if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics")
+	{
+		keyvals["spawnflags"] <- ent.GetSpawnFlags();
+		if((ent.GetSpawnFlags()% 2) == 1)	// Disable start asleep flag
+			keyvals["spawnflags"] -= 1;
+
+		if((ent.GetSpawnFlags()>>3) % 2 == 1)	// Disable motion disabled flag
+			keyvals["spawnflags"] -= 8;
+	}
+	
+
+	if(entclass.find("weapon_") != null) // a weapon spawner entity
+	{
+		player.RemoveAttached(ent);
+		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+		printB(player.GetCharacterName(),"Let go the held entity spawner #"+ent.GetIndex(),true,"info",true,true)
+		return;
+	}
+	else
+	{
+		new_ent = Utils.CreateEntityWithTable(keyvals);
+		ent.Kill();
+		player.RemoveAttached(ent);
+		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+	}
+
+	if(new_ent == null)
+	{
+		printB(player.GetCharacterName(),"Failed to create new entity after letting go the held item",true,"error",true,true)
+		
+		keyvals["classname"] = "prop_physics_multiplayer"
+		keyvals["model"] = "models/items/l4d_gift.mdl"
+		new_ent = Utils.CreateEntityWithTable(keyvals);
+		
+		local fwvec = RotateOrientation(player.GetEyeAngles(),QAngle(AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].yeetPitch,0,0)).Forward();
+		fwvec = fwvec.Scale(300/fwvec.Length());
+
+		new_ent.Push(fwvec);
+	}
+	else
+	{
+		printB(player.GetCharacterName(),"YEEEEETED the held entity and created new entity #"+new_ent.GetIndex(),true,"info",true,true)
+		
+		local fwvec = RotateOrientation(player.GetEyeAngles(),QAngle(AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].yeetPitch,0,0)).Forward();
+		fwvec = fwvec.Scale(AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].yeetSpeed/fwvec.Length());
+
+		new_ent.Push(fwvec);
+	}
+	
+}
+
+/* @authors rhino
+ * Show grabbing and throwing settings
+		entid="",
+		yeetSpeed = 1500.0,
+		yeetPitch = -10,
+		grabRange = 120,
+		grabHeightBelowEyes = 30,
+		grabDistMin = 50,
+		grabAttachPos = "forward",
+		grabByAimedPart = 1
+ */
+::AdminSystem.ShowYeetSettingsCmd <- function (player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	printB(player.GetCharacterName(),"",false,"",true,false);
+	foreach(setting,val in AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()])
+	{
+		printB(player.GetCharacterName(),"[YEET-Setting] "+setting+"->"+val.tostring(),false,"",false,false)
+	}
+	printB(player.GetCharacterName(),"",false,"",false,true,0.1);
+}
+
+/* @authors rhino
+ * Update grabByAimedPart setting state
+ */
+::AdminSystem.GrabMethodCmd <- function (player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local name = player.GetCharacterName();
+	local val = AdminSystem.Vars._heldEntity[name.tolower()].grabByAimedPart;
+	AdminSystem.Vars._heldEntity[name.tolower()].grabByAimedPart = (1-val).tointeger();
+
+	Utils.SayToAll(name+" set grab method to :"+(val==1 ? "'grab by center'":"'grab by aimed location'"));
+}
+
+/* @authors rhino
+ * Change grabbing and throwing settings
+ */
+::AdminSystem.YeetSettingCmd <- function (player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local name = player.GetCharacterName();
+	local setting = GetArgument(1);
+	local val = GetArgument(2);
+	local attachment_names = 
+	["eyes","mouth","forward","survivor_light","survivor_neck",
+	"primary","L_weapon_bone","muzzle_flash","armL_T2","armR_T2","medkit",
+	"bleedout","pistol","pills","spine","grenade","molotov",
+	"legL","legL_B","rfoot","lfoot","thighL","weapon_bone"
+	]
+
+	if(!(setting in AdminSystem.Vars._heldEntity[name.tolower()]) || setting == "entid")
+		return;
+	
+	if(setting == "grabByAimedPart")
+	{
+		{try{val = val.tointeger();}catch(e){return;}}
+		if(val != 0 || val != 1)
+		{
+			Utils.SayToAll("grabByAimedPart setting can only be 0 or 1");
+			return;
+		}
+		AdminSystem.Vars._heldEntity[name.tolower()].grabByAimedPart = val;
+
+	}
+
+	else if(setting != "grabAttachPos")
+	{
+		try{val = val.tofloat();}catch(e){return;}
+
+		AdminSystem.Vars._heldEntity[name.tolower()][setting] = val;
+	}
+
+	else if(Utils.GetIDFromArray(attachment_names,val) == null)
+	{Utils.SayToAll("No attachment point named "+val+" was found.");Utils.SayToAll("Available attachment point names:"+Utils.ArrayString(attachment_names));return;}
+
+	else
+		AdminSystem.Vars._heldEntity[name.tolower()].grabAttachPos = val;
+
+	if (AdminSystem.Vars._outputsEnabled[name.tolower()])
+	{Utils.SayToAll(name+" -> Changed yeeting setting "+setting+": "+AdminSystem.Vars._heldEntity[name.tolower()][setting]+"->"+val.tostring());}
+	else
+	{printB(name,name+" -> Changed yeeting setting "+setting+": "+AdminSystem.Vars._heldEntity[name.tolower()][setting]+"->"+val.tostring(),true,"info",true,true);}
+	
 }
 
 /*
