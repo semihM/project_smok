@@ -86,6 +86,38 @@
        rainbow {total_duration<=300.0} {color_duration>=0.05}  
        rainbow {total_duration<=300.0} 
 ```
+
+- **grab** : Grabs aimed entity, also lets go if player is grabbing an entity
+
+- **letgo** : Drops the held entity
+
+- **yeet** : YEEEEEET
+
+- **show_yeet_settings** : Shows grabbing settings in console
+
+- **change_grab_method** : Change grabbing method between "Grab by aimed point" and "Grab by center"(basically hug the entity, some entity cause player to get stuck)
+
+- **yeet_setting** : Change a grabbing setting
+```cpp 
+       //Overloads:
+       // Check setting names with "show_yeet_settings"
+       // "entid" setting cant be changed, because held entity's index is stored in this setting
+       yeet_setting {setting} {new_value}  
+       
+       // Example: Change grabbing range to 400 ( pretty long arms )
+       yeet_setting grabRange 400
+       
+       // Example: Change how far entity is gonna be held by player to 100 units
+       yeet_setting grabDistMin 100
+       
+       // Example: Change how high below eye-level to hold the entity to -30 units ( negative values for above eye level )
+       // default is 30, which means 30 units BELOW eye-level
+       // -30 will make the entity held above player's head
+       yeet_setting grabHeightBelowEyes -30
+```
+
+- **cleanup_car_alarms** : Remove all alarm cars and their annoying alarms
+
 ---
 ### Random and saved voices
 ---
