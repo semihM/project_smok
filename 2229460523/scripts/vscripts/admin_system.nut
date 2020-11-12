@@ -2573,9 +2573,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.CleanupCmd( player, args );
 			break;
 		}
-		case "cleanup_car_alarms":
+		case "stop_car_alarms":
 		{
-			AdminSystem.CleanupAlarmcarsCmd( player, args );
+			AdminSystem.StopCarAlarmsCmd( player, args );
 			break;
 		}
 		case "sound":
@@ -5012,9 +5012,9 @@ function ChatTriggers::change_grab_method(player,args,text)
 {
 	AdminSystem.GrabMethodCmd(player, args);
 }
-function ChatTriggers::cleanup_car_alarms( player, args, text )
+function ChatTriggers::stop_car_alarms( player, args, text )
 {
-	AdminSystem.CleanupAlarmcarsCmd( player, args );
+	AdminSystem.StopCarAlarmsCmd( player, args );
 }
 /////////////////////////others/////////////////////////////
 
@@ -6664,20 +6664,21 @@ if ( Director.GetGameMode() == "holdout" )
 /*
  * @authors rhino
  */
-::AdminSystem.CleanupAlarmcarsCmd <- function ( player, args )
+::AdminSystem.StopCarAlarmsCmd <- function ( player, args )
 {
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	local objects = ::VSLib.EasyLogic.Objects.OfClassname("prop_car_alarm");
+	local objects = ::VSLib.EasyLogic.Objects.OfClassname("ambient_generic");
 	if(objects != null)
 	{
 		foreach(obj in objects)
 		{	
-			obj.Kill();
+			if(obj.GetName().find("caralarm") != null)
+				obj.StopSound();
 		}
 
-		printB(player.GetCharacterName(),"Removed all alarm cars",true,"info",true,true);
+		printB(player.GetCharacterName(),"Stopped all car alarms",true,"info",true,true);
 	}
 }
 
@@ -12448,8 +12449,12 @@ if ( Director.GetGameMode() == "holdout" )
 	"legL","legL_B","rfoot","lfoot","thighL","weapon_bone"
 	]
 
+	local oldval = null;
+	
 	if(!(setting in AdminSystem.Vars._heldEntity[name.tolower()]) || setting == "entid")
 		return;
+
+	oldval = AdminSystem.Vars._heldEntity[name.tolower()][setting].tostring();
 	
 	if(setting == "grabByAimedPart")
 	{
@@ -12477,9 +12482,9 @@ if ( Director.GetGameMode() == "holdout" )
 		AdminSystem.Vars._heldEntity[name.tolower()].grabAttachPos = val;
 
 	if (AdminSystem.Vars._outputsEnabled[name.tolower()])
-	{Utils.SayToAll(name+" -> Changed yeeting setting "+setting+": "+AdminSystem.Vars._heldEntity[name.tolower()][setting]+"->"+val.tostring());}
+	{Utils.SayToAll(name+" -> Changed yeeting setting "+setting+": "+oldval+"->"+val.tostring());}
 	else
-	{printB(name,name+" -> Changed yeeting setting "+setting+": "+AdminSystem.Vars._heldEntity[name.tolower()][setting]+"->"+val.tostring(),true,"info",true,true);}
+	{printB(name,name+" -> Changed yeeting setting "+setting+": "+oldval+"->"+val.tostring(),true,"info",true,true);}
 	
 }
 
