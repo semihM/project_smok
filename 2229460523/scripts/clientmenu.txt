@@ -35803,7 +35803,7 @@
 			}
 			"3"
 			{
-				"command"		 "play buttons/button14;scripted_user_func prop,dynamic,models/props_furniture/piano.mdl;show_menu pianokeys1"
+				"command"		 "play buttons/button14;scripted_user_func prop,dynamic,models/props_furniture/piano.mdl,0,180;show_menu pianokeys1"
 				"label"			 " Spawn dynamic piano prop"
 			}
 			"8"
