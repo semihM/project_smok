@@ -24522,12 +24522,12 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lighthouse/checkpoint_door_lighthouse01.mdl,55;show_menu props_laststand2"
+					"command"    "play buttons/button14;scripted_user_func door,models/lighthouse/checkpoint_door_lighthouse01.mdl;show_menu props_laststand2"
 					"label"      " Saferoom door 1"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lighthouse/checkpoint_door_lighthouse02.mdl,55;show_menu props_laststand2"
+					"command"    "play buttons/button14;scripted_user_func door,models/lighthouse/checkpoint_door_lighthouse02.mdl;show_menu props_laststand2"
 					"label"      " Saferoom door 2"
 			}
 			"5"
@@ -35678,8 +35678,8 @@
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;show_menu ladderteams1"
-				"label"			" Change ladders' team"
+				"command"		 "play buttons/button14;show_menu meteor_shower1"
+				"label"			" Meteor shower event"
 			}
 			"3"
 			{
@@ -35701,6 +35701,11 @@
 				"command"		 "play buttons/button14;show_menu invwalls1"
 				"label"			" Enable/Disable all invisible walls"
 			}
+			"7"
+			{
+				"command"		 "play buttons/button14;show_menu ladderteams1"
+				"label"			" Change ladders' team"
+			}
 			"0"
 			{
 					"command"    "play buttons/button14"
@@ -35708,6 +35713,41 @@
 			}
 	}
 	
+	"meteor_shower1"
+	{
+			"Title"		"Meteor shower menu"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func start_the_shower;show_menu meteor_shower1"
+				"label"			 " Start/Pause the event"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func show_meteor_shower_settings;show_menu meteor_shower1"
+				"label"			 " Show settings (use show_meteor_shower_settings)"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button10;show_menu meteor_shower1"
+				"label"			 " Change settings (In works...)(use meteor_shower_setting setting value)"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func meteor_shower_debug;show_menu meteor_shower1"
+				"label"			 " Enable/Disable debug messages"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu secret_commands"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
 	"apocalypse1"
 	{
 			"Title"		"Apocalypse menu"
@@ -35724,7 +35764,7 @@
 			"3"
 			{
 				"command"		 "play buttons/button10;show_menu apocalypse1"
-				"label"			 " Change settings (In works...)(use apocalypse_setting,setting,val)"
+				"label"			 " Change settings (In works...)(use apocalypse_setting setting value)"
 			}
 			"4"
 			{
@@ -35821,16 +35861,16 @@
 	
 	"micspeaker1"
 	{
-			"Title"		"Piano keys"
+			"Title"		"Microphones and speakers"
 			"1"
 			{
 				"command"		 "play buttons/button14;scripted_user_func microphone;show_menu micspeaker1"
-				"label"			 " Spawn a microphone"
+				"label"			 " Spawn a microphone(Check your console)"
 			}
 			"2"
 			{
 				"command"		 "play buttons/button14;scripted_user_func speaker;show_menu micspeaker1"
-				"label"			 " Spawn a speaker"
+				"label"			 " Spawn a speaker(Check your console)"
 			}
 			"3"
 			{
@@ -35874,15 +35914,20 @@
 			}
 			"2"
 			{
+				"command"		 "play buttons/button14;scripted_user_func explosion,meteor;show_menu explosion1"
+				"label"			 " Create a delayed meteor strike"
+			}
+			"3"
+			{
 				"command"		 "play buttons/button14;scripted_user_func show_explosion_settings;show_menu explosion1"
 				"label"			 " Show current settings"
 			}
-			"3"
+			"4"
 			{
 				"command"		 "play buttons/button14;show_menu explosion_effects1"
 				"label"			 " Change particle effect"
 			}
-			"4"
+			"5"
 			{
 				"command"		 "play buttons/button10;show_menu explosion1"
 				"label"			 " Change other settings(use !explosion_seting {setting} {value})"
