@@ -720,6 +720,87 @@
        apocalypse_setting updatedelay 3
 ```
 ---
+## Meteor Shower event
+---
+- **start_the_shower** : Not the greatest shower you'll have
+
+    Chat Syntax | !start_the_shower
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *start_the_shower* 
+    ------------- | -------------
+    
+    Menu Sequence | _Top secret_
+    ------------- | -------------
+
+---
+- **pause_the_shower** : Take a break
+
+    Chat Syntax | !pause_the_shower
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *pause_the_shower* 
+    ------------- | -------------
+    
+    Menu Sequence | _Top secret_
+    ------------- | -------------
+
+---
+- **show_meteor_shower_settings** : Show meteor shower event's settings and values. Probabilities normalized: (0 = 0% , 1 = 100%)
+
+    Chat Syntax | !show_meteor_shower_settings
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *show_meteor_shower_settings* 
+    ------------- | -------------
+    
+    Menu Sequence | _Top secret_
+    ------------- | -------------
+
+    Setting | Default Value | Description
+    ------------ | ------------- | -------------
+    maxradius | 900		     | maximum radius to pick a random meteor attack point
+    minspawnheight | 550		| minimum spawn height for meteors
+    updatedelay | 2				| how often to create a meteor
+    mindelay | 0.5				| minimum extra delay to apply each spawn tick
+    maxdelay | 1  				| maximum extra delay to apply each spawn tick
+    maxexplosiondelay | 10		| maximum lifetime for a meteor, if meteor is still valid after this delay, it explodes
+    minspeed | 1500				| minimum meteor speed
+    maxspeed | 7000    			| maximum speed
+    expmaxradius | 300			| maximum explosion radius caused by the meteor
+    expdmgmin | 3			 | minimum explosion damage caused to closeby entities
+    expdmgmax | 20				| maximum explosion damage caused to closeby entities
+    expprob | 0.9				| probability of the meteor exploding
+    scatterprob | 0.55			| probability of the meteor scattering into smaller pieces after hitting the ground
+    minscatterchunk | 4			| minimum amount of smaller chunks created if scattering probably was met
+    maxscatterchunk | 15		| maximum amount of smaller chunks created
+    meteormodelspecific | ""	| specific model for meteors
+    meteormodelpick | 0			| enumerated: RANDOM_ROCK = 0, RANDOM_CUSTOM = 1, FIRST_CUSTOM = 2, LAST_CUSTOM = 3, SPECIFIC = 4
+    debug | 0					| Print meteor spawn and hit points, explosions, scatters and breaks
+
+--- 
+- **meteor_shower_setting** : Change apocalypse event settings
+
+    Chat Syntax | !meteor_shower_setting *setting new_value*
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *meteor_shower_setting,setting,new_value* 
+    ------------- | -------------
+    
+    Menu Sequence | _Top secret_
+    ------------- | -------------
+
+```cpp
+       //Overloads:
+       // Check out the settings and their values with show_meteor_shower_settings
+       meteor_shower_setting {setting} {new_value: float/integer}
+       
+       // Example: Change "specific" meteor model to TV model and then change meteor model picking method to "specific"
+       // Model paths are required to be given in quotes ("")
+       meteor_shower_setting meteormodelspecific "models/props_interiors/tv.mdl"
+       meteor_shower_setting meteormodelpick 4
+```
+---
 ## Piano
 ---
 - **piano_keys** : Place 25 piano keys starting at looked location placing them to the right
@@ -812,17 +893,26 @@
 ---
 ## Explosions
 ---
-- **explosion** : Create a delayed explosion at aimed location, with a particle effect until explosion
+- **explosion** : Create a delayed explosion or a meteor strike at aimed location, with a particle effect until explosion
 
-    Chat Syntax | !explosion
+    Chat Syntax | !explosion _option_
     ------------- | -------------
 
-    Console Syntax | scripted_user_func *explosion* 
+    Console Syntax | scripted_user_func *explosion,option* 
     ------------- | -------------
     
     Menu Sequence | _Top secret_
     ------------- | -------------
 
+```cpp
+       //Overloads:
+       // If option is "meteor" a delayed meteor strike is called
+       explosion {option:(meteor)} 
+       explosion   // Creates a normal delayed explosion
+       
+       // Example: Create a delayed meteor strike at aimed location
+       explosion meteor
+```
 ---
 - **show_explosion_settings** : Show current *explosion* command settings in console
 
@@ -843,7 +933,8 @@
     radiusmax | 450 | explosion's maximum radius to damage and push entities in
     dmgmin | 10 | minimum damage to give entities in the radius
     dmgmax | 30 | maximum damage to give entities in the radius
-    maxpushspeed | 10000 | maximum speed an explosion can push and entity away 
+    minpushspeed | 2500 | minimum speed an explosion can push an entity away 
+    maxpushspeed | 10000 | maximum speed an explosion can push an entity away 
 
 ---
 - **explosion_setting** : Update *explosion* command settings
