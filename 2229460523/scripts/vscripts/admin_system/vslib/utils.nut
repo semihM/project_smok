@@ -500,6 +500,59 @@ function VSLib::Utils::SayToAllDel(str, ...)
 	::VSLib.Timers.AddTimer ( 0.1, false, ::VSLib.Utils._sayfunc, { txt = temp, team = false } );
 }
 
+function VSLib::Utils::PrintToAllDel(message, ...)
+{
+	local temp = "";
+	switch (vargv.len())
+	{
+		case 0:
+			temp = message;
+			break;
+		case 1:
+			temp = format(message, vargv[0]);
+			break;
+		case 2:
+			temp = format(message, vargv[0], vargv[1]);
+			break;
+		case 3:
+			temp = format(message, vargv[0], vargv[1], vargv[2]);
+			break;
+		case 4:
+			temp = format(message, vargv[0], vargv[1], vargv[2], vargv[3]);
+			break;
+		case 5:
+			temp = format(message, vargv[0], vargv[1], vargv[2], vargv[3], vargv[4]);
+			break;
+		case 6:
+			temp = format(message, vargv[0], vargv[1], vargv[2], vargv[3], vargv[4], vargv[5]);
+			break;
+		case 7:
+			temp = format(message, vargv[0], vargv[1], vargv[2], vargv[3], vargv[4], vargv[5], vargv[6]);
+			break;
+		case 8:
+			temp = format(message, vargv[0], vargv[1], vargv[2], vargv[3], vargv[4], vargv[5], vargv[6], vargv[7]);
+			break;
+		case 9:
+			temp = format(message, vargv[0], vargv[1], vargv[2], vargv[3], vargv[4], vargv[5], vargv[6], vargv[7], vargv[8]);
+			break;
+		case 10:
+			temp = format(message, vargv[0], vargv[1], vargv[2], vargv[3], vargv[4], vargv[5], vargv[6], vargv[7], vargv[8], vargv[9]);
+			break;
+		case 11:
+			temp = format(message, vargv[0], vargv[1], vargv[2], vargv[3], vargv[4], vargv[5], vargv[6], vargv[7], vargv[8], vargv[9], vargv[10]);
+			break;
+		case 12:
+			temp = format(message, vargv[0], vargv[1], vargv[2], vargv[3], vargv[4], vargv[5], vargv[6], vargv[7], vargv[8], vargv[9], vargv[10], vargv[11]);
+			break;
+	}
+
+	::VSLib.Timers.AddTimer ( 0.1, false, VSLib.Utils.ClientPrintWrapper, { player = null, destination = 3, message = "\x04"+temp } );
+}
+
+function VSLib::Utils::ClientPrintWrapper(args)
+{
+	ClientPrint(args.player,args.destination,args.message);
+}
 
 /**
  * Says some text after a delay to the team.
@@ -2138,6 +2191,34 @@ function VSLib::Utils::GetRandValueFromArray(arr, removeValue = false)
 	
 	return arrvalue;
 	//return arr[ ::VSLib.Utils.GetRandNumber(0, arrlen - 1) ];
+}
+
+/**
+ * Returns the closest hittable point above the given point, ignores given entity. Lowers(z-axis) found point given amount
+ * @authors rhino
+ */
+function VSLib::Utils::GetLocationAbove(start,ignore=null,lower=0)
+{
+	if(ignore != null)
+	{
+		if (!ignore.IsValid())
+		{
+			printl("VSLib Warning: Entity #" + ignore.GetEntityIndex() + " is invalid.");
+			return;
+		}
+	}
+	
+	local endPt = start + Vector(0, 0, 9999999);
+	
+	local m_trace = { start = start, end = endPt, ignore = ignore, mask = TRACE_MASK_SHOT };
+	TraceLine(m_trace);
+	
+	if (!m_trace.hit)
+		return;
+	
+	local pos = m_trace.pos;
+	pos.z = pos.z - lower;
+	return pos;
 }
 
 /*

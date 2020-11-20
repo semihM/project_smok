@@ -3242,6 +3242,12 @@ function VSLib::Entity::KillDelayed(seconds)
 		return;
 	}
 	
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return;
+	}
+	
 	DoEntFire("!self", "Kill", "", seconds.tofloat(), null, _ent);
 }
 
