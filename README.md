@@ -1056,11 +1056,14 @@
 ---
 - AdminSystem configuration files are stored in the **"..\Left 4 Dead 2\left4dead2\ems\admin system"** directory.
 
-- This directory contains **configurations(settings.txt)**, **admins(admins.txt)**, **banned players(banned.txt)**, **script authorizations(scriptauths.txt)**, **custom responses(custom_responses.json)** and **apocalypse event settings(apocalypse_settings.txt)**. Which can all be edited manually (Be careful while formatting! Keep a differently named copy before changing anything!)
+- This directory contains **configurations(settings.txt)**, **admins(admins.txt)**, **banned players(banned.txt)**, **script authorizations(scriptauths.txt)**, **custom responses(custom_responses.json)**, **apocalypse event settings(apocalypse_settings.txt)** and **meteor shower event settings(meteor_shower_settings.txt)**. Which can all be edited manually (Be careful while formatting! Keep a differently named copy before changing anything!)
 
 - **"custom_responses.json"** file can be opened with a text editor and new custom sequences can be defined  for each admin's steam ID with the example format given in the file.
 
-- **"apocalypse_settings.txt"** file contains the settings to use for apocalypse event.
+- **"apocalypse_settings.txt"** file contains the settings to use for the _apocalypse_ event.
+
+- **"meteor_shower_settings.txt"** file contains the settings to use for the _meteor shower_ event.
+
 ---
 ### Bug reports
 ---
