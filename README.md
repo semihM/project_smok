@@ -27,9 +27,10 @@
        <code>!speak ellis hurrah21</code>
  
    + ### Via console:
+     + **To enable the console**: [Main Menu -> Options -> Keyboard/Mouse -> Enable the "Allow Developer Console" option](https://left4dead.fandom.com/wiki/Console_commands#:~:text=it%20can%20be%20activated,pressing%20the%20tilde%20(~)%20key.)
      + Add **"scripted_user_func "** before the command and seperate it and arguments with **"," commas**
      + Allows pretty much unlimited amount of characters in a command
-     + This option **restricts usage of some special characters** such as : **quotation marks " | commas , | equals signs = **
+     + This option **restricts usage of some special characters** such as : **quotation marks(""), commas(,), equals signs(=)**
      
        <code>scripted_user_func command,argument_1,argument_2,...</code>
  
