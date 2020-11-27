@@ -259,6 +259,52 @@
     
     Menu Sequence | _6 9 6_
     ------------- | -------------
+    
+---
+- **model** : Change the model of an entity
+
+    Chat Syntax | !model *target* *model_path*
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *model,target,model_path* 
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 7 1_, _6 9 7 2_ AND _6 9 7 3_
+    ------------- | -------------
+    
+```cpp 
+       //Overloads:
+       model {target:(!self,!picker,#{ID},{Name}) } {model_path}  
+       
+       // Example: Change your model to a TV
+       model !self models/props_interiors/tv.mdl
+       
+       // Example: Change targeted object's model to a wheelbarrow
+       model !picker models/props_junk/wheebarrow01a.mdl
+
+       // Example: Change entity at index 54's model to a vending machine
+       model #54 models/props/cs_office/vending_machine.mdl
+```
+---
+- **model_scale** : Change the model scale of an entity, only works with a few of the models
+
+    Chat Syntax | !model_scale *target* *scale*
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *model,target,scale* 
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 7 4_ AND _6 9 7 5_
+    ------------- | -------------
+    
+```cpp 
+       //Overloads:
+       model_scale {target:(!self,!picker,#{ID},{Name}) } {scale}  
+       
+       // Example: Make yourself 2 times bigger ( if possible )
+       model_scale !self 2
+       
+```
 ---
 ## Random and saved voices
 ---
