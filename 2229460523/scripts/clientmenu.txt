@@ -35933,38 +35933,38 @@
 			"Title"     "Models Page 1"
 			"1"
 			{
+					"command"    "play buttons/button14;show_menu models_self_survivor_infected"
+					"label"      " Survivor and Infected models"
+			}
+			"2"
+			{
 					"command"    "play buttons/button14;show_menu models_self_furniture1"
 					"label"      " Furniture and stuff"
 			}
-			"2"
+			"3"
 			{		
 					"command"    "play buttons/button14;show_menu models_self_vehicles1"
 					"label"      " Vehicles"
 			}
-			"3"
+			"4"
 			{		
 					"command"    "play buttons/button14;show_menu models_self_unique1"
 					"label"      " Uniques"
 			}
-			"4"
+			"5"
 			{
 					"command"    "play buttons/button14;show_menu models_self_barrels1"
 					"label"      " Barrels and crates"
 			}
-			"5"
+			"6"
 			{
 					"command"    "play buttons/button14;show_menu models_self_equipment1"
 					"label"      " Hazardous stuff"
 			}
-			"6"
+			"7"
 			{
 					"command"    "play buttons/button14;show_menu models_self_foliage1"
 					"label"      " Throwable and breakables"
-			}
-			"7"
-			{
-					"command"    "play buttons/button14;show_menu models_self_vehicles_junk1"
-					"label"      " Other vehicles"
 			}
 			"8"
 			{
@@ -35975,6 +35975,176 @@
 			{
 					"command"    "play buttons/button14;show_menu models_self_menu_start2"
 					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"models_self_survivor_infected"
+	{
+			"Title"     "Survivors or infected"
+			"1"
+			{
+					"command"    "play buttons/button14;show_menu models_self_survivors"
+					"label"      " Survivors"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;show_menu models_self_infected"
+					"label"      " Infected"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu models_self_menu_start1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"models_self_survivors"
+	{
+			"Title"     "Survivors"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/survivors/survivor_namvet.mdl;show_menu models_self_survivors"
+					"label"      " Bill"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/survivors/survivor_biker.mdl;show_menu models_self_survivors"
+					"label"      " Francis"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/survivors/survivor_manager.mdl;show_menu models_self_survivors"
+					"label"      " Louis"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/survivors/survivor_teenangst.mdl;show_menu models_self_survivors"
+					"label"      " Zoey"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/survivors/survivor_gambler.mdl;show_menu models_self_survivors"
+					"label"      " Nick"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/survivors/survivor_mechanic.mdl;show_menu models_self_survivors"
+					"label"      " Ellis"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/survivors/survivor_coach.mdl;show_menu models_self_survivors"
+					"label"      " Coach"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/survivors/survivor_producer.mdl;show_menu models_self_survivors"
+					"label"      " Rochelle"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu models_self_survivor_infected"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"models_self_infected"
+	{
+			"Title"     "Infected"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/infected/smoker.mdl;show_menu models_self_infected"
+					"label"      " Smoker"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/infected/boomer.mdl;show_menu models_self_infected"
+					"label"      " Boomer"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/infected/boomette.mdl;show_menu models_self_infected"
+					"label"      " Boomette"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/infected/hunter.mdl;show_menu models_self_infected"
+					"label"      " Hunter"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/infected/spitter.mdl;show_menu models_self_infected"
+					"label"      " Spitter"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/infected/charger.mdl;show_menu models_self_infected"
+					"label"      " Charger"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/infected/jockey.mdl;show_menu models_self_infected"
+					"label"      " Jockey"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu models_self_survivor_infected"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu models_self_infected2"
+					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"models_self_infected2"
+	{
+			"Title"     "Infected 2"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/infected/witch.mdl;show_menu models_self_infected2"
+					"label"      " Witch"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/infected/witch_bride.mdl;show_menu models_self_infected2"
+					"label"      " Witch Bride"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/infected/hulk.mdl;show_menu models_self_infected2"
+					"label"      " Tank"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/infected/hulk_dlc3.mdl;show_menu models_self_infected2"
+					"label"      " Tank dlc3"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu models_self_infected"
+					"label"      " << Back"
 			}
 			"0"
 			{
@@ -36214,7 +36384,11 @@
 					"command"    "play buttons/button14;show_menu models_self_shacks1"
 					"label"      " Screens"
 			}
-			
+			"2"
+			{
+					"command"    "play buttons/button14;show_menu models_self_vehicles_junk1"
+					"label"      " Other vehicles"
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_menu_start6"
@@ -37136,7 +37310,7 @@
 			
 			"1"
             {
-                    "command"	 "play buttons/button14;scripted_user_func barrel;show_menu models_self_barrels1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_industrial/barrel_fuel.mdl;show_menu models_self_barrels1"
 					"label"		 " Barrel"
 		    }
 			"2"
@@ -38793,27 +38967,27 @@
 			}
 			"3"
 			{
-					"command"	 "play buttons/button14;scripted_user_func gascan;show_menu models_self_equipment1"
+					"command"	 "play buttons/button14;scripted_user_func model,!self,models/props_junk/gascan001a.mdl;show_menu models_self_equipment1"
 					"label"		 " Gascan"
 			}
 			"4"		
 			{
-					"command"	 "play buttons/button14;scripted_user_func models_selfanetank;show_menu models_self_equipment1"
+					"command"	 "play buttons/button14;scripted_user_func model,!self,models/props_junk/propanecanister001a.mdl;show_menu models_self_equipment1"
 					"label"		 " Propanetank"
 			}
 			"5"
 			{
-					"command"	 "play buttons/button14;scripted_user_func oxygentank;show_menu models_self_equipment1"
+					"command"	 "play buttons/button14;scripted_user_func model,!self,models/props_equipment/oxygentank01.mdl;show_menu models_self_equipment1"
 					"label"		 " Oxygentank"
 			}
 			"6"
 			{
-					"command"	 "play buttons/button14;scripted_user_func fireworkcrate;show_menu models_self_equipment1"
+					"command"	 "play buttons/button14;scripted_user_func model,!self,models/props_junk/explosive_box001.mdl;show_menu models_self_equipment1"
 					"label"		 " Firework"
 			}
 			"7"
 			{
-					"command"	 "play buttons/button14;scripted_user_func barrel;show_menu models_self_equipment1"
+					"command"	 "play buttons/button14;scripted_user_func model,!self,models/props_industrial/barrel_fuel.mdl;show_menu models_self_equipment1"
 					"label"		 " Barrel"
 			}		
 
@@ -41513,7 +41687,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu models_self_menu_start1"
+					"command"    "play buttons/button14;show_menu models_self_menu_start6"
 					"label"      " << Back"
 			}
 			"9"
@@ -41575,38 +41749,38 @@
 			"Title"     "Models Page 1"
 			"1"
 			{
+					"command"    "play buttons/button14;show_menu models_picker_survivor_infected"
+					"label"      " Survivor and Infected models"
+			}
+			"2"
+			{
 					"command"    "play buttons/button14;show_menu models_picker_furniture1"
 					"label"      " Furniture and stuff"
 			}
-			"2"
+			"3"
 			{		
 					"command"    "play buttons/button14;show_menu models_picker_vehicles1"
 					"label"      " Vehicles"
 			}
-			"3"
+			"4"
 			{		
 					"command"    "play buttons/button14;show_menu models_picker_unique1"
 					"label"      " Uniques"
 			}
-			"4"
+			"5"
 			{
 					"command"    "play buttons/button14;show_menu models_picker_barrels1"
 					"label"      " Barrels and crates"
 			}
-			"5"
+			"6"
 			{
 					"command"    "play buttons/button14;show_menu models_picker_equipment1"
 					"label"      " Hazardous stuff"
 			}
-			"6"
+			"7"
 			{
 					"command"    "play buttons/button14;show_menu models_picker_foliage1"
 					"label"      " Throwable and breakables"
-			}
-			"7"
-			{
-					"command"    "play buttons/button14;show_menu models_picker_vehicles_junk1"
-					"label"      " Other vehicles"
 			}
 			"8"
 			{
@@ -41624,7 +41798,176 @@
 					"label"      " Exit"
 			}
 	}
+	
+	"models_picker_survivor_infected"
+	{
+			"Title"     "Survivors or infected"
+			"1"
+			{
+					"command"    "play buttons/button14;show_menu models_picker_survivors"
+					"label"      " Survivors"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;show_menu models_picker_infected"
+					"label"      " Infected"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu models_picker_menu_start1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"models_picker_survivors"
+	{
+			"Title"     "Survivors"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/survivors/survivor_namvet.mdl;show_menu models_picker_survivors"
+					"label"      " Bill"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/survivors/survivor_biker.mdl;show_menu models_picker_survivors"
+					"label"      " Francis"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/survivors/survivor_manager.mdl;show_menu models_picker_survivors"
+					"label"      " Louis"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/survivors/survivor_teenangst.mdl;show_menu models_picker_survivors"
+					"label"      " Zoey"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/survivors/survivor_gambler.mdl;show_menu models_picker_survivors"
+					"label"      " Nick"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/survivors/survivor_mechanic.mdl;show_menu models_picker_survivors"
+					"label"      " Ellis"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/survivors/survivor_coach.mdl;show_menu models_picker_survivors"
+					"label"      " Coach"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/survivors/survivor_producer.mdl;show_menu models_picker_survivors"
+					"label"      " Rochelle"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu models_picker_survivor_infected"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"models_picker_infected"
+	{
+			"Title"     "Infected"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/infected/smoker.mdl;show_menu models_picker_infected"
+					"label"      " Smoker"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/infected/boomer.mdl;show_menu models_picker_infected"
+					"label"      " Boomer"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/infected/boomette.mdl;show_menu models_picker_infected"
+					"label"      " Boomette"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/infected/hunter.mdl;show_menu models_picker_infected"
+					"label"      " Hunter"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/infected/spitter.mdl;show_menu models_picker_infected"
+					"label"      " Spitter"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/infected/charger.mdl;show_menu models_picker_infected"
+					"label"      " Charger"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/infected/jockey.mdl;show_menu models_picker_infected"
+					"label"      " Jockey"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu models_picker_survivor_infected"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu models_picker_infected2"
+					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
 
+	"models_picker_infected2"
+	{
+			"Title"     "Infected 2"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/infected/witch.mdl;show_menu models_picker_infected2"
+					"label"      " Witch"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/infected/witch_bride.mdl;show_menu models_picker_infected2"
+					"label"      " Witch Bride"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/infected/hulk.mdl;show_menu models_picker_infected2"
+					"label"      " Tank"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/infected/hulk_dlc3.mdl;show_menu models_picker_infected2"
+					"label"      " Tank dlc3"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu models_picker_infected"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
 	"models_picker_menu_start2"
 	{
 			"Title"     "Models Page 2"
@@ -41855,6 +42198,11 @@
 			{
 					"command"    "play buttons/button14;show_menu models_picker_shacks1"
 					"label"      " Screens"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;show_menu models_picker_vehicles_junk1"
+					"label"      " Other vehicles"
 			}
 			
 			"7"
@@ -42778,7 +43126,7 @@
 			
 			"1"
             {
-                    "command"	 "play buttons/button14;scripted_user_func barrel;show_menu models_picker_barrels1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_industrial/barrel_fuel.mdl;show_menu models_picker_barrels1"
 					"label"		 " Barrel"
 		    }
 			"2"
@@ -44435,29 +44783,29 @@
 			}
 			"3"
 			{
-					"command"	 "play buttons/button14;scripted_user_func gascan;show_menu models_picker_equipment1"
+					"command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_junk/gascan001a.mdl;show_menu models_picker_equipment1"
 					"label"		 " Gascan"
 			}
 			"4"		
 			{
-					"command"	 "play buttons/button14;scripted_user_func models_pickeranetank;show_menu models_picker_equipment1"
+					"command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_junk/propanecanister001a.mdl;show_menu models_picker_equipment1"
 					"label"		 " Propanetank"
 			}
 			"5"
 			{
-					"command"	 "play buttons/button14;scripted_user_func oxygentank;show_menu models_picker_equipment1"
+					"command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_equipment/oxygentank01.mdl;show_menu models_picker_equipment1"
 					"label"		 " Oxygentank"
 			}
 			"6"
 			{
-					"command"	 "play buttons/button14;scripted_user_func fireworkcrate;show_menu models_picker_equipment1"
+					"command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_junk/explosive_box001.mdl;show_menu models_picker_equipment1"
 					"label"		 " Firework"
 			}
 			"7"
 			{
-					"command"	 "play buttons/button14;scripted_user_func barrel;show_menu models_picker_equipment1"
+					"command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_industrial/barrel_fuel.mdl;show_menu models_picker_equipment1"
 					"label"		 " Barrel"
-			}		
+			}			
 
 			"8"
 			{
@@ -47155,7 +47503,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu models_picker_menu_start1"
+					"command"    "play buttons/button14;show_menu models_picker_menu_start6"
 					"label"      " << Back"
 			}
 			"9"

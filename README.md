@@ -269,7 +269,7 @@
     Console Syntax | scripted_user_func *model,target,model_path* 
     ------------- | -------------
     
-    Menu Sequence | _6 9 7 1_, _6 9 7 2_ AND _6 9 7 3_
+    Menu Sequence | _6 9 7 1_ AND _6 9 7 2_
     ------------- | -------------
     
 ```cpp 
@@ -294,7 +294,7 @@
     Console Syntax | scripted_user_func *model,target,scale* 
     ------------- | -------------
     
-    Menu Sequence | _6 9 7 4_ AND _6 9 7 5_
+    Menu Sequence | _6 9 7 3_ AND _6 9 7 4_
     ------------- | -------------
     
 ```cpp 

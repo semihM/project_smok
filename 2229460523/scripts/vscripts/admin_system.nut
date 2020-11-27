@@ -7870,6 +7870,9 @@ if ( Director.GetGameMode() == "holdout" )
 		try{ent = VSLib.Entity(Ent(ent))}catch(e){return;}
 	}
 
+	if(ent == null)
+		return;
+
 	local model = GetArgument(2);
 	if(model == null)
 		return;
@@ -7906,6 +7909,9 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		try{ent = VSLib.Entity(Ent(ent))}catch(e){return;}
 	}
+
+	if(ent == null)
+		return;
 
 	local scale = GetArgument(2);
 	if(scale == null)
