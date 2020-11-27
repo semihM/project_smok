@@ -174,7 +174,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		}
 
 		// Chat output state
-	    _outputsEnabled = 
+		_outputsEnabled = 
 		{
 			bill=false,
 			francis=false,
@@ -302,7 +302,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 
 		// Wheter to attach to looked location of the targeted entity
 		// if false then particle spawns at entity's origin
-	    _attachTargetedLocation = 
+		_attachTargetedLocation = 
 		{
 			bill=true,
 			francis=true,
@@ -328,7 +328,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		}
 
 		// Prop spawn_settings
-	 	_prop_spawn_settings_menu_type =
+		_prop_spawn_settings_menu_type =
 		{
 			bill="all",
 			francis="all",
@@ -677,7 +677,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 }
 
 /*
- *	@authors rhino
+ * @authors rhino
  */
 ::AdminSystem.LoadApocalypseSettings <- function ()
 {
@@ -700,7 +700,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 }
 
 /*
- *	@authors rhino
+ * @authors rhino
  */
 ::AdminSystem.LoadShowerSettings <- function ()
 {
@@ -723,7 +723,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 }
 
 /*
- *	@authors rhino
+ * @authors rhino
  */
 ::AdminSystem.SaveApocalypseSettings <- function ()
 {
@@ -744,7 +744,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 }
 
 /*
- *	@authors rhino
+ * @authors rhino
  */
 ::AdminSystem.SaveShowerSettings <- function ()
 {
@@ -2628,6 +2628,16 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.GrabMethodCmd( player, args );
 			break;
 		}
+		case "model":
+		{
+			AdminSystem.ModelCmd( player, args );
+			break;
+		}
+		case "model_scale":
+		{
+			AdminSystem.ModelScaleCmd( player, args );
+			break;
+		}
 		case "timescale":
 		{
 			AdminSystem.TimescaleCmd( player, args );
@@ -3343,7 +3353,7 @@ enum SCENES
 }
 
 /*
- * @rhino
+ * @authors rhino
  * Default meteor event settings
  */
 ::AdminSystem.Vars._meteor_shower_state <- 0;
@@ -3845,7 +3855,7 @@ enum SCENES
 }
 
 /*
- * @rhino
+ * @authors rhino
  * Default apocalypse event settings
  */
 ::AdminSystem.Vars._propageddon_state <- 0;
@@ -4571,7 +4581,7 @@ enum SCENES
 			ClientPrint(null,3,"\x04"+player.GetCharacterName()+"->Arguments should be in one of the following formats: \n1){character} >{sequence} {length} \n2){character} {line} {length} ");return;
 		}
 	}
- 	local steamid = player.GetSteamID();
+	local steamid = player.GetSteamID();
 	
 	local character = arguments[0];
 	if(character==null)
@@ -5328,6 +5338,59 @@ function Notifications::OnAdrenalineUsed::_SpeakWhenUsedAdrenalineCondition(ent,
 /*
  * @authors rhino
  */
+::AdminSystem.Vars._RockThrow <- 
+{
+	enabled = true
+	rockorigin = null
+	rockpushspeed = 900
+	raise = 300
+	friction = 0.01
+}
+
+function Notifications::OnHurt::_HitByTankRock(player,attacker,args)
+{
+	if(!("weapon" in args))
+		return;
+	if(args.weapon != "tank_rock")
+		return;
+	else
+	{
+		if(AdminSystem.Vars._RockThrow.enabled)
+		{
+			local pushvec = player.GetEyePosition() - AdminSystem.Vars._RockThrow.rockorigin ;
+			pushvec = pushvec.Scale( AdminSystem.Vars._RockThrow.rockpushspeed / pushvec.Length());
+			
+			Timers.AddTimer(0.1,false,_pushPlayer,
+			{
+				player=player,
+				pushvec=pushvec,
+				raise=AdminSystem.Vars._RockThrow.raise,
+				friction=AdminSystem.Vars._RockThrow.friction
+			})	
+		}
+	}
+}
+
+::_pushPlayer <- function(args)
+{
+	args.player.OverrideFriction(1,args.friction);
+	args.player.Push(Vector(0,0,args.raise));
+	args.player.Push(args.pushvec);
+}
+
+function Notifications::OnAbilityUsed::_TankRockSpawning(player,ability,args)
+{
+	if(ability != "ability_throw")
+		return;
+	else
+	{
+		AdminSystem.Vars._RockThrow.rockorigin = player.GetOrigin()+Vector(0,0,45);
+	}
+}
+
+/*
+ * @authors rhino
+ */
 /////////////////////custom_sequence/////////////////////////
 function ChatTriggers::loop( player, args, text )
 {
@@ -5674,6 +5737,16 @@ function ChatTriggers::rainbow(player,args,text)
 function ChatTriggers::color(player,args,text)
 {
 	AdminSystem.ColorCmd(player, args);
+}
+
+function ChatTriggers::model(player,args,text)
+{
+	AdminSystem.ModelCmd(player, args);
+}
+
+function ChatTriggers::model_scale(player,args,text)
+{
+	AdminSystem.ModelScaleCmd(player, args);
 }
 
 function ChatTriggers::attach_particle(player,args,text)
@@ -7778,6 +7851,82 @@ if ( Director.GetGameMode() == "holdout" )
 /*
  * @authors rhino
  */
+::AdminSystem.ModelCmd <- function ( player, args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local ent = GetArgument(1);
+	if(ent == "!picker")
+		ent = player.GetLookingEntity();
+	else if(ent == "!self")
+		ent = player;
+	else if(ent.find("#") != null)
+	{
+		ent = VSLib.Entity(Ent(ent))
+	}
+	else
+	{
+		try{ent = VSLib.Entity(Ent(ent))}catch(e){return;}
+	}
+
+	local model = GetArgument(2);
+	if(model == null)
+		return;
+
+	local name = player.GetCharacterName().tolower();
+	
+	ent.SetModel(model);
+
+	if (AdminSystem.Vars._outputsEnabled[name])
+	{ClientPrint(null,3,"\x04"+name+"->Changed model of #"+ent.GetIndex()+" to:"+model);}
+	else
+	{printB(player.GetCharacterName(),name+"->Changed model of #"+ent.GetIndex()+" to:"+model,true,"info",true,true);}
+	
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.ModelScaleCmd <- function ( player, args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local ent = GetArgument(1);
+	if(ent == "!picker")
+		ent = player.GetLookingEntity();
+	else if(ent == "!self")
+		ent = player;
+	else if(ent.find("#") != null)
+	{
+		ent = VSLib.Entity(Ent(ent))
+	}
+	else
+	{
+		try{ent = VSLib.Entity(Ent(ent))}catch(e){return;}
+	}
+
+	local scale = GetArgument(2);
+	if(scale == null)
+		return;
+
+	try{scale = scale.tofloat()}catch(e){return;}
+
+	local name = player.GetCharacterName().tolower();
+	
+	ent.SetModelScale(scale);
+
+	if (AdminSystem.Vars._outputsEnabled[name])
+	{ClientPrint(null,3,"\x04"+name+"->Changed model scale of #"+ent.GetIndex()+" to:"+scale);}
+	else
+	{printB(player.GetCharacterName(),name+"->Changed model scale of #"+ent.GetIndex()+" to:"+scale,true,"info",true,true);}
+	
+}
+
+/*
+ * @authors rhino
+ */
 ::AdminSystem.ParticleCmd <- function ( player, args )
 {	
 	if (!AdminSystem.IsPrivileged( player ))
@@ -8017,11 +8166,11 @@ if ( Director.GetGameMode() == "holdout" )
 	{ 
 		classname = "info_particle_system",
 		targetname = uniqname,
-	  	origin = aimedlocation,
-	   	angles = QAngle(-90,0,0),
-	    start_active = true,
+		origin = aimedlocation,
+		angles = QAngle(-90,0,0),
+		start_active = true,
 		effect_name = explosion_particle 
-    };
+	};
 	
 	local particle = Utils.CreateEntityWithTable(particletable);
 	local minsp = argtable.minpushspeed
@@ -12038,7 +12187,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local t = intervals*(-7.0);
 	local last_t = 0.0;
 
-    function color_seq()
+	function color_seq()
 	{
 		entlooked.InputColor(255, 0, 0,t+intervals);
 		entlooked.InputColor(255, 127, 0,t+intervals*2.0);
