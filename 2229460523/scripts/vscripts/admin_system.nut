@@ -2638,6 +2638,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.ModelScaleCmd( player, args );
 			break;
 		}
+		case "disguise":
+		{
+			AdminSystem.DisguiseCmd( player, args );
+			break;
+		}
 		case "timescale":
 		{
 			AdminSystem.TimescaleCmd( player, args );
@@ -5749,6 +5754,11 @@ function ChatTriggers::model_scale(player,args,text)
 	AdminSystem.ModelScaleCmd(player, args);
 }
 
+function ChatTriggers::disguise(player,args,text)
+{
+	AdminSystem.DisguiseCmd(player, args);
+}
+
 function ChatTriggers::attach_particle(player,args,text)
 {
 	AdminSystem.Attach_particleCmd(player, args);
@@ -7877,10 +7887,24 @@ if ( Director.GetGameMode() == "holdout" )
 	if(model == null)
 		return;
 
+	if(model.find("models/") == null)
+	{
+		if(model.find("*")==null)
+			return;
+		
+		model = split(model,"*")
+		if(model.len() != 1)
+			return;
+
+		try{model = model.tointeger()}catch(e){return;}
+
+		ent.SetModelIndex(model);
+	}
+	else
+		ent.SetModel(model);
+
 	local name = player.GetCharacterName().tolower();
 	
-	ent.SetModel(model);
-
 	if (AdminSystem.Vars._outputsEnabled[name])
 	{ClientPrint(null,3,"\x04"+name+"->Changed model of #"+ent.GetIndex()+" to:"+model);}
 	else
@@ -7927,6 +7951,57 @@ if ( Director.GetGameMode() == "holdout" )
 	{ClientPrint(null,3,"\x04"+name+"->Changed model scale of #"+ent.GetIndex()+" to:"+scale);}
 	else
 	{printB(player.GetCharacterName(),name+"->Changed model scale of #"+ent.GetIndex()+" to:"+scale,true,"info",true,true);}
+	
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.DisguiseCmd <- function ( player, args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local ent = player.GetLookingEntity();
+	
+	if(ent == null)
+	{
+		foreach(e in Objects.AroundRadius(player.GetLookingLocation(),1))
+		{
+			ent = e;
+			break;
+		}
+
+		if(ent == null)
+			return;
+	}
+	
+	local model = ent.GetModel();
+	if(model == null)
+		return;
+
+	if(model.find("models/") == null)
+	{
+		if(model.find("*")==null)
+			return;
+		
+		model = split(model,"*")
+		if(model.len() != 1)
+			return;
+
+		try{model = model.tointeger()}catch(e){return;}
+
+		player.SetModelIndex(model);
+	}
+	else
+		player.SetModel(model);
+
+	local name = player.GetCharacterName().tolower();
+
+	if (AdminSystem.Vars._outputsEnabled[name])
+	{ClientPrint(null,3,"\x04"+name+"->Changed model of #"+ent.GetIndex()+" to:"+model);}
+	else
+	{printB(player.GetCharacterName(),name+"->Changed model of #"+ent.GetIndex()+" to:"+model,true,"info",true,true);}
 	
 }
 
@@ -8957,6 +9032,7 @@ if ( Director.GetGameMode() == "holdout" )
 			if(pairsplit[1].find("|") != null)
 			{	
 				local str = split(pairsplit[1],"|");
+
 				// Three values, Possible position, angle, rgb value
 				if(str.len()==4)
 				{
@@ -8992,6 +9068,26 @@ if ( Director.GetGameMode() == "holdout" )
 					else if(str[0]=="str")
 					{
 						pairsplit[1] = str[1];
+					}
+					else
+					{
+						printB(player.GetCharacterName(),name+" -> Unrecognized TYPE("+str[0]+") for Key->"+pairsplit[0],true,"error",true,true);
+						return;
+					}
+				}
+				// string with multiple spaces
+				else
+				{
+					if(str[0]=="str")
+					{
+						pairsplit[1] = ""
+						for(local i=1;i<str.len();i++)
+							pairsplit += str[i]+" ";
+						
+					}
+					else if(str.len() == 1)
+					{
+						pairsplit[1] = str[0]
 					}
 					else
 					{
@@ -12392,6 +12488,7 @@ if ( Director.GetGameMode() == "holdout" )
 		printB(playername,"Index-> "+ ent.GetIndex() + " | Base index-> "+ ent.GetBaseIndex(),true,"debug",false,false);
 		printB(playername,"Type-> "+ ent.GetType(),true,"debug",false,false);
 		printB(playername,"Parent-> "+ ent.GetParent(),true,"debug",false,false);
+		printB(playername,"Model-> " + ent.GetModel(),true,"debug",false,false);
 		printB(playername,"Scale-> " + ent.GetModelScale(),true,"debug",false,false);
 
 		printB(playername,"==================flags======================",true,"debug",false,false);

@@ -676,6 +676,61 @@ function VSLib::Utils::CreateEntityWithTable(kvs = {},baseent = null)
 	return ::VSLib.Entity(ent);
 }
 
+/*
+ * @authors rhino
+ * Reset survivor models back to their characters'
+ */
+function VSLib::Utils::ResetModels()
+{
+	foreach(p in Players.AliveSurvivors())
+	{
+		switch(p.GetCharacterName().tolower())
+		{
+			case "bill":
+			{
+				p.SetModel("models/survivors/survivor_namvet.mdl");
+				break;
+			}
+			case "francis":
+			{
+				p.SetModel("models/survivors/survivor_biker.mdl");
+				break;
+			}
+			case "louis":
+			{
+				p.SetModel("models/survivors/survivor_manager.mdl");
+				break;
+			}
+			case "zoey":
+			{
+				p.SetModel("models/survivors/survivor_teenangst.mdl");
+				break;
+			}
+			case "nick":
+			{
+				p.SetModel("models/survivors/survivor_gambler.mdl");
+				break;
+			}
+			case "ellis":
+			{
+				p.SetModel("models/survivors/survivor_mechanic.mdl");
+				break;
+			}
+			case "coach":
+			{
+				p.SetModel("models/survivors/survivor_coach.mdl");
+				break;
+			}
+			case "rochelle":
+			{
+				p.SetModel("models/survivors/survivor_producer.mdl");
+				break;
+			}
+			default:
+				break;
+		}
+	}
+}
 /**
  * Alternative to Utils.CreateEntity(). Spawns a new entity and returns it as VSLib::Entity.
  *

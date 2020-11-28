@@ -1461,7 +1461,7 @@ g_MapScript.ScriptMode_AddCriteria <- function ( )
 ::VSLib.EasyLogic.Events.OnGameEvent_map_transition <- function (params)
 {
 	::VSLib.EasyLogic.NextMapContinues <- true;
-	
+	Utils.ResetModels();
 	foreach (func in ::VSLib.EasyLogic.Notifications.OnMapEnd)
 		func();
 }

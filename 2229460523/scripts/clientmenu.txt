@@ -17793,6 +17793,11 @@
 			}
 			"5"
 			{		
+					"command"    "play buttons/button14;scripted_user_func disguise;show_menu models_menus"
+					"label"      " Disguise as targeted object"
+			}
+			"6"
+			{		
 					"command"    "play buttons/button14;show_menu models_views"
 					"label"      " View of your character"
 			}
