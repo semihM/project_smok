@@ -8224,9 +8224,10 @@ if ( Director.GetGameMode() == "holdout" )
 		if(model.len() != 1)
 			return;
 
-		try{model = model.tointeger()}catch(e){return;}
+		try{model = model[0].tointeger()}catch(e){return;}
 
 		ent.SetModelIndex(model);
+		model = "*"+model.tostring();
 	}
 	else
 	{
@@ -9518,7 +9519,7 @@ if ( Director.GetGameMode() == "holdout" )
 					{
 						pairsplit[1] = ""
 						for(local i=1;i<str.len();i++)
-							pairsplit += str[i]+" ";
+							pairsplit[1] += str[i]+" ";
 						
 					}
 					else if(str.len() == 1)
@@ -10344,6 +10345,12 @@ if ( Director.GetGameMode() == "holdout" )
 	local Value3 = GetArgument(5);
 	local Entity = player.GetLookingEntity();
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
+
+	if(Action.tolower() == "addoutput")
+	{
+		if(!AdminSystem.HasScriptAuth(player))
+			return;
+	}
 
 	local val = "";
 	if (Value && Value2 && Value3)
@@ -12955,7 +12962,7 @@ if ( Director.GetGameMode() == "holdout" )
 		printB(playername,"=================player_stats===================",true,"debug",false,false);
 		foreach(key,value in player.GetStats())
 		{
-			printB(playername,"[Stats] "+Utils.StringReplace(key,"m_","")+" -> "+value.tostring(),true,"debug",false,false);
+			printB(playername,"[Stats] "+key+" -> "+value.tostring(),true,"debug",false,false);
 		}
 
 		if(svcheatsval==1.0)
