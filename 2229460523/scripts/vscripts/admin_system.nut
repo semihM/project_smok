@@ -5923,6 +5923,10 @@ function ChatTriggers::update_tank_rock_preference( player, args, text )
 	AdminSystem.UpdateTankRockPreferenceCmd( player, args );
 }
 
+function ChatTriggers::update_model_preference( player, args, text )
+{
+	AdminSystem.UpdateModelPreferenceCmd( player, args );
+}
 /*
  * @authors rhino
  */

@@ -17788,7 +17788,7 @@
 			}
 			"8"
 			{
-					"command"	 "play buttons/button14;show_menu smok_menu"
+					"command"	 "play buttons/button14;show_menu smok_menu2"
 					"label"		 " << Back"
 			}
 			"0"
