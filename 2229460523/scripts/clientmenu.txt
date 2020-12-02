@@ -17716,40 +17716,36 @@
 	"smok_menu2"
 	{	
 			"Title"     "Smok Menu 2"
+			
 			"1"
 			{
-				"command"	 "play buttons/button14;scripted_user_func update_print_output_state;show_menu smok_menu2"
-				"label"		 " Enable/Disable output messages"
+					"command"	 "play buttons/button14;show_menu smok_menu_settings1"
+					"label"		 " Enable/Disable some custom stuff"
 			}
 			"2"
 			{
-				"command"	 "play buttons/button14;scripted_user_func update_custom_response_preference;show_menu smok_menu2"
-				"label"		 " Enable/Disable custom responses"
+					"command"    "play buttons/button14;show_menu smok_script_auth_GT"
+					"label"		 " Give/Take away script authorization"
 			}
 			"3"
 			{
-				"command"	 "play buttons/button14;show_menu prop_settings_typemenu1"
-				"label"		 " Prop spawn settings"
+					"command"	 "play buttons/button14;show_menu prop_settings_typemenu1"
+					"label"		 " Prop spawn settings"
 			}
 			"4"
 			{
-				"command"	 "play buttons/button14;show_menu smok_debug_info_menu1"
-				"label"		 " Debug settings menu"
+					"command"	 "play buttons/button14;show_menu smok_debug_info_menu1"
+					"label"		 " Debug settings menu"
 			}
 			"5"
 			{
-				"command"    "play buttons/button14;show_menu smok_script_auth_GT"
-				"label"		 " Give/Take away script authorization"
+					"command"    "play buttons/button14;scripted_user_func stop_car_alarms;show_menu smok_menu2"
+					"label"		 " Stop car alarms"
 			}
 			"6"
 			{
-				"command"    "play buttons/button14;scripted_user_func stop_car_alarms;show_menu smok_menu2"
-				"label"		 " Stop car alarms"
-			}
-			"7"
-			{
-				"command"    "play buttons/button14;show_menu models_menus"
-				"label"		 " Change model"
+					"command"    "play buttons/button14;show_menu models_menus"
+					"label"		 " Change model"
 			}
 			"8"
 			{
@@ -17767,29 +17763,63 @@
 					"label"      " Exit"
 			}
 	}
+	"smok_menu_settings1"
+	{
+			"Title"     "Settings"
+			"1"
+			{
+					"command"	 "play buttons/button14;scripted_user_func update_custom_response_preference;show_menu smok_menu_settings1"
+					"label"		 " Enable/Disable custom responses"
+			}
+			"2"
+			{
+					"command"	 "play buttons/button14;scripted_user_func update_tank_rock_preference;show_menu smok_menu_settings1"
+					"label"		 " Enable/Disable tank rock's push effect"
+			}
+			"3"
+			{
+					"command"	 "play buttons/button14;scripted_user_func update_jockey_preference;show_menu smok_menu_settings1"
+					"label"		 " Enable/Disable little bastards"
+			}
+			"4"
+			{
+					"command"	 "play buttons/button14;scripted_user_func update_model_preference;show_menu smok_menu_settings1"
+					"label"		 " Enable/Disable keeping last model between chapters"
+			}
+			"8"
+			{
+					"command"	 "play buttons/button14;show_menu smok_menu"
+					"label"		 " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
 
 	"models_menus"
 	{	
-			"Title"     "Change the"
+			"Title"     "Model changing options"
 			"1"
 			{
 					"command"	 "play buttons/button14;show_menu models_self_menu_start1"
-					"label"		 " model of yourself"
+					"label"		 " Change the model of yourself"
 			}
 			"2"
 			{		
 					"command"    "play buttons/button14;show_menu models_picker_menu_start1"
-					"label"      " model of the aimed object"
+					"label"      " Change the model of the aimed object"
 			}
 			"3"
 			{
 					"command"	 "play buttons/button14;show_menu models_self_scale1"
-					"label"		 " model scale of yourself"
+					"label"		 " Change the model scale of yourself"
 			}
 			"4"
 			{		
 					"command"    "play buttons/button14;show_menu models_picker_scale1"
-					"label"      " model scale of the aimed object"
+					"label"      " Change the model scale of the aimed object"
 			}
 			"5"
 			{		
@@ -17799,7 +17829,7 @@
 			"6"
 			{		
 					"command"    "play buttons/button14;show_menu models_views"
-					"label"      " View of your character"
+					"label"      " Change the view of your character"
 			}
 			"8"
 			{
@@ -18085,6 +18115,11 @@
 			{
 				"command"	 "play buttons/button14;scripted_user_func debug_info,player;show_menu smok_debug_info_menu1"
 				"label"		 " Dump info about player"
+			}
+			"6"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_print_output_state;show_menu smok_debug_info_menu1"
+				"label"		 " Enable/Disable output messages"
 			}
 			"8"
 			{

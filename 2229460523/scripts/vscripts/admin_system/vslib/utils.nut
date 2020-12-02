@@ -680,8 +680,58 @@ function VSLib::Utils::CreateEntityWithTable(kvs = {},baseent = null)
  * @authors rhino
  * Reset survivor models back to their characters'
  */
-function VSLib::Utils::ResetModels()
+function VSLib::Utils::ResetModels(name = null)
 {
+	if ( name != null)
+	{
+		switch(name.tolower())
+		{
+			case "bill":
+			{
+				GetPlayerFromCharacter("Bill").SetModel("models/survivors/survivor_namvet.mdl");
+				break;
+			}
+			case "francis":
+			{
+				GetPlayerFromCharacter("Francis").SetModel("models/survivors/survivor_biker.mdl");
+				break;
+			}
+			case "louis":
+			{
+				GetPlayerFromCharacter("Louis").SetModel("models/survivors/survivor_manager.mdl");
+				break;
+			}
+			case "zoey":
+			{
+				GetPlayerFromCharacter("Zoey").SetModel("models/survivors/survivor_teenangst.mdl");
+				break;
+			}
+			case "nick":
+			{
+				GetPlayerFromCharacter("Nick").SetModel("models/survivors/survivor_gambler.mdl");
+				break;
+			}
+			case "ellis":
+			{
+				GetPlayerFromCharacter("Ellis").SetModel("models/survivors/survivor_mechanic.mdl");
+				break;
+			}
+			case "coach":
+			{
+				GetPlayerFromCharacter("Coach").SetModel("models/survivors/survivor_coach.mdl");
+				break;
+			}
+			case "rochelle":
+			{
+				GetPlayerFromCharacter("Rochelle").SetModel("models/survivors/survivor_producer.mdl");
+				break;
+			}
+			default:
+				break;
+		}
+		return;
+	}
+	
 	foreach(p in Players.AliveSurvivors())
 	{
 		switch(p.GetCharacterName().tolower())

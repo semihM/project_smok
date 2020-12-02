@@ -257,7 +257,7 @@
     Console Syntax | scripted_user_func *stop_car_alarms* 
     ------------- | -------------
     
-    Menu Sequence | _6 9 6_
+    Menu Sequence | _6 9 5_
     ------------- | -------------
     
 ---
@@ -269,7 +269,7 @@
     Console Syntax | scripted_user_func *model,target,model_path* 
     ------------- | -------------
     
-    Menu Sequence | _6 9 7 1_ AND _6 9 7 2_
+    Menu Sequence | _6 9 6 1_ AND _6 9 6 2_
     ------------- | -------------
     
 ```cpp 
@@ -294,7 +294,7 @@
     Console Syntax | scripted_user_func *model,target,scale* 
     ------------- | -------------
     
-    Menu Sequence | _6 9 7 3_ AND _6 9 7 4_
+    Menu Sequence | _6 9 6 3_ AND _6 9 6 4_
     ------------- | -------------
     
 ```cpp 
@@ -305,6 +305,18 @@
        model_scale !self 2
        
 ```
+---
+- **disguise** : Disguise as targeted object (change your model to it's model)
+
+    Chat Syntax | !disguise
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *disguise* 
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 6 5_
+    ------------- | -------------
+
 ---
 ## Random and saved voices
 ---
@@ -843,7 +855,7 @@
        meteor_shower_setting {setting} {new_value: float/integer}
        
        // Example: Change "specific" meteor model to TV model and then change meteor model picking method to "specific"
-       // Model paths are required to be given in quotes ("")
+       // Model paths are required to be given in quotes ("") when using chat
        meteor_shower_setting meteormodelspecific "models/props_interiors/tv.mdl"
        meteor_shower_setting meteormodelpick 4
 ```
@@ -1041,7 +1053,101 @@
        invisible_walls disable all
 ```
 ---
-## Debug and script related 
+## Debugging, scripting and settings related
+---
+- **add_script_auth** : Give authorization to an admin to use "script" command
+
+    Chat Syntax | !add_script_auth *character*
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *add_script_auth,character*
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 2 1_
+    ------------- | -------------
+```cpp
+       //Overloads:
+       // ONLY THE HOST can give script authority to others
+       add_script_auth {character}
+    
+```
+---
+- **remove_script_auth** : Take away the authorization from admin to use "script" command
+
+    Chat Syntax | !remove_script_auth *character*
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *remove_script_auth,character*
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 2 2_
+    ------------- | -------------
+```cpp
+       //Overloads:
+       // Host's script authority can not be taken away
+       remove_script_auth {character}
+    
+```
+---
+- **update_custom_response_preference** : Enable/Disable custom responses
+
+    Chat Syntax | !update_custom_response_preference
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *update_custom_response_preference*
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 1 1_
+    ------------- | -------------
+
+---
+- **update_tank_rock_preference** : Enable/Disable push effect when hit by a tank's rock
+
+    Chat Syntax | !update_tank_rock_preference
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *update_tank_rock_preference*
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 1 2_
+    ------------- | -------------
+
+---
+- **update_jockey_preference** : Get rid of or bring back the little jockey bastards
+
+    Chat Syntax | !update_jockey_preference
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *update_jockey_preference*
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 1 3_
+    ------------- | -------------
+
+---
+- **update_model_preference** : Enable/Disable wheter to keep last model used for survivors between chapters
+
+    Chat Syntax | !update_model_preference
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *update_model_preference*
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 1 4_
+    ------------- | -------------
+
+---
+- **update_print_output_state** : Display debug messages for all in chat, or only in server's console
+
+    Chat Syntax | !update_print_output_state
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *update_print_output_state*
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 4 6_
+    ------------- | -------------
+    
 ---
 - **debug_info** : Dump information about objects
 
@@ -1060,40 +1166,6 @@
        
        // Example: Get information about your player's current state
        debug_info player
-```
----
-- **add_script_auth** : Give authorization to an admin to use "script" command
-
-    Chat Syntax | !add_script_auth *character*
-    ------------- | -------------
-
-    Console Syntax | scripted_user_func *add_script_auth,character*
-    ------------- | -------------
-    
-    Menu Sequence | _6 9 5 1_
-    ------------- | -------------
-```cpp
-       //Overloads:
-       // ONLY THE HOST can give script authority to others
-       add_script_auth {character}
-    
-```
-
-- **remove_script_auth** : Take away the authorization from admin to use "script" command
-
-    Chat Syntax | !remove_script_auth *character*
-    ------------- | -------------
-
-    Console Syntax | scripted_user_func *remove_script_auth,character*
-    ------------- | -------------
-    
-    Menu Sequence | _6 9 5 2_
-    ------------- | -------------
-```cpp
-       //Overloads:
-       // Host's script authority can not be taken away
-       remove_script_auth {character}
-    
 ```
 - **and more...**
 

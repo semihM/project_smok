@@ -490,6 +490,58 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		
 		_spawnedPianoKeys = {}
 
+		_modelPreference =
+		{
+			bill=
+			{
+				keeplast = true,
+				lastmodel = "models/survivors/survivor_namvet.mdl"
+				original = "models/survivors/survivor_namvet.mdl"
+			},
+			francis=
+			{
+				keeplast = true,
+				lastmodel = "models/survivors/survivor_biker.mdl"
+				original = "models/survivors/survivor_biker.mdl"
+			},
+			louis=
+			{
+				keeplast = true,
+				lastmodel = "models/survivors/survivor_manager.mdl"
+				original = "models/survivors/survivor_manager.mdl"
+			},
+			zoey=
+			{
+				keeplast = true,
+				lastmodel = "models/survivors/survivor_teenangst.mdl"
+				original = "models/survivors/survivor_teenangst.mdl"
+			},
+			nick=
+			{
+				keeplast = true,
+				lastmodel = "models/survivors/survivor_gambler.mdl"
+				original = "models/survivors/survivor_gambler.mdl"
+			},
+			ellis=
+			{
+				keeplast = true,
+				lastmodel = "models/survivors/survivor_mechanic.mdl"
+				original = "models/survivors/survivor_mechanic.mdl"
+			},
+			coach=
+			{
+				keeplast = true,
+				lastmodel = "models/survivors/survivor_coach.mdl"
+				original = "models/survivors/survivor_coach.mdl"
+			},
+			rochelle=
+			{
+				keeplast = true,
+				lastmodel = "models/survivors/survivor_producer.mdl"
+				original = "models/survivors/survivor_producer.mdl"
+			},
+		}
+
 		IgnoreSpeakerClass = true
 	}
 	
@@ -1538,6 +1590,218 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 					
 				}
 			}
+			
+			_modelPreference =
+			{
+				bill=
+				{
+					keeplast = true,
+					lastmodel = "models/survivors/survivor_namvet.mdl"
+					original = "models/survivors/survivor_namvet.mdl"
+				},
+				francis=
+				{
+					keeplast = true,
+					lastmodel = "models/survivors/survivor_biker.mdl"
+					original = "models/survivors/survivor_biker.mdl"
+				},
+				louis=
+				{
+					keeplast = true,
+					lastmodel = "models/survivors/survivor_manager.mdl"
+					original = "models/survivors/survivor_manager.mdl"
+				},
+				zoey=
+				{
+					keeplast = true,
+					lastmodel = "models/survivors/survivor_teenangst.mdl"
+					original = "models/survivors/survivor_teenangst.mdl"
+				},
+				nick=
+				{
+					keeplast = true,
+					lastmodel = "models/survivors/survivor_gambler.mdl"
+					original = "models/survivors/survivor_gambler.mdl"
+				},
+				ellis=
+				{
+					keeplast = true,
+					lastmodel = "models/survivors/survivor_mechanic.mdl"
+					original = "models/survivors/survivor_mechanic.mdl"
+				},
+				coach=
+				{
+					keeplast = true,
+					lastmodel = "models/survivors/survivor_coach.mdl"
+					original = "models/survivors/survivor_coach.mdl"
+				},
+				rochelle=
+				{
+					keeplast = true,
+					lastmodel = "models/survivors/survivor_producer.mdl"
+					original = "models/survivors/survivor_producer.mdl"
+				},
+			}
+
+			_CustomResponse =
+			{
+				bill = 
+				{
+					_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.bill,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+					
+					_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+					
+					_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.bill,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+				}
+
+				francis = 
+				{
+					_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.francis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+					
+					_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+
+					_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.francis,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+				}
+
+				louis = 
+				{
+					_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.louis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+					
+					_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+					
+					_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.louis,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+				}
+
+				zoey = 
+				{
+					_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.zoey,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+					
+					_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+					
+					_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.zoey,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+				}
+
+				nick = 
+				{
+					_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.nick,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+					
+					_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+					
+					_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.nick,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+				}
+
+				ellis = 
+				{
+					_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.ellis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+					
+					_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+					
+					_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.ellis,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+				}
+
+				coach = 
+				{
+					_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.coach,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+					
+					_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+					
+					_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.coach,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+				}
+
+				rochelle = 
+				{
+					_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.rochelle,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+					
+					_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+					
+					_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.rochelle,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+				}
+			}
+
+			_CustomResponseOptions =
+			{	
+				bill = {}
+				
+				francis = 
+				{
+					_SpeakWhenLeftSaferoom = 
+					{
+						enabled = true
+						prob = 0.2
+						order = SCENES.RANDOM
+						sequence =
+						{
+							smokboomer1=
+							{   // "Well hell, let's all- Smok- Booooomer!"
+								scenes=["warnboomer03.vcd","warnsmoker03.vcd","followme08.vcd"]
+								delays=[2.45,1.7,0]
+							}
+						}
+					}
+				}
+
+				louis = {}
+
+				zoey = {}
+
+				nick = {}	
+				
+				ellis = 
+				{
+					_SpeakWhenLeftSaferoom = 
+					{
+						enabled = true
+						prob = 0.2
+						order = SCENES.RANDOM
+						sequence =
+						{	
+							ilovecrack1=
+							{   // "Man I hate them zombies but I loooooove- Crack!"
+								scenes=["meleeresponse08.vcd","boomerjar17.vcd"]
+								delays=[2.55,0]
+							}
+						}
+					}
+				}
+
+				coach = {}
+
+				rochelle = {}
+			}
+
+			_meteor_shower_state = 0
+
+			_meteor_models =
+			{
+				_rocks = 
+				[
+					"models/props/cs_militia/militiarock02.mdl",
+					"models/props/cs_militia/militiarock03.mdl",
+					"models/props/cs_militia/militiarock05.mdl",
+					"models/props_wasteland/rock_moss01.mdl",
+					"models/props_wasteland/rock_moss02.mdl",
+					"models/props_wasteland/rock_moss03.mdl",
+					"models/props_wasteland/rock_moss04.mdl",
+					"models/props_wasteland/rock_moss05.mdl",
+					"models/props_wasteland/rockcliff07b.mdl"
+				]
+
+				_chunks = 
+				[
+					"models/props_debris/concrete_chunk02a.mdl",
+					"models/props_debris/concrete_chunk07a.mdl",
+					"models/props_interiors/concretepiller01_dm01_4.mdl",
+					"models/props_unique/zombiebreakwallinterior01_concrete_dm_part03.mdl",
+					"models/props_unique/zombiebreakwallinterior01_concrete_dm_part04.mdl",
+					"models/lostcoast/props_wasteland/rock_coast01e.mdl",
+					"models/lostcoast/props_wasteland/rock_cliff02a.mdl",
+					"models/lostcoast/props_wasteland/rock_cliff02b.mdl",
+					"models/lostcoast/props_wasteland/rock_cliff02c.mdl",
+					"models/lostcoast/props_wasteland/rock_cliff02d.mdl"
+				]
+
+				_custom = []
+			}
 		}
 	}
 	else
@@ -1545,7 +1809,6 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 		if ( AdminSystem.Vars.DirectorDisabled )
 			Utils.StopDirector();
 
-		
 		AdminSystem.Vars.CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle"]
 			
 		AdminSystem.Vars.CharacterNamesLower = ["bill","francis","louis","zoey","nick","ellis","coach","rochelle"]
@@ -1673,6 +1936,12 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			printl("[Custom-Fix] Applying fixes to HeldEntity table...");
 			AdminSystem.Vars._heldEntity.coach <- Utils.TableCopy(AdminSystem.Vars._heldEntity.Coach);
 			delete AdminSystem.Vars._heldEntity.Coach;
+		}
+		if("Coach" in AdminSystem.Vars._modelPreference)
+		{
+			printl("[Custom-Fix] Applying fixes to model preference table...");
+			AdminSystem.Vars._modelPreference.coach <- Utils.TableCopy(AdminSystem.Vars._modelPreference.Coach);
+			delete AdminSystem.Vars._modelPreference.Coach;
 		}
 		if("Coach" in AdminSystem.Vars._CustomResponseOptions)
 		{	
@@ -1846,7 +2115,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 		}
 		
 	}
-	catch(e){printl("[Custom-Warning] OnRoundStart reported: "+e);}
+	catch(e){printl("[OnRoundStart-AdminLoadFiles] "+e);}
 	
 	printl("[Custom] Loaded custom responses created by admins");
 
@@ -1860,6 +2129,26 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	{
 		::VSLib.Timers.AddTimer(3.2,false,Utils.PrintToAllDel,"Is it still raining?");
 		::VSLib.Timers.AddTimerByName("meteor_shower",AdminSystem._meteor_shower_args.updatedelay, true, _MeteorTimer,{});	
+	}
+
+}
+
+function Notifications::OnPlayerConnected::RestoreModels(player,args)
+{
+	local name = player.GetCharacterName().tolower();
+	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,name)==-1)
+		return;
+		
+	local tbl = AdminSystem.Vars._modelPreference[name];
+	if(tbl.keeplast)
+	{
+		player.SetModel(tbl.lastmodel)
+		printl("[OnPlayerConnected-RestoreModels] Restoring "+player.GetCharacterName()+":"+tbl.lastmodel)
+	}
+	else
+	{
+		player.SetModel(tbl.original)
+		printl("[OnPlayerConnected-RestoreModels] Restoring original model of "+player.GetCharacterName())
 	}
 }
 
@@ -2641,6 +2930,21 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		case "disguise":
 		{
 			AdminSystem.DisguiseCmd( player, args );
+			break;
+		}
+		case "update_model_preference":
+		{
+			AdminSystem.UpdateModelPreferenceCmd( player, args );
+			break;
+		}
+		case "update_jockey_preference":
+		{
+			AdminSystem.UpdateJockeyPreferenceCmd( player, args );
+			break;
+		}
+		case "update_tank_rock_preference":
+		{
+			AdminSystem.UpdateTankRockPreferenceCmd( player, args );
 			break;
 		}
 		case "timescale":
@@ -5609,6 +5913,16 @@ function ChatTriggers::explosion_setting( player, args, text )
 	AdminSystem.Explosion_settingCmd( player, args );
 }
 
+function ChatTriggers::update_jockey_preference( player, args, text )
+{
+	AdminSystem.UpdateJockeyPreferenceCmd( player, args );
+}
+
+function ChatTriggers::update_tank_rock_preference( player, args, text )
+{
+	AdminSystem.UpdateTankRockPreferenceCmd( player, args );
+}
+
 /*
  * @authors rhino
  */
@@ -7901,7 +8215,10 @@ if ( Director.GetGameMode() == "holdout" )
 		ent.SetModelIndex(model);
 	}
 	else
+	{
 		ent.SetModel(model);
+		AdminSystem.Vars._modelPreference[player.GetCharacterName().tolower()].lastmodel = model;
+	}
 
 	local name = player.GetCharacterName().tolower();
 	
@@ -8394,6 +8711,69 @@ if ( Director.GetGameMode() == "holdout" )
 		dist = distvec.Length();
 		distvec = distvec.Scale(pushspeed/dist);
 		ent.Push(distvec); 
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.UpdateTankRockPreferenceCmd <- function ( player, args )
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	if(AdminSystem.Vars._RockThrow.enabled)
+	{
+		AdminSystem.Vars._RockThrow.enabled = false;
+		Utils.PrintToAllDel("Tank rock's push effect is now disabled.")
+	}
+	else
+	{
+		AdminSystem.Vars._RockThrow.enabled = true;
+		Utils.PrintToAllDel("Tank rock's push effect is now enabled.")
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.UpdateJockeyPreferenceCmd <- function ( player, args )
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	if(Convars.GetStr("z_jockey_limit") == "0")
+	{
+		Convars.SetValue("z_jockey_limit","1");
+		SessionOptions.JockeyLimit <- "1";
+		Utils.PrintToAllDel("Little bastards are back...")
+	}
+	else
+	{
+		Convars.SetValue("z_jockey_limit","0");
+		SessionOptions.JockeyLimit <- "0";
+		Utils.PrintToAllDel("Be gone vile man, be gone from me!")
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.UpdateModelPreferenceCmd <- function ( player, args )
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	local name = player.GetCharacterName().tolower();
+
+	if(AdminSystem.Vars._modelPreference[name].keeplast)
+	{
+		AdminSystem.Vars._modelPreference[name].keeplast = false;
+		Utils.PrintToAllDel(name+"->Last model won't be kept for the next chapter.")
+	}
+	else
+	{
+		AdminSystem.Vars._modelPreference[name].keeplast = true;
+		Utils.PrintToAllDel(name+"->Last model is going to be kept for the next chapter.")
 	}
 }
 
