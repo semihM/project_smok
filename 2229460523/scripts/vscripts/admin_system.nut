@@ -2947,6 +2947,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.UpdateTankRockPreferenceCmd( player, args );
 			break;
 		}
+		case "restore_model":
+		{
+			AdminSystem.RestoreModelCmd( player, args );
+			break;
+		}
 		case "timescale":
 		{
 			AdminSystem.TimescaleCmd( player, args );
@@ -5927,6 +5932,11 @@ function ChatTriggers::update_model_preference( player, args, text )
 {
 	AdminSystem.UpdateModelPreferenceCmd( player, args );
 }
+
+function ChatTriggers::restore_model( player, args, text )
+{
+	AdminSystem.RestoreModelCmd( player, args );
+}
 /*
  * @authors rhino
  */
@@ -8715,6 +8725,48 @@ if ( Director.GetGameMode() == "holdout" )
 		dist = distvec.Length();
 		distvec = distvec.Scale(pushspeed/dist);
 		ent.Push(distvec); 
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.RestoreModelCmd <- function ( player, args )
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local target = GetArgument(1);
+	local name = player.GetCharacterName().tolower();
+	if(target != null)
+	{
+		if(target == "!picker")
+			target = player.GetLookingEntity();
+		else
+		{
+			try{target = Utils.GetPlayerFromName(target);}catch(e){return;}
+		}
+
+		if(target == null)
+			return
+		else if(target.GetClassname() != "player")
+			return
+		
+		Utils.ResetModels(target.GetCharacterName());
+
+		if (AdminSystem.Vars._outputsEnabled[name])
+		{ClientPrint(null,3,"\x04"+name+"->Restored original model for "+target.GetCharacterName());}
+		else
+		{printB(player.GetCharacterName(),name+"->Restored original model for "+target.GetCharacterName(),true,"info",true,true);}
+	}
+	else
+	{
+		Utils.ResetModels(name);
+
+		if (AdminSystem.Vars._outputsEnabled[name])
+		{ClientPrint(null,3,"\x04"+name+"->Restored original model");}
+		else
+		{printB(player.GetCharacterName(),name+"->Restored original model",true,"info",true,true);}
 	}
 }
 

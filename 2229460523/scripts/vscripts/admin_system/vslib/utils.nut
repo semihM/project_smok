@@ -688,42 +688,42 @@ function VSLib::Utils::ResetModels(name = null)
 		{
 			case "bill":
 			{
-				GetPlayerFromCharacter("Bill").SetModel("models/survivors/survivor_namvet.mdl");
+				GetPlayerFromName("Bill").SetModel("models/survivors/survivor_namvet.mdl");
 				break;
 			}
 			case "francis":
 			{
-				GetPlayerFromCharacter("Francis").SetModel("models/survivors/survivor_biker.mdl");
+				GetPlayerFromName("Francis").SetModel("models/survivors/survivor_biker.mdl");
 				break;
 			}
 			case "louis":
 			{
-				GetPlayerFromCharacter("Louis").SetModel("models/survivors/survivor_manager.mdl");
+				GetPlayerFromName("Louis").SetModel("models/survivors/survivor_manager.mdl");
 				break;
 			}
 			case "zoey":
 			{
-				GetPlayerFromCharacter("Zoey").SetModel("models/survivors/survivor_teenangst.mdl");
+				GetPlayerFromName("Zoey").SetModel("models/survivors/survivor_teenangst.mdl");
 				break;
 			}
 			case "nick":
 			{
-				GetPlayerFromCharacter("Nick").SetModel("models/survivors/survivor_gambler.mdl");
+				GetPlayerFromName("Nick").SetModel("models/survivors/survivor_gambler.mdl");
 				break;
 			}
 			case "ellis":
 			{
-				GetPlayerFromCharacter("Ellis").SetModel("models/survivors/survivor_mechanic.mdl");
+				GetPlayerFromName("Ellis").SetModel("models/survivors/survivor_mechanic.mdl");
 				break;
 			}
 			case "coach":
 			{
-				GetPlayerFromCharacter("Coach").SetModel("models/survivors/survivor_coach.mdl");
+				GetPlayerFromName("Coach").SetModel("models/survivors/survivor_coach.mdl");
 				break;
 			}
 			case "rochelle":
 			{
-				GetPlayerFromCharacter("Rochelle").SetModel("models/survivors/survivor_producer.mdl");
+				GetPlayerFromName("Rochelle").SetModel("models/survivors/survivor_producer.mdl");
 				break;
 			}
 			default:

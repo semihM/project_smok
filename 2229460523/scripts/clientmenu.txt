@@ -17831,9 +17831,40 @@
 					"command"    "play buttons/button14;show_menu models_views"
 					"label"      " Change the view of your character"
 			}
+			"7"
+			{		
+					"command"    "play buttons/button14;show_menu models_restore_model"
+					"label"      " Restore your model"
+			}
 			"8"
 			{
 					"command"	 "play buttons/button14;show_menu smok_menu2"
+					"label"		 " << Back"
+			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"models_restore_model"
+	{	
+			"Title"     "Restore model of"
+			"1"
+			{
+					"command"	 "play buttons/button14;scripted_user_func restore_model;show_menu models_restore_model"
+					"label"		 " Yourself"
+			}
+			"2"
+			{		
+					"command"    "play buttons/button14;scripted_user_func restore_model,!picker;show_menu models_restore_model"
+					"label"      " Targeted player"
+			}
+			"8"
+			{
+					"command"	 "play buttons/button14;show_menu models_menus"
 					"label"		 " << Back"
 			}
 
