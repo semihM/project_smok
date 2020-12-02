@@ -318,6 +318,29 @@
     ------------- | -------------
 
 ---
+- **restore_model** : Restore the original model of a player
+
+    Chat Syntax | !restore_model *target*
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *restore_model,target* 
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 6 7_
+    ------------- | -------------
+```cpp
+       //Overloads:
+       restore_model {target:character | !picker}
+       restore_model              // target = yourself
+       
+       //Example: Restore the model of targeted player
+       restore_model !picker
+       //Example: Restore the model of Bill
+       restore_model bill
+       //Example: Restore the model of your player
+       restore_model
+```
+---
 ## Random and saved voices
 ---
 - **randomline** : Speak a line. Last line gets saved by default, use **randomline_save_last** to change state
