@@ -920,7 +920,7 @@
     ------------- | -------------
 ---
 ## Microphones and speakers
----
+
 - **microphone** : Create an entity to be used as microphone, check console for its index and name 
 
     Chat Syntax | !microphone *effect hearing_range speaker_to_connect*
@@ -1192,6 +1192,18 @@
     ------------- | -------------
     
     Menu Sequence | _6 9 1 4_
+    ------------- | -------------
+    
+---
+- **update_custom_sharing_preference** : Enable/Disable sharing grenades and packs by holding reload "R" button
+
+    Chat Syntax | !update_custom_sharing_preference
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *update_custom_sharing_preference*
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 1 5_
     ------------- | -------------
 
 ---
