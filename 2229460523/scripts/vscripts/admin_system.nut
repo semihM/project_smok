@@ -61,6 +61,8 @@ Convars.SetValue( "precache_all_survivors", "1" );
 
 		AllowCustomResponses = true
 
+		AllowCustomSharing = true
+
 		CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle"]
 		
 		CharacterNamesLower = ["bill","francis","louis","zoey","nick","ellis","coach","rochelle"]
@@ -1061,6 +1063,8 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			IgnoreDeletingPlayers = true
 
 			AllowCustomResponses = true
+
+			AllowCustomSharing = true
 
 			CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle"]
 			
@@ -2717,6 +2721,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.Update_custom_response_preferenceCmd(player, args);
 			break;
 		}
+		case "update_custom_sharing_preference":
+		{
+			AdminSystem.Update_custom_sharing_preferenceCmd(player, args);
+			break;
+		}
 		case "velocity":
 		{
 			AdminSystem.VelocityCmd( player, args );
@@ -3487,7 +3496,73 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		turnpertick = 7
 		listenerid = -1
 	}
+	francis = 
+	{
+		keymask = 0
+		forward = Vector(0,0,0)
+		speed = 400.0
+		reversescale = -4
+		speedscale = 2.75
+		overridefriction = 0.05
+		turnpertick = 7
+		listenerid = -1
+	}
+	louis = 
+	{
+		keymask = 0
+		forward = Vector(0,0,0)
+		speed = 400.0
+		reversescale = -4
+		speedscale = 2.75
+		overridefriction = 0.05
+		turnpertick = 7
+		listenerid = -1
+	}
+	zoey = 
+	{
+		keymask = 0
+		forward = Vector(0,0,0)
+		speed = 400.0
+		reversescale = -4
+		speedscale = 2.75
+		overridefriction = 0.05
+		turnpertick = 7
+		listenerid = -1
+	}
 	nick = 
+	{
+		keymask = 0
+		forward = Vector(0,0,0)
+		speed = 400.0
+		reversescale = -4
+		speedscale = 2.75
+		overridefriction = 0.05
+		turnpertick = 7
+		listenerid = -1
+	}
+	ellis = 
+	{
+		keymask = 0
+		forward = Vector(0,0,0)
+		speed = 400.0
+		reversescale = -4
+		speedscale = 2.75
+		overridefriction = 0.05
+		turnpertick = 7
+		listenerid = -1
+	}
+	coach = 
+	{
+		keymask = 0
+		forward = Vector(0,0,0)
+		speed = 400.0
+		reversescale = -4
+		speedscale = 2.75
+		overridefriction = 0.05
+		turnpertick = 7
+		listenerid = -1
+	}
+	rochelle = 
 	{
 		keymask = 0
 		forward = Vector(0,0,0)
@@ -5959,6 +6034,69 @@ enum SCENES
  */
 function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacker,args=null)
 {
+	if(attacker.IsPressingReload())
+	{
+		if(!AdminSystem.Vars.AllowCustomSharing)
+		{
+			return;
+		}
+
+		local sharable_grenade = 
+		[
+			"weapon_molotov","weapon_pipe_bomb",
+			"weapon_vomitjar",
+		]
+		local sharable_packs = 
+		[
+			"weapon_first_aid_kit","weapon_defibrillator",
+			"weapon_upgradepack_incendiary","weapon_upgradepack_explosive"
+		]
+
+		local inHand = attacker.GetActiveWeapon();
+		local inhandclass = inHand.GetClassname();
+		local targetinv = target.GetHeldItems();
+		local atkinv = attacker.GetHeldItems()
+
+		if(Utils.GetIDFromArray(sharable_grenade,inhandclass)!=-1) // Give grenades
+		{
+			if(!("slot2" in targetinv))
+			{
+				Utils.DropThenGive(attacker,target,2,inHand,inhandclass.slice(7))
+				return;
+			}
+		}
+		else if(Utils.GetIDFromArray(sharable_packs,inhandclass)!=-1) // Give packs
+		{
+			if(!("slot3" in targetinv))
+			{
+				Utils.DropThenGive(attacker,target,3,inHand,inhandclass.slice(7))
+				return;
+			}
+		}
+		else if(target.IsBot()) // Take grenades and packs from bot
+		{
+			if("slot2" in targetinv)
+			{
+				if(!("slot2" in atkinv))
+				{
+					inHand = targetinv.slot2;
+					inhandclass = inHand.GetClassname();
+					Utils.DropThenGive(target,attacker,2,inHand,inhandclass.slice(7));
+				}
+			}
+			
+			if("slot3" in targetinv)
+			{
+				if(!("slot3" in atkinv))
+				{
+					inHand = targetinv.slot3;
+					inhandclass = inHand.GetClassname();
+					Utils.DropThenGive(target,attacker,3,inHand,inhandclass.slice(7));
+				}
+			}
+		}
+	}
+
 	if(!AdminSystem.Vars.AllowCustomResponses)
 		return;
 
@@ -6335,6 +6473,11 @@ function ChatTriggers::display_prop_spawn_settings(player,args,text)
 function ChatTriggers::update_custom_response_preference(player,args,text)
 {
 	AdminSystem.Update_custom_response_preferenceCmd(player, args);
+}
+
+function ChatTriggers::update_custom_sharing_preference(player,args,text)
+{
+	AdminSystem.Update_custom_sharing_preferenceCmd(player, args);
 }
 
 function ChatTriggers::explosion( player, args, text )
@@ -14513,6 +14656,20 @@ if ( Director.GetGameMode() == "holdout" )
 	::AdminSystem.Vars.AllowCustomResponses = newstate;
 
 	ClientPrint(null,3,"\x04"+player.GetCharacterName()+" set custom responses to:"+( newstate ? " Enabled":" Disabled"));
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.Update_custom_sharing_preferenceCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local newstate = !::AdminSystem.Vars.AllowCustomSharing;
+	::AdminSystem.Vars.AllowCustomSharing = newstate;
+
+	ClientPrint(null,3,"\x04"+player.GetCharacterName()+" set custom sharing to:"+( newstate ? " Enabled":" Disabled"));
 }
 
 ::AdminSystem.GravityCmd <- function ( player, args )

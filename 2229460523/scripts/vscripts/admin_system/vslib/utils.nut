@@ -648,6 +648,19 @@ function VSLib::Utils::CreateEntity(_classname, pos = Vector(0,0,0), ang = QAngl
 	return ::VSLib.Entity(ent);
 }
 
+/*
+ * @authors rhino
+ * Drop an item from a player's inventory and give one of sameclass to other
+ */
+function VSLib::Utils::DropThenGive(dropfrom,giveto,slot,item,itemclass)
+{	
+	dropfrom.DropWeaponSlot(slot);
+	item.SetOrigin(Vector(0,0,0));
+	item.KillDelayed(0.1);
+	giveto.Give(itemclass);
+	return;
+}
+
 /**
  * Spawns a new entity with the key-value pairs.
  *

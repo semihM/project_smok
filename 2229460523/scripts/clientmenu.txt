@@ -17786,6 +17786,11 @@
 					"command"	 "play buttons/button14;scripted_user_func update_model_preference;show_menu smok_menu_settings1"
 					"label"		 " Enable/Disable keeping last model between chapters"
 			}
+			"5"
+			{
+					"command"	 "play buttons/button14;scripted_user_func update_custom_sharing_preference;show_menu smok_menu_settings1"
+					"label"		 " Enable/Disable sharing all non-weapon items"
+			}
 			"8"
 			{
 					"command"	 "play buttons/button14;show_menu smok_menu2"
