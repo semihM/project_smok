@@ -35617,13 +35617,59 @@
 				"command"		 "play buttons/button14;show_menu ladderteams1"
 				"label"			" Change ladders' team"
 			}
+			"8"
+			{
+				"command"		 "play buttons/button14;show_menu drivemenu1"
+				"label"			" Enable drive mechanics (experimental)"
+			}
 			"0"
 			{
 					"command"    "play buttons/button14"
 					"label"      " Exit"
 			}
 	}
-	
+
+	"drivemenu1"
+	{
+			"Title"		"Driving options menu"
+			"1"
+			{
+				"command"		 "play buttons/button10;show_menu drivemenu1"
+				"label"			 " Hold shift/crouch for better movement, Hold left-click to keep aim forward"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func drive;show_menu drivemenu1"
+				"label"			 " Start/Stop driving as targeted car/object"
+			}
+			"3"
+			{
+				"command"	 	"play buttons/button14;c_thirdpersonshoulder 0;show_menu drivemenu1"
+				"label"		 	" First-person"
+			}
+			"4"
+			{
+				"command"	 	"play buttons/button14;c_thirdpersonshoulder 1;c_thirdpersonshoulderaimdist 360;c_thirdpersonshoulderdist 90;c_thirdpersonshoulderheight 15;c_thirdpersonshoulderoffset 0;thirdpersonshoulder;thirdpersonshoulder;show_menu drivemenu1"
+				"label"		 	" Third-person Center"
+			}
+			"5"
+			{
+				"command"	 	"play buttons/button14;c_thirdpersonshoulder 1;c_thirdpersonshoulderaimdist 720;c_thirdpersonshoulderdist 40;c_thirdpersonshoulderheight 3;c_thirdpersonshoulderoffset 0;thirdpersonshoulder;cam_idealdist 30;thirdpersonshoulder;cam_idealdist 30;show_menu drivemenu1"
+				"label"		 	" Third-person Shoulder Center"
+			}
+
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu secret_commands"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
 	"meteor_shower1"
 	{
 			"Title"		"Meteor shower menu"

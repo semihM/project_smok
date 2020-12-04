@@ -3298,11 +3298,445 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.Show_apocalypse_settingsCmd(player,args);
 			break;
 		}
+		case "create_listener":
+		{
+			AdminSystem._CreateKeyListenerCmd(player,args);
+			break;
+		}
+		case "stop_listener":
+		{
+			AdminSystem._StopKeyListenerCmd(player,args);
+			break;
+		}
+		case "drive":
+		{
+			AdminSystem.DriveCmd(player,args);
+			break;
+		}
 		default:
 			break;
 	}
 }
 
+::AdminSystem.DriveCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local name = player.GetCharacterName().tolower();
+	if(AdminSystem._CarControl[name].listenerid != -1)
+	{
+		AdminSystem._StopKeyListenerCmd(player,args)
+
+		local currentmodel = player.GetModel();
+		Utils.ResetModels(name);
+
+		local fw = player.GetForwardVector()
+		fw = fw.Scale(AdminSystem.Vars._heldEntity[name].grabDistMin/fw.Length())
+		local replica = Utils.CreateEntityWithTable(
+			{
+				classname="prop_physics_multiplayer",
+				origin=player.GetOrigin()+fw,
+				model=currentmodel,
+				angles=QAngle(0,0,0)
+			})
+		printl("New replica #"+replica.GetIndex())
+		return;
+	}
+
+	local lookedent = player.GetLookingEntity()
+
+	if(lookedent == null)
+		return;
+	else if(Utils.CalculateDistance(player.GetOrigin(),player.GetLookingLocation())>100)
+		return;
+	
+	AdminSystem.ModelCmd(player,{_fromDrive=lookedent});
+
+	lookedent.Kill();
+	
+	AdminSystem._CreateKeyListenerCmd(player,args);
+}
+
+::AdminSystem._Pusher <- function(args)
+{
+	local ent = args.ent;
+	local name = ent.GetCharacterName().tolower();
+	local tbl = AdminSystem._CarControl[name]
+	local speed = tbl.speed;
+	local pushvec = tbl.forward.Scale(speed);
+	local mask = tbl.keymask;
+	local turnangle = tbl.turnpertick;
+
+	if(mask == 0)
+		return;
+	
+	if((mask == 16) || (mask == 28) || (mask == 31))
+		return;
+	
+	// FORWARD+BACKWARD OR NONE
+	if((mask % 2 == 1 && (mask>>1) % 2 == 1) || (mask % 2 == 0 && (mask>>1) % 2 == 0))
+	{
+		ent.Push(ent.GetVelocity().Scale(tbl.reversescale));
+		if((mask>>4) % 2 == 1)
+			ent.SetForwardVector(pushvec);
+		return;
+	}
+
+	ent.OverrideFriction(2.5,tbl.overridefriction)
+	// CANCEL LEFT+RIGHT
+	if((mask>>2) % 2 == 1 && (mask>>3) % 2 == 1)
+	{
+		if((mask>>4) % 2 == 1)
+			ent.SetForwardVector(pushvec);
+
+		if((mask>>1) % 2 == 1) // BACKWARD
+		{
+			pushvec = pushvec.Scale(-1);
+			ent.SetVelocity(pushvec);
+		}
+		else  // FORWARD
+		{
+			ent.SetVelocity(pushvec);
+		}
+	}
+	else
+	{
+		// LEFT
+		if((mask>>2) % 2 == 1)
+		{
+			ent.Push(ent.GetVelocity().Scale(tbl.reversescale));
+			if((mask>>1) % 2 == 1) // BACKWARD LEFT
+			{
+				pushvec = pushvec.Scale(-1);
+				pushvec = RotatePosition(Vector(0,0,0),QAngle(0,-turnangle,0),pushvec);
+				if((mask>>4) % 2 == 1)
+					ent.SetForwardVector(pushvec.Scale(-1));
+				AdminSystem._CarControl[name].forward = pushvec.Scale(-1/speed);
+			}
+			else
+			{
+				pushvec = RotatePosition(Vector(0,0,0),QAngle(0,turnangle,0),pushvec);
+				if((mask>>4) % 2 == 1)
+					ent.SetForwardVector(pushvec);
+				AdminSystem._CarControl[name].forward = pushvec.Scale(1/speed);
+			}
+			
+			ent.SetVelocity(pushvec);
+		}
+		// RIGHT
+		else if((mask>>3) % 2 == 1)
+		{	
+			ent.Push(ent.GetVelocity().Scale(tbl.reversescale));
+			if((mask>>1) % 2 == 1) // BACKWARD RIGHT
+			{
+				pushvec = pushvec.Scale(-1);
+				pushvec = RotatePosition(Vector(0,0,0),QAngle(0,turnangle,0),pushvec);
+				if((mask>>4) % 2 == 1)
+					ent.SetForwardVector(pushvec.Scale(-1))
+				AdminSystem._CarControl[name].forward = pushvec.Scale(-1/speed)
+			}
+			else
+			{
+				pushvec = RotatePosition(Vector(0,0,0),QAngle(0,-turnangle,0),pushvec);
+				if((mask>>4) % 2 == 1)
+					ent.SetForwardVector(pushvec)
+				AdminSystem._CarControl[name].forward = pushvec.Scale(1/speed)
+			}
+			
+			ent.SetVelocity(pushvec);
+		}
+		else if((mask>>1) % 2 == 1) // BACKWARD
+		{
+			pushvec = pushvec.Scale(-1);
+			ent.SetVelocity(pushvec);
+		}
+		else // FORWARD
+		{
+			ent.SetVelocity(pushvec);
+		}
+		
+	}
+	
+}
+
+::AdminSystem._KeyMasker <- function(arg)
+{
+	local spl = split(arg,"__")
+	local ind = spl[0].tointeger();
+	local key = spl[1].tointeger();
+
+	local ent = VSLib.Player(ind.tointeger());
+	local name = ent.GetCharacterName().tolower();
+	local currmask = AdminSystem._CarControl[name].keymask;
+
+	AdminSystem._CarControl[name].keymask = currmask ^ key;
+
+}
+
+::AdminSystem._CarControl <-
+{
+	bill = 
+	{
+		keymask = 0
+		forward = Vector(0,0,0)
+		speed = 400.0
+		reversescale = -4
+		speedscale = 2.75
+		overridefriction = 0.05
+		turnpertick = 7
+		listenerid = -1
+	}
+	nick = 
+	{
+		keymask = 0
+		forward = Vector(0,0,0)
+		speed = 400.0
+		reversescale = -4
+		speedscale = 2.75
+		overridefriction = 0.05
+		turnpertick = 7
+		listenerid = -1
+	}
+}
+
+::AdminSystem._StopKeyListenerCmd <- function(ent,args)
+{
+	if (!AdminSystem.IsPrivileged( ent ))
+		return;
+
+	local name = ent.GetCharacterName().tolower()
+	if (name+"_car_push1" in ::VSLib.Timers.TimersID)
+	{
+		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[name+"_car_push1"]);
+		delete ::VSLib.Timers.TimersID[name+"_car_push1"];
+
+		local id = AdminSystem._CarControl[name].listenerid;
+
+		Ent(id).Kill();
+		AdminSystem._CarControl[name].forward = Vector(0,0,0)
+		AdminSystem._CarControl[name].keymask = 0
+		AdminSystem._CarControl[name].listenerid = -1
+
+		::VSLib.Timers.AddTimer(1, false, _SetCarControl,{ent=ent,grav=1,speedscale=1.0});
+
+	}
+}
+
+::AdminSystem._CreateKeyListenerCmd <- function(ent,args)
+{
+	if (!AdminSystem.IsPrivileged( ent ))
+		return;
+
+	local forIndex = ent.GetIndex();
+
+	local keyvals = 
+	{
+		classname = "game_ui"
+		FieldOfView = -1
+		origin = ent.GetOrigin()
+		spawnflags = 64
+	}
+
+	local listener = Utils.CreateEntityWithTable(keyvals);
+	listener.SetName("listener_"+ent.GetCharacterName().tolower()+UniqueString())
+	listener.SetFlags(64)
+
+	ClientPrint(null,3,"\x04"+forIndex+"->Created listener(#"+listener.GetIndex()+") named "+listener.GetName());
+
+	listener.Input("addoutput",__.FP+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+BTN_FORWARD)+"),0,-1",0,null)
+	listener.Input("addoutput",__.FU+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+BTN_FORWARD)+"),0,-1",0,null)
+	listener.Input("addoutput",__.BP+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+BTN_BACKWARD)+"),0,-1",0,null)
+	listener.Input("addoutput",__.BU+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+BTN_BACKWARD)+"),0,-1",0,null)
+	listener.Input("addoutput",__.LP+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+BTN_LEFT)+"),0,-1",0,null)
+	listener.Input("addoutput",__.LU+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+BTN_LEFT)+"),0,-1",0,null)
+	listener.Input("addoutput",__.RP+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+BTN_RIGHT)+"),0,-1",0,null)
+	listener.Input("addoutput",__.RU+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+BTN_RIGHT)+"),0,-1",0,null)
+
+	listener.Input("addoutput",__.aP+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+BTN_ATK)+"),0,-1",0,null)
+	listener.Input("addoutput",__.aU+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+BTN_ATK)+"),0,-1",0,null)
+	listener.Input("addoutput",__.AP+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+BTN_ATK2)+"),0,-1",0,null)
+	listener.Input("addoutput",__.AU+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+BTN_ATK2)+"),0,-1",0,null)
+
+	listener.Input("activate","",0.1,ent.GetBaseEntity())
+
+	local name = ent.GetCharacterName().tolower();
+	local forward = ent.GetAngles().Forward();
+	forward = forward.Scale(1/forward.Length())
+
+	AdminSystem._CarControl[name].forward = forward;
+	AdminSystem._CarControl[name].listenerid = listener.GetIndex();
+	
+	::VSLib.Timers.AddTimer(0.1, false, _SetCarControl,{ent=ent,grav=5,speedscale=AdminSystem._CarControl[name].speedscale});
+	::VSLib.Timers.AddTimerByName(name+"_car_push1",0.1, true, AdminSystem._Pusher,{ent=ent});
+}
+
+::_SetCarControl <- function(args)
+{
+	args.ent.SetGravity(args.grav);
+	args.ent.SetNetProp("m_flLaggedMovementValue",args.speedscale)
+}
+
+::_GetEnumString <- function(str)
+{
+	local temp = ["1","2","3","4","5","6","7","8","9",",","="," ","_",";","\""] // "
+	local res = ""
+	local ch = ""
+	for(local i=0;i<str.len();i++)
+	{
+		if(i != str.len()-1)
+			ch = str.slice(i,i+1)
+		else
+			ch = str.slice(i)
+
+		if(Utils.GetIDFromArray(temp,ch)==-1)
+			res = res + "__." + ch;
+		else
+		{
+			switch(ch)
+			{
+				case ",":
+				{
+					ch = "c";
+					break;
+				}
+				case "=":
+				{
+					ch = "e";
+					break;
+				}
+				case " ":
+				{
+					ch = "s";
+					break;
+				}
+				case "_":
+				{
+					ch = "u";
+					break;
+				}
+				case ";":
+				{
+					ch = "sc";
+					break;
+				}
+				case "\"": // "
+				{
+					ch = "q";
+					break;
+				}
+				default:
+					break;
+			}
+			res = res + "__._" + ch;
+		}
+		
+		if(i != str.len()-1)
+			res += "+";
+	}
+	return res;
+}
+
+getconsttable()["BTN_FORWARD"] <- 1;
+getconsttable()["BTN_BACKWARD"] <- 1<<1;
+getconsttable()["BTN_LEFT"] <- 1<<2;
+getconsttable()["BTN_RIGHT"] <- 1<<3;
+getconsttable()["BTN_ATK"] <- 1<<4;
+getconsttable()["BTN_ATK2"] <- 1<<5;
+
+// KEYS AS STRINGS
+enum __
+{
+	_1 = "1"
+	_2 = "2"
+	_3 = "3"
+	_4 = "4"
+	_5 = "5"
+	_6 = "6"
+	_7 = "7"
+	_8 = "8"
+	_9 = "9"
+	_0 = "0"
+	////SPECIALS
+	_c = ","
+	_sc = ";"
+	_e = "="
+	_q = "\"" // "
+	_s = " "
+	_u = "_"
+	////LETTERS
+	//LOWERCASE
+	a = "a"
+	b = "b"
+	c = "c"
+	d = "d"
+	e = "e"
+	f = "f"
+	g = "g"
+	h = "h"
+	i = "i"
+	j = "j"
+	k = "k"
+	l = "l"
+	m = "m"
+	n = "n"
+	o = "o"
+	p = "p"
+	r = "r"
+	s = "s"
+	t = "t"
+	u = "u"
+	v = "v"
+	y = "y"
+	z = "z"
+	x = "x"
+	w = "w"
+	q = "q"
+	//UPPERCASE
+	A = "A"
+	B = "B"
+	C = "C"
+	D = "D"
+	E = "E"
+	F = "F"
+	G = "G"
+	H = "H"
+	I = "I"
+	J = "J"
+	K = "K"
+	L = "L"
+	M = "M"
+	N = "N"
+	O = "O"
+	P = "P"
+	R = "R"
+	S = "S"
+	T = "T"
+	U = "U"
+	V = "V"
+	Y = "Y"
+	Z = "Z"
+	X = "X"
+	W = "W"
+	Q = "Q"
+	////LISTENER
+	ON = "PlayerOn"
+	OF = "PlayerOff"
+	//ATTACK
+	aP = "PressedAttack"
+	aU = "UnpressedAttack"
+	AP = "PressedAttack2"
+	AU = "UnpressedAttack2"
+	//DIRECTIONAL
+	LP = "PressedMoveLeft"
+	LU = "UnpressedMoveLeft"
+	RP = "PressedMoveRight"
+	RU = "UnpressedMoveRight"
+	FP = "PressedForward"
+	FU = "UnpressedForward"
+	BP = "PressedBack"
+	BU = "UnpressedBack"
+}
 
 /////////////////////////////////////////////////////////////////
 /*
@@ -5937,6 +6371,21 @@ function ChatTriggers::restore_model( player, args, text )
 {
 	AdminSystem.RestoreModelCmd( player, args );
 }
+
+function ChatTriggers::create_listener( player, args, text )
+{
+	AdminSystem._CreateKeyListenerCmd( player, args );
+}
+
+function ChatTriggers::stop_listener( player, args, text )
+{
+	AdminSystem._StopKeyListenerCmd( player, args );
+}
+
+function ChatTriggers::drive( player, args, text )
+{
+	AdminSystem.DriveCmd( player, args );
+}
 /*
  * @authors rhino
  */
@@ -8193,8 +8642,24 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
-	
-	local ent = GetArgument(1);
+
+	local ent = null
+	if(args != null)
+	{
+		if((typeof args) == "table" )
+		{
+			if(("_fromDrive" in args))
+			{
+				ent = args._fromDrive;
+				local model = ent.GetModel();
+				player.SetModel(model);
+				AdminSystem.Vars._modelPreference[player.GetCharacterName().tolower()].lastmodel = model;
+				return;
+			}
+		}
+	}
+
+	ent = GetArgument(1);
 	if(ent == "!picker")
 		ent = player.GetLookingEntity();
 	else if(ent == "!self")
@@ -12884,9 +13349,12 @@ if ( Director.GetGameMode() == "holdout" )
 /*
  * @authors rhino
  */
-::_OutputTest <- function()
+::_OutputTest <- function(msg=null)
 {
-	ClientPrint(null,3,"\x5"+"Output connected!");
+	if(msg == null)
+		ClientPrint(null,3,"\x5"+"Output connected!");
+	else
+		ClientPrint(null,3,"\x5"+msg.tostring());
 }
 
 /*
@@ -13553,6 +14021,31 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
+	local ent = null
+	if(args != null)
+	{
+		if((typeof args) == "table" )
+		{
+			if(("_fromlistener" in args))
+			{
+				ent = args._fromlistener;
+				local playerEyeLoc = player.GetEyePosition();
+				local angles = player.GetEyeAngles();
+				local newanglesF = QAngle(0,angles.Yaw(),angles.Roll()).Forward();
+				local holdingLoc = playerEyeLoc + newanglesF.Scale(100/newanglesF.Length());
+				holdingLoc.z = playerEyeLoc.z - 40;
+				ent.SetOrigin(holdingLoc);
+				local entind = ent.GetIndex();
+				player.AttachOther(ent,false,0,null);
+				//player.SetAttachmentPoint(ent,tbl_heldEnt.grabAttachPos,true,0.1);
+
+				printB(player.GetCharacterName(),"Grabbed #"+entind,true,"info",true,true)
+
+				AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = entind;
+				return;
+			}
+		}
+	}
 	local tbl_heldEnt = AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()];
 	local baseent = null;
 	if(tbl_heldEnt.entid != "")	// Already holding something, validate it
@@ -13579,7 +14072,7 @@ if ( Director.GetGameMode() == "holdout" )
 		// 
 	}
 
-	local ent = player.GetLookingEntity();
+	ent = player.GetLookingEntity();
 	local lookedpoint = player.GetLookingLocation();
 
 	local entind = null;
