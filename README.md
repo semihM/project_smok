@@ -67,7 +67,6 @@
 
 ---
 ## Entities
----
 
 - **ent** : Create an entity of the given class with given key-values
 
@@ -271,19 +270,7 @@
     
     Menu Sequence | _6 3 7 6_
     ------------- | -------------
-
----
-- **stop_car_alarms** : Stops all car alarms playing
-
-    Chat Syntax | !stop_car_alarms
-    ------------- | -------------
-
-    Console Syntax | scripted_user_func *stop_car_alarms* 
-    ------------- | -------------
-    
-    Menu Sequence | _6 9 5_
-    ------------- | -------------
-    
+ 
 ---
 - **model** : Change the model of an entity
 
@@ -366,7 +353,7 @@
 ```
 ---
 ## Random and saved voices
----
+
 - **randomline** : Speak a line. Last line gets saved by default, use **randomline_save_last** to change state
 
     Chat Syntax | !randomline *speaker line_source* 
@@ -435,7 +422,7 @@
     
 ---
 ## Particle effects
----
+
 - **particle** : Spawn a particle. Last random particle is saved by default, use **randomparticle_save_state** to change it.
 
     Chat Syntax | !particle *particle_name* 
@@ -558,7 +545,7 @@
 ``` 
 ---
 ## Custom sequences
----
+
 - **speak_test** : Speak given line for given time
 
     Chat Syntax | !speak_test *speaker line duration*
@@ -746,7 +733,7 @@
 ```
 ---
 ## Apocalypse event
----
+
 - **start_the_apocalypse** : Uh oh
 
     Chat Syntax | !start_the_apocalypse
@@ -827,7 +814,7 @@
 ```
 ---
 ## Meteor Shower event
----
+
 - **start_the_shower** : Not the greatest shower you'll have
 
     Chat Syntax | !start_the_shower
@@ -908,7 +895,7 @@
 ```
 ---
 ## Piano
----
+
 - **piano_keys** : Place 25 piano keys starting at looked location placing them to the right
 
     Chat Syntax | !piano_keys
@@ -998,7 +985,7 @@
 
 ---
 ## Explosions
----
+
 - **explosion** : Create a delayed explosion or a meteor strike at aimed location, with a particle effect until explosion
 
     Chat Syntax | !explosion _option_
@@ -1064,7 +1051,7 @@
 ```
 ---
 ## Other
----
+
 - **ladder_team** : Change teams of ladders
 
     Chat Syntax | !ladder_team *team*
@@ -1100,8 +1087,32 @@
        invisible_walls disable all
 ```
 ---
-## Debugging, scripting and settings related
+- **drive** : "Drive" targeted car/object or stop driving. **Hold shift** or crouch to move smoother. **Hold left-click** to keep aiming forward
+
+    Chat Syntax | !drive
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *drive* 
+    ------------- | -------------
+    
+    Menu Sequence | _Top secret_
+    ------------- | -------------
+
 ---
+- **stop_car_alarms** : Stops all car alarms playing
+
+    Chat Syntax | !stop_car_alarms
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *stop_car_alarms* 
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 5_
+    ------------- | -------------
+       
+---
+## Debugging, scripting and settings related
+
 - **add_script_auth** : Give authorization to an admin to use "script" command
 
     Chat Syntax | !add_script_auth *character*
@@ -1217,7 +1228,7 @@
 - **and more...**
 
 ## Extra
----
+
 ### Changing settings, adding custom responses without launching the game
 ---
 - AdminSystem configuration files are stored in the **"..\Left 4 Dead 2\left4dead2\ems\admin system"** directory.
@@ -1236,7 +1247,7 @@
 - Before creating an issue report, please contact to the [developer](http://steamcommunity.com/profiles/76561198095804696).
 ---
 ## Links
----
+
 - [Admin System](https://steamcommunity.com/sharedfiles/filedetails/?id=214630948)
 - [Admin Menu 2.0](https://steamcommunity.com/sharedfiles/filedetails/?id=1229957234)
 - [VSLib](https://l4d2scripters.github.io/vslib/docs/index.html)
