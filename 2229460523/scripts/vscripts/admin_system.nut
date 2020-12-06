@@ -65,7 +65,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 
 		AllowAutomatedSharing = true
 
-		_LastLootThinkState = true
+		_LastLootThinkState = false
 
 		CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle"]
 		
@@ -1074,7 +1074,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 
 			AllowAutomatedSharing = true
 
-			_LastLootThinkState = true
+			_LastLootThinkState = false
 
 			CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle"]
 			
