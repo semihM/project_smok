@@ -19,6 +19,136 @@ IncludeScript("Voice_paths/paths/producer.nut");
         rochelle = ::Producer.rochelle
     }
     
+	ShareItem =
+	{
+        bill = 
+		[
+			"alertgiveitem01.vcd",
+			"alertgiveitem02.vcd",
+			"alertgiveitem03.vcd",
+			"alertgiveitem04.vcd",
+			"alertgiveitem05.vcd",
+			"alertgiveitem06.vcd",
+			"alertgiveitem07.vcd"
+		]
+        francis = 
+		[
+			"alertgiveitem01.vcd",
+			"alertgiveitem02.vcd",
+			"alertgiveitem03.vcd",
+			"alertgiveitem04.vcd",
+			"alertgiveitem05.vcd",
+			"alertgiveitem06.vcd",
+			"alertgiveitem07.vcd"
+		]
+        louis = 
+		[
+			"alertgiveitem01.vcd",
+			"alertgiveitem02.vcd",
+			"alertgiveitem03.vcd",
+			"alertgiveitem04.vcd",
+			"alertgiveitem05.vcd",
+			"alertgiveitem06.vcd",
+			"alertgiveitem07.vcd"
+		]
+        zoey = 
+		[
+			"alertgiveitem01.vcd",
+			"alertgiveitem03.vcd",
+			"alertgiveitem05.vcd",
+			"alertgiveitem07.vcd",
+			"alertgiveitem09.vcd",
+			"alertgiveitem11.vcd",
+			"alertgiveitem12.vcd",
+			"alertgiveitem14.vcd",
+			"alertgiveitem15.vcd",
+			"alertgiveitem16.vcd"
+		]
+        nick = 
+		[
+			"alertgiveitem01.vcd",
+			"alertgiveitem02.vcd",
+			"alertgiveitem03.vcd",
+			"alertgiveitem04.vcd",
+			"alertgiveitem05.vcd",
+			"alertgiveitem06.vcd",
+			"alertgiveitemc101.vcd",
+			"alertgiveitemc102.vcd",
+			"alertgiveitemcombat01.vcd",
+			"alertgiveitemcombat02.vcd",
+			"alertgiveitemcombat03.vcd",
+			"alertgiveitemstop01.vcd",
+			"alertgiveitemstop02.vcd",
+			"alertgiveitemstop03.vcd",
+			"alertgiveitemstop04.vcd",
+			"alertgiveitemstop05.vcd",
+			"alertgiveitemstop06.vcd"
+		]
+        ellis = 
+		[
+			"alertgiveitem01.vcd",
+			"alertgiveitem02.vcd",
+			"alertgiveitem03.vcd",
+			"alertgiveitem04.vcd",
+			"alertgiveitem05.vcd",
+			"alertgiveitem06.vcd",
+			"alertgiveitem07.vcd",
+			"alertgiveitem08.vcd",
+			"alertgiveitemcombat01.vcd",
+			"alertgiveitemcombat02.vcd",
+			"alertgiveitemcombat03.vcd",
+			"alertgiveitemcombat04.vcd",
+			"alertgiveitemstop01.vcd",
+			"alertgiveitemstop02.vcd",
+			"alertgiveitemstop03.vcd",
+			"alertgiveitemstop04.vcd",
+			"alertgiveitemstop05.vcd",
+			"alertgiveitemstop06.vcd",
+			"alertgiveitemstopc101.vcd",
+			"alertgiveitemstopc102.vcd"
+		]
+        coach = 
+		[
+			"alertgiveitem01.vcd",
+			"alertgiveitem02.vcd",
+			"alertgiveitem03.vcd",
+			"alertgiveitem04.vcd",
+			"alertgiveitem05.vcd",
+			"alertgiveitemc101.vcd",
+			"alertgiveitemc102.vcd",
+			"alertgiveitemc103.vcd",
+			"alertgiveitemcombat01.vcd",
+			"alertgiveitemcombat02.vcd",
+			"alertgiveitemcombat03.vcd",
+			"alertgiveitemcombat04.vcd",
+			"alertgiveitemcombat05.vcd",
+			"alertgiveitemstop01.vcd",
+			"alertgiveitemstop02.vcd",
+			"alertgiveitemstop03.vcd",
+			"alertgiveitemstopc101.vcd",
+			"alertgiveitemstopc102.vcd"
+		]
+        rochelle = 
+		[
+			"alertgiveitem01.vcd",
+			"alertgiveitem02.vcd",
+			"alertgiveitem03.vcd",
+			"alertgiveitem04.vcd",
+			"alertgiveitem05.vcd",
+			"alertgiveitemc101.vcd",
+			"alertgiveitemcombat01.vcd",
+			"alertgiveitemcombat02.vcd",
+			"alertgiveitemcombat03.vcd",
+			"alertgiveitemcombat04.vcd",
+			"alertgiveitemcombat05.vcd",
+			"alertgiveitemcombat06.vcd",
+			"alertgiveitemstop01.vcd",
+			"alertgiveitemstop02.vcd",
+			"alertgiveitemstop03.vcd",
+			"alertgiveitemstopc101.vcd"
+		]
+	}
+
     FriendlyFire =
     {		
 		nick =

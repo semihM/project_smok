@@ -3543,7 +3543,10 @@ function VSLib::Player::BotGetClosestVisibleFriend()
 	
 	local survivor = ::VSLib.EasyLogic.Cache[_idx]._botClosestVisibleFriend;
 	
-	return ::VSLib.Player(::VSLib.ResponseRules.ExpTargetName[survivor]);
+	if(survivor in ::VSLib.ResponseRules.ExpTargetName)
+		return ::VSLib.Player(::VSLib.ResponseRules.ExpTargetName[survivor]);
+	else
+		return null;
 }
 
 /**

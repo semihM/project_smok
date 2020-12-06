@@ -41,6 +41,12 @@
      + **Example:** Bind the **"randomline"** command to key **"j"** for making your survivor say a random line from Francis
      
        <code>bind j "scripted_user_func randomline,self,francis"</code>
+
+ - By pressing reload button "**R**" and then shove button "**right-click**" :
+     + Grenade or pack held can be given to anyone if they have a free slot
+     + Grenade or pack held can be exchanged with a bot's grenade or pack
+     + Grenade and pack from a bot can be taken while holding a weapon if you have slots for them
+
 ---
 # Documentation Contents
 - [**Entities/objects**](https://github.com/semihM/project_smok#entities)
@@ -1204,6 +1210,42 @@
     ------------- | -------------
     
     Menu Sequence | _6 9 1 5_
+    ------------- | -------------
+    
+---
+- **update_bots_sharing_preference** : Enable/Disable automatic sharing grenades and packs for bots
+
+    Chat Syntax | !update_bots_sharing_preference
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *update_bots_sharing_preference*
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 1 6 1_
+    ------------- | -------------
+    
+---
+- **kind_bots** : Enable ability for bots to look for and share grenades and packs
+
+    Chat Syntax | !kind_bots
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *kind_bots*
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 1 6 2_
+    ------------- | -------------
+    
+---
+- **selfish_bots** : Disable ability for bots to look for and share grenades and packs
+
+    Chat Syntax | !selfish_bots
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *selfish_bots*
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 1 6 3_
     ------------- | -------------
 
 ---

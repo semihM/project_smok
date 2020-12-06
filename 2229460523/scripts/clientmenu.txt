@@ -17791,9 +17791,44 @@
 					"command"	 "play buttons/button14;scripted_user_func update_custom_sharing_preference;show_menu smok_menu_settings1"
 					"label"		 " Enable/Disable sharing all non-weapon items"
 			}
+			"6"
+			{
+					"command"	 "play buttons/button14;show_menu smok_menu_bot_share_settings1"
+					"label"		 " Enable/Disable bots taking/sharing greanades and packs"
+			}
 			"8"
 			{
 					"command"	 "play buttons/button14;show_menu smok_menu2"
+					"label"		 " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"smok_menu_bot_share_settings1"
+	{
+			"Title"     "Bot looting/sharing settings"
+			"1"
+			{
+					"command"	 "play buttons/button14;scripted_user_func update_bots_sharing_preference;show_menu smok_menu_bot_share_settings1"
+					"label"		 " Enable/Disable bots sharing their grenades/packs automatically"
+			}
+			"2"
+			{
+					"command"	 "play buttons/button14;scripted_user_func kind_bots;show_menu smok_menu_bot_share_settings1"
+					"label"		 " Enable bots searching for and sharing grenades/packs"
+			}
+			"3"
+			{
+					"command"	 "play buttons/button14;scripted_user_func selfish_bots;show_menu smok_menu_bot_share_settings1"
+					"label"		 " Disable bots searching for and sharing grenades/packs"
+			}
+			"8"
+			{
+					"command"	 "play buttons/button14;show_menu smok_menu_settings1"
 					"label"		 " << Back"
 			}
 			"0"

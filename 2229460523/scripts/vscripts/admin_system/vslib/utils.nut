@@ -661,6 +661,67 @@ function VSLib::Utils::DropThenGive(dropfrom,giveto,slot,item,itemclass)
 	return;
 }
 
+function VSLib::Utils::ExchangeItems(player,other,slot,item1,item1_class,item2,item2_class)
+{	
+	other.Give(item1_class);
+	player.Give(item2_class);
+
+	item1.SetOrigin(Vector(0,0,0));
+	item1.KillDelayed(0.1);
+	item2.SetOrigin(Vector(0,0,0));
+	item2.KillDelayed(0.1);
+
+	return;
+}
+
+function VSLib::Utils::ItemHeldByOther(id,slot)
+{
+	foreach(survivor in ::VSLib.EasyLogic.Players.AliveSurvivors())
+	{
+		local inv = survivor.GetHeldItems();
+		if( ("slot"+slot) in inv)
+		{
+			if( inv["slot"+slot].GetIndex() == id )
+				return true;
+		}
+	}
+	return false;
+}
+
+function VSLib::Utils::RemoveCustomThinkTimers(index,searchonly=false)
+{
+	if(!searchonly)
+	{
+		if(index+"_bot_think_share_attempt_slot2" in ::VSLib.Timers.TimersID)
+		{
+			::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[index+"_bot_think_share_attempt_slot2"]);
+			delete ::VSLib.Timers.TimersID[index+"_bot_think_share_attempt_slot2"];
+		}
+		if(index+"_bot_think_share_attempt_slot3" in ::VSLib.Timers.TimersID)
+		{
+			::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[index+"_bot_think_share_attempt_slot3"]);
+			delete ::VSLib.Timers.TimersID[index+"_bot_think_share_attempt_slot3"];
+		}
+
+		if(index+"_bot_think_adder" in ::VSLib.Timers.TimersID)
+		{
+			::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[index+"_bot_think_adder"]);
+			delete ::VSLib.Timers.TimersID[index+"_bot_think_adder"];
+		}
+	}
+
+	if(index+"_bot_think_search_attempt_slot2" in ::VSLib.Timers.TimersID)
+	{
+		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[index+"_bot_think_search_attempt_slot2"]);
+		delete ::VSLib.Timers.TimersID[index+"_bot_think_search_attempt_slot2"];
+	}
+	if(index+"_bot_think_search_attempt_slot3" in ::VSLib.Timers.TimersID)
+	{
+		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[index+"_bot_think_search_attempt_slot3"]);
+		delete ::VSLib.Timers.TimersID[index+"_bot_think_search_attempt_slot3"];
+	}
+	
+}
 /**
  * Spawns a new entity with the key-value pairs.
  *

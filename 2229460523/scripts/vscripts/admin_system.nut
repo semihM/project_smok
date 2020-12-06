@@ -63,6 +63,10 @@ Convars.SetValue( "precache_all_survivors", "1" );
 
 		AllowCustomSharing = true
 
+		AllowAutomatedSharing = true
+
+		_LastLootThinkState = true
+
 		CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle"]
 		
 		CharacterNamesLower = ["bill","francis","louis","zoey","nick","ellis","coach","rochelle"]
@@ -545,6 +549,8 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		}
 
 		IgnoreSpeakerClass = true
+		
+		_currentlyBeingTaken = {}
 	}
 	
 	ZombieModels =
@@ -1065,6 +1071,10 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			AllowCustomResponses = true
 
 			AllowCustomSharing = true
+
+			AllowAutomatedSharing = true
+
+			_LastLootThinkState = true
 
 			CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle"]
 			
@@ -1806,6 +1816,8 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 
 				_custom = []
 			}
+
+			_currentlyBeingTaken = {}
 		}
 	}
 	else
@@ -2135,6 +2147,15 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 		::VSLib.Timers.AddTimerByName("meteor_shower",AdminSystem._meteor_shower_args.updatedelay, true, _MeteorTimer,{});	
 	}
 
+	if(AdminSystem.Vars._LastLootThinkState)
+	{
+		local tadd = _CreateLootThinker();
+		printl("[Bot-Thinker] Enabled looting/sharing thinking for bots via adder #"+tadd.GetIndex());
+	}
+	else
+	{
+		printl("[Bot-Thinker] Disabled looting/sharing thinking for bots ");
+	}
 }
 
 function Notifications::OnPlayerConnected::RestoreModels(player,args)
@@ -3322,11 +3343,566 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.DriveCmd(player,args);
 			break;
 		}
+		case "kind_bots":
+		{
+			AdminSystem._EnableKindnessCmd(player,args);
+			break;
+		}
+		case "selfish_bots":
+		{
+			AdminSystem._DisableKindnessCmd(player,args);
+			break;
+		}
+		case "update_bots_sharing_preference":
+		{
+			AdminSystem.Update_bots_sharing_preferenceCmd(player,args);
+			break;
+		}
 		default:
 			break;
 	}
 }
 
+/*
+ * @authors rhino
+ */
+::AdminSystem.Update_bots_sharing_preferenceCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local newstate = !::AdminSystem.Vars.AllowAutomatedSharing;
+	::AdminSystem.Vars.AllowAutomatedSharing = newstate;
+
+	ClientPrint(null,3,"\x04"+player.GetCharacterName()+" set bots' sharing preference to:"+( newstate ? " Enabled":" Disabled"));
+}
+
+/*
+ * @authors rhino
+ */
+::_TryToReachAndGet <- function(args)
+{
+	local obj = args.obj;
+
+	if(!args.obj.IsEntityValid())
+		return;
+		
+	local bot = args.bot;
+	local botindex = bot.GetIndex();
+	local slot = args.slot;
+	
+	if(Utils.CalculateDistance(args.bot.GetEyePosition(),obj.GetOrigin())<= 100 && (botindex+"_bot_think_search_attempt_slot"+slot in ::VSLib.Timers.TimersID))
+	{
+		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[botindex+"_bot_think_search_attempt_slot"+slot]);
+		delete ::VSLib.Timers.TimersID[botindex+"_bot_think_search_attempt_slot"+slot];
+		
+		if(!bot.IsAlive())
+		{
+			//ClientPrint(null,3,"#" + botindex + " bot is dead")
+		}
+		else if(bot.IsIncapacitated())
+		{
+			//ClientPrint(null,3,"#" + botindex + " bot is incapped")
+		}
+		else
+		{
+			AdminSystem.BotOnSearchOrSharePath[bot.GetCharacterName().tolower()] = false;
+			if(obj.GetIndex() in AdminSystem.Vars._currentlyBeingTaken)
+				delete AdminSystem.Vars._currentlyBeingTaken[obj.GetIndex()];
+
+			if(!("slot"+slot in args.bot.GetHeldItems()))
+			{
+				DoEntFire("!self","use","",0.1,bot.GetBaseEntity(),obj.GetBaseEntity());
+				bot.BotMoveToLocation(bot.GetBaseEntity().TryGetPathableLocationWithin(10));
+
+			}
+			else
+			{
+				//ClientPrint(null,3,"\x04"+"Inventory changed during search")
+			}
+		}
+	}
+	else if(botindex+"_bot_think_search_attempt_slot"+slot in ::VSLib.Timers.TimersID)
+	{
+		if((rand().tofloat()/RAND_MAX) <= 0.25)
+			bot.BotMoveToLocation(obj.GetOrigin())
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::_TryAndGiveItem <- function(args)
+{
+	local bot = args.bot;
+	local botindex = bot.GetIndex();
+	local target = args.target;
+	local slot = args.slot;
+
+	if(Utils.CalculateDistance(bot.GetOrigin(),target.GetOrigin()) <= 100 && (botindex+"_bot_think_share_attempt_slot"+slot in ::VSLib.Timers.TimersID))
+	{
+		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[botindex+"_bot_think_share_attempt_slot"+slot]);
+		delete ::VSLib.Timers.TimersID[botindex+"_bot_think_share_attempt_slot"+slot];
+		
+		bot.Speak(Utils.GetRandValueFromArray(::Survivorlines.ShareItem[bot.GetCharacterName().tolower()]));
+		
+		if(!bot.IsAlive())
+		{
+			//ClientPrint(null,3,"#" + botindex + " bot is dead")
+		}
+		else if(bot.IsIncapacitated())
+		{
+			//ClientPrint(null,3,"#" + botindex + " bot is incapped")
+		}
+		else
+		{
+			if(!target.IsAlive())
+			{
+				//ClientPrint(null,3,"#" + target.GetIndex() + " target is dead")
+			}
+			else if(target.IsIncapacitated())
+			{
+				//ClientPrint(null,3,"#" + target.GetIndex() + " target is incapped")
+			}
+			else
+			{
+				AdminSystem.BotOnSearchOrSharePath[bot.GetCharacterName().tolower()] = false;
+
+				if(("slot"+slot in bot.GetHeldItems()) && !("slot"+slot in target.GetHeldItems()))
+				{
+					//ClientPrint(null,3,"\x05"+"#"+botindex+" gave "+args.classname+" to "+target.GetIndex());
+
+					Utils.DropThenGive(bot,target,slot,args.item,args.classname);
+				}
+				else
+				{
+					//ClientPrint(null,3,"\x04"+"Inventories changed")
+				}
+			}
+		}	
+	}
+	else if(botindex+"_bot_think_share_attempt_slot"+slot in ::VSLib.Timers.TimersID)
+	{
+		if((rand().tofloat()/RAND_MAX) <= 0.25)
+			bot.BotMoveToLocation(target.GetOrigin())
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::_CreateLootThinker <-function()
+{
+	local keyvaltable = 
+	{	
+		classname = "info_target"
+		origin = Vector(0,0,0)
+		spawnflags = 0
+	}
+
+	local thinkadder = Utils.CreateEntityWithTable(keyvaltable);
+	thinkadder.SetName("think_adder_base_entity");
+
+	AddThinkToEnt(thinkadder.GetBaseEntity(),"_AddSearchThinkToBots");
+	return thinkadder;
+}
+
+::_TakenFailCheckerRemover <- function(args)
+{
+	if(args.index in AdminSystem.Vars._currentlyBeingTaken)
+	{
+		Utils.RemoveCustomThinkTimers(args.bot.GetIndex(),true);
+		AdminSystem.BotOnSearchOrSharePath[args.bot.GetCharacterName().tolower()] = false;
+		delete AdminSystem.Vars._currentlyBeingTaken[args.index];
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem._EnableKindnessCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local found = Objects.AnyOfName("think_adder_base_entity")
+	if(found != null)
+	{
+		AdminSystem._DisableKindnessCmd(player,args);
+	}
+
+	local name = player.GetCharacterName().tolower();
+
+	local thinkadder = _CreateLootThinker();
+	AdminSystem.Vars._LastLootThinkState = true;
+	foreach(survivor,val in AdminSystem.BotOnSearchOrSharePath)
+	{
+		AdminSystem.BotOnSearchOrSharePath[survivor] = false;
+	}
+
+	if (AdminSystem.Vars._outputsEnabled[name])
+	{ClientPrint(null,3,"\x04"+name+"->Created a think adder(#"+thinkadder.GetIndex()+") named "+thinkadder.GetName());}
+	else
+	{printB(player.GetCharacterName(),name+"->Created a think adder(#"+thinkadder.GetIndex()+") named "+thinkadder.GetName(),true,"info",true,true);}
+
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem._DisableKindnessCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local name = player.GetCharacterName().tolower();
+	local ent = null
+	local found = false
+	while (ent = Entities.FindByName(ent, "think_adder_base_entity"))
+	{
+		if (ent.IsValid())
+		{
+			AddThinkToEnt(ent,null);
+			DoEntFire("!self", "Kill", "", 0.1, null, ent);
+			found = true;
+		}
+	}
+
+	foreach(survivor,val in AdminSystem.BotOnSearchOrSharePath)
+	{
+		AdminSystem.BotOnSearchOrSharePath[survivor] = false;
+	}
+
+	foreach(survivor in Players.AliveSurvivors())
+	{
+		Utils.RemoveCustomThinkTimers(survivor.GetIndex());
+	}
+
+	foreach(survivor in Players.DeadSurvivors())
+	{
+		Utils.RemoveCustomThinkTimers(survivor.GetIndex());
+	}
+
+	AdminSystem.Vars._currentlyBeingTaken <- {};
+	AdminSystem.Vars._LastLootThinkState = false;
+
+	if(!found)
+		return;
+
+	if (AdminSystem.Vars._outputsEnabled[name])
+	{ClientPrint(null,3,"\x04"+name+"->Removed think adders for bots");}
+	else
+	{printB(player.GetCharacterName(),name+"->Removed think adders for bots",true,"info",true,true);}
+	
+}
+
+/*
+ * @authors rhino
+ */
+::_AddSearchThinkToBots <- function()
+{
+	foreach(survivor in Players.AliveSurvivors())
+	{
+		if(!(survivor.GetIndex()+"_bot_think_adder" in ::VSLib.Timers.TimersID) && survivor.IsBot())
+		{
+			Timers.AddTimerByName(survivor.GetIndex()+"_bot_think_adder",1.5,true,_LookForLoot,{index=survivor.GetIndex()})
+		}
+	}
+}
+
+::AdminSystem.BotOnSearchOrSharePath <-
+{
+	bill=false,
+	francis=false,
+	louis=false,
+	zoey=false,
+	nick=false,
+	coach=false,
+	ellis=false,
+	rochelle=false
+}
+
+/*
+ * @authors rhino
+ */
+::_LookForLoot <- function(arg)
+{
+	local botindex = arg.index;
+	local bot = Player(botindex.tointeger());
+	local botname = bot.GetCharacterName().tolower();
+	if(!bot.IsBot())
+	{
+		//ClientPrint(null,3,"#" + botindex + " is not a bot")
+		Utils.RemoveCustomThinkTimers(botindex);
+		return;
+	}
+	else if(!bot.IsAlive())
+	{
+		//ClientPrint(null,3,"#" + botindex + " bot is dead")
+	}
+	else if(bot.IsIncapacitated())
+	{
+		//ClientPrint(null,3,"#" + botindex + " bot is incapped")
+	}
+	else if(!AdminSystem.BotOnSearchOrSharePath[botname])
+	{
+		local inv = bot.GetHeldItems();
+		local origin = bot.GetOrigin();
+		local inHand = null;
+		local inhandclass = null;
+		local alreadygiving = false;
+
+		local hasgrenade = ("slot2" in inv)
+		local haspack = ("slot3" in inv)
+		local share = AdminSystem.Vars.AllowAutomatedSharing
+
+		// TRY SHARING EITHER GRENADE OR THE PACK, OR JUST SEARCH FOR NEW ONE
+		if(hasgrenade && share)
+		{
+			if(botindex+"_bot_think_share_attempt_slot2" in ::VSLib.Timers.TimersID)
+			{
+				//ClientPrint(null,3,"\x05"+"Already trying to give the grenade");
+			}
+			else
+			{
+				inHand = inv.slot2;
+				inhandclass = inHand.GetClassname();
+				//ClientPrint(null,3,"\x05"+"Has grenade");
+
+				local closest = bot.BotGetClosestVisibleFriend(); // TO-DO: Loop the players instead of closest, but it may slow this down even more
+				if(closest != null)
+				{
+					if(!closest.IsBot())
+					{
+						local closestorigin = closest.GetOrigin();
+						if("slot2" in closest.GetHeldItems())
+						{
+							//ClientPrint(null,3,"\x04"+"Friend already has grenade");
+						}
+						else if(Utils.CalculateDistance(origin,closestorigin) <= 200)
+						{
+							//ClientPrint(null,3,"\x05"+"Friend close enough");
+							if(bot.IsCalm())
+							{
+								//ClientPrint(null,3,"\x03"+botindex+" is calm and kind enough to share");
+								bot.BotMoveToLocation(closestorigin);
+
+								AdminSystem.BotOnSearchOrSharePath[botname] = true;
+								alreadygiving = true;
+
+								Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot2",1,true,_TryAndGiveItem,{bot=bot,target=closest,slot=2,item=inHand,classname=inhandclass.slice(7)})
+							}
+							else if((rand().tofloat()/RAND_MAX) <= 0.25)
+							{
+								//ClientPrint(null,3,"\x03"+"25% probability hit");
+								bot.BotMoveToLocation(closestorigin);
+
+								AdminSystem.BotOnSearchOrSharePath[botname] = true;
+								alreadygiving = true;
+								
+								Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot2",1,true,_TryAndGiveItem,{bot=bot,target=closest,slot=2,item=inHand,classname=inhandclass.slice(7)})
+							}
+						}
+					}
+					else
+					{
+						//ClientPrint(null,3,"\x05"+"Closest is a bot");
+					}
+					
+				}
+				else
+				{
+					//ClientPrint(null,3,"\x04"+"No close friend found");
+				}
+			}
+			
+		}
+
+		if(haspack && !alreadygiving && share)
+		{
+			if(botindex+"_bot_think_share_attempt_slot3" in ::VSLib.Timers.TimersID)
+			{
+				//ClientPrint(null,3,"\x05"+"Already trying to give a pack");
+			}
+			else
+			{
+				inHand = inv.slot3;
+				inhandclass = inHand.GetClassname();
+
+				local closest = bot.BotGetClosestVisibleFriend(); // TO-DO: Loop the players instead of closest, but it may slow this down even more
+				if(closest != null)
+				{
+					if(!closest.IsBot())
+					{
+						local closestorigin = closest.GetOrigin();
+						if("slot3" in closest.GetHeldItems())
+						{
+							//ClientPrint(null,3,"\x04"+"Friend already has a pack");
+						}
+						else if(Utils.CalculateDistance(origin,closestorigin) <= 200)
+						{
+							//ClientPrint(null,3,"\x05"+"Friend close enough");
+							if(bot.IsCalm())
+							{
+								//ClientPrint(null,3,"\x03"+botindex+" is calm and kind enough to share");
+								bot.BotMoveToLocation(closestorigin);
+
+								AdminSystem.BotOnSearchOrSharePath[botname] = true;
+								alreadygiving = true;
+
+								Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot3",1,true,_TryAndGiveItem,{bot=bot,target=closest,slot=3,item=inHand,classname=inhandclass.slice(7)})
+							}
+							else if((rand().tofloat()/RAND_MAX) <= 0.25)
+							{
+								//ClientPrint(null,3,"\x03"+"25% probability hit");
+								bot.BotMoveToLocation(closestorigin);
+								
+								AdminSystem.BotOnSearchOrSharePath[botname] = true;
+								alreadygiving = true;
+
+								Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot3",1,true,_TryAndGiveItem,{bot=bot,target=closest,slot=3,item=inHand,classname=inhandclass.slice(7)})
+							}
+						}
+					}
+					else
+					{
+						//ClientPrint(null,3,"\x05"+"Closest is a bot");
+					}
+					
+				}
+				else
+				{
+					//ClientPrint(null,3,"\x04"+"No close friend found");
+				}
+			}
+		}
+
+		if ((!hasgrenade || !haspack) && !alreadygiving)
+		{
+			// Search for closeby stuff
+			local sharable_grenade = 
+			[
+				"weapon_molotov","weapon_pipe_bomb",
+				"weapon_vomitjar",
+				"weapon_molotov_spawn","weapon_pipe_bomb_spawn",
+				"weapon_vomitjar_spawn",
+			]
+			local sharable_packs = 
+			[
+				"weapon_first_aid_kit","weapon_first_aid_kit_spawn",
+				"weapon_upgradepack_incendiary","weapon_upgradepack_explosive",
+				"weapon_defibrillator_spawn","weapon_defibrillator",
+				"weapon_upgradepack_incendiary_spawn","weapon_upgradepack_explosive_spawn"
+			]
+
+			local closebygrenade_pack = {}
+			local usedorigin = bot.GetOrigin()
+			foreach(obj in Objects.AroundRadius(usedorigin,300))
+			{
+				if(Utils.GetIDFromArray(sharable_grenade,obj.GetClassname()) != -1)
+				{
+					if(!Utils.ItemHeldByOther(obj.GetIndex(),2) && !hasgrenade && obj.GetNetProp("m_fEffects") != 48)
+						closebygrenade_pack[obj.GetIndex()] <- 2
+				}
+				else if(Utils.GetIDFromArray(sharable_packs,obj.GetClassname()) != -1)
+				{
+					if(!Utils.ItemHeldByOther(obj.GetIndex(),3) && !haspack)
+						closebygrenade_pack[obj.GetIndex()] <- 3
+				}
+			}
+
+			local randompathable = null
+			if(closebygrenade_pack.len() == 0)
+			{ 
+				randompathable = bot.GetBaseEntity().TryGetPathableLocationWithin(250);
+				//eye level
+				randompathable.z += 68;
+
+				//DebugDrawText(randompathable,"RANDOM PATH",false,1);
+
+				foreach(obj in Objects.AroundRadius(randompathable,150))
+				{
+					if(Utils.GetIDFromArray(sharable_grenade,obj.GetClassname()) != -1)
+					{
+						if(!Utils.ItemHeldByOther(obj.GetIndex(),2) && !hasgrenade && obj.GetNetProp("m_fEffects") != 48)
+							closebygrenade_pack[obj.GetIndex()] <- 2
+					}
+					else if(Utils.GetIDFromArray(sharable_packs,obj.GetClassname()) != -1)
+					{
+						if(!Utils.ItemHeldByOther(obj.GetIndex(),3) && !haspack)
+							closebygrenade_pack[obj.GetIndex()] <- 3
+					}
+				}
+
+				if(closebygrenade_pack.len() == 0)
+				{
+					//ClientPrint(null,3,"\x04"+"Nothing closeby");
+					return;
+				}
+				else
+				{
+					usedorigin = randompathable;
+				}
+			}
+			
+
+			local m_trace = null;
+			local obj = null;
+			local found = false;
+			local foundclassslot = null;
+
+			foreach(objindex,slot in closebygrenade_pack)
+			{
+				if(objindex in AdminSystem.Vars._currentlyBeingTaken)
+					continue;
+
+				obj = Entity(objindex);
+				//DebugDrawText(obj.GetOrigin(),"FOUND ITEM",false,3);
+
+				m_trace = { start = bot.GetEyePosition(), end = usedorigin, ignore = bot.GetBaseEntity(), mask = 33579137 };
+				TraceLine(m_trace);
+				if (!m_trace.hit || m_trace.enthit == null || m_trace.enthit == bot.GetBaseEntity() || m_trace.enthit == obj.GetBaseEntity())
+				{
+					//ClientPrint(null,3,"\x05"+"Visible closeby "+obj.GetClassname()+" #"+objindex);
+					foundclassslot = slot;
+					found = true;
+					break;
+				}
+			}
+			
+			if(!found)
+			{
+				//ClientPrint(null,3,"\x04"+"No visible closeby items");
+			}
+			else
+			{
+				if(!obj.IsEntityValid())
+					return;
+
+				local org = obj.GetOrigin();
+				if(Utils.CalculateDistance(origin,org) > 400)
+				{
+					//ClientPrint(null,3,"\x04"+"Visible #"+obj.GetIndex()+" is too far");
+				}
+				else
+				{
+					bot.BotMoveToLocation(org);
+
+					AdminSystem.BotOnSearchOrSharePath[botname] = true;
+					AdminSystem.Vars._currentlyBeingTaken[obj.GetIndex()] <- true;
+					
+					Timers.AddTimer(10,false,_TakenFailCheckerRemover,{index=obj.GetIndex(),bot=bot});
+					Timers.AddTimerByName(botindex+"_bot_think_search_attempt_slot"+foundclassslot,1,true,_TryToReachAndGet,{bot=bot,obj=obj,slot=foundclassslot,classname=obj.GetClassname().slice(7)})
+				}
+			}
+		}
+		
+	}
+}
+
+/*
+ * @authors rhino
+ */
 ::AdminSystem.DriveCmd <- function(player,args)
 {
 	if (!AdminSystem.IsPrivileged( player ))
@@ -3367,6 +3943,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	AdminSystem._CreateKeyListenerCmd(player,args);
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem._Pusher <- function(args)
 {
 	local ent = args.ent;
@@ -3469,6 +4048,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem._KeyMasker <- function(arg)
 {
 	local spl = split(arg,"__")
@@ -6026,6 +6608,24 @@ enum SCENES
 	}
 }
 
+::AdminSystem._CurrentlyTradingItems <-
+{
+	bill=false,
+	francis=false,
+	louis=false,
+	zoey=false,
+	nick=false,
+	coach=false,
+	ellis=false,
+	rochelle=false
+}
+
+::_TradingStatusWrapper <- function(args)
+{
+	AdminSystem._CurrentlyTradingItems[args.player1.GetCharacterName().tolower()] = false;
+	AdminSystem._CurrentlyTradingItems[args.player2.GetCharacterName().tolower()] = false;
+}
+
 /////////////////////////////////////////////////////////////////
 /*
  * Speak a friendly fire line when shoved with given options in AdminSystem.Vars._CustomResponseOptions
@@ -6037,9 +6637,13 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 	if(attacker.IsPressingReload())
 	{
 		if(!AdminSystem.Vars.AllowCustomSharing)
-		{
 			return;
-		}
+
+		if(AdminSystem._CurrentlyTradingItems[target.GetCharacterName().tolower()] || AdminSystem._CurrentlyTradingItems[attacker.GetCharacterName().tolower()])
+			return;
+
+		AdminSystem._CurrentlyTradingItems[target.GetCharacterName().tolower()] = true;
+		AdminSystem._CurrentlyTradingItems[attacker.GetCharacterName().tolower()] = true;
 
 		local sharable_grenade = 
 		[
@@ -6061,40 +6665,53 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 		{
 			if(!("slot2" in targetinv))
 			{
-				Utils.DropThenGive(attacker,target,2,inHand,inhandclass.slice(7))
+				Utils.DropThenGive(attacker,target,2,inHand,inhandclass.slice(7));
 				return;
+			}
+			else if(target.IsBot())
+			{
+				inHand = targetinv.slot2;
+				inhandclass = inHand.GetClassname();
+				Utils.ExchangeItems(target,attacker,2,inHand,inhandclass.slice(7),atkinv.slot2,atkinv.slot2.GetClassname().slice(7));
 			}
 		}
 		else if(Utils.GetIDFromArray(sharable_packs,inhandclass)!=-1) // Give packs
 		{
 			if(!("slot3" in targetinv))
 			{
-				Utils.DropThenGive(attacker,target,3,inHand,inhandclass.slice(7))
+				Utils.DropThenGive(attacker,target,3,inHand,inhandclass.slice(7));
 				return;
+			}
+			else if(target.IsBot())
+			{
+				inHand = targetinv.slot2;
+				inhandclass = inHand.GetClassname();
+				Utils.ExchangeItems(target,attacker,3,atkinv.slot3,inHand,inhandclass.slice(7),atkinv.slot3.GetClassname().slice(7));
 			}
 		}
 		else if(target.IsBot()) // Take grenades and packs from bot
 		{
 			if("slot2" in targetinv)
 			{
+				inHand = targetinv.slot2;
+				inhandclass = inHand.GetClassname();
 				if(!("slot2" in atkinv))
 				{
-					inHand = targetinv.slot2;
-					inhandclass = inHand.GetClassname();
 					Utils.DropThenGive(target,attacker,2,inHand,inhandclass.slice(7));
 				}
 			}
 			
 			if("slot3" in targetinv)
 			{
+				inHand = targetinv.slot3;
+				inhandclass = inHand.GetClassname();
 				if(!("slot3" in atkinv))
 				{
-					inHand = targetinv.slot3;
-					inhandclass = inHand.GetClassname();
 					Utils.DropThenGive(target,attacker,3,inHand,inhandclass.slice(7));
 				}
 			}
 		}
+		::VSLib.Timers.AddTimer(0.1, false, _TradingStatusWrapper,{player1=target,player2=attacker});
 	}
 
 	if(!AdminSystem.Vars.AllowCustomResponses)
@@ -6528,6 +7145,21 @@ function ChatTriggers::stop_listener( player, args, text )
 function ChatTriggers::drive( player, args, text )
 {
 	AdminSystem.DriveCmd( player, args );
+}
+
+function ChatTriggers::kind_bots( player, args, text )
+{
+	AdminSystem._EnableKindnessCmd( player, args );
+}
+
+function ChatTriggers::selfish_bots( player, args, text )
+{
+	AdminSystem._DisableKindnessCmd( player, args );
+}
+
+function ChatTriggers::update_bots_sharing_preference( player, args, text )
+{
+	AdminSystem.Update_bots_sharing_preferenceCmd( player, args );
 }
 /*
  * @authors rhino
