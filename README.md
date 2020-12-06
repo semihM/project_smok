@@ -42,7 +42,7 @@
      
        <code>bind j "scripted_user_func randomline,self,francis"</code>
 
- - By pressing reload button "**R**" and then shove button "**right-click**" :
+ - By holding reload button "**R**" and then pressing shove button "**right-click**" :
      + Grenade or pack held can be given to anyone if they have a free slot
      + Grenade or pack held can be exchanged with a bot's grenade or pack
      + Grenade and pack from a bot can be taken while holding a weapon if you have slots for them
