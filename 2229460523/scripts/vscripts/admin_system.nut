@@ -5860,13 +5860,15 @@ enum SCENES
 	local trimend = GetArgument(3)
 	if(trimend==null)
 	{
-		trimend = 0.1; // make it play after the blank == play it full
+		trimend = "full_duration"; // make it play after the blank == play it full
+		_SceneSequencer(Utils.GetPlayerFromName(character),{scenes=[scene_name],delays=[0]});
 	}
 	else
-	{trimend = trimend.tofloat();}
+	{
+		trimend = trimend.tofloat();
+		_SceneSequencer(Utils.GetPlayerFromName(character),{scenes=["blank",scene_name],delays=[trimend,0.15]});
+	}
 	
-	_SceneSequencer(Utils.GetPlayerFromName(character),{scenes=["blank",scene_name],delays=[trimend,0.15]});
-
 	printB(player.GetCharacterName(),player.GetCharacterName()+" ->Speak test "+character+" "+scene_name+" "+trimend);
 }
 
@@ -6082,24 +6084,51 @@ enum SCENES
 	local character = GetArgument(1);
 	local seqnames = "";
 	local steamid = player.GetSteamID();
+	local outputenabled = AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()];
 	if(character == null || character == "all")
 	{
+		if (outputenabled)
+		{ClientPrint(player.GetBaseEntity(),3,"\x03"+"-----------------");}
+		else
+		{printB(player.GetCharacterName(),"-----------------",false,"",true,false);}
+
 		foreach(charname in AdminSystem.Vars.CharacterNamesLower)
 		{	
-			seqnames += charname + ":("
+			seqnames += charname + "("
 			if(steamid in AdminSystem.Vars._CustomResponseOptions[charname])
 			{
+				if (outputenabled)
+				{ClientPrint(player.GetBaseEntity(),3,"\x04"+charname+":");}
+				else
+				{printB(player.GetCharacterName(),charname+"->",false,"info",false,false);}
+
 				foreach(seq_name,seqtable in AdminSystem.Vars._CustomResponseOptions[charname][steamid].sequence)
 				{
-					seqnames += seq_name + ", ";
+					if (outputenabled)
+					{ClientPrint(player.GetBaseEntity(),3,"\x05"+seq_name);}
+					else
+					{printB(player.GetCharacterName(),seq_name,false,"info",false,false);}
 				}
+
+				if (outputenabled)
+				{ClientPrint(player.GetBaseEntity(),3,"\x04"+"-----------------");}
+				else
+				{printB(player.GetCharacterName(),"-----------------",false,"",false,false);}
 			}
-			seqnames += ") \n";
 		}
-		character = "all characters";
+
+		if (outputenabled)
+		{ClientPrint(player.GetBaseEntity(),3,"\x03"+"-----------------");}
+		else
+		{printB(player.GetCharacterName(),"-----------------",false,"",false,true);}
 	}
 	else
 	{	
+		if (outputenabled)
+		{ClientPrint(player.GetBaseEntity(),3,"\x03"+"-----------------");}
+		else
+		{printB(player.GetCharacterName(),"-----------------",false,"",true,false);}
+
 		character = character.tolower();
 		if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
 		{ClientPrint(null,3,"\x04"+character+" is not a character name");return;}
@@ -6108,16 +6137,27 @@ enum SCENES
 		{
 			ClientPrint(null,3,"\x04"+"No custom sequence found for "+character);return;
 		}
+
+		if (outputenabled)
+		{ClientPrint(player.GetBaseEntity(),3,"\x04"+character+":");}
+		else
+		{printB(player.GetCharacterName(),character+"->",false,"info",true,false);}
+
 		foreach(seq_name,seqtable in AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence)
 		{
-			seqnames += seq_name + ", ";
+			if (outputenabled)
+			{ClientPrint(player.GetBaseEntity(),3,"\x05"+seq_name);}
+			else
+			{printB(player.GetCharacterName(),seq_name,false,"info",false,false);}
+			seqnames += seq_name + " ";
 		}
+
+		if (outputenabled)
+		{ClientPrint(player.GetBaseEntity(),3,"\x04"+"-----------------");}
+		else
+		{printB(player.GetCharacterName(),"-----------------",false,"info",false,true);}
 	}
 	
-	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
-	{ClientPrint(null,3,"\x04"+player.GetCharacterName()+" -> Saved custom responses for "+character+": "+seqnames);}
-	else
-	{printB(player.GetCharacterName(),player.GetCharacterName()+" -> Saved custom responses for "+character+"-> "+seqnames,true,"info",true,true);}
 }
 
 /*
@@ -6666,7 +6706,6 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 			if(!("slot2" in targetinv))
 			{
 				Utils.DropThenGive(attacker,target,2,inHand,inhandclass.slice(7));
-				return;
 			}
 			else if(target.IsBot())
 			{
@@ -6680,7 +6719,6 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 			if(!("slot3" in targetinv))
 			{
 				Utils.DropThenGive(attacker,target,3,inHand,inhandclass.slice(7));
-				return;
 			}
 			else if(target.IsBot())
 			{
