@@ -76,6 +76,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 
 		_grabAvailable = 
 		{
+			player = true,
 			prop_dynamic = true,
 			prop_dynamic_override = true,
 			prop_physics = true,
@@ -1086,6 +1087,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 
 			_grabAvailable = 
 			{
+				player = true,
 				prop_dynamic = true,
 				prop_dynamic_override = true,
 				prop_physics = true,
@@ -14825,6 +14827,140 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 }
 
+::AdminSystem._GrabControl <-
+{
+	bill = 
+	{
+		keymask = 0
+		listenerid = -1
+	}
+	francis = 
+	{
+		keymask = 0
+		listenerid = -1
+	}
+	louis = 
+	{
+		keymask = 0
+		listenerid = -1
+	}
+	zoey = 
+	{
+		keymask = 0
+		listenerid = -1
+	}
+	nick = 
+	{
+		keymask = 0
+		listenerid = -1
+	}
+	ellis = 
+	{
+		keymask = 0
+		listenerid = -1
+	}
+	coach = 
+	{
+		keymask = 0
+		listenerid = -1
+	}
+	rochelle = 
+	{
+		keymask = 0
+		listenerid = -1
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem._AngleUpdater <- function(args)
+{
+	local player = args.player;
+	local name = player.GetCharacterName().tolower();
+	local tbl = AdminSystem._GrabControl[name]
+	local mask = tbl.keymask;
+
+	local held = AdminSystem.Vars._heldEntity[name].entid;
+	local ent = null;
+	if(held == "")
+	{
+		if (name+"_item_rotate1" in ::VSLib.Timers.TimersID)
+		{
+			::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[name+"_item_rotate1"]);
+			delete ::VSLib.Timers.TimersID[name+"_item_rotate1"];
+
+			Ent(AdminSystem._GrabControl[name].listenerid).Kill();
+			AdminSystem._GrabControl[name].keymask = 0
+			AdminSystem._GrabControl[name].listenerid = -1
+		}
+		return;
+	}
+	else
+	{
+		ent = Entity(held.tointeger());
+	}
+
+	local angles = ent.GetAngles();
+	ClientPrint(null,3,"\x03"+mask+" : "+angles.Pitch()+","+angles.Yaw()+","+angles.Roll());
+
+	if(mask == 0)
+		return;
+
+	local pitchDown = (mask % 2)*3;
+	local pitchUp = ((mask>>1) % 2)*3;
+	local yawRight = ((mask>>2) % 2)*3;
+	local yawLeft = ((mask>>3) % 2)*3;
+	local rollClockwise = yawRight;
+	local rollAntiClockwise = yawLeft;
+
+	// Pitch, yaw
+	if(player.IsPressingWalk())
+	{
+		Entity(AdminSystem._GrabControl[name].listenerid).SetFlags(32);
+
+		ent.SetAngles(RotateOrientation(ent.GetAngles(),QAngle(pitchUp-pitchDown,yawRight-yawLeft,0)));	
+
+	}
+	// Roll
+	else if(player.IsPressingReload())
+	{
+		Entity(AdminSystem._GrabControl[name].listenerid).SetFlags(32);
+
+		ent.SetAngles(RotateOrientation(ent.GetAngles(),QAngle(0,0,yawRight-yawLeft)));	
+	}
+	else
+	{
+		Entity(AdminSystem._GrabControl[name].listenerid).SetFlags(0);
+		AdminSystem._GrabControl[name].keymask = 0;
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem._GrabKeyMasker <- function(arg)
+{
+	local spl = split(arg,"__")
+	local ind = spl[0].tointeger();
+	local key = spl[1].tointeger();
+
+	local ent = VSLib.Player(ind.tointeger());
+	local name = ent.GetCharacterName().tolower();
+	local currmask = AdminSystem._GrabControl[name].keymask;
+
+	if((ent.IsPressingReload() || ent.IsPressingWalk()) && (ent.IsPressingReload() != ent.IsPressingWalk()))
+	{
+		AdminSystem._GrabControl[name].keymask = currmask ^ key;
+	}
+	else
+	{
+		AdminSystem._GrabControl[name].keymask = 0;
+	}
+	ClientPrint(null,3,"\x04"+AdminSystem._GrabControl[name].keymask);
+
+}
+
 /*
  * @authors rhino
  * Attach the targeted entity around players arms, make it look and move like player is holding it
@@ -14906,7 +15042,7 @@ if ( Director.GetGameMode() == "holdout" )
 				entclass = obj.GetClassname();	
 				entmodel = obj.GetModel();
 
-				if(!(entclass in AdminSystem.Vars._grabAvailable) && (entclass.find("weapon_") == null))	// Validate class name
+				if(!(entclass in AdminSystem.Vars._grabAvailable) && (entclass.find("weapon_") == null) && obj.GetIndex() == player.GetIndex())	// Validate class name
 					continue;
 				
 				if((entmodel.find("props_vehicles") != null) && (entmodel.find("_glass") != null)) // Vehicle glasses ignored
@@ -14957,6 +15093,11 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		else	// No entities withing given radius
 			return;
+	}
+	else if(ent.GetIndex() == player.GetIndex())
+	{
+		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+		return;
 	}
 	else	// Found entity with default masking
 	{
@@ -15015,6 +15156,39 @@ if ( Director.GetGameMode() == "holdout" )
 		printB(player.GetCharacterName(),"Grabbed #"+entind,true,"info",true,true)
 
 		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = entind;
+		/*
+		local keyvals = 
+		{
+			classname = "game_ui"
+			FieldOfView = -1
+			origin = player.GetOrigin()
+			spawnflags = 0
+		}
+
+		local name = player.GetCharacterName().tolower();
+		local listener = Utils.CreateEntityWithTable(keyvals);
+		listener.SetName("grab_listener_"+player.GetCharacterName().tolower()+UniqueString())
+		listener.SetFlags(0)
+
+		local forIndex = player.GetIndex();
+		
+		ClientPrint(null,3,"\x04"+forIndex+"->Created grab listener(#"+listener.GetIndex()+") named "+listener.GetName());
+
+		listener.Input("addoutput",__.FP+" !self,RunScriptCode,AdminSystem._GrabKeyMasker("+_GetEnumString(forIndex+"__"+BTN_FORWARD)+"),0,-1",0,null)
+		listener.Input("addoutput",__.FU+" !self,RunScriptCode,AdminSystem._GrabKeyMasker("+_GetEnumString(forIndex+"__"+BTN_FORWARD)+"),0,-1",0,null)
+		listener.Input("addoutput",__.BP+" !self,RunScriptCode,AdminSystem._GrabKeyMasker("+_GetEnumString(forIndex+"__"+BTN_BACKWARD)+"),0,-1",0,null)
+		listener.Input("addoutput",__.BU+" !self,RunScriptCode,AdminSystem._GrabKeyMasker("+_GetEnumString(forIndex+"__"+BTN_BACKWARD)+"),0,-1",0,null)
+		listener.Input("addoutput",__.LP+" !self,RunScriptCode,AdminSystem._GrabKeyMasker("+_GetEnumString(forIndex+"__"+BTN_LEFT)+"),0,-1",0,null)
+		listener.Input("addoutput",__.LU+" !self,RunScriptCode,AdminSystem._GrabKeyMasker("+_GetEnumString(forIndex+"__"+BTN_LEFT)+"),0,-1",0,null)
+		listener.Input("addoutput",__.RP+" !self,RunScriptCode,AdminSystem._GrabKeyMasker("+_GetEnumString(forIndex+"__"+BTN_RIGHT)+"),0,-1",0,null)
+		listener.Input("addoutput",__.RU+" !self,RunScriptCode,AdminSystem._GrabKeyMasker("+_GetEnumString(forIndex+"__"+BTN_RIGHT)+"),0,-1",0,null)
+
+		listener.Input("activate","",0.1,player.GetBaseEntity())
+
+		AdminSystem._GrabControl[name].listenerid = listener.GetIndex();
+
+		::VSLib.Timers.AddTimerByName(name+"_item_rotate1",0.1, true, AdminSystem._AngleUpdater,{player=player});
+		*/
 	}
 	
 }
@@ -15028,6 +15202,20 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
+	local name = player.GetCharacterName().tolower();
+	/*
+	if (name+"_item_rotate1" in ::VSLib.Timers.TimersID)
+	{
+		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[name+"_item_rotate1"]);
+		delete ::VSLib.Timers.TimersID[name+"_item_rotate1"];
+
+		local id = AdminSystem._GrabControl[name].listenerid;
+
+		Ent(id).Kill();
+		AdminSystem._GrabControl[name].keymask = 0
+		AdminSystem._GrabControl[name].listenerid = -1
+	}
+	*/
 	if(AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid == "")
 		return;
 
@@ -15039,74 +15227,99 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 
 	local ent = ::VSLib.Entity(baseent);
+	
+	local entclass = null;
 
 	if(!ent.IsEntityValid())
 	{
 		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
 		return;
 	}
-
+	
 	if(ent.GetParent() == null)
 	{
 		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
 		return;
 	}
-
-	local keyvals = 
+	else
 	{
-		classname = "prop_physics_multiplayer",
-		model = ent.GetModel(),
-		origin = ent.GetOrigin(),
-		angles = ent.GetAngles(),
-	};
+		ent.Input("ClearParent","",0);
+		entclass = ent.GetClassname();
 	
-	local entclass = ent.GetClassname();
-	local new_ent = null;
+		if(entclass == "player")
+		{
+			ent.SetMoveType(MOVETYPE_WALK);
+			ent.Input("RunScriptCode","_dropit(Entity("+ent.GetIndex()+"))",0);
+		}
+		else if(entclass.find("weapon_") != null) // a weapon spawner entity
+		{
+		}
+		else if(entclass.find("physics") != null) // physics entity
+		{
+			if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics")
+			{	
+				local flags = ent.GetFlags();
+				local effects = ent.GetNetProp("m_fEffects")
 
-	if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics")
-	{	
-		keyvals["spawnflags"] <- ent.GetSpawnFlags();
-		if((ent.GetSpawnFlags()% 2) == 1)	// Disable start asleep flag
-			keyvals["spawnflags"] -= 1;
+				if((flags% 2) == 1)	// Disable start asleep flag
+					ent.SetFlags(flags-1)
 
-		if((ent.GetSpawnFlags()>>3) % 2 == 1)	// Disable motion disabled flag
-			keyvals["spawnflags"] -= 8;
-		
-	}
-	
-	else if(entclass.find("weapon_") != null) // a weapon spawner entity
-	{
-		player.RemoveAttached(ent);
+				flags = ent.GetFlags();
+				
+				if((flags>>3) % 2 == 1)	// Disable motion disabled flag
+					ent.SetFlags(flags-8)
+				
+				ent.Input("EnableMotion","",0);
+				ent.SetEffects(effects);
+			}
+			ent.Input("RunScriptCode","_dropit(Entity("+ent.GetIndex()+"))",0);
+		}
+		else // non physics, try creating entity with its model
+		{
+			local new_ent = null;
+			local keyvals = 
+			{
+				classname = "prop_physics_multiplayer",
+				model = ent.GetModel(),
+				origin = ent.GetOrigin(),
+				angles = ent.GetAngles(),
+			};
+			local skin = ent.GetNetProp("m_nSkin");
+			local scale = ent.GetModelScale();
+			ent.Kill();
+			
+			new_ent = Utils.CreateEntityWithTable(keyvals);
+
+			if(new_ent == null)
+			{
+				printB(player.GetCharacterName(),"Failed to create new entity after letting go the held item",true,"error",true,true)
+				
+				keyvals["classname"] = "prop_physics_multiplayer"
+				keyvals["model"] = "models/items/l4d_gift.mdl"
+				new_ent = Utils.CreateEntityWithTable(keyvals);
+			}
+			else
+			{
+				new_ent.SetNetProp("m_nSkin",skin);
+				new_ent.SetModelScale(scale);
+				printB(player.GetCharacterName(),"Let go the held entity created new entity #"+new_ent.GetIndex(),true,"info",true,true)
+			}
+
+			AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+			return;
+		}
+
 		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+	}
+
+	if(entclass.find("weapon_") != null) // a weapon spawner entity
+	{
 		printB(player.GetCharacterName(),"Let go the held entity spawner #"+ent.GetIndex(),true,"info",true,true)
 		return;
 	}
-	else if(entclass == "prop_door_rotating" || entclass == "prop_door_rotating_checkpoint")
-	{
-		keyvals["classname"] = entclass;
-		keyvals["spawnflags"] <- ent.GetSpawnFlags();
-	}
-	
-	new_ent = Utils.CreateEntityWithTable(keyvals);
 
-	ent.Kill();
-	player.RemoveAttached(ent);
+	printB(player.GetCharacterName(),"Let go the held entity #"+ent.GetIndex(),true,"info",true,true)
 
-	AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
-
-	if(new_ent == null)
-	{
-		printB(player.GetCharacterName(),"Failed to create new entity after letting go the held item",true,"error",true,true)
-		
-		keyvals["classname"] = "prop_physics_multiplayer"
-		keyvals["model"] = "models/items/l4d_gift.mdl"
-		new_ent = Utils.CreateEntityWithTable(keyvals);
-	}
-	else
-	{
-		printB(player.GetCharacterName(),"Let go the held entity created new entity #"+new_ent.GetIndex(),true,"info",true,true)
-	}
-	
 }
 
 /*
@@ -15118,6 +15331,20 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
+	local name = player.GetCharacterName().tolower();
+	/*
+	if (name+"_item_rotate1" in ::VSLib.Timers.TimersID)
+	{
+		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[name+"_item_rotate1"]);
+		delete ::VSLib.Timers.TimersID[name+"_item_rotate1"];
+
+		local id = AdminSystem._GrabControl[name].listenerid;
+
+		Ent(id).Kill();
+		AdminSystem._GrabControl[name].keymask = 0
+		AdminSystem._GrabControl[name].listenerid = -1
+	}
+	*/
 	if(AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid == "")
 		return;
 	
@@ -15129,6 +15356,7 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	
 	local ent = ::VSLib.Entity(baseent);
+	local entclass = null;
 	if(!ent.IsEntityValid())
 	{
 		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
@@ -15140,67 +15368,101 @@ if ( Director.GetGameMode() == "holdout" )
 		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
 		return;
 	}
-
-	local keyvals = 
+	else
 	{
-		classname = "prop_physics_multiplayer",
-		model = ent.GetModel(),
-		origin = ent.GetOrigin(),
-		angles = ent.GetAngles(),
-	};
+		ent.Input("ClearParent","",0);
+		entclass = ent.GetClassname();
+	
+		if(entclass == "player")
+		{
+			ent.SetMoveType(MOVETYPE_WALK);
+			ent.Input("RunScriptCode","_yeetit(Entity("+ent.GetIndex()+"), Player("+player.GetIndex()+"))",0);
+		}
+		else if(entclass.find("weapon_") != null) // a weapon spawner entity
+		{
+		}
+		else if(entclass.find("physics") != null) // physics entity
+		{
+			if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics")
+			{	
+				local flags = ent.GetFlags();
+				local effects = ent.GetNetProp("m_fEffects")
 
-	local entclass = ent.GetClassname();
-	local new_ent = null;
+				if((flags% 2) == 1)	// Disable start asleep flag
+					ent.SetFlags(flags-1)
 
-	if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics")
-	{
-		keyvals["spawnflags"] <- ent.GetSpawnFlags();
-		if((ent.GetSpawnFlags()% 2) == 1)	// Disable start asleep flag
-			keyvals["spawnflags"] -= 1;
+				flags = ent.GetFlags();
+				
+				if((flags>>3) % 2 == 1)	// Disable motion disabled flag
+					ent.SetFlags(flags-8)
+				
+				ent.Input("EnableMotion","",0);
+				ent.SetEffects(effects);
+			}
+			ent.Input("RunScriptCode","_yeetit(Entity("+ent.GetIndex()+"), Player("+player.GetIndex()+"))",0);
+		}
+		else // non physics, try creating entity with its model
+		{
+			local new_ent = null;
+			local keyvals = 
+			{
+				classname = "prop_physics_multiplayer",
+				model = ent.GetModel(),
+				origin = ent.GetOrigin(),
+				angles = ent.GetAngles(),
+			};
+			local skin = ent.GetNetProp("m_nSkin");
+			local scale = ent.GetModelScale();
+			ent.Kill();
+			
+			new_ent = Utils.CreateEntityWithTable(keyvals);
+			
+			if(new_ent == null)
+			{
+				printB(player.GetCharacterName(),"Failed to create new entity after letting go the held item",true,"error",true,true)
+				
+				keyvals["classname"] = "prop_physics_multiplayer"
+				keyvals["model"] = "models/items/l4d_gift.mdl"
+				new_ent = Utils.CreateEntityWithTable(keyvals);
+				
+			}
+			else
+			{
+				new_ent.SetNetProp("m_nSkin",skin);
+				new_ent.SetModelScale(scale);
+				printB(player.GetCharacterName(),"Let go the held entity created new entity #"+new_ent.GetIndex(),true,"info",true,true)
+			}
 
-		if((ent.GetSpawnFlags()>>3) % 2 == 1)	// Disable motion disabled flag
-			keyvals["spawnflags"] -= 8;
+			AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+			return;
+		}
+
+		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
 	}
 	
-
 	if(entclass.find("weapon_") != null) // a weapon spawner entity
 	{
-		player.RemoveAttached(ent);
-		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
 		printB(player.GetCharacterName(),"Let go the held entity spawner #"+ent.GetIndex(),true,"info",true,true)
 		return;
 	}
-	else
-	{
-		new_ent = Utils.CreateEntityWithTable(keyvals);
-		ent.Kill();
-		player.RemoveAttached(ent);
-		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
-	}
 
-	if(new_ent == null)
-	{
-		printB(player.GetCharacterName(),"Failed to create new entity after letting go the held item",true,"error",true,true)
-		
-		keyvals["classname"] = "prop_physics_multiplayer"
-		keyvals["model"] = "models/items/l4d_gift.mdl"
-		new_ent = Utils.CreateEntityWithTable(keyvals);
-		
-		local fwvec = RotateOrientation(player.GetEyeAngles(),QAngle(AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].yeetPitch,0,0)).Forward();
-		fwvec = fwvec.Scale(300/fwvec.Length());
+	printB(player.GetCharacterName(),"YEEEEETED the held entity #"+ent.GetIndex(),true,"info",true,true)
 
-		new_ent.Push(fwvec);
-	}
-	else
-	{
-		printB(player.GetCharacterName(),"YEEEEETED the held entity and created new entity #"+new_ent.GetIndex(),true,"info",true,true)
-		
-		local fwvec = RotateOrientation(player.GetEyeAngles(),QAngle(AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].yeetPitch,0,0)).Forward();
-		fwvec = fwvec.Scale(AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].yeetSpeed/fwvec.Length());
+}
 
-		new_ent.Push(fwvec);
-	}
-	
+::_dropit <- function(ent)
+{
+	local movetype = ent.GetClassname() == "player" ? MOVETYPE_WALK : MOVETYPE_VPHYSICS
+	local a=ent.GetOrigin();ent.GetBaseEntity().SetSequence(0);ent.Input("wake","",0);ent.SetMoveType(movetype);ent.SetOrigin(a)
+}
+
+::_yeetit <- function(ent,p)
+{
+	_dropit(ent);
+
+	local fwvec = RotateOrientation(p.GetEyeAngles(),QAngle(AdminSystem.Vars._heldEntity[p.GetCharacterName().tolower()].yeetPitch,0,0)).Forward();
+	fwvec = fwvec.Scale(AdminSystem.Vars._heldEntity[p.GetCharacterName().tolower()].yeetSpeed/fwvec.Length());
+	ent.Push(fwvec);
 }
 
 /* @authors rhino
