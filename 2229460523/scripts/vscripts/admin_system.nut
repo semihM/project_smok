@@ -15042,7 +15042,7 @@ if ( Director.GetGameMode() == "holdout" )
 				entclass = obj.GetClassname();	
 				entmodel = obj.GetModel();
 
-				if(!(entclass in AdminSystem.Vars._grabAvailable) && (entclass.find("weapon_") == null) && obj.GetIndex() == player.GetIndex())	// Validate class name
+				if(!(entclass in AdminSystem.Vars._grabAvailable) && (entclass.find("weapon_") == null))	// Validate class name
 					continue;
 				
 				if((entmodel.find("props_vehicles") != null) && (entmodel.find("_glass") != null)) // Vehicle glasses ignored
@@ -15051,6 +15051,9 @@ if ( Director.GetGameMode() == "holdout" )
 				if((entmodel.find("hybridphysx") != null)) // Animation props etc ignored
 					continue;
 
+				if(obj.GetIndex() == player.GetIndex())
+					continue;
+					
 				entind = obj.GetIndex().tostring();
 
 				foreach(survivor in Players.AliveSurvivors())
@@ -15432,7 +15435,8 @@ if ( Director.GetGameMode() == "holdout" )
 				new_ent.SetModelScale(scale);
 				printB(player.GetCharacterName(),"Let go the held entity created new entity #"+new_ent.GetIndex(),true,"info",true,true)
 			}
-
+		
+			new_ent.Input("RunScriptCode","_yeetit(Entity("+new_ent.GetIndex()+"), Player("+player.GetIndex()+"))",0);
 			AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
 			return;
 		}
@@ -15463,6 +15467,12 @@ if ( Director.GetGameMode() == "holdout" )
 	local fwvec = RotateOrientation(p.GetEyeAngles(),QAngle(AdminSystem.Vars._heldEntity[p.GetCharacterName().tolower()].yeetPitch,0,0)).Forward();
 	fwvec = fwvec.Scale(AdminSystem.Vars._heldEntity[p.GetCharacterName().tolower()].yeetSpeed/fwvec.Length());
 	ent.Push(fwvec);
+}
+
+::deltimer <- function(name)
+{
+	::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[name]);
+	delete ::VSLib.Timers.TimersID[name];
 }
 
 /* @authors rhino
