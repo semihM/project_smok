@@ -74,6 +74,34 @@
 ---
 ## Entities
 
+- **prop** : Create a prop of the given type with given model
+
+    Chat Syntax | !prop *type model_path*
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *prop,type,model_path* 
+    ------------- | -------------
+    
+    Menu Sequence | _6 1_ AND _6 2_ 
+    ------------- | -------------
+
+```cpp
+       //Overloads:
+       // {type} should be one of (physicsM: physics object, dynamic: non-physics object, ragdoll: ragdolling models)
+       // {model_path} follows this format in general: models/props_{category}/{name}.mdl OR !random for a random model
+       // To check out all possible models: Hammer World Editor -> New -> CTRL+SHIFT+M -> Search all models
+       prop {type: (physicsM, dynamic, ragdoll)} {model_path | !random}
+
+       // Example create a flower barrel with physics
+       prop physicsM models/props_foliage/flower_barrel.mdl
+       
+       // Example create a BurgerTank sign without physics
+       prop dynamic models/props_signs/burgersign.mdl
+       
+       // Example create a random object with physics
+       prop physicsM !random
+```
+---
 - **ent** : Create an entity of the given class with given key-values
 
     Chat Syntax | !ent *class key_1>val_1&key_2>val_2...*
@@ -1115,7 +1143,75 @@
     
     Menu Sequence | _6 9 5_
     ------------- | -------------
+ 
+---
+- **wear_hat** : _Wear_ aimed object like a hat
+
+    Chat Syntax | !wear_hat extra_height
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *wear_hat,extra_height* 
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 9 1 1_
+    ------------- | -------------
+
+```cpp
+       //Overloads:
+       wear_hat {extra_height}
+       wear_hat     // Default height is eye-level
        
+       //Example: Wear aimed object like a hat, 10 units above eye-level
+       wear_hat 10
+```
+---
+- **take_off_hat** : Take off currently worn hat and drop it at aimed point
+
+    Chat Syntax | !take_off_hat
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *take_off_hat* 
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 9 1 2_
+    ------------- | -------------
+
+---
+- **hat_position** : Take off currently worn hat and drop it at aimed point
+
+    Chat Syntax | !take_off_hat
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *take_off_hat* 
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 9 1 3_ , _6 9 9 1 4_ AND _6 9 9 1 5_
+    ------------- | -------------
+
+---
+- **update_aimed_ent_direction** : Make aimed object face the same way as you
+
+    Chat Syntax | !update_aimed_ent_direction
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *update_aimed_ent_direction* 
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 9 1 6_
+    ------------- | -------------
+
+---
+- **random_model** : Prints a random model name to chat, only visible to caller
+
+    Chat Syntax | !random_model
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *random_model* 
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 3 9 1_
+    ------------- | -------------
+                             
 ---
 ## Debugging, scripting and settings related
 
@@ -1165,15 +1261,39 @@
     ------------- | -------------
 
 ---
-- **update_tank_rock_preference** : Enable/Disable push effect when hit by a tank's rock
+- **update_tank_rock_launch_preference** : Enable/Disable push effect when hit by a tank's rock(only works if only 1 rock was present)
 
-    Chat Syntax | !update_tank_rock_preference
+    Chat Syntax | !update_tank_rock_launch_preference
     ------------- | -------------
 
-    Console Syntax | scripted_user_func *update_tank_rock_preference*
+    Console Syntax | scripted_user_func *update_tank_rock_launch_preference*
     ------------- | -------------
     
-    Menu Sequence | _6 9 1 2_
+    Menu Sequence | _6 9 1 2 1_
+    ------------- | -------------
+
+---
+- **update_tank_rock_random_preference** : Enable/Disable random models for tank's rocks
+
+    Chat Syntax | !update_tank_rock_random_preference
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *update_tank_rock_random_preference*
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 1 2 2_
+    ------------- | -------------
+
+---
+- **update_tank_rock_spawn_preference** : Enable/Disable spawning tank's rocks as physics objects (which wont be destroyed on hit)
+
+    Chat Syntax | !update_tank_rock_spawn_preference
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *update_tank_rock_spawn_preference*
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 1 2 3_
     ------------- | -------------
 
 ---
@@ -1296,11 +1416,15 @@
 - **"meteor_shower_settings.txt"** file contains the settings to use for the _meteor shower_ event.
 
 ---
-### Bug reports
+### Forms
 ---
-- Before creating an issue report, please contact to the [developer](http://steamcommunity.com/profiles/76561198095804696).
+- If you have encountered a bug, please report it [here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089552207/)
+
+- If you have any suggestions, write them [here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089554499/)
+
+- If you are having trouble with the add-on or have any questions, ask [here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089567424/)
 ---
-## Links
+## Other Links
 
 - [Admin System](https://steamcommunity.com/sharedfiles/filedetails/?id=214630948)
 - [Admin Menu 2.0](https://steamcommunity.com/sharedfiles/filedetails/?id=1229957234)
