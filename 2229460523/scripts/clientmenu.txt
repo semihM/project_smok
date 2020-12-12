@@ -19632,6 +19632,11 @@
 					"command"    "play buttons/button14;show_menu smok_menu"
 					"label"      " << Back"
 			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu ent_fire_menu2"
+					"label"      " >> Next"
+			}
 			"0"
 			{
 					"command"    "play buttons/button14"
@@ -19639,6 +19644,26 @@
 			}
 	}
 	
+	"ent_fire_menu2"
+	{
+			"Title"		 "Options 2"
+
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func random_model;show_menu ent_fire_menu2"
+				"label"			 " Get a random model path"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_fire_menu1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
 
 	"ent_grab_yeet"
 	{	
@@ -35752,25 +35777,30 @@
 			}
 			"4"
 			{
+				"command"		 "play buttons/button14;scripted_user_func hat_position,mouth;show_menu wear_hat_menu1"
+				"label"			 " Wear above mouth"
+			}
+			"5"
+			{
 				"command"		 "play buttons/button14;scripted_user_func hat_position,survivor_neck;show_menu wear_hat_menu1"
 				"label"			 " Wear above neck"
 			}
-			"5"
+			"6"
 			{
 				"command"		 "play buttons/button14;scripted_user_func update_aimed_ent_direction;show_menu wear_hat_menu1"
 				"label"			 " Make hat face the direction you face"
 			}
-			"6"
+			"7"
 			{
 				"command"	 	"play buttons/button14;c_thirdpersonshoulder 0;show_menu wear_hat_menu1"
 				"label"		 	" First-person"
 			}
-			"7"
+			"8"
 			{
 				"command"	 	"play buttons/button14;c_thirdpersonshoulder 1;c_thirdpersonshoulderaimdist 360;c_thirdpersonshoulderdist 90;c_thirdpersonshoulderheight 15;c_thirdpersonshoulderoffset 0;thirdpersonshoulder;thirdpersonshoulder;show_menu wear_hat_menu1"
 				"label"		 	" Third-person Center"
 			}
-			"8"
+			"9"
 			{
 					"command"    "play buttons/button14;show_menu secret_commands2"
 					"label"      " << Back"

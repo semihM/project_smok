@@ -10387,12 +10387,12 @@ if ( Director.GetGameMode() == "holdout" )
 	if(AdminSystem.Vars._RockThrow.randomized_spawn_prop_after)
 	{
 		AdminSystem.Vars._RockThrow.randomized_spawn_prop_after = false;
-		Utils.PrintToAllDel("Tank rock's re-spawn after breaking is now disabled.")
+		Utils.PrintToAllDel("Tank rock's using to physics is now disabled.")
 	}
 	else
 	{
 		AdminSystem.Vars._RockThrow.randomized_spawn_prop_after = true;
-		Utils.PrintToAllDel("Tank rock's re-spawn after breaking is now enabled.")
+		Utils.PrintToAllDel("Tank rock's using to physics is now enabled.")
 	}
 }
 
@@ -15298,16 +15298,22 @@ if ( Director.GetGameMode() == "holdout" )
 		AdminSystem._TakeOffHatCmd(player,args);
 	}
 
+	local pos = AdminSystem.Vars._wornHat[name].wearAttachPos;
+	local posextra = 0;
 	AdminSystem.Vars._wornHat[name].entid = ind;
 	AdminSystem.Vars._wornHat[name].collisiongroup = ent.GetNetProp("m_CollisionGroup");
+	if(pos == "mouth")
+		pos = -8
+	else if(pos == "survivor_neck")
+		pos = -16
 
-	local vec = GetArgument(1)==null ? Vector(0,0,0) : Vector(0,0,-57 + AdminSystem.Vars._wornHat[name].wearAbove + GetArgument(1).tofloat() )
+	local vec = GetArgument(1)==null ? Vector(0,0,0) : Vector(0,0,-57 + AdminSystem.Vars._wornHat[name].wearAbove + GetArgument(1).tofloat() + posextra)
 
 	//ent.SetForwardVector(player.GetForwardVector());
 	ent.SetNetProp("m_CollisionGroup",1);
 	ent.Input("setparent","#"+player.GetIndex(),0);
 	ent.SetOrigin(player.GetEyePosition()+vec);	
-	ent.Input("setparentattachmentmaintainoffset",AdminSystem.Vars._wornHat[name].wearAttachPos,0.1);
+	ent.Input("setparentattachmentmaintainoffset",pos,0.1);
 }
 
 ::AdminSystem._HatPosition <- function(player,args)
