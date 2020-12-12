@@ -12,6 +12,8 @@ IncludeScript("Admin_System/VSLib");
 IncludeScript("Voice_Paths/Survivorlines");
 // Include particle names table
 IncludeScript("Particle_Names/Particlenames");
+// Model paths
+IncludeScript("Model_Paths/Model");
 
 if ( SessionState.ModeName == "coop" || SessionState.ModeName == "realism" || SessionState.ModeName == "survival" || SessionState.ModeName == "versus" || SessionState.ModeName == "scavenge" )
 {
@@ -85,7 +87,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 			prop_vehicle = true,
 			prop_car_alarm = true,
 			prop_door_rotating = true,
-			prop_door_rotating_checkpoint = true
+			prop_door_rotating_checkpoint = true,
 		}
 
 		_heldEntity =
@@ -180,6 +182,65 @@ Convars.SetValue( "precache_all_survivors", "1" );
 			}
 		}
 
+		_wornHat =
+		{
+			bill=
+			{
+				entid="",
+				wearAttachPos = "eyes",
+				wearAbove = 0,
+				collisiongroup = 0
+			},
+			francis=
+			{
+				entid="",
+				wearAttachPos = "eyes",
+				wearAbove = 0,
+				collisiongroup = 0
+			},
+			louis=
+			{
+				entid="",
+				wearAttachPos = "eyes",
+				wearAbove = 0,
+				collisiongroup = 0
+			},
+			zoey=
+			{
+				entid="",
+				wearAttachPos = "eyes",
+				wearAbove = 0,
+				collisiongroup = 0
+			},
+			nick=
+			{
+				entid="",
+				wearAttachPos = "eyes",
+				wearAbove = 0,
+				collisiongroup = 0
+			},
+			coach=
+			{
+				entid="",
+				wearAttachPos = "eyes",
+				wearAbove = 0,
+				collisiongroup = 0
+			},
+			ellis=
+			{
+				entid="",
+				wearAttachPos = "eyes",
+				wearAbove = 0,
+				collisiongroup = 0
+			},
+			rochelle=
+			{
+				entid="",
+				wearAttachPos = "eyes",
+				wearAbove = 0,
+				collisiongroup = 0
+			}
+		}
 		// Chat output state
 		_outputsEnabled = 
 		{
@@ -1191,6 +1252,66 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 				}
 			}
 
+			_wornHat =
+			{
+				bill=
+				{
+					entid="",
+					wearAttachPos = "eyes",
+					wearAbove = 0,
+					collisiongroup = 0
+				},
+				francis=
+				{
+					entid="",
+					wearAttachPos = "eyes",
+					wearAbove = 0,
+					collisiongroup = 0
+				},
+				louis=
+				{
+					entid="",
+					wearAttachPos = "eyes",
+					wearAbove = 0,
+					collisiongroup = 0
+				},
+				zoey=
+				{
+					entid="",
+					wearAttachPos = "eyes",
+					wearAbove = 0,
+					collisiongroup = 0
+				},
+				nick=
+				{
+					entid="",
+					wearAttachPos = "eyes",
+					wearAbove = 0,
+					collisiongroup = 0
+				},
+				coach=
+				{
+					entid="",
+					wearAttachPos = "eyes",
+					wearAbove = 0,
+					collisiongroup = 0
+				},
+				ellis=
+				{
+					entid="",
+					wearAttachPos = "eyes",
+					wearAbove = 0,
+					collisiongroup = 0
+				},
+				rochelle=
+				{
+					entid="",
+					wearAttachPos = "eyes",
+					wearAbove = 0,
+					collisiongroup = 0
+				}
+			}
+
 			// Chat output state
 			_outputsEnabled = 
 			{
@@ -1954,6 +2075,28 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			printl("[Custom-Fix] Applying fixes to HeldEntity table...");
 			AdminSystem.Vars._heldEntity.coach <- Utils.TableCopy(AdminSystem.Vars._heldEntity.Coach);
 			delete AdminSystem.Vars._heldEntity.Coach;
+			AdminSystem.Vars._heldEntity.bill.entid = "";
+			AdminSystem.Vars._heldEntity.francis.entid = "";
+			AdminSystem.Vars._heldEntity.louis.entid = "";
+			AdminSystem.Vars._heldEntity.zoey.entid = "";
+			AdminSystem.Vars._heldEntity.nick.entid = "";
+			AdminSystem.Vars._heldEntity.ellis.entid = "";
+			AdminSystem.Vars._heldEntity.coach.entid = "";
+			AdminSystem.Vars._heldEntity.rochelle.entid = "";
+		}
+		if("Coach" in AdminSystem.Vars._wornHat)
+		{
+			printl("[Custom-Fix] Applying fixes to WornHat table...");
+			AdminSystem.Vars._wornHat.coach <- Utils.TableCopy(AdminSystem.Vars._wornHat.Coach);
+			delete AdminSystem.Vars._wornHat.Coach;
+			AdminSystem.Vars._wornHat.bill.entid = "";
+			AdminSystem.Vars._wornHat.francis.entid = "";
+			AdminSystem.Vars._wornHat.louis.entid = "";
+			AdminSystem.Vars._wornHat.zoey.entid = "";
+			AdminSystem.Vars._wornHat.nick.entid = "";
+			AdminSystem.Vars._wornHat.ellis.entid = "";
+			AdminSystem.Vars._wornHat.coach.entid = "";
+			AdminSystem.Vars._wornHat.rochelle.entid = "";
 		}
 		if("Coach" in AdminSystem.Vars._modelPreference)
 		{
@@ -2669,6 +2812,26 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.Attach_particle_savedCmd(player, args);
 			break;
 		}
+		case "hat_position":
+		{
+			AdminSystem._HatPosition(player, args);
+			break;
+		}
+		case "update_aimed_ent_direction":
+		{
+			AdminSystem.UpdateAimedEntityDirection(player, args);
+			break;
+		}
+		case "wear_hat":
+		{
+			AdminSystem._WearHatCmd(player, args);
+			break;
+		}
+		case "take_off_hat":
+		{
+			AdminSystem._TakeOffHatCmd(player, args);
+			break;
+		}
 		case "update_svcheats":
 		{
 			AdminSystem.Update_svcheatsCmd(player, args);
@@ -2949,6 +3112,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.GrabMethodCmd( player, args );
 			break;
 		}
+		case "random_model":
+		{
+			AdminSystem.RandomModelCmd( player, args );
+			break;
+		}
 		case "model":
 		{
 			AdminSystem.ModelCmd( player, args );
@@ -2974,9 +3142,19 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.UpdateJockeyPreferenceCmd( player, args );
 			break;
 		}
-		case "update_tank_rock_preference":
+		case "update_tank_rock_launch_preference":
 		{
 			AdminSystem.UpdateTankRockPreferenceCmd( player, args );
+			break;
+		}
+		case "update_tank_rock_random_preference":
+		{
+			AdminSystem.UpdateTankRockRandomPreferenceCmd( player, args );
+			break;
+		}
+		case "update_tank_rock_respawn_preference":
+		{
+			AdminSystem.UpdateTankRockSpawnAfterPreferenceCmd( player, args );
 			break;
 		}
 		case "restore_model":
@@ -3363,6 +3541,14 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		default:
 			break;
 	}
+}
+
+/*
+ * @authors rhino
+ */
+::out <- function(msg="",color="\x04",target=null)
+{
+	ClientPrint(target,3,color+msg);
 }
 
 /*
@@ -6888,6 +7074,8 @@ function Notifications::OnAdrenalineUsed::_SpeakWhenUsedAdrenalineCondition(ent,
 	rockpushspeed = 900
 	raise = 300
 	friction = 0.01
+	randomized = false
+	randomized_spawn_prop_after = true
 }
 
 function Notifications::OnHurt::_HitByTankRock(player,attacker,args)
@@ -6900,6 +7088,11 @@ function Notifications::OnHurt::_HitByTankRock(player,attacker,args)
 	{
 		if(AdminSystem.Vars._RockThrow.enabled)
 		{
+			if(::VSLib.EasyLogic.Objects.OfClassname("tank_rock").len() != 1)
+			{
+				//printl("Too many rocks, not pushing")
+				return;
+			}
 			local pushvec = player.GetEyePosition() - AdminSystem.Vars._RockThrow.rockorigin ;
 			pushvec = pushvec.Scale( AdminSystem.Vars._RockThrow.rockpushspeed / pushvec.Length());
 			
@@ -6927,8 +7120,53 @@ function Notifications::OnAbilityUsed::_TankRockSpawning(player,ability,args)
 		return;
 	else
 	{
+		Timers.AddTimer(2.25,false,_findAndChangeRock,{});
 		AdminSystem.Vars._RockThrow.rockorigin = player.GetOrigin()+Vector(0,0,45);
 	}
+}
+
+::_findAndChangeRock <- function(args)
+{
+	if(AdminSystem.Vars._RockThrow.randomized)
+	{
+		foreach( rock in ::VSLib.EasyLogic.Objects.OfClassname("tank_rock") )
+		{
+			if(rock.GetName().find("_randomized") == null)
+			{
+				rock.SetName(rock.GetName()+"_randomized");
+				rock.SetModel(RandomPick(::Model.paths));
+				if(AdminSystem.Vars._RockThrow.randomized_spawn_prop_after)
+				{
+					Timers.AddTimer(0.1,false,_replaceRock,{rock=rock});
+				}
+			}
+		}
+	}
+}
+
+::_replaceRock <- function(args)
+{
+	if(!args.rock.IsEntityValid())
+		return;
+	if(args.rock.GetClassname() != "tank_rock")
+		return;
+	local keyvals = 
+	{
+		classname = "prop_physics_multiplayer",
+		model = args.rock.GetModel(),
+		origin = args.rock.GetOrigin(),
+		angles = args.rock.GetAngles(),
+		massscale = 10.0
+	};
+	local velocity = args.rock.GetVelocity();
+	args.rock.Kill();
+	local newent = Utils.CreateEntityWithTable(keyvals);
+	newent.Push(velocity.Scale(2));
+}
+
+::RandomPick <- function(arr)
+{
+	return Utils.GetRandValueFromArray(arr);
 }
 
 /*
@@ -7157,9 +7395,19 @@ function ChatTriggers::update_jockey_preference( player, args, text )
 	AdminSystem.UpdateJockeyPreferenceCmd( player, args );
 }
 
-function ChatTriggers::update_tank_rock_preference( player, args, text )
+function ChatTriggers::update_tank_rock_launch_preference( player, args, text )
 {
 	AdminSystem.UpdateTankRockPreferenceCmd( player, args );
+}
+
+function ChatTriggers::update_tank_rock_random_preference( player, args, text )
+{
+	AdminSystem.UpdateTankRockRandomPreferenceCmd( player, args );
+}
+
+function ChatTriggers::update_tank_rock_respawn_preference( player, args, text )
+{
+	AdminSystem.UpdateTankRockSpawnAfterPreferenceCmd( player, args );
 }
 
 function ChatTriggers::update_model_preference( player, args, text )
@@ -7170,6 +7418,11 @@ function ChatTriggers::update_model_preference( player, args, text )
 function ChatTriggers::restore_model( player, args, text )
 {
 	AdminSystem.RestoreModelCmd( player, args );
+}
+
+function ChatTriggers::random_model( player, args, text )
+{
+	AdminSystem.RandomModelCmd( player, args );
 }
 
 function ChatTriggers::create_listener( player, args, text )
@@ -7364,6 +7617,23 @@ function ChatTriggers::spawn_particle_saved(player,args,text)
 function ChatTriggers::attach_particle_saved(player,args,text)
 {
 	AdminSystem.Attach_particle_savedCmd(player, args);
+}
+
+function ChatTriggers::hat_position(player,args,text)
+{
+	AdminSystem._HatPosition(player, args);
+}
+function ChatTriggers::update_aimed_ent_direction(player,args,text)
+{
+	AdminSystem.UpdateAimedEntityDirection(player, args);
+}
+function ChatTriggers::take_off_hat(player,args,text)
+{
+	AdminSystem._TakeOffHatCmd(player, args);
+}
+function ChatTriggers::wear_hat(player,args,text)
+{
+	AdminSystem._WearHatCmd(player, args);
 }
 
 function ChatTriggers::grab(player,args,text)
@@ -9453,6 +9723,18 @@ if ( Director.GetGameMode() == "holdout" )
 /*
  * @authors rhino
  */
+::AdminSystem.RandomModelCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	ClientPrint(player.GetBaseEntity(),3,"\x05"+RandomPick(::Model.paths));
+}
+
+
+/*
+ * @authors rhino
+ */
 ::AdminSystem.ModelCmd <- function ( player, args)
 {
 	if (!AdminSystem.IsPrivileged( player ))
@@ -9494,6 +9776,9 @@ if ( Director.GetGameMode() == "holdout" )
 	local model = GetArgument(2);
 	if(model == null)
 		return;
+
+	if(model == "!random")
+		model = RandomPick(::Model.paths);
 
 	if(model.find("models/") == null)
 	{
@@ -10068,6 +10353,46 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		AdminSystem.Vars._RockThrow.enabled = true;
 		Utils.PrintToAllDel("Tank rock's push effect is now enabled.")
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.UpdateTankRockRandomPreferenceCmd <- function ( player, args )
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	if(AdminSystem.Vars._RockThrow.randomized)
+	{
+		AdminSystem.Vars._RockThrow.randomized = false;
+		Utils.PrintToAllDel("Tank rock's random models are now disabled.")
+	}
+	else
+	{
+		AdminSystem.Vars._RockThrow.randomized = true;
+		Utils.PrintToAllDel("Tank rock's random models are now enabled.")
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.UpdateTankRockSpawnAfterPreferenceCmd <- function ( player, args )
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	if(AdminSystem.Vars._RockThrow.randomized_spawn_prop_after)
+	{
+		AdminSystem.Vars._RockThrow.randomized_spawn_prop_after = false;
+		Utils.PrintToAllDel("Tank rock's re-spawn after breaking is now disabled.")
+	}
+	else
+	{
+		AdminSystem.Vars._RockThrow.randomized_spawn_prop_after = true;
+		Utils.PrintToAllDel("Tank rock's re-spawn after breaking is now enabled.")
 	}
 }
 
@@ -10885,6 +11210,8 @@ if ( Director.GetGameMode() == "holdout" )
 
 	local Entity = GetArgument(1);
 	local MDL = GetArgument(2);
+	if(MDL == "!random")
+		MDL = RandomPick(::Model.paths)
 	local raise = GetArgument(3);
 	
 	local yaw = GetArgument(4);
@@ -14827,6 +15154,184 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 }
 
+::AdminSystem._TakeOffHatCmd <- function (player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local entid = AdminSystem.Vars._wornHat[player.GetCharacterName().tolower()].entid;
+	if(entid == "")
+		return;
+
+	local ent = Entity(entid);
+	local colgroup = AdminSystem.Vars._wornHat[player.GetCharacterName().tolower()].collisiongroup;
+
+	if(!ent.IsEntityValid())
+		return;
+	
+	AdminSystem.Vars._wornHat[player.GetCharacterName().tolower()].entid = "";
+	ent.SetNetProp("m_CollisionGroup",colgroup);
+
+	ent.Input("ClearParent","",0);
+	local entclass = ent.GetClassname();
+	
+	if(entclass.find("weapon_") != null) // a weapon spawner entity
+	{
+	}
+	else if(entclass.find("physics") != null || entclass == "prop_car_alarm") // physics entity
+	{
+		if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics")
+		{	
+			local flags = ent.GetFlags();
+			local effects = ent.GetNetProp("m_fEffects")
+
+			if((flags% 2) == 1)	// Disable start asleep flag
+				ent.SetFlags(flags-1)
+
+			flags = ent.GetFlags();
+			
+			if((flags>>3) % 2 == 1)	// Disable motion disabled flag
+				ent.SetFlags(flags-8)
+			
+			ent.Input("EnableMotion","",0);
+			ent.SetEffects(effects);
+		}
+		ent.Input("RunScriptCode","_dropit(Entity("+entid+"))",0);
+	}
+	else // non physics, try creating entity with its model
+	{
+		local new_ent = null;
+		local keyvals = 
+		{
+			classname = "prop_physics_multiplayer",
+			model = ent.GetModel(),
+			origin = ent.GetOrigin(),
+			angles = ent.GetAngles(),
+		};
+		local skin = ent.GetNetProp("m_nSkin");
+		local scale = ent.GetModelScale();
+		ent.Kill();
+		
+		new_ent = Utils.CreateEntityWithTable(keyvals);
+		local looked = player.GetLookingLocation();
+
+		if(new_ent == null)
+		{
+			printB(player.GetCharacterName(),"Failed to create new entity after taking off hat entity",true,"error",true,true)
+			
+			keyvals["classname"] = "prop_physics_multiplayer"
+			keyvals["model"] = "models/items/l4d_gift.mdl"
+			new_ent = Utils.CreateEntityWithTable(keyvals);
+		}
+		else
+		{
+			new_ent.SetNetProp("m_nSkin",skin);
+			new_ent.SetModelScale(scale);
+			printB(player.GetCharacterName(),"Took off hat entity, created new entity #"+new_ent.GetIndex(),true,"info",true,true)
+		}
+		
+		return;
+	}
+	
+
+	if(entclass.find("weapon_") != null) // a weapon spawner entity
+	{
+		printB(player.GetCharacterName(),"Took off the hat entity (spawner) #"+entid,true,"info",true,true)
+	}
+	else
+	{
+		printB(player.GetCharacterName(),"Took off the hat entity #"+entid,true,"info",true,true)
+	}
+	ent.Input("RunScriptCode","originWrap(Entity("+ent.GetIndex()+"),Player("+player.GetIndex()+"))",0.1);
+}
+::originWrap <- function(ent,player)
+{
+	local looked = player.GetLookingLocation();
+
+	if(Utils.CalculateDistance(looked,player.GetOrigin()) > 150)
+	{
+		local fw = player.GetEyeAngles().Forward();
+		fw = fw.Scale(120/fw.Length());
+		ent.SetOrigin(fw+player.GetEyePosition());
+	}
+	else
+	{
+		ent.SetOrigin(looked);
+	}
+}
+::AdminSystem._WearHatCmd <- function (player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local ent = player.GetLookingEntity();
+	if( ent == null)
+		return;
+
+	if (!ent.IsEntityValid())
+		return;
+
+	if(Utils.CalculateDistance(ent.GetOrigin(),player.GetEyePosition()) > 250)
+		return;
+
+	local entclass = ent.GetClassname();
+
+	if(entclass == "player")
+		return;
+
+	if(!(entclass in AdminSystem.Vars._grabAvailable) && (entclass.find("weapon_") == null))
+		return;
+	if(ent.GetModel().find("_glass") != null || entclass.find("_glass") != null)
+		return;
+	if((entclass.find("props_vehicles") != null)) // Vehicle glasses ignored
+		return;
+
+	local ind = ent.GetIndex();
+	foreach(name,tbl in AdminSystem.Vars._wornHat)
+	{
+		if(tbl.entid == ind)
+			return;
+	}
+	local name = player.GetCharacterName().tolower();
+	if(AdminSystem.Vars._wornHat[name].entid != "")
+	{
+		AdminSystem._TakeOffHatCmd(player,args);
+	}
+
+	AdminSystem.Vars._wornHat[name].entid = ind;
+	AdminSystem.Vars._wornHat[name].collisiongroup = ent.GetNetProp("m_CollisionGroup");
+
+	local vec = GetArgument(1)==null ? Vector(0,0,0) : Vector(0,0,-57 + AdminSystem.Vars._wornHat[name].wearAbove + GetArgument(1).tofloat() )
+
+	//ent.SetForwardVector(player.GetForwardVector());
+	ent.SetNetProp("m_CollisionGroup",1);
+	ent.Input("setparent","#"+player.GetIndex(),0);
+	ent.SetOrigin(player.GetEyePosition()+vec);	
+	ent.Input("setparentattachmentmaintainoffset",AdminSystem.Vars._wornHat[name].wearAttachPos,0.1);
+}
+
+::AdminSystem._HatPosition <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	local pos = GetArgument(1);
+	if(pos == null)
+		return;
+
+	AdminSystem.Vars._wornHat[player.GetCharacterName().tolower()].wearAttachPos = pos;
+}
+
+::AdminSystem.UpdateAimedEntityDirection <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	local ent = player.GetLookingEntity();
+	if(ent == null)
+		return;
+
+  	ent.SetForwardVector(player.GetForwardVector());
+}
+
 ::AdminSystem._GrabControl <-
 {
 	bill = 
@@ -15042,10 +15547,10 @@ if ( Director.GetGameMode() == "holdout" )
 				entclass = obj.GetClassname();	
 				entmodel = obj.GetModel();
 
-				if(!(entclass in AdminSystem.Vars._grabAvailable) && (entclass.find("weapon_") == null))	// Validate class name
+				if(!(entclass in AdminSystem.Vars._grabAvailable) && (entclass.find("weapon_") == null) ))	// Validate class name
 					continue;
 				
-				if((entmodel.find("props_vehicles") != null) && (entmodel.find("_glass") != null)) // Vehicle glasses ignored
+				if(entmodel.find("_glass") != null || entclass.find("_glass") != null)
 					continue;
 
 				if((entmodel.find("hybridphysx") != null)) // Animation props etc ignored
@@ -15105,11 +15610,10 @@ if ( Director.GetGameMode() == "holdout" )
 	else	// Found entity with default masking
 	{
 		entclass = ent.GetClassname();
-
+		entmodel = ent.GetModel();
 		if(!(entclass in AdminSystem.Vars._grabAvailable) && (entclass.find("weapon_") == null))
 			return;
-		
-		if((entclass.find("props_vehicles") != null) && (entclass.find("_glass") != null)) // Vehicle glasses ignored
+		if(entmodel.find("_glass") != null || entclass.find("_glass") != null)
 			return;
 
 		entind = ent.GetIndex().tostring();
@@ -15254,10 +15758,10 @@ if ( Director.GetGameMode() == "holdout" )
 			ent.SetMoveType(MOVETYPE_WALK);
 			ent.Input("RunScriptCode","_dropit(Entity("+ent.GetIndex()+"))",0);
 		}
-		else if(entclass.find("weapon_") != null) // a weapon spawner entity
+		else if(entclass.find("weapon_") != null) // a weapon spawner 
 		{
 		}
-		else if(entclass.find("physics") != null) // physics entity
+		else if(entclass.find("physics") != null || entclass == "prop_car_alarm") // physics entity
 		{
 			if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics")
 			{	
@@ -15384,7 +15888,7 @@ if ( Director.GetGameMode() == "holdout" )
 		else if(entclass.find("weapon_") != null) // a weapon spawner entity
 		{
 		}
-		else if(entclass.find("physics") != null) // physics entity
+		else if(entclass.find("physics") != null || entclass == "prop_car_alarm") // physics entity
 		{
 			if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics")
 			{	

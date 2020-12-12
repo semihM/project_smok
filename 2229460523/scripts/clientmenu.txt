@@ -17773,8 +17773,8 @@
 			}
 			"2"
 			{
-					"command"	 "play buttons/button14;scripted_user_func update_tank_rock_preference;show_menu smok_menu_settings1"
-					"label"		 " Enable/Disable tank rock's push effect"
+					"command"	 "play buttons/button14;show_menu smok_menu_settings_tankrock1"
+					"label"		 " Enable/Disable tank's rock settings"
 			}
 			"3"
 			{
@@ -17799,6 +17799,36 @@
 			"8"
 			{
 					"command"	 "play buttons/button14;show_menu smok_menu2"
+					"label"		 " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	"smok_menu_settings_tankrock1"
+	{
+			"Title"     "Tank's rock settings"
+			
+			"1"
+			{
+					"command"	 "play buttons/button14;scripted_user_func update_tank_rock_launch_preference;show_menu smok_menu_settings_tankrock1"
+					"label"		 " Enable/Disable tank's rock push effect"
+			}
+			"2"
+			{
+					"command"	 "play buttons/button14;scripted_user_func update_tank_rock_random_preference;show_menu smok_menu_settings_tankrock1"
+					"label"		 " Enable/Disable tank's rock random models"
+			}
+			"3"
+			{
+					"command"	 "play buttons/button14;scripted_user_func update_tank_rock_respawn_preference;show_menu smok_menu_settings_tankrock1"
+					"label"		 " Enable/Disable tank's rock respawning after breaking"
+			}
+			"8"
+			{
+					"command"	 "play buttons/button14;show_menu smok_menu_settings1"
 					"label"		 " << Back"
 			}
 			"0"
@@ -23400,38 +23430,38 @@
 			"Title"     "Dynamic Page 1"
 			"1"
 			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,!random;show_menu prop_menu_start1"
+					"label"      " Random"
+			}
+			"2"
+			{
 					"command"    "play buttons/button14;show_menu props_furniture1"
 					"label"      " Furniture and stuff"
 			}
-			"2"
+			"3"
 			{		
 					"command"    "play buttons/button14;show_menu props_vehicles1"
 					"label"      " Vehicles"
 			}
-			"3"
+			"4"
 			{		
 					"command"    "play buttons/button14;show_menu props_unique1"
 					"label"      " Uniques"
 			}
-			"4"
+			"5"
 			{
 					"command"    "play buttons/button14;show_menu props_barrels1"
 					"label"      " Barrels and crates"
 			}
-			"5"
+			"6"
 			{
 					"command"    "play buttons/button14;show_menu props_equipment1"
 					"label"      " Hazardous stuff"
 			}
-			"6"
+			"7"
 			{
 					"command"    "play buttons/button14;show_menu props_foliage1"
 					"label"      " Throwable and breakables"
-			}
-			"7"
-			{
-					"command"    "play buttons/button14;show_menu props_vehicles_junk1"
-					"label"      " Other vehicles"
 			}
 			"8"
 			{
@@ -23475,9 +23505,9 @@
 					"label"      " Mall"
 			}
 			"5"
-			{		
-					"command"    "play buttons/button14;show_menu props_lighting1"
-					"label"      " Search lights"
+			{
+					"command"    "play buttons/button14;show_menu props_vehicles_junk1"
+					"label"      " Other vehicles"
 			}
 			"6"
 			{		
@@ -23682,6 +23712,11 @@
 					"label"      " Screens"
 			}
 			
+			"2"
+			{		
+					"command"    "play buttons/button14;show_menu props_lighting1"
+					"label"      " Search lights"
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu prop_menu_start6"
@@ -24375,7 +24410,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu prop_menu_start2"
+					"command"    "play buttons/button14;show_menu prop_menu_start6"
 					"label"      " << Back"
 			}
 			"0"
@@ -29450,7 +29485,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu prop_menu_start1"
+					"command"    "play buttons/button14;show_menu prop_menu_start2"
 					"label"      " << Back"
 			}
 			"9"
@@ -29512,38 +29547,38 @@
 			"Title"     "Physics Page 1"
 			"1"
 			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,!random,30;show_menu phys_prop_menu_start1"
+					"label"      " Random"
+			}
+			"2"
+			{
 					"command"    "play buttons/button14;show_menu phys_props_furniture1"
 					"label"      " Furniture and stuff"
 			}
-			"2"
+			"3"
 			{		
 					"command"    "play buttons/button14;show_menu phys_props_vehicles1"
 					"label"      " Vehicles"
 			}
-			"3"
+			"4"
 			{		
 					"command"    "play buttons/button14;show_menu phys_props_unique1"
 					"label"      " Uniques"
 			}
-			"4"
+			"5"
 			{
 					"command"    "play buttons/button14;show_menu phys_props_barrels1"
 					"label"      " Barrels and crates"
 			}
-			"5"
+			"6"
 			{
 					"command"    "play buttons/button14;show_menu phys_props_equipment1"
 					"label"      " Hazardous stuff"
 			}
-			"6"
+			"7"
 			{
 					"command"    "play buttons/button14;show_menu phys_props_foliage1"
 					"label"      " Throwable and breakables"
-			}
-			"7"
-			{
-					"command"    "play buttons/button14;show_menu phys_props_vehicles_junk1"
-					"label"      " Other vehicles"
 			}
 			"8"
 			{
@@ -29587,9 +29622,9 @@
 					"label"      " Mall"
 			}
 			"5"
-			{		
-					"command"    "play buttons/button14;show_menu phys_props_lighting1"
-					"label"      " Search lights"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_vehicles_junk1"
+					"label"      " Other vehicles"
 			}
 			"6"
 			{		
@@ -29793,7 +29828,11 @@
 					"command"    "play buttons/button14;show_menu phys_props_shacks1"
 					"label"      " Screens"
 			}
-			
+			"2"
+			{		
+					"command"    "play buttons/button14;show_menu phys_props_lighting1"
+					"label"      " Search lights"
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_prop_menu_start6"
@@ -30487,7 +30526,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu phys_prop_menu_start2"
+					"command"    "play buttons/button14;show_menu phys_prop_menu_start6"
 					"label"      " << Back"
 			}
 			"0"
@@ -35562,7 +35601,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu phys_prop_menu_start1"
+					"command"    "play buttons/button14;show_menu phys_prop_menu_start2"
 					"label"      " << Back"
 			}
 			"9"
@@ -35661,6 +35700,80 @@
 			{
 				"command"		 "play buttons/button14;show_menu drivemenu1"
 				"label"			" Enable drive mechanics (experimental)"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu secret_commands2"
+					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	"secret_commands2"
+	{
+			"Title"		"Secret commands 2"
+			"1"
+			{
+				"command"		 "play buttons/button14;show_menu wear_hat_menu1"
+				"label"			 " Wear hats"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu secret_commands"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"wear_hat_menu1"
+	{
+			"Title"		"Hat menu"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func wear_hat;show_menu wear_hat_menu1"
+				"label"			 " Wear aimed object as a hat"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func take_off_hat;show_menu wear_hat_menu1"
+				"label"			 " Take off your hat"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func hat_position,eyes;show_menu wear_hat_menu1"
+				"label"			 " Wear above eyes"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func hat_position,survivor_neck;show_menu wear_hat_menu1"
+				"label"			 " Wear above neck"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func update_aimed_ent_direction;show_menu wear_hat_menu1"
+				"label"			 " Make hat face the direction you face"
+			}
+			"6"
+			{
+				"command"	 	"play buttons/button14;c_thirdpersonshoulder 0;show_menu wear_hat_menu1"
+				"label"		 	" First-person"
+			}
+			"7"
+			{
+				"command"	 	"play buttons/button14;c_thirdpersonshoulder 1;c_thirdpersonshoulderaimdist 360;c_thirdpersonshoulderdist 90;c_thirdpersonshoulderheight 15;c_thirdpersonshoulderoffset 0;thirdpersonshoulder;thirdpersonshoulder;show_menu wear_hat_menu1"
+				"label"		 	" Third-person Center"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu secret_commands2"
+					"label"      " << Back"
 			}
 			"0"
 			{
@@ -36095,28 +36208,28 @@
 			}
 			"2"
 			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,!random;show_menu models_self_menu_start1"
+					"label"      " Random"
+			}
+			"3"
+			{
 					"command"    "play buttons/button14;show_menu models_self_furniture1"
 					"label"      " Furniture and stuff"
 			}
-			"3"
+			"4"
 			{		
 					"command"    "play buttons/button14;show_menu models_self_vehicles1"
 					"label"      " Vehicles"
 			}
-			"4"
+			"5"
 			{		
 					"command"    "play buttons/button14;show_menu models_self_unique1"
 					"label"      " Uniques"
 			}
-			"5"
+			"6"
 			{
 					"command"    "play buttons/button14;show_menu models_self_barrels1"
 					"label"      " Barrels and crates"
-			}
-			"6"
-			{
-					"command"    "play buttons/button14;show_menu models_self_equipment1"
-					"label"      " Hazardous stuff"
 			}
 			"7"
 			{
@@ -36335,9 +36448,9 @@
 					"label"      " Mall"
 			}
 			"5"
-			{		
-					"command"    "play buttons/button14;show_menu models_self_lighting1"
-					"label"      " Search lights"
+			{
+					"command"    "play buttons/button14;show_menu models_self_equipment1"
+					"label"      " Hazardous stuff"
 			}
 			"6"
 			{		
@@ -36545,6 +36658,11 @@
 			{
 					"command"    "play buttons/button14;show_menu models_self_vehicles_junk1"
 					"label"      " Other vehicles"
+			}
+			"3"
+			{		
+					"command"    "play buttons/button14;show_menu models_self_lighting1"
+					"label"      " Search lights"
 			}
 			"7"
 			{
@@ -37213,7 +37331,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu models_self_menu_start2"
+					"command"    "play buttons/button14;show_menu models_self_menu_start6"
 					"label"      " << Back"
 			}
 			"0"
@@ -39150,7 +39268,7 @@
 
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu models_self_menu_start1"
+					"command"    "play buttons/button14;show_menu models_self_menu_start2"
 					"label"      " << Back"
 			}
 			"0"
@@ -41911,28 +42029,28 @@
 			}
 			"2"
 			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,!random;show_menu models_picker_menu_start1"
+					"label"      " Random"
+			}
+			"3"
+			{
 					"command"    "play buttons/button14;show_menu models_picker_furniture1"
 					"label"      " Furniture and stuff"
 			}
-			"3"
+			"4"
 			{		
 					"command"    "play buttons/button14;show_menu models_picker_vehicles1"
 					"label"      " Vehicles"
 			}
-			"4"
+			"5"
 			{		
 					"command"    "play buttons/button14;show_menu models_picker_unique1"
 					"label"      " Uniques"
 			}
-			"5"
+			"6"
 			{
 					"command"    "play buttons/button14;show_menu models_picker_barrels1"
 					"label"      " Barrels and crates"
-			}
-			"6"
-			{
-					"command"    "play buttons/button14;show_menu models_picker_equipment1"
-					"label"      " Hazardous stuff"
 			}
 			"7"
 			{
@@ -42150,9 +42268,9 @@
 					"label"      " Mall"
 			}
 			"5"
-			{		
-					"command"    "play buttons/button14;show_menu models_picker_lighting1"
-					"label"      " Search lights"
+			{
+					"command"    "play buttons/button14;show_menu models_picker_equipment1"
+					"label"      " Hazardous stuff"
 			}
 			"6"
 			{		
@@ -42361,7 +42479,11 @@
 					"command"    "play buttons/button14;show_menu models_picker_vehicles_junk1"
 					"label"      " Other vehicles"
 			}
-			
+			"3"
+			{		
+					"command"    "play buttons/button14;show_menu models_picker_lighting1"
+					"label"      " Search lights"
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_picker_menu_start6"
@@ -43029,7 +43151,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu models_picker_menu_start2"
+					"command"    "play buttons/button14;show_menu models_picker_menu_start6"
 					"label"      " << Back"
 			}
 			"0"
@@ -44966,7 +45088,7 @@
 
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu models_picker_menu_start1"
+					"command"    "play buttons/button14;show_menu models_picker_menu_start2"
 					"label"      " << Back"
 			}
 			"0"
