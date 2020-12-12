@@ -188,56 +188,56 @@ Convars.SetValue( "precache_all_survivors", "1" );
 			{
 				entid="",
 				wearAttachPos = "eyes",
-				wearAbove = 0,
+				wearAbove = 5,
 				collisiongroup = 0
 			},
 			francis=
 			{
 				entid="",
 				wearAttachPos = "eyes",
-				wearAbove = 0,
+				wearAbove = 5,
 				collisiongroup = 0
 			},
 			louis=
 			{
 				entid="",
 				wearAttachPos = "eyes",
-				wearAbove = 0,
+				wearAbove = 5,
 				collisiongroup = 0
 			},
 			zoey=
 			{
 				entid="",
 				wearAttachPos = "eyes",
-				wearAbove = 0,
+				wearAbove = 5,
 				collisiongroup = 0
 			},
 			nick=
 			{
 				entid="",
 				wearAttachPos = "eyes",
-				wearAbove = 0,
+				wearAbove = 5,
 				collisiongroup = 0
 			},
 			coach=
 			{
 				entid="",
 				wearAttachPos = "eyes",
-				wearAbove = 0,
+				wearAbove = 5,
 				collisiongroup = 0
 			},
 			ellis=
 			{
 				entid="",
 				wearAttachPos = "eyes",
-				wearAbove = 0,
+				wearAbove = 5,
 				collisiongroup = 0
 			},
 			rochelle=
 			{
 				entid="",
 				wearAttachPos = "eyes",
-				wearAbove = 0,
+				wearAbove = 5,
 				collisiongroup = 0
 			}
 		}
@@ -1258,56 +1258,56 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 				{
 					entid="",
 					wearAttachPos = "eyes",
-					wearAbove = 0,
+					wearAbove = 5,
 					collisiongroup = 0
 				},
 				francis=
 				{
 					entid="",
 					wearAttachPos = "eyes",
-					wearAbove = 0,
+					wearAbove = 5,
 					collisiongroup = 0
 				},
 				louis=
 				{
 					entid="",
 					wearAttachPos = "eyes",
-					wearAbove = 0,
+					wearAbove = 5,
 					collisiongroup = 0
 				},
 				zoey=
 				{
 					entid="",
 					wearAttachPos = "eyes",
-					wearAbove = 0,
+					wearAbove = 5,
 					collisiongroup = 0
 				},
 				nick=
 				{
 					entid="",
 					wearAttachPos = "eyes",
-					wearAbove = 0,
+					wearAbove = 5,
 					collisiongroup = 0
 				},
 				coach=
 				{
 					entid="",
 					wearAttachPos = "eyes",
-					wearAbove = 0,
+					wearAbove = 5,
 					collisiongroup = 0
 				},
 				ellis=
 				{
 					entid="",
 					wearAttachPos = "eyes",
-					wearAbove = 0,
+					wearAbove = 5,
 					collisiongroup = 0
 				},
 				rochelle=
 				{
 					entid="",
 					wearAttachPos = "eyes",
-					wearAbove = 0,
+					wearAbove = 5,
 					collisiongroup = 0
 				}
 			}
@@ -15252,10 +15252,10 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	local looked = player.GetLookingLocation();
 
-	if(Utils.CalculateDistance(looked,player.GetOrigin()) > 150)
+	if(Utils.CalculateDistance(looked,player.GetOrigin()) > 200)
 	{
 		local fw = player.GetEyeAngles().Forward();
-		fw = fw.Scale(120/fw.Length());
+		fw = fw.Scale(200/fw.Length());
 		ent.SetOrigin(fw+player.GetEyePosition());
 	}
 	else
@@ -15307,11 +15307,11 @@ if ( Director.GetGameMode() == "holdout" )
 	AdminSystem.Vars._wornHat[name].entid = ind;
 	AdminSystem.Vars._wornHat[name].collisiongroup = ent.GetNetProp("m_CollisionGroup");
 	if(pos == "mouth")
-		pos = -8
+		posextra = -6
 	else if(pos == "survivor_neck")
-		pos = -16
+		posextra = -13
 
-	local vec = GetArgument(1)==null ? Vector(0,0,0) : Vector(0,0,-57 + AdminSystem.Vars._wornHat[name].wearAbove + GetArgument(1).tofloat() + posextra)
+	local vec = GetArgument(1)==null ? Vector(0,0,AdminSystem.Vars._wornHat[name].wearAbove + posextra) : Vector(0,0,AdminSystem.Vars._wornHat[name].wearAbove + GetArgument(1).tofloat() + posextra)
 
 	//ent.SetForwardVector(player.GetForwardVector());
 	ent.SetNetProp("m_CollisionGroup",1);

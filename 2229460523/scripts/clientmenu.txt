@@ -24415,15 +24415,10 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_lighting/searchlight_base_01.mdl;show_menu props_lighting1"
-					"label"      " Search light 1 Base"
-			}
-			"3"
-			{
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_equipment/light_floodlight.mdl;show_menu props_lighting1"
 					"label"      " Flood light"
 			}
-			"4"
+			"3"
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_wasteland/light_spotlight01_lamp.mdl;show_menu props_lighting1"
 					"label"      " Spotlight"
@@ -30531,15 +30526,10 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_lighting/searchlight_base_01.mdl;show_menu phys_props_lighting1"
-					"label"      " Search light 1 Base"
-			}
-			"3"
-			{
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_equipment/light_floodlight.mdl;show_menu phys_props_lighting1"
 					"label"      " Flood light"
 			}
-			"4"
+			"3"
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_wasteland/light_spotlight01_lamp.mdl;show_menu phys_props_lighting1"
 					"label"      " Spotlight"
@@ -37346,15 +37336,10 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_lighting/searchlight_base_01.mdl;show_menu models_self_lighting1"
-					"label"      " Search light 1 Base"
-			}
-			"3"
-			{
 					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_equipment/light_floodlight.mdl;show_menu models_self_lighting1"
 					"label"      " Flood light"
 			}
-			"4"
+			"3"
 			{
 					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_wasteland/light_spotlight01_lamp.mdl;show_menu models_self_lighting1"
 					"label"      " Spotlight"
@@ -43166,15 +43151,10 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_lighting/searchlight_base_01.mdl;show_menu models_picker_lighting1"
-					"label"      " Search light 1 Base"
-			}
-			"3"
-			{
 					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_equipment/light_floodlight.mdl;show_menu models_picker_lighting1"
 					"label"      " Flood light"
 			}
-			"4"
+			"3"
 			{
 					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_wasteland/light_spotlight01_lamp.mdl;show_menu models_picker_lighting1"
 					"label"      " Spotlight"
