@@ -56,7 +56,6 @@
         "models/props_c17/pottery04a.mdl",
         "models/props_c17/pottery08a.mdl",
         "models/props_lighting/searchlight_01.mdl",
-        "models/props_lighting/searchlight_base_01.mdl",
         "models/props_equipment/light_floodlight.mdl",
         "models/props_wasteland/light_spotlight01_lamp.mdl",
         "models/lighthouse/b_waterwheel01.mdl",
