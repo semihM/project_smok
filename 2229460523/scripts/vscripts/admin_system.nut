@@ -97,9 +97,9 @@ Convars.SetValue( "precache_all_survivors", "1" );
 				entid="",
 				yeetSpeed = 1500.0,
 				yeetPitch = -10,
-				grabRange = 120,
+				grabRange = 170,
 				grabHeightBelowEyes = 30,
-				grabDistMin = 50,
+				grabDistMin = 75,
 				grabAttachPos = "forward",
 				grabByAimedPart = 1
 			},
@@ -108,9 +108,9 @@ Convars.SetValue( "precache_all_survivors", "1" );
 				entid="",
 				yeetSpeed = 1500.0,
 				yeetPitch = -10,
-				grabRange = 120,
+				grabRange = 170,
 				grabHeightBelowEyes = 30,
-				grabDistMin = 50,
+				grabDistMin = 75,
 				grabAttachPos = "forward",
 				grabByAimedPart = 1
 			},
@@ -119,9 +119,9 @@ Convars.SetValue( "precache_all_survivors", "1" );
 				entid="",
 				yeetSpeed = 1500.0,
 				yeetPitch = -10,
-				grabRange = 120,
+				grabRange = 170,
 				grabHeightBelowEyes = 30,
-				grabDistMin = 50,
+				grabDistMin = 75,
 				grabAttachPos = "forward",
 				grabByAimedPart = 1
 			},
@@ -130,9 +130,9 @@ Convars.SetValue( "precache_all_survivors", "1" );
 				entid="",
 				yeetSpeed = 1500.0,
 				yeetPitch = -10,
-				grabRange = 120,
+				grabRange = 170,
 				grabHeightBelowEyes = 30,
-				grabDistMin = 50,
+				grabDistMin = 75,
 				grabAttachPos = "forward",
 				grabByAimedPart = 1
 			},
@@ -141,9 +141,9 @@ Convars.SetValue( "precache_all_survivors", "1" );
 				entid="",
 				yeetSpeed = 1500.0,
 				yeetPitch = -10,
-				grabRange = 120,
+				grabRange = 170,
 				grabHeightBelowEyes = 30,
-				grabDistMin = 50,
+				grabDistMin = 75,
 				grabAttachPos = "forward",
 				grabByAimedPart = 1
 			},
@@ -152,9 +152,9 @@ Convars.SetValue( "precache_all_survivors", "1" );
 				entid="",
 				yeetSpeed = 1500.0,
 				yeetPitch = -10,
-				grabRange = 120,
+				grabRange = 170,
 				grabHeightBelowEyes = 30,
-				grabDistMin = 50,
+				grabDistMin = 75,
 				grabAttachPos = "forward",
 				grabByAimedPart = 1
 			},
@@ -163,9 +163,9 @@ Convars.SetValue( "precache_all_survivors", "1" );
 				entid="",
 				yeetSpeed = 1500.0,
 				yeetPitch = -10,
-				grabRange = 120,
+				grabRange = 170,
 				grabHeightBelowEyes = 30,
-				grabDistMin = 50,
+				grabDistMin = 75,
 				grabAttachPos = "forward",
 				grabByAimedPart = 1
 			},
@@ -174,9 +174,9 @@ Convars.SetValue( "precache_all_survivors", "1" );
 				entid="",
 				yeetSpeed = 1500.0,
 				yeetPitch = -10,
-				grabRange = 120,
+				grabRange = 170,
 				grabHeightBelowEyes = 30,
-				grabDistMin = 50,
+				grabDistMin = 75,
 				grabAttachPos = "forward",
 				grabByAimedPart = 1
 			}
@@ -1167,9 +1167,9 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 					entid="",
 					yeetSpeed = 1500.0,
 					yeetPitch = -10,
-					grabRange = 120,
+					grabRange = 170,
 					grabHeightBelowEyes = 30,
-					grabDistMin = 50,
+					grabDistMin = 75,
 					grabAttachPos = "forward",
 					grabByAimedPart = 1
 				},
@@ -1178,9 +1178,9 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 					entid="",
 					yeetSpeed = 1500.0,
 					yeetPitch = -10,
-					grabRange = 120,
+					grabRange = 170,
 					grabHeightBelowEyes = 30,
-					grabDistMin = 50,
+					grabDistMin = 75,
 					grabAttachPos = "forward",
 					grabByAimedPart = 1
 				},
@@ -1189,9 +1189,9 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 					entid="",
 					yeetSpeed = 1500.0,
 					yeetPitch = -10,
-					grabRange = 120,
+					grabRange = 170,
 					grabHeightBelowEyes = 30,
-					grabDistMin = 50,
+					grabDistMin = 75,
 					grabAttachPos = "forward",
 					grabByAimedPart = 1
 				},
@@ -1200,9 +1200,9 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 					entid="",
 					yeetSpeed = 1500.0,
 					yeetPitch = -10,
-					grabRange = 120,
+					grabRange = 170,
 					grabHeightBelowEyes = 30,
-					grabDistMin = 50,
+					grabDistMin = 75,
 					grabAttachPos = "forward",
 					grabByAimedPart = 1
 				},
@@ -1211,9 +1211,9 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 					entid="",
 					yeetSpeed = 1500.0,
 					yeetPitch = -10,
-					grabRange = 120,
+					grabRange = 170,
 					grabHeightBelowEyes = 30,
-					grabDistMin = 50,
+					grabDistMin = 75,
 					grabAttachPos = "forward",
 					grabByAimedPart = 1
 				},
@@ -1222,9 +1222,9 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 					entid="",
 					yeetSpeed = 1500.0,
 					yeetPitch = -10,
-					grabRange = 120,
+					grabRange = 170,
 					grabHeightBelowEyes = 30,
-					grabDistMin = 50,
+					grabDistMin = 75,
 					grabAttachPos = "forward",
 					grabByAimedPart = 1
 				},
@@ -1233,9 +1233,9 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 					entid="",
 					yeetSpeed = 1500.0,
 					yeetPitch = -10,
-					grabRange = 120,
+					grabRange = 170,
 					grabHeightBelowEyes = 30,
-					grabDistMin = 50,
+					grabDistMin = 75,
 					grabAttachPos = "forward",
 					grabByAimedPart = 1
 				},
@@ -1244,9 +1244,9 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 					entid="",
 					yeetSpeed = 1500.0,
 					yeetPitch = -10,
-					grabRange = 120,
+					grabRange = 170,
 					grabHeightBelowEyes = 30,
-					grabDistMin = 50,
+					grabDistMin = 75,
 					grabAttachPos = "forward",
 					grabByAimedPart = 1
 				}
@@ -7161,6 +7161,10 @@ function Notifications::OnAbilityUsed::_TankRockSpawning(player,ability,args)
 	local velocity = args.rock.GetVelocity();
 	args.rock.Kill();
 	local newent = Utils.CreateEntityWithTable(keyvals);
+
+	if(newent==null)
+		return
+
 	newent.Push(velocity.Scale(2));
 }
 
@@ -15553,7 +15557,7 @@ if ( Director.GetGameMode() == "holdout" )
 				entclass = obj.GetClassname();	
 				entmodel = obj.GetModel();
 
-				if(!(entclass in AdminSystem.Vars._grabAvailable) && (entclass.find("weapon_") == null) ))	// Validate class name
+				if(!(entclass in AdminSystem.Vars._grabAvailable) && (entclass.find("weapon_") == null) )	// Validate class name
 					continue;
 				
 				if(entmodel.find("_glass") != null || entclass.find("_glass") != null)
@@ -15637,6 +15641,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if(entity_dist < tbl_heldEnt.grabRange)
 	{
+		local grabdist = tbl_heldEnt.grabDistMin
 		// THIS METHOD TELEPORTS ENTITY CLOSER TO PLAYER
 		// BUT SINCE IT DOES IT VIA ENTITY ORIGIN AND SOME MODELS
 		// HAVE THEIR ORIGIN ODDLY PLACED, PLAYER COULD GET STUCK IN
@@ -15645,13 +15650,13 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			local angles = player.GetEyeAngles();
 			local newanglesF = QAngle(0,angles.Yaw(),angles.Roll()).Forward();
-			local holdingLoc = playerEyeLoc + newanglesF.Scale(tbl_heldEnt.grabDistMin/newanglesF.Length());
+			local holdingLoc = playerEyeLoc + newanglesF.Scale(grabdist/newanglesF.Length());
 			holdingLoc.z = player.GetEyePosition().z - tbl_heldEnt.grabHeightBelowEyes;
 			ent.SetOrigin(holdingLoc);
 		}
 		else
 		{
-			local moveback = entity_dist-tbl_heldEnt.grabDistMin;
+			local moveback = entity_dist-grabdist;
 			local fwvec = player.GetEyeAngles().Forward();
 			local entpos = ent.GetPosition();
 			fwvec.z *= -1;
@@ -15990,9 +15995,9 @@ if ( Director.GetGameMode() == "holdout" )
 		entid="",
 		yeetSpeed = 1500.0,
 		yeetPitch = -10,
-		grabRange = 120,
+		grabRange = 170,
 		grabHeightBelowEyes = 30,
-		grabDistMin = 50,
+		grabDistMin = 75,
 		grabAttachPos = "forward",
 		grabByAimedPart = 1
  */
