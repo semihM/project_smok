@@ -10391,12 +10391,12 @@ if ( Director.GetGameMode() == "holdout" )
 	if(AdminSystem.Vars._RockThrow.randomized_spawn_prop_after)
 	{
 		AdminSystem.Vars._RockThrow.randomized_spawn_prop_after = false;
-		Utils.PrintToAllDel("Tank rock's using to physics is now disabled.")
+		Utils.PrintToAllDel("Tank rock's using physics is now disabled.")
 	}
 	else
 	{
 		AdminSystem.Vars._RockThrow.randomized_spawn_prop_after = true;
-		Utils.PrintToAllDel("Tank rock's using to physics is now enabled.")
+		Utils.PrintToAllDel("Tank rock's using physics is now enabled.")
 	}
 }
 
