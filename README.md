@@ -319,13 +319,13 @@
     
 ```cpp 
        //Overloads:
-       model {target:(!self,!picker,#{ID},{Name}) } {model_path}  
+       model {target:(!self,!picker,#{ID},{Name}) } {model_path | !random}  
        
        // Example: Change your model to a TV
        model !self models/props_interiors/tv.mdl
        
-       // Example: Change targeted object's model to a wheelbarrow
-       model !picker models/props_junk/wheebarrow01a.mdl
+       // Example: Change targeted object's model to a random model
+       model !picker !random
 
        // Example: Change entity at index 54's model to a vending machine
        model #54 models/props/cs_office/vending_machine.mdl
