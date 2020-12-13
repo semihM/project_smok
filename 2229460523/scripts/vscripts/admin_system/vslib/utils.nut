@@ -652,25 +652,19 @@ function VSLib::Utils::CreateEntity(_classname, pos = Vector(0,0,0), ang = QAngl
  * @authors rhino
  * Drop an item from a player's inventory and give one of sameclass to other
  */
-function VSLib::Utils::DropThenGive(dropfrom,giveto,slot,item,itemclass)
+function VSLib::Utils::DropThenGive(dropfrom,giveto,slot,item)
 {	
-	dropfrom.DropWeaponSlot(slot);
-	item.SetOrigin(Vector(0,0,0));
-	item.KillDelayed(0.1);
-	giveto.Give(itemclass);
+	dropfrom.Drop(slot);
+	item.Input("Use","",0.1,giveto);
 	return;
 }
 
-function VSLib::Utils::ExchangeItems(player,other,slot,item1,item1_class,item2,item2_class)
+function VSLib::Utils::ExchangeItems(player,other,slot,item1,item2)
 {	
-	other.Give(item1_class);
-	player.Give(item2_class);
-
-	item1.SetOrigin(Vector(0,0,0));
-	item1.KillDelayed(0.1);
-	item2.SetOrigin(Vector(0,0,0));
-	item2.KillDelayed(0.1);
-
+	player.Drop(slot);
+	other.Drop(slot);
+	item1.Input("Use","",0.1,other);
+	item2.Input("Use","",0.1,player);
 	return;
 }
 

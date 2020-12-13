@@ -67,7 +67,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 
 		AllowAutomatedSharing = true
 
-		_LastLootThinkState = false
+		_LastLootThinkState = true
 
 		CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle"]
 		
@@ -1136,7 +1136,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 
 			AllowAutomatedSharing = true
 
-			_LastLootThinkState = false
+			_LastLootThinkState = true
 
 			CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle"]
 			
@@ -3568,6 +3568,15 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 /*
  * @authors rhino
  */
+::_ClearBeingTakenStatus <- function(args)
+{
+	if(args.item in AdminSystem.Vars._currentlyBeingTaken)
+		delete AdminSystem.Vars._currentlyBeingTaken[args.item];
+}
+
+/*
+ * @authors rhino
+ */
 ::_TryToReachAndGet <- function(args)
 {
 	local obj = args.obj;
@@ -3600,8 +3609,13 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 			if(!("slot"+slot in args.bot.GetHeldItems()))
 			{
-				DoEntFire("!self","use","",0.1,bot.GetBaseEntity(),obj.GetBaseEntity());
-				bot.BotMoveToLocation(bot.GetBaseEntity().TryGetPathableLocationWithin(10));
+				if(obj.GetClassname().find("_spawn") != null)
+				{
+					if(obj.GetNetProp("m_fEffects") == 48)
+						return;
+				}
+				DoEntFire("!self","use","",0,bot.GetBaseEntity(),obj.GetBaseEntity());
+				bot.BotMoveToLocation(bot.GetBaseEntity().TryGetPathableLocationWithin(2));
 
 			}
 			else
@@ -3659,8 +3673,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				if(("slot"+slot in bot.GetHeldItems()) && !("slot"+slot in target.GetHeldItems()))
 				{
 					//ClientPrint(null,3,"\x05"+"#"+botindex+" gave "+args.classname+" to "+target.GetIndex());
-
-					Utils.DropThenGive(bot,target,slot,args.item,args.classname);
+					
+					AdminSystem.Vars._currentlyBeingTaken[args.item.GetIndex()] <- true;
+					Utils.DropThenGive(bot,target,slot,args.item);
+					::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=args.item.GetIndex()});
 				}
 				else
 				{
@@ -3789,6 +3805,8 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
  */
 ::_AddSearchThinkToBots <- function()
 {
+	if(!("AliveSurvivors" in Players))
+		return;
 	foreach(survivor in Players.AliveSurvivors())
 	{
 		if(!(survivor.GetIndex()+"_bot_think_adder" in ::VSLib.Timers.TimersID) && survivor.IsBot())
@@ -3832,7 +3850,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	{
 		//ClientPrint(null,3,"#" + botindex + " bot is incapped")
 	}
-	else if(!AdminSystem.BotOnSearchOrSharePath[botname])
+	else if(!AdminSystem.BotOnSearchOrSharePath[botname] && !AdminSystem._CurrentlyTradingItems[botname])
 	{
 		local inv = bot.GetHeldItems();
 		local origin = bot.GetOrigin();
@@ -3862,33 +3880,36 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				{
 					if(!closest.IsBot())
 					{
-						local closestorigin = closest.GetOrigin();
-						if("slot2" in closest.GetHeldItems())
+						if(!AdminSystem._CurrentlyTradingItems[closest.GetCharacterName().tolower()])
 						{
-							//ClientPrint(null,3,"\x04"+"Friend already has grenade");
-						}
-						else if(Utils.CalculateDistance(origin,closestorigin) <= 200)
-						{
-							//ClientPrint(null,3,"\x05"+"Friend close enough");
-							if(bot.IsCalm())
+							local closestorigin = closest.GetOrigin();
+							if("slot2" in closest.GetHeldItems())
 							{
-								//ClientPrint(null,3,"\x03"+botindex+" is calm and kind enough to share");
-								bot.BotMoveToLocation(closestorigin);
-
-								AdminSystem.BotOnSearchOrSharePath[botname] = true;
-								alreadygiving = true;
-
-								Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot2",1,true,_TryAndGiveItem,{bot=bot,target=closest,slot=2,item=inHand,classname=inhandclass.slice(7)})
+								//ClientPrint(null,3,"\x04"+"Friend already has grenade");
 							}
-							else if((rand().tofloat()/RAND_MAX) <= 0.25)
+							else if(Utils.CalculateDistance(origin,closestorigin) <= 200)
 							{
-								//ClientPrint(null,3,"\x03"+"25% probability hit");
-								bot.BotMoveToLocation(closestorigin);
+								//ClientPrint(null,3,"\x05"+"Friend close enough");
+								if(bot.IsCalm())
+								{
+									//ClientPrint(null,3,"\x03"+botindex+" is calm and kind enough to share");
+									bot.BotMoveToLocation(closestorigin);
 
-								AdminSystem.BotOnSearchOrSharePath[botname] = true;
-								alreadygiving = true;
-								
-								Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot2",1,true,_TryAndGiveItem,{bot=bot,target=closest,slot=2,item=inHand,classname=inhandclass.slice(7)})
+									AdminSystem.BotOnSearchOrSharePath[botname] = true;
+									alreadygiving = true;
+
+									Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot2",1,true,_TryAndGiveItem,{bot=bot,target=closest,slot=2,item=inHand,classname=inhandclass.slice(7)})
+								}
+								else if((rand().tofloat()/RAND_MAX) <= 0.25)
+								{
+									//ClientPrint(null,3,"\x03"+"25% probability hit");
+									bot.BotMoveToLocation(closestorigin);
+
+									AdminSystem.BotOnSearchOrSharePath[botname] = true;
+									alreadygiving = true;
+									
+									Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot2",1,true,_TryAndGiveItem,{bot=bot,target=closest,slot=2,item=inHand,classname=inhandclass.slice(7)})
+								}
 							}
 						}
 					}
@@ -3922,33 +3943,36 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				{
 					if(!closest.IsBot())
 					{
-						local closestorigin = closest.GetOrigin();
-						if("slot3" in closest.GetHeldItems())
+						if(!AdminSystem._CurrentlyTradingItems[closest.GetCharacterName().tolower()])
 						{
-							//ClientPrint(null,3,"\x04"+"Friend already has a pack");
-						}
-						else if(Utils.CalculateDistance(origin,closestorigin) <= 200)
-						{
-							//ClientPrint(null,3,"\x05"+"Friend close enough");
-							if(bot.IsCalm())
+							local closestorigin = closest.GetOrigin();
+							if("slot3" in closest.GetHeldItems())
 							{
-								//ClientPrint(null,3,"\x03"+botindex+" is calm and kind enough to share");
-								bot.BotMoveToLocation(closestorigin);
-
-								AdminSystem.BotOnSearchOrSharePath[botname] = true;
-								alreadygiving = true;
-
-								Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot3",1,true,_TryAndGiveItem,{bot=bot,target=closest,slot=3,item=inHand,classname=inhandclass.slice(7)})
+								//ClientPrint(null,3,"\x04"+"Friend already has a pack");
 							}
-							else if((rand().tofloat()/RAND_MAX) <= 0.25)
+							else if(Utils.CalculateDistance(origin,closestorigin) <= 200)
 							{
-								//ClientPrint(null,3,"\x03"+"25% probability hit");
-								bot.BotMoveToLocation(closestorigin);
-								
-								AdminSystem.BotOnSearchOrSharePath[botname] = true;
-								alreadygiving = true;
+								//ClientPrint(null,3,"\x05"+"Friend close enough");
+								if(bot.IsCalm())
+								{
+									//ClientPrint(null,3,"\x03"+botindex+" is calm and kind enough to share");
+									bot.BotMoveToLocation(closestorigin);
 
-								Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot3",1,true,_TryAndGiveItem,{bot=bot,target=closest,slot=3,item=inHand,classname=inhandclass.slice(7)})
+									AdminSystem.BotOnSearchOrSharePath[botname] = true;
+									alreadygiving = true;
+
+									Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot3",1,true,_TryAndGiveItem,{bot=bot,target=closest,slot=3,item=inHand,classname=inhandclass.slice(7)})
+								}
+								else if((rand().tofloat()/RAND_MAX) <= 0.25)
+								{
+									//ClientPrint(null,3,"\x03"+"25% probability hit");
+									bot.BotMoveToLocation(closestorigin);
+									
+									AdminSystem.BotOnSearchOrSharePath[botname] = true;
+									alreadygiving = true;
+
+									Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot3",1,true,_TryAndGiveItem,{bot=bot,target=closest,slot=3,item=inHand,classname=inhandclass.slice(7)})
+								}
 							}
 						}
 					}
@@ -4045,17 +4069,38 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 					continue;
 
 				obj = Entity(objindex);
-				//DebugDrawText(obj.GetOrigin(),"FOUND ITEM",false,3);
 
-				m_trace = { start = bot.GetEyePosition(), end = usedorigin, ignore = bot.GetBaseEntity(), mask = 33579137 };
-				TraceLine(m_trace);
-				if (!m_trace.hit || m_trace.enthit == null || m_trace.enthit == bot.GetBaseEntity() || m_trace.enthit == obj.GetBaseEntity())
+				if(bot.CanSeeOtherEntity(obj,270))
 				{
 					//ClientPrint(null,3,"\x05"+"Visible closeby "+obj.GetClassname()+" #"+objindex);
 					foundclassslot = slot;
 					found = true;
+					//DebugDrawText(obj.GetOrigin(),"VISIBLE ITEM",false,5);
 					break;
 				}
+
+				//DebugDrawText(obj.GetOrigin(),"FOUND ITEM",false,5);
+				/*
+				m_trace = { start = bot.GetEyePosition(), end = usedorigin, ignore = bot.GetBaseEntity(), mask = 33579137 };
+				TraceLine(m_trace);
+				
+				if (!m_trace.hit || m_trace.enthit == null || m_trace.enthit == bot.GetBaseEntity())
+					continue;
+				
+				if (m_trace.enthit.GetClassname() == "worldspawn" || !m_trace.enthit.IsValid())
+					continue;
+				
+				if (m_trace.hit && m_trace.enthit != bot.GetBaseEntity() && m_trace.enthit == obj.GetBaseEntity())
+				{
+					ClientPrint(null,3,"\x05"+"Visible closeby "+obj.GetClassname()+" #"+objindex);
+					foundclassslot = slot;
+					found = true;
+					break;
+				}
+				else
+					ClientPrint(null,3,"\x05"+"Not visible: "+obj.GetClassname()+" #"+objindex);
+				*/
+
 			}
 			
 			if(!found)
@@ -6857,11 +6902,52 @@ enum SCENES
 /////////////////////////////////////////////////////////////////
 /*
  * Speak a friendly fire line when shoved with given options in AdminSystem.Vars._CustomResponseOptions
- *
+ * Or trade items
  * @authors rhino
  */
 function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacker,args=null)
 {
+	
+	// Bot was trying to heal with a non-medkit, drop the pack
+	if(attacker.IsBot() && !target.IsBot())
+	{
+		if(!AdminSystem.Vars.AllowCustomSharing)
+			return;
+
+		if(AdminSystem._CurrentlyTradingItems[target.GetCharacterName().tolower()] || AdminSystem._CurrentlyTradingItems[attacker.GetCharacterName().tolower()])
+			return;
+
+		AdminSystem._CurrentlyTradingItems[target.GetCharacterName().tolower()] = true;
+		AdminSystem._CurrentlyTradingItems[attacker.GetCharacterName().tolower()] = true;
+
+		local inHand = attacker.GetActiveWeapon();
+		local inhandclass = inHand.GetClassname();
+		local sharable_packs = 
+		[
+			"weapon_defibrillator",
+			"weapon_upgradepack_incendiary","weapon_upgradepack_explosive"
+		]
+		if(Utils.GetIDFromArray(sharable_packs,inhandclass)!=-1)
+		{
+			AdminSystem.Vars._currentlyBeingTaken[inHand.GetIndex()] <- true;
+
+			if(!("slot3" in target.GetHeldItems()))
+			{
+				Utils.DropThenGive(attacker,target,3,inHand);
+				::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=inHand.GetIndex()});
+			}
+			else
+			{
+				attacker.Drop(3);
+				::VSLib.Timers.AddTimer(10, false, _ClearBeingTakenStatus,{item=inHand.GetIndex()}); // Newly dropped, disable picking it up for a while
+			}
+			
+		}
+
+		::VSLib.Timers.AddTimer(0.1, false, _TradingStatusWrapper,{player1=target,player2=attacker});
+		return;
+	}
+
 	if(attacker.IsPressingReload())
 	{
 		if(!AdminSystem.Vars.AllowCustomSharing)
@@ -6893,26 +6979,42 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 		{
 			if(!("slot2" in targetinv))
 			{
-				Utils.DropThenGive(attacker,target,2,inHand,inhandclass.slice(7));
+				AdminSystem.Vars._currentlyBeingTaken[inHand.GetIndex()] <- true;
+				Utils.DropThenGive(attacker,target,2,inHand);
+				::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=inHand.GetIndex()});
 			}
 			else if(target.IsBot())
 			{
-				inHand = targetinv.slot2;
-				inhandclass = inHand.GetClassname();
-				Utils.ExchangeItems(target,attacker,2,inHand,inhandclass.slice(7),atkinv.slot2,atkinv.slot2.GetClassname().slice(7));
+				AdminSystem.Vars._currentlyBeingTaken[atkinv.slot2.GetIndex()] <- true;
+				AdminSystem.Vars._currentlyBeingTaken[targetinv.slot2.GetIndex()] <- true;
+
+				Utils.ExchangeItems(attacker,target,2,
+				 					atkinv.slot2,
+									targetinv.slot2);
+
+				::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=targetinv.slot2.GetIndex()});
+				::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=atkinv.slot2.GetIndex()});
 			}
 		}
 		else if(Utils.GetIDFromArray(sharable_packs,inhandclass)!=-1) // Give packs
 		{
 			if(!("slot3" in targetinv))
 			{
-				Utils.DropThenGive(attacker,target,3,inHand,inhandclass.slice(7));
+				AdminSystem.Vars._currentlyBeingTaken[inHand.GetIndex()] <- true;
+				Utils.DropThenGive(attacker,target,3,inHand);
+				::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=inHand.GetIndex()});
 			}
 			else if(target.IsBot())
 			{
-				inHand = targetinv.slot2;
-				inhandclass = inHand.GetClassname();
-				Utils.ExchangeItems(target,attacker,3,atkinv.slot3,inHand,inhandclass.slice(7),atkinv.slot3.GetClassname().slice(7));
+				AdminSystem.Vars._currentlyBeingTaken[atkinv.slot3.GetIndex()] <- true;
+				AdminSystem.Vars._currentlyBeingTaken[targetinv.slot3.GetIndex()] <- true;
+
+				Utils.ExchangeItems(attacker,target,3,
+				 					atkinv.slot3,
+									targetinv.slot3);
+
+				::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=targetinv.slot3.GetIndex()});
+				::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=atkinv.slot3.GetIndex()});
 			}
 		}
 		else if(target.IsBot()) // Take grenades and packs from bot
@@ -6923,7 +7025,9 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 				inhandclass = inHand.GetClassname();
 				if(!("slot2" in atkinv))
 				{
-					Utils.DropThenGive(target,attacker,2,inHand,inhandclass.slice(7));
+					AdminSystem.Vars._currentlyBeingTaken[inHand.GetIndex()] <- true;
+					Utils.DropThenGive(target,attacker,2,inHand);
+					::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=inHand.GetIndex()});
 				}
 			}
 			
@@ -6933,7 +7037,9 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 				inhandclass = inHand.GetClassname();
 				if(!("slot3" in atkinv))
 				{
-					Utils.DropThenGive(target,attacker,3,inHand,inhandclass.slice(7));
+					AdminSystem.Vars._currentlyBeingTaken[inHand.GetIndex()] <- true;
+					Utils.DropThenGive(target,attacker,3,inHand);
+					::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=inHand.GetIndex()});
 				}
 			}
 		}
@@ -7062,6 +7168,40 @@ function Notifications::OnAdrenalineUsed::_SpeakWhenUsedAdrenalineCondition(ent,
 	}
 	printl(name+" has gone crazy after using an adrenaline shot!");
 	AdminSystem.Vars._CustomResponse[name]._SpeakWhenUsedAdrenaline.call_amount += 1;
+}
+
+/*
+ * @authors rhino
+ */
+function Notifications::OnHealStart::_TradeMedPack(target,healer,args)
+{
+	if(!AdminSystem.Vars.AllowCustomSharing)
+		return;
+	
+	else if(healer.IsPressingReload())
+	{
+		if(AdminSystem._CurrentlyTradingItems[target.GetCharacterName().tolower()] || AdminSystem._CurrentlyTradingItems[healer.GetCharacterName().tolower()])
+			return;
+			
+		AdminSystem._CurrentlyTradingItems[target.GetCharacterName().tolower()] = true;
+		AdminSystem._CurrentlyTradingItems[healer.GetCharacterName().tolower()] = true;
+
+		local targetinv = target.GetHeldItems();
+
+		if(!("slot3" in targetinv))
+		{
+			local item = healer.GetActiveWeapon();
+			healer.Drop(3);
+			item.Input("Use","",0.1,target);
+		}
+		else if(target.IsBot())
+		{
+			Utils.ExchangeItems(target,healer,3,
+								target.GetHeldItems().slot3,
+								healer.GetHeldItems().slot3);
+		}
+		::VSLib.Timers.AddTimer(0.2, false, _TradingStatusWrapper,{player1=target,player2=healer});
+	}
 }
 
 /*
@@ -15285,9 +15425,15 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if(!(entclass in AdminSystem.Vars._grabAvailable) && (entclass.find("weapon_") == null))
 		return;
-	if(ent.GetModel().find("_glass") != null || entclass.find("_glass") != null)
-		return;
+
+	if((ent.GetModel().find("_glass") != null || entclass.find("_glass") != null) 
+		&& (entclass.find("_car") != null || entclass.find("car_") != null || entclass.find("vehicle") != null || entclass.find("dynamic") != null || entclass.find("prop_physics") == null))
+		{return;}
+
 	if((entclass.find("props_vehicles") != null)) // Vehicle glasses ignored
+		return;
+
+	if(ent.GetModel().find("*") != null)
 		return;
 
 	local ind = ent.GetIndex();
@@ -15560,7 +15706,11 @@ if ( Director.GetGameMode() == "holdout" )
 				if(!(entclass in AdminSystem.Vars._grabAvailable) && (entclass.find("weapon_") == null) )	// Validate class name
 					continue;
 				
-				if(entmodel.find("_glass") != null || entclass.find("_glass") != null)
+				if((entmodel.find("_glass") != null || entclass.find("_glass") != null) 
+					&& (entclass.find("_car") != null || entclass.find("car_") != null || entclass.find("vehicle") != null || entclass.find("dynamic") != null || entclass.find("prop_physics") == null))
+					{continue;}
+				
+				if(entmodel.find("*") != null)
 					continue;
 
 				if((entmodel.find("hybridphysx") != null)) // Animation props etc ignored
@@ -15623,7 +15773,11 @@ if ( Director.GetGameMode() == "holdout" )
 		entmodel = ent.GetModel();
 		if(!(entclass in AdminSystem.Vars._grabAvailable) && (entclass.find("weapon_") == null))
 			return;
-		if(entmodel.find("_glass") != null || entclass.find("_glass") != null)
+		if((entmodel.find("_glass") != null || entclass.find("_glass") != null) 
+			&& (entclass.find("_car") != null || entclass.find("car_") != null || entclass.find("vehicle") != null || entclass.find("dynamic") != null || entclass.find("prop_physics") == null))
+			{return;}
+		
+		if(entmodel.find("*") != null)
 			return;
 
 		entind = ent.GetIndex().tostring();

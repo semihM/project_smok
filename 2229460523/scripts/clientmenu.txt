@@ -19683,17 +19683,17 @@
 				"command"	 "play buttons/button14;scripted_user_func yeet;show_menu ent_grab_yeet"
 				"label"		 " YEET held prop"
 			}
-			"5"
+			"4"
 			{
 					"command"	 "play buttons/button14;scripted_user_func show_yeet_settings;show_menu ent_grab_yeet"
 					"label"		 " Show current settings"
 			}
-			"6"
+			"5"
 			{
 					"command"	 "play buttons/button10;show_menu ent_grab_yeet"
 					"label"		 " Change settings( Use !yeet_setting {setting} {new_value})"
 			}
-			"7"
+			"6"
 			{
 					"command"	 "play buttons/button14;scripted_user_func change_grab_method;show_menu ent_grab_yeet"
 					"label"		 " Change grab method"
@@ -24410,15 +24410,10 @@
 			
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_lighting/searchlight_01.mdl;show_menu props_lighting1"
-					"label"      " Search light 1"
-			}
-			"2"
-			{
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_equipment/light_floodlight.mdl;show_menu props_lighting1"
 					"label"      " Flood light"
 			}
-			"3"
+			"2"
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_wasteland/light_spotlight01_lamp.mdl;show_menu props_lighting1"
 					"label"      " Spotlight"
@@ -24482,7 +24477,7 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lighthouse/junkyard_crane_nagnet.mdl;show_menu props_laststand1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lighthouse/junkyard_crane_magnet.mdl;show_menu props_laststand1"
 					"label"      " Crane Magnet"
 			}
 			"6"
@@ -30521,15 +30516,10 @@
 			
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_lighting/searchlight_01.mdl;show_menu phys_props_lighting1"
-					"label"      " Search light 1"
-			}
-			"2"
-			{
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_equipment/light_floodlight.mdl;show_menu phys_props_lighting1"
 					"label"      " Flood light"
 			}
-			"3"
+			"2"
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_wasteland/light_spotlight01_lamp.mdl;show_menu phys_props_lighting1"
 					"label"      " Spotlight"
@@ -30593,7 +30583,7 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/junkyard_crane_nagnet.mdl;show_menu phys_props_laststand1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/junkyard_crane_magnet.mdl;show_menu phys_props_laststand1"
 					"label"      " Crane Magnet"
 			}
 			"6"
@@ -35704,7 +35694,7 @@
 			"6"
 			{
 				"command"		 "play buttons/button14;show_menu invwalls1"
-				"label"			" Enable/Disable all invisible walls"
+				"label"			" Enable/Disable most of the invisible walls"
 			}
 			"7"
 			{
@@ -37331,15 +37321,10 @@
 			
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_lighting/searchlight_01.mdl;show_menu models_self_lighting1"
-					"label"      " Search light 1"
-			}
-			"2"
-			{
 					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_equipment/light_floodlight.mdl;show_menu models_self_lighting1"
 					"label"      " Flood light"
 			}
-			"3"
+			"2"
 			{
 					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_wasteland/light_spotlight01_lamp.mdl;show_menu models_self_lighting1"
 					"label"      " Spotlight"
@@ -37382,7 +37367,7 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/lighthouse/junkyard_crane_nagnet.mdl;show_menu models_self_laststand1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/lighthouse/junkyard_crane_magnet.mdl;show_menu models_self_laststand1"
 					"label"      " Crane Magnet"
 			}
 			"6"
@@ -43146,15 +43131,10 @@
 			
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_lighting/searchlight_01.mdl;show_menu models_picker_lighting1"
-					"label"      " Search light 1"
-			}
-			"2"
-			{
 					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_equipment/light_floodlight.mdl;show_menu models_picker_lighting1"
 					"label"      " Flood light"
 			}
-			"3"
+			"2"
 			{
 					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_wasteland/light_spotlight01_lamp.mdl;show_menu models_picker_lighting1"
 					"label"      " Spotlight"
@@ -43197,7 +43177,7 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lighthouse/junkyard_crane_nagnet.mdl;show_menu models_picker_laststand1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lighthouse/junkyard_crane_magnet.mdl;show_menu models_picker_laststand1"
 					"label"      " Crane Magnet"
 			}
 			"6"
