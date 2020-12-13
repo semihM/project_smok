@@ -255,8 +255,8 @@
     
     Setting | Default Value | Description
     ------------ | ------------- | -------------
-    grabRange | 120      | maximum range for grabbing an entity
-    grabDistMin | 50      | how far away to hold the entity
+    grabRange | 170      | maximum range for grabbing an entity
+    grabDistMin | 75      | how far away to hold the entity
     grabHeightBelowEyes | 30      | how far below eye-level to hold the entity, below zero mean above eye-level
     yeetSpeed | 1500      | speed of yeeting
     yeetPitch | -10      | pitch of yeeting, below zero means aiming higher
