@@ -1177,17 +1177,21 @@
     ------------- | -------------
 
 ---
-- **hat_position** : Take off currently worn hat and drop it at aimed point
+- **hat_position** : Change hat position to given attachment point name
 
-    Chat Syntax | !take_off_hat
+    Chat Syntax | !hat_position *attachment_point*
     ------------- | -------------
 
-    Console Syntax | scripted_user_func *take_off_hat* 
+    Console Syntax | scripted_user_func *hat_position,attachment_point*
     ------------- | -------------
     
     Menu Sequence | _6 9 9 1 3_ , _6 9 9 1 4_ AND _6 9 9 1 5_
     ------------- | -------------
 
+```cpp
+       //Overloads
+       hat_position {attachment_point:(eyes, mouth, survivor_neck, ...)}
+```
 ---
 - **update_aimed_ent_direction** : Make aimed object face the same way as you
 
