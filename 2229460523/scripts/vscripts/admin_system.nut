@@ -59,6 +59,8 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		DirectorDisabled = false
 		AllowAdminsOnly = true
 
+		RestoreModelsOnJoin = true
+
 		IgnoreDeletingPlayers = true
 
 		AllowCustomResponses = true
@@ -69,9 +71,9 @@ Convars.SetValue( "precache_all_survivors", "1" );
 
 		_LastLootThinkState = true
 
-		CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle"]
+		CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle","","survivor"]
 		
-		CharacterNamesLower = ["bill","francis","louis","zoey","nick","ellis","coach","rochelle"]
+		CharacterNamesLower = ["bill","francis","louis","zoey","nick","ellis","coach","rochelle","","survivor"]
 
 		// Grabbing parameters
 		_grabRadiusTolerance = 30
@@ -1111,6 +1113,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	
 	if (::AdminSystem.Vars == null)
 	{
+		printl("[Vars] Creating new vars table...");
 		::AdminSystem.Vars <-
 		{
 			IsBashDisabled = {}
@@ -1128,6 +1131,8 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			DirectorDisabled = false
 			AllowAdminsOnly = true
 
+			RestoreModelsOnJoin = true
+
 			IgnoreDeletingPlayers = true
 
 			AllowCustomResponses = true
@@ -1138,9 +1143,9 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 
 			_LastLootThinkState = true
 
-			CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle"]
+			CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle","","survivor"]
 			
-			CharacterNamesLower = ["bill","francis","louis","zoey","nick","ellis","coach","rochelle"]
+			CharacterNamesLower = ["bill","francis","louis","zoey","nick","ellis","coach","rochelle","","survivor"]
 
 			// Parameters for grabbing, letting go, yeeting entities
 
@@ -1947,10 +1952,12 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	{
 		if ( AdminSystem.Vars.DirectorDisabled )
 			Utils.StopDirector();
+		
+		printl("[Vars] Restoring existing vars table...");
 
-		AdminSystem.Vars.CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle"]
+		AdminSystem.Vars.CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle","","survivor"]
 			
-		AdminSystem.Vars.CharacterNamesLower = ["bill","francis","louis","zoey","nick","ellis","coach","rochelle"]
+		AdminSystem.Vars.CharacterNamesLower = ["bill","francis","louis","zoey","nick","ellis","coach","rochelle","","survivor"]
 
 		AdminSystem.Vars._looping =
 		{
@@ -1963,7 +1970,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			ellis=false,
 			rochelle=false
 		}
-		
+
 		AdminSystem.Vars._loopingTable =
 		{
 			bill={timername="",character="",sequence={}},
@@ -1975,6 +1982,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			ellis={timername="",character="",sequence={}},
 			rochelle={timername="",character="",sequence={}}
 		}
+
 		printl("[Custom-Loop] Stopped all custom loops");
 
 		// Remove ladder teams table
@@ -2010,118 +2018,245 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			
 		}
 	}
+	
+	printl("[Spectators] Enabling commands for spectator admins...");
+
+	foreach(spec in {spectator = "", extrasurvivor = "survivor"})
+	{
+		AdminSystem._GrabControl[spec] <- 
+		{
+			keymask = 0
+			listenerid = -1
+		};
+		AdminSystem._CarControl[spec] <- 
+		{
+			keymask = 0
+			forward = Vector(0,0,0)
+			speed = 400.0
+			reversescale = -4
+			speedscale = 2.75
+			overridefriction = 0.05
+			turnpertick = 7
+			listenerid = -1
+		};
+
+		AdminSystem.Vars._outputsEnabled[spec] <- false;
+
+		AdminSystem.Vars._loopingTable[spec] <- 
+		{
+			timername="",
+			character="",
+			sequence={}
+		};
+		AdminSystem.Vars._looping[spec] <- false;
+		
+		AdminSystem.Vars._savedParticle[spec] <- 
+		{
+			duration=-1,
+			source=""
+		};
+		AdminSystem.Vars._saveLastParticle[spec] <- true;
+		
+		AdminSystem.Vars._savedLine[spec] <- 
+		{
+			target="",
+			source=""
+		};
+		AdminSystem.Vars._saveLastLine[spec] <- true;
+
+		AdminSystem.Vars._wornHat[spec] <- 
+		{
+			entid="",
+			wearAttachPos = "eyes",
+			wearAbove = 5,
+			collisiongroup = 0
+		};
+
+		AdminSystem.Vars._heldEntity[spec] <- 
+		{
+			entid="",
+			yeetSpeed = 1500.0,
+			yeetPitch = -10,
+			grabRange = 170,
+			grabHeightBelowEyes = 30,
+			grabDistMin = 75,
+			grabAttachPos = "forward",
+			grabByAimedPart = 1
+		};
+
+		AdminSystem.Vars._explosion_settings[spec] <- 
+		{
+			delay=1
+			effect_name="flame_blue"
+			dmgmin = 10
+			dmgmax = 30
+			radiusmin = 300
+			radiusmax = 450
+			minpushspeed = 2500
+			maxpushspeed = 10000
+		};
+		
+		AdminSystem.Vars._prop_spawn_settings[spec] <- 
+		{
+			dynamic=	
+			{
+				spawn_height=0
+			},
+			physics=
+			{
+				spawn_height=0
+			},
+			ragdoll=
+			{
+				spawn_height=0
+			}
+		};
+
+		AdminSystem.Vars._prop_spawn_settings_menu_type[spec] <- "all";
+
+		AdminSystem.Vars._preferred_duration[spec] <- -1;
+		AdminSystem.Vars._attachTargetedLocation[spec] <- true;
+
+		AdminSystem.Vars._modelPreference[spec] <- 
+		{
+			keeplast = true
+			lastmodel = "models/survivors/survivor_namvet.mdl"
+			original = "models/survivors/survivor_namvet.mdl"
+		};
+
+		AdminSystem.Vars._CustomResponseOptions[spec] <- {};
+		AdminSystem.Vars._CustomResponse[spec] <- 
+		{
+			_SpeakWhenShoved = _CustomResponseBase(false,0.5,0.1,true,::Survivorlines.FriendlyFire.bill,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+			
+			_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+			
+			_SpeakWhenUsedAdrenaline = _CustomResponseBase(false,0.9,1.0,true,::Survivorlines.Excited.bill,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+		};
+
+		AdminSystem._CurrentlyTradingItems[spec] <- false;
+
+		AdminSystem.BotBringingItem[spec] <- false;
+		AdminSystem.BotOnSearchOrSharePath[spec] <- false;
+	}
+
 	printl("[Custom] Loaded default custom responses");
 	printl("[Custom] Loading admin custom responses...")
 	// Fixes for tables
-	try
+	//try
+	//{	
+	// Have to do this because squirrel is restoring "coach" as "Coach"
+	if("Coach" in AdminSystem.Vars._outputsEnabled)
+	{
+		printl("[Custom-Fix] Applying fixes to outputs table...");
+		AdminSystem.Vars._outputsEnabled.coach <- AdminSystem.Vars._outputsEnabled.Coach;
+		delete AdminSystem.Vars._outputsEnabled.Coach;
+	}
+	if("Coach" in AdminSystem.Vars._saveLastLine)
+	{
+		printl("[Custom-Fix] Applying fixes to LastLine table...");
+		AdminSystem.Vars._saveLastLine.coach <- AdminSystem.Vars._saveLastLine.Coach;
+		delete AdminSystem.Vars._saveLastLine.Coach;
+	}
+	if("Coach" in AdminSystem.Vars._savedLine)
+	{
+		printl("[Custom-Fix] Applying fixes to SavedLine table...");
+		AdminSystem.Vars._savedLine.coach <- Utils.TableCopy(AdminSystem.Vars._savedLine.Coach);
+		delete AdminSystem.Vars._savedLine.Coach;
+	}
+	if("Coach" in AdminSystem.Vars._savedParticle)
+	{
+		printl("[Custom-Fix] Applying fixes to SavedParticle table...");
+		AdminSystem.Vars._savedParticle.coach <- Utils.TableCopy(AdminSystem.Vars._savedParticle.Coach);
+		delete AdminSystem.Vars._savedParticle.Coach;
+	}
+	if("Coach" in AdminSystem.Vars._saveLastParticle)
+	{
+		printl("[Custom-Fix] Applying fixes to LastParticle table...");
+		AdminSystem.Vars._saveLastParticle.coach <- AdminSystem.Vars._saveLastParticle.Coach;
+		delete AdminSystem.Vars._saveLastParticle.Coach;
+	}
+	if("Coach" in AdminSystem.Vars._preferred_duration)
+	{
+		printl("[Custom-Fix] Applying fixes to preferred_duration table...");
+		AdminSystem.Vars._preferred_duration.coach <- AdminSystem.Vars._preferred_duration.Coach;
+		delete AdminSystem.Vars._preferred_duration.Coach;
+	}
+	if("Coach" in AdminSystem.Vars._prop_spawn_settings_menu_type)
+	{
+		printl("[Custom-Fix] Applying fixes to prop_spawn_settings_menu_type table...");
+		AdminSystem.Vars._prop_spawn_settings_menu_type.coach <- AdminSystem.Vars._prop_spawn_settings_menu_type.Coach;
+		delete AdminSystem.Vars._prop_spawn_settings_menu_type.Coach;
+	}
+	if("Coach" in AdminSystem.Vars._prop_spawn_settings)
+	{
+		printl("[Custom-Fix] Applying fixes to prop_spawn_settings table...");
+		AdminSystem.Vars._prop_spawn_settings.coach <- Utils.TableCopy(AdminSystem.Vars._prop_spawn_settings.Coach);
+		delete AdminSystem.Vars._prop_spawn_settings.Coach;
+	}
+	if("Coach" in AdminSystem.Vars._explosion_settings)
+	{
+		printl("[Custom-Fix] Applying fixes to explosion_settings table...");
+		AdminSystem.Vars._explosion_settings.coach <- Utils.TableCopy(AdminSystem.Vars._explosion_settings.Coach);
+		delete AdminSystem.Vars._explosion_settings.Coach;
+	}
+	if("Coach" in AdminSystem.Vars._heldEntity)
+	{
+		printl("[Custom-Fix] Applying fixes to HeldEntity table...");
+		AdminSystem.Vars._heldEntity.coach <- Utils.TableCopy(AdminSystem.Vars._heldEntity.Coach);
+		delete AdminSystem.Vars._heldEntity.Coach;
+		AdminSystem.Vars._heldEntity.bill.entid = "";
+		AdminSystem.Vars._heldEntity.francis.entid = "";
+		AdminSystem.Vars._heldEntity.louis.entid = "";
+		AdminSystem.Vars._heldEntity.zoey.entid = "";
+		AdminSystem.Vars._heldEntity.nick.entid = "";
+		AdminSystem.Vars._heldEntity.ellis.entid = "";
+		AdminSystem.Vars._heldEntity.coach.entid = "";
+		AdminSystem.Vars._heldEntity.rochelle.entid = "";
+	}
+	if("Coach" in AdminSystem.Vars._wornHat)
+	{
+		printl("[Custom-Fix] Applying fixes to WornHat table...");
+		AdminSystem.Vars._wornHat.coach <- Utils.TableCopy(AdminSystem.Vars._wornHat.Coach);
+		delete AdminSystem.Vars._wornHat.Coach;
+		AdminSystem.Vars._wornHat.bill.entid = "";
+		AdminSystem.Vars._wornHat.francis.entid = "";
+		AdminSystem.Vars._wornHat.louis.entid = "";
+		AdminSystem.Vars._wornHat.zoey.entid = "";
+		AdminSystem.Vars._wornHat.nick.entid = "";
+		AdminSystem.Vars._wornHat.ellis.entid = "";
+		AdminSystem.Vars._wornHat.coach.entid = "";
+		AdminSystem.Vars._wornHat.rochelle.entid = "";
+	}
+	if("Coach" in AdminSystem.Vars._modelPreference)
+	{
+		printl("[Custom-Fix] Applying fixes to model preference table...");
+		AdminSystem.Vars._modelPreference.coach <- Utils.TableCopy(AdminSystem.Vars._modelPreference.Coach);
+		delete AdminSystem.Vars._modelPreference.Coach;
+	}
+	local skip = false;
+	if("Coach" in AdminSystem.Vars._CustomResponseOptions)
 	{	
-		// Have to do this because squirrel is fuckin stupid and restores "coach" as "Coach"
-		if("Coach" in AdminSystem.Vars._outputsEnabled)
-		{
-			printl("[Custom-Fix] Applying fixes to outputs table...");
-			AdminSystem.Vars._outputsEnabled.coach <- AdminSystem.Vars._outputsEnabled.Coach;
-			delete AdminSystem.Vars._outputsEnabled.Coach;
-		}
-		if("Coach" in AdminSystem.Vars._saveLastLine)
-		{
-			printl("[Custom-Fix] Applying fixes to LastLine table...");
-			AdminSystem.Vars._saveLastLine.coach <- AdminSystem.Vars._saveLastLine.Coach;
-			delete AdminSystem.Vars._saveLastLine.Coach;
-		}
-		if("Coach" in AdminSystem.Vars._savedLine)
-		{
-			printl("[Custom-Fix] Applying fixes to SavedLine table...");
-			AdminSystem.Vars._savedLine.coach <- Utils.TableCopy(AdminSystem.Vars._savedLine.Coach);
-			delete AdminSystem.Vars._savedLine.Coach;
-		}
-		if("Coach" in AdminSystem.Vars._savedParticle)
-		{
-			printl("[Custom-Fix] Applying fixes to SavedParticle table...");
-			AdminSystem.Vars._savedParticle.coach <- Utils.TableCopy(AdminSystem.Vars._savedParticle.Coach);
-			delete AdminSystem.Vars._savedParticle.Coach;
-		}
-		if("Coach" in AdminSystem.Vars._saveLastParticle)
-		{
-			printl("[Custom-Fix] Applying fixes to LastParticle table...");
-			AdminSystem.Vars._saveLastParticle.coach <- AdminSystem.Vars._saveLastParticle.Coach;
-			delete AdminSystem.Vars._saveLastParticle.Coach;
-		}
-		if("Coach" in AdminSystem.Vars._preferred_duration)
-		{
-			printl("[Custom-Fix] Applying fixes to preferred_duration table...");
-			AdminSystem.Vars._preferred_duration.coach <- AdminSystem.Vars._preferred_duration.Coach;
-			delete AdminSystem.Vars._preferred_duration.Coach;
-		}
-		if("Coach" in AdminSystem.Vars._prop_spawn_settings_menu_type)
-		{
-			printl("[Custom-Fix] Applying fixes to prop_spawn_settings_menu_type table...");
-			AdminSystem.Vars._prop_spawn_settings_menu_type.coach <- AdminSystem.Vars._prop_spawn_settings_menu_type.Coach;
-			delete AdminSystem.Vars._prop_spawn_settings_menu_type.Coach;
-		}
-		if("Coach" in AdminSystem.Vars._prop_spawn_settings)
-		{
-			printl("[Custom-Fix] Applying fixes to prop_spawn_settings table...");
-			AdminSystem.Vars._prop_spawn_settings.coach <- Utils.TableCopy(AdminSystem.Vars._prop_spawn_settings.Coach);
-			delete AdminSystem.Vars._prop_spawn_settings.Coach;
-		}
-		if("Coach" in AdminSystem.Vars._explosion_settings)
-		{
-			printl("[Custom-Fix] Applying fixes to explosion_settings table...");
-			AdminSystem.Vars._explosion_settings.coach <- Utils.TableCopy(AdminSystem.Vars._explosion_settings.Coach);
-			delete AdminSystem.Vars._explosion_settings.Coach;
-		}
-		if("Coach" in AdminSystem.Vars._heldEntity)
-		{
-			printl("[Custom-Fix] Applying fixes to HeldEntity table...");
-			AdminSystem.Vars._heldEntity.coach <- Utils.TableCopy(AdminSystem.Vars._heldEntity.Coach);
-			delete AdminSystem.Vars._heldEntity.Coach;
-			AdminSystem.Vars._heldEntity.bill.entid = "";
-			AdminSystem.Vars._heldEntity.francis.entid = "";
-			AdminSystem.Vars._heldEntity.louis.entid = "";
-			AdminSystem.Vars._heldEntity.zoey.entid = "";
-			AdminSystem.Vars._heldEntity.nick.entid = "";
-			AdminSystem.Vars._heldEntity.ellis.entid = "";
-			AdminSystem.Vars._heldEntity.coach.entid = "";
-			AdminSystem.Vars._heldEntity.rochelle.entid = "";
-		}
-		if("Coach" in AdminSystem.Vars._wornHat)
-		{
-			printl("[Custom-Fix] Applying fixes to WornHat table...");
-			AdminSystem.Vars._wornHat.coach <- Utils.TableCopy(AdminSystem.Vars._wornHat.Coach);
-			delete AdminSystem.Vars._wornHat.Coach;
-			AdminSystem.Vars._wornHat.bill.entid = "";
-			AdminSystem.Vars._wornHat.francis.entid = "";
-			AdminSystem.Vars._wornHat.louis.entid = "";
-			AdminSystem.Vars._wornHat.zoey.entid = "";
-			AdminSystem.Vars._wornHat.nick.entid = "";
-			AdminSystem.Vars._wornHat.ellis.entid = "";
-			AdminSystem.Vars._wornHat.coach.entid = "";
-			AdminSystem.Vars._wornHat.rochelle.entid = "";
-		}
-		if("Coach" in AdminSystem.Vars._modelPreference)
-		{
-			printl("[Custom-Fix] Applying fixes to model preference table...");
-			AdminSystem.Vars._modelPreference.coach <- Utils.TableCopy(AdminSystem.Vars._modelPreference.Coach);
-			delete AdminSystem.Vars._modelPreference.Coach;
-		}
-		if("Coach" in AdminSystem.Vars._CustomResponseOptions)
-		{	
-			printl("[Custom-Fix] Applying fixes to CustomResponse table...");
-			AdminSystem.Vars._CustomResponseOptions.coach <- Utils.TableCopy(AdminSystem.Vars._CustomResponseOptions.Coach);
-			delete AdminSystem.Vars._CustomResponseOptions.Coach;
-			AdminSystem.Vars._CustomResponse.coach <- Utils.TableCopy(AdminSystem.Vars._CustomResponse.Coach);
-			delete AdminSystem.Vars._CustomResponse.Coach;
-		}
-		else
-		{	
-			// Apply options created by admins
-			AdminSystem.LoadCustomSequences();
-			throw("No need for fixes in CustomRespose tables");
-		}
+		printl("[Custom-Fix] Applying fixes to CustomResponse table...");
+		AdminSystem.Vars._CustomResponseOptions.coach <- Utils.TableCopy(AdminSystem.Vars._CustomResponseOptions.Coach);
+		delete AdminSystem.Vars._CustomResponseOptions.Coach;
+		AdminSystem.Vars._CustomResponse.coach <- Utils.TableCopy(AdminSystem.Vars._CustomResponse.Coach);
+		delete AdminSystem.Vars._CustomResponse.Coach;
+	}
+	else
+	{	
+		// Apply options created by admins
+		AdminSystem.LoadCustomSequences();
+		//throw("No need for fixes in CustomRespose tables");
+		printl("[OnRoundStart-Info] No need for fixes in CustomRespose tables");
+		skip = true;
+	}
+	if(!skip)
+	{
 		///////////////////////////////////////////////
 		/* RestoreTable is also bad
-		 * Have to manually update : sequence, lastspoken, randomlinepaths 
-		 */
+		* Have to manually update : sequence, lastspoken, randomlinepaths 
+		*/
 
 		local newsequence = {scenes=[],delays=[]};
 		local newlastspoken = [];
@@ -2274,9 +2409,11 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			else
 				throw("No need for meteor shower model array fixes, "+label+" "+(typeof modelarr))
 		}
-		
+	
 	}
-	catch(e){printl("[OnRoundStart-AdminLoadFiles] "+e);}
+		
+	//}
+	//catch(e){printl("[OnRoundStart-AdminLoadFiles] "+e);}
 	
 	printl("[Custom] Loaded custom responses created by admins");
 
@@ -2301,24 +2438,36 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	{
 		printl("[Bot-Thinker] Disabled looting/sharing thinking for bots ");
 	}
+
 }
 
 function Notifications::OnPlayerConnected::RestoreModels(player,args)
 {
-	local name = player.GetCharacterName().tolower();
-	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,name)==-1)
+	if(!("Vars" in AdminSystem))
 		return;
-		
-	local tbl = AdminSystem.Vars._modelPreference[name];
-	if(tbl.keeplast)
+	if(!("RestoreModelsOnJoin" in AdminSystem.Vars))
+		return;
+
+	if(AdminSystem.Vars.RestoreModelsOnJoin)
 	{
-		player.SetModel(tbl.lastmodel)
-		printl("[OnPlayerConnected-RestoreModels] Restoring "+player.GetCharacterName()+":"+tbl.lastmodel)
-	}
-	else
-	{
-		player.SetModel(tbl.original)
-		printl("[OnPlayerConnected-RestoreModels] Restoring original model of "+player.GetCharacterName())
+		local name = player.GetCharacterName().tolower();
+		if(name == "" || name == "survivor")
+			return;
+
+		if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,name)==-1)
+			return;
+
+		local tbl = AdminSystem.Vars._modelPreference[name];
+		if(tbl.keeplast)
+		{
+			player.SetModel(tbl.lastmodel)
+			printl("[OnPlayerConnected-RestoreModels] Restoring last model of "+player.GetCharacterName()+": "+tbl.lastmodel)
+		}
+		else
+		{
+			player.SetModel(tbl.original)
+			printl("[OnPlayerConnected-RestoreModels] Restoring original model of "+player.GetCharacterName())
+		}
 	}
 }
 
@@ -2506,6 +2655,38 @@ function Notifications::OnUse::AdminGiveUpgrade( player, target, params )
 				player.GiveUpgrade( UPGRADE_LASER_SIGHT );
 				player.Input( "CancelCurrentScene" );
 			}
+		}
+	}
+}
+
+/*
+ * @authors rhino
+ */
+function Notifications::OnPlayerReplacedBot::LetGoHeldPlayer(player,bot,args)
+{
+	printl("Bot #"+bot.GetIndex()+" was replaced with Player #"+player.GetIndex())
+	local botparent = bot.GetParent();
+	if(botparent != null)
+	{
+		AdminSystem.LetgoCmd(botparent,null);
+		bot.Input("ClearParent","",0);
+		_dropit(bot);
+	}
+}
+
+/*
+ * @authors rhino
+ */
+function Notifications::OnBotReplacedPlayer::LetGoHeldPlayer(player,bot,args)
+{
+	printl("Player #"+player.GetIndex()+" was replaced with Bot #"+bot.GetIndex())
+	AdminSystem.LetgoCmd(player,null);
+
+	foreach(survivor in Players.AliveSurvivors())
+	{
+		if(AdminSystem.Vars._heldEntity[survivor.GetCharacterName().tolower()].entid == player.GetIndex().tostring())
+		{
+			AdminSystem.LetgoCmd(survivor,null);
 		}
 	}
 }
@@ -3546,14 +3727,37 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 /*
  * @authors rhino
  */
-::out <- function(msg="",color="\x04",target=null)
+::out <- function(msg="",target=null,color="\x04")
 {
-	ClientPrint(target,3,color+msg);
+	if(target != null)
+	{
+		if((typeof msg) == "table")
+			Utils.PrintTable(msg);
+		else if((typeof msg) == "array")
+			ClientPrint(target.GetBaseEntity(),3,color+Utils.ArrayString(msg));
+		else if((typeof msg) == "string" || (typeof msg) == "float" || (typeof msg) == "integer" || (typeof msg) == "bool")
+			ClientPrint(target.GetBaseEntity(),3,color+msg.tostring());
+		else
+			EntInfo(msg,target,false,0.0);
+	}
+	else
+	{
+		if((typeof msg) == "table")
+			Utils.PrintTable(msg);
+		else if((typeof msg) == "array")
+			ClientPrint(null,3,color+Utils.ArrayString(msg));
+		else if((typeof msg) == "string" || (typeof msg) == "float" || (typeof msg) == "integer" || (typeof msg) == "bool")
+			ClientPrint(null,3,color+msg.tostring());
+		else
+			EntInfo(msg,null,false,0.0);
+	}
 }
 
+// Bot share and loot functions
 /*
  * @authors rhino
  */
+
 ::AdminSystem.Update_bots_sharing_preferenceCmd <- function ( player, args )
 {
 	if (!AdminSystem.IsPrivileged( player ))
@@ -3565,13 +3769,100 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	ClientPrint(null,3,"\x04"+player.GetCharacterName()+" set bots' sharing preference to:"+( newstate ? " Enabled":" Disabled"));
 }
 
-/*
- * @authors rhino
- */
+::BotParams <- 
+{
+	CanSee_Share = 110,
+	CanSee_Loot = 130,
+	VisibleDistLimit = 400,
+	ShareTimeout = 7,
+	ReachTimeout = 6,
+	PathableDist_Loot = 150,
+	BotOriginLootRadius = 250,
+	ClosestPlayerMaxDist = 250,
+	SpawnerRadiusAroundClosest = 200,
+	MaxRadiusToLetShare = 100,
+	MaxRadiusToTake = 100,
+	RandomChanceForShare = 0.6,
+	ChanceRelocateWhenTooFarToGive = 0.4,
+	ChanceRelocateWhenTooFarToGet = 0.25,
+	Mask = TRACE_MASK_VISIBLE_AND_NPCS,
+	ItemShareTimerDelay = 0.5,
+	ItemReachTimerDelay = 0.5,
+	debug = 0
+}
+
+::AdminSystem.BotOnSearchOrSharePath <-
+{
+	bill=false,
+	francis=false,
+	louis=false,
+	zoey=false,
+	nick=false,
+	coach=false,
+	ellis=false,
+	rochelle=false
+}
+
+::AdminSystem.BotBringingItem <-
+{
+	bill=false,
+	francis=false,
+	louis=false,
+	zoey=false,
+	nick=false,
+	coach=false,
+	ellis=false,
+	rochelle=false
+}
+
+::AdminSystem.BotTemporaryStopState <-
+{
+	bill=false,
+	francis=false,
+	louis=false,
+	zoey=false,
+	nick=false,
+	coach=false,
+	ellis=false,
+	rochelle=false
+}
+
 ::_ClearBeingTakenStatus <- function(args)
 {
 	if(args.item in AdminSystem.Vars._currentlyBeingTaken)
 		delete AdminSystem.Vars._currentlyBeingTaken[args.item];
+}
+
+
+::_TakenFailCheckerRemover <- function(args)
+{
+	if(args.index in AdminSystem.Vars._currentlyBeingTaken)
+	{
+		args.bot.BotReset();
+		Utils.RemoveCustomThinkTimers(args.bot.GetIndex(),true);
+		AdminSystem.BotOnSearchOrSharePath[args.bot.GetCharacterName().tolower()] = false;
+		delete AdminSystem.Vars._currentlyBeingTaken[args.index];
+	}
+}
+
+::_ShareFailCheckerRemover <- function(args)
+{
+	local index = args.botindex;
+	args.bot.BotReset();
+
+	if(index+"_bot_think_share_attempt_slot2" in ::VSLib.Timers.TimersID)
+	{
+		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[index+"_bot_think_share_attempt_slot2"]);
+		delete ::VSLib.Timers.TimersID[index+"_bot_think_share_attempt_slot2"];
+	}
+	if(index+"_bot_think_share_attempt_slot3" in ::VSLib.Timers.TimersID)
+	{
+		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[index+"_bot_think_share_attempt_slot3"]);
+		delete ::VSLib.Timers.TimersID[index+"_bot_think_share_attempt_slot3"];
+	}
+
+	AdminSystem.BotOnSearchOrSharePath[args.bot.GetCharacterName().tolower()] = false;
+	AdminSystem.BotBringingItem[args.targetname] = false;
 }
 
 /*
@@ -3587,23 +3878,32 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	local bot = args.bot;
 	local botindex = bot.GetIndex();
 	local slot = args.slot;
+	local debug = BotParams.debug;
 	
-	if(Utils.CalculateDistance(args.bot.GetEyePosition(),obj.GetOrigin())<= 100 && (botindex+"_bot_think_search_attempt_slot"+slot in ::VSLib.Timers.TimersID))
+	if(Utils.CalculateDistance(args.bot.GetEyePosition(),obj.GetOrigin()) <= BotParams.MaxRadiusToTake && (botindex+"_bot_think_search_attempt_slot"+slot in ::VSLib.Timers.TimersID))
 	{
 		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[botindex+"_bot_think_search_attempt_slot"+slot]);
 		delete ::VSLib.Timers.TimersID[botindex+"_bot_think_search_attempt_slot"+slot];
 		
 		if(!bot.IsAlive())
 		{
-			//ClientPrint(null,3,"#" + botindex + " bot is dead")
+			if(debug == 1)
+				ClientPrint(null,3,"\x04"+"#" + botindex + " bot is dead")
 		}
 		else if(bot.IsIncapacitated())
 		{
-			//ClientPrint(null,3,"#" + botindex + " bot is incapped")
+			if(debug == 1)
+				ClientPrint(null,3,"\x04"+"#" + botindex + " bot is incapped")
+		}
+		else if(bot.IsHealing())
+		{
+			if(debug == 1)
+				ClientPrint(null,3,"\x04"+"#" + botindex + " bot is healing")
 		}
 		else
 		{
 			AdminSystem.BotOnSearchOrSharePath[bot.GetCharacterName().tolower()] = false;
+
 			if(obj.GetIndex() in AdminSystem.Vars._currentlyBeingTaken)
 				delete AdminSystem.Vars._currentlyBeingTaken[obj.GetIndex()];
 
@@ -3612,22 +3912,69 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				if(obj.GetClassname().find("_spawn") != null)
 				{
 					if(obj.GetNetProp("m_fEffects") == 48)
+					{
+						bot.BotReset();
 						return;
+					}
 				}
 				DoEntFire("!self","use","",0,bot.GetBaseEntity(),obj.GetBaseEntity());
-				bot.BotMoveToLocation(bot.GetBaseEntity().TryGetPathableLocationWithin(2));
-
+				if(debug == 1)
+					ClientPrint(null,3,"\x03"+bot.GetIndex()+" taking #"+obj.GetIndex());
 			}
 			else
 			{
-				//ClientPrint(null,3,"\x04"+"Inventory changed during search")
+				if(debug == 1)
+					ClientPrint(null,3,"\x04"+"Inventory changed during search")
 			}
+			bot.BotReset();
 		}
 	}
 	else if(botindex+"_bot_think_search_attempt_slot"+slot in ::VSLib.Timers.TimersID)
 	{
-		if((rand().tofloat()/RAND_MAX) <= 0.25)
+		foreach(inf in Objects.OfClassnameWithin("inferno",obj.GetOrigin(),275))
+		{
+			//out("Found inferno")
+			//DebugDrawText(inf.GetOrigin()+Vector(0,0,25),"INFERNO",false,5);
+			local a = Utils.CalculateDistance(obj.GetOrigin(),inf.GetOrigin())
+			local b = Utils.CalculateDistance(inf.GetOrigin(),bot.GetOrigin())
+			local f = Utils.CalculateDistance(obj.GetOrigin(),bot.GetOrigin())
+			local temp = (pow(b,2)-pow(a,2)+pow(f,2))/(2*f)
+			local d = pow((b-temp)*(b+temp),0.5)
+			if(d < 125)
+			{
+				bot.BotReset();
+				//out("Inferno too close: "+d);
+				return;
+			}
+		}
+		foreach(inf in Objects.OfClassnameWithin("insect_swarm",obj.GetOrigin(),275))
+		{
+			//out("Found spit")
+			//DebugDrawText(inf.GetOrigin()+Vector(0,0,25),"SPIT",false,5);
+			local a = Utils.CalculateDistance(obj.GetOrigin(),inf.GetOrigin())
+			local b = Utils.CalculateDistance(inf.GetOrigin(),bot.GetOrigin())
+			local f = Utils.CalculateDistance(obj.GetOrigin(),bot.GetOrigin())
+			local temp = (pow(b,2)-pow(a,2)+pow(f,2))/(2*f)
+			local d = pow((b-temp)*(b+temp),0.5)
+			if(d < 125)
+			{
+				bot.BotReset();
+				//out("Spit too close: "+d);
+				return;
+			}
+		}
+
+		if((rand().tofloat()/RAND_MAX) <= BotParams.ChanceRelocateWhenTooFarToGet 
+			&& !bot.IsInCombat()
+			&& bot.IsAlive()
+			&& !bot.IsIncapacitated()
+			&& !bot.IsHealing()
+			&& !bot.IsBeingHealed()
+			)
+		{
+			//out("No inferno and trying to relocate");
 			bot.BotMoveToLocation(obj.GetOrigin())
+		}
 	}
 }
 
@@ -3640,39 +3987,73 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	local botindex = bot.GetIndex();
 	local target = args.target;
 	local slot = args.slot;
+	local debug = BotParams.debug;
 
-	if(Utils.CalculateDistance(bot.GetOrigin(),target.GetOrigin()) <= 100 && (botindex+"_bot_think_share_attempt_slot"+slot in ::VSLib.Timers.TimersID))
+	if(Utils.CalculateDistance(bot.GetOrigin(),target.GetOrigin()) <= BotParams.MaxRadiusToLetShare && (botindex+"_bot_think_share_attempt_slot"+slot in ::VSLib.Timers.TimersID))
 	{
 		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[botindex+"_bot_think_share_attempt_slot"+slot]);
 		delete ::VSLib.Timers.TimersID[botindex+"_bot_think_share_attempt_slot"+slot];
-		
-		bot.Speak(Utils.GetRandValueFromArray(::Survivorlines.ShareItem[bot.GetCharacterName().tolower()]));
-		
+
 		if(!bot.IsAlive())
 		{
-			//ClientPrint(null,3,"#" + botindex + " bot is dead")
+			if(debug == 1)
+				ClientPrint(null,3,"\x04"+"#" + botindex + " bot is dead")
 		}
 		else if(bot.IsIncapacitated())
 		{
-			//ClientPrint(null,3,"#" + botindex + " bot is incapped")
+			if(debug == 1)
+				ClientPrint(null,3,"\x04"+"#" + botindex + " bot is incapped")
+		}
+		else if(bot.IsHealing())
+		{
+			if(debug == 1)
+				ClientPrint(null,3,"\x04"+"#" + botindex + " bot is healing")
 		}
 		else
 		{
 			if(!target.IsAlive())
 			{
-				//ClientPrint(null,3,"#" + target.GetIndex() + " target is dead")
+				AdminSystem.BotOnSearchOrSharePath[bot.GetCharacterName().tolower()] = false;
+				AdminSystem.BotBringingItem[target.GetCharacterName().tolower()] = false;
+				if(debug == 1)
+					ClientPrint(null,3,"\x04"+"#" + target.GetIndex() + " target is dead")
 			}
 			else if(target.IsIncapacitated())
 			{
-				//ClientPrint(null,3,"#" + target.GetIndex() + " target is incapped")
+				if(debug == 1)
+					ClientPrint(null,3,"\x04"+"#" + target.GetIndex() + " target is incapped")
+			}
+			else if(target.IsBeingHealed() || target.IsHealing())
+			{
+				if(debug == 1)
+					ClientPrint(null,3,"\x04"+"#" + target.GetIndex() + " target is healing or getting healed")
 			}
 			else
 			{
 				AdminSystem.BotOnSearchOrSharePath[bot.GetCharacterName().tolower()] = false;
-
-				if(("slot"+slot in bot.GetHeldItems()) && !("slot"+slot in target.GetHeldItems()))
+				AdminSystem.BotBringingItem[target.GetCharacterName().tolower()] = false;
+				
+				local spawnertooclose = false;
+				foreach(spawner in Objects.OfClassnameWithin(args.item.GetClassname()+"_spawn",bot.GetOrigin(),100))
 				{
-					//ClientPrint(null,3,"\x05"+"#"+botindex+" gave "+args.classname+" to "+target.GetIndex());
+					if(spawner.GetNetProp("m_fEffects") == 48 || spawner.GetSpawnFlags() == 10)
+					{
+						if(debug == 1)
+							ClientPrint(null,3,"\x04"+"#"+botindex+" Can't give, spawner too close #"+spawner.GetIndex());
+						spawnertooclose = true;
+						break;
+					}
+				}
+
+				if(spawnertooclose)
+				{
+
+				}
+				else if(("slot"+slot in bot.GetHeldItems()) && !("slot"+slot in target.GetHeldItems()))
+				{
+					if(debug == 1)
+						ClientPrint(null,3,"\x03"+"#"+botindex+" gave "+args.classname+" to "+target.GetIndex());
+					bot.Speak(Utils.GetRandValueFromArray(::Survivorlines.ShareItem[bot.GetCharacterName().tolower()]),0.1);
 					
 					AdminSystem.Vars._currentlyBeingTaken[args.item.GetIndex()] <- true;
 					Utils.DropThenGive(bot,target,slot,args.item);
@@ -3680,15 +4061,57 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				}
 				else
 				{
-					//ClientPrint(null,3,"\x04"+"Inventories changed")
+					if(debug == 1)
+						ClientPrint(null,3,"\x04"+"Inventories changed")
 				}
 			}
+			bot.BotReset();
 		}	
 	}
 	else if(botindex+"_bot_think_share_attempt_slot"+slot in ::VSLib.Timers.TimersID)
 	{
-		if((rand().tofloat()/RAND_MAX) <= 0.25)
+		foreach(inf in Objects.OfClassnameWithin("inferno",args.item.GetOrigin(),275))
+		{
+			//out("Found inferno")
+			//DebugDrawText(inf.GetOrigin()+Vector(0,0,25),"INFERNO",false,5);
+			local a = Utils.CalculateDistance(args.item.GetOrigin(),inf.GetOrigin())
+			local b = Utils.CalculateDistance(inf.GetOrigin(),bot.GetOrigin())
+			local f = Utils.CalculateDistance(args.item.GetOrigin(),bot.GetOrigin())
+			local temp = (pow(b,2)-pow(a,2)+pow(f,2))/(2*f)
+			local d = pow((b-temp)*(b+temp),0.5)
+			if(d < 125)
+			{
+				bot.BotReset();
+				//out("Inferno too close: "+d);
+				return;
+			}
+		}
+		foreach(inf in Objects.OfClassnameWithin("insect_swarm",args.item.GetOrigin(),275))
+		{
+			//out("Found spit")
+			//DebugDrawText(inf.GetOrigin()+Vector(0,0,25),"SPIT",false,5);
+			local a = Utils.CalculateDistance(args.item.GetOrigin(),inf.GetOrigin())
+			local b = Utils.CalculateDistance(inf.GetOrigin(),bot.GetOrigin())
+			local f = Utils.CalculateDistance(args.item.GetOrigin(),bot.GetOrigin())
+			local temp = (pow(b,2)-pow(a,2)+pow(f,2))/(2*f)
+			local d = pow((b-temp)*(b+temp),0.5)
+			if(d < 125)
+			{
+				bot.BotReset();
+				//out("Spit too close: "+d);
+				return;
+			}
+		}
+		if((rand().tofloat()/RAND_MAX) <= BotParams.ChanceRelocateWhenTooFarToGive  
+			&& !bot.IsInCombat()
+			&& bot.IsAlive()
+			&& !bot.IsIncapacitated()
+			&& !bot.IsHealing()
+			&& !bot.IsBeingHealed())
+		{
+			//out("No inferno and trying to relocate");
 			bot.BotMoveToLocation(target.GetOrigin())
+		}
 	}
 }
 
@@ -3709,16 +4132,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 	AddThinkToEnt(thinkadder.GetBaseEntity(),"_AddSearchThinkToBots");
 	return thinkadder;
-}
-
-::_TakenFailCheckerRemover <- function(args)
-{
-	if(args.index in AdminSystem.Vars._currentlyBeingTaken)
-	{
-		Utils.RemoveCustomThinkTimers(args.bot.GetIndex(),true);
-		AdminSystem.BotOnSearchOrSharePath[args.bot.GetCharacterName().tolower()] = false;
-		delete AdminSystem.Vars._currentlyBeingTaken[args.index];
-	}
 }
 
 /*
@@ -3745,7 +4158,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	}
 
 	if (AdminSystem.Vars._outputsEnabled[name])
-	{ClientPrint(null,3,"\x04"+name+"->Created a think adder(#"+thinkadder.GetIndex()+") named "+thinkadder.GetName());}
+	{ClientPrint(null,3,"\x03"+name+"->Created a think adder(#"+thinkadder.GetIndex()+") named "+thinkadder.GetName());}
 	else
 	{printB(player.GetCharacterName(),name+"->Created a think adder(#"+thinkadder.GetIndex()+") named "+thinkadder.GetName(),true,"info",true,true);}
 
@@ -3775,6 +4188,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	foreach(survivor,val in AdminSystem.BotOnSearchOrSharePath)
 	{
 		AdminSystem.BotOnSearchOrSharePath[survivor] = false;
+		AdminSystem.BotBringingItem[survivor] = false;
 	}
 
 	foreach(survivor in Players.AliveSurvivors())
@@ -3811,21 +4225,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	{
 		if(!(survivor.GetIndex()+"_bot_think_adder" in ::VSLib.Timers.TimersID) && survivor.IsBot())
 		{
-			Timers.AddTimerByName(survivor.GetIndex()+"_bot_think_adder",1.5,true,_LookForLoot,{index=survivor.GetIndex()})
+			Timers.AddTimerByName(survivor.GetIndex()+"_bot_think_adder",1.3+((rand().tofloat()/RAND_MAX)%0.5),true,_LookForLoot,{index=survivor.GetIndex()})
 		}
 	}
-}
-
-::AdminSystem.BotOnSearchOrSharePath <-
-{
-	bill=false,
-	francis=false,
-	louis=false,
-	zoey=false,
-	nick=false,
-	coach=false,
-	ellis=false,
-	rochelle=false
 }
 
 /*
@@ -3836,19 +4238,37 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	local botindex = arg.index;
 	local bot = Player(botindex.tointeger());
 	local botname = bot.GetCharacterName().tolower();
+	local debug = BotParams.debug;
 	if(!bot.IsBot())
 	{
-		//ClientPrint(null,3,"#" + botindex + " is not a bot")
+		if(debug == 1)
+			ClientPrint(null,3,"\x04"+"#" + botindex + " is not a bot")
 		Utils.RemoveCustomThinkTimers(botindex);
+		AdminSystem.BotOnSearchOrSharePath[botname] = false;
 		return;
 	}
 	else if(!bot.IsAlive())
 	{
-		//ClientPrint(null,3,"#" + botindex + " bot is dead")
+		if(debug == 1)
+			ClientPrint(null,3,"\x04"+"#" + botindex + " bot is dead")
+
+		Utils.RemoveCustomThinkTimers(botindex);
+		AdminSystem.BotOnSearchOrSharePath[botname] = false;
 	}
 	else if(bot.IsIncapacitated())
 	{
-		//ClientPrint(null,3,"#" + botindex + " bot is incapped")
+		if(debug == 1)
+			ClientPrint(null,3,"\x04"+"#" + botindex + " bot is incapped")
+	}
+	else if(bot.IsInCombat())
+	{
+		if(debug == 1)
+			ClientPrint(null,3,"\x04"+"#" + botindex + " bot is in combat")
+	}
+	else if(bot.IsHealing() || bot.IsBeingHealed())
+	{
+		if(debug == 1)
+			ClientPrint(null,3,"\x04"+"#" + botindex + " bot is healing or getting healed")
 	}
 	else if(!AdminSystem.BotOnSearchOrSharePath[botname] && !AdminSystem._CurrentlyTradingItems[botname])
 	{
@@ -3857,7 +4277,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		local inHand = null;
 		local inhandclass = null;
 		local alreadygiving = false;
-
+		
 		local hasgrenade = ("slot2" in inv)
 		local haspack = ("slot3" in inv)
 		local share = AdminSystem.Vars.AllowAutomatedSharing
@@ -3867,61 +4287,154 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		{
 			if(botindex+"_bot_think_share_attempt_slot2" in ::VSLib.Timers.TimersID)
 			{
-				//ClientPrint(null,3,"\x05"+"Already trying to give the grenade");
+				if(debug == 1)
+					ClientPrint(null,3,"\x04"+"Already trying to give the grenade");
 			}
 			else
 			{
 				inHand = inv.slot2;
 				inhandclass = inHand.GetClassname();
-				//ClientPrint(null,3,"\x05"+"Has grenade");
 
-				local closest = bot.BotGetClosestVisibleFriend(); // TO-DO: Loop the players instead of closest, but it may slow this down even more
-				if(closest != null)
+				local closest = null;
+				local lastdist = null;
+				local currdist = null;
+				foreach(survivor in Players.AliveSurvivors())
 				{
-					if(!closest.IsBot())
+					if(survivor.GetIndex() == botindex)
+						continue;
+
+					if(survivor.IsBot())
+						continue;
+
+					if(bot.CanSeeLocation(survivor.GetEyePosition(),BotParams.CanSee_Share))
 					{
-						if(!AdminSystem._CurrentlyTradingItems[closest.GetCharacterName().tolower()])
+						local valid = false;
+						local begin = bot.GetEyePosition();
+						local finish = survivor.GetEyePosition();
+						
+						local m_trace = { start = begin, end = finish, ignore = bot.GetBaseEntity(), mask = BotParams.Mask };
+						TraceLine(m_trace);
+
+						if(debug == 1)
+							DebugDrawLine_vCol(begin,m_trace.pos+Vector(0,0,5),Vector(255,0,0),false,3);
+						if (!m_trace.hit || m_trace.enthit == null || m_trace.enthit == bot.GetBaseEntity())
+							continue;
+						
+						if(debug == 1)
+							DebugDrawLine_vCol(begin,m_trace.pos+Vector(0,0,10),Vector(255,255,0),false,3);
+						if (m_trace.enthit.GetClassname() == "worldspawn" || !m_trace.enthit.IsValid())
+							continue;
+						
+						if(debug == 1)
+							DebugDrawLine_vCol(begin,m_trace.pos+Vector(0,0,15),Vector(0,255,255),false,3);
+						if (m_trace.enthit == survivor.GetBaseEntity() || ::VSLib.Utils.AreVectorsEqual(m_trace.pos, finish))
+							valid = true;
+
+						if(!valid)
+							continue;
+						
+						if(debug == 1)
 						{
-							local closestorigin = closest.GetOrigin();
-							if("slot2" in closest.GetHeldItems())
-							{
-								//ClientPrint(null,3,"\x04"+"Friend already has grenade");
-							}
-							else if(Utils.CalculateDistance(origin,closestorigin) <= 200)
-							{
-								//ClientPrint(null,3,"\x05"+"Friend close enough");
-								if(bot.IsCalm())
-								{
-									//ClientPrint(null,3,"\x03"+botindex+" is calm and kind enough to share");
-									bot.BotMoveToLocation(closestorigin);
-
-									AdminSystem.BotOnSearchOrSharePath[botname] = true;
-									alreadygiving = true;
-
-									Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot2",1,true,_TryAndGiveItem,{bot=bot,target=closest,slot=2,item=inHand,classname=inhandclass.slice(7)})
-								}
-								else if((rand().tofloat()/RAND_MAX) <= 0.25)
-								{
-									//ClientPrint(null,3,"\x03"+"25% probability hit");
-									bot.BotMoveToLocation(closestorigin);
-
-									AdminSystem.BotOnSearchOrSharePath[botname] = true;
-									alreadygiving = true;
-									
-									Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot2",1,true,_TryAndGiveItem,{bot=bot,target=closest,slot=2,item=inHand,classname=inhandclass.slice(7)})
-								}
-							}
+							DebugDrawLine_vCol(begin,finish+Vector(0,0,15),Vector(0,0,255),false,3);
+							ClientPrint(null,3,"\x05"+"#"+botindex+" Can see and no trace hits #"+survivor.GetIndex());
 						}
 					}
 					else
 					{
-						//ClientPrint(null,3,"\x05"+"Closest is a bot");
+						if(debug == 1)
+						{
+							DebugDrawLine_vCol(bot.GetEyePosition(),survivor.GetEyePosition(),Vector(0,255,0),false,3);
+							ClientPrint(null,3,"\x04"+"#"+botindex+" Can't see #"+survivor.GetIndex());
+						}
+						continue;
+					}
+
+					if(!survivor.IsBot() && !survivor.IsBeingHealed() && !survivor.IsHealing() && survivor.IsAlive() && !survivor.IsIncapacitated())
+					{
+						if(closest != null)
+						{
+							currdist = Utils.CalculateDistance(survivor.GetOrigin(),origin);
+							if(lastdist > currdist)
+							{
+								closest = survivor;
+								lastdist = currdist;
+							}
+						}
+						else
+						{
+							closest = survivor;
+							lastdist = Utils.CalculateDistance(survivor.GetOrigin(),origin);
+						}
+					}
+					else
+					{
+						if(debug == 1)
+							ClientPrint(null,3,"\x04"+"#"+botindex+"Not valid #"+survivor.GetIndex());
+					}
+				}
+
+				if(closest != null)
+				{
+					if(!AdminSystem._CurrentlyTradingItems[closest.GetCharacterName().tolower()] && !AdminSystem.BotBringingItem[closest.GetCharacterName().tolower()])
+					{
+						local closestorigin = closest.GetOrigin();
+						if("slot2" in closest.GetHeldItems())
+						{
+							if(debug == 1)
+								ClientPrint(null,3,"\x04"+"Friend already has grenade");
+						}
+						else if(Utils.CalculateDistance(origin,closestorigin) <= BotParams.ClosestPlayerMaxDist)
+						{
+							local spawnertooclose = false;
+							foreach(spawner in Objects.OfClassnameWithin(inhandclass+"_spawn",closestorigin,BotParams.SpawnerRadiusAroundClosest))
+							{
+								if(spawner.GetNetProp("m_fEffects") == 48 || spawner.GetSpawnFlags() == 10)
+								{
+									if(debug == 1)
+										ClientPrint(null,3,"\x04"+"Spawner too close #"+spawner.GetIndex());
+									spawnertooclose = true;
+									break;
+								}
+							}
+
+							if(spawnertooclose)
+							{
+
+							}
+							else if(bot.IsCalm())
+							{
+								if(debug == 1)
+									ClientPrint(null,3,"\x03"+"#"+botindex+" is calm and kind enough to share");
+								bot.BotMoveToLocation(closestorigin);
+
+								AdminSystem.BotOnSearchOrSharePath[botname] = true;
+								AdminSystem.BotBringingItem[closest.GetCharacterName().tolower()] = true;
+								alreadygiving = true;
+
+								Timers.AddTimer(BotParams.ShareTimeout,false,_ShareFailCheckerRemover,{bot=bot,botindex=botindex,targetname=closest.GetCharacterName().tolower()});
+								Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot2",BotParams.ItemShareTimerDelay,true,_TryAndGiveItem,{bot=bot,target=closest,slot=2,item=inHand,classname=inhandclass.slice(7)})
+							}
+							else if((rand().tofloat()/RAND_MAX) <= BotParams.RandomChanceForShare)
+							{
+								if(debug == 1)
+									ClientPrint(null,3,"\x03"+"#"+botindex+" "+BotParams.RandomChanceForShare*100+"% probability hit");
+								bot.BotMoveToLocation(closestorigin);
+
+								AdminSystem.BotOnSearchOrSharePath[botname] = true;
+								AdminSystem.BotBringingItem[closest.GetCharacterName().tolower()] = true;
+								alreadygiving = true;
+								
+								Timers.AddTimer(BotParams.ShareTimeout,false,_ShareFailCheckerRemover,{bot=bot,botindex=botindex,targetname=closest.GetCharacterName().tolower()});
+								Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot2",BotParams.ItemShareTimerDelay,true,_TryAndGiveItem,{bot=bot,target=closest,slot=2,item=inHand,classname=inhandclass.slice(7)})
+							}
+						}
 					}
 					
 				}
 				else
 				{
-					//ClientPrint(null,3,"\x04"+"No close friend found");
+					if(debug == 1)
+						ClientPrint(null,3,"\x04"+"No valid close friend found");
 				}
 			}
 			
@@ -3931,66 +4444,164 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		{
 			if(botindex+"_bot_think_share_attempt_slot3" in ::VSLib.Timers.TimersID)
 			{
-				//ClientPrint(null,3,"\x05"+"Already trying to give a pack");
+				if(debug == 1)
+					ClientPrint(null,3,"\x04"+"Already trying to give a pack");
 			}
 			else
 			{
 				inHand = inv.slot3;
 				inhandclass = inHand.GetClassname();
 
-				local closest = bot.BotGetClosestVisibleFriend(); // TO-DO: Loop the players instead of closest, but it may slow this down even more
-				if(closest != null)
+				local closest = null;
+				local lastdist = null;
+				local currdist = null;
+				foreach(survivor in Players.AliveSurvivors())
 				{
-					if(!closest.IsBot())
+					if(survivor.GetIndex() == botindex)
+						continue;
+
+					if(survivor.IsBot())
+						continue;
+						
+					if(bot.CanSeeLocation(survivor.GetEyePosition(),BotParams.CanSee_Share))
 					{
-						if(!AdminSystem._CurrentlyTradingItems[closest.GetCharacterName().tolower()])
+						local valid = false;
+						local begin = bot.GetEyePosition();
+						local finish = survivor.GetEyePosition();
+						
+						local m_trace = { start = begin, end = finish, ignore = bot.GetBaseEntity(), mask = BotParams.Mask };
+						TraceLine(m_trace);
+						
+						if(debug == 1)
+							DebugDrawLine_vCol(begin,m_trace.pos+Vector(0,0,5),Vector(255,0,0),false,3);
+						if (!m_trace.hit || m_trace.enthit == null || m_trace.enthit == bot.GetBaseEntity())
+							continue;
+						
+						if(debug == 1)
+							DebugDrawLine_vCol(begin,m_trace.pos+Vector(0,0,10),Vector(255,255,0),false,3);
+						if (m_trace.enthit.GetClassname() == "worldspawn" || !m_trace.enthit.IsValid())
+							continue;
+						
+						if(debug == 1)
+							DebugDrawLine_vCol(begin,m_trace.pos+Vector(0,0,15),Vector(0,255,255),false,3);
+						if (m_trace.enthit == survivor.GetBaseEntity() || ::VSLib.Utils.AreVectorsEqual(m_trace.pos, finish))
+							valid = true;
+
+						if(!valid)
+							continue;
+						
+						if(debug == 1)
 						{
-							local closestorigin = closest.GetOrigin();
-							if("slot3" in closest.GetHeldItems())
-							{
-								//ClientPrint(null,3,"\x04"+"Friend already has a pack");
-							}
-							else if(Utils.CalculateDistance(origin,closestorigin) <= 200)
-							{
-								//ClientPrint(null,3,"\x05"+"Friend close enough");
-								if(bot.IsCalm())
-								{
-									//ClientPrint(null,3,"\x03"+botindex+" is calm and kind enough to share");
-									bot.BotMoveToLocation(closestorigin);
-
-									AdminSystem.BotOnSearchOrSharePath[botname] = true;
-									alreadygiving = true;
-
-									Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot3",1,true,_TryAndGiveItem,{bot=bot,target=closest,slot=3,item=inHand,classname=inhandclass.slice(7)})
-								}
-								else if((rand().tofloat()/RAND_MAX) <= 0.25)
-								{
-									//ClientPrint(null,3,"\x03"+"25% probability hit");
-									bot.BotMoveToLocation(closestorigin);
-									
-									AdminSystem.BotOnSearchOrSharePath[botname] = true;
-									alreadygiving = true;
-
-									Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot3",1,true,_TryAndGiveItem,{bot=bot,target=closest,slot=3,item=inHand,classname=inhandclass.slice(7)})
-								}
-							}
+							DebugDrawLine_vCol(begin,finish+Vector(0,0,15),Vector(0,0,255),false,3);
+							ClientPrint(null,3,"\x05"+"#"+botindex+" Can see and no trace hits #"+survivor.GetIndex());
 						}
 					}
 					else
 					{
-						//ClientPrint(null,3,"\x05"+"Closest is a bot");
+						if(debug == 1)
+						{
+							DebugDrawLine_vCol(bot.GetEyePosition(),survivor.GetEyePosition(),Vector(0,255,0),false,3);
+							ClientPrint(null,3,"\x04"+"#"+botindex+" Can't see #"+survivor.GetIndex());
+						}
+						continue;
 					}
-					
+
+					if(!survivor.IsBot() && !survivor.IsBeingHealed() && !survivor.IsHealing() && survivor.IsAlive() && !survivor.IsIncapacitated())
+					{
+						if(closest != null)
+						{
+							currdist = Utils.CalculateDistance(survivor.GetOrigin(),origin);
+							if(lastdist > currdist)
+							{
+								closest = survivor;
+								lastdist = currdist;
+							}
+						}
+						else
+						{
+							closest = survivor;
+							lastdist = Utils.CalculateDistance(survivor.GetOrigin(),origin);
+						}
+					}
+					else
+					{
+						if(debug == 1)
+							ClientPrint(null,3,"\x04"+"#"+botindex+" Not valid #"+survivor.GetIndex());
+					}
+				}
+
+				if(closest != null)
+				{
+					if(debug == 1)
+						ClientPrint(null,3,"\x05"+"Closest #"+closest.GetIndex());
+					if(!AdminSystem._CurrentlyTradingItems[closest.GetCharacterName().tolower()] && !AdminSystem.BotBringingItem[closest.GetCharacterName().tolower()])
+					{
+						local closestorigin = closest.GetOrigin();
+						if("slot3" in closest.GetHeldItems())
+						{
+							if(debug == 1)
+								ClientPrint(null,3,"\x04"+"Friend already has a pack");
+						}
+						else if(Utils.CalculateDistance(origin,closestorigin) <= BotParams.ClosestPlayerMaxDist)
+						{
+							local packspawnertooclose = false;
+							foreach(spawner in Objects.OfClassnameWithin(inhandclass+"_spawn",closestorigin,BotParams.SpawnerRadiusAroundClosest))
+							{
+								if(spawner.GetNetProp("m_fEffects") == 48 || spawner.GetSpawnFlags() == 10 )
+								{
+									if(debug == 1)
+										ClientPrint(null,3,"\x04"+"Spawner too close #"+spawner.GetIndex());
+									packspawnertooclose = true;
+									break;
+								}
+							}
+							
+							if(packspawnertooclose)
+							{
+
+							}
+							else if(bot.IsCalm())
+							{
+								if(debug == 1)
+									ClientPrint(null,3,"\x03"+"#"+botindex+" is calm and kind enough to share");
+								bot.BotMoveToLocation(closestorigin);
+
+								AdminSystem.BotOnSearchOrSharePath[botname] = true;
+								AdminSystem.BotBringingItem[closest.GetCharacterName().tolower()] = true;
+								alreadygiving = true;
+
+								Timers.AddTimer(BotParams.ShareTimeout,false,_ShareFailCheckerRemover,{bot=bot,botindex=botindex,targetname=closest.GetCharacterName().tolower()});
+								Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot3",BotParams.ItemShareTimerDelay,true,_TryAndGiveItem,{bot=bot,target=closest,slot=3,item=inHand,classname=inhandclass.slice(7)})
+							}
+							else if((rand().tofloat()/RAND_MAX) <= BotParams.RandomChanceForShare)
+							{
+								if(debug == 1)
+									ClientPrint(null,3,"\x03"+"#"+botindex+" "+BotParams.RandomChanceForShare*100+"% probability hit");
+								bot.BotMoveToLocation(closestorigin);
+								
+								AdminSystem.BotOnSearchOrSharePath[botname] = true;
+								AdminSystem.BotBringingItem[closest.GetCharacterName().tolower()] = true;
+								alreadygiving = true;
+
+								Timers.AddTimer(BotParams.ShareTimeout,false,_ShareFailCheckerRemover,{bot=bot,botindex=botindex,targetname=closest.GetCharacterName().tolower()});
+								Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot3",BotParams.ItemShareTimerDelay,true,_TryAndGiveItem,{bot=bot,target=closest,slot=3,item=inHand,classname=inhandclass.slice(7)})
+							}
+						}
+					}
 				}
 				else
 				{
-					//ClientPrint(null,3,"\x04"+"No close friend found");
+					if(debug == 1)
+						ClientPrint(null,3,"\x04"+"No close friend found");
 				}
 			}
 		}
 
 		if ((!hasgrenade || !haspack) && !alreadygiving)
 		{
+			if(debug == 1)
+				ClientPrint(null,3,"\x05"+"#"+botindex+" looking for items");
+
 			// Search for closeby stuff
 			local sharable_grenade = 
 			[
@@ -4007,54 +4618,97 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				"weapon_upgradepack_incendiary_spawn","weapon_upgradepack_explosive_spawn"
 			]
 
-			local closebygrenade_pack = {}
-			local usedorigin = bot.GetOrigin()
-			foreach(obj in Objects.AroundRadius(usedorigin,300))
+			local closebygrenade_pack = {};
+			local usedorigin = bot.GetOrigin();
+			foreach(obj in Objects.AroundRadius(usedorigin,BotParams.BotOriginLootRadius))
 			{
 				if(Utils.GetIDFromArray(sharable_grenade,obj.GetClassname()) != -1)
 				{
 					if(!Utils.ItemHeldByOther(obj.GetIndex(),2) && !hasgrenade && obj.GetNetProp("m_fEffects") != 48)
+					{
+						if(debug == 1)
+							ClientPrint(null,3,"\x05"+"Closeby #"+obj.GetIndex());
 						closebygrenade_pack[obj.GetIndex()] <- 2
+					}
+					else
+					{
+						if(debug == 1)
+							ClientPrint(null,3,"\x04"+"Item #"+obj.GetIndex()+" ungrabbable->"+"byother:"+Utils.ItemHeldByOther(obj.GetIndex(),2)+", noslot:"+hasgrenade+", effect:"+obj.GetNetProp("m_fEffects"));
+					}
 				}
 				else if(Utils.GetIDFromArray(sharable_packs,obj.GetClassname()) != -1)
 				{
 					if(!Utils.ItemHeldByOther(obj.GetIndex(),3) && !haspack)
+					{
+						if(debug == 1)
+							ClientPrint(null,3,"\x05"+"Closeby #"+obj.GetIndex());
 						closebygrenade_pack[obj.GetIndex()] <- 3
+					}
+					else
+					{
+						if(debug == 1)
+							ClientPrint(null,3,"\x04"+"Item #"+obj.GetIndex()+" ungrabbable->"+"byother:"+Utils.ItemHeldByOther(obj.GetIndex(),3)+", noslot:"+haspack);
+					}
 				}
 			}
 
 			local randompathable = null
 			if(closebygrenade_pack.len() == 0)
 			{ 
-				randompathable = bot.GetBaseEntity().TryGetPathableLocationWithin(250);
+				randompathable = bot.GetBaseEntity().TryGetPathableLocationWithin(BotParams.BotOriginLootRadius);
 				//eye level
-				randompathable.z += 68;
+				randompathable.z += 62;
 
-				//DebugDrawText(randompathable,"RANDOM PATH",false,1);
+				if(debug == 1)
+					DebugDrawText(randompathable,"USING RANDOM PATH",false,4);
 
-				foreach(obj in Objects.AroundRadius(randompathable,150))
+				foreach(obj in Objects.AroundRadius(randompathable,BotParams.PathableDist_Loot))
 				{
 					if(Utils.GetIDFromArray(sharable_grenade,obj.GetClassname()) != -1)
 					{
 						if(!Utils.ItemHeldByOther(obj.GetIndex(),2) && !hasgrenade && obj.GetNetProp("m_fEffects") != 48)
+						{
+							if(debug == 1)
+								ClientPrint(null,3,"\x05"+"Closeby #"+obj.GetIndex());
 							closebygrenade_pack[obj.GetIndex()] <- 2
+						}
+						else
+						{
+							if(debug == 1)
+								ClientPrint(null,3,"\x04"+"Item #"+obj.GetIndex()+" ungrabbable->"+"byother:"+Utils.ItemHeldByOther(obj.GetIndex(),2)+", noslot:"+hasgrenade+", effect:"+obj.GetNetProp("m_fEffects"));
+						}
 					}
 					else if(Utils.GetIDFromArray(sharable_packs,obj.GetClassname()) != -1)
 					{
 						if(!Utils.ItemHeldByOther(obj.GetIndex(),3) && !haspack)
+						{
+							if(debug == 1)
+								ClientPrint(null,3,"\x05"+"Closeby #"+obj.GetIndex());
 							closebygrenade_pack[obj.GetIndex()] <- 3
+						}
+						else
+						{
+							if(debug == 1)
+								ClientPrint(null,3,"\x04"+"Item #"+obj.GetIndex()+" ungrabbable->"+"byother:"+Utils.ItemHeldByOther(obj.GetIndex(),3)+", noslot:"+haspack);
+						}
 					}
 				}
 
 				if(closebygrenade_pack.len() == 0)
 				{
-					//ClientPrint(null,3,"\x04"+"Nothing closeby");
+					if(debug == 1)
+						ClientPrint(null,3,"\x04"+"Nothing closeby");
 					return;
 				}
 				else
 				{
 					usedorigin = randompathable;
 				}
+			}
+			else
+			{
+				if(debug == 1)
+					DebugDrawText(usedorigin,"USING BOT ORIGIN",false,4);
 			}
 			
 
@@ -4070,42 +4724,86 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 				obj = Entity(objindex);
 
-				if(bot.CanSeeOtherEntity(obj,270))
+				if(bot.CanSeeLocation(obj.GetOrigin(),BotParams.CanSee_Loot))
 				{
-					//ClientPrint(null,3,"\x05"+"Visible closeby "+obj.GetClassname()+" #"+objindex);
+					local valid = false;
+					local begin = bot.GetEyePosition();
+					local finish = obj.GetOrigin();
+					local m_trace = { start = begin, end = finish, ignore = bot.GetBaseEntity(), mask = BotParams.Mask };
+					TraceLine(m_trace);
+					
+					if(debug == 1)
+					{
+						DebugDrawLine_vCol(begin,m_trace.pos,Vector(255,0,0),false,3);
+						Utils.PrintTable(m_trace);
+					}
+
+					if (!m_trace.hit || m_trace.enthit == null || m_trace.enthit == bot.GetBaseEntity())
+					{
+						if(::VSLib.Utils.AreVectorsEqual(m_trace.pos, finish) && obj.GetClassname().find("weapon_vomitjar") != null) // vomitjars are weird
+						{
+							valid = true;
+							if(debug == 1)
+							{
+								DebugDrawLine_vCol(begin,m_trace.pos+Vector(0,0,15),Vector(0,255,0),false,3);
+								ClientPrint(null,3,"\x05"+"#"+botindex+" Visible closeby "+obj.GetClassname()+" #"+objindex);
+								DebugDrawText(obj.GetOrigin()+Vector(0,0,25),"VISIBLE ITEM",false,5);
+							}
+								
+							foundclassslot = slot;
+							found = true;
+							break;
+						}
+						else
+						{
+							if(debug == 1)
+								ClientPrint(null,3,"\x04"+"Trace failed, trying a bit higher");
+							m_trace = { start = begin, end = finish+Vector(0,0,2), ignore = bot.GetBaseEntity(), mask = BotParams.Mask };
+							TraceLine(m_trace);
+							if (!m_trace.hit || m_trace.enthit == null || m_trace.enthit == bot.GetBaseEntity())
+							{
+								if(::VSLib.Utils.AreVectorsEqual(m_trace.pos, finish) && obj.GetClassname().find("vomit_jar") != null) // vomitjars are weird
+									valid = true;
+								else
+									continue;
+							}
+						}
+						
+					}
+					
+					if(debug == 1)
+						DebugDrawLine_vCol(begin,m_trace.pos+Vector(0,0,5),Vector(255,255,0),false,3);
+					if (m_trace.enthit.GetClassname() == "worldspawn" || !m_trace.enthit.IsValid())
+						continue;
+					
+					if(debug == 1)
+						DebugDrawLine_vCol(begin,m_trace.pos+Vector(0,0,10),Vector(0,255,255),false,3);
+					if (m_trace.enthit == obj.GetBaseEntity() || ::VSLib.Utils.AreVectorsEqual(m_trace.pos, finish))
+						valid = true;
+
+					if(!valid)
+						continue;
+
+					if(debug == 1)
+					{
+						DebugDrawLine_vCol(begin,m_trace.pos+Vector(0,0,15),Vector(0,255,0),false,3);
+						ClientPrint(null,3,"\x05"+"#"+botindex+" Visible closeby "+obj.GetClassname()+" #"+objindex);
+						DebugDrawText(obj.GetOrigin()+Vector(0,0,25),"VISIBLE ITEM",false,5);
+					}
+						
 					foundclassslot = slot;
 					found = true;
-					//DebugDrawText(obj.GetOrigin(),"VISIBLE ITEM",false,5);
 					break;
 				}
 
-				//DebugDrawText(obj.GetOrigin(),"FOUND ITEM",false,5);
-				/*
-				m_trace = { start = bot.GetEyePosition(), end = usedorigin, ignore = bot.GetBaseEntity(), mask = 33579137 };
-				TraceLine(m_trace);
-				
-				if (!m_trace.hit || m_trace.enthit == null || m_trace.enthit == bot.GetBaseEntity())
-					continue;
-				
-				if (m_trace.enthit.GetClassname() == "worldspawn" || !m_trace.enthit.IsValid())
-					continue;
-				
-				if (m_trace.hit && m_trace.enthit != bot.GetBaseEntity() && m_trace.enthit == obj.GetBaseEntity())
-				{
-					ClientPrint(null,3,"\x05"+"Visible closeby "+obj.GetClassname()+" #"+objindex);
-					foundclassslot = slot;
-					found = true;
-					break;
-				}
-				else
-					ClientPrint(null,3,"\x05"+"Not visible: "+obj.GetClassname()+" #"+objindex);
-				*/
-
+				if(debug == 1)
+					DebugDrawText(obj.GetOrigin(),"FOUND ITEM",false,5);
 			}
 			
 			if(!found)
 			{
-				//ClientPrint(null,3,"\x04"+"No visible closeby items");
+				if(debug == 1)
+					ClientPrint(null,3,"\x04"+"#"+botindex+" No visible closeby items");
 			}
 			else
 			{
@@ -4113,9 +4811,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 					return;
 
 				local org = obj.GetOrigin();
-				if(Utils.CalculateDistance(origin,org) > 400)
+				if(Utils.CalculateDistance(origin,org) > BotParams.VisibleDistLimit)
 				{
-					//ClientPrint(null,3,"\x04"+"Visible #"+obj.GetIndex()+" is too far");
+					if(debug == 1)
+						ClientPrint(null,3,"\x04"+"Visible #"+obj.GetIndex()+" is too far");
 				}
 				else
 				{
@@ -4124,12 +4823,18 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 					AdminSystem.BotOnSearchOrSharePath[botname] = true;
 					AdminSystem.Vars._currentlyBeingTaken[obj.GetIndex()] <- true;
 					
-					Timers.AddTimer(10,false,_TakenFailCheckerRemover,{index=obj.GetIndex(),bot=bot});
-					Timers.AddTimerByName(botindex+"_bot_think_search_attempt_slot"+foundclassslot,1,true,_TryToReachAndGet,{bot=bot,obj=obj,slot=foundclassslot,classname=obj.GetClassname().slice(7)})
+					Timers.AddTimer(BotParams.ReachTimeout,false,_TakenFailCheckerRemover,{index=obj.GetIndex(),bot=bot});
+					Timers.AddTimerByName(botindex+"_bot_think_search_attempt_slot"+foundclassslot,BotParams.ItemReachTimerDelay,true,_TryToReachAndGet,{bot=bot,obj=obj,slot=foundclassslot,classname=obj.GetClassname().slice(7)})
 				}
 			}
 		}
-		
+		else
+		{
+			if(debug == 1)
+			{
+				ClientPrint(null,3,"\x04"+"#"+botindex+" not searching-> grenade:"+hasgrenade+", pack:"+haspack+", onpath:"+alreadygiving);
+			}
+		}
 	}
 }
 
@@ -4757,7 +5462,7 @@ enum SCENES
 		_SpeakWhenLeftSaferoom = 
 		{
 			enabled = true
-			prob = 0.2
+			prob = 0.1
 			order = SCENES.RANDOM
 			sequence =
 			{
@@ -4781,7 +5486,7 @@ enum SCENES
 		_SpeakWhenLeftSaferoom = 
 		{
 			enabled = true
-			prob = 0.2
+			prob = 0.1
 			order = SCENES.RANDOM
 			sequence =
 			{	
@@ -5602,8 +6307,34 @@ enum SCENES
 		}
 		local apocargs = AdminSystem._propageddon_args;
 		local entites = VSLib.EasyLogic.Objects.AroundRadius(unluckyone.GetPosition(),apocargs.maxradius);
+		local validents = {}
+		foreach(id,ent in entities)
+		{
+			local valid = true;
+			local entid = ent.GetIndex().tostring()
+			foreach(tbl in AdminSystem.Vars._heldEntity)
+			{
+				if(tbl.entid == entid)
+				{
+					valid = false;break;
+				}
+			}
+			if(!valid)
+				continue;
 
-		::VSLib.Timers.AddTimer(apocargs.mindelay+rand()%apocargs.maxdelay, false, _Propageddon,entites);
+			foreach(tbl in AdminSystem.Vars._wornHat)
+			{
+				if(tbl.entid.tostring() == entid)
+				{
+					valid = false;break;
+				}
+			}
+			if(!valid)
+				continue;
+				
+			validents[id] <- ent;
+		}
+		::VSLib.Timers.AddTimer(apocargs.mindelay+rand()%apocargs.maxdelay, false, _Propageddon,validents);
 	}
 	else
 	{
@@ -6327,6 +7058,9 @@ enum SCENES
 
 		foreach(charname in AdminSystem.Vars.CharacterNamesLower)
 		{	
+			if(charname == "" || charname == "survivor")
+				continue;
+
 			seqnames += charname + "("
 			if(steamid in AdminSystem.Vars._CustomResponseOptions[charname])
 			{
@@ -6606,11 +7340,13 @@ enum SCENES
 	{	
 		foreach(character,customs in chartable)
 		{	
-			if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1){continue;} // Ignore wrong character names
+			if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1 || character == "" || character == "survivor"){continue;} // Ignore wrong character names
 
 			// Add steamid to each character
 			foreach(charname in AdminSystem.Vars.CharacterNamesLower)
 			{
+				if(charname == "" || charname == "survivor")
+					continue;
 				if(!(steamid in AdminSystem.Vars._CustomResponseOptions[charname]))
 					AdminSystem.Vars._CustomResponseOptions[charname][steamid] <- {enabled=true,sequence={}}
 			}
@@ -6676,7 +7412,9 @@ enum SCENES
 	{
 		foreach(charname in AdminSystem.Vars.CharacterNamesLower)
 		{
-			
+			if(charname == "" || charname == "survivor")
+				continue;
+
 			if(!(charname in responsetable[steamid]))
 			{
 				responsetable[steamid][charname] <- {};
@@ -6950,6 +7688,9 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 
 	if(attacker.IsPressingReload())
 	{
+		if(!target.IsSurvivor())
+			return;
+			
 		if(!AdminSystem.Vars.AllowCustomSharing)
 			return;
 
@@ -9485,8 +10226,35 @@ if ( Director.GetGameMode() == "holdout" )
 		fuelpartb.Kill();
 	foreach( particle_system in Objects.OfName("_*_our_particles") )
 		particle_system.Kill();
+
+	local skip = false;
+
 	foreach( entity in Objects.OfName("_*_singlesimple") )
+	{	
+		skip = false;
+		foreach(tbl in AdminSystem.Vars._heldEntity)
+		{
+			if(tbl.entid == entity.GetIndex().tostring())
+			{
+				printl(player.GetCharacterName().tolower()+"->Ignore attemp to kill entity #"+entity.GetIndex().tostring()+" held by a player");
+				skip = true;break;
+			}
+		}
+		
+		foreach(tbl in AdminSystem.Vars._wornHat)
+		{
+			if(tbl.entid.tostring() == entity.GetIndex().tostring())
+			{
+				printl(player.GetCharacterName().tolower()+"->Ignore attemp to kill hat entity #"+entity.GetIndex().tostring()+" worn by a player");
+				skip = true;break;
+			}
+		}
+
+		if(skip)
+			continue;
+
 		entity.Kill();
+	}
 }
 
 ::AdminSystem.AdrenalineCmd <- function ( player, args )
@@ -12126,7 +12894,29 @@ if ( Director.GetGameMode() == "holdout" )
 				return;
 			}
 			else
+			{
+				if(Action == "kill")
+				{
+					foreach(tbl in AdminSystem.Vars._heldEntity)
+					{
+						if(tbl.entid == Entity.GetIndex().tostring())
+						{
+							printl(player.GetCharacterName().tolower()+"->Ignore attemp to kill entity #"+Entity.GetIndex().tostring()+" held by a player");
+							return;
+						}
+					}
+					
+					foreach(tbl in AdminSystem.Vars._wornHat)
+					{
+						if(tbl.entid.tostring() == Entity.GetIndex().tostring())
+						{
+							printl(player.GetCharacterName().tolower()+"->Ignore attemp to kill hat entity #"+Entity.GetIndex().tostring()+" worn by a player");
+							return;
+						}
+					}
+				}
 				Entity.Input( Action, val );
+			}
 		}
 	}
 	else if ( Entnameid == "!self" )
@@ -12245,6 +13035,25 @@ if ( Director.GetGameMode() == "holdout" )
 	local entlooked = player.GetLookingEntity();
 	if(entlooked)
 	{	
+		
+		foreach(tbl in AdminSystem.Vars._heldEntity)
+		{
+			if(tbl.entid == entlooked.GetIndex().tostring())
+			{
+				printl(player.GetCharacterName().tolower()+"->Ignore attemp to push entity #"+entlooked.GetIndex().tostring()+" held by a player");
+				return;
+			}
+		}
+		
+		foreach(tbl in AdminSystem.Vars._wornHat)
+		{
+			if(tbl.entid.tostring() == entlooked.GetIndex().tostring())
+			{
+				printl(player.GetCharacterName().tolower()+"->Ignore attemp to push hat entity #"+entlooked.GetIndex().tostring()+" worn by a player");
+				return;
+			}
+		}
+
 		local newangs = null
 		if(direction == "random" )
 			newangs = QAngle(rand()%360,rand()%360,rand()%360);
@@ -12338,7 +13147,25 @@ if ( Director.GetGameMode() == "holdout" )
 
 	local entlooked = player.GetLookingEntity();
 	if(entlooked)
-	{	
+	{		
+		foreach(tbl in AdminSystem.Vars._heldEntity)
+		{
+			if(tbl.entid == entlooked.GetIndex().tostring())
+			{
+				printl(player.GetCharacterName().tolower()+"->Ignore attemp to move entity #"+entlooked.GetIndex().tostring()+" held by a player");
+				return;
+			}
+		}
+		
+		foreach(tbl in AdminSystem.Vars._wornHat)
+		{
+			if(tbl.entid.tostring() == entlooked.GetIndex().tostring())
+			{
+				printl(player.GetCharacterName().tolower()+"->Ignore attemp to move hat entity #"+entlooked.GetIndex().tostring()+" worn by a player");
+				return;
+			}
+		}
+
 		local fwvec = RotateOrientation(player.GetEyeAngles(),QAngle(pitchofeye,0,0)).Forward();
 		local temp = Vector(fwvec.x,fwvec.y,0);
 
@@ -12418,7 +13245,25 @@ if ( Director.GetGameMode() == "holdout" )
 
 	local entlooked = player.GetLookingEntity();
 	if(entlooked)
-	{	
+	{		
+		foreach(tbl in AdminSystem.Vars._heldEntity)
+		{
+			if(tbl.entid == entlooked.GetIndex().tostring())
+			{
+				printl(player.GetCharacterName().tolower()+"->Ignore attemp to spin entity #"+entlooked.GetIndex().tostring()+" held by a player");
+				return;
+			}
+		}
+		
+		foreach(tbl in AdminSystem.Vars._wornHat)
+		{
+			if(tbl.entid.tostring() == entlooked.GetIndex().tostring())
+			{
+				printl(player.GetCharacterName().tolower()+"->Ignore attemp to spin hat entity #"+entlooked.GetIndex().tostring()+" worn by a player");
+				return;
+			}
+		}
+
 		local fwvec = player.GetEyeAngles().Forward();
 		local temp = Vector(fwvec.x,fwvec.y,fwvec.z);
 
@@ -14650,10 +15495,162 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	foreach(i,name in ::AdminSystem.Vars.CharacterNames)
 	{
+		if(name == "" || name == "survivor")
+			continue;
 		ClientPrint(null,3,"\x3"+"AdminSystem.Vars.CharacterNames"+"["+i+"]"+"\x4"+"->"+"\x3"+name);
 	}
 }
 
+::EntInfo <- function(ent, player, toconsole = false, svcheatsval = 0.0)
+{
+	local playername = player.GetCharacterName();
+
+	if(toconsole)
+	{
+		printB(playername,"==================basic======================",true,"",true,false);
+		printB(playername,"Name-> "+ ent.GetName(),true,"debug",false,false);
+		printB(playername,"Index-> "+ ent.GetIndex(),true,"debug",false,false);
+		printB(playername,"Type-> "+ ent.GetType(),true,"debug",false,false);
+		printB(playername,"Parent->  #"+  (ent.GetParent() == null ? "No parent" : ent.GetParent().GetIndex()),true,"debug",false,false);
+		printB(playername,"Model-> " + ent.GetModel(),true,"debug",false,false);
+		printB(playername,"Scale-> " + ent.GetModelScale(),true,"debug",false,false);
+
+		printB(playername,"==================flags======================",true,"debug",false,false);
+		printB(playername,"SpawnFlags-> "+ ent.GetSpawnFlags(),true,"debug",false,false);
+		printB(playername,"Effects-> "+ ent.GetNetProp("m_fEffects"),true,"debug",false,false);
+		printB(playername,"Flags-> "+ ent.GetFlags() +" | EFlags-> " + ent.GetEFlags()+" | Sense flags-> "+ ent.GetSenseFlags(),true,"debug",false,false);
+
+		printB(playername,"===============positional==================",true,"debug",false,false);
+		printB(playername,"Location-> "+ent.GetLocation(),true,"debug",false,false);
+		printB(playername,"Angles-> " + ent.GetAngles(),true,"debug",false,false);
+		if(ent.GetClassname() == "player")
+		{
+			printB(playername,"Looking at"+"\x05"+"-> "+"\x03"+ent.GetLookingLocation(),true,"debug",false,false);
+			printB(playername,"Eye Position"+"\x05"+"-> "+"\x03"+ent.GetEyePosition(),true,"debug",false,false);
+			printB(playername,"Eye angles"+"\x05"+"-> "+"\x03"+ent.GetEyeAngles(),true,"debug",false,false);
+		}
+		
+		printB(playername,"================physics_debug=================",true,"debug",false,false);
+		AdminSystem._Clientbroadcast(playername,"physics_debug_entity",1,false);
+		if(svcheatsval==1.0)
+		{
+			printB(playername,"==================ent_dump====================",true,"debug",false,false);
+			AdminSystem._Clientbroadcast(playername,"ent_dump !picker",1,false);
+			AdminSystem._Clientbroadcast(playername,"ent_script_dump",1,false);
+		}
+
+		printB(playername,"",false,"",false,true,0.5);
+	}
+	else
+	{
+		printB(playername,"",false,"",true,false,0);
+		out("=================basic==================",player);
+		out("Name"+"\x05"+"-> "+"\x03"+ ent.GetName(),player);
+		out("Index"+"\x05"+"-> "+"\x03"+ ent.GetIndex(),player);
+		out("Type"+"\x05"+"-> "+"\x03"+ ent.GetType(),player);
+		out("Parent #"+"\x05"+"-> "+"\x03"+ (ent.GetParent() == null ? "No parent" : ent.GetParent().GetIndex()),player);
+		out("Model"+"\x05"+"-> "+"\x03" + ent.GetModel(),player);
+		out("Scale"+"\x05"+"-> "+"\x03" + ent.GetModelScale(),player);
+
+		out("=================flags===================",player);
+		out("SpawnFlags"+"\x05"+"-> "+"\x03"+ ent.GetSpawnFlags(),player);
+		out("Effects"+"\x05"+"-> "+"\x03"+ ent.GetNetProp("m_fEffects"),player);
+		out("Flags"+"\x05"+"-> "+"\x03"+ ent.GetFlags() +" | EFlags-> " + ent.GetEFlags()+" | Sense flags-> "+ ent.GetSenseFlags(),player);
+
+		out("===============positional=================",player);
+		out("Location"+"\x05"+"-> "+"\x03"+ent.GetLocation(),player);
+		out("Angles"+"\x05"+"-> "+"\x03" + ent.GetAngles(),player);
+
+		if(ent.GetClassname() == "player")
+		{
+			out("Looking at"+"\x05"+"-> "+"\x03"+ent.GetLookingLocation(),player);
+			out("Eye Position"+"\x05"+"-> "+"\x03"+ent.GetEyePosition(),player);
+			out("Eye angles"+"\x05"+"-> "+"\x03"+ent.GetEyeAngles(),player);
+		}
+		
+		printB(playername,"================physics_debug=================",true,"debug",false,false);
+		AdminSystem._Clientbroadcast(playername,"physics_debug_entity",1,false);
+		if(svcheatsval==1.0)
+		{
+			printB(playername,"=================ent_dump==================",true,"debug",false,false);
+			AdminSystem._Clientbroadcast(playername,"ent_dump !picker",1,false);
+			AdminSystem._Clientbroadcast(playername,"ent_script_dump",1,false);
+		}
+
+		printB(playername,"",false,"",false,true,0.5);
+
+	}
+}
+
+::PlayerInfo <- function(player, toconsole = false, svcheatsval = 0.0)
+{
+	local playername = player.GetCharacterName();
+
+	if(toconsole)
+	{
+		printB(playername,"==================basic====================",true,"",true,false);
+		printB(playername,"Name-> "+ player.GetName(),true,"debug",false,false);
+		printB(playername,"Index-> "+ player.GetIndex(),true,"debug",false,false);
+		printB(playername,"Type-> "+ player.GetType(),true,"debug",false,false);
+		printB(playername,"Parent->  #"+  (player.GetParent() == null ? "No parent" : player.GetParent().GetIndex()),true,"debug",false,false);
+		printB(playername,"Model-> " + player.GetModel(),true,"debug",false,false);
+		printB(playername,"Scale-> " + player.GetModelScale(),true,"debug",false,false);
+
+		printB(playername,"==================flags====================",true,"debug",false,false);
+		printB(playername,"SpawnFlags-> "+ player.GetSpawnFlags(),true,"debug",false,false);
+		printB(playername,"Effects-> "+ player.GetNetProp("m_fEffects"),true,"debug",false,false);
+		printB(playername,"Flags-> "+ player.GetFlags() +" | EFlags-> " + player.GetEFlags()+" | Sense flags-> "+ player.GetSenseFlags(),true,"debug",false,false);
+
+		printB(playername,"===============positional==================",true,"debug",false,false);
+		printB(playername,"Player location-> "+player.GetPosition(),true,"debug",false,false);
+		printB(playername,"Player angles-> "+player.GetAngles(),true,"debug",false,false);
+		printB(playername,"Looked location-> "+player.GetLookingLocation(),true,"debug",false,false);
+		printB(playername,"Eye location-> "+player.GetEyePosition(),true,"debug",false,false);
+		printB(playername,"Eye angles-> "+player.GetEyeAngles(),true,"debug",false,false);
+		printB(playername,"================player_stats===============",true,"debug",false,false);
+		foreach(key,value in player.GetStats())
+		{
+			printB(playername,"[Stats] "+key+" -> "+value.tostring(),true,"debug",false,false);
+		}
+
+		if(svcheatsval==1.0)
+		{	
+			printB(playername,"=================dumpplayer===================",true,"debug",false,false);
+			AdminSystem._Clientbroadcast(playername,"cl_dumpplayer "+player.GetIndex().tostring(),1,false);
+		}
+
+		printB(playername,"",false,"",false,true,0.5);
+	}
+	else
+	{
+		out("==================basic====================",player);
+		out("Name"+"\x05"+"-> "+"\x03"+ player.GetName(),player);
+		out("Index"+"\x05"+"-> "+"\x03"+ player.GetIndex(),player);
+		out("Type"+"\x05"+"-> "+"\x03"+ player.GetType(),player);
+		out("Parent"+"\x05"+"-> #"+"\x03"+  (player.GetParent() == null ? "No parent" : player.GetParent().GetIndex()),player);
+		out("Model"+"\x05"+"-> "+"\x03"+ player.GetModel(),player);
+		out("Scale"+"\x05"+"-> "+"\x03"+ player.GetModelScale(),player);
+
+		out("==================flags====================",player);
+		out("SpawnFlags"+"\x05"+"-> "+"\x03"+ player.GetSpawnFlags(),player);
+		out("Effects"+"\x05"+"-> "+"\x03"+ player.GetNetProp("m_fEffects"),player);
+		out("Flags"+"\x05"+"-> "+"\x03"+ player.GetFlags() +" | EFlags-> " + player.GetEFlags()+" | Sense flags-> "+ player.GetSenseFlags(),player);
+
+		out("===============positional==================",player);
+		out("Player location"+"\x05"+"-> "+"\x03"+player.GetPosition(),player);
+		out("Player angles"+"\x05"+"-> "+"\x03" + player.GetAngles(),player);
+		out("Looked location"+"\x05"+"-> "+"\x03"+player.GetLookingLocation(),player);
+		out("Eye location"+"\x05"+"-> "+"\x03"+player.GetEyePosition(),player);
+		out("Eye angles"+"\x05"+"-> "+"\x03"+player.GetEyeAngles(),player);
+		/*
+		out(playername,"=================player_stats===================");
+		foreach(key,value in player.GetStats())
+		{
+			out(playername,"[Stats] "+key+" -> "+value.tostring());
+		}
+		*/
+	}
+}
 /*
  * @authors rhino
  */
@@ -14668,9 +15665,8 @@ if ( Director.GetGameMode() == "holdout" )
 	local arg = GetArgument(1);
 
 	local playername = player.GetCharacterName();
-
 	local svcheatsval = Convars.GetFloat("sv_cheats");
-
+	
 	if(arg == null)
 	{	
 		local ent = player.GetLookingEntity();
@@ -14679,54 +15675,14 @@ if ( Director.GetGameMode() == "holdout" )
 			printB(playername,"No looked entity found",true,"error",true,true);
 			return;
 		}
-
-		printB(playername,"",true,"",true,false);
-		printB(playername,"Name-> "+ ent.GetName() + " | Global name-> "+ ent.GetGlobalName(),true,"debug",false,false);
-		printB(playername,"Index-> "+ ent.GetIndex() + " | Base index-> "+ ent.GetBaseIndex(),true,"debug",false,false);
-		printB(playername,"Type-> "+ ent.GetType(),true,"debug",false,false);
-		printB(playername,"Parent-> "+ ent.GetParent(),true,"debug",false,false);
-		printB(playername,"Model-> " + ent.GetModel(),true,"debug",false,false);
-		printB(playername,"Scale-> " + ent.GetModelScale(),true,"debug",false,false);
-
-		printB(playername,"==================flags======================",true,"debug",false,false);
-		printB(playername,"SpawnFlags-> "+ ent.GetSpawnFlags(),true,"debug",false,false);
-		printB(playername,"Flags-> "+ ent.GetFlags() +" | EFlags-> " + ent.GetEFlags()+" | Sense flags-> "+ ent.GetSenseFlags(),true,"debug",false,false);
-
-		printB(playername,"================positional====================",true,"debug",false,false);
-		printB(playername,"Location(Origin)-> "+ent.GetLocation(),true,"debug",false,false);
-		printB(playername,"Angles-> " + ent.GetAngles(),true,"debug",false,false);
-
-		printB(playername,"================physics_debug=================",true,"debug",false,false);
-		AdminSystem._Clientbroadcast(playername,"physics_debug_entity",1,false);
-		if(svcheatsval==1.0)
-		{
-			printB(playername,"==================ent_dump====================",true,"debug",false,false);
-			AdminSystem._Clientbroadcast(playername,"ent_dump !picker",1,false);
-			AdminSystem._Clientbroadcast(playername,"ent_script_dump",1,false);
-		}
-
-		printB(playername,"",false,"",false,true,0.5);
+		
+		EntInfo(ent,player,!AdminSystem.Vars._outputsEnabled[playername.tolower()],svcheatsval)
 	}
 	else if(arg == "player")
 	{
-		printB(playername,"",true,"",true,false);
-		printB(playername,"Looked location-> "+player.GetLookingLocation(),true,"debug",false,false);
-		printB(playername,"Eye angles-> "+player.GetEyeAngles(),true,"debug",false,false);
-		printB(playername,"Player position-> "+player.GetPosition(),true,"debug",false,false);
-		printB(playername,"=================player_stats===================",true,"debug",false,false);
-		foreach(key,value in player.GetStats())
-		{
-			printB(playername,"[Stats] "+key+" -> "+value.tostring(),true,"debug",false,false);
-		}
-
-		if(svcheatsval==1.0)
-		{	
-			printB(playername,"==================dumpplayer====================",true,"debug",false,false);
-			AdminSystem._Clientbroadcast(playername,"cl_dumpplayer "+player.GetIndex().tostring(),1,false);
-		}
-
-		printB(playername,"",false,"",false,true,0.5);
+		PlayerInfo(player,!AdminSystem.Vars._outputsEnabled[playername.tolower()],svcheatsval)
 	}
+	
 }
 
 /* ******************DANGEROUS FUNCTION*******************
@@ -14834,12 +15790,14 @@ if ( Director.GetGameMode() == "holdout" )
 	if(linesource == "random")
 	{
 		linesource = Utils.GetRandValueFromArray(AdminSystem.Vars.CharacterNamesLower);
+		while(linesource == "" || linesource == "survivor")
+			linesource = Utils.GetRandValueFromArray(AdminSystem.Vars.CharacterNamesLower);
 	}
 
 	// Speaker selection
 	if(targetname == "random")
-	{
-		targetname = Utils.GetRandValueFromArray(AdminSystem.Vars.CharacterNamesLower);
+	{	
+		targetname = Utils.GetRandValueFromArray(Players.AliveSurvivors()).GetCharacterName().tolower();
 		speaker = Utils.GetPlayerFromName(targetname);
 	}
 	else if(targetname == "self")
@@ -14863,14 +15821,17 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{
-		speaker = Utils.GetPlayerFromName(targetname);
+		speaker = Player("!"+targetname);
 	}
 
-	if(speaker==null){printl(name+" ->No person found as speaker");return;}
+	if(speaker==null)
+	{
+		speaker = Utils.GetPlayerFromName(Utils.GetRandValueFromArray(Players.AliveSurvivors()).GetCharacterName().tolower());
+	}
 
 	randomline_path = (linesource == null) ? Utils.GetRandValueFromArray(::Survivorlines.Paths[targetname]) : Utils.GetRandValueFromArray(::Survivorlines.Paths[linesource.tolower()]);
 	speaker.Speak(randomline_path);
-	
+
 	//Output messages
 	if (AdminSystem.Vars._outputsEnabled[name])
 	{	
@@ -15437,11 +16398,18 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 
 	local ind = ent.GetIndex();
-	foreach(name,tbl in AdminSystem.Vars._wornHat)
+	foreach(tbl in AdminSystem.Vars._wornHat)
 	{
 		if(tbl.entid == ind)
 			return;
 	}
+
+	foreach(tbl in AdminSystem.Vars._heldEntity)
+	{
+		if(tbl.entid == ind.tostring())
+			return;
+	}
+
 	local name = player.GetCharacterName().tolower();
 	if(AdminSystem.Vars._wornHat[name].entid != "")
 	{
@@ -15453,17 +16421,32 @@ if ( Director.GetGameMode() == "holdout" )
 	AdminSystem.Vars._wornHat[name].entid = ind;
 	AdminSystem.Vars._wornHat[name].collisiongroup = ent.GetNetProp("m_CollisionGroup");
 	if(pos == "mouth")
-		posextra = -6
+		posextra = HatParameters.mouth_extra;
 	else if(pos == "survivor_neck")
-		posextra = -13
+		posextra = HatParameters.neck_extra;
 
 	local vec = GetArgument(1)==null ? Vector(0,0,AdminSystem.Vars._wornHat[name].wearAbove + posextra) : Vector(0,0,AdminSystem.Vars._wornHat[name].wearAbove + GetArgument(1).tofloat() + posextra)
+	local survivorfw = player.GetEyeAngles().Forward();
+	survivorfw = survivorfw.Scale(HatParameters.forward_scale/survivorfw.Length()) + Vector(0,0,HatParameters.forward_raise);
 
 	//ent.SetForwardVector(player.GetForwardVector());
+	
 	ent.SetNetProp("m_CollisionGroup",1);
 	ent.Input("setparent","#"+player.GetIndex(),0);
-	ent.SetOrigin(player.GetEyePosition()+vec);	
+	ent.SetOrigin(player.GetEyePosition()+vec+survivorfw);
+	ent.SetAngles(RotateOrientation(player.GetEyeAngles(),QAngle(HatParameters.pitch,HatParameters.yaw,HatParameters.roll)))	
 	ent.Input("setparentattachmentmaintainoffset",pos,0.1);
+}
+
+::HatParameters <- 
+{
+	mouth_extra = -6,
+	neck_extra = -10,
+	forward_scale = 4,
+	forward_raise = 4,
+	pitch = 10,
+	yaw = 0,
+	roll = 0
 }
 
 ::AdminSystem._HatPosition <- function(player,args)
@@ -15645,7 +16628,7 @@ if ( Director.GetGameMode() == "holdout" )
 				local holdingLoc = playerEyeLoc + newanglesF.Scale(100/newanglesF.Length());
 				holdingLoc.z = playerEyeLoc.z - 40;
 				ent.SetOrigin(holdingLoc);
-				local entind = ent.GetIndex();
+				local entind = ent.GetIndex().tostring();
 				player.AttachOther(ent,false,0,null);
 				//player.SetAttachmentPoint(ent,tbl_heldEnt.grabAttachPos,true,0.1);
 
@@ -15683,13 +16666,13 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 
 	ent = player.GetLookingEntity();
-	local lookedpoint = player.GetLookingLocation();
-
+	local lookedpoint = player.GetLookingLocation(33579137);
 	local entind = null;
 	local objtable = null;
 	local entclass = null;
 	local entmodel = null;
-	local taken = null
+	local taken = null;
+	local closestgrabbed = false;
 	// TO-DO use masks instead
 	if(ent == null)
 	{
@@ -15718,9 +16701,24 @@ if ( Director.GetGameMode() == "holdout" )
 
 				if(obj.GetIndex() == player.GetIndex())
 					continue;
-					
+				
 				entind = obj.GetIndex().tostring();
 
+				if(obj.GetClassname() == "player")
+				{
+					local notvalid = false;
+					foreach(survivor in Players.AliveSurvivors())
+					{
+						if(AdminSystem.Vars._heldEntity[survivor.GetCharacterName().tolower()].entid == entind || AdminSystem.Vars._heldEntity[survivor.GetCharacterName().tolower()].entid == player.GetIndex().tostring())
+						{
+							notvalid = true;
+							break;
+						}
+					}
+					if(notvalid)
+						continue;
+				}
+				
 				foreach(survivor in Players.AliveSurvivors())
 				{
 					foreach(helditem in survivor.GetHeldItems())
@@ -15751,8 +16749,21 @@ if ( Director.GetGameMode() == "holdout" )
 				if(taken)		// Skip to next if already held
 					continue;
 				
+				foreach(tbl in AdminSystem.Vars._wornHat)
+				{
+					if(tbl.entid.tostring() == entind)
+					{
+						taken = true;
+						break;
+					}
+				}
+
+				if(taken)		// Skip to next if a hat
+					continue;
+
 				ent = obj;		// Available object, select and break out of the loop
-				printB(player.GetCharacterName(),"Grabbing closest prop at targeted location #"+entind+" "+entclass+" "+entmodel,true,"info",true,true)
+				closestgrabbed = true;
+				
 				break;
 			}
 
@@ -15770,6 +16781,16 @@ if ( Director.GetGameMode() == "holdout" )
 	else	// Found entity with default masking
 	{
 		entclass = ent.GetClassname();
+		if(entclass == "player")
+		{
+			foreach(survivor in Players.AliveSurvivors())
+			{
+				if(AdminSystem.Vars._heldEntity[survivor.GetCharacterName().tolower()].entid == ent.GetIndex() || AdminSystem.Vars._heldEntity[survivor.GetCharacterName().tolower()].entid == player.GetIndex())
+				{
+					return;
+				}
+			}
+		}
 		entmodel = ent.GetModel();
 		if(!(entclass in AdminSystem.Vars._grabAvailable) && (entclass.find("weapon_") == null))
 			return;
@@ -15788,9 +16809,17 @@ if ( Director.GetGameMode() == "holdout" )
 				return;
 		}
 
+		foreach(tbl in AdminSystem.Vars._wornHat)
+		{
+			if(tbl.entid.tostring() == entind)
+				return;
+		}
 	}
-	
-	local playerEyeLoc = player.GetEyePosition()
+
+	local playerEyeLoc = player.GetEyePosition();
+	if(player.GetModel().find("survivor") == null)
+		playerEyeLoc = player.GetOrigin() + Vector(0,0,30);
+
 	local entity_dist = Utils.CalculateDistance(playerEyeLoc,lookedpoint);
 
 	if(entity_dist < tbl_heldEnt.grabRange)
@@ -15824,8 +16853,11 @@ if ( Director.GetGameMode() == "holdout" )
 
 		player.AttachOther(ent,false,0,null);
 		player.SetAttachmentPoint(ent,tbl_heldEnt.grabAttachPos,true,0.1);
-
-		printB(player.GetCharacterName(),"Grabbed #"+entind,true,"info",true,true)
+		
+		if(closestgrabbed)
+			printB(player.GetCharacterName(),"Grabbing closest prop at targeted location #"+entind+" "+entclass+" "+entmodel,true,"info",true,true);
+		else
+			printB(player.GetCharacterName(),"Grabbed #"+entind,true,"info",true,true)
 
 		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = entind;
 		/*

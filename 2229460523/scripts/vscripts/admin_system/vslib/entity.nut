@@ -3283,8 +3283,9 @@ function VSLib::Entity::IsInFront(otherEnt)
 
 /**
  * Returns a vector position of where the entity is looking.
+ * EDIT (rhino) : Add masking for making it better usable with GetLookingEntity
  */
-function VSLib::Entity::GetLookingLocation()
+function VSLib::Entity::GetLookingLocation(mask = TRACE_MASK_SHOT)
 {
 	if (!IsEntityValid())
 	{
@@ -3301,7 +3302,7 @@ function VSLib::Entity::GetLookingLocation()
 	local startPt = GetEyePosition();
 	local endPt = startPt + _ent.EyeAngles().Forward().Scale(999999);
 	
-	local m_trace = { start = startPt, end = endPt, ignore = _ent, mask = TRACE_MASK_SHOT };
+	local m_trace = { start = startPt, end = endPt, ignore = _ent, mask = mask };
 	TraceLine(m_trace);
 	
 	if (!m_trace.hit || m_trace.enthit == _ent)

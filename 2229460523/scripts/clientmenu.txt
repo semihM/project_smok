@@ -17449,6 +17449,11 @@
 			"command"	 "play buttons/button14;jointeam 3;show_menu CharacterSelector"
 			"label"		 " Control Infected"
 		}
+		"7"
+		{
+			"command"	 "play buttons/button14;jointeam 0;show_menu CharacterSelector"
+			"label"		 " Go spectator (requires sv_cheats 1)"
+		}
 		"8"
 		{
 			"command"	 "play buttons/button14;show_menu Menu3"
@@ -35723,7 +35728,7 @@
 			"1"
 			{
 				"command"		 "play buttons/button14;show_menu wear_hat_menu1"
-				"label"			 " Wear hats"
+				"label"			 " Wear hats (Experimental)"
 			}
 			"8"
 			{
@@ -35768,7 +35773,7 @@
 			"6"
 			{
 				"command"		 "play buttons/button14;scripted_user_func update_aimed_ent_direction;show_menu wear_hat_menu1"
-				"label"			 " Make hat face the direction you face"
+				"label"			 " Make aimed object face the direction you face"
 			}
 			"7"
 			{
