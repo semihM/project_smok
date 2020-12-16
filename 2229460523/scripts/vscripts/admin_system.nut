@@ -15522,7 +15522,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 		printB(playername,"===============positional==================",true,"debug",false,false);
 		printB(playername,"Location-> "+ent.GetLocation(),true,"debug",false,false);
-		printB(playername,"Angles-> " + ent.GetAngles(),true,"debug",false,false);
+		printB(playername,"Angles-> " + ent.GetAngles().ToKVString(),true,"debug",false,false);
 		if(ent.GetClassname() == "player")
 		{
 			printB(playername,"Looking at"+"\x05"+"-> "+"\x03"+ent.GetLookingLocation(),true,"debug",false,false);
@@ -15559,7 +15559,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 		out("===============positional=================",player);
 		out("Location"+"\x05"+"-> "+"\x03"+ent.GetLocation(),player);
-		out("Angles"+"\x05"+"-> "+"\x03" + ent.GetAngles(),player);
+		out("Angles"+"\x05"+"-> "+"\x03" + ent.GetAngles().ToKVString(),player);
 
 		if(ent.GetClassname() == "player")
 		{
@@ -15603,7 +15603,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 		printB(playername,"===============positional==================",true,"debug",false,false);
 		printB(playername,"Player location-> "+player.GetPosition(),true,"debug",false,false);
-		printB(playername,"Player angles-> "+player.GetAngles(),true,"debug",false,false);
+		printB(playername,"Player angles-> "+player.GetAngles().ToKVString(),true,"debug",false,false);
 		printB(playername,"Looked location-> "+player.GetLookingLocation(),true,"debug",false,false);
 		printB(playername,"Eye location-> "+player.GetEyePosition(),true,"debug",false,false);
 		printB(playername,"Eye angles-> "+player.GetEyeAngles(),true,"debug",false,false);
@@ -15638,7 +15638,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 		out("===============positional==================",player);
 		out("Player location"+"\x05"+"-> "+"\x03"+player.GetPosition(),player);
-		out("Player angles"+"\x05"+"-> "+"\x03" + player.GetAngles(),player);
+		out("Player angles"+"\x05"+"-> "+"\x03" + player.GetAngles().ToKVString(),player);
 		out("Looked location"+"\x05"+"-> "+"\x03"+player.GetLookingLocation(),player);
 		out("Eye location"+"\x05"+"-> "+"\x03"+player.GetEyePosition(),player);
 		out("Eye angles"+"\x05"+"-> "+"\x03"+player.GetEyeAngles(),player);
@@ -16817,8 +16817,6 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 
 	local playerEyeLoc = player.GetEyePosition();
-	if(player.GetModel().find("survivor") == null)
-		playerEyeLoc = player.GetOrigin() + Vector(0,0,30);
 
 	local entity_dist = Utils.CalculateDistance(playerEyeLoc,lookedpoint);
 
@@ -16835,6 +16833,9 @@ if ( Director.GetGameMode() == "holdout" )
 			local newanglesF = QAngle(0,angles.Yaw(),angles.Roll()).Forward();
 			local holdingLoc = playerEyeLoc + newanglesF.Scale(grabdist/newanglesF.Length());
 			holdingLoc.z = player.GetEyePosition().z - tbl_heldEnt.grabHeightBelowEyes;
+
+			if(player.GetModel().find("survivor") == null)
+				holdingLoc = holdingLoc + Vector(0,0,60)
 			ent.SetOrigin(holdingLoc);
 		}
 		else
@@ -16847,6 +16848,8 @@ if ( Director.GetGameMode() == "holdout" )
 			fwvec.x *= -1;
 			fwvec = fwvec.Scale(moveback/fwvec.Length());
 			
+			if(player.GetModel().find("survivor") == null)
+				fwvec = fwvec + Vector(0,0,60)
 			ent.SetOrigin(Vector(entpos.x+fwvec.x,entpos.y+fwvec.y,entpos.z+fwvec.z));
 
 		}
