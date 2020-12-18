@@ -6306,7 +6306,7 @@ enum SCENES
 			return;
 		}
 		local apocargs = AdminSystem._propageddon_args;
-		local entites = VSLib.EasyLogic.Objects.AroundRadius(unluckyone.GetPosition(),apocargs.maxradius);
+		local entities = VSLib.EasyLogic.Objects.AroundRadius(unluckyone.GetPosition(),apocargs.maxradius);
 		local validents = {}
 		foreach(id,ent in entities)
 		{
@@ -6350,7 +6350,7 @@ enum SCENES
 }
 
 /* @authors rhino
- * Apply forces to random entites from the table
+ * Apply forces to random entities from the table
  */
 ::_Propageddon <- function (enttbl)
 {	
