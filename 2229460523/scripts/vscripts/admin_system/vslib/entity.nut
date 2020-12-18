@@ -2083,6 +2083,23 @@ function VSLib::Entity::GetOrigin()
 }
 
 /**
+ * Gets the entity's current origin relative to its parent if it has one.
+ */
+function VSLib::Entity::GetLocalOrigin()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return;
+	}
+	
+	if(GetParent() == null)
+		return _ent.GetOrigin();
+
+	return _ent.GetLocalOrigin();
+}
+
+/**
  * Gets the entity's current location.
  */
 function VSLib::Entity::GetLocation()
@@ -2108,6 +2125,23 @@ function VSLib::Entity::SetOrigin(vec)
 	}
 	
 	_ent.SetOrigin(vec);
+}
+
+/**
+ * Sets the entity's origin relative to its parent if it has one.
+ */
+function VSLib::Entity::SetLocalOrigin(vec)
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return;
+	}
+	
+	if(GetParent() == null)
+	{_ent.SetOrigin(vec);return;}
+
+	_ent.SetLocalOrigin(vec);
 }
 
 /**
@@ -2922,7 +2956,7 @@ function VSLib::Entity::KillEntity()
 }
 
 /**
- * Returns the base angles.
+ * Returns the angles relative to world's origin.
  */
 function VSLib::Entity::GetAngles()
 {
@@ -2936,7 +2970,23 @@ function VSLib::Entity::GetAngles()
 }
 
 /**
- * Sets the base angles.
+ * Returns the local angles.
+ */
+function VSLib::Entity::GetLocalAngles()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return;
+	}
+	if(GetParent() == null)
+		return _ent.GetAngles();
+
+	return _ent.GetLocalAngles();
+}
+
+/**
+ * Sets the angles relative to world's origin.
  */
 function VSLib::Entity::SetAngles(x, y = 0.0, z = 0.0)
 {
@@ -2950,6 +3000,25 @@ function VSLib::Entity::SetAngles(x, y = 0.0, z = 0.0)
 		return _ent.SetAngles(x);
 	else
 		return _ent.SetAngles(QAngle(x,y,z));
+}
+
+/**
+ * Sets the local angles.
+ */
+function VSLib::Entity::SetLocalAngles(x, y = 0.0, z = 0.0)
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return;
+	}
+	if(GetParent() == null)
+		return SetAngles(x,y,z);
+	
+	if ( typeof x == "QAngle" )
+		return _ent.SetLocalAngles(x);
+	else
+		return _ent.SetLocalAngles(QAngle(x,y,z));
 }
 
 /**

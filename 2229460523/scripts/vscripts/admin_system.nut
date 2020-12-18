@@ -3725,31 +3725,83 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 }
 
 /*
+ *
+ */
+::draw <- function(start,end,color=Vector(255,0,0))
+{
+	DebugDrawLine_vCol(start,end,color,false,3);
+}
+
+/*
  * @authors rhino
  */
 ::out <- function(msg="",target=null,color="\x04")
 {
 	if(target != null)
 	{
-		if((typeof msg) == "table")
+		if(msg == null)
+			return;
+		else if((typeof msg) == "table")
 			Utils.PrintTable(msg);
 		else if((typeof msg) == "array")
 			ClientPrint(target.GetBaseEntity(),3,color+Utils.ArrayString(msg));
+		else if((typeof msg) == "QAngle" || (typeof msg) == "Vector")
+			ClientPrint(target.GetBaseEntity(),3,color+msg.ToKVString());
 		else if((typeof msg) == "string" || (typeof msg) == "float" || (typeof msg) == "integer" || (typeof msg) == "bool")
 			ClientPrint(target.GetBaseEntity(),3,color+msg.tostring());
+		else if((typeof msg) == "instance" || (typeof msg).find("VSLIB") != null)
+		{
+			try
+			{
+				if(msg.GetClassname() == "player")
+				{
+					EntInfo(Player(msg.GetBaseIndex()),target,false,0.0);
+				}
+				else
+				{
+					EntInfo(msg,target,false,0.0);
+				}
+			}
+			catch(e)
+			{
+				ClientPrint(target,3,color+msg.tostring());
+			}
+		}
 		else
-			EntInfo(msg,target,false,0.0);
+			ClientPrint(target.GetBaseEntity(),3,color+msg.tostring());
 	}
 	else
 	{
-		if((typeof msg) == "table")
+		if(msg == null)
+			return;
+		else if((typeof msg) == "table")
 			Utils.PrintTable(msg);
 		else if((typeof msg) == "array")
 			ClientPrint(null,3,color+Utils.ArrayString(msg));
+		else if((typeof msg) == "QAngle" || (typeof msg) == "Vector")
+			ClientPrint(null,3,color+msg.ToKVString());
 		else if((typeof msg) == "string" || (typeof msg) == "float" || (typeof msg) == "integer" || (typeof msg) == "bool")
 			ClientPrint(null,3,color+msg.tostring());
+		else if((typeof msg) == "instance" || (typeof msg).find("VSLIB") != null)
+		{
+			try
+			{
+				if(msg.GetClassname() == "player")
+				{
+					EntInfo(Player(msg.GetBaseIndex()),null,false,0.0);
+				}
+				else
+				{
+					EntInfo(msg,null,false,0.0);
+				}
+			}
+			catch(e)
+			{
+				ClientPrint(null,3,color+msg.tostring());
+			}
+		}
 		else
-			EntInfo(msg,null,false,0.0);
+			ClientPrint(null,3,color+msg.tostring());
 	}
 }
 
@@ -4871,9 +4923,12 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 	if(lookedent == null)
 		return;
+	else if(lookedent.GetParent() != null)
+		return; 
 	else if(Utils.CalculateDistance(player.GetOrigin(),player.GetLookingLocation())>100)
 		return;
 	
+
 	AdminSystem.ModelCmd(player,{_fromDrive=lookedent});
 
 	lookedent.Kill();
@@ -6310,29 +6365,10 @@ enum SCENES
 		local validents = {}
 		foreach(id,ent in entities)
 		{
-			local valid = true;
-			local entid = ent.GetIndex().tostring()
-			foreach(tbl in AdminSystem.Vars._heldEntity)
+			if(ent.GetParent() == null)
 			{
-				if(tbl.entid == entid)
-				{
-					valid = false;break;
-				}
+				validents[id] <- ent;
 			}
-			if(!valid)
-				continue;
-
-			foreach(tbl in AdminSystem.Vars._wornHat)
-			{
-				if(tbl.entid.tostring() == entid)
-				{
-					valid = false;break;
-				}
-			}
-			if(!valid)
-				continue;
-				
-			validents[id] <- ent;
 		}
 		::VSLib.Timers.AddTimer(apocargs.mindelay+rand()%apocargs.maxdelay, false, _Propageddon,validents);
 	}
@@ -12140,6 +12176,13 @@ if ( Director.GetGameMode() == "holdout" )
 
 	local createdent = null;
 
+	if(yaw)
+	{
+		try{yaw = yaw.tofloat();}
+		catch(e){printl((typeof yaw)+" couldnt be parsed as float.");return;}
+		GroundPosition = GroundPosition + QAngle(0,yaw,0);
+	}
+
 	if ( Entity == "physics" )
 	{	
 		// +++++++++++++++ SETTINGS START 
@@ -12309,13 +12352,6 @@ if ( Director.GetGameMode() == "holdout" )
 		printB(player.GetCharacterName(),name+" ->Created "+Entity+" entity(#"+createdent.GetIndex().tostring()+") named "+createdent.GetName(),true,"info",true,true);
 	}
 
-	if(yaw)
-	{
-		try{yaw = yaw.tofloat();}
-		catch(e){return;}
-
-		createdent.SetAngles(0,yaw,0);
-	}
 }
 
 ::AdminSystem.DoorCmd <- function ( player, args )
@@ -12961,35 +12997,88 @@ if ( Director.GetGameMode() == "holdout" )
 
 	local axis = GetArgument(1);
 	local val = GetArgument(2);
-	
+	local uselocal = GetArgument(3);
+
 	if(axis == null)
 		return;
 	if(val == null)
 	{
 		val = axis; axis = "y";
 	}
+	val = val.tofloat();
+
 	local entlooked = player.GetLookingEntity();
+	local newAngle = null;
 
-	if(entlooked)
-	{	
-		val = val.tofloat();
-		local newAngle = entlooked.GetAngles();
+	if(uselocal != null)
+	{
+		if(AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid == "")
+			return;
 
+		entlooked = Entity("#"+AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid);
+		//entlooked.Input("sleep","",0)
+		newAngle = entlooked.GetLocalAngles();
 		if( axis == "x" )
 		{	
 			newAngle.x += val;
+			entlooked.SetLocalAngles(newAngle);
 		}
 		else if ( axis == "z")
 		{
 			newAngle.z += val;
+			entlooked.SetLocalAngles(newAngle);
 		}
 		else
 		{
-			newAngle.y += val;	
+			newAngle.y += val;
+			entlooked.SetLocalAngles(newAngle);
 		}
-
-		entlooked.SetAngles(newAngle);
-		entlooked.SetForwardVector(newAngle.Forward());
+	}
+	else if(entlooked)
+	{	
+		//entlooked.Input("sleep","",0)
+		newAngle = entlooked.GetLocalAngles();
+		if(entlooked.GetParent() == null)
+		{
+			if( axis == "x" )
+			{	
+				newAngle.x += val;
+				entlooked.SetLocalAngles(newAngle);
+				entlooked.SetForwardVector(newAngle.Forward());
+			}
+			else if ( axis == "z")
+			{
+				newAngle.z += val;
+				entlooked.SetLocalAngles(newAngle);
+				if(entlooked.GetClassname().find("physics") == null)
+					entlooked.SetForwardVector(newAngle.Forward());
+			}
+			else
+			{
+				newAngle.y += val;
+				entlooked.SetLocalAngles(newAngle);
+				entlooked.SetForwardVector(newAngle.Forward());	
+			}
+		}
+		else
+		{
+			if( axis == "x" )
+			{	
+				newAngle.x += val;
+				entlooked.SetLocalAngles(newAngle);
+			}
+			else if ( axis == "z")
+			{
+				newAngle.z += val;
+				entlooked.SetLocalAngles(newAngle);
+			}
+			else
+			{
+				newAngle.y += val;
+				entlooked.SetLocalAngles(newAngle);
+			}
+		}
+	
 	}
 }
 
@@ -13035,23 +13124,10 @@ if ( Director.GetGameMode() == "holdout" )
 	local entlooked = player.GetLookingEntity();
 	if(entlooked)
 	{	
-		
-		foreach(tbl in AdminSystem.Vars._heldEntity)
+		if(entlooked.GetParent() != null)
 		{
-			if(tbl.entid == entlooked.GetIndex().tostring())
-			{
-				printl(player.GetCharacterName().tolower()+"->Ignore attemp to push entity #"+entlooked.GetIndex().tostring()+" held by a player");
-				return;
-			}
-		}
-		
-		foreach(tbl in AdminSystem.Vars._wornHat)
-		{
-			if(tbl.entid.tostring() == entlooked.GetIndex().tostring())
-			{
-				printl(player.GetCharacterName().tolower()+"->Ignore attemp to push hat entity #"+entlooked.GetIndex().tostring()+" worn by a player");
-				return;
-			}
+			printl(player.GetCharacterName().tolower()+"->Ignore attempt to push parented entity #"+entlooked.GetIndex().tostring()+", parent #"+entlooked.GetParent().GetIndex());
+			return;
 		}
 
 		local newangs = null
@@ -13121,6 +13197,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local units = GetArgument(1);
 	local direction = GetArgument(2);
 	local pitchofeye = GetArgument(3);
+	local uselocal = GetArgument(4);
 
 	if(units == null)
 	{
@@ -13146,31 +13223,16 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 
 	local entlooked = player.GetLookingEntity();
-	if(entlooked)
-	{		
-		foreach(tbl in AdminSystem.Vars._heldEntity)
-		{
-			if(tbl.entid == entlooked.GetIndex().tostring())
-			{
-				printl(player.GetCharacterName().tolower()+"->Ignore attemp to move entity #"+entlooked.GetIndex().tostring()+" held by a player");
-				return;
-			}
-		}
+	
+	if(uselocal != null)
+	{
+		if(AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid == "")
+			return;
+
+		entlooked = Entity("#"+AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid);
 		
-		foreach(tbl in AdminSystem.Vars._wornHat)
-		{
-			if(tbl.entid.tostring() == entlooked.GetIndex().tostring())
-			{
-				printl(player.GetCharacterName().tolower()+"->Ignore attemp to move hat entity #"+entlooked.GetIndex().tostring()+" worn by a player");
-				return;
-			}
-		}
-
-		local fwvec = RotateOrientation(player.GetEyeAngles(),QAngle(pitchofeye,0,0)).Forward();
-		local temp = Vector(fwvec.x,fwvec.y,0);
-
-		local entpos = entlooked.GetPosition();
-
+		local fwvec =  entlooked.GetLocalOrigin();out(fwvec)
+		local entpos = entlooked.GetLocalOrigin();
 		if(direction == "backward")
 		{	
 			fwvec.z *= -1;
@@ -13179,14 +13241,14 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		else if(direction == "left")
 		{	
-			fwvec.x = -temp.y;
-			fwvec.y = temp.x;
+			fwvec.x = -entpos.y;
+			fwvec.y = entpos.x;
 			fwvec.z = 0;
 		}
 		else if(direction == "right")
 		{
-			fwvec.x = temp.y;
-			fwvec.y = -temp.x;
+			fwvec.x = entpos.y;
+			fwvec.y = -entpos.x;
 			fwvec.z = 0;
 		}
 		else if(direction == "up")
@@ -13201,11 +13263,98 @@ if ( Director.GetGameMode() == "holdout" )
 			fwvec.y = 0;
 			fwvec.x = 0;
 		}
-		
+		out(fwvec)
 		fwvec = fwvec.Scale(units/fwvec.Length());
-		
-		entlooked.SetOrigin(Vector(entpos.x+fwvec.x,entpos.y+fwvec.y,entpos.z+fwvec.z));
+		out(fwvec)
+		entlooked.SetLocalOrigin(Vector(entpos.x+fwvec.x,entpos.y+fwvec.y,entpos.z+fwvec.z));
+	}
+	else if(entlooked)
+	{	
+		if(entlooked.GetParent() != null)
+		{
+			local fwvec = RotateOrientation(player.GetEyeAngles(),QAngle(pitchofeye,0,0)).Forward();
+			local temp = Vector(fwvec.x,fwvec.y,0);
 
+			local entpos = entlooked.GetLocalOrigin();
+
+			if(direction == "backward")
+			{	
+				fwvec.z *= -1;
+				fwvec.y *= -1;
+				fwvec.x *= -1;
+			}
+			else if(direction == "left")
+			{	
+				fwvec.x = -temp.y;
+				fwvec.y = temp.x;
+				fwvec.z = 0;
+			}
+			else if(direction == "right")
+			{
+				fwvec.x = temp.y;
+				fwvec.y = -temp.x;
+				fwvec.z = 0;
+			}
+			else if(direction == "up")
+			{
+				fwvec.z = units;
+				fwvec.y = 0;
+				fwvec.x = 0;
+			}
+			else if(direction == "down")
+			{
+				fwvec.z = -units;
+				fwvec.y = 0;
+				fwvec.x = 0;
+			}
+			
+			fwvec = fwvec.Scale(units/fwvec.Length());
+			
+			entlooked.SetLocalOrigin(Vector(entpos.x+fwvec.x,entpos.y+fwvec.y,entpos.z+fwvec.z));
+		}
+		else
+		{
+			local fwvec = RotateOrientation(player.GetEyeAngles(),QAngle(pitchofeye,0,0)).Forward();
+			local temp = Vector(fwvec.x,fwvec.y,0);
+
+			local entpos = entlooked.GetPosition();
+
+			if(direction == "backward")
+			{	
+				fwvec.z *= -1;
+				fwvec.y *= -1;
+				fwvec.x *= -1;
+			}
+			else if(direction == "left")
+			{	
+				fwvec.x = -temp.y;
+				fwvec.y = temp.x;
+				fwvec.z = 0;
+			}
+			else if(direction == "right")
+			{
+				fwvec.x = temp.y;
+				fwvec.y = -temp.x;
+				fwvec.z = 0;
+			}
+			else if(direction == "up")
+			{
+				fwvec.z = units;
+				fwvec.y = 0;
+				fwvec.x = 0;
+			}
+			else if(direction == "down")
+			{
+				fwvec.z = -units;
+				fwvec.y = 0;
+				fwvec.x = 0;
+			}
+			
+			fwvec = fwvec.Scale(units/fwvec.Length());
+			
+			entlooked.SetOrigin(Vector(entpos.x+fwvec.x,entpos.y+fwvec.y,entpos.z+fwvec.z));
+		}
+		
 		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
 		{
 			ClientPrint(null,3,"\x04"+player.GetCharacterName().tolower()+" ->Move("+units+","+direction+","+pitchofeye+"), Entity index: "+entlooked.GetIndex());
@@ -13214,7 +13363,6 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			printB(player.GetCharacterName(),player.GetCharacterName().tolower()+" ->Move("+units+","+direction+","+pitchofeye+"), Entity index: "+entlooked.GetIndex(),true,"info",true,true);
 		}
-
 	}
 }
 
@@ -13245,23 +13393,11 @@ if ( Director.GetGameMode() == "holdout" )
 
 	local entlooked = player.GetLookingEntity();
 	if(entlooked)
-	{		
-		foreach(tbl in AdminSystem.Vars._heldEntity)
+	{	
+		if(entlooked.GetParent() != null)
 		{
-			if(tbl.entid == entlooked.GetIndex().tostring())
-			{
-				printl(player.GetCharacterName().tolower()+"->Ignore attemp to spin entity #"+entlooked.GetIndex().tostring()+" held by a player");
-				return;
-			}
-		}
-		
-		foreach(tbl in AdminSystem.Vars._wornHat)
-		{
-			if(tbl.entid.tostring() == entlooked.GetIndex().tostring())
-			{
-				printl(player.GetCharacterName().tolower()+"->Ignore attemp to spin hat entity #"+entlooked.GetIndex().tostring()+" worn by a player");
-				return;
-			}
+			printl(player.GetCharacterName().tolower()+"->Ignore attempt to spin parented entity #"+entlooked.GetIndex().tostring()+", parent #"+entlooked.GetParent().GetIndex());
+			return;
 		}
 
 		local fwvec = player.GetEyeAngles().Forward();
@@ -15503,14 +15639,14 @@ if ( Director.GetGameMode() == "holdout" )
 
 ::EntInfo <- function(ent, player, toconsole = false, svcheatsval = 0.0)
 {
-	local playername = player.GetCharacterName();
+	local playername = (player == null) ? null : player.GetCharacterName();
 
-	if(toconsole)
+	if(toconsole && playername != null)
 	{
 		printB(playername,"==================basic======================",true,"",true,false);
 		printB(playername,"Name-> "+ ent.GetName(),true,"debug",false,false);
 		printB(playername,"Index-> "+ ent.GetIndex(),true,"debug",false,false);
-		printB(playername,"Type-> "+ ent.GetType(),true,"debug",false,false);
+		printB(playername,"Class-> "+ ent.GetClassname(),true,"debug",false,false);
 		printB(playername,"Parent->  #"+  (ent.GetParent() == null ? "No parent" : ent.GetParent().GetIndex()),true,"debug",false,false);
 		printB(playername,"Model-> " + ent.GetModel(),true,"debug",false,false);
 		printB(playername,"Scale-> " + ent.GetModelScale(),true,"debug",false,false);
@@ -15521,13 +15657,13 @@ if ( Director.GetGameMode() == "holdout" )
 		printB(playername,"Flags-> "+ ent.GetFlags() +" | EFlags-> " + ent.GetEFlags()+" | Sense flags-> "+ ent.GetSenseFlags(),true,"debug",false,false);
 
 		printB(playername,"===============positional==================",true,"debug",false,false);
-		printB(playername,"Location-> "+ent.GetLocation(),true,"debug",false,false);
+		printB(playername,"Location-> "+ent.GetLocation().ToKVString(),true,"debug",false,false);
 		printB(playername,"Angles-> " + ent.GetAngles().ToKVString(),true,"debug",false,false);
 		if(ent.GetClassname() == "player")
 		{
-			printB(playername,"Looking at"+"\x05"+"-> "+"\x03"+ent.GetLookingLocation(),true,"debug",false,false);
-			printB(playername,"Eye Position"+"\x05"+"-> "+"\x03"+ent.GetEyePosition(),true,"debug",false,false);
-			printB(playername,"Eye angles"+"\x05"+"-> "+"\x03"+ent.GetEyeAngles(),true,"debug",false,false);
+			printB(playername,"Looking at"+"\x05"+"-> "+"\x03"+ent.GetLookingLocation().ToKVString(),true,"debug",false,false);
+			printB(playername,"Eye Position"+"\x05"+"-> "+"\x03"+ent.GetEyePosition().ToKVString(),true,"debug",false,false);
+			printB(playername,"Eye angles"+"\x05"+"-> "+"\x03"+ent.GetEyeAngles().ToKVString(),true,"debug",false,false);
 		}
 		
 		printB(playername,"================physics_debug=================",true,"debug",false,false);
@@ -15543,11 +15679,12 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{
-		printB(playername,"",false,"",true,false,0);
+		if(player != null)
+			printB(playername,"",false,"",true,false,0);
 		out("=================basic==================",player);
 		out("Name"+"\x05"+"-> "+"\x03"+ ent.GetName(),player);
 		out("Index"+"\x05"+"-> "+"\x03"+ ent.GetIndex(),player);
-		out("Type"+"\x05"+"-> "+"\x03"+ ent.GetType(),player);
+		out("Class"+"\x05"+"-> "+"\x03"+ ent.GetClassname(),player);
 		out("Parent #"+"\x05"+"-> "+"\x03"+ (ent.GetParent() == null ? "No parent" : ent.GetParent().GetIndex()),player);
 		out("Model"+"\x05"+"-> "+"\x03" + ent.GetModel(),player);
 		out("Scale"+"\x05"+"-> "+"\x03" + ent.GetModelScale(),player);
@@ -15558,26 +15695,30 @@ if ( Director.GetGameMode() == "holdout" )
 		out("Flags"+"\x05"+"-> "+"\x03"+ ent.GetFlags() +" | EFlags-> " + ent.GetEFlags()+" | Sense flags-> "+ ent.GetSenseFlags(),player);
 
 		out("===============positional=================",player);
-		out("Location"+"\x05"+"-> "+"\x03"+ent.GetLocation(),player);
+		out("Location"+"\x05"+"-> "+"\x03"+ent.GetLocation().ToKVString(),player);
 		out("Angles"+"\x05"+"-> "+"\x03" + ent.GetAngles().ToKVString(),player);
 
 		if(ent.GetClassname() == "player")
 		{
-			out("Looking at"+"\x05"+"-> "+"\x03"+ent.GetLookingLocation(),player);
-			out("Eye Position"+"\x05"+"-> "+"\x03"+ent.GetEyePosition(),player);
-			out("Eye angles"+"\x05"+"-> "+"\x03"+ent.GetEyeAngles(),player);
+			out("Looking at"+"\x05"+"-> "+"\x03"+ent.GetLookingLocation().ToKVString(),player);
+			out("Eye Position"+"\x05"+"-> "+"\x03"+ent.GetEyePosition().ToKVString(),player);
+			out("Eye angles"+"\x05"+"-> "+"\x03"+ent.GetEyeAngles().ToKVString(),player);
 		}
 		
-		printB(playername,"================physics_debug=================",true,"debug",false,false);
-		AdminSystem._Clientbroadcast(playername,"physics_debug_entity",1,false);
-		if(svcheatsval==1.0)
+		if(player != null)
 		{
-			printB(playername,"=================ent_dump==================",true,"debug",false,false);
-			AdminSystem._Clientbroadcast(playername,"ent_dump !picker",1,false);
-			AdminSystem._Clientbroadcast(playername,"ent_script_dump",1,false);
-		}
+			printB(playername,"================physics_debug=================",true,"debug",false,false);
+			AdminSystem._Clientbroadcast(playername,"physics_debug_entity",1,false);
 
-		printB(playername,"",false,"",false,true,0.5);
+			if(svcheatsval==1.0)
+			{
+				printB(playername,"=================ent_dump==================",true,"debug",false,false);
+				AdminSystem._Clientbroadcast(playername,"ent_dump !picker",1,false);
+				AdminSystem._Clientbroadcast(playername,"ent_script_dump",1,false);
+			}
+			printB(playername,"",false,"",false,true,0.5);
+		}
+			
 
 	}
 }
@@ -15591,7 +15732,7 @@ if ( Director.GetGameMode() == "holdout" )
 		printB(playername,"==================basic====================",true,"",true,false);
 		printB(playername,"Name-> "+ player.GetName(),true,"debug",false,false);
 		printB(playername,"Index-> "+ player.GetIndex(),true,"debug",false,false);
-		printB(playername,"Type-> "+ player.GetType(),true,"debug",false,false);
+		printB(playername,"Team-> "+ player.GetTeam(),true,"debug",false,false);
 		printB(playername,"Parent->  #"+  (player.GetParent() == null ? "No parent" : player.GetParent().GetIndex()),true,"debug",false,false);
 		printB(playername,"Model-> " + player.GetModel(),true,"debug",false,false);
 		printB(playername,"Scale-> " + player.GetModelScale(),true,"debug",false,false);
@@ -15602,11 +15743,11 @@ if ( Director.GetGameMode() == "holdout" )
 		printB(playername,"Flags-> "+ player.GetFlags() +" | EFlags-> " + player.GetEFlags()+" | Sense flags-> "+ player.GetSenseFlags(),true,"debug",false,false);
 
 		printB(playername,"===============positional==================",true,"debug",false,false);
-		printB(playername,"Player location-> "+player.GetPosition(),true,"debug",false,false);
+		printB(playername,"Player location-> "+player.GetPosition().ToKVString(),true,"debug",false,false);
 		printB(playername,"Player angles-> "+player.GetAngles().ToKVString(),true,"debug",false,false);
-		printB(playername,"Looked location-> "+player.GetLookingLocation(),true,"debug",false,false);
-		printB(playername,"Eye location-> "+player.GetEyePosition(),true,"debug",false,false);
-		printB(playername,"Eye angles-> "+player.GetEyeAngles(),true,"debug",false,false);
+		printB(playername,"Looked location-> "+player.GetLookingLocation().ToKVString(),true,"debug",false,false);
+		printB(playername,"Eye location-> "+player.GetEyePosition().ToKVString(),true,"debug",false,false);
+		printB(playername,"Eye angles-> "+player.GetEyeAngles().ToKVString(),true,"debug",false,false);
 		printB(playername,"================player_stats===============",true,"debug",false,false);
 		foreach(key,value in player.GetStats())
 		{
@@ -15626,7 +15767,7 @@ if ( Director.GetGameMode() == "holdout" )
 		out("==================basic====================",player);
 		out("Name"+"\x05"+"-> "+"\x03"+ player.GetName(),player);
 		out("Index"+"\x05"+"-> "+"\x03"+ player.GetIndex(),player);
-		out("Type"+"\x05"+"-> "+"\x03"+ player.GetType(),player);
+		out("Team"+"\x05"+"-> "+"\x03"+ player.GetTeam(),player);
 		out("Parent"+"\x05"+"-> #"+"\x03"+  (player.GetParent() == null ? "No parent" : player.GetParent().GetIndex()),player);
 		out("Model"+"\x05"+"-> "+"\x03"+ player.GetModel(),player);
 		out("Scale"+"\x05"+"-> "+"\x03"+ player.GetModelScale(),player);
@@ -15637,11 +15778,11 @@ if ( Director.GetGameMode() == "holdout" )
 		out("Flags"+"\x05"+"-> "+"\x03"+ player.GetFlags() +" | EFlags-> " + player.GetEFlags()+" | Sense flags-> "+ player.GetSenseFlags(),player);
 
 		out("===============positional==================",player);
-		out("Player location"+"\x05"+"-> "+"\x03"+player.GetPosition(),player);
+		out("Player location"+"\x05"+"-> "+"\x03"+player.GetPosition().ToKVString(),player);
 		out("Player angles"+"\x05"+"-> "+"\x03" + player.GetAngles().ToKVString(),player);
-		out("Looked location"+"\x05"+"-> "+"\x03"+player.GetLookingLocation(),player);
-		out("Eye location"+"\x05"+"-> "+"\x03"+player.GetEyePosition(),player);
-		out("Eye angles"+"\x05"+"-> "+"\x03"+player.GetEyeAngles(),player);
+		out("Looked location"+"\x05"+"-> "+"\x03"+player.GetLookingLocation().ToKVString(),player);
+		out("Eye location"+"\x05"+"-> "+"\x03"+player.GetEyePosition().ToKVString(),player);
+		out("Eye angles"+"\x05"+"-> "+"\x03"+player.GetEyeAngles().ToKVString(),player);
 		/*
 		out(playername,"=================player_stats===================");
 		foreach(key,value in player.GetStats())
@@ -16375,6 +16516,9 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if (!ent.IsEntityValid())
 		return;
+	
+	if(ent.GetParent() != null)
+		return; 
 
 	if(Utils.CalculateDistance(ent.GetOrigin(),player.GetEyePosition()) > 250)
 		return;
@@ -16398,17 +16542,6 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 
 	local ind = ent.GetIndex();
-	foreach(tbl in AdminSystem.Vars._wornHat)
-	{
-		if(tbl.entid == ind)
-			return;
-	}
-
-	foreach(tbl in AdminSystem.Vars._heldEntity)
-	{
-		if(tbl.entid == ind.tostring())
-			return;
-	}
 
 	local name = player.GetCharacterName().tolower();
 	if(AdminSystem.Vars._wornHat[name].entid != "")
@@ -16683,6 +16816,9 @@ if ( Director.GetGameMode() == "holdout" )
 			{	
 				taken = false;		// Store state of the entity being held by someone else
 
+				if(obj.GetParent() != null) // Parented objects can't be parented by others
+					continue;
+
 				entclass = obj.GetClassname();	
 				entmodel = obj.GetModel();
 
@@ -16737,30 +16873,6 @@ if ( Director.GetGameMode() == "holdout" )
 				if(taken)		// Skip to next if already held
 					continue;
 
-				foreach(info in AdminSystem.Vars._heldEntity)	// Check if its already being held
-				{
-					if(info.entid == entind)
-					{
-						taken = true;
-						break;
-					}	
-				}
-
-				if(taken)		// Skip to next if already held
-					continue;
-				
-				foreach(tbl in AdminSystem.Vars._wornHat)
-				{
-					if(tbl.entid.tostring() == entind)
-					{
-						taken = true;
-						break;
-					}
-				}
-
-				if(taken)		// Skip to next if a hat
-					continue;
-
 				ent = obj;		// Available object, select and break out of the loop
 				closestgrabbed = true;
 				
@@ -16776,6 +16888,10 @@ if ( Director.GetGameMode() == "holdout" )
 	else if(ent.GetIndex() == player.GetIndex())
 	{
 		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+		return;
+	}
+	else if(ent.GetParent() != null) // Parented objects can't be parented by others
+	{
 		return;
 	}
 	else	// Found entity with default masking
@@ -16802,18 +16918,6 @@ if ( Director.GetGameMode() == "holdout" )
 			return;
 
 		entind = ent.GetIndex().tostring();
-
-		foreach(info in AdminSystem.Vars._heldEntity)
-		{
-			if(info.entid == entind)
-				return;
-		}
-
-		foreach(tbl in AdminSystem.Vars._wornHat)
-		{
-			if(tbl.entid.tostring() == entind)
-				return;
-		}
 	}
 
 	local playerEyeLoc = player.GetEyePosition();
@@ -17161,7 +17265,11 @@ if ( Director.GetGameMode() == "holdout" )
 ::_dropit <- function(ent)
 {
 	local movetype = ent.GetClassname() == "player" ? MOVETYPE_WALK : MOVETYPE_VPHYSICS
-	local a=ent.GetOrigin();ent.GetBaseEntity().SetSequence(0);ent.Input("wake","",0);ent.SetMoveType(movetype);ent.SetOrigin(a)
+	local a=ent.GetOrigin();
+	ent.GetBaseEntity().SetSequence(0);
+	//ent.Input("wake","",0);
+	ent.SetMoveType(movetype);
+	ent.SetOrigin(a)
 }
 
 ::_yeetit <- function(ent,p)

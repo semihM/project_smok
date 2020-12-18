@@ -19676,17 +19676,17 @@
 			"1"
 			{
 				"command"	 "play buttons/button14;scripted_user_func grab;show_menu ent_grab_yeet"
-				"label"		 " Grab targeted prop"
+				"label"		 " Grab/Drop aimed/held object"
 			}
 			"2"
 			{
-				"command"	 "play buttons/button14;scripted_user_func letgo;show_menu ent_grab_yeet"
-				"label"		 " Let go held prop"
+				"command"	 "play buttons/button14;scripted_user_func yeet;show_menu ent_grab_yeet"
+				"label"		 " YEET held prop"
 			}
 			"3"
 			{
-				"command"	 "play buttons/button14;scripted_user_func yeet;show_menu ent_grab_yeet"
-				"label"		 " YEET held prop"
+				"command"	 "play buttons/button14;show_menu ent_grab_yeet_forcesmain"
+				"label"		 " Rotate or Move held object"
 			}
 			"4"
 			{
@@ -19709,6 +19709,565 @@
 					"label"		 " << Back"
 			}
 
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ent_grab_yeet_forcesmain"
+	{	
+			"Title"     "Rotate or move the held object"
+			"1"
+			{
+				"command"	 "play buttons/button14;show_menu ent_grab_yeet_rotatemain"
+				"label"		 " Rotate object relative to it's origin"
+			}
+			"2"
+			{
+				"command"	 "play buttons/button14;show_menu ent_grab_yeet_movemain"
+				"label"		 " Move object relative to player's origin "
+			}
+			"8"
+			{
+					"command"	 "play buttons/button14;show_menu ent_grab_yeet"
+					"label"		 " << Back"
+			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ent_grab_yeet_rotatemain"
+	{	
+			"Title"     "Rotation axis"
+			"1"
+			{
+				"command"	 "play buttons/button14;show_menu ent_grab_yeet_rotate_x"
+				"label"		 " X (Pitch)"
+			}
+			"2"
+			{
+				"command"	 "play buttons/button14;show_menu ent_grab_yeet_rotate_y"
+				"label"		 " Y (Yaw)"
+			}
+			"3"
+			{
+				"command"	 "play buttons/button14;show_menu ent_grab_yeet_rotate_z"
+				"label"		 " Z (Roll)"
+			}
+			"8"
+			{
+					"command"	 "play buttons/button14;show_menu ent_grab_yeet_forcesmain"
+					"label"		 " << Back"
+			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"ent_grab_yeet_rotate_x"
+	{
+			"Title"		 "Rotate around X axis"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,x,-90,1;show_menu ent_grab_yeet_rotate_x"
+				"label"			" -90"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,x,-10,1;show_menu ent_grab_yeet_rotate_x"
+				"label"			" -10"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,x,-1,1;show_menu ent_grab_yeet_rotate_x"
+				"label"			" -1"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,x,1,1;show_menu ent_grab_yeet_rotate_x"
+				"label"			" +1"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,x,10,1;show_menu ent_grab_yeet_rotate_x"
+				"label"			" +10"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,x,90,1;show_menu ent_grab_yeet_rotate_x"
+				"label"			" +90"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,x,180,1;show_menu ent_grab_yeet_rotate_x"
+				"label"			" +180"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_grab_yeet_rotatemain"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"ent_grab_yeet_rotate_y"
+	{
+			"Title"		 "Rotate around Y axis"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,y,-90,1;show_menu ent_grab_yeet_rotate_y"
+				"label"			" -90"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,y,-10,1;show_menu ent_grab_yeet_rotate_y"
+				"label"			" -10"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,y,-1,1;show_menu ent_grab_yeet_rotate_y"
+				"label"			" -1"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,y,1,1;show_menu ent_grab_yeet_rotate_y"
+				"label"			" +1"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,y,10,1;show_menu ent_grab_yeet_rotate_y"
+				"label"			" +10"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,y,90,1;show_menu ent_grab_yeet_rotate_y"
+				"label"			" +90"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,y,180,1;show_menu ent_grab_yeet_rotate_y"
+				"label"			" +180"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_grab_yeet_rotatemain"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"ent_grab_yeet_rotate_z"
+	{
+			"Title"		 "Rotate around Z axis"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,z,-90,1;show_menu ent_grab_yeet_rotate_z"
+				"label"			" -90"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,z,-10,1;show_menu ent_grab_yeet_rotate_z"
+				"label"			" -10"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,z,-1,1;show_menu ent_grab_yeet_rotate_z"
+				"label"			" -1"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,z,1,1;show_menu ent_grab_yeet_rotate_z"
+				"label"			" +1"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,z,10,1;show_menu ent_grab_yeet_rotate_z"
+				"label"			" +10"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,z,90,1;show_menu ent_grab_yeet_rotate_z"
+				"label"			" +90"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,z,180,1;show_menu ent_grab_yeet_rotate_z"
+				"label"			" +180"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_grab_yeet_rotatemain"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ent_grab_yeet_movemain"
+	{	
+			"Title"     "Move direction"
+			"1"
+			{
+				"command"	 "play buttons/button14;show_menu ent_grab_yeet_move_forward"
+				"label"		 " Forward"
+			}
+			"2"
+			{
+				"command"	 "play buttons/button14;show_menu ent_grab_yeet_move_backward"
+				"label"		 " Backward"
+			}
+			"3"
+			{
+				"command"	 "play buttons/button14;show_menu ent_grab_yeet_move_left"
+				"label"		 " Left"
+			}
+			"4"
+			{
+				"command"	 "play buttons/button14;show_menu ent_grab_yeet_move_right"
+				"label"		 " Right"
+			}
+			"5"
+			{
+				"command"	 "play buttons/button14;show_menu ent_grab_yeet_move_up"
+				"label"		 " Up"
+			}
+			"6"
+			{
+				"command"	 "play buttons/button14;show_menu ent_grab_yeet_move_down"
+				"label"		 " Down"
+			}
+			"8"
+			{
+					"command"	 "play buttons/button14;show_menu ent_grab_yeet_forcesmain"
+					"label"		 " << Back"
+			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ent_grab_yeet_move_forward"
+	{
+			"Title"		 "Move forward"
+
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1,forward,0,1;show_menu ent_grab_yeet_move_forward"
+				"label"			" 1 unit"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,5,forward,0,1;show_menu ent_grab_yeet_move_forward"
+				"label"			" 5 units"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,25,forward,0,1;show_menu ent_grab_yeet_move_forward"
+				"label"			" 25 units"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,100,forward,0,1;show_menu ent_grab_yeet_move_forward"
+				"label"			" 100 units"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,250,forward,0,1;show_menu ent_grab_yeet_move_forward"
+				"label"			" 250 units"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,500,forward,0,1;show_menu ent_grab_yeet_move_forward"
+				"label"			" 500 units"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1000,forward,0,1;show_menu ent_grab_yeet_move_forward"
+				"label"			" 1000 units"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_grab_yeet_movemain"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ent_grab_yeet_move_backward"
+	{
+			"Title"		 "Move backward"
+
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1,backward,0,1;show_menu ent_grab_yeet_move_backward"
+				"label"			" 1 unit"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,5,backward,0,1;show_menu ent_grab_yeet_move_backward"
+				"label"			" 5 units"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,25,backward,0,1;show_menu ent_grab_yeet_move_backward"
+				"label"			" 25 units"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,100,backward,0,1;show_menu ent_grab_yeet_move_backward"
+				"label"			" 100 units"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,250,backward,0,1;show_menu ent_grab_yeet_move_backward"
+				"label"			" 250 units"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,500,backward,0,1;show_menu ent_grab_yeet_move_backward"
+				"label"			" 500 units"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1000,backward,0,1;show_menu ent_grab_yeet_move_backward"
+				"label"			" 1000 units"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_grab_yeet_movemain"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"ent_grab_yeet_move_left"
+	{
+			"Title"		 "Move left"
+
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1,left,0,1;show_menu ent_grab_yeet_move_left"
+				"label"			" 1 unit"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,5,left,0,1;show_menu ent_grab_yeet_move_left"
+				"label"			" 5 units"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,25,left,0,1;show_menu ent_grab_yeet_move_left"
+				"label"			" 25 units"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,100,left,0,1;show_menu ent_grab_yeet_move_left"
+				"label"			" 100 units"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,250,left,0,1;show_menu ent_grab_yeet_move_left"
+				"label"			" 250 units"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,500,left,0,1;show_menu ent_grab_yeet_move_left"
+				"label"			" 500 units"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1000,left,0,1;show_menu ent_grab_yeet_move_left"
+				"label"			" 1000 units"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_grab_yeet_movemain"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"ent_grab_yeet_move_right"
+	{
+			"Title"		 "Move right"
+
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1,right,0,1;show_menu ent_grab_yeet_move_right"
+				"label"			" 1 unit"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,5,right,0,1;show_menu ent_grab_yeet_move_right"
+				"label"			" 5 units"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,25,right,0,1;show_menu ent_grab_yeet_move_right"
+				"label"			" 25 units"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,100,right,0,1;show_menu ent_grab_yeet_move_right"
+				"label"			" 100 units"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,250,right,0,1;show_menu ent_grab_yeet_move_right"
+				"label"			" 250 units"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,500,right,0,1;show_menu ent_grab_yeet_move_right"
+				"label"			" 500 units"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1000,right,0,1;show_menu ent_grab_yeet_move_right"
+				"label"			" 1000 units"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_grab_yeet_movemain"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"ent_grab_yeet_move_up"
+	{
+			"Title"		 "Move up"
+
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1,up,0,1;show_menu ent_grab_yeet_move_up"
+				"label"			" 1 unit"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,5,up,0,1;show_menu ent_grab_yeet_move_up"
+				"label"			" 5 units"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,25,up,0,1;show_menu ent_grab_yeet_move_up"
+				"label"			" 25 units"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,100,up,0,1;show_menu ent_grab_yeet_move_up"
+				"label"			" 100 units"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,250,up,0,1;show_menu ent_grab_yeet_move_up"
+				"label"			" 250 units"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,500,up,0,1;show_menu ent_grab_yeet_move_up"
+				"label"			" 500 units"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1000,up,0,1;show_menu ent_grab_yeet_move_up"
+				"label"			" 1000 units"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_grab_yeet_movemain"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"ent_grab_yeet_move_down"
+	{
+			"Title"		 "Move down"
+
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1,down,0,1;show_menu ent_grab_yeet_move_down"
+				"label"			" 1 unit"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,5,down,0,1;show_menu ent_grab_yeet_move_down"
+				"label"			" 5 units"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,25,down,0,1;show_menu ent_grab_yeet_move_down"
+				"label"			" 25 units"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,100,down,0,1;show_menu ent_grab_yeet_move_down"
+				"label"			" 100 units"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,250,down,0,1;show_menu ent_grab_yeet_move_down"
+				"label"			" 250 units"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,500,down,0,1;show_menu ent_grab_yeet_move_down"
+				"label"			" 500 units"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1000,down,0,1;show_menu ent_grab_yeet_move_down"
+				"label"			" 1000 units"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_grab_yeet_movemain"
+					"label"      " << Back"
+			}
 			"0"
 			{
 					"command"    "play buttons/button14"
@@ -20102,7 +20661,7 @@
 			"4"
 			{
 				"command"		 "play buttons/button14;show_menu ent_rotate_menu1"
-				"label"			" Rotate"
+				"label"			" Rotate (relative to object's origin)"
 			}
 			"5"
 			{
@@ -20948,17 +21507,17 @@
 			"1"
 			{
 				"command"		 "play buttons/button14;show_menu ent_rotate_x1"
-				"label"			" X"
+				"label"			" X (Pitch)"
 			}
 			"2"
 			{
 				"command"		 "play buttons/button14;show_menu ent_rotate_y1"
-				"label"			" Y (Normal to ground)"
+				"label"			" Y (Yaw) (Normal to ground)"
 			}
 			"3"
 			{
 				"command"		 "play buttons/button14;show_menu ent_rotate_z1"
-				"label"			" Z"
+				"label"			" Z (Roll) (Physics objects doesn't like to roll)"
 			}
 			"8"
 			{
@@ -23745,7 +24304,7 @@
 			"2"
 			{		
 					"command"    "play buttons/button14;show_menu props_lighting1"
-					"label"      " Search lights"
+					"label"      " Lights"
 			}
 			"7"
 			{
@@ -24078,6 +24637,11 @@
 			{
 					"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/stair_treads_straight.mdl;show_menu props_furniture_stairs2"
 					"label"		 " Wooden treads" 
+			}
+			"3"
+			{
+					"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_unique/small_town/trainyard_tower.mdl;show_menu props_furniture_stairs2"
+					"label"		 " Trainyard triple" 
 			}
 			"7"
 			{
@@ -24420,6 +24984,26 @@
 			}
 			"2"
 			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_downtown/light01_32.mdl;show_menu props_lighting1"
+					"label"      " Ceiling light 1 short"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_downtown/light01_64.mdl;show_menu props_lighting1"
+					"label"      " Ceiling light 1 long"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_downtown/light02_32.mdl;show_menu props_lighting1"
+					"label"      " Ceiling light 2 short"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_downtown/light02_64.mdl;show_menu props_lighting1"
+					"label"      " Ceiling light 2 long"
+			}
+			"6"
+			{
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_wasteland/light_spotlight01_lamp.mdl;show_menu props_lighting1"
 					"label"      " Spotlight"
 			}
@@ -24651,7 +25235,7 @@
 
 	"props_debris1"
 	{
-			"Title"     "Debris"
+			"Title"     "Debris 1"
 			"1"
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_debris/wood_board04a.mdl,35;show_menu props_debris1"
@@ -24682,15 +25266,69 @@
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_debris/concrete_debris128pile001a.mdl,11;show_menu props_debris1"
 					"label"      " Concrete debris 4"
 			}
-
 			"7"
 			{
-					"command"    "play buttons/button14;show_menu cleanup_props_debris1"
-					"label"      " Remove all"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_debris/dead_cow.mdl;show_menu props_debris1"
+					"label"      " Dead cow"
 			}
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu prop_menu_start5"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu props_debris2"
+					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"props_debris2"
+	{
+			"Title"     "Debris 2"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_debris/airliner_wreckage1.mdl;show_menu props_debris2"
+					"label"      " Plane wreck nose"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_debris/airliner_wreckage3.mdl;show_menu props_debris2"
+					"label"      " Plane wreck tail"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_debris/airliner_wreckage2.mdl;show_menu props_debris2"
+					"label"      " Plane wreck left wing"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lostcoast/props_wasteland/shipwreck_part02.mdl;show_menu props_debris2"
+					"label"      " Ship wreck bow"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lostcoast/props_wasteland/shipwreck_part01.mdl;show_menu props_debris2"
+					"label"      " Ship wreck hull"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lostcoast/props_wasteland/shipwreck_part03.mdl;show_menu props_debris2"
+					"label"      " Ship wreck stern"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;show_menu cleanup_props_debris2"
+					"label"      " Remove all"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu props_debris1"
 					"label"      " << Back"
 			}
 			"0"
@@ -24700,18 +25338,18 @@
 			}
 	}
 
-	"cleanup_props_debris1"
+	"cleanup_props_debris2"
 	{
 			"Title"     "ARE YOU SURE YOU WANT TO REMOVE ALL SPAWNED PROPS?"
 			
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func cleanup;show_menu props_debris1"
+					"command"    "play buttons/button14;scripted_user_func cleanup;show_menu props_debris2"
 					"label"      " Yes"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;show_menu props_debris1"
+					"command"    "play buttons/button14;show_menu props_debris2"
 					"label"      " No! Get me out of here!"
 			}
 	}
@@ -27349,7 +27987,7 @@
 			"1"
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_exteriors/wood_railing001.mdl;show_menu props_exteriors1"
-					"label"      " wood_railing001"
+					"label"      " Wood railing"
 			}
 			"2"
 			{
@@ -27358,23 +27996,23 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/fence001_64.mdl;show_menu props_exteriors1"
-					"label"      " Metal fence 1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/fence002_128.mdl;show_menu props_exteriors1"
+					"label"      " Metal fence"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/fence002_128.mdl;show_menu props_exteriors1"
-					"label"      " Metal fence 2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/gate_wall003_128.mdl;show_menu props_exteriors1"
+					"label"      " Metal fence spikes"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/fence002_256.mdl;show_menu props_exteriors1"
-					"label"      " Metal fence 3"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/wood_fence001_128.mdl;show_menu props_exteriors1"
+					"label"      " Wood fence"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/fence_gate002_256.mdl;show_menu props_exteriors1"
-					"label"      " Metal fence gate"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_wasteland/exterior_fence002c.mdl,50;show_menu props_exteriors1"
+					"label"      " Metal fence 2"
 			}
 
 			"7"
@@ -27409,23 +28047,33 @@
 		}
 		"2"
 		{
-				"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/c3_plantation/gate_expl_1.mdl;show_menu props_exteriors2"
-				"label"      " Big garden gate destroyed 1"
+				"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_equipment/scaffolding.mdl;show_menu props_exteriors2"
+				"label"      " Scaffolding"
 		}
 		"3"
 		{
-				"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/c3_plantation/gate_expl_2.mdl;show_menu props_exteriors2"
-				"label"      " Big garden gate destroyed 2"
+				"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_exteriors/guardshack.mdl;show_menu props_exteriors2"
+				"label"      " Guardshack"
 		}
 		"4"
 		{
-				"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/c3_plantation/gate_expl_3.mdl;show_menu props_exteriors2"
-				"label"      " Big garden gate destroyed 3"
+				"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_exteriors/roadsidefence_64.mdl;show_menu props_exteriors2"
+				"label"      " Road-side fence (single)"
+		}
+		"5"
+		{
+				"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_exteriors/roadsidefence_512.mdl;show_menu props_exteriors2"
+				"label"      " Road-side fence (x8)"
+		}
+		"6"
+		{
+				"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fortifications/concrete_block001_128_reference.mdl;show_menu props_exteriors2"
+				"label"      " Concrete block"
 		}
 		"7"
 		{
-				"command"    "play buttons/button14;show_menu cleanup_props_exteriors2"
-				"label"      " Remove all"
+				"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_exteriors2"
+				"label"      " Delete object"
 		}
 		"8"
 		{
@@ -27439,21 +28087,6 @@
 		}
 	}
 
-	"cleanup_props_exteriors2"
-	{
-			"Title"     "ARE YOU SURE YOU WANT TO REMOVE ALL SPAWNED PROPS?"
-			
-			"1"
-			{
-					"command"    "play buttons/button14;scripted_user_func cleanup;show_menu props_exteriors2"
-					"label"      " Yes"
-			}
-			"2"
-			{
-					"command"    "play buttons/button14;show_menu props_exteriors2"
-					"label"      " No! Get me out of here!"
-			}
-	}
 	"props_industrial1"
 	{
 			"Title"     "Industrial stuff"
@@ -29085,7 +29718,7 @@
             }
             "2"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/train_engine_military.mdl;show_menu props_vehicles_trains1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/train_engine_military.mdl,0,-90;show_menu props_vehicles_trains1"
                     "label"		 " Engine car, military"
             }
             "3"
@@ -29158,6 +29791,11 @@
             {
                     "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/train_tank_small.mdl;show_menu props_vehicles_trains2"
                     "label"		 " Tank car, small"
+            }
+            "6"
+            {
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_trainstation/train_transporter.mdl;show_menu props_vehicles_trains2"
+                    "label"		 " Transporter"
             }
 
 			"7"
@@ -29430,7 +30068,7 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/racecar.mdl;show_menu props_vehicles6"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/racecar_damaged.mdl;show_menu props_vehicles6"
 					"label"      " Jimmy Gibbs Jr.'s race car"
 			}
 			"7"
@@ -29851,7 +30489,7 @@
 			"2"
 			{		
 					"command"    "play buttons/button14;show_menu phys_props_lighting1"
-					"label"      " Search lights"
+					"label"      " Lights"
 			}
 			"7"
 			{
@@ -30184,6 +30822,11 @@
 			{
 					"command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/stair_treads_straight.mdl;show_menu phys_props_furniture_stairs2"
 					"label"		 " Wooden treads" 
+			}
+			"3"
+			{
+					"command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_unique/small_town/trainyard_tower.mdl;show_menu phys_props_furniture_stairs2"
+					"label"		 " Trainyard triple" 
 			}
 			"7"
 			{
@@ -30518,13 +31161,32 @@
 	"phys_props_lighting1"
 	{
 			"Title"     "Lights"
-			
 			"1"
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_equipment/light_floodlight.mdl;show_menu phys_props_lighting1"
 					"label"      " Flood light"
 			}
 			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_downtown/light01_32.mdl;show_menu phys_props_lighting1"
+					"label"      " Ceiling light 1 short"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_downtown/light01_64.mdl;show_menu phys_props_lighting1"
+					"label"      " Ceiling light 1 long"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_downtown/light02_32.mdl;show_menu phys_props_lighting1"
+					"label"      " Ceiling light 2 short"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_downtown/light02_64.mdl;show_menu phys_props_lighting1"
+					"label"      " Ceiling light 2 long"
+			}
+			"6"
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_wasteland/light_spotlight01_lamp.mdl;show_menu phys_props_lighting1"
 					"label"      " Spotlight"
@@ -30757,7 +31419,7 @@
 
 	"phys_props_debris1"
 	{
-			"Title"     "Debris"
+			"Title"     "Debris 1"
 			"1"
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_debris/wood_board04a.mdl,35;show_menu phys_props_debris1"
@@ -30788,15 +31450,69 @@
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_debris/concrete_debris128pile001a.mdl,11;show_menu phys_props_debris1"
 					"label"      " Concrete debris 4"
 			}
-
 			"7"
 			{
-					"command"    "play buttons/button14;show_menu cleanup_phys_props_debris1"
-					"label"      " Remove all"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_debris/dead_cow.mdl;show_menu phys_props_debris1"
+					"label"      " Dead cow"
 			}
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu phys_prop_menu_start5"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_debris2"
+					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"phys_props_debris2"
+	{
+			"Title"     "Debris 2"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_debris/airliner_wreckage1.mdl;show_menu phys_props_debris2"
+					"label"      " Plane wreck nose"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_debris/airliner_wreckage3.mdl;show_menu phys_props_debris2"
+					"label"      " Plane wreck tail"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_debris/airliner_wreckage2.mdl;show_menu phys_props_debris2"
+					"label"      " Plane wreck left wing"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lostcoast/props_wasteland/shipwreck_part02.mdl;show_menu phys_props_debris2"
+					"label"      " Ship wreck bow"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lostcoast/props_wasteland/shipwreck_part01.mdl;show_menu phys_props_debris2"
+					"label"      " Ship wreck hull"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lostcoast/props_wasteland/shipwreck_part03.mdl;show_menu phys_props_debris2"
+					"label"      " Ship wreck stern"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;show_menu cleanup_props_debris2"
+					"label"      " Remove all"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_debris1"
 					"label"      " << Back"
 			}
 			"0"
@@ -30806,18 +31522,18 @@
 			}
 	}
 
-	"cleanup_phys_props_debris1"
+	"cleanup_props_debris2"
 	{
 			"Title"     "ARE YOU SURE YOU WANT TO REMOVE ALL SPAWNED PROPS?"
 			
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func cleanup;show_menu phys_props_debris1"
+					"command"    "play buttons/button14;scripted_user_func cleanup;show_menu phys_props_debris2"
 					"label"      " Yes"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;show_menu phys_props_debris1"
+					"command"    "play buttons/button14;show_menu phys_props_debris2"
 					"label"      " No! Get me out of here!"
 			}
 	}
@@ -33455,7 +34171,7 @@
 			"1"
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_exteriors/wood_railing001.mdl;show_menu phys_props_exteriors1"
-					"label"      " wood_railing001"
+					"label"      " Wood railing"
 			}
 			"2"
 			{
@@ -33464,23 +34180,23 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/fence001_64.mdl;show_menu phys_props_exteriors1"
-					"label"      " Metal fence 1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/fence002_128.mdl;show_menu phys_props_exteriors1"
+					"label"      " Metal fence"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/fence002_128.mdl;show_menu phys_props_exteriors1"
-					"label"      " Metal fence 2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/gate_wall003_128.mdl;show_menu phys_props_exteriors1"
+					"label"      " Metal fence spikes"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/fence002_256.mdl;show_menu phys_props_exteriors1"
-					"label"      " Metal fence 3"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/wood_fence001_128.mdl;show_menu phys_props_exteriors1"
+					"label"      " Wood fence"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/fence_gate002_256.mdl;show_menu phys_props_exteriors1"
-					"label"      " Metal fence gate"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_wasteland/exterior_fence002c.mdl,50;show_menu phys_props_exteriors1"
+					"label"      " Metal fence 2"
 			}
 
 			"7"
@@ -33515,23 +34231,33 @@
 		}
 		"2"
 		{
-				"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/c3_plantation/gate_expl_1.mdl;show_menu phys_props_exteriors2"
-				"label"      " Big garden gate destroyed 1"
+				"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_equipment/scaffolding.mdl;show_menu phys_props_exteriors2"
+				"label"      " Scaffolding"
 		}
 		"3"
 		{
-				"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/c3_plantation/gate_expl_2.mdl;show_menu phys_props_exteriors2"
-				"label"      " Big garden gate destroyed 2"
+				"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_exteriors/guardshack.mdl;show_menu phys_props_exteriors2"
+				"label"      " Guardshack"
 		}
 		"4"
 		{
-				"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/c3_plantation/gate_expl_3.mdl;show_menu phys_props_exteriors2"
-				"label"      " Big garden gate destroyed 3"
+				"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_exteriors/roadsidefence_64.mdl;show_menu phys_props_exteriors2"
+				"label"      " Road-side fence (single)"
+		}
+		"5"
+		{
+				"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_exteriors/roadsidefence_512.mdl;show_menu phys_props_exteriors2"
+				"label"      " Road-side fence (x8)"
+		}
+		"6"
+		{
+				"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fortifications/concrete_block001_128_reference.mdl;show_menu phys_props_exteriors2"
+				"label"      " Concrete block"
 		}
 		"7"
 		{
-				"command"    "play buttons/button14;show_menu cleanup_phys_props_exteriors2"
-				"label"      " Remove all"
+				"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_exteriors2"
+				"label"      " Delete object"
 		}
 		"8"
 		{
@@ -33545,21 +34271,6 @@
 		}
 	}
 
-	"cleanup_phys_props_exteriors2"
-	{
-			"Title"     "ARE YOU SURE YOU WANT TO REMOVE ALL SPAWNED PROPS?"
-			
-			"1"
-			{
-					"command"    "play buttons/button14;scripted_user_func cleanup;show_menu phys_props_exteriors2"
-					"label"      " Yes"
-			}
-			"2"
-			{
-					"command"    "play buttons/button14;show_menu phys_props_exteriors2"
-					"label"      " No! Get me out of here!"
-			}
-	}
 	"phys_props_industrial1"
 	{
 			"Title"     "Industrial stuff"
@@ -35191,7 +35902,7 @@
             }
             "2"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/train_engine_military.mdl;show_menu phys_props_vehicles_trains1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/train_engine_military.mdl,0,-90;show_menu phys_props_vehicles_trains1"
                     "label"		 " Engine car, military"
             }
             "3"
@@ -35265,7 +35976,11 @@
                     "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/train_tank_small.mdl;show_menu phys_props_vehicles_trains2"
                     "label"		 " Tank car, small"
             }
-
+            "6"
+            {
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_trainstation/train_transporter.mdl;show_menu phys_props_vehicles_trains2"
+                    "label"		 " Transporter"
+            }
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_vehicles_trains1"
@@ -35536,7 +36251,7 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/racecar.mdl;show_menu phys_props_vehicles6"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/racecar_damaged.mdl;show_menu phys_props_vehicles6"
 					"label"      " Jimmy Gibbs Jr.'s race car"
 			}
 			"7"
@@ -36677,7 +37392,7 @@
 			"3"
 			{		
 					"command"    "play buttons/button14;show_menu models_self_lighting1"
-					"label"      " Search lights"
+					"label"      " Lights"
 			}
 			"7"
 			{
@@ -37011,6 +37726,11 @@
 					"command"	 "play buttons/button14;scripted_user_func model,!self,models/props_interiors/stair_treads_straight.mdl;show_menu models_self_furniture_stairs2"
 					"label"		 " Wooden treads" 
 			}
+			"3"
+			{
+					"command"	 "play buttons/button14;scripted_user_func model,!self,models/props_unique/small_town/trainyard_tower.mdl;show_menu models_self_furniture_stairs2"
+					"label"		 " Trainyard Triple" 
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_furniture_stairs2"
@@ -37331,6 +38051,26 @@
 			}
 			"2"
 			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_downtown/light01_32.mdl;show_menu models_self_lighting1"
+					"label"      " Ceiling light 1 short"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_downtown/light01_64.mdl;show_menu models_self_lighting1"
+					"label"      " Ceiling light 1 long"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_downtown/light02_32.mdl;show_menu models_self_lighting1"
+					"label"      " Ceiling light 2 short"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_downtown/light02_64.mdl;show_menu models_self_lighting1"
+					"label"      " Ceiling light 2 long"
+			}
+			"6"
+			{
 					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_wasteland/light_spotlight01_lamp.mdl;show_menu models_self_lighting1"
 					"label"      " Spotlight"
 			}
@@ -37541,7 +38281,7 @@
 
 	"models_self_debris1"
 	{
-			"Title"     "Debris"
+			"Title"     "Debris 1"
 			"1"
 			{
 					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_debris/wood_board04a.mdl,35;show_menu models_self_debris1"
@@ -37572,9 +38312,64 @@
 					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_debris/concrete_debris128pile001a.mdl,11;show_menu models_self_debris1"
 					"label"      " Concrete debris 4"
 			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_debris/dead_cow.mdl;show_menu models_self_debris1"
+					"label"      " Dead cow"
+			}
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu models_self_menu_start5"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu models_self_debris2"
+					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"models_self_debris2"
+	{
+			"Title"     "Debris 2"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_debris/airliner_wreckage1.mdl;show_menu models_self_debris2"
+					"label"      " Plane wreck nose"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_debris/airliner_wreckage3.mdl;show_menu models_self_debris2"
+					"label"      " Plane wreck tail"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_debris/airliner_wreckage2.mdl;show_menu models_self_debris2"
+					"label"      " Plane wreck left wing"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/lostcoast/props_wasteland/shipwreck_part02.mdl;show_menu models_self_debris2"
+					"label"      " Ship wreck bow"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/lostcoast/props_wasteland/shipwreck_part01.mdl;show_menu models_self_debris2"
+					"label"      " Ship wreck hull"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/lostcoast/props_wasteland/shipwreck_part03.mdl;show_menu models_self_debris2"
+					"label"      " Ship wreck stern"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu models_self_debris1"
 					"label"      " << Back"
 			}
 			"0"
@@ -40051,7 +40846,7 @@
 			"1"
 			{
 					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_exteriors/wood_railing001.mdl;show_menu models_self_exteriors1"
-					"label"      " wood_railing001"
+					"label"      " Wood railing"
 			}
 			"2"
 			{
@@ -40060,25 +40855,24 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_urban/fence001_64.mdl;show_menu models_self_exteriors1"
-					"label"      " Metal fence 1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_urban/fence002_128.mdl;show_menu models_self_exteriors1"
+					"label"      " Metal fence"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_urban/fence002_128.mdl;show_menu models_self_exteriors1"
-					"label"      " Metal fence 2"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_urban/gate_wall003_128.mdl;show_menu models_self_exteriors1"
+					"label"      " Metal fence spikes"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_urban/fence002_256.mdl;show_menu models_self_exteriors1"
-					"label"      " Metal fence 3"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_urban/wood_fence001_128.mdl;show_menu models_self_exteriors1"
+					"label"      " Wood fence"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_urban/fence_gate002_256.mdl;show_menu models_self_exteriors1"
-					"label"      " Metal fence gate"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_wasteland/exterior_fence002c.mdl,50;show_menu models_self_exteriors1"
+					"label"      " Metal fence 2"
 			}
-
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_exteriors1"
@@ -40111,18 +40905,28 @@
 		}
 		"2"
 		{
-				"command"    "play buttons/button14;scripted_user_func model,!self,models/c3_plantation/gate_expl_1.mdl;show_menu models_self_exteriors2"
-				"label"      " Big garden gate destroyed 1"
+				"command"    "play buttons/button14;scripted_user_func model,!self,models/props_equipment/scaffolding.mdl;show_menu models_self_exteriors2"
+				"label"      " Scaffolding"
 		}
 		"3"
 		{
-				"command"    "play buttons/button14;scripted_user_func model,!self,models/c3_plantation/gate_expl_2.mdl;show_menu models_self_exteriors2"
-				"label"      " Big garden gate destroyed 2"
+				"command"    "play buttons/button14;scripted_user_func model,!self,models/props_exteriors/guardshack.mdl;show_menu models_self_exteriors2"
+				"label"      " Guardshack"
 		}
 		"4"
 		{
-				"command"    "play buttons/button14;scripted_user_func model,!self,models/c3_plantation/gate_expl_3.mdl;show_menu models_self_exteriors2"
-				"label"      " Big garden gate destroyed 3"
+				"command"    "play buttons/button14;scripted_user_func model,!self,models/props_exteriors/roadsidefence_64.mdl;show_menu models_self_exteriors2"
+				"label"      " Road-side fence (single)"
+		}
+		"5"
+		{
+				"command"    "play buttons/button14;scripted_user_func model,!self,models/props_exteriors/roadsidefence_512.mdl;show_menu models_self_exteriors2"
+				"label"      " Road-side fence (x8)"
+		}
+		"6"
+		{
+				"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fortifications/concrete_block001_128_reference.mdl;show_menu models_self_exteriors2"
+				"label"      " Concrete block"
 		}
 		"8"
 		{
@@ -41641,6 +42445,11 @@
                     "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/train_tank_small.mdl;show_menu models_self_vehicles_trains2"
                     "label"		 " Tank car, small"
             }
+            "6"
+            {
+                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_trainstation/train_transporter.mdl;show_menu models_self_vehicles_trains2"
+                    "label"		 " Transporter"
+            }
 
 			"7"
 			{
@@ -41912,7 +42721,7 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/racecar.mdl;show_menu models_self_vehicles6"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/racecar_damaged.mdl;show_menu models_self_vehicles6"
 					"label"      " Jimmy Gibbs Jr.'s race car"
 			}
 			"8"
@@ -42487,7 +43296,7 @@
 			"3"
 			{		
 					"command"    "play buttons/button14;show_menu models_picker_lighting1"
-					"label"      " Search lights"
+					"label"      " Lights"
 			}
 			"7"
 			{
@@ -42821,6 +43630,11 @@
 					"command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/stair_treads_straight.mdl;show_menu models_picker_furniture_stairs2"
 					"label"		 " Wooden treads" 
 			}
+			"3"
+			{
+					"command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_unique/small_town/trainyard_tower.mdl;show_menu models_picker_furniture_stairs2"
+					"label"		 " Trainyard triple" 
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_picker_furniture_stairs2"
@@ -43130,6 +43944,7 @@
 			}
 	}
 
+	
 	"models_picker_lighting1"
 	{
 			"Title"     "Lights"
@@ -43140,6 +43955,26 @@
 					"label"      " Flood light"
 			}
 			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_downtown/light01_32.mdl;show_menu models_picker_lighting1"
+					"label"      " Ceiling light 1 short"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_downtown/light01_64.mdl;show_menu models_picker_lighting1"
+					"label"      " Ceiling light 1 long"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_downtown/light02_32.mdl;show_menu models_picker_lighting1"
+					"label"      " Ceiling light 2 short"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_downtown/light02_64.mdl;show_menu models_picker_lighting1"
+					"label"      " Ceiling light 2 long"
+			}
+			"6"
 			{
 					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_wasteland/light_spotlight01_lamp.mdl;show_menu models_picker_lighting1"
 					"label"      " Spotlight"
@@ -43351,7 +44186,7 @@
 
 	"models_picker_debris1"
 	{
-			"Title"     "Debris"
+			"Title"     "Debris 1"
 			"1"
 			{
 					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_debris/wood_board04a.mdl,35;show_menu models_picker_debris1"
@@ -43382,9 +44217,64 @@
 					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_debris/concrete_debris128pile001a.mdl,11;show_menu models_picker_debris1"
 					"label"      " Concrete debris 4"
 			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_debris/dead_cow.mdl;show_menu models_picker_debris1"
+					"label"      " Dead cow"
+			}
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu models_picker_menu_start5"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu models_picker_debris2"
+					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"models_picker_debris2"
+	{
+			"Title"     "Debris 2"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_debris/airliner_wreckage1.mdl;show_menu models_picker_debris2"
+					"label"      " Plane wreck nose"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_debris/airliner_wreckage3.mdl;show_menu models_picker_debris2"
+					"label"      " Plane wreck tail"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_debris/airliner_wreckage2.mdl;show_menu models_picker_debris2"
+					"label"      " Plane wreck left wing"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lostcoast/props_wasteland/shipwreck_part02.mdl;show_menu models_picker_debris2"
+					"label"      " Ship wreck bow"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lostcoast/props_wasteland/shipwreck_part01.mdl;show_menu models_picker_debris2"
+					"label"      " Ship wreck hull"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lostcoast/props_wasteland/shipwreck_part03.mdl;show_menu models_picker_debris2"
+					"label"      " Ship wreck stern"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu models_picker_debris1"
 					"label"      " << Back"
 			}
 			"0"
@@ -45855,13 +46745,14 @@
 			}
 	}
 
+	
 	"models_picker_exteriors1"
 	{
 			"Title"     "Exterior stuff 1"
 			"1"
 			{
 					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_exteriors/wood_railing001.mdl;show_menu models_picker_exteriors1"
-					"label"      " wood_railing001"
+					"label"      " Wood railing"
 			}
 			"2"
 			{
@@ -45870,29 +46761,23 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_urban/fence001_64.mdl;show_menu models_picker_exteriors1"
-					"label"      " Metal fence 1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_urban/fence002_128.mdl;show_menu models_picker_exteriors1"
+					"label"      " Metal fence"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_urban/fence002_128.mdl;show_menu models_picker_exteriors1"
-					"label"      " Metal fence 2"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_urban/gate_wall003_128.mdl;show_menu models_picker_exteriors1"
+					"label"      " Metal fence spikes"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_urban/fence002_256.mdl;show_menu models_picker_exteriors1"
-					"label"      " Metal fence 3"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_urban/wood_fence001_128.mdl;show_menu models_picker_exteriors1"
+					"label"      " Wood fence"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_urban/fence_gate002_256.mdl;show_menu models_picker_exteriors1"
-					"label"      " Metal fence gate"
-			}
-
-			"7"
-			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_picker_exteriors1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_wasteland/exterior_fence002c.mdl,50;show_menu models_picker_exteriors1"
+					"label"      " Metal fence 2"
 			}
 			"8"
 			{
@@ -45921,18 +46806,28 @@
 		}
 		"2"
 		{
-				"command"    "play buttons/button14;scripted_user_func model,!picker,models/c3_plantation/gate_expl_1.mdl;show_menu models_picker_exteriors2"
-				"label"      " Big garden gate destroyed 1"
+				"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_equipment/scaffolding.mdl;show_menu models_picker_exteriors2"
+				"label"      " Scaffolding"
 		}
 		"3"
 		{
-				"command"    "play buttons/button14;scripted_user_func model,!picker,models/c3_plantation/gate_expl_2.mdl;show_menu models_picker_exteriors2"
-				"label"      " Big garden gate destroyed 2"
+				"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_exteriors/guardshack.mdl;show_menu models_picker_exteriors2"
+				"label"      " Guardshack"
 		}
 		"4"
 		{
-				"command"    "play buttons/button14;scripted_user_func model,!picker,models/c3_plantation/gate_expl_3.mdl;show_menu models_picker_exteriors2"
-				"label"      " Big garden gate destroyed 3"
+				"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_exteriors/roadsidefence_64.mdl;show_menu models_picker_exteriors2"
+				"label"      " Road-side fence (single)"
+		}
+		"5"
+		{
+				"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_exteriors/roadsidefence_512.mdl;show_menu models_picker_exteriors2"
+				"label"      " Road-side fence (x8)"
+		}
+		"6"
+		{
+				"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fortifications/concrete_block001_128_reference.mdl;show_menu models_picker_exteriors2"
+				"label"      " Concrete block"
 		}
 		"8"
 		{
@@ -47451,6 +48346,11 @@
                     "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/train_tank_small.mdl;show_menu models_picker_vehicles_trains2"
                     "label"		 " Tank car, small"
             }
+            "6"
+            {
+                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_trainstation/train_transporter.mdl;show_menu models_picker_vehicles_trains2"
+                    "label"		 " Transporter"
+            }
 
 			"7"
 			{
@@ -47722,7 +48622,7 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/racecar.mdl;show_menu models_picker_vehicles6"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/racecar_damaged.mdl;show_menu models_picker_vehicles6"
 					"label"      " Jimmy Gibbs Jr.'s race car"
 			}
 			"8"

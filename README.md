@@ -228,7 +228,7 @@
     Console Syntax | scripted_user_func *letgo* 
     ------------- | -------------
     
-    Menu Sequence | _6 3 7 2_
+    Menu Sequence | _USE 6 3 7 1_
     ------------- | -------------
 ---    
 - **yeet** : YEEEEEET
@@ -239,7 +239,7 @@
     Console Syntax | scripted_user_func *yeet* 
     ------------- | -------------
     
-    Menu Sequence | _6 3 7 3_
+    Menu Sequence | _6 3 7 2_
     ------------- | -------------
 ---    
 - **show_yeet_settings** : Shows grabbing settings in console
