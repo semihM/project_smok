@@ -1800,7 +1800,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 				{
 					_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.francis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 					
-					_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+					_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.15,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 
 					_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.francis,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 				}
@@ -1836,7 +1836,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 				{
 					_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.ellis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 					
-					_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
+					_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.15,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 					
 					_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.ellis,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
 				}
@@ -1869,14 +1869,50 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 					_SpeakWhenLeftSaferoom = 
 					{
 						enabled = true
-						prob = 0.2
+						prob = 0.15
 						order = SCENES.RANDOM
 						sequence =
 						{
 							smokboomer1=
 							{   // "Well hell, let's all- Smok- Booooomer!"
-								scenes=["warnboomer03.vcd","warnsmoker03.vcd","followme08.vcd"]
-								delays=[2.45,1.7,0]
+								scenes=["followme08.vcd","warnsmoker03.vcd","warnboomer03.vcd"]
+								delays=[0, 1.7, 2.45 ]
+							}
+
+							hateboomerbill1=
+							{   // "If there's one thing I hate more than vampires, it's- Boomer- Bill"
+								scenes=["dlc2canadahate02.vcd","warnboomer01.vcd","namebill01.vcd"]
+								delays=[0, 3.3, 4]
+							}
+
+							signsayshateboomerbill1=
+							{   // "This sign says, "I hate- Bill!" "
+								scenes=["dlc2bulletinboard01.vcd","namebill02.vcd"]
+								delays=[0, 1.85]
+							}
+
+							lookingforwardtosmokbill1=
+							{   // "I was getting tired of being cooped up, looking forward to- Smok- Boomer- Bill!"
+								scenes=["c6dlc3intro28.vcd","warnsmoker03.vcd","warnboomer02.vcd","namebill02.vcd"]
+								delays=[0, 3.4, 4.1, 4.7]
+							}
+
+							signsaysdead=
+							{   // "This sign says, -"...Dead"- AAAAAAAAAAAAAAAAAAA
+								scenes=["dlc2bulletinboard01.vcd","killconfirmation05.vcd","fall02.vcd"]
+								delays=[0, 1.1, 2.2]
+							}
+
+							hatelouis1=
+							{   // "If there's one thing I hate more than vampires, it's- Louis"
+								scenes=["dlc2canadahate02.vcd","namelouis01.vcd"]
+								delays=[0, 3.3]
+							}
+
+							louislookshit1=
+							{   // "Louis you look like shit!"
+								scenes=["generic30.vcd"]
+								delays=[0]
 							}
 						}
 					}
@@ -1893,7 +1929,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 					_SpeakWhenLeftSaferoom = 
 					{
 						enabled = true
-						prob = 0.2
+						prob = 0.1
 						order = SCENES.RANDOM
 						sequence =
 						{	
@@ -2680,7 +2716,9 @@ function Notifications::OnPlayerReplacedBot::LetGoHeldPlayer(player,bot,args)
 function Notifications::OnBotReplacedPlayer::LetGoHeldPlayer(player,bot,args)
 {
 	printl("Player #"+player.GetIndex()+" was replaced with Bot #"+bot.GetIndex())
-	AdminSystem.LetgoCmd(player,null);
+	
+	if(AdminSystem.IsPrivileged(player))
+		AdminSystem.LetgoCmd(player,null);
 
 	foreach(survivor in Players.AliveSurvivors())
 	{
@@ -5517,14 +5555,50 @@ enum SCENES
 		_SpeakWhenLeftSaferoom = 
 		{
 			enabled = true
-			prob = 0.1
+			prob = 0.15
 			order = SCENES.RANDOM
 			sequence =
 			{
 				smokboomer1=
 				{   // "Well hell, let's all- Smok- Booooomer!"
-					scenes=["warnboomer03.vcd","warnsmoker03.vcd","followme08.vcd"]
-					delays=[2.45,1.7,0]
+					scenes=["followme08.vcd","warnsmoker03.vcd","warnboomer03.vcd"]
+					delays=[0, 1.7, 2.45 ]
+				}
+
+				hateboomerbill1=
+				{   // "If there's one thing I hate more than vampires, it's- Boomer- Bill"
+					scenes=["dlc2canadahate02.vcd","warnboomer01.vcd","namebill01.vcd"]
+					delays=[0, 3.3, 4]
+				}
+
+				signsayshateboomerbill1=
+				{   // "This sign says, "I hate- Bill!" "
+					scenes=["dlc2bulletinboard01.vcd","namebill02.vcd"]
+					delays=[0, 1.85]
+				}
+
+				lookingforwardtosmokbill1=
+				{   // "I was getting tired of being cooped up, looking forward to- Smok- Boomer- Bill!"
+					scenes=["c6dlc3intro28.vcd","warnsmoker03.vcd","warnboomer02.vcd","namebill02.vcd"]
+					delays=[0, 3.4, 4.1, 4.7]
+				}
+
+				signsaysdead=
+				{   // "This sign says, -"...Dead"- AAAAAAAAAAAAAAAAAAA
+					scenes=["dlc2bulletinboard01.vcd","killconfirmation05.vcd","fall02.vcd"]
+					delays=[0, 1.1, 2.2]
+				}
+
+				hatelouis1=
+				{   // "If there's one thing I hate more than vampires, it's- Louis"
+					scenes=["dlc2canadahate02.vcd","namelouis01.vcd"]
+					delays=[0, 3.3]
+				}
+
+				louislookshit1=
+				{   // "Louis you look like shit!"
+					scenes=["generic30.vcd"]
+					delays=[0]
 				}
 			}
 		}
@@ -7603,7 +7677,7 @@ enum SCENES
 
 				scenes.extend(seq.scenes);
 
-				prev_total_delay += Utils.ArraySum(seq.delays);
+				prev_total_delay += Utils.ArrayMax(seq.delays);
 				prev_total_delay += optiontable.mindelay + rand()%optiontable.offsetdelay	// Add delay between each sequence
 			}
 			optiontable.lastspoken = scenes;
@@ -7631,7 +7705,7 @@ enum SCENES
 
 				scenes.extend(picked_seq.scenes);
 
-				prev_total_delay += Utils.ArraySum(picked_seq.delays);
+				prev_total_delay += Utils.ArrayMax(picked_seq.delays);
 				prev_total_delay += optiontable.mindelay + rand()%optiontable.offsetdelay	// Add delay between each sequence
 			}
 			optiontable.lastspoken = scenes;
