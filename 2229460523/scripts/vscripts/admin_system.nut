@@ -13231,7 +13231,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 		entlooked = Entity("#"+AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid);
 		
-		local fwvec =  entlooked.GetLocalOrigin();out(fwvec)
+		local fwvec =  entlooked.GetLocalOrigin();
 		local entpos = entlooked.GetLocalOrigin();
 		if(direction == "backward")
 		{	
@@ -13263,9 +13263,8 @@ if ( Director.GetGameMode() == "holdout" )
 			fwvec.y = 0;
 			fwvec.x = 0;
 		}
-		out(fwvec)
+		
 		fwvec = fwvec.Scale(units/fwvec.Length());
-		out(fwvec)
 		entlooked.SetLocalOrigin(Vector(entpos.x+fwvec.x,entpos.y+fwvec.y,entpos.z+fwvec.z));
 	}
 	else if(entlooked)
