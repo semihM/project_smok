@@ -6,14 +6,25 @@ printl("Activating Admin System");
  * Other authors : rhino
  */
 
+
 // Include the VScript Library
 IncludeScript("Admin_System/VSLib");
+
 // Include custom settings for unused lines
 IncludeScript("Voice_Paths/Survivorlines");
 // Include particle names table
 IncludeScript("Particle_Names/Particlenames");
 // Model paths
 IncludeScript("Model_Paths/Model");
+
+// Include the Message Class
+IncludeScript("Admin_System/Messages");
+// Include String Constants
+IncludeScript("Admin_System/Constants");
+// Include Custom Variables
+IncludeScript("Admin_System/AdminVars");
+
+::CmdMessages <- ::Messages.BIM.CMD;
 
 if ( SessionState.ModeName == "coop" || SessionState.ModeName == "realism" || SessionState.ModeName == "survival" || SessionState.ModeName == "versus" || SessionState.ModeName == "scavenge" )
 {
@@ -41,582 +52,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 	EnableIdleKick = false
 	IdleKickTime = 60
 	AdminPassword = ""
-	Vars =
-	{
-		IsBashDisabled = {}
-		IsBashLimited = {}
-		IsFreezeEnabled = {}
-		IsNoclipEnabled = {}
-		IsFlyingEnabled = {}
-		IsGodEnabled = {}
-		IsInfiniteAmmoEnabled = {}
-		IsUnlimitedAmmoEnabled = {}
-		IsInfiniteExplosiveAmmoEnabled = {}
-		IsInfiniteIncendiaryAmmoEnabled = {}
-		IsInfiniteLaserSightsEnabled = {}
-		EnabledGodInfected = false
-		EnabledGodSI = false
-		DirectorDisabled = false
-		AllowAdminsOnly = true
-
-		RestoreModelsOnJoin = true
-
-		IgnoreDeletingPlayers = true
-
-		AllowCustomResponses = true
-
-		AllowCustomSharing = true
-
-		AllowAutomatedSharing = true
-
-		_LastLootThinkState = true
-
-		CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle","","survivor"]
-		
-		CharacterNamesLower = ["bill","francis","louis","zoey","nick","ellis","coach","rochelle","","survivor"]
-
-		// Grabbing parameters
-		_grabRadiusTolerance = 30
-
-		_grabAvailable = 
-		{
-			player = true,
-			prop_dynamic = true,
-			prop_dynamic_override = true,
-			prop_physics = true,
-			prop_physics_override = true,
-			prop_physics_multiplayer = true,
-			prop_vehicle = true,
-			prop_car_alarm = true,
-			prop_door_rotating = true,
-			prop_door_rotating_checkpoint = true,
-		}
-
-		_heldEntity =
-		{
-			bill=
-			{
-				entid="",
-				yeetSpeed = 1500.0,
-				yeetPitch = -10,
-				grabRange = 170,
-				grabHeightBelowEyes = 30,
-				grabDistMin = 75,
-				grabAttachPos = "forward",
-				grabByAimedPart = 1
-			},
-			francis=
-			{
-				entid="",
-				yeetSpeed = 1500.0,
-				yeetPitch = -10,
-				grabRange = 170,
-				grabHeightBelowEyes = 30,
-				grabDistMin = 75,
-				grabAttachPos = "forward",
-				grabByAimedPart = 1
-			},
-			louis=
-			{
-				entid="",
-				yeetSpeed = 1500.0,
-				yeetPitch = -10,
-				grabRange = 170,
-				grabHeightBelowEyes = 30,
-				grabDistMin = 75,
-				grabAttachPos = "forward",
-				grabByAimedPart = 1
-			},
-			zoey=
-			{
-				entid="",
-				yeetSpeed = 1500.0,
-				yeetPitch = -10,
-				grabRange = 170,
-				grabHeightBelowEyes = 30,
-				grabDistMin = 75,
-				grabAttachPos = "forward",
-				grabByAimedPart = 1
-			},
-			nick=
-			{
-				entid="",
-				yeetSpeed = 1500.0,
-				yeetPitch = -10,
-				grabRange = 170,
-				grabHeightBelowEyes = 30,
-				grabDistMin = 75,
-				grabAttachPos = "forward",
-				grabByAimedPart = 1
-			},
-			coach=
-			{
-				entid="",
-				yeetSpeed = 1500.0,
-				yeetPitch = -10,
-				grabRange = 170,
-				grabHeightBelowEyes = 30,
-				grabDistMin = 75,
-				grabAttachPos = "forward",
-				grabByAimedPart = 1
-			},
-			ellis=
-			{
-				entid="",
-				yeetSpeed = 1500.0,
-				yeetPitch = -10,
-				grabRange = 170,
-				grabHeightBelowEyes = 30,
-				grabDistMin = 75,
-				grabAttachPos = "forward",
-				grabByAimedPart = 1
-			},
-			rochelle=
-			{
-				entid="",
-				yeetSpeed = 1500.0,
-				yeetPitch = -10,
-				grabRange = 170,
-				grabHeightBelowEyes = 30,
-				grabDistMin = 75,
-				grabAttachPos = "forward",
-				grabByAimedPart = 1
-			}
-		}
-
-		_wornHat =
-		{
-			bill=
-			{
-				entid="",
-				wearAttachPos = "eyes",
-				wearAbove = 5,
-				collisiongroup = 0
-			},
-			francis=
-			{
-				entid="",
-				wearAttachPos = "eyes",
-				wearAbove = 5,
-				collisiongroup = 0
-			},
-			louis=
-			{
-				entid="",
-				wearAttachPos = "eyes",
-				wearAbove = 5,
-				collisiongroup = 0
-			},
-			zoey=
-			{
-				entid="",
-				wearAttachPos = "eyes",
-				wearAbove = 5,
-				collisiongroup = 0
-			},
-			nick=
-			{
-				entid="",
-				wearAttachPos = "eyes",
-				wearAbove = 5,
-				collisiongroup = 0
-			},
-			coach=
-			{
-				entid="",
-				wearAttachPos = "eyes",
-				wearAbove = 5,
-				collisiongroup = 0
-			},
-			ellis=
-			{
-				entid="",
-				wearAttachPos = "eyes",
-				wearAbove = 5,
-				collisiongroup = 0
-			},
-			rochelle=
-			{
-				entid="",
-				wearAttachPos = "eyes",
-				wearAbove = 5,
-				collisiongroup = 0
-			}
-		}
-		// Chat output state
-		_outputsEnabled = 
-		{
-			bill=false,
-			francis=false,
-			louis=false,
-			zoey=false,
-			nick=false,
-			coach=false,
-			ellis=false,
-			rochelle=false
-		}
-
-		// Randomline stuff
-		_saveLastLine = 
-		{
-			bill=true,
-			francis=true,
-			louis=true,
-			zoey=true,
-			nick=true,
-			coach=true,
-			ellis=true,
-			rochelle=true
-		}
-
-		_savedLine =
-		{
-			bill=
-			{
-				target="",
-				source=""
-			},
-			francis=
-			{
-				target="",
-				source=""
-			},
-			louis=
-			{
-				target="",
-				source=""
-			},
-			zoey=
-			{
-				target="",
-				source=""
-			},
-			nick=
-			{
-				target="",
-				source=""
-			},
-			coach=
-			{
-				target="",
-				source=""
-			},
-			ellis=
-			{
-				target="",
-				source=""
-			},
-			rochelle=
-			{
-				target="",
-				source=""
-			}
-		}
-
-		// Particle stuff
-		_saveLastParticle = 
-		{
-			bill=true,
-			francis=true,
-			louis=true,
-			zoey=true,
-			nick=true,
-			coach=true,
-			ellis=true,
-			rochelle=true
-		}
-
-		_savedParticle =
-		{
-			bill=
-			{
-				duration=-1,
-				source=""
-			},
-			francis=
-			{
-				duration=-1,
-				source=""
-			},
-			louis=
-			{
-				duration=-1,
-				source=""
-			},
-			zoey=
-			{
-				duration=-1,
-				source=""
-			},
-			nick=
-			{
-				duration=-1,
-				source=""
-			},
-			coach=
-			{
-				duration=-1,
-				source=""
-			},
-			ellis=
-			{
-				duration=-1,
-				source=""
-			},
-			rochelle=
-			{
-				duration=-1,
-				source=""
-			}
-		}
-
-		// Wheter to attach to looked location of the targeted entity
-		// if false then particle spawns at entity's origin
-		_attachTargetedLocation = 
-		{
-			bill=true,
-			francis=true,
-			louis=true,
-			zoey=true,
-			nick=true,
-			coach=true,
-			ellis=true,
-			rochelle=true
-		}
-
-		// To reduce menu amount
-		_preferred_duration =
-		{
-			bill=-1,
-			francis=-1,
-			louis=-1,
-			zoey=-1,
-			nick=-1,
-			coach=-1,
-			ellis=-1,
-			rochelle=-1
-		}
-
-		// Prop spawn_settings
-		_prop_spawn_settings_menu_type =
-		{
-			bill="all",
-			francis="all",
-			louis="all",
-			zoey="all",
-			nick="all",
-			coach="all",
-			ellis="all",
-			rochelle="all"
-		}
-
-		_prop_spawn_settings =
-		{
-			bill=
-			{
-				dynamic=	
-				{
-					spawn_height=0
-				},
-				physics=
-				{
-					spawn_height=0
-				},
-				ragdoll=
-				{
-					spawn_height=0
-				}
-			}
-			francis=
-			{
-				dynamic=
-				{
-					spawn_height=0
-				},
-				physics=
-				{
-					spawn_height=0
-				},
-				ragdoll=
-				{
-					spawn_height=0
-				}
-			},
-			louis=
-			{
-				dynamic=
-				{
-					spawn_height=0
-				},
-				physics=
-				{
-					spawn_height=0
-				},
-				ragdoll=
-				{
-					spawn_height=0
-				}
-			},
-			zoey=
-			{
-				dynamic=
-				{
-					spawn_height=0
-				},
-				physics=
-				{
-					spawn_height=0
-				},
-				ragdoll=
-				{
-					spawn_height=0
-				}
-			},
-			nick=
-			{
-				dynamic=
-				{
-					spawn_height=0
-				},
-				physics=
-				{
-					spawn_height=0
-				},
-				ragdoll=
-				{
-					spawn_height=0
-				}
-			},
-			coach=
-			{
-				dynamic=
-				{
-					spawn_height=0
-				},
-				physics=
-				{
-					spawn_height=0
-				},
-				ragdoll=
-				{
-					spawn_height=0
-				}
-			},
-			ellis=
-			{
-				dynamic=
-				{
-					spawn_height=0
-				},
-				physics=
-				{
-					spawn_height=0
-				},
-				ragdoll=
-				{
-					spawn_height=0
-				}
-			},
-			rochelle=
-			{
-				dynamic=
-				{
-					spawn_height=0
-				},
-				physics=
-				{
-					spawn_height=0
-				},
-				ragdoll=
-				{
-					spawn_height=0
-				}
-			}
-		}
-		
-		_looping =
-		{
-			bill=false,
-			francis=false,
-			louis=false,
-			zoey=false,
-			nick=false,
-			coach=false,
-			ellis=false,
-			rochelle=false
-		}
-		
-		_loopingTable =
-		{
-			bill={timername="",character="",sequence={}},
-			francis={timername="",character="",sequence={}},
-			louis={timername="",character="",sequence={}},
-			zoey={timername="",character="",sequence={}},
-			nick={timername="",character="",sequence={}},
-			coach={timername="",character="",sequence={}},
-			ellis={timername="",character="",sequence={}},
-			rochelle={timername="",character="",sequence={}}
-		}
-		
-		_spawnedPianoKeys = {}
-
-		_modelPreference =
-		{
-			bill=
-			{
-				keeplast = true,
-				lastmodel = "models/survivors/survivor_namvet.mdl"
-				original = "models/survivors/survivor_namvet.mdl"
-			},
-			francis=
-			{
-				keeplast = true,
-				lastmodel = "models/survivors/survivor_biker.mdl"
-				original = "models/survivors/survivor_biker.mdl"
-			},
-			louis=
-			{
-				keeplast = true,
-				lastmodel = "models/survivors/survivor_manager.mdl"
-				original = "models/survivors/survivor_manager.mdl"
-			},
-			zoey=
-			{
-				keeplast = true,
-				lastmodel = "models/survivors/survivor_teenangst.mdl"
-				original = "models/survivors/survivor_teenangst.mdl"
-			},
-			nick=
-			{
-				keeplast = true,
-				lastmodel = "models/survivors/survivor_gambler.mdl"
-				original = "models/survivors/survivor_gambler.mdl"
-			},
-			ellis=
-			{
-				keeplast = true,
-				lastmodel = "models/survivors/survivor_mechanic.mdl"
-				original = "models/survivors/survivor_mechanic.mdl"
-			},
-			coach=
-			{
-				keeplast = true,
-				lastmodel = "models/survivors/survivor_coach.mdl"
-				original = "models/survivors/survivor_coach.mdl"
-			},
-			rochelle=
-			{
-				keeplast = true,
-				lastmodel = "models/survivors/survivor_producer.mdl"
-				original = "models/survivors/survivor_producer.mdl"
-			},
-		}
-
-		IgnoreSpeakerClass = true
-		
-		_currentlyBeingTaken = {}
-	}
-	
+	Vars = Utils.TableCopy(::AdminVars)
 	ZombieModels =
 	[
 		"common_female_tankTop_jeans",
@@ -666,7 +102,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 
 ::AdminSystem.LoadAdmins <- function ()
 {
-	local fileContents = FileToString("admin system/admins.txt");
+	local fileContents = FileToString(Constants.Directories.Admins);
 	local admins = split(fileContents, "\r\n");
 	local searchForHost = true;
 	
@@ -695,7 +131,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
  */
 ::AdminSystem.LoadScriptAuths <- function ()
 {
-	local fileContents = FileToString("admin system/scriptauths.txt");
+	local fileContents = FileToString(Constants.Directories.ScriptAuths);
 	local auths = split(fileContents, "\r\n");
 	
 	foreach (auth in auths)
@@ -715,7 +151,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 
 ::AdminSystem.LoadBanned <- function ()
 {
-	local fileContents = FileToString("admin system/banned.txt");
+	local fileContents = FileToString(Constants.Directories.Banned);
 	local banned = split(fileContents, "\r\n");
 	
 	foreach (ban in banned)
@@ -748,10 +184,10 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		{
 			local value = cvar.slice( cvar.find(" ") );
 			value = Utils.StringReplace( value, " ", "" );
-			value = Utils.StringReplace( value, "\"", "" );
+			value = Utils.StringReplace( value, "\"", "" ); //"
 			local command = Utils.StringReplace( cvar, value, "" );
 			command = Utils.StringReplace( command, " ", "" );
-			command = Utils.StringReplace( command, "\"", "" );
+			command = Utils.StringReplace( command, "\"", "" ); //"
 			
 			if ( cvar.find("scripted_user_func") == null )
 				Convars.SetValue( command, value );
@@ -781,7 +217,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 
 ::AdminSystem.LoadSettings <- function ()
 {
-	local fileContents = FileToString("admin system/settings.txt");
+	local fileContents = FileToString(Constants.Directories.Settings);
 	local settings = split(fileContents, "\r\n");
 	
 	foreach (setting in settings)
@@ -805,7 +241,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
  */
 ::AdminSystem.LoadApocalypseSettings <- function ()
 {
-	local fileContents = FileToString("admin system/apocalypse_settings.txt");
+	local fileContents = FileToString(Constants.Directories.ApocalypseSettings);
 	local settings = split(fileContents, "\r\n");
 	
 	if(!("_propageddon_args" in AdminSystem))
@@ -828,7 +264,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
  */
 ::AdminSystem.LoadShowerSettings <- function ()
 {
-	local fileContents = FileToString("admin system/meteor_shower_settings.txt");
+	local fileContents = FileToString(Constants.Directories.MeteorShowerSettings);
 	local settings = split(fileContents, "\r\n");
 	
 	if(!("_meteor_shower_args" in AdminSystem))
@@ -851,20 +287,21 @@ Convars.SetValue( "precache_all_survivors", "1" );
  */
 ::AdminSystem.SaveApocalypseSettings <- function ()
 {
-	local fileContents = FileToString("admin system/apocalypse_settings.txt");
+	local fileContents = FileToString(Constants.Directories.ApocalypseSettings);
 	local filesettings = split(fileContents, "\r\n");
 
+	local comments = Constants.GetApocalypseSettingsComments();
 	local newstring = "";
 	local length = AdminSystem._propageddon_args.len()-1;
 	local i = 0;
 	foreach (setting,val in AdminSystem._propageddon_args)
 	{	
-		newstring += setting + " = " + val.tostring() + " // " + AdminSystem._propageddon_args_comments[setting];
+		newstring += setting + " = " + val.tostring() + " // " + comments[setting];
 
 		if(i < length)
 			newstring += " \r\n"
 	}
-	StringToFile("admin system/apocalypse_settings.txt", newstring);
+	StringToFile(Constants.Directories.ApocalypseSettings, newstring);
 }
 
 /*
@@ -872,9 +309,10 @@ Convars.SetValue( "precache_all_survivors", "1" );
  */
 ::AdminSystem.SaveShowerSettings <- function ()
 {
-	local fileContents = FileToString("admin system/meteor_shower_settings.txt");
+	local fileContents = FileToString(Constants.Directories.MeteorShowerSettings);
 	local filesettings = split(fileContents, "\r\n");
 
+	local comments = Constants.GetMeteorShowerSettingsComments();
 	local newstring = "";
 	local length = AdminSystem._meteor_shower_args.len()-1;
 	local i = 0;
@@ -882,15 +320,15 @@ Convars.SetValue( "precache_all_survivors", "1" );
 	{	
 		if(val.tostring() == "")
 			val = "\"\""
-		newstring += setting + " = " + val.tostring() + " // " + AdminSystem._meteor_shower_comments[setting];
+		newstring += setting + " = " + val.tostring() + " // " + comments[setting];
 		
 		if(i < length)
 			newstring += " \r\n"
 	}
-	StringToFile("admin system/meteor_shower_settings.txt", newstring);
+	StringToFile(Constants.Directories.MeteorShowerSettings, newstring);
 }
 
-::AdminSystem.IsPrivileged <- function ( player )
+::AdminSystem.IsPrivileged <- function ( player, silent = false)
 {
 	if ( Director.IsSinglePlayerGame() || player.IsServerHost() )
 		return true;
@@ -903,8 +341,8 @@ Convars.SetValue( "precache_all_survivors", "1" );
 	
 	if ( !(steamid in ::AdminSystem.Admins) && AdminSystem.Vars.AllowAdminsOnly )
 	{
-		if ( AdminSystem.DisplayMsgs )
-			Utils.PrintToAllDel("You ain't got no access to admin commands "+player.GetName()+"("+player.GetSteamID()+")!");
+		if ( AdminSystem.DisplayMsgs && !silent )
+			Messages.BIM.IsPrivileged.NoAccess(player);
 		return false;
 	}
 
@@ -922,7 +360,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 	if ( !(steamid in ::AdminSystem.Admins) )
 	{
 		if ( AdminSystem.DisplayMsgs )
-			Utils.PrintToAllDel("Sorry, only Admins have access to this command.");
+			Messages.BIM.IsAdmin.NoAccess(player);
 		return false;
 	}
 
@@ -943,7 +381,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 	if ( !(steamid in ::AdminSystem.ScriptAuths) )
 	{
 		if ( AdminSystem.DisplayMsgs )
-			Utils.PrintToAllDel(player.GetCharacterName()+"("+steamid+") doesn't have script authorization");
+			Messages.BIM.HasScriptAuth.NoAccess(player);
 		return false;
 	}
 
@@ -973,8 +411,8 @@ Convars.SetValue( "precache_all_survivors", "1" );
 
 	Timers.RemoveTimerByName( "KickTimer" + AdminSystem.GetID( player ).tostring() );
 	if ( AdminSystem.DisplayMsgs )
-		Utils.PrintToAllDel("%s has been kicked for being idle too long.", player.GetName());
-	SendToServerConsole( "kickid " + steamid + " You've been kicked for being idle too long" );
+		Messages.BIM.KickPlayer.Idle(player);
+	SendToServerConsole( "kickid " + steamid + Messages.BIM.KickPlayer.KickedMessage() );
 }
 
 ::AdminSystem.CalculateFly <- function ( player )
@@ -1015,1169 +453,97 @@ function EasyLogic::OnShutdown::AdminSaveData( reason, nextmap )
 
 function Notifications::OnRoundStart::AdminLoadFiles()
 {
-	local adminList = FileToString("admin system/admins.txt");
-	local scriptauthList = FileToString("admin system/scriptauths.txt");
-	local banList = FileToString("admin system/banned.txt");
-	local settingList = FileToString("admin system/settings.txt");
-	local apocsettings = FileToString("admin system/apocalypse_settings.txt");
-	local metosettings = FileToString("admin system/meteor_shower_settings.txt");
+	local adminList = FileToString(Constants.Directories.Admins);
+	local scriptauthList = FileToString(Constants.Directories.ScriptAuths);
+	local banList = FileToString(Constants.Directories.Banned);
+	local settingList = FileToString(Constants.Directories.Settings);
+	local apocsettings = FileToString(Constants.Directories.ApocalypseSettings);
+	local metosettings = FileToString(Constants.Directories.MeteorShowerSettings);
+
+	local MessageTable = Messages.BIM.Events.OnRoundStart.AdminLoadFiles;
 
 	if ( adminList != null )
 	{
-		printf("[Admins] Loading admin list...");
+		MessageTable.LoadAdmins();
 		AdminSystem.LoadAdmins();
 	}
 	if ( scriptauthList != null )
 	{
-		printf("[Script-auth] Loading script authorization list...");
+		MessageTable.LoadScriptAuths();
 		AdminSystem.LoadScriptAuths();
 	}
 	if ( banList != null )
 	{
-		printf("[Banned] Loading ban list...");
+		MessageTable.LoadBanned();
 		AdminSystem.LoadBanned();
 	}
 	if ( settingList != null )
 	{
-		printf("[Settings] Loading settings...");
+		MessageTable.LoadSettings();
 		AdminSystem.LoadSettings();
 	}
 	else
 	{
-		settingList = "AdminsOnly = true\nDisplayMsgs = true\nEnableIdleKick = false\nIdleKickTime = 60\nAdminPassword = \"\"";
-		StringToFile("admin system/settings.txt", settingList);
+		MessageTable.CreateSettings();
+		StringToFile(Constants.Directories.Settings, Constants.Defaults.Settings);
 	}
 
 	if ( apocsettings != null )
 	{
-		printf("[Apocalypse-Settings] Loading apocalypse settings...");
+		MessageTable.LoadApocalypseSettings();
 		AdminSystem.LoadApocalypseSettings();
 	}
 	else
 	{	
-		printl("[Apocalypse-Settings] Creating the setting file for the first time...")
-		apocsettings  = "maxradius = 850 // maximum radius to apply forces \r\n";
-		apocsettings += "updatedelay = 1.5 // how often to update entity list in seconds \r\n";
-		apocsettings += "mindelay = 0.5 // minimum delay to apply propageddon function \r\n";
-		apocsettings += "maxdelay = 2 // maximum delay to apply propageddon function \r\n";
-		apocsettings += "minspeed = 800 // minimum speed of pushed entities \r\n";
-		apocsettings += "maxspeed = 24000 // maximum speed of pushed entities \r\n";
-		apocsettings += "dmgmin = 5 // minimum damage done to entity \r\n";
-		apocsettings += "dmgmax = 100 // maximum damage done to entity \r\n";
-		apocsettings += "dmgprob = 0.3 // probability of entity getting damaged \r\n";
-		apocsettings += "expmaxradius = 300 // explosion radius maximum \r\n";
-		apocsettings += "expdmgmin = 5 // explosion damage minimum \r\n";
-		apocsettings += "expdmgmax = 40 // explosion damage maximum \r\n";
-		apocsettings += "expprob = 0.022 // probability of explosion \r\n";
-		apocsettings += "breakprob = 0.04 // probability of entity being broken \r\n";
-		apocsettings += "doorlockprob = 0.02 // probability of doors getting locked, saferoom doors excluded \r\n";
-		apocsettings += "ropebreakprob = 0.05 // probability of a cable or sorts to be broken from its connection point \r\n";
-		apocsettings += "entprob = 0.6 // probability of an entity being chosen within the radius \r\n";
-		apocsettings += "debug = 0 // Print which entities are effected";
-
-		StringToFile("admin system/apocalypse_settings.txt", apocsettings);
+		MessageTable.CreateApocalypseSettings();
+		StringToFile(Constants.Directories.ApocalypseSettings, Constants.Defaults.ApocalypseSettings);
 	}
 
 	if ( metosettings != null )
 	{
-		printf("[Meteor_Shower-Settings] Loading meteor shower settings...");
+		MessageTable.LoadMeteorShowerSettings();
 		AdminSystem.LoadShowerSettings();
 	}
 	else
 	{	
-		printl("[Meteor_Shower-Settings] Creating the setting file for the first time...")
-		
-		metosettings  = "maxradius = 900 // maximum radius to pick a random meteor attack point \r\n"
-		metosettings += "minspawnheight = 550 // minimum spawn height for meteors \r\n"
-		metosettings += "updatedelay = 2 // how often to create a meteor \r\n"
-		metosettings += "mindelay = 0.5 // minimum extra delay to apply each spawn tick \r\n"
-		metosettings += "maxdelay = 1 // maximum extra delay to apply each spawn tick \r\n"
-		metosettings += "maxexplosiondelay = 10 // maximum lifetime for a meteor, if meteor is still valid after this delay, it explodes \r\n"
-		metosettings += "minspeed = 1500 // minimum meteor speed \r\n"
-		metosettings += "maxspeed = 7000 // maximum speed \r\n"
-		metosettings += "expmaxradius = 300 // maximum explosion radius caused by the meteor \r\n"
-		metosettings += "expdmgmin = 3 // minimum explosion damage caused to closeby entities \r\n"
-		metosettings += "expdmgmax = 20 // maximum explosion damage caused to closeby entities \r\n"
-		metosettings += "expprob = 0.9	// probability of the meteor exploding"
-		metosettings += "scatterprob = 0.55 // probability of the meteor scattering into smaller pieces after hitting the ground \r\n"
-		metosettings += "minscatterchunk = 4 // minimum amount of smaller chunks created if scattering probably was met \r\n"
-		metosettings += "maxscatterchunk = 15 // maximum amount of smaller chunks created \r\n"
-		metosettings += "meteormodelspecific = \"\" // specific model for meteors \r\n"
-		metosettings += "meteormodelpick = 0 // enumerated: RANDOM_ROCK = 0, RANDOM_CUSTOM = 1, FIRST_CUSTOM = 2, LAST_CUSTOM = 3, SPECIFIC = 4 \r\n"
-		metosettings += "debug = 0 // Print meteor spawn and hit points, explosions, scatters and breaks"
-
-		StringToFile("admin system/meteor_shower_settings.txt", metosettings);
+		MessageTable.CreateMeteorShowerSettings();
+		StringToFile(Constants.Directories.MeteorShowerSettings, Constants.Defaults.MeteorShowerSettings);
 	}
 
 	RestoreTable( "admin_variable_data", ::AdminSystem.Vars );
-	
+	IncludeScript("Admin_System/AdminVars");
+
 	if (::AdminSystem.Vars == null)
 	{
-		printl("[Vars] Creating new vars table...");
-		::AdminSystem.Vars <-
-		{
-			IsBashDisabled = {}
-			IsBashLimited = {}
-			IsNoclipEnabled = {}
-			IsFlyingEnabled = {}
-			IsGodEnabled = {}
-			IsInfiniteAmmoEnabled = {}
-			IsUnlimitedAmmoEnabled = {}
-			IsInfiniteExplosiveAmmoEnabled = {}
-			IsInfiniteIncendiaryAmmoEnabled = {}
-			IsInfiniteLaserSightsEnabled = {}
-			EnabledGodInfected = false
-			EnabledGodSI = false
-			DirectorDisabled = false
-			AllowAdminsOnly = true
-
-			RestoreModelsOnJoin = true
-
-			IgnoreDeletingPlayers = true
-
-			AllowCustomResponses = true
-
-			AllowCustomSharing = true
-
-			AllowAutomatedSharing = true
-
-			_LastLootThinkState = true
-
-			CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle","","survivor"]
-			
-			CharacterNamesLower = ["bill","francis","louis","zoey","nick","ellis","coach","rochelle","","survivor"]
-
-			// Parameters for grabbing, letting go, yeeting entities
-
-			_grabRadiusTolerance = 30
-
-			_grabAvailable = 
-			{
-				player = true,
-				prop_dynamic = true,
-				prop_dynamic_override = true,
-				prop_physics = true,
-				prop_physics_override = true,
-				prop_physics_multiplayer = true,
-				prop_vehicle = true,
-				prop_car_alarm = true,
-				prop_door_rotating = true,
-				prop_door_rotating_checkpoint = true
-			}
-
-			_heldEntity =
-			{
-				bill=
-				{
-					entid="",
-					yeetSpeed = 1500.0,
-					yeetPitch = -10,
-					grabRange = 170,
-					grabHeightBelowEyes = 30,
-					grabDistMin = 75,
-					grabAttachPos = "forward",
-					grabByAimedPart = 1
-				},
-				francis=
-				{
-					entid="",
-					yeetSpeed = 1500.0,
-					yeetPitch = -10,
-					grabRange = 170,
-					grabHeightBelowEyes = 30,
-					grabDistMin = 75,
-					grabAttachPos = "forward",
-					grabByAimedPart = 1
-				},
-				louis=
-				{
-					entid="",
-					yeetSpeed = 1500.0,
-					yeetPitch = -10,
-					grabRange = 170,
-					grabHeightBelowEyes = 30,
-					grabDistMin = 75,
-					grabAttachPos = "forward",
-					grabByAimedPart = 1
-				},
-				zoey=
-				{
-					entid="",
-					yeetSpeed = 1500.0,
-					yeetPitch = -10,
-					grabRange = 170,
-					grabHeightBelowEyes = 30,
-					grabDistMin = 75,
-					grabAttachPos = "forward",
-					grabByAimedPart = 1
-				},
-				nick=
-				{
-					entid="",
-					yeetSpeed = 1500.0,
-					yeetPitch = -10,
-					grabRange = 170,
-					grabHeightBelowEyes = 30,
-					grabDistMin = 75,
-					grabAttachPos = "forward",
-					grabByAimedPart = 1
-				},
-				coach=
-				{
-					entid="",
-					yeetSpeed = 1500.0,
-					yeetPitch = -10,
-					grabRange = 170,
-					grabHeightBelowEyes = 30,
-					grabDistMin = 75,
-					grabAttachPos = "forward",
-					grabByAimedPart = 1
-				},
-				ellis=
-				{
-					entid="",
-					yeetSpeed = 1500.0,
-					yeetPitch = -10,
-					grabRange = 170,
-					grabHeightBelowEyes = 30,
-					grabDistMin = 75,
-					grabAttachPos = "forward",
-					grabByAimedPart = 1
-				},
-				rochelle=
-				{
-					entid="",
-					yeetSpeed = 1500.0,
-					yeetPitch = -10,
-					grabRange = 170,
-					grabHeightBelowEyes = 30,
-					grabDistMin = 75,
-					grabAttachPos = "forward",
-					grabByAimedPart = 1
-				}
-			}
-
-			_wornHat =
-			{
-				bill=
-				{
-					entid="",
-					wearAttachPos = "eyes",
-					wearAbove = 5,
-					collisiongroup = 0
-				},
-				francis=
-				{
-					entid="",
-					wearAttachPos = "eyes",
-					wearAbove = 5,
-					collisiongroup = 0
-				},
-				louis=
-				{
-					entid="",
-					wearAttachPos = "eyes",
-					wearAbove = 5,
-					collisiongroup = 0
-				},
-				zoey=
-				{
-					entid="",
-					wearAttachPos = "eyes",
-					wearAbove = 5,
-					collisiongroup = 0
-				},
-				nick=
-				{
-					entid="",
-					wearAttachPos = "eyes",
-					wearAbove = 5,
-					collisiongroup = 0
-				},
-				coach=
-				{
-					entid="",
-					wearAttachPos = "eyes",
-					wearAbove = 5,
-					collisiongroup = 0
-				},
-				ellis=
-				{
-					entid="",
-					wearAttachPos = "eyes",
-					wearAbove = 5,
-					collisiongroup = 0
-				},
-				rochelle=
-				{
-					entid="",
-					wearAttachPos = "eyes",
-					wearAbove = 5,
-					collisiongroup = 0
-				}
-			}
-
-			// Chat output state
-			_outputsEnabled = 
-			{
-				bill=false,
-				francis=false,
-				louis=false,
-				zoey=false,
-				nick=false,
-				coach=false,
-				ellis=false,
-				rochelle=false
-			}
-
-			// Randomline stuff
-			_saveLastLine = 
-			{
-				bill=true,
-				francis=true,
-				louis=true,
-				zoey=true,
-				nick=true,
-				coach=true,
-				ellis=true,
-				rochelle=true
-			}
-
-			_savedLine =
-			{
-				bill=
-				{
-					target="",
-					source=""
-				},
-				francis=
-				{
-					target="",
-					source=""
-				},
-				louis=
-				{
-					target="",
-					source=""
-				},
-				zoey=
-				{
-					target="",
-					source=""
-				},
-				nick=
-				{
-					target="",
-					source=""
-				},
-				coach=
-				{
-					target="",
-					source=""
-				},
-				ellis=
-				{
-					target="",
-					source=""
-				},
-				rochelle=
-				{
-					target="",
-					source=""
-				}
-			}
-
-			// Particle stuff
-			_saveLastParticle = 
-			{
-				bill=true,
-				francis=true,
-				louis=true,
-				zoey=true,
-				nick=true,
-				coach=true,
-				ellis=true,
-				rochelle=true
-			}
-
-			_savedParticle =
-			{
-				bill=
-				{
-					duration=-1,
-					source=""
-				},
-				francis=
-				{
-					duration=-1,
-					source=""
-				},
-				louis=
-				{
-					duration=-1,
-					source=""
-				},
-				zoey=
-				{
-					duration=-1,
-					source=""
-				},
-				nick=
-				{
-					duration=-1,
-					source=""
-				},
-				coach=
-				{
-					duration=-1,
-					source=""
-				},
-				ellis=
-				{
-					duration=-1,
-					source=""
-				},
-				rochelle=
-				{
-					duration=-1,
-					source=""
-				}
-			}
-
-			// Wheter to attach to looked location of the targeted entity
-			// if false then particle spawns at entity's origin
-			_attachTargetedLocation = 
-			{
-				bill=true,
-				francis=true,
-				louis=true,
-				zoey=true,
-				nick=true,
-				coach=true,
-				ellis=true,
-				rochelle=true
-			}
-
-			// To reduce menu amount
-			_preferred_duration =
-			{
-				bill=-1,
-				francis=-1,
-				louis=-1,
-				zoey=-1,
-				nick=-1,
-				coach=-1,
-				ellis=-1,
-				rochelle=-1
-			}
-
-			// Prop spawn_settings
-			_prop_spawn_settings_menu_type =
-			{
-				bill="all",
-				francis="all",
-				louis="all",
-				zoey="all",
-				nick="all",
-				coach="all",
-				ellis="all",
-				rochelle="all"
-			}
-
-			_prop_spawn_settings =
-			{
-				bill=
-				{
-					dynamic=	
-					{
-						spawn_height=0
-					},
-					physics=
-					{
-						spawn_height=0
-					},
-					ragdoll=
-					{
-						spawn_height=0
-					}
-				}
-				francis=
-				{
-					dynamic=
-					{
-						spawn_height=0
-					},
-					physics=
-					{
-						spawn_height=0
-					},
-					ragdoll=
-					{
-						spawn_height=0
-					}
-				},
-				louis=
-				{
-					dynamic=
-					{
-						spawn_height=0
-					},
-					physics=
-					{
-						spawn_height=0
-					},
-					ragdoll=
-					{
-						spawn_height=0
-					}
-				},
-				zoey=
-				{
-					dynamic=
-					{
-						spawn_height=0
-					},
-					physics=
-					{
-						spawn_height=0
-					},
-					ragdoll=
-					{
-						spawn_height=0
-					}
-				},
-				nick=
-				{
-					dynamic=
-					{
-						spawn_height=0
-					},
-					physics=
-					{
-						spawn_height=0
-					},
-					ragdoll=
-					{
-						spawn_height=0
-					}
-				},
-				coach=
-				{
-					dynamic=
-					{
-						spawn_height=0
-					},
-					physics=
-					{
-						spawn_height=0
-					},
-					ragdoll=
-					{
-						spawn_height=0
-					}
-				},
-				ellis=
-				{
-					dynamic=
-					{
-						spawn_height=0
-					},
-					physics=
-					{
-						spawn_height=0
-					},
-					ragdoll=
-					{
-						spawn_height=0
-					}
-				},
-				rochelle=
-				{
-					dynamic=
-					{
-						spawn_height=0
-					},
-					physics=
-					{
-						spawn_height=0
-					},
-					ragdoll=
-					{
-						spawn_height=0
-					}
-				}
-			}
-
-			_looping =
-			{
-				bill=false,
-				francis=false,
-				louis=false,
-				zoey=false,
-				nick=false,
-				coach=false,
-				ellis=false,
-				rochelle=false
-			}
-
-			_loopingTable =
-			{
-				bill={timername="",character="",sequence={}},
-				francis={timername="",character="",sequence={}},
-				louis={timername="",character="",sequence={}},
-				zoey={timername="",character="",sequence={}},
-				nick={timername="",character="",sequence={}},
-				coach={timername="",character="",sequence={}},
-				ellis={timername="",character="",sequence={}},
-				rochelle={timername="",character="",sequence={}}
-			}
-
-			IgnoreSpeakerClass = true
-
-			_explosion_settings =
-			{
-				bill=
-				{
-					delay=1
-					effect_name="flame_blue"
-					dmgmin = 10
-					dmgmax = 30
-					radiusmin = 300
-					radiusmax = 450
-					minpushspeed = 2500
-					maxpushspeed = 10000
-				},
-				francis=
-				{
-					delay=1
-					effect_name="flame_blue"
-					dmgmin = 10
-					dmgmax = 30
-					radiusmin = 300
-					radiusmax = 450
-					minpushspeed = 2500
-					maxpushspeed = 10000
-					
-				},
-				louis=
-				{
-					delay=1
-					effect_name="flame_blue"
-					dmgmin = 10
-					dmgmax = 30
-					radiusmin = 300
-					radiusmax = 450
-					minpushspeed = 2500
-					maxpushspeed = 10000
-					
-				},
-				zoey=
-				{
-					delay=1
-					effect_name="flame_blue"
-					dmgmin = 10
-					dmgmax = 30
-					radiusmin = 300
-					radiusmax = 450
-					minpushspeed = 2500
-					maxpushspeed = 10000
-					
-				},
-				nick=
-				{
-					delay=1
-					effect_name="flame_blue"
-					dmgmin = 10
-					dmgmax = 30
-					radiusmin = 300
-					radiusmax = 450
-					minpushspeed = 2500
-					maxpushspeed = 10000
-					
-				},
-				coach=
-				{
-					delay=1
-					effect_name="flame_blue"
-					dmgmin = 10
-					dmgmax = 30
-					radiusmin = 300
-					radiusmax = 450
-					minpushspeed = 2500
-					maxpushspeed = 10000
-					
-				},
-				ellis=
-				{
-					delay=1
-					effect_name="flame_blue"
-					dmgmin = 10
-					dmgmax = 30
-					radiusmin = 300
-					radiusmax = 450
-					minpushspeed = 2500
-					maxpushspeed = 10000
-					
-				},
-				rochelle=
-				{
-					delay=1
-					effect_name="flame_blue"
-					dmgmin = 10
-					dmgmax = 30
-					radiusmin = 300
-					radiusmax = 450
-					minpushspeed = 2500
-					maxpushspeed = 10000
-					
-				}
-			}
-			
-			_modelPreference =
-			{
-				bill=
-				{
-					keeplast = true,
-					lastmodel = "models/survivors/survivor_namvet.mdl"
-					original = "models/survivors/survivor_namvet.mdl"
-				},
-				francis=
-				{
-					keeplast = true,
-					lastmodel = "models/survivors/survivor_biker.mdl"
-					original = "models/survivors/survivor_biker.mdl"
-				},
-				louis=
-				{
-					keeplast = true,
-					lastmodel = "models/survivors/survivor_manager.mdl"
-					original = "models/survivors/survivor_manager.mdl"
-				},
-				zoey=
-				{
-					keeplast = true,
-					lastmodel = "models/survivors/survivor_teenangst.mdl"
-					original = "models/survivors/survivor_teenangst.mdl"
-				},
-				nick=
-				{
-					keeplast = true,
-					lastmodel = "models/survivors/survivor_gambler.mdl"
-					original = "models/survivors/survivor_gambler.mdl"
-				},
-				ellis=
-				{
-					keeplast = true,
-					lastmodel = "models/survivors/survivor_mechanic.mdl"
-					original = "models/survivors/survivor_mechanic.mdl"
-				},
-				coach=
-				{
-					keeplast = true,
-					lastmodel = "models/survivors/survivor_coach.mdl"
-					original = "models/survivors/survivor_coach.mdl"
-				},
-				rochelle=
-				{
-					keeplast = true,
-					lastmodel = "models/survivors/survivor_producer.mdl"
-					original = "models/survivors/survivor_producer.mdl"
-				},
-			}
-
-			_CustomResponse =
-			{
-				bill = 
-				{
-					_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.bill,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-					
-					_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-					
-					_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.bill,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-				}
-
-				francis = 
-				{
-					_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.francis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-					
-					_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.15,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-
-					_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.francis,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-				}
-
-				louis = 
-				{
-					_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.louis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-					
-					_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-					
-					_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.louis,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-				}
-
-				zoey = 
-				{
-					_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.zoey,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-					
-					_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-					
-					_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.zoey,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-				}
-
-				nick = 
-				{
-					_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.nick,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-					
-					_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-					
-					_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.nick,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-				}
-
-				ellis = 
-				{
-					_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.ellis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-					
-					_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.15,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-					
-					_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.ellis,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-				}
-
-				coach = 
-				{
-					_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.coach,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-					
-					_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-					
-					_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.coach,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-				}
-
-				rochelle = 
-				{
-					_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.rochelle,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-					
-					_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-					
-					_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.rochelle,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-				}
-			}
-
-			_CustomResponseOptions =
-			{	
-				bill = {}
-				
-				francis = 
-				{
-					_SpeakWhenLeftSaferoom = 
-					{
-						enabled = true
-						prob = 0.15
-						order = SCENES.RANDOM
-						sequence =
-						{
-							smokboomer1=
-							{   // "Well hell, let's all- Smok- Booooomer!"
-								scenes=["followme08.vcd","warnsmoker03.vcd","warnboomer03.vcd"]
-								delays=[0, 1.7, 2.45 ]
-							}
-
-							hateboomerbill1=
-							{   // "If there's one thing I hate more than vampires, it's- Boomer- Bill"
-								scenes=["dlc2canadahate02.vcd","warnboomer01.vcd","namebill01.vcd"]
-								delays=[0, 3.3, 4]
-							}
-
-							signsayshateboomerbill1=
-							{   // "This sign says, "I hate- Bill!" "
-								scenes=["dlc2bulletinboard01.vcd","namebill02.vcd"]
-								delays=[0, 1.85]
-							}
-
-							lookingforwardtosmokbill1=
-							{   // "I was getting tired of being cooped up, looking forward to- Smok- Boomer- Bill!"
-								scenes=["c6dlc3intro28.vcd","warnsmoker03.vcd","warnboomer02.vcd","namebill02.vcd"]
-								delays=[0, 3.4, 4.1, 4.7]
-							}
-
-							signsaysdead=
-							{   // "This sign says, -"...Dead"- AAAAAAAAAAAAAAAAAAA
-								scenes=["dlc2bulletinboard01.vcd","killconfirmation05.vcd","fall02.vcd"]
-								delays=[0, 1.1, 2.2]
-							}
-
-							hatelouis1=
-							{   // "If there's one thing I hate more than vampires, it's- Louis"
-								scenes=["dlc2canadahate02.vcd","namelouis01.vcd"]
-								delays=[0, 3.3]
-							}
-
-							louislookshit1=
-							{   // "Louis you look like shit!"
-								scenes=["generic30.vcd"]
-								delays=[0]
-							}
-						}
-					}
-				}
-
-				louis = {}
-
-				zoey = {}
-
-				nick = {}	
-				
-				ellis = 
-				{
-					_SpeakWhenLeftSaferoom = 
-					{
-						enabled = true
-						prob = 0.1
-						order = SCENES.RANDOM
-						sequence =
-						{	
-							ilovecrack1=
-							{   // "Man I hate them zombies but I loooooove- Crack!"
-								scenes=["meleeresponse08.vcd","boomerjar17.vcd"]
-								delays=[2.55,0]
-							}
-						}
-					}
-				}
-
-				coach = {}
-
-				rochelle = {}
-			}
-
-			_meteor_shower_state = 0
-
-			_meteor_models =
-			{
-				_rocks = 
-				[
-					"models/props/cs_militia/militiarock02.mdl",
-					"models/props/cs_militia/militiarock03.mdl",
-					"models/props/cs_militia/militiarock05.mdl",
-					"models/props_wasteland/rock_moss01.mdl",
-					"models/props_wasteland/rock_moss02.mdl",
-					"models/props_wasteland/rock_moss03.mdl",
-					"models/props_wasteland/rock_moss04.mdl",
-					"models/props_wasteland/rock_moss05.mdl",
-					"models/props_wasteland/rockcliff07b.mdl"
-				]
-
-				_chunks = 
-				[
-					"models/props_debris/concrete_chunk02a.mdl",
-					"models/props_debris/concrete_chunk07a.mdl",
-					"models/props_interiors/concretepiller01_dm01_4.mdl",
-					"models/props_unique/zombiebreakwallinterior01_concrete_dm_part03.mdl",
-					"models/props_unique/zombiebreakwallinterior01_concrete_dm_part04.mdl",
-					"models/lostcoast/props_wasteland/rock_coast01e.mdl",
-					"models/lostcoast/props_wasteland/rock_cliff02a.mdl",
-					"models/lostcoast/props_wasteland/rock_cliff02b.mdl",
-					"models/lostcoast/props_wasteland/rock_cliff02c.mdl",
-					"models/lostcoast/props_wasteland/rock_cliff02d.mdl"
-				]
-
-				_custom = []
-			}
-
-			_currentlyBeingTaken = {}
-		}
+		MessageTable.CreateVars();
+		::AdminSystem.Vars <- Utils.TableCopy(::AdminVars);
 	}
 	else
 	{
 		if ( AdminSystem.Vars.DirectorDisabled )
 			Utils.StopDirector();
 		
-		printl("[Vars] Restoring existing vars table...");
+		MessageTable.RestoreVars();
+		
+		::AdminVars.FixRestoredTableFunctions(::AdminSystem.Vars,::AdminVars);
 
-		AdminSystem.Vars.CharacterNames = ["Bill","Francis","Louis","Zoey","Nick","Ellis","Coach","Rochelle","","survivor"]
-			
-		AdminSystem.Vars.CharacterNamesLower = ["bill","francis","louis","zoey","nick","ellis","coach","rochelle","","survivor"]
+		::AdminSystem.Vars.SetDefaultCharNames(::AdminSystem.Vars);
 
-		AdminSystem.Vars._looping =
-		{
-			bill=false,
-			francis=false,
-			louis=false,
-			zoey=false,
-			nick=false,
-			coach=false,
-			ellis=false,
-			rochelle=false
-		}
+		::AdminSystem.Vars.SetDefaultLoopingSettings(::AdminSystem.Vars);
 
-		AdminSystem.Vars._loopingTable =
-		{
-			bill={timername="",character="",sequence={}},
-			francis={timername="",character="",sequence={}},
-			louis={timername="",character="",sequence={}},
-			zoey={timername="",character="",sequence={}},
-			nick={timername="",character="",sequence={}},
-			coach={timername="",character="",sequence={}},
-			ellis={timername="",character="",sequence={}},
-			rochelle={timername="",character="",sequence={}}
-		}
-
-		printl("[Custom-Loop] Stopped all custom loops");
+		::AdminSystem.Vars.SetDefaultPianoSettings(::AdminSystem.Vars);
 
 		// Remove ladder teams table
 		if(("_ladderteams" in AdminSystem.Vars))
-			delete AdminSystem.Vars._ladderteams;
-		
-		printl("[Custom-Loop] Reset all ladder teams");
-
-		// Piano keys
-		if(!("_spawnedPianoKeys" in AdminSystem.Vars))
-			AdminSystem.Vars._spawnedPianoKeys <- {};
-		else
-			AdminSystem.Vars._spawnedPianoKeys = {};
-		
-		printl("[Custom-Loop] Reset all spawned piano keys");
+			delete ::AdminSystem.Vars._ladderteams;
 	}
 	
-	foreach(name,optiontable in AdminSystem.Vars._CustomResponseOptions)
-	{
-		foreach(event,settings in optiontable)
-		{
-			if(event.find("STEAM")!=null)
-			{
-				continue;
-			}
-			else
-			{
-				foreach(setting,value in settings)
-				{
-					AdminSystem.Vars._CustomResponse[name][event][setting] = value;
-				}
-			}
-			
-		}
-	}
+	::AdminSystem.Vars.EnableCustomResponses(::AdminSystem.Vars);
 	
-	printl("[Spectators] Enabling commands for spectator admins...");
+	MessageTable.EnableSpecAndOther();
 
-	foreach(spec in {spectator = "", extrasurvivor = "survivor"})
-	{
-		AdminSystem._GrabControl[spec] <- 
-		{
-			keymask = 0
-			listenerid = -1
-		};
-		AdminSystem._CarControl[spec] <- 
-		{
-			keymask = 0
-			forward = Vector(0,0,0)
-			speed = 400.0
-			reversescale = -4
-			speedscale = 2.75
-			overridefriction = 0.05
-			turnpertick = 7
-			listenerid = -1
-		};
+	::AdminSystem.Vars.EnableCommandsForSpecsAndOthers(::AdminSystem.Vars,::AdminSystem);
 
-		AdminSystem.Vars._outputsEnabled[spec] <- false;
-
-		AdminSystem.Vars._loopingTable[spec] <- 
-		{
-			timername="",
-			character="",
-			sequence={}
-		};
-		AdminSystem.Vars._looping[spec] <- false;
-		
-		AdminSystem.Vars._savedParticle[spec] <- 
-		{
-			duration=-1,
-			source=""
-		};
-		AdminSystem.Vars._saveLastParticle[spec] <- true;
-		
-		AdminSystem.Vars._savedLine[spec] <- 
-		{
-			target="",
-			source=""
-		};
-		AdminSystem.Vars._saveLastLine[spec] <- true;
-
-		AdminSystem.Vars._wornHat[spec] <- 
-		{
-			entid="",
-			wearAttachPos = "eyes",
-			wearAbove = 5,
-			collisiongroup = 0
-		};
-
-		AdminSystem.Vars._heldEntity[spec] <- 
-		{
-			entid="",
-			yeetSpeed = 1500.0,
-			yeetPitch = -10,
-			grabRange = 170,
-			grabHeightBelowEyes = 30,
-			grabDistMin = 75,
-			grabAttachPos = "forward",
-			grabByAimedPart = 1
-		};
-
-		AdminSystem.Vars._explosion_settings[spec] <- 
-		{
-			delay=1
-			effect_name="flame_blue"
-			dmgmin = 10
-			dmgmax = 30
-			radiusmin = 300
-			radiusmax = 450
-			minpushspeed = 2500
-			maxpushspeed = 10000
-		};
-		
-		AdminSystem.Vars._prop_spawn_settings[spec] <- 
-		{
-			dynamic=	
-			{
-				spawn_height=0
-			},
-			physics=
-			{
-				spawn_height=0
-			},
-			ragdoll=
-			{
-				spawn_height=0
-			}
-		};
-
-		AdminSystem.Vars._prop_spawn_settings_menu_type[spec] <- "all";
-
-		AdminSystem.Vars._preferred_duration[spec] <- -1;
-		AdminSystem.Vars._attachTargetedLocation[spec] <- true;
-
-		AdminSystem.Vars._modelPreference[spec] <- 
-		{
-			keeplast = true
-			lastmodel = "models/survivors/survivor_namvet.mdl"
-			original = "models/survivors/survivor_namvet.mdl"
-		};
-
-		AdminSystem.Vars._CustomResponseOptions[spec] <- {};
-		AdminSystem.Vars._CustomResponse[spec] <- 
-		{
-			_SpeakWhenShoved = _CustomResponseBase(false,0.5,0.1,true,::Survivorlines.FriendlyFire.bill,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-			
-			_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-			
-			_SpeakWhenUsedAdrenaline = _CustomResponseBase(false,0.9,1.0,true,::Survivorlines.Excited.bill,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-		};
-
-		AdminSystem._CurrentlyTradingItems[spec] <- false;
-
-		AdminSystem.BotBringingItem[spec] <- false;
-		AdminSystem.BotOnSearchOrSharePath[spec] <- false;
-	}
-
-	printl("[Custom] Loaded default custom responses");
-	printl("[Custom] Loading admin custom responses...")
 	// Fixes for tables
 	//try
 	//{	
@@ -2465,7 +831,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 		::VSLib.Timers.AddTimerByName("meteor_shower",AdminSystem._meteor_shower_args.updatedelay, true, _MeteorTimer,{});	
 	}
 
-	if(AdminSystem.Vars._LastLootThinkState)
+	if(AdminSystem.Vars.LastLootThinkState)
 	{
 		local tadd = _CreateLootThinker();
 		printl("[Bot-Thinker] Enabled looting/sharing thinking for bots via adder #"+tadd.GetIndex());
@@ -2475,9 +841,14 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 		printl("[Bot-Thinker] Disabled looting/sharing thinking for bots ");
 	}
 
+	//Restore models if necessary
+	foreach(survivor in Players.AliveSurvivors())
+	{
+		AdminSystem.RestoreModels(survivor);
+	}
 }
 
-function Notifications::OnPlayerConnected::RestoreModels(player,args)
+::AdminSystem.RestoreModels <- function(player)
 {
 	if(!("Vars" in AdminSystem))
 		return;
@@ -2497,19 +868,24 @@ function Notifications::OnPlayerConnected::RestoreModels(player,args)
 		if(tbl.keeplast)
 		{
 			player.SetModel(tbl.lastmodel)
-			printl("[OnPlayerConnected-RestoreModels] Restoring last model of "+player.GetCharacterName()+": "+tbl.lastmodel)
+			Messages.BIM.Events.OnPlayerConnected.RestoreModels.RestoringLast(player.GetCharacterName(),tbl.lastmodel);
 		}
 		else
 		{
 			player.SetModel(tbl.original)
-			printl("[OnPlayerConnected-RestoreModels] Restoring original model of "+player.GetCharacterName())
+			Messages.BIM.Events.OnPlayerConnected.RestoreModels.RestoringOrg(player.GetCharacterName());
 		}
 	}
 }
 
+function Notifications::OnPlayerConnected::RestoreModels(player,args)
+{
+	AdminSystem.RestoreModels(player);
+}
+
 function Notifications::OnModeStart::AdminLoadFiles( gamemode )
 {
-	local cvarList = FileToString("admin system/cvars.txt");
+	local cvarList = FileToString(Constants.Directories.Cvars);
 	local baseCvarList = FileToString("admin system/" + gamemode + "_cvars.txt");
 	local modeCvarList = FileToString("admin system/" + SessionState.ModeName + "_cvars.txt");
 	
@@ -2546,13 +922,13 @@ function Notifications::OnPlayerJoined::AdminBanCheck( player, name, IPAddress, 
 		local steamid = player.GetSteamID();
 		
 		if ( (steamid in ::AdminSystem.BannedPlayers) )
-			SendToServerConsole( "kickid " + steamid + " You're banned from this server" );
+			SendToServerConsole( "kickid " + steamid + Messages.BIM.Events.OnPlayerJoined.AdminBanCheck.BannedMessage() );
 	}
 }
 
 function Notifications::OnPlayerJoined::AdminCheck( player, name, IPAddress, SteamID, params )
 {
-	local adminList = FileToString("admin system/admins.txt");
+	local adminList = FileToString(Constants.Directories.Admins);
 	if ( adminList != null )
 		return;
 	
@@ -2561,12 +937,12 @@ function Notifications::OnPlayerJoined::AdminCheck( player, name, IPAddress, Ste
 		if ( player.IsBot() || !player.IsServerHost() )
 			return;
 		
-		local admins = FileToString("admin system/admins.txt");
+		local admins = FileToString(Constants.Directories.Admins);
 		local steamid = player.GetSteamID();
 		if ( steamid == "" || steamid == "BOT" )
 			return;
 		admins = steamid + " //" + player.GetName();
-		StringToFile("admin system/admins.txt", admins);
+		StringToFile(Constants.Directories.Admins, admins);
 		AdminSystem.LoadAdmins();
 	}
 }
@@ -2576,7 +952,7 @@ function Notifications::OnPlayerJoined::AdminCheck( player, name, IPAddress, Ste
  */
 function Notifications::OnPlayerJoined::ScriptAuthCheck( player, name, IPAddress, SteamID, params )
 {
-	local authList = FileToString("admin system/scriptauths.txt");
+	local authList = FileToString(Constants.Directories.ScriptAuths);
 	if ( authList != null )
 		return;
 	
@@ -2585,12 +961,12 @@ function Notifications::OnPlayerJoined::ScriptAuthCheck( player, name, IPAddress
 		if ( player.IsBot() || !player.IsServerHost() )
 			return;
 		
-		local auths = FileToString("admin system/scriptauths.txt");
+		local auths = FileToString(Constants.Directories.ScriptAuths);
 		local steamid = player.GetSteamID();
 		if ( steamid == "" || steamid == "BOT" )
 			return;
 		auths = steamid + " //" + player.GetName();
-		StringToFile("admin system/scriptauths.txt", auths);
+		StringToFile(Constants.Directories.ScriptAuths, auths);
 		AdminSystem.LoadScriptAuths();
 	}
 }
@@ -2704,7 +1080,8 @@ function Notifications::OnPlayerReplacedBot::LetGoHeldPlayer(player,bot,args)
 	local botparent = bot.GetParent();
 	if(botparent != null)
 	{
-		AdminSystem.LetgoCmd(botparent,null);
+		if(AdminSystem.IsPrivileged(botparent,true))
+			AdminSystem.LetgoCmd(botparent,null);
 		bot.Input("ClearParent","",0);
 		_dropit(bot);
 	}
@@ -2717,7 +1094,7 @@ function Notifications::OnBotReplacedPlayer::LetGoHeldPlayer(player,bot,args)
 {
 	printl("Player #"+player.GetIndex()+" was replaced with Bot #"+bot.GetIndex())
 	
-	if(AdminSystem.IsPrivileged(player))
+	if(AdminSystem.IsPrivileged(player,true))
 		AdminSystem.LetgoCmd(player,null);
 
 	foreach(survivor in Players.AliveSurvivors())
@@ -3430,7 +1807,8 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		{	
 			if(!(player.GetSteamID() in ::AdminSystem.ScriptAuths))
 			{
-				ClientPrint(null,3,"\x04"+player.GetCharacterName()+"("+player.GetSteamID()+") doesn't have authority to execute scripts");return;
+				Messages.ThrowAll(Messages.BIM.HasScriptAuth.NoAccess(player));
+				return;
 			}
 			local Code = Utils.StringReplace(text, "script,", "");
 			Code = Utils.StringReplace(Code, "'", "\""); //"
@@ -3600,7 +1978,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			
 			if ( Password == AdminSystem.AdminPassword )
 			{
-				local admins = FileToString("admin system/admins.txt");
+				local admins = FileToString(Constants.Directories.Admins);
 				local steamid = player.GetSteamID();
 				if ( steamid == "BOT" )
 					return;
@@ -3610,7 +1988,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 					admins = steamid + " //" + player.GetName();
 				else
 					admins += "\r\n" + steamid + " //" + player.GetName();
-				StringToFile("admin system/admins.txt", admins);
+				StringToFile(Constants.Directories.Admins, admins);
 				AdminSystem.LoadAdmins();
 			}
 			
@@ -3772,22 +2150,24 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 /*
  * @authors rhino
+ * For debugging in-game
  */
 ::out <- function(msg="",target=null,color="\x04")
 {
+	local msgtype = typeof msg;
 	if(target != null)
 	{
 		if(msg == null)
 			return;
-		else if((typeof msg) == "table")
+		else if(msgtype == "table")
 			Utils.PrintTable(msg);
-		else if((typeof msg) == "array")
+		else if(msgtype == "array")
 			ClientPrint(target.GetBaseEntity(),3,color+Utils.ArrayString(msg));
-		else if((typeof msg) == "QAngle" || (typeof msg) == "Vector")
+		else if(msgtype == "QAngle" || msgtype == "Vector")
 			ClientPrint(target.GetBaseEntity(),3,color+msg.ToKVString());
-		else if((typeof msg) == "string" || (typeof msg) == "float" || (typeof msg) == "integer" || (typeof msg) == "bool")
+		else if(msgtype == "string" || msgtype == "float" || msgtype == "integer" || msgtype == "bool")
 			ClientPrint(target.GetBaseEntity(),3,color+msg.tostring());
-		else if((typeof msg) == "instance" || (typeof msg).find("VSLIB") != null)
+		else if(msgtype == "instance" || msgtype.find("VSLIB") != null)
 		{
 			try
 			{
@@ -3805,6 +2185,8 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				ClientPrint(target,3,color+msg.tostring());
 			}
 		}
+		else if(msgtype.tostring().find("project_smok_Message_") != null)
+			ClientPrint(target.GetBaseEntity(),3,msg.GetColored());
 		else
 			ClientPrint(target.GetBaseEntity(),3,color+msg.tostring());
 	}
@@ -3812,15 +2194,15 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	{
 		if(msg == null)
 			return;
-		else if((typeof msg) == "table")
+		else if(msgtype == "table")
 			Utils.PrintTable(msg);
-		else if((typeof msg) == "array")
+		else if(msgtype == "array")
 			ClientPrint(null,3,color+Utils.ArrayString(msg));
-		else if((typeof msg) == "QAngle" || (typeof msg) == "Vector")
+		else if(msgtype == "QAngle" || msgtype == "Vector")
 			ClientPrint(null,3,color+msg.ToKVString());
-		else if((typeof msg) == "string" || (typeof msg) == "float" || (typeof msg) == "integer" || (typeof msg) == "bool")
+		else if(msgtype == "string" || msgtype == "float" || msgtype == "integer" || msgtype == "bool")
 			ClientPrint(null,3,color+msg.tostring());
-		else if((typeof msg) == "instance" || (typeof msg).find("VSLIB") != null)
+		else if(msgtype == "instance" || msgtype.find("VSLIB") != null)
 		{
 			try
 			{
@@ -3838,6 +2220,8 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				ClientPrint(null,3,color+msg.tostring());
 			}
 		}
+		else if(msgtype.tostring().find("project_smok_Message_") != null)
+			ClientPrint(null,3,msg.GetColored());
 		else
 			ClientPrint(null,3,color+msg.tostring());
 	}
@@ -3856,7 +2240,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	local newstate = !::AdminSystem.Vars.AllowAutomatedSharing;
 	::AdminSystem.Vars.AllowAutomatedSharing = newstate;
 
-	ClientPrint(null,3,"\x04"+player.GetCharacterName()+" set bots' sharing preference to:"+( newstate ? " Enabled":" Disabled"));
+	Messages.InformAll(CmdMessages.BotSharingPreference(player.GetCharacterName(),newstate));
 }
 
 ::BotParams <- 
@@ -4241,16 +2625,16 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	local name = player.GetCharacterName().tolower();
 
 	local thinkadder = _CreateLootThinker();
-	AdminSystem.Vars._LastLootThinkState = true;
+	AdminSystem.Vars.LastLootThinkState = true;
 	foreach(survivor,val in AdminSystem.BotOnSearchOrSharePath)
 	{
 		AdminSystem.BotOnSearchOrSharePath[survivor] = false;
 	}
 
 	if (AdminSystem.Vars._outputsEnabled[name])
-	{ClientPrint(null,3,"\x03"+name+"->Created a think adder(#"+thinkadder.GetIndex()+") named "+thinkadder.GetName());}
+	{Messages.InformAll(CmdMessages.EnableKindness(name,thinkadder));}
 	else
-	{printB(player.GetCharacterName(),name+"->Created a think adder(#"+thinkadder.GetIndex()+") named "+thinkadder.GetName(),true,"info",true,true);}
+	{printB(player.GetCharacterName(),CmdMessages.EnableKindness(name,thinkadder),true,"info",true,true);}
 
 }
 
@@ -4292,15 +2676,15 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	}
 
 	AdminSystem.Vars._currentlyBeingTaken <- {};
-	AdminSystem.Vars._LastLootThinkState = false;
+	AdminSystem.Vars.LastLootThinkState = false;
 
 	if(!found)
 		return;
 
 	if (AdminSystem.Vars._outputsEnabled[name])
-	{ClientPrint(null,3,"\x04"+name+"->Removed think adders for bots");}
+	{Messages.InformAll(CmdMessages.DisableKindness(name));}
 	else
-	{printB(player.GetCharacterName(),name+"->Removed think adders for bots",true,"info",true,true);}
+	{printB(player.GetCharacterName(),CmdMessages.EnableKindness(name,thinkadder),true,"info",true,true);}
 	
 }
 
@@ -5426,213 +3810,6 @@ enum __
 	BU = "UnpressedBack"
 }
 
-/////////////////////////////////////////////////////////////////
-/*
- * Custom responses
- *
- * @authors rhino
- */
-enum SCENES
-{
-	ORDERED = 0
-	SHUFFLED = 1
-	RANDOM = 2
-}
-
-/*
- * @authors rhino
- * Base table definition for custom responses
- */
-::_CustomResponseBase <- function(_enabled,_prob,_startdelay,_userandom,_randomlinepaths,_lineamount,_mindelay,_offsetdelay,_order,_sequence) 
-{	
-	local restable = 
-	{
-		call_amount = 0
-		lastspoken = []
-		enabled = _enabled
-		prob = _prob
-		startdelay = _startdelay
-		userandom = _userandom
-		randomlinepaths = _randomlinepaths
-		lineamount = _lineamount
-		mindelay = _mindelay
-		offsetdelay = _offsetdelay
-		order = _order
-		sequence = _sequence
-	}
-	return restable
-}
-
-/*
- * @authors rhino
- * Base tables for custom responses
- */
-::AdminSystem.Vars._CustomResponse <-
-{
-	bill = 
-	{
-		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.bill,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-		
-		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-		
-		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.bill,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-	}
-
-	francis = 
-	{
-		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.francis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-		
-		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-
-		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.francis,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-	}
-
-	louis = 
-	{
-		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.louis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-		
-		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-		
-		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.louis,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-	}
-
-	zoey = 
-	{
-		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.zoey,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-		
-		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-		
-		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.zoey,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-	}
-
-	nick = 
-	{
-		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.nick,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-		
-		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-		
-		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.nick,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-	}
-
-	ellis = 
-	{
-		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.ellis,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-		
-		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-		
-		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.ellis,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-	}
-
-	coach = 
-	{
-		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.coach,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-		
-		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-		
-		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.coach,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-	}
-
-	rochelle = 
-	{
-		_SpeakWhenShoved = _CustomResponseBase(true,0.5,0.1,true,::Survivorlines.FriendlyFire.rochelle,1,0.3,2.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-		
-		_SpeakWhenLeftSaferoom = _CustomResponseBase(false,0.5,2.5,false,null,1,1.0,3.0,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-		
-		_SpeakWhenUsedAdrenaline = _CustomResponseBase(true,0.9,1.0,true,::Survivorlines.Excited.rochelle,6,1.5,4.5,SCENES.ORDERED,{def={scenes=[],delays=[]}})
-	}
-}
-
-/*
- * @authors rhino
- * Custom responses to load over base tables, overwrites the base values
- */
-::AdminSystem.Vars._CustomResponseOptions <-
-{	
-	bill = {}
-	
-	francis = 
-	{
-		_SpeakWhenLeftSaferoom = 
-		{
-			enabled = true
-			prob = 0.15
-			order = SCENES.RANDOM
-			sequence =
-			{
-				smokboomer1=
-				{   // "Well hell, let's all- Smok- Booooomer!"
-					scenes=["followme08.vcd","warnsmoker03.vcd","warnboomer03.vcd"]
-					delays=[0, 1.7, 2.45 ]
-				}
-
-				hateboomerbill1=
-				{   // "If there's one thing I hate more than vampires, it's- Boomer- Bill"
-					scenes=["dlc2canadahate02.vcd","warnboomer01.vcd","namebill01.vcd"]
-					delays=[0, 3.3, 4]
-				}
-
-				signsayshateboomerbill1=
-				{   // "This sign says, "I hate- Bill!" "
-					scenes=["dlc2bulletinboard01.vcd","namebill02.vcd"]
-					delays=[0, 1.85]
-				}
-
-				lookingforwardtosmokbill1=
-				{   // "I was getting tired of being cooped up, looking forward to- Smok- Boomer- Bill!"
-					scenes=["c6dlc3intro28.vcd","warnsmoker03.vcd","warnboomer02.vcd","namebill02.vcd"]
-					delays=[0, 3.4, 4.1, 4.7]
-				}
-
-				signsaysdead=
-				{   // "This sign says, -"...Dead"- AAAAAAAAAAAAAAAAAAA
-					scenes=["dlc2bulletinboard01.vcd","killconfirmation05.vcd","fall02.vcd"]
-					delays=[0, 1.1, 2.2]
-				}
-
-				hatelouis1=
-				{   // "If there's one thing I hate more than vampires, it's- Louis"
-					scenes=["dlc2canadahate02.vcd","namelouis01.vcd"]
-					delays=[0, 3.3]
-				}
-
-				louislookshit1=
-				{   // "Louis you look like shit!"
-					scenes=["generic30.vcd"]
-					delays=[0]
-				}
-			}
-		}
-	}
-
-	louis = {}
-
-	zoey = {}
-
-	nick = {}	
-	
-	ellis = 
-	{
-		_SpeakWhenLeftSaferoom = 
-		{
-			enabled = true
-			prob = 0.1
-			order = SCENES.RANDOM
-			sequence =
-			{	
-				ilovecrack1=
-				{   // "Man I hate them zombies but I loooooove- Crack!"
-					scenes=["meleeresponse08.vcd","boomerjar17.vcd"]
-					delays=[2.55,0]
-				}
-			}
-		}
-	}
-
-	coach = {}
-
-	rochelle = {}
-}
-
 /* ******************DANGEROUS FUNCTION*******************
  * RESTRICTED TO: Host and ScriptAuth
  * @authors rhino
@@ -5824,11 +4001,11 @@ enum SCENES
 	
 }
 
+//////////////////////////////////////////////////////////
 /*
  * @authors rhino
  * Default meteor event settings
  */
-::AdminSystem.Vars._meteor_shower_state <- 0;
 
 ::AdminSystem._meteor_model_pick <- 
 {
@@ -5839,81 +4016,7 @@ enum SCENES
 	SPECIFIC = 4
 }
 
-::AdminSystem.Vars._meteor_models <-
-{
-	_rocks = 
-	[
-		"models/props/cs_militia/militiarock02.mdl",
-		"models/props/cs_militia/militiarock03.mdl",
-		"models/props/cs_militia/militiarock05.mdl",
-		"models/props_wasteland/rock_moss01.mdl",
-		"models/props_wasteland/rock_moss02.mdl",
-		"models/props_wasteland/rock_moss03.mdl",
-		"models/props_wasteland/rock_moss04.mdl",
-		"models/props_wasteland/rock_moss05.mdl",
-		"models/props_wasteland/rockcliff07b.mdl"
-	]
-
-	_chunks = 
-	[
-		"models/props_debris/concrete_chunk02a.mdl",
-		"models/props_debris/concrete_chunk07a.mdl",
-		"models/props_interiors/concretepiller01_dm01_4.mdl",
-		"models/props_unique/zombiebreakwallinterior01_concrete_dm_part03.mdl",
-		"models/props_unique/zombiebreakwallinterior01_concrete_dm_part04.mdl",
-		"models/lostcoast/props_wasteland/rock_coast01e.mdl",
-		"models/lostcoast/props_wasteland/rock_cliff02a.mdl",
-		"models/lostcoast/props_wasteland/rock_cliff02b.mdl",
-		"models/lostcoast/props_wasteland/rock_cliff02c.mdl",
-		"models/lostcoast/props_wasteland/rock_cliff02d.mdl"
-	]
-
-	_custom = []
-}
-
-::AdminSystem._meteor_shower_args <-
-{
-	maxradius = 900		        // maximum radius to pick a random meteor attack point
-	minspawnheight = 550		// minimum spawn height for meteors
-	updatedelay = 2				// how often to create a meteor
-	mindelay = 0.5				// minimum extra delay to apply each spawn tick
-	maxdelay = 1  				// maximum extra delay to apply each spawn tick
-	maxexplosiondelay = 10		// maximum lifetime for a meteor, if meteor is still valid after this delay, it explodes
-	minspeed = 1500				// minimum meteor speed
-	maxspeed = 7000    			// maximum speed
-	expmaxradius = 300			// maximum explosion radius caused by the meteor
-	expdmgmin = 3				// minimum explosion damage caused to closeby entities
-	expdmgmax = 20				// maximum explosion damage caused to closeby entities
-	expprob = 0.9				// probability of the meteor exploding
-	scatterprob = 0.55			// probability of the meteor scattering into smaller pieces after hitting the ground
-	minscatterchunk = 4			// minimum amount of smaller chunks created if scattering probably was met
-	maxscatterchunk = 15		// maximum amount of smaller chunks created
-	meteormodelspecific = ""	// specific model for meteors
-	meteormodelpick = 0			// enumerated: RANDOM_ROCK = 0, RANDOM_CUSTOM = 1, FIRST_CUSTOM = 2, LAST_CUSTOM = 3, SPECIFIC = 4
-	debug = 0					// Print meteor spawn and hit points, explosions, scatters and breaks
-}
-
-::AdminSystem._meteor_shower_comments <-
-{
-	maxradius = "maximum radius to pick a random meteor attack point"
-	minspawnheight = "minimum spawn height for meteors"
-	updatedelay = "how often to create a meteor"
-	mindelay = "minimum extra delay to apply each spawn tick"
-	maxdelay = "maximum extra delay to apply each spawn tick"
-	maxexplosiondelay = "maximum lifetime for a meteor, if meteor is still valid after this delay, it explodes"
-	minspeed = "minimum meteor speed"
-	maxspeed =   "maximum speed"
-	expmaxradius = "maximum explosion radius caused by the meteor"
-	expdmgmin = "minimum explosion damage caused to closeby entities"
-	expdmgmax = "maximum explosion damage caused to closeby entities"
-	expprob = "probability of the meteor exploding"
-	scatterprob = "probability of the meteor scattering into smaller pieces after hitting the ground"
-	minscatterchunk = "minimum amount of smaller chunks created if scattering probably was met"
-	maxscatterchunk = "maximum amount of smaller chunks created"
-	meteormodelspecific = "specific model for meteors"
-	meteormodelpick = "enumerated: RANDOM_ROCK = 0, RANDOM_CUSTOM = 1, FIRST_CUSTOM = 2, LAST_CUSTOM = 3, SPECIFIC = 4"
-	debug = "print meteor spawn and hit points, explosions, scatters and breaks"
-}
+::AdminSystem._meteor_shower_args <- Constants.GetMeteorShowerSettingsDefaults()
 
 /* @authors rhino
  * Change meteor shower settings
@@ -5936,16 +4039,30 @@ enum SCENES
 	{
 		if(val.find("\"") == null) // "
 		{
-			ClientPrint(null,3,"\x05"+"Model name should be given in quotes");
+			Messages.ThrowPlayer(player,CmdMessages.MeteorShowerSettings.ModelQuotesMissing());
 			return;
+		}
+		else if(split(val,"\"").len() != 3) // "
+		{
+			Messages.ThrowPlayer(player,CmdMessages.MeteorShowerSettings.ModelQuotesFormat());
+			return;
+		}
+		else
+		{
+			local s =  split(val,"\""); //"
+			if(s[0] != "" || s[2] != "")
+			{
+				Messages.ThrowPlayer(player,CmdMessages.MeteorShowerSettings.ModelCharacterOutsideQuotes());
+				return;
+			}
 		}
 	}
 	local name = player.GetCharacterName();
 
 	if (AdminSystem.Vars._outputsEnabled[name.tolower()])
-	{ClientPrint(null,3,"\x04"+name+" -> Changed meteor shower setting "+setting+": "+AdminSystem._meteor_shower_args[setting]+"->"+val);}
+	{Messages.InformAll(CmdMessages.MeteorShowerSettings.Success(name,setting,AdminSystem._meteor_shower_args[setting],val));}
 	else
-	{printB(name,name+" -> Changed meteor shower setting "+setting+": "+AdminSystem._meteor_shower_args[setting]+"->"+val,true,"info",true,true);}
+	{printB(name,CmdMessages.MeteorShowerSettings.Success(name,setting,AdminSystem._meteor_shower_args[setting],val),true,"info",true,true);}
 	
 	AdminSystem._meteor_shower_args[setting] = val;
 	AdminSystem.SaveShowerSettings();
@@ -5961,10 +4078,11 @@ enum SCENES
 
 	AdminSystem.LoadShowerSettings();
 
+	local comments = Constants.GetMeteorShowerSettingsComments();
 	printB(player.GetCharacterName(),"",false,"",true,false);
 	foreach(setting,val in AdminSystem._meteor_shower_args)
 	{
-		printB(player.GetCharacterName(),"[Meteor_Shower-Setting] "+setting+" ----> "+val.tostring()+" ----> "+AdminSystem._meteor_shower_comments[setting],false,"",false,false)
+		printB(player.GetCharacterName(),"[Meteor_Shower-Setting] "+setting+" ----> "+val.tostring()+" ----> "+comments[setting],false,"",false,false)
 	}
 	printB(player.GetCharacterName(),"",false,"",false,true,0.1);
 }
@@ -6287,7 +4405,7 @@ enum SCENES
 	if(AdminSystem.Vars._meteor_shower_state == 0)
 	{	
 		AdminSystem.LoadShowerSettings();
-		ClientPrint(null,3,"\x04"+"How is the weather?");
+		ClientPrint(null,3,"\x04"+Utils.GetRandValueFromArray(CmdMessages.MeteorShowerSettings.StartingMessages));
 		AdminSystem.Vars._meteor_shower_state = 1;
 		::VSLib.Timers.AddTimerByName("meteor_shower",AdminSystem._meteor_shower_args.updatedelay, true, _MeteorTimer,{});	
 	}
@@ -6330,51 +4448,8 @@ enum SCENES
  * @authors rhino
  * Default apocalypse event settings
  */
-::AdminSystem.Vars._propageddon_state <- 0;
 
-::AdminSystem._propageddon_args <-
-{
-	maxradius = 850				// maximum radius to apply forces
-	updatedelay = 1.5			// how often to update entity list in seconds
-	mindelay = 0.5				// minimum delay to apply propageddon function
-	maxdelay = 2  				// maximum delay to apply propageddon function
-	minspeed = 800				// minimum speed
-	maxspeed = 24000    		// maximum speed
-	dmgmin = 5			    	// minimum damage done to entity
-	dmgmax = 100				// maximum damage done to entity
-	dmgprob = 0.3				// probability of entity getting damaged
-	expmaxradius = 300			// explosion radius maximum
-	expdmgmin = 5				// explosion damage minimum
-	expdmgmax = 40				// explosion damage maximum
-	expprob = 0.015				// probability of explosion
-	breakprob = 0.04			// probability of entity being broken
-	doorlockprob = 0.02  		// probability of doors getting locked, saferoom doors excluded
-	ropebreakprob = 0.05		// probability of a cable or sorts to be broken from its connection point
-	entprob = 0.6				// probability of an entity being chosen within the radius
-	debug = 0					// Print which entities are effected
-}
-
-::AdminSystem._propageddon_args_comments <-
-{
-	maxradius = "maximum radius to apply forces"
-	updatedelay = "how often to update entity list in seconds"
-	mindelay = "minimum delay to apply propageddon function"
-	maxdelay = "maximum delay to apply propageddon function"
-	minspeed = "minimum speed"
-	maxspeed = "maximum speed"
-	dmgmin = "minimum damage done to entity"
-	dmgmax = "maximum damage done to entity"
-	dmgprob = "probability of entity getting damaged"
-	expmaxradius = "explosion radius maximum"
-	expdmgmin = "explosion damage minimum"
-	expdmgmax = "explosion damage maximum"
-	expprob = "probability of explosion"
-	breakprob = "probability of entity being broken"
-	doorlockprob = "probability of doors getting locked, saferoom doors excluded"
-	ropebreakprob = "probability of a cable or sorts to be broken from its connection point"
-	entprob = "probability of an entity being chosen within the radius"
-	debug = "Print which entities are effected"
-}
+::AdminSystem._propageddon_args <- Constants.GetApocalypseSettingsDefaults()
 
 /* @authors rhino
  * Change how hellish you want the experience to be
@@ -6394,9 +4469,9 @@ enum SCENES
 	local name = player.GetCharacterName();
 
 	if (AdminSystem.Vars._outputsEnabled[name.tolower()])
-	{ClientPrint(null,3,"\x04"+name+" -> Changed apocalypse parameter "+setting+": "+AdminSystem._propageddon_args[setting]+"->"+val);}
+	{Messages.InformAll(CmdMessages.ApocalypseSettings.Success(name,setting,AdminSystem._propageddon_args[setting],val));}
 	else
-	{printB(name,name+" -> Changed apocalypse parameter "+setting+": "+AdminSystem._propageddon_args[setting]+"->"+val,true,"info",true,true);}
+	{printB(name,CmdMessages.ApocalypseSettings.Success(name,setting,AdminSystem._propageddon_args[setting],val),true,"info",true,true);}
 	
 	AdminSystem._propageddon_args[setting] = val;
 	AdminSystem.SaveApocalypseSettings();
@@ -6411,11 +4486,12 @@ enum SCENES
 		return;
 
 	AdminSystem.LoadApocalypseSettings();
+	local comments = Constants.GetApocalypseSettingsComments();
 
 	printB(player.GetCharacterName(),"",false,"",true,false);
 	foreach(setting,val in AdminSystem._propageddon_args)
 	{
-		printB(player.GetCharacterName(),"[Apocalypse-Setting] "+setting+" ----> "+val.tostring()+" ----> "+AdminSystem._propageddon_args_comments[setting],false,"",false,false)
+		printB(player.GetCharacterName(),"[Apocalypse-Setting] "+setting+" ----> "+val.tostring()+" ----> "+comments[setting],false,"",false,false)
 	}
 	printB(player.GetCharacterName(),"",false,"",false,true,0.1);
 }
@@ -6453,8 +4529,10 @@ enum SCENES
 			::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID["propageddon"]);
 			delete ::VSLib.Timers.TimersID["propageddon"];
 		}
-		local endmsg = "Apocalypse has been postponed..."+(((rand()%4) == 1)?" or has it ?":" ");
-		ClientPrint(null,3,"\x03"+endmsg);
+
+		ClientPrint(null,3,"\x03"
+							+ CmdMessages.ApocalypseSettings.Ending 
+							+ (Utils.GetRandValueFromArray(CmdMessages.ApocalypseSettings.Extras)));
 	}
 
 }
@@ -6864,7 +4942,7 @@ enum SCENES
 	if(AdminSystem.Vars._propageddon_state == 0)
 	{	
 		AdminSystem.LoadApocalypseSettings();
-		ClientPrint(null,3,"\x04"+"Something doesn't feel right...");
+		ClientPrint(null,3,"\x04"+Utils.GetRandValueFromArray(CmdMessages.ApocalypseSettings.StartingMessages));
 		AdminSystem.Vars._propageddon_state = 1;
 		::VSLib.Timers.AddTimerByName("propageddon",AdminSystem._propageddon_args.updatedelay, true, _ApocalypseTimer,{});	
 	}
@@ -6903,7 +4981,6 @@ enum SCENES
 	AdminSystem.SaveApocalypseSettings();
 }
 
-
 /*
  * @authors rhino
  * Speak the given line for given length
@@ -6925,7 +5002,7 @@ enum SCENES
 	character = character.tolower();
 
 	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
-	{ClientPrint(null,3,"\x04"+character+" is not a character name");return;}
+	{Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));return;}
 
 	local scene_name = GetArgument(2);
 	if(scene_name==null)
@@ -6976,7 +5053,7 @@ enum SCENES
 	}
 
 	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
-	{ClientPrint(null,3,"\x04"+character+" is not a character name");return;}
+	{Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));return;}
 
 	try
 	{
@@ -6984,7 +5061,7 @@ enum SCENES
 	}
 	catch(e)
 	{
-		ClientPrint(null,3,"\x04"+"No custom sequence found for "+character+" named:"+seq_name);return;
+		Messages.ThrowPlayer(player,CmdMessages.CustomSequences.NoSeqFound(character,seq_name));return;
 	}
 	printB(player.GetCharacterName(),player.GetCharacterName()+" ->Speak custom "+character+" "+seq_name);
 }
@@ -7026,7 +5103,7 @@ enum SCENES
 	character = character.tolower();
 
 	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
-	{ClientPrint(null,3,"\x04"+character+" is not a character name");return;}
+	{Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));return;}
 
 	if(AdminSystem.Vars._looping[character])
 	{
@@ -7059,7 +5136,7 @@ enum SCENES
 	{
 		if(arglen < 2)
 		{
-			ClientPrint(null,3,"\x04"+player.GetCharacterName()+"->Arguments should be in one of the following formats: \n1){character} >{sequence} {length} \n2){character} {line} {length} ");return;
+			Messages.ThrowPlayer(player,CmdMessages.Loops.ValidFormats);return;
 		}
 	}
 	local steamid = player.GetSteamID();
@@ -7070,11 +5147,11 @@ enum SCENES
 	character = character.tolower();
 
 	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
-	{ClientPrint(null,3,"\x04"+character+" is not a character name");return;}
+	{Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));return;}
 	
 	//Return if already in a loop
 	if(AdminSystem.Vars._looping[character])
-	{ClientPrint(null,3,"\x04"+character+" is already in a talking loop.");return;}
+	{Messages.ThrowPlayer(player,CmdMessages.Loops.AlreadyLooping(character));return;}
 
 	local sequencename = arguments[1];
 	local looplength = arguments[2].tofloat();
@@ -7085,17 +5162,17 @@ enum SCENES
 		sequencename = split(sequencename,">")[0];
 		
 		if(!(steamid in AdminSystem.Vars._CustomResponseOptions[character]))
-		{ClientPrint(null,3,"\x04"+player.GetCharacterName()+" -> No custom responses created for "+character);return;}
+		{Messages.ThrowPlayer(player,CmdMessages.CustomSequences.NoneFound(character));return;}
 		else
 		{
 			if(!(sequencename in AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence))
-			{ClientPrint(null,3,"\x04"+player.GetCharacterName()+" ->"+sequencename+" doesn't exist for "+character);return;}
+			{Messages.ThrowPlayer(player,CmdMessages.CustomSequences.NoSeqFound(character,sequencename));return;}
 
 			local seqtable = AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence[sequencename];
 			local blanksec = looplength-Utils.ArrayMax(seqtable.delays);
 			// Loop length is shorter
 			if(blanksec<0)
-			{printB(player.GetCharacterName(),"[Loop-Warning] length is "+blanksec*-1+"seconds shorter than sequence: "+player.GetCharacterName()+" ->"+sequencename+" "+looplength,true,"");}
+			{Messages.WarnPlayer(player,CmdMessages.Loops.ShorterLength(blanksec,player.GetCharacterName(),sequencename,looplength));}
 			
 			AdminSystem.Vars._looping[character] = true;
 			
@@ -7105,7 +5182,7 @@ enum SCENES
 			{
 				foreach(i,delay in seqtable.delays)
 				{
-					if(delay<looplength) // Filter out scenes after blanktime
+					if(delay.tofloat()<looplength) // Filter out scenes after blanktime
 					{
 						loopseq.scenes.append(seqtable.scenes[i]);
 						loopseq.delays.append(delay);
@@ -7158,81 +5235,103 @@ enum SCENES
 	local character = GetArgument(1);
 	local seqnames = "";
 	local steamid = player.GetSteamID();
-	local outputenabled = AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()];
-	if(character == null || character == "all")
+	if(AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
 	{
-		if (outputenabled)
-		{ClientPrint(player.GetBaseEntity(),3,"\x03"+"-----------------");}
-		else
-		{printB(player.GetCharacterName(),"-----------------",false,"",true,false);}
+		if(character == null || character == "all")
+		{
+			ClientPrint(player.GetBaseEntity(),3,"\x03"+"-----------------");
 
-		foreach(charname in AdminSystem.Vars.CharacterNamesLower)
-		{	
-			if(charname == "" || charname == "survivor")
-				continue;
+			foreach(charname in AdminSystem.Vars.CharacterNamesLower)
+			{	
+				if(charname == "" || charname == "survivor")
+					continue;
 
-			seqnames += charname + "("
-			if(steamid in AdminSystem.Vars._CustomResponseOptions[charname])
-			{
-				if (outputenabled)
-				{ClientPrint(player.GetBaseEntity(),3,"\x04"+charname+":");}
-				else
-				{printB(player.GetCharacterName(),charname+"->",false,"info",false,false);}
-
-				foreach(seq_name,seqtable in AdminSystem.Vars._CustomResponseOptions[charname][steamid].sequence)
+				seqnames += charname + "("
+				if(steamid in AdminSystem.Vars._CustomResponseOptions[charname])
 				{
-					if (outputenabled)
-					{ClientPrint(player.GetBaseEntity(),3,"\x05"+seq_name);}
-					else
-					{printB(player.GetCharacterName(),seq_name,false,"info",false,false);}
+					ClientPrint(player.GetBaseEntity(),3,"\x04"+charname+":");
+
+					foreach(seq_name,seqtable in AdminSystem.Vars._CustomResponseOptions[charname][steamid].sequence)
+					{
+						ClientPrint(player.GetBaseEntity(),3,"\x05"+seq_name);
+					}
+
+					ClientPrint(player.GetBaseEntity(),3,"\x04"+"-----------------");
 				}
-
-				if (outputenabled)
-				{ClientPrint(player.GetBaseEntity(),3,"\x04"+"-----------------");}
-				else
-				{printB(player.GetCharacterName(),"-----------------",false,"",false,false);}
 			}
-		}
 
-		if (outputenabled)
-		{ClientPrint(player.GetBaseEntity(),3,"\x03"+"-----------------");}
+			ClientPrint(player.GetBaseEntity(),3,"\x03"+"-----------------");
+		}
 		else
-		{printB(player.GetCharacterName(),"-----------------",false,"",false,true);}
+		{
+			ClientPrint(player.GetBaseEntity(),3,"\x03"+"-----------------");
+
+			character = character.tolower();
+			if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
+			{Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));return;}
+
+			if(!(steamid in AdminSystem.Vars._CustomResponseOptions[character]))
+			{Messages.ThrowPlayer(player,CmdMessages.CustomSequences.NoneFound(character));return;}
+
+			ClientPrint(player.GetBaseEntity(),3,"\x04"+character+":");
+
+			foreach(seq_name,seqtable in AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence)
+			{
+				ClientPrint(player.GetBaseEntity(),3,"\x05"+seq_name);
+				seqnames += seq_name + " ";
+			}
+
+			ClientPrint(player.GetBaseEntity(),3,"\x04"+"-----------------");
+		}
 	}
 	else
-	{	
-		if (outputenabled)
-		{ClientPrint(player.GetBaseEntity(),3,"\x03"+"-----------------");}
-		else
-		{printB(player.GetCharacterName(),"-----------------",false,"",true,false);}
-
-		character = character.tolower();
-		if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
-		{ClientPrint(null,3,"\x04"+character+" is not a character name");return;}
-
-		if(!(steamid in AdminSystem.Vars._CustomResponseOptions[character]))
+	{
+		if(character == null || character == "all")
 		{
-			ClientPrint(null,3,"\x04"+"No custom sequence found for "+character);return;
+			printB(player.GetCharacterName(),"-----------------",false,"",true,false);
+
+			foreach(charname in AdminSystem.Vars.CharacterNamesLower)
+			{	
+				if(charname == "" || charname == "survivor")
+					continue;
+
+				seqnames += charname + "("
+				if(steamid in AdminSystem.Vars._CustomResponseOptions[charname])
+				{
+					printB(player.GetCharacterName(),charname+"->",false,"info",false,false);
+
+					foreach(seq_name,seqtable in AdminSystem.Vars._CustomResponseOptions[charname][steamid].sequence)
+					{
+						printB(player.GetCharacterName(),seq_name,false,"info",false,false);
+					}
+
+					printB(player.GetCharacterName(),"-----------------",false,"",false,false);
+				}
+			}
+
+			printB(player.GetCharacterName(),"-----------------",false,"",false,true);
 		}
-
-		if (outputenabled)
-		{ClientPrint(player.GetBaseEntity(),3,"\x04"+character+":");}
 		else
-		{printB(player.GetCharacterName(),character+"->",false,"info",true,false);}
-
-		foreach(seq_name,seqtable in AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence)
 		{
-			if (outputenabled)
-			{ClientPrint(player.GetBaseEntity(),3,"\x05"+seq_name);}
-			else
-			{printB(player.GetCharacterName(),seq_name,false,"info",false,false);}
-			seqnames += seq_name + " ";
-		}
+			printB(player.GetCharacterName(),"-----------------",false,"",true,false);
 
-		if (outputenabled)
-		{ClientPrint(player.GetBaseEntity(),3,"\x04"+"-----------------");}
-		else
-		{printB(player.GetCharacterName(),"-----------------",false,"info",false,true);}
+			character = character.tolower();
+			if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
+			{Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));return;}
+
+			if(!(steamid in AdminSystem.Vars._CustomResponseOptions[character]))
+			{Messages.ThrowPlayer(player,CmdMessages.CustomSequences.NoneFound(character));return;}
+
+			printB(player.GetCharacterName(),character+"->",false,"info",true,false);
+
+			foreach(seq_name,seqtable in AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence)
+			{
+				printB(player.GetCharacterName(),seq_name,false,"info",false,false);
+				seqnames += seq_name + " ";
+			}
+
+			printB(player.GetCharacterName(),"-----------------",false,"info",false,true);
+		}
 	}
 	
 }
@@ -7264,19 +5363,19 @@ enum SCENES
 	}
 
 	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
-	{ClientPrint(null,3,"\x04"+character+" is not a character name");return;}
+	{Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));return;}
 
 	local str = "\n";
 	local steamid = player.GetSteamID();
 
 	if(!(steamid in AdminSystem.Vars._CustomResponseOptions[character]))
 	{
-		ClientPrint(null,3,"\x04"+"No custom sequence found for "+character);return;
+		Messages.ThrowPlayer(player,CmdMessages.CustomSequences.NoneFound(character));return;
 	}
 
 	if(!(sequencename in AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence))
 	{
-		ClientPrint(null,3,"\x04"+"No custom sequence found for "+character+" named "+sequencename);return;
+		Messages.ThrowPlayer(player,CmdMessages.CustomSequences.NoSeqFound(character,sequencename));return;
 	}
 	
 	str += Utils.ArrayString(AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence[sequencename].scenes)
@@ -7284,7 +5383,7 @@ enum SCENES
 	str += Utils.ArrayString(AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence[sequencename].delays)
 
 	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
-	{ClientPrint(null,3,"\x04"+player.GetCharacterName()+" -> Sequence info "+character+"."+sequencename+str);}
+	{Messages.InformPlayer(player,CmdMessages.CustomSequences.InfoString(character,sequencename,str));}
 	else
 	{printB(player.GetCharacterName(),player.GetCharacterName()+" -> Sequence info "+character+"."+sequencename+str,true,"info",true,true);}
 }
@@ -7319,18 +5418,18 @@ enum SCENES
 	
 	character = character.tolower();
 	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
-	{ClientPrint(null,3,"\x04"+character+" is not a character name");return;}
+	{Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));return;}
 
 	local steamid = player.GetSteamID();
 	
 	if(!(steamid in AdminSystem.Vars._CustomResponseOptions[character]))
 	{
-		ClientPrint(null,3,"\x04"+"No custom sequence found for "+character);return;
+		Messages.ThrowPlayer(player,CmdMessages.CustomSequences.NoneFound(character));return;
 	}
 
 	if(!(sequencename in AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence))
 	{
-		ClientPrint(null,3,"\x04"+"No custom sequence found for "+character+" named "+sequencename);return;
+		Messages.ThrowPlayer(player,CmdMessages.CustomSequences.NoSeqFound(character,sequencename));return;
 	}
 	
 	local scene_index = -1;
@@ -7355,7 +5454,7 @@ enum SCENES
 			setting = split(setting,">");
 			if(setting.len() != 2)
 			{
-				ClientPrint(null,3,"\x04"+"Setting should be in format scene>new_name OR delay>x");return;
+				Messages.ThrowPlayer(player,CmdMessages.CustomSequences.EditFormat);return;
 			}
 
 			newval = setting[1];
@@ -7373,30 +5472,30 @@ enum SCENES
 			}
 			else
 			{
-				ClientPrint(null,3,"\x04"+"Setting should be in format scene>new_name OR delay>x");return;
+				Messages.ThrowPlayer(player,CmdMessages.CustomSequences.EditFormat);return;
 			}
 		}
 		else
 		{
-			ClientPrint(null,3,"\x04"+"Setting should be in format scene>new_name OR delay>x");return;
+			Messages.ThrowPlayer(player,CmdMessages.CustomSequences.EditFormat);return;
 		}
 		
 	}
 	else
 	{
-		ClientPrint(null,3,"\x04"+"No scene named "+scene+" was found");return;
+		Messages.ThrowPlayer(player,CmdMessages.CustomSequences.NoSceneFound(scene));return;
 	}
 
 	// Output messages
 	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
-	{ClientPrint(null,3,"\x04"+player.GetCharacterName()+" -> Changed "+character+"."+sequencename+"."+setting+"s["+scene_index+"]:\n "+oldvalue+"->"+newval.tostring());}
+	{Messages.InformPlayer(player,CmdMessages.CustomSequences.EditSuccess(character,sequencename,setting,scene_index,oldvalue,newval));}
 	else
 	{printB(player.GetCharacterName(),player.GetCharacterName()+" -> Sequence info "+character+"."+sequencename+"."+setting+"s["+scene_index+"]-> "+oldvalue+"->"+newval.tostring(),true,"info",true,true);}
 	
 	// Save to custom file
-	local contents = FileToString("admin system/custom_responses.json");
+	local contents = FileToString(Constants.Directories.CustomResponses);
 	if(contents == null)
-	{ClientPrint(null,3,"\x04"+"custom_responses.json file is missing, changes will only be applied for current session cache!");return;}
+	{Messages.WarnAll(CmdMessages.CustomSequences.FileMissing(Constants.Directories.CustomResponses));return;}
 
 	local responsetable = compilestring( "return " + contents )();
 
@@ -7409,7 +5508,7 @@ enum SCENES
 		responsetable[steamid][character][sequencename].delays[scene_index] = AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence[sequencename].delays[scene_index];
 	}
 
-	StringToFile("admin system/custom_responses.json", Utils.SceneTableToString(responsetable));
+	StringToFile(Constants.Directories.CustomResponses, Utils.SceneTableToString(responsetable));
 	AdminSystem.LoadCustomSequences();
 }
 
@@ -7419,11 +5518,11 @@ enum SCENES
  */
 ::AdminSystem.LoadCustomSequences <- function (...)
 {
-	local contents = FileToString("admin system/custom_responses.json");
+	local contents = FileToString(Constants.Directories.CustomResponses);
 	// First time
 	if(contents == null)
 	{	
-		printl("[Custom] Creating custom response file for the first time...");
+		CmdMessages.CustomSequences.CreatingFile();
 		contents = "{";
 		foreach(admin,val in AdminSystem.Admins)
 		{
@@ -7431,7 +5530,7 @@ enum SCENES
 				contents += "\n\t\""+admin+"\":\n\t{\n\t\t\"character_name\":\n\t\t{\n\t\t\t\"sequence_name\":\n\t\t\t{\n\t\t\t\t\"scenes\":[\"blank\"],\n\t\t\t\t\"delays\":[0]\n\t\t\t}\n\t\t}\n\t}"; 
 		}
 		contents += "\n}";
-		StringToFile("admin system/custom_responses.json", contents);
+		StringToFile(Constants.Directories.CustomResponses, contents);
 	}
 
 	local responsetable = compilestring( "return " + contents )();
@@ -7441,7 +5540,7 @@ enum SCENES
 	{	
 		if(!(admin in responsetable))
 		{
-			printl("[Custom] Creating default response table for new admin: "+admin);
+			CmdMessages.CustomSequences.AddingMissingAdminTables(admin);
 			responsetable[admin] <- {character_name={sequence_name={scenes=["blank"],delays=[0]}}};
 		}
 	}
@@ -7469,12 +5568,12 @@ enum SCENES
 		}
 		
 	}
-	StringToFile("admin system/custom_responses.json", Utils.SceneTableToString(responsetable));
+	StringToFile(Constants.Directories.CustomResponses, Utils.SceneTableToString(responsetable));
 }
 
 /*
  * @authors rhino
- * @param charachter = character name | all
+ * @param character = character name | all
  * @param sequencename = name for the sequence
  * Rest of the parameters should be given as: ... scene1 delay1 scene2 delay2 ...
  */
@@ -7492,16 +5591,16 @@ enum SCENES
 	{
 		if(arglen % 2 || arglen<4)
 		{
-			ClientPrint(null,3,"\x04"+player.GetCharacterName()+"->Arguments should be follow the format: character sequence_name scene1 delay1 scene2 delay2 ...");return;
+			Messages.ThrowPlayer(player,CmdMessages.CustomSequences.CreateFormat);return;
 		}
 	}
 	
-	local contents = FileToString("admin system/custom_responses.json");
+	local contents = FileToString(Constants.Directories.CustomResponses);
 
 	// Somehow response file wasn't created
 	if(contents == null)
 	{
-		ClientPrint(null,3,"\x04"+"No custom respose file found.");
+		Messages.ThrowPlayer(player,CmdMessages.CustomSequences.FileMissing(Constants.Directories.CustomResponses));
 		return;
 	}
 
@@ -7514,7 +5613,7 @@ enum SCENES
 	character = character.tolower();
 	
 	if(character != "all" && Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1 )
-	{ClientPrint(null,3,"\x04"+character+" is not a character name");return;}
+	{Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));return;}
 
 	local sequencename = arguments[1];
 
@@ -7532,7 +5631,7 @@ enum SCENES
 
 			if(sequencename in responsetable[steamid][charname])
 			{
-				ClientPrint(null,3,"\x04"+"Skipping creating sequence "+sequencename+" for "+charname+": Sequence already exists!");continue;
+				Messages.WarnPlayer(player,CmdMessages.CustomSequences.SkipDuplicate(sequencename,charname));continue;
 			}
 			else
 			{
@@ -7549,7 +5648,7 @@ enum SCENES
 		}
 		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
 		{
-			ClientPrint(null,3,"\x04"+player.GetCharacterName()+" ->Created sequence for all characters named "+sequencename);
+			Messages.InformPlayer(player,CmdMessages.CustomSequences.CreateForAll(sequencename));
 		}
 		else
 		{
@@ -7565,7 +5664,7 @@ enum SCENES
 
 		if(sequencename in responsetable[steamid][character])
 		{
-			ClientPrint(null,3,"\x04"+"Sequence "+sequencename+" already exists for "+character+"!");return;
+			Messages.ThrowPlayer(player,CmdMessages.CustomSequences.AlreadyExists(sequencename,character));return;
 		}
 		else
 		{
@@ -7582,7 +5681,7 @@ enum SCENES
 
 		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
 		{
-			ClientPrint(null,3,"\x04"+player.GetCharacterName()+" ->Created sequence for "+character+" named "+sequencename);
+			Messages.InformPlayer(player,CmdMessages.CustomSequences.CreateSuccess(character,sequencename));
 		}
 		else
 		{
@@ -7590,7 +5689,7 @@ enum SCENES
 		}
 	}
 
-	StringToFile("admin system/custom_responses.json", Utils.SceneTableToString(responsetable));
+	StringToFile(Constants.Directories.CustomResponses, Utils.SceneTableToString(responsetable));
 	AdminSystem.LoadCustomSequences();
 }
 
@@ -7608,15 +5707,15 @@ enum SCENES
 	character = character.tolower();
 	
 	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
-	{ClientPrint(null,3,"\x04"+character+" is not a character name");return;}
+	{Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));return;}
 
 	local sequencename = GetArgument(2);
-	local contents = FileToString("admin system/custom_responses.json");
+	local contents = FileToString(Constants.Directories.CustomResponses);
 
 	// Somehow response file wasn't created
 	if(contents == null)
 	{
-		ClientPrint(null,3,"\x04"+"No custom respose file found.");
+		Messages.ThrowPlayer(player,CmdMessages.CustomSequences.FileMissing(Constants.Directories.CustomResponses));
 		return;
 	}
 
@@ -7625,11 +5724,11 @@ enum SCENES
 	local steamid = player.GetSteamID();
 	
 	if(!(character in responsetable[steamid]))
-	{ClientPrint(null,3,"\x04"+"No custom responses found for "+character);return;}
+	{Messages.ThrowPlayer(player,CmdMessages.CustomSequences.NoneFound(character));return;}
 
 	if(sequencename in responsetable[steamid][character])
 	{	
-		ClientPrint(null,3,"\x04"+"Deleted custom response for "+character+": "+sequencename+"");
+		Messages.InformPlayer(player,CmdMessages.CustomSequences.DeleteSuccess(character,sequencename));
 		delete responsetable[steamid][character][sequencename];
 		
 		if(sequencename in AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence)
@@ -7637,10 +5736,10 @@ enum SCENES
 	}
 	else
 	{
-		ClientPrint(null,3,"\x04"+"No custom response found for "+character+" named: "+sequencename+"");return;
+		Messages.ThrowPlayer(player,CmdMessages.CustomSequences.NoSeqFound(character,sequencename));return;
 	}
 
-	StringToFile("admin system/custom_responses.json", Utils.SceneTableToString(responsetable));
+	StringToFile(Constants.Directories.CustomResponses, Utils.SceneTableToString(responsetable));
 	AdminSystem.LoadCustomSequences();
 }
 
@@ -8329,7 +6428,7 @@ function ChatTriggers::script( player, args, text )
 		return;
 	if(!(player.GetSteamID() in ::AdminSystem.ScriptAuths))
 	{
-		ClientPrint(null,3,"\x04"+player.GetCharacterName()+"("+player.GetSteamID()+") doesn't have authority to execute scripts");return;
+		Messages.ThrowAll(player.GetCharacterName()+"("+player.GetSteamID()+") doesn't have authority to execute scripts");return;
 	}
 	local compiledscript = compilestring(Utils.CombineArray(args));
 	compiledscript();
@@ -9085,13 +7184,13 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		AdminSystem.Vars.AllowAdminsOnly = true;
 		if ( AdminSystem.DisplayMsgs )
-			Utils.PrintToAllDel("Admin mode enabled, only Admins have access to Admin commands.");
+			Messages.BIM.AdminMode.Enabled();
 	}
 	else if ( AdminSystem.Vars.AllowAdminsOnly && (AdminsOnly == "disable" || AdminsOnly == "false" || AdminsOnly == "off") )
 	{
 		AdminSystem.Vars.AllowAdminsOnly = false;
 		if ( AdminSystem.DisplayMsgs )
-			Utils.PrintToAllDel("Admin mode disabled, everyone has access to Admin commands.");
+			Messages.BIM.AdminMode.Disabled();
 	}
 }
 
@@ -9103,7 +7202,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if(!(player.GetSteamID() in ::AdminSystem.HostPlayer))
 	{
 		if ( AdminSystem.DisplayMsgs )
-			Utils.PrintToAllDel("Sorry, only the host can give script authorization.");
+			Messages.BIM.ScriptAuth.HostOnly();
 		return;
 	}
 
@@ -9115,21 +7214,21 @@ if ( Director.GetGameMode() == "holdout" )
 	if ( Target.IsBot() && Target.IsHumanSpectating() )
 		Target = Target.GetHumanSpectator();
 	
-	local authList = FileToString("admin system/scriptauths.txt");
+	local authList = FileToString(Constants.Directories.ScriptAuths);
 	if ( authList != null )
 	{
 		if (!AdminSystem.HasScriptAuth( player ))
 			return;
 	}
 	
-	local auths = FileToString("admin system/scriptauths.txt");
+	local auths = FileToString(Constants.Directories.ScriptAuths);
 	local steamid = Target.GetSteamID();
 	if ( steamid == "BOT" )
 		return;
 	if ( (steamid in ::AdminSystem.ScriptAuths) )
 	{
 		if ( AdminSystem.DisplayMsgs )
-			Utils.PrintToAllDel("%s already has script authorization.", Target.GetName());
+			Messages.BIM.ScriptAuth.AlreadyAuthed(Target.GetName());
 		return;
 	}
 	if ( auths == null )
@@ -9137,8 +7236,9 @@ if ( Director.GetGameMode() == "holdout" )
 	else
 		auths += "\r\n" + steamid + " //" + Target.GetName();
 	if ( AdminSystem.DisplayMsgs )
-		Utils.PrintToAllDel("%s has been given script authorization.", Target.GetName());
-	StringToFile("admin system/scriptauths.txt", auths);
+		Messages.BIM.ScriptAuth.Given(Target.GetName());
+
+	StringToFile(Constants.Directories.ScriptAuths, auths);
 	AdminSystem.LoadScriptAuths();
 }
 
@@ -9150,7 +7250,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if(!(player.GetSteamID() in ::AdminSystem.HostPlayer))
 	{
 		if ( AdminSystem.DisplayMsgs )
-			Utils.PrintToAllDel("Sorry, only the host can take away script authorization.");
+			Messages.BIM.ScriptAuth.HostOnly();
 		return;
 	}
 
@@ -9162,7 +7262,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if ( Target.IsBot() && Target.IsHumanSpectating() )
 		Target = Target.GetHumanSpectator();
 	
-	local auths = FileToString("admin system/scriptauths.txt");
+	local auths = FileToString(Constants.Directories.ScriptAuths);
 	local steamid = Target.GetSteamID();
 
 	if ( (steamid in ::AdminSystem.HostPlayer) && (player.GetSteamID() in ::AdminSystem.HostPlayer) )
@@ -9171,7 +7271,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if ( !(steamid in ::AdminSystem.ScriptAuths))
 	{
 		if ( AdminSystem.DisplayMsgs )
-			Utils.PrintToAllDel("%s doesn't have script authorization.", Target.GetName());
+			Messages.BIM.ScriptAuth.AlreadyNone(Target.GetName());
 		return;
 	}
 
@@ -9181,8 +7281,8 @@ if ( Director.GetGameMode() == "holdout" )
 	auths = Utils.StringReplace(auths, steamid, "");
 	::AdminSystem.ScriptAuths = {};
 	if ( AdminSystem.DisplayMsgs )
-		Utils.PrintToAllDel("%s has lost script authorization.", Target.GetName());
-	StringToFile("admin system/scriptauths.txt", auths);
+		Messages.BIM.ScriptAuth.Taken(Target.GetName());
+	StringToFile(Constants.Directories.ScriptAuths, auths);
 	AdminSystem.LoadScriptAuths();	
 }
 
@@ -9196,21 +7296,21 @@ if ( Director.GetGameMode() == "holdout" )
 	if ( Target.IsBot() && Target.IsHumanSpectating() )
 		Target = Target.GetHumanSpectator();
 	
-	local adminList = FileToString("admin system/admins.txt");
+	local adminList = FileToString(Constants.Directories.Admins);
 	if ( adminList != null )
 	{
 		if (!AdminSystem.IsAdmin( player ))
 			return;
 	}
 	
-	local admins = FileToString("admin system/admins.txt");
+	local admins = FileToString(Constants.Directories.Admins);
 	local steamid = Target.GetSteamID();
 	if ( steamid == "BOT" )
 		return;
 	if ( (steamid in ::AdminSystem.Admins) )
 	{
 		if ( AdminSystem.DisplayMsgs )
-			Utils.PrintToAllDel("%s is already an Admin.", Target.GetName());
+			Messages.BIM.Admin.AlreadyAdmin(Target.GetName());
 		return;
 	}
 	if ( admins == null )
@@ -9218,8 +7318,8 @@ if ( Director.GetGameMode() == "holdout" )
 	else
 		admins += "\r\n" + steamid + " //" + Target.GetName();
 	if ( AdminSystem.DisplayMsgs )
-		Utils.PrintToAllDel("%s has been given Admin control.", Target.GetName());
-	StringToFile("admin system/admins.txt", admins);
+			Messages.BIM.Admin.Add(Target.GetName());
+	StringToFile(Constants.Directories.Admins, admins);
 	AdminSystem.LoadAdmins();
 	AdminSystem.LoadCustomSequences();
 }
@@ -9234,13 +7334,13 @@ if ( Director.GetGameMode() == "holdout" )
 	if ( Target.IsBot() && Target.IsHumanSpectating() )
 		Target = Target.GetHumanSpectator();
 	
-	local admins = FileToString("admin system/admins.txt");
+	local admins = FileToString(Constants.Directories.Admins);
 	local steamid = Target.GetSteamID();
 
 	if ( (steamid in ::AdminSystem.Admins) && !(player.GetSteamID() in ::AdminSystem.HostPlayer) )
 	{
 		if ( AdminSystem.DisplayMsgs )
-			Utils.PrintToAllDel("Sorry, only the host can remove Admins.");
+			Messages.BIM.Admin.HostOnlyRemoval();
 		return;
 	}
 	if ( (steamid in ::AdminSystem.HostPlayer) && (player.GetSteamID() in ::AdminSystem.HostPlayer) )
@@ -9253,8 +7353,8 @@ if ( Director.GetGameMode() == "holdout" )
 	admins = Utils.StringReplace(admins, steamid, "");
 	::AdminSystem.Admins = {};
 	if ( AdminSystem.DisplayMsgs )
-		Utils.PrintToAllDel("%s has lost Admin control.", Target.GetName());
-	StringToFile("admin system/admins.txt", admins);
+		Messages.BIM.Admin.Remove(Target.GetName());
+	StringToFile(Constants.Directories.Admins, admins);
 	AdminSystem.LoadAdmins();
 }
 
@@ -9274,7 +7374,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if ( (steamid in ::AdminSystem.Admins) && !(player.GetSteamID() in ::AdminSystem.HostPlayer) )
 	{
 		if ( AdminSystem.DisplayMsgs )
-			Utils.PrintToAllDel("Sorry, you can't kick an Admin.");
+			Messages.BIM.KickPlayer.NoAdminKick();
 		return;
 	}
 	if ( (steamid in ::AdminSystem.HostPlayer) && (player.GetSteamID() in ::AdminSystem.HostPlayer) )
@@ -9285,13 +7385,13 @@ if ( Director.GetGameMode() == "holdout" )
 	if ( Reason && steamid != "BOT" )
 	{
 		if ( AdminSystem.DisplayMsgs )
-			Utils.PrintToAllDel("%s has been kicked by %s due to %s.", Target.GetName(), player.GetName(), Reason);
+			Messages.BIM.KickPlayer.ChatKickedMessageReasoned(Target.GetName(), player.GetName(), Reason);
 		SendToServerConsole( "kickid " + steamid + " " + Reason );
 	}
 	else
 	{
 		if ( AdminSystem.DisplayMsgs )
-			Utils.PrintToAllDel("%s has been kicked by %s.", Target.GetName(), player.GetName());
+			Messages.BIM.KickPlayer.ChatKickedMessage(Target.GetName(), player.GetName());
 		if ( steamid == "BOT" )
 			SendToServerConsole( "kick " + Target.GetName() );
 		else
@@ -9311,7 +7411,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if ( Target.IsBot() && Target.IsHumanSpectating() )
 		Target = Target.GetHumanSpectator();
 	
-	local bannedPlayers = FileToString("admin system/banned.txt");
+	local bannedPlayers = FileToString(Constants.Directories.Banned);
 	local steamid = Target.GetSteamID();
 	
 	if ( !steamid || steamid == "BOT" )
@@ -9320,7 +7420,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if ( (steamid in ::AdminSystem.Admins) && !(player.GetSteamID() in ::AdminSystem.HostPlayer) )
 	{
 		if ( AdminSystem.DisplayMsgs )
-			Utils.PrintToAllDel("Sorry, you can't ban an Admin.");
+			Messages.BIM.BanPlayer.NoAdminBan();
 		return;
 	}
 	if ( (steamid in ::AdminSystem.HostPlayer) && (player.GetSteamID() in ::AdminSystem.HostPlayer) )
@@ -9333,17 +7433,17 @@ if ( Director.GetGameMode() == "holdout" )
 	else
 		bannedPlayers += "\r\n" + steamid + " //" + Target.GetName();
 	
-	StringToFile("admin system/banned.txt", bannedPlayers);
+	StringToFile(Constants.Directories.Banned, bannedPlayers);
 	if ( Reason )
 	{
 		if ( AdminSystem.DisplayMsgs )
-			Utils.PrintToAllDel("%s has been banned by %s due to %s.", Target.GetName(), player.GetName(), Reason);
+			Messages.BIM.BanPlayer.ChatBannedMessageReasoned(Target.GetName(), player.GetName(),Reason);
 		SendToServerConsole( "kickid " + steamid + " " + Reason );
 	}
 	else
 	{
 		if ( AdminSystem.DisplayMsgs )
-			Utils.PrintToAllDel("%s has been banned by %s.", Target.GetName(), player.GetName());
+			Messages.BIM.BanPlayer.ChatBannedMessage(Target.GetName(), player.GetName());
 		SendToServerConsole( "kickid " + steamid );
 	}
 	AdminSystem.LoadBanned();
@@ -10346,7 +8446,7 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			if(tbl.entid == entity.GetIndex().tostring())
 			{
-				printl(player.GetCharacterName().tolower()+"->Ignore attemp to kill entity #"+entity.GetIndex().tostring()+" held by a player");
+				printl(player.GetCharacterName().tolower()+"->Ignore attempt to kill entity #"+entity.GetIndex().tostring()+" held by a player");
 				skip = true;break;
 			}
 		}
@@ -10355,7 +8455,7 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			if(tbl.entid.tostring() == entity.GetIndex().tostring())
 			{
-				printl(player.GetCharacterName().tolower()+"->Ignore attemp to kill hat entity #"+entity.GetIndex().tostring()+" worn by a player");
+				printl(player.GetCharacterName().tolower()+"->Ignore attempt to kill hat entity #"+entity.GetIndex().tostring()+" worn by a player");
 				skip = true;break;
 			}
 		}
@@ -10753,7 +8853,6 @@ if ( Director.GetGameMode() == "holdout" )
 	ClientPrint(player.GetBaseEntity(),3,"\x05"+RandomPick(::Model.paths));
 }
 
-
 /*
  * @authors rhino
  */
@@ -10825,9 +8924,9 @@ if ( Director.GetGameMode() == "holdout" )
 	local name = player.GetCharacterName().tolower();
 	
 	if (AdminSystem.Vars._outputsEnabled[name])
-	{ClientPrint(null,3,"\x04"+name+"->Changed model of #"+ent.GetIndex()+" to:"+model);}
+	{Messages.InformPlayer(player,CmdMessages.Models.ChangeSuccess(ent.GetIndex(),model));}
 	else
-	{printB(player.GetCharacterName(),name+"->Changed model of #"+ent.GetIndex()+" to:"+model,true,"info",true,true);}
+	{printB(player.GetCharacterName(),name+"->Changed model of #"+ent.GetIndex()+" to "+model,true,"info",true,true);}
 	
 }
 
@@ -10867,9 +8966,9 @@ if ( Director.GetGameMode() == "holdout" )
 	ent.SetModelScale(scale);
 
 	if (AdminSystem.Vars._outputsEnabled[name])
-	{ClientPrint(null,3,"\x04"+name+"->Changed model scale of #"+ent.GetIndex()+" to:"+scale);}
+	{Messages.InformPlayer(player,CmdMessages.Models.ScaleChangeSuccess(ent.GetIndex(),scale));}
 	else
-	{printB(player.GetCharacterName(),name+"->Changed model scale of #"+ent.GetIndex()+" to:"+scale,true,"info",true,true);}
+	{printB(player.GetCharacterName(),name+"->Changed model scale of #"+ent.GetIndex()+" to "+scale,true,"info",true,true);}
 	
 }
 
@@ -10918,9 +9017,9 @@ if ( Director.GetGameMode() == "holdout" )
 	local name = player.GetCharacterName().tolower();
 
 	if (AdminSystem.Vars._outputsEnabled[name])
-	{ClientPrint(null,3,"\x04"+name+"->Changed model of #"+ent.GetIndex()+" to:"+model);}
+	{Messages.InformPlayer(player,CmdMessages.Models.ChangeSuccess(ent.GetIndex(),model));}
 	else
-	{printB(player.GetCharacterName(),name+"->Changed model of #"+ent.GetIndex()+" to:"+model,true,"info",true,true);}
+	{printB(player.GetCharacterName(),name+"->Changed model of #"+ent.GetIndex()+" to "+model,true,"info",true,true);}
 	
 }
 
@@ -10947,7 +9046,7 @@ if ( Director.GetGameMode() == "holdout" )
 	
 	g_ModeScript.CreateParticleSystemAt( null, EyePosition, Particle, true );
 	if (AdminSystem.Vars._outputsEnabled[name])
-	{ClientPrint(null,3,"\x04"+name+"->Spawned particle:"+Particle+" at:"+EyePosition.x+","+EyePosition.y+","+EyePosition.z);}
+	{Messages.InformPlayer(player,CmdMessages.Particles.SpawnSuccess(Particle,EyePosition));}
 	else
 	{printB(player.GetCharacterName(),name+"->Spawned particle->"+Particle+" at->"+EyePosition.x+" "+EyePosition.y+" "+EyePosition.z,true,"info",true,true);}
 	
@@ -10986,115 +9085,14 @@ if ( Director.GetGameMode() == "holdout" )
 	if(setting != "effect_name")
 		{try{val = val.tofloat();}catch(e){return;}}
 	else if(Utils.GetIDFromArray(::Particlenames.names,val) == null)
-		{ClientPrint(null,3,"\x04"+"No particle named "+val+" was found.");return;}
+		{Messages.ThrowPlayer(player,CmdMessages.Particles.UnknownParticle(val));return;}
 
 	if (AdminSystem.Vars._outputsEnabled[name.tolower()])
-	{ClientPrint(null,3,"\x04"+name+" -> Changed explosion setting "+setting+": "+AdminSystem.Vars._explosion_settings[name.tolower()][setting]+"->"+val);}
+	{Messages.InformPlayer(player,CmdMessages.Explosions.SettingSuccess(setting,AdminSystem.Vars._explosion_settings[name.tolower()][setting],val));}
 	else
 	{printB(name,name+" -> Changed explosion setting "+setting+": "+AdminSystem.Vars._explosion_settings[name.tolower()][setting]+"->"+val,true,"info",true,true);}
 	
 	AdminSystem.Vars._explosion_settings[name.tolower()][setting] = val;
-}
-
-/*
- * @authors rhino
- */
-::AdminSystem.Vars._explosion_settings <-
-{
-	bill=
-	{
-		delay=1
-		effect_name="flame_blue"
-		dmgmin = 10
-		dmgmax = 30
-		radiusmin = 300
-		radiusmax = 450
-		minpushspeed = 2500
-		maxpushspeed = 10000
-	},
-	francis=
-	{
-		delay=1
-		effect_name="flame_blue"
-		dmgmin = 10
-		dmgmax = 30
-		radiusmin = 300
-		radiusmax = 450
-		minpushspeed = 2500
-		maxpushspeed = 10000
-		
-	},
-	louis=
-	{
-		delay=1
-		effect_name="flame_blue"
-		dmgmin = 10
-		dmgmax = 30
-		radiusmin = 300
-		radiusmax = 450
-		minpushspeed = 2500
-		maxpushspeed = 10000
-		
-	},
-	zoey=
-	{
-		delay=1
-		effect_name="flame_blue"
-		dmgmin = 10
-		dmgmax = 30
-		radiusmin = 300
-		radiusmax = 450
-		minpushspeed = 2500
-		maxpushspeed = 10000
-		
-	},
-	nick=
-	{
-		delay=1
-		effect_name="flame_blue"
-		dmgmin = 10
-		dmgmax = 30
-		radiusmin = 300
-		radiusmax = 450
-		minpushspeed = 2500
-		maxpushspeed = 10000
-		
-	},
-	coach=
-	{
-		delay=1
-		effect_name="flame_blue"
-		dmgmin = 10
-		dmgmax = 30
-		radiusmin = 300
-		radiusmax = 450
-		minpushspeed = 2500
-		maxpushspeed = 10000
-		
-	},
-	ellis=
-	{
-		delay=1
-		effect_name="flame_blue"
-		dmgmin = 10
-		dmgmax = 30
-		radiusmin = 300
-		radiusmax = 450
-		minpushspeed = 2500
-		maxpushspeed = 10000
-		
-	},
-	rochelle=
-	{
-		delay=1
-		effect_name="flame_blue"
-		dmgmin = 10
-		dmgmax = 30
-		radiusmin = 300
-		radiusmax = 450
-		minpushspeed = 2500
-		maxpushspeed = 10000
-	}
 }
 
 /*
@@ -11180,7 +9178,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if (!particle)
 	{
-		printl("Warning: Could not create info_particle_system entity.");
+		CmdMessages.Explosions.FailedParticle();
 		return;
 	}
 	
@@ -11189,7 +9187,7 @@ if ( Director.GetGameMode() == "holdout" )
 		particle.SetAngles(-90,0,0);
 		particle.SetOrigin(Vector(aimedlocation.x,aimedlocation.y,aimedlocation.z+5.0));
 		if(delay>7)
-			{printB(player.GetCharacterName(),"[Explosion-Warning] Fireworks disappear after 7 seconds",false,"");particle.KillDelayed(7);}
+			{printB(player.GetCharacterName(),CmdMessages.Explosions.FireworkLength,false,"");particle.KillDelayed(7);}
 		else
 			particle.KillDelayed(delay);
 		
@@ -11343,7 +9341,7 @@ if ( Director.GetGameMode() == "holdout" )
 		Utils.ResetModels(target.GetCharacterName());
 
 		if (AdminSystem.Vars._outputsEnabled[name])
-		{ClientPrint(null,3,"\x04"+name+"->Restored original model for "+target.GetCharacterName());}
+		{Messages.InformPlayer(player,CmdMessages.Models.RestoredOrgOther(target.GetCharacterName()));}
 		else
 		{printB(player.GetCharacterName(),name+"->Restored original model for "+target.GetCharacterName(),true,"info",true,true);}
 	}
@@ -11352,7 +9350,7 @@ if ( Director.GetGameMode() == "holdout" )
 		Utils.ResetModels(name);
 
 		if (AdminSystem.Vars._outputsEnabled[name])
-		{ClientPrint(null,3,"\x04"+name+"->Restored original model");}
+		{Messages.InformPlayer(player,CmdMessages.Models.RestoredOrgSelf());}
 		else
 		{printB(player.GetCharacterName(),name+"->Restored original model",true,"info",true,true);}
 	}
@@ -11369,12 +9367,12 @@ if ( Director.GetGameMode() == "holdout" )
 	if(AdminSystem.Vars._RockThrow.enabled)
 	{
 		AdminSystem.Vars._RockThrow.enabled = false;
-		Utils.PrintToAllDel("Tank rock's push effect is now disabled.")
+		Messages.InformAll(CmdMessages.DisableTankRockPush());
 	}
 	else
 	{
 		AdminSystem.Vars._RockThrow.enabled = true;
-		Utils.PrintToAllDel("Tank rock's push effect is now enabled.")
+		Messages.InformAll(CmdMessages.EnableTankRockPush());
 	}
 }
 
@@ -11389,12 +9387,12 @@ if ( Director.GetGameMode() == "holdout" )
 	if(AdminSystem.Vars._RockThrow.randomized)
 	{
 		AdminSystem.Vars._RockThrow.randomized = false;
-		Utils.PrintToAllDel("Tank rock's random models are now disabled.")
+		Messages.InformAll(CmdMessages.DisableTankRockRandomModel());
 	}
 	else
 	{
 		AdminSystem.Vars._RockThrow.randomized = true;
-		Utils.PrintToAllDel("Tank rock's random models are now enabled.")
+		Messages.InformAll(CmdMessages.EnableTankRockRandomModel());
 	}
 }
 
@@ -11409,12 +9407,12 @@ if ( Director.GetGameMode() == "holdout" )
 	if(AdminSystem.Vars._RockThrow.randomized_spawn_prop_after)
 	{
 		AdminSystem.Vars._RockThrow.randomized_spawn_prop_after = false;
-		Utils.PrintToAllDel("Tank rock's using physics is now disabled.")
+		Messages.InformAll(CmdMessages.DisableTankRockPhys());
 	}
 	else
 	{
 		AdminSystem.Vars._RockThrow.randomized_spawn_prop_after = true;
-		Utils.PrintToAllDel("Tank rock's using physics is now enabled.")
+		Messages.InformAll(CmdMessages.EnableTankRockPhys());
 	}
 }
 
@@ -11430,13 +9428,13 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		Convars.SetValue("z_jockey_limit","1");
 		SessionOptions.JockeyLimit <- "1";
-		Utils.PrintToAllDel("Little bastards are back...")
+		Messages.InformAll(CmdMessages.EnableJockeys());
 	}
 	else
 	{
 		Convars.SetValue("z_jockey_limit","0");
 		SessionOptions.JockeyLimit <- "0";
-		Utils.PrintToAllDel("Be gone vile man, be gone from me!")
+		Messages.InformAll(CmdMessages.DisableJockeys());
 	}
 }
 
@@ -11452,25 +9450,13 @@ if ( Director.GetGameMode() == "holdout" )
 	if(AdminSystem.Vars._modelPreference[name].keeplast)
 	{
 		AdminSystem.Vars._modelPreference[name].keeplast = false;
-		Utils.PrintToAllDel(name+"->Last model won't be kept for the next chapter.")
+		Messages.InformPlayer(player,CmdMessages.DisableModelKeeping());
 	}
 	else
 	{
 		AdminSystem.Vars._modelPreference[name].keeplast = true;
-		Utils.PrintToAllDel(name+"->Last model is going to be kept for the next chapter.")
+		Messages.InformPlayer(player,CmdMessages.EnableModelKeeping());
 	}
-}
-
-::MicEffects <-
-{
-	standard = "0"
-	no_effect = "50"
-	very_small = "56"
-	small = "58"
-	tiny = "59"
-	loud = "55"
-	loud_echo = "57"
-
 }
 
 /*
@@ -11480,6 +9466,17 @@ if ( Director.GetGameMode() == "holdout" )
  * Example ( Spawn a standard microphone with 100 units range and connect it to speaker #123 ):
  * 		!microphone standard 100 #123
  */
+::MicEffects <-
+{
+	standard = "0"
+	no_effect = "50"
+	very_small = "56"
+	small = "58"
+	tiny = "59"
+	loud = "55"
+	loud_echo = "57"
+}
+
 ::AdminSystem.MicrophoneCmd <- function ( player, args )
 {	
 	if (!AdminSystem.IsPrivileged( player ))
@@ -11493,7 +9490,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if(!(effect in MicEffects))
 	{
-		ClientPrint(null,3,"\x04"+"Available mic effects: no_effect,standard,very_small,small,tiny,loud,loud_echo");return;
+		Messages.ThrowPlayer(player,CmdMessages.MicSpeaker.MicEffects());return;
 	}
 	else
 	{
@@ -11517,12 +9514,12 @@ if ( Director.GetGameMode() == "holdout" )
 
 			if (speaker == null)
 			{
-				ClientPrint(null,3,"\x04"+"Invalid speaker index");return;
+				Messages.ThrowPlayer(player,CmdMessages.MicSpeaker.SpeakerIDInvalid());return;
 			}
 
 			if(speaker.GetClassname() != "info_target" && !AdminSystem.Vars.IgnoreSpeakerClass)
 			{
-				ClientPrint(null,3,"\x04"+"Speaker's should be a \"info_target\" class entity");return;
+				Messages.ThrowPlayer(player,CmdMessages.MicSpeaker.SpeakerClassInvalid());return;
 			}
 		}
 	}
@@ -11546,12 +9543,12 @@ if ( Director.GetGameMode() == "holdout" )
 	local micent = Utils.CreateEntityWithTable(keyvaltable);
 
 	if(micent == null)
-	{ClientPrint(null,3,"\x04"+"Failed to create a mic with given values.");return;}
+	{Messages.ThrowPlayer(player,CmdMessages.MicSpeaker.MicKeyValsInvalid());return;}
 
 	if (AdminSystem.Vars._outputsEnabled[name])
-	{ClientPrint(null,3,"\x04"+name+"->Created a microphone(#"+micent.GetIndex()+") named "+micent.GetName());}
+	{Messages.InformPlayer(player,CmdMessages.MicSpeaker.MicrophoneSuccess(micent));}
 	else
-	{printB(player.GetCharacterName(),name+"->Created a microphone(#"+micent.GetIndex()+") named "+micent.GetName(),true,"info",true,true);}
+	{printB(player.GetCharacterName(),"Created a microphone(#"+micent.GetIndex()+") named "+micent.GetName(),true,"info",true,true);}
 
 }
 
@@ -11577,10 +9574,10 @@ if ( Director.GetGameMode() == "holdout" )
 	local speakerent = Utils.CreateEntityWithTable(keyvaltable);
 
 	if(speakerent == null)
-	{ClientPrint(null,3,"\x04"+"Failed to create a speaker.");return;}
+	{Messages.ThrowPlayer(player,CmdMessages.MicSpeaker.SpeakerKeyValsInvalid());return;}
 
 	if (AdminSystem.Vars._outputsEnabled[name])
-	{ClientPrint(null,3,"\x04"+name+"->Created a speaker(#"+speakerent.GetIndex()+") named "+speakerent.GetName());}
+	{Messages.InformPlayer(player,CmdMessages.MicSpeaker.SpeakerSuccess(speakerent));}
 	else
 	{printB(player.GetCharacterName(),name+"->Created a speaker(#"+speakerent.GetIndex()+") named "+speakerent.GetName(),true,"info",true,true);}
 
@@ -11609,17 +9606,17 @@ if ( Director.GetGameMode() == "holdout" )
 	if(speaker == null || mic == null)
 		return;
 	
-	if((speaker.GetClassname() != "info_target" || mic.GetClassname() != "env_microphone") && !AdminSystem.Vars.IgnoreSpeakerClass)
+	if((speaker.GetClassname() != "info_target" && !AdminSystem.Vars.IgnoreSpeakerClass) || mic.GetClassname() != "env_microphone")
 	{
-		ClientPrint(null,3,"\x04"+"Speaker's class should be \"info_target\", mic's class should be \"env_microphone\"");return;
+		Messages.ThrowPlayer(player,CmdMessages.MicSpeaker.ClassesInvalid());return;
 	}
 
 	DoEntFire("!self","SetSpeakerName",speaker.GetName(),0,null,mic);
 
 	if (AdminSystem.Vars._outputsEnabled[name])
-	{ClientPrint(null,3,"\x04"+name+"->Connected speaker(#"+speaker.GetEntityIndex()+") to mic(#"+mic.GetEntityIndex()+")");}
+	{Messages.InformPlayer(player,CmdMessages.MicSpeaker.ConnectSuccess(speaker.GetEntityIndex(),mic.GetEntityIndex()));}
 	else
-	{printB(player.GetCharacterName(),name+"->Connected speaker(#"+speaker.GetEntityIndex()+") to mic(#"+mic.GetEntityIndex()+")",true,"info",true,true);}
+	{printB(player.GetCharacterName(),"Connected speaker(#"+speaker.GetEntityIndex()+") to mic(#"+mic.GetEntityIndex()+")",true,"info",true,true);}
 	
 }
 
@@ -11637,8 +9634,12 @@ if ( Director.GetGameMode() == "holdout" )
 	local dist = null;
 	local entorigin = null;
 	local foundany = false;
+	local outputenabled = AdminSystem.Vars._outputsEnabled[name];
 
-	printB(player.GetCharacterName(),"",false,"",true,false);
+	if(!outputenabled)
+	{
+		printB(player.GetCharacterName(),"",false,"",true,false);
+	}
 
 	foreach(mic in ::VSLib.EasyLogic.Objects.OfClassname("env_microphone"))
 	{	
@@ -11646,7 +9647,15 @@ if ( Director.GetGameMode() == "holdout" )
 		{	
 			foundany = true;
 			entorigin = mic.GetOrigin();
-			printB(player.GetCharacterName(),"Mic(#"+mic.GetIndex()+") at->("+entorigin.x+" "+entorigin.y+" "+entorigin.z+") distance->"+Utils.CalculateDistance(entorigin,pos),false,"info",false,false)
+			if(outputenabled)
+			{
+				Messages.InformPlayer(player,CmdMessages.MicSpeaker.MicInfo(mic.GetIndex(),entorigin,Utils.CalculateDistance(entorigin,pos)));
+			}
+			else
+			{
+				printB(player.GetCharacterName(),CmdMessages.MicSpeaker.MicInfo(mic.GetIndex(),entorigin,Utils.CalculateDistance(entorigin,pos)),false,"info",false,false);
+			}
+			
 		}
 	}
 
@@ -11656,14 +9665,33 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			foundany = true;
 			entorigin = speaker.GetOrigin();
-			printB(player.GetCharacterName(),"Speaker(#"+speaker.GetIndex()+") at->("+entorigin.x+" "+entorigin.y+" "+entorigin.z+") distance->"+Utils.CalculateDistance(entorigin,pos),false,"info",false,false)
+			if(outputenabled)
+			{
+				Messages.InformPlayer(player,CmdMessages.MicSpeaker.SpeakerInfo(speaker.GetIndex(),entorigin,Utils.CalculateDistance(entorigin,pos)));
+			}
+			else
+			{
+				printB(player.GetCharacterName(),CmdMessages.MicSpeaker.SpeakerInfo(speaker.GetIndex(),entorigin,Utils.CalculateDistance(entorigin,pos)),false,"info",false,false);
+			}
 		}	
 	}
+
 	if(!foundany)
 	{
-		printB(player.GetCharacterName(),"No mic or speaker found",false,"info",false,false);
+		if(outputenabled)
+		{
+			Messages.ThrowPlayer(player,CmdMessages.MicSpeaker.NoneFound());
+		}
+		else
+		{
+			printB(player.GetCharacterName(),CmdMessages.MicSpeaker.NoneFound(),false,"info",false,false);
+		}
 	}
-	printB(player.GetCharacterName(),"",false,"",false,true,0.3);
+
+	if(!outputenabled)
+	{
+		printB(player.GetCharacterName(),"",false,"",false,true,0.3);
+	}
 }
 
 /*
@@ -11689,9 +9717,9 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 
 	if (AdminSystem.Vars._outputsEnabled[name])
-	{ClientPrint(null,3,"\x04"+name+"->Deleted all piano keys");}
+	{Messages.InformPlayer(player,CmdMessages.Piano.Remove());}
 	else
-	{printB(player.GetCharacterName(),name+"->Deleted all piano keys",true,"info",true,true);}
+	{printB(player.GetCharacterName(),CmdMessages.Piano.Remove(),true,"info",true,true);}
 	
 }
 
@@ -11725,7 +9753,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local startkey = Utils.CreateEntityWithTable(keyvaltable);
 	
 	if(startkey == null)
-	{ClientPrint(null,3,"\x04"+name+"-> Couldn't spawn piano keys");return;}
+	{Messages.ThrowPlayer(player,CmdMessages.Piano.Failed());return;}
 	
 	local entindex = startkey.GetIndex();
 
@@ -11752,9 +9780,9 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	
 	if (AdminSystem.Vars._outputsEnabled[name])
-	{ClientPrint(null,3,"\x04"+name+"->Spawned piano keys starting with #"+startkey.GetIndex()+" at:"+startkey.GetLocation());}
+	{Messages.InformPlayer(player,CmdMessages.Piano.Success(startkey));}
 	else
-	{printB(player.GetCharacterName(),name+"->Spawned piano keys starting with #"+startkey.GetIndex()+" at->"+startkey.GetLocation(),true,"info",true,true);}
+	{printB(player.GetCharacterName(),CmdMessages.Piano.Success(startkey),true,"info",true,true);}
 	
 }
 
@@ -12005,11 +10033,11 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if (AdminSystem.Vars._outputsEnabled[name])
 	{
-		ClientPrint(null,3,"\x04"+name+" ->Created entity(#"+ent.GetIndex()+"):\nclass = "+classname+"\nposition = "+pos+"\nangles = "+ang+"\nkeyvals = ");
+		Messages.InformPlayer(player,"Created entity(#"+ent.GetIndex()+"):\nclass = "+classname+"\nposition = "+pos+"\nangles = "+ang+"\nkeyvals = ");
 	}
 	else
 	{
-		printB(player.GetCharacterName(),name+" ->Created entity(#"+ent.GetIndex()+"):\nclass = "+classname+"\nposition = "+pos+"\nangles = "+ang+"\nkeyvals = ",true,"info",true,true);
+		printB(player.GetCharacterName(),"Created entity(#"+ent.GetIndex()+"):\nclass = "+classname+"\nposition = "+pos+"\nangles = "+ang+"\nkeyvals = ",true,"info",true,true);
 	}
 
 	Utils.PrintTable(keyvals);
@@ -12190,20 +10218,20 @@ if ( Director.GetGameMode() == "holdout" )
 	local newEntity = Utils.CreateEntityWithTable(keyvals);
 	if (newEntity == null)
 	{
-		printB(player.GetCharacterName(),name+" ->Couldn't create the entity",true,"error",true,true);
+		printB(player.GetCharacterName(),"Couldn't create the entity",true,"error",true,true);
 		return;
 	}
 
 	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
 	{
-		ClientPrint(null,3,"\x04"+name+" ->Created "+cname+" entity(#"+newEntity.GetIndex()+") with table:");
+		Messages.InformPlayer(player, "Created " + cname + " entity(#" + newEntity.GetIndex() + ") with table:\n"
+									  + Utils.GetTableString(keyvals));
 	}
 	else
 	{
-		printB(player.GetCharacterName(),name+" ->Created "+cname+" entity(#"+newEntity.GetIndex()+") with table:",true,"info",true,true);
+		printB(player.GetCharacterName(), "Created " + cname + " entity(#" + newEntity.GetIndex() + ") with table:", true, "info", true, true);
+		Utils.PrintTable(keyvals);
 	}
-
-	Utils.PrintTable(keyvals);
 
 	// Apply flags, effects and name after spawning
 	if(spawnflags!=null)
@@ -12414,16 +10442,16 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if(createdent == null)
 	{
-		printl("Couldn't create "+Entity);return;
+		Messages.ThrowPlayer(player,CmdMessages.Prop.Failed(Entity));return;
 	}
 
 	if (AdminSystem.Vars._outputsEnabled[name])
 	{
-		ClientPrint(null,3,"\x04"+name+" ->Created "+Entity+" entity(#"+createdent.GetIndex().tostring()+") named "+createdent.GetName());
+		Messages.InformPlayer(player,CmdMessages.Prop.Success(Entity,createdent));
 	}
 	else
 	{
-		printB(player.GetCharacterName(),name+" ->Created "+Entity+" entity(#"+createdent.GetIndex().tostring()+") named "+createdent.GetName(),true,"info",true,true);
+		printB(player.GetCharacterName(),CmdMessages.Prop.Success(Entity,createdent),true,"info",true,true);
 	}
 
 }
@@ -12454,11 +10482,11 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
 	{
-		ClientPrint(null,3,"\x04"+name+" ->Created a Door entity(#"+ent.GetIndex().tostring()+") named "+ent.GetName());
+		Messages.InformPlayer(player,CmdMessages.Prop.SuccessDoor(ent));
 	}
 	else
 	{
-		printB(player.GetCharacterName(),name+" ->Created a Door entity(#"+ent.GetIndex().tostring()+") named "+ent.GetName(),true,"info",true,true);
+		printB(player.GetCharacterName(),CmdMessages.Prop.SuccessDoor(ent),true,"info",true,true);
 	}
 }
 
@@ -12954,7 +10982,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if (AdminSystem.Vars._outputsEnabled[name.tolower()])
 	{
-		ClientPrint(null,3,"\x04"+name.tolower()+"-> ent_teleport "+id+" "+player.GetLookingLocation());
+		Messages.InformPlayer(player,CmdMessages.Force.TeleportSuccess(id,player.GetLookingLocation()));
 	}
 	else
 	{
@@ -12995,12 +11023,12 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			if (Entity.GetClassname() == "player" && Action == "kill" && Entity.GetSteamID() !="BOT" && AdminSystem.Vars.IgnoreDeletingPlayers)
 			{
-				printl(player.GetCharacterName().tolower()+"->Ignore attemp to kick player:"+Entity.GetName());
+				printl(player.GetCharacterName().tolower()+"->Ignore attempt to kick player:"+Entity.GetName());
 				return;
 			}
 			else if (Entity.GetClassname() == "player" && Action == "becomeragdoll")
 			{
-				printl(player.GetCharacterName().tolower()+"->Ignore attemp to make player ragdoll:"+Entity.GetName());
+				printl(player.GetCharacterName().tolower()+"->Ignore attempt to make player ragdoll:"+Entity.GetName());
 				return;
 			}
 			else
@@ -13011,7 +11039,7 @@ if ( Director.GetGameMode() == "holdout" )
 					{
 						if(tbl.entid == Entity.GetIndex().tostring())
 						{
-							printl(player.GetCharacterName().tolower()+"->Ignore attemp to kill entity #"+Entity.GetIndex().tostring()+" held by a player");
+							printl(player.GetCharacterName().tolower()+"->Ignore attempt to kill entity #"+Entity.GetIndex().tostring()+" held by a player");
 							return;
 						}
 					}
@@ -13020,7 +11048,7 @@ if ( Director.GetGameMode() == "holdout" )
 					{
 						if(tbl.entid.tostring() == Entity.GetIndex().tostring())
 						{
-							printl(player.GetCharacterName().tolower()+"->Ignore attemp to kill hat entity #"+Entity.GetIndex().tostring()+" worn by a player");
+							printl(player.GetCharacterName().tolower()+"->Ignore attempt to kill hat entity #"+Entity.GetIndex().tostring()+" worn by a player");
 							return;
 						}
 					}
@@ -13052,7 +11080,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
 	{
-		ClientPrint(null,3,"\x04"+player.GetCharacterName().tolower()+"-> ent_fire "+(Entity == null ? Entnameid : ("#"+Entity.GetIndex()))+" "+Action+" "+val);
+		Messages.InformPlayer(player,"Firing input '"+ Action + "'"+(val == "" ? " " : " with params '"+val+"' ")+"for entity "+(Entity == null ? Entnameid : ("#"+Entity.GetIndex())));
 	}
 	else
 	{
@@ -13250,7 +11278,7 @@ if ( Director.GetGameMode() == "holdout" )
 		
 		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
 		{
-			ClientPrint(null,3,"\x04"+player.GetCharacterName().tolower()+"->Push("+scalefactor+","+direction+","+pitchofeye+"), Entity index: "+entlooked.GetIndex());
+			Messages.InformPlayer(player,CmdMessages.Force.PushSuccess(entlooked.GetIndex(),scalefactor,direction,pitchofeye));
 		}
 		else
 		{
@@ -13430,7 +11458,7 @@ if ( Director.GetGameMode() == "holdout" )
 		
 		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
 		{
-			ClientPrint(null,3,"\x04"+player.GetCharacterName().tolower()+" ->Move("+units+","+direction+","+pitchofeye+"), Entity index: "+entlooked.GetIndex());
+			Messages.InformPlayer(player,CmdMessages.Force.MoveSuccess(entlooked.GetIndex(),units,direction,pitchofeye));
 		}
 		else
 		{
@@ -13513,7 +11541,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
 		{
-			ClientPrint(null,3,"\x04"+player.GetCharacterName().tolower()+"->Spin("+scalefactor+","+direction+"), Entity index: "+entlooked.GetIndex());
+			Messages.InformPlayer(player,CmdMessages.Force.SpinSuccess(entlooked.GetIndex(),scalefactor,direction));
 		}
 		else
 		{
@@ -13548,13 +11576,13 @@ if ( Director.GetGameMode() == "holdout" )
 		if ( DesiredTimeScale < 0.1 )
 		{
 			if ( AdminSystem.DisplayMsgs )
-				Utils.PrintToAllDel("You can't enter a value less than 0.1!");
+				Messages.ThrowPlayer(player,CmdMessages.TimeScale.ScaleTooSmall());
 			return;
 		}
 		else if ( DesiredTimeScale > 10.0 )
 		{
 			if ( AdminSystem.DisplayMsgs )
-				Utils.PrintToAllDel("You can't enter a value more than 10.0!");
+				Messages.ThrowPlayer(player,CmdMessages.TimeScale.ScaleTooHigh());
 			return;
 		}
 		Utils.ResumeTime();
@@ -13563,7 +11591,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
 	{
-		ClientPrint(null,3,"\x04"+player.GetCharacterName().tolower()+"->Changed timescale to "+GetArgument(1));
+		Messages.InformPlayer(player,CmdMessages.TimeScale.Success(GetArgument(1)));
 	}
 	else
 	{
@@ -15172,7 +13200,7 @@ if ( Director.GetGameMode() == "holdout" )
 		else
 		{
 			if ( AdminSystem.DisplayMsgs )
-				ClientPrint(null,3,"\x04"+"Incorrect upgrade, valid upgrades are \"laser_sight\", \"explosive_ammo\" and \"incendiary_ammo\".");
+				Messages.ThrowPlayer(player,"Incorrect upgrade, valid upgrades are \"laser_sight\", \"explosive_ammo\" and \"incendiary_ammo\".");
 		}
 	}
 }
@@ -15313,7 +13341,7 @@ if ( Director.GetGameMode() == "holdout" )
 		else
 		{
 			if ( AdminSystem.DisplayMsgs )
-				ClientPrint(null,3,"\x04"+"Incorrect upgrade, valid upgrades are \"laser_sight\", \"explosive_ammo\" and \"incendiary_ammo\".");
+				Messages.ThrowPlayer(player,"Incorrect upgrade, valid upgrades are \"laser_sight\", \"explosive_ammo\" and \"incendiary_ammo\".");
 		}
 	}
 }
@@ -15563,7 +13591,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
 	{
-		ClientPrint(null,3,"\x04"+player.GetCharacterName().tolower()+"->Rainbow("+duration+","+intervals+"), Entity index: "+entlooked.GetIndex());
+		Messages.InformPlayer(player,CmdMessages.RainbowSuccess(duration,intervals,entlooked.GetIndex()));
 	}
 	else
 	{
@@ -15583,7 +13611,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local newstate = !AdminSystem.Vars._outputsEnabled[name];
 	AdminSystem.Vars._outputsEnabled[name] = newstate;
 
-	ClientPrint(null,3,"\x04"+"Printing output state for "+name+":"+( newstate ? " Enabled":" Disabled"));
+	Messages.InformPlayer(player,CmdMessages.OutputState(newstate));
 	
 }
 
@@ -15599,7 +13627,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local newstate = !AdminSystem.Vars._saveLastLine[name];
 	AdminSystem.Vars._saveLastLine[name] = newstate;
 
-	ClientPrint(null,3,"\x04"+"Random line saving for "+name+" is"+( newstate ? " Enabled":" Disabled"));
+	Messages.InformPlayer(player,CmdMessages.LineSaving.State(newstate));
 	
 }
 
@@ -15624,7 +13652,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if (AdminSystem.Vars._outputsEnabled[name])
 	{
-		ClientPrint(null,3,"\x04"+"Saved for "+name+" -> speak "+targetname+" "+linesource,true,"info",true,true);
+		Messages.InformPlayer(player,CmdMessages.LineSaving.Success(targetname,linesource));
 	}
 	else
 	{
@@ -15648,7 +13676,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 		if (AdminSystem.Vars._outputsEnabled[name])
 		{
-			ClientPrint(null,3,"\x04"+name+" -> speak "+lineinfo.target+" "+lineinfo.source);
+			Messages.InformPlayer(player,CmdMessages.LineSaving.MakeSpeak(lineinfo.target,lineinfo.source));
 		}
 		else
 		{
@@ -15657,7 +13685,7 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{
-		printB(player.GetCharacterName(),"No saved line was found for "+name,true,"error",true,true);
+		Messages.ThrowPlayer(player,CmdMessages.LineSaving.NoneSaved(name));
 	}
 	
 }
@@ -15676,11 +13704,11 @@ if ( Director.GetGameMode() == "holdout" )
 		local lineinfo = AdminSystem.Vars._savedLine[name];
 		if (lineinfo.target != "")
 		{
-			ClientPrint(null,3,"\x04"+name+" -> speak "+lineinfo.target+" "+lineinfo.source);
+			Messages.InformPlayer(player,CmdMessages.LineSaving.Information(lineinfo));
 		}
 		else
 		{
-			ClientPrint(null,3,"\x04"+"No saved line was found for "+name);
+			Messages.ThrowPlayer(player,CmdMessages.LineSaving.NoneSaved(name));
 		}
 	}
 	
@@ -15886,7 +13914,7 @@ if ( Director.GetGameMode() == "holdout" )
 		local ent = player.GetLookingEntity();
 		if (ent == null)
 		{
-			printB(playername,"No looked entity found",true,"error",true,true);
+			printB(playername,Messages.BIM.NoTraceHits(),true,"error",true,true);
 			return;
 		}
 		
@@ -15930,7 +13958,7 @@ if ( Director.GetGameMode() == "holdout" )
 ::printB <- function(character,message,reporttohost=true,msgtype="info",startmsg=true,endmsg=true,delay_end_msg=0)
 {
 	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character.tolower())==-1)
-	{ClientPrint(null,3,"\x04"+character+" is not a character name");return;}
+	{ClientPrint(null,3,"\x04"+Messages.BIM.NotACharacter(character));return;}
 
 	if(startmsg)
 		AdminSystem._Clientbroadcast(character,"echo -----------------SCRIPT_REPORT_START-------------------",1,!reporttohost);
@@ -16031,7 +14059,7 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,targetname) == -1)
 	{
-		printl(GetArgument(1)+" is not a character name");return;
+		printl(Messages.BIM.NotACharacter(GetArgument(1)));return;
 	}
 	else
 	{
@@ -16051,13 +14079,21 @@ if ( Director.GetGameMode() == "holdout" )
 	{	
 		if (AdminSystem.Vars._saveLastLine[name])
 		{
-			AdminSystem.Vars._savedLine[name].target = targetname;
-			AdminSystem.Vars._savedLine[name].source = randomline_path;
-			ClientPrint(null,3,"\x04"+"Saved for "+name+" -> speak "+targetname+" "+randomline_path);
+			if(AdminSystem.Vars._savedLine[name].target != targetname
+			   || AdminSystem.Vars._savedLine[name].source != randomline_path)
+			{
+				AdminSystem.Vars._savedLine[name].target = targetname;
+				AdminSystem.Vars._savedLine[name].source = randomline_path;
+				Messages.InformPlayer(player,CmdMessages.RandomLine.SaveAndSpeak(randomline_path,targetname));
+			}
+			else
+			{
+				Messages.InformPlayer(player,CmdMessages.LineSaving.MakeSpeak(targetname,randomline_path));
+			}
 		}
 		else
 		{
-			ClientPrint(null,3,"\x04"+name+" -> speak "+targetname+" "+randomline_path);
+			Messages.InformPlayer(player,CmdMessages.LineSaving.MakeSpeak(targetname,randomline_path));
 		}
 	}
 	else
@@ -16101,13 +14137,13 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 
 	if (alpha==null)
-		alpha = 1.0;
+		alpha = 255.0;
 
 	ent.SetColor(red,green,blue,alpha);
 	if (AdminSystem.Vars._outputsEnabled[name])
-	{ClientPrint(null,3,"\x04"+name+"->Changed color:("+red+","+green+","+blue+","+alpha+") of "+ent.GetName());}
+	{Messages.InformPlayer(player,CmdMessages.Color(red,green,blue,alpha,ent.GetIndex()));}
 	else
-	{printB(player.GetCharacterName(),name+"-> Changed color:("+red+" "+green+" "+blue+" "+alpha+") of "+ent.GetName(),true,"info",true,true);}
+	{printB(player.GetCharacterName(),name+"-> Changed color:("+red+" "+green+" "+blue+" "+alpha+") of #"+ent.GetIndex(),true,"info",true,true);}
 
 }
 
@@ -16138,7 +14174,7 @@ if ( Director.GetGameMode() == "holdout" )
 		ent.SetKeyValue(key,val);
 		
 	if (AdminSystem.Vars._outputsEnabled[name])
-	{ClientPrint(null,3,"\x04"+name+"->Changed key:"+key+" value to:"+val+" of "+ent.GetName());}
+	{Messages.InformPlayer(player,"Changed key:"+key+" value to "+val+" of #"+ent.GetIndex());}
 	else
 	{printB(player.GetCharacterName(),name+" ->Changed key->"+key+" value to->"+val+" of "+ent.GetName(),true,"info",true,true);}
 
@@ -16175,7 +14211,7 @@ if ( Director.GetGameMode() == "holdout" )
 		else
 			AdminSystem.Vars._prop_spawn_settings[name][typename][setting] = val;
 
-		printl(name +" Updated prop("+typename+") setting "+setting+" to: "+val);
+		CmdMessages.Prop.SettingSuccess(name,typename,setting,val);
 	}
 	else
 	{	
@@ -16198,13 +14234,12 @@ if ( Director.GetGameMode() == "holdout" )
 	if (typename != null)
 	{	
 		AdminSystem.Vars._prop_spawn_settings_menu_type[name] = typename;
-		printl(name +" Updated prop menu type :"+typename);
+		//printl(name +" Updated prop menu type :"+typename);
 	}
 	else
 	{	
 		return;
 	}
-
 }
 
 /*
@@ -16231,7 +14266,6 @@ if ( Director.GetGameMode() == "holdout" )
 			}
 		}
 	}
-	
 	else 
 	{	
 		if(typename == "ptr")
@@ -16244,7 +14278,7 @@ if ( Director.GetGameMode() == "holdout" )
 			infostr += " 	 " + setting + ": " + val + "\n";
 		}
 	}
-	ClientPrint(null,3,"\x04"+infostr);
+	Messages.InformPlayer(player,infostr);
 }
 
 /*
@@ -16268,7 +14302,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if (AdminSystem.Vars._outputsEnabled[name])
 	{
-		ClientPrint(null,3,"\x04"+"Saved for "+name+" -> attach_particle "+source+" "+duration);
+		Messages.InformPlayer(player,"Saved particle "+source+" with duration "+duration+" seconds");
 	}
 	else
 	{
@@ -16319,7 +14353,7 @@ if ( Director.GetGameMode() == "holdout" )
 		duration = "infinite"
 
 	if (AdminSystem.Vars._outputsEnabled[name])
-	{ClientPrint(null,3,"\x04"+name+"->Attached particle(#"+createdent.GetIndex()+")("+duration+" sec):"+particle+" to:"+ent.GetName());}
+	{Messages.InformPlayer(player,"Attached "+particle+"(#"+createdent.GetIndex()+") for "+duration+" seconds to #"+ent.GetIndex());}
 	else
 	{printB(player.GetCharacterName(),name+" ->Attached particle(#"+createdent.GetIndex()+")("+duration+" sec)->"+particle+" to->"+ent.GetName(),true,"info",true,true);}
 
@@ -16338,7 +14372,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local newstate = !AdminSystem.Vars._attachTargetedLocation[name];
 	AdminSystem.Vars._attachTargetedLocation[name] = newstate;
 
-	ClientPrint(null,3,"\x04"+"Attach particles to targeted position state for "+name+" is"+( newstate ? " Enabled":" Disabled"));
+	Messages.InformPlayer(player,"Particles will be attached to "+( newstate ? " aimed point.":" aimed object's origin."));
 }
 
 /*
@@ -16353,7 +14387,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local newstate = !AdminSystem.Vars._saveLastParticle[name];
 	AdminSystem.Vars._saveLastParticle[name] = newstate;
 
-	ClientPrint(null,3,"\x04"+"Random particle saving for "+name+" is"+( newstate ? " Enabled":" Disabled"));
+	Messages.InformPlayer(player,"Random particle saving is now "+( newstate ? "enabled":"disabled"));
 }
 
 /*
@@ -16375,8 +14409,7 @@ if ( Director.GetGameMode() == "holdout" )
 		duration = duration.tofloat();
 	}
 	AdminSystem.Vars._preferred_duration[name] = duration;
-	printl(name +" Updated attachment duration:"+duration);
-
+	//printl(name +" Updated attachment duration:"+duration);
 }
 
 /*
@@ -16393,11 +14426,11 @@ if ( Director.GetGameMode() == "holdout" )
 		local particleinfo = AdminSystem.Vars._savedParticle[name];
 		if (particleinfo.source != "")
 		{
-			ClientPrint(null,3,"\x04"+name+" -> particle "+particleinfo.source);
+			Messages.InformPlayer(player,"Particle name:"+particleinfo.source);
 		}
 		else
 		{
-			ClientPrint(null,3,"\x04"+"No saved particle was found for "+name);
+			Messages.ThrowPlayer(player,"No saved particle was found");
 		}
 	}
 	
@@ -16420,7 +14453,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 		if (AdminSystem.Vars._outputsEnabled[name])
 		{
-			ClientPrint(null,3,"\x04"+name+" -> particle "+particleinfo.source);
+			Messages.InformPlayer(player,"Spawned particle "+particleinfo.source);
 		}
 		else
 		{
@@ -16429,7 +14462,7 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{
-		printB(player.GetCharacterName(),"No saved particle was found for "+name,true,"error",true,true);
+		Messages.ThrowPlayer(player,"No saved particle was found");
 	}
 }
 
@@ -16460,7 +14493,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 		if (AdminSystem.Vars._outputsEnabled[name])
 		{
-			ClientPrint(null,3,"\x04"+name+" -> attach_particle "+particleinfo.source+","+particleinfo.duration);
+			Messages.InformPlayer(player,"Attached particle "+particleinfo.source+" to #"+ent.GetIndex()+" for "+particleinfo.duration+" seconds");
 		}
 		else
 		{
@@ -16469,7 +14502,7 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{
-		printB(player.GetCharacterName(),"No saved particle was found for "+name,true,"error",true,true);
+		Messages.ThrowPlayer(player,"No saved particle was found");
 	}
 }
 
@@ -17396,7 +15429,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local val = AdminSystem.Vars._heldEntity[name.tolower()].grabByAimedPart;
 	AdminSystem.Vars._heldEntity[name.tolower()].grabByAimedPart = (1-val).tointeger();
 
-	ClientPrint(null,3,"\x04"+name+" set grab method to :"+(val==1 ? "'grab by center'":"'grab by aimed location'"));
+	Messages.InformPlayer(player,"Set grab method to "+(val==1 ? "'grab by center'":"'grab by aimed location'"));
 }
 
 /* @authors rhino
@@ -17429,7 +15462,7 @@ if ( Director.GetGameMode() == "holdout" )
 		{try{val = val.tointeger();}catch(e){return;}}
 		if(val != 0 || val != 1)
 		{
-			ClientPrint(null,3,"\x04"+"grabByAimedPart setting can only be 0 or 1");
+			Messages.ThrowPlayer(player,"'grabByAimedPart' setting can only be 0 or 1");
 			return;
 		}
 		AdminSystem.Vars._heldEntity[name.tolower()].grabByAimedPart = val;
@@ -17444,15 +15477,18 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 
 	else if(Utils.GetIDFromArray(attachment_names,val) == null)
-	{ClientPrint(null,3,"\x04"+"No attachment point named "+val+" was found.");ClientPrint(null,3,"\x04"+"Available attachment point names:"+Utils.ArrayString(attachment_names));return;}
-
+	{
+		Messages.ThrowPlayer(player,"No attachment point named "+val+" was found.");
+		ClientPrint(player.GetBaseEntity(),3,"\x04"+"Available attachment point names:"+Utils.ArrayString(attachment_names));
+		return;
+	}
 	else
 		AdminSystem.Vars._heldEntity[name.tolower()].grabAttachPos = val;
 
 	if (AdminSystem.Vars._outputsEnabled[name.tolower()])
-	{ClientPrint(null,3,"\x04"+name+" -> Changed yeeting setting "+setting+": "+oldval+"->"+val.tostring());}
+	{Messages.InformPlayer(player,"Changed yeeting setting "+setting+": "+oldval+" to "+val.tostring());}
 	else
-	{printB(name,name+" -> Changed yeeting setting "+setting+": "+oldval+"->"+val.tostring(),true,"info",true,true);}
+	{printB(name,name+" -> Changed yeeting setting "+setting+": "+oldval+" to "+val.tostring(),true,"info",true,true);}
 	
 }
 
@@ -17482,7 +15518,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local newstate = !::AdminSystem.Vars.AllowCustomResponses;
 	::AdminSystem.Vars.AllowCustomResponses = newstate;
 
-	ClientPrint(null,3,"\x04"+player.GetCharacterName()+" set custom responses to:"+( newstate ? " Enabled":" Disabled"));
+	Messages.InformAll(player.GetCharacterName()+( newstate ? " enabled":" disabled") + " custom responses");
 }
 
 /*
@@ -17496,7 +15532,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local newstate = !::AdminSystem.Vars.AllowCustomSharing;
 	::AdminSystem.Vars.AllowCustomSharing = newstate;
 
-	ClientPrint(null,3,"\x04"+player.GetCharacterName()+" set custom sharing to:"+( newstate ? " Enabled":" Disabled"));
+	Messages.InformAll(player.GetCharacterName()+( newstate ? " enabled":" disabled")+" custom sharing");
 }
 
 ::AdminSystem.GravityCmd <- function ( player, args )

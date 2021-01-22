@@ -185,6 +185,46 @@ function VSLib::Utils::DeserializeIdxTable(t)
 	return t;
 }
 
+/*
+ * @authors rhino
+ */
+function VSLib::Utils::GetTableString(tbl, prefix = "", prev = "")
+{
+	local typ = typeof(tbl);
+	if(prefix == "")
+	{
+		prev += (typ == "table") ? "{" 
+								 : ( typ == "array" ) ? "["
+								 					  : "";
+		prefix = "   ";
+	}
+	foreach (idx, val in tbl)
+	{
+		if ( typeof(val) == "table" )
+		{
+			prev += prefix + idx + " = \n" + prefix + "{";
+			prev = ::VSLib.Utils.GetTableString( val, prefix + "   ", prev );
+			prev += prefix + "}";
+		}
+		else if ( typeof(val) == "array" )
+		{
+			prev += prefix + idx + " = \n" + prefix + "[";
+			prev = ::VSLib.Utils.GetTableString( val, prefix + "   ", prev );
+			prev += prefix + "]";
+		}
+		else if ( typeof(val) == "string" )
+			prev += prefix + idx + "\t= \"" + val + "\"";
+		else
+			prev += prefix + idx + "\t= " + val;
+	}
+
+	prev += (typ == "table") ? "}" 
+							 : ( typ == "array" ) ? "]"
+							    				  : "";
+
+	return prev;
+}
+
 /**
  * Prints a table or array
  */
@@ -2457,11 +2497,15 @@ function VSLib::Utils::ArrayAdd(arr,val)
 /*
  * @author rhino
  */
-function VSLib::Utils::ArrayString(arr)
+function VSLib::Utils::ArrayString(arr,emptyIfZero=false)
 {
-	local str = "[";
 	local len = arr.len();
-
+	if(emptyIfZero && len == 0)
+	{
+		return "";
+	}
+	
+	local str = "[";
 	for(local i=0; i < len; i++)
 	{
 		str += arr[i].tostring();
