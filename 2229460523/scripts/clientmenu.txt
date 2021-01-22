@@ -28962,8 +28962,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_doors1"
-					"label"      " Delete object"
+					"command"	 "play buttons/button14;scripted_user_func door,saferoom;show_menu props_doors1"
+					"label"		 " Saferoom Door"
 			}
 			"8"
 			{
@@ -35146,8 +35146,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_doors1"
-					"label"      " Delete object"
+					"command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_doors/checkpoint_door_01.mdl;show_menu phys_props_doors1"
+					"label"		 " Saferoom Door"
 			}
 			"8"
 			{
@@ -36770,7 +36770,7 @@
 			"5"
 			{
 				"command"		 "play buttons/button10;show_menu explosion1"
-				"label"			 " Change other settings(use !explosion_seting {setting} {value})"
+				"label"			 " Change other settings(use !explosion_setting {setting} {value})"
 			}
 			"8"
 			{
@@ -41735,8 +41735,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_doors1"
-					"label"      " Delete object"
+					"command"	 "play buttons/button14;scripted_user_func model,!self,models/props_doors/checkpoint_door_01.mdl;show_menu models_self_doors1"
+					"label"		 " Saferoom Door"
 			}
 			"8"
 			{
@@ -47636,8 +47636,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_picker_doors1"
-					"label"      " Delete object"
+					"command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_doors/checkpoint_door_01.mdl;show_menu models_picker_doors1"
+					"label"		 " Saferoom Door"
 			}
 			"8"
 			{
