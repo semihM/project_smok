@@ -217,6 +217,11 @@
 	}
 }
 
+::AdminVars.SetDefaultTankRockSettings <- function(tbl)
+{
+    tbl._RockThrow <- ::VSLib.Utils.TableCopy(::Constants.Defaults.Tables.TankRock);
+}
+
 // Enable stuff for spectators and others
 ::AdminVars.EnableCommandsForSpecsAndOthers <- function(tbl,basetbl=null)
 {
@@ -349,6 +354,7 @@
 
 ::AdminVars.SetDefaultHatSettings(::AdminVars);
 ::AdminVars.SetDefaultModelSettings(::AdminVars);
+::AdminVars.SetDefaultTankRockSettings(::AdminVars);
 
 ::AdminVars.SetDefaultPianoSettings(::AdminVars);
 ::AdminVars.SetDefaultPropSpawnSettings(::AdminVars);

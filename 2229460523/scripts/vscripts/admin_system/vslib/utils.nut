@@ -99,6 +99,33 @@ function VSLib::Utils::StringReplace(string, original, replacement)
 	return result;
 }
 
+/*
+ * @authors rhino
+ */
+function VSLib::Utils::CleanColoredString(msg)
+{
+	local cleanedmsg = "";
+	local c = 0;
+	
+	// Get rid of some coloring escape chars
+	for(local i=0;i<msg.len();i++)
+	{
+		c = msg[i];
+
+		if(c == "\x01" 
+			|| c == "\x03"  
+			|| c == "\x04"  
+			|| c == "\x05" )
+		{
+			continue;
+		}
+
+		cleanedmsg += c.tochar();
+	}
+
+	return cleanedmsg;
+}
+
 /**
  * Searches in the Vars and RoundVars tables if not found in the root table.
  */
@@ -193,33 +220,34 @@ function VSLib::Utils::GetTableString(tbl, prefix = "", prev = "")
 	local typ = typeof(tbl);
 	if(prefix == "")
 	{
-		prev += (typ == "table") ? "{" 
-								 : ( typ == "array" ) ? "["
+		prev += (typ == "table") ? "{\n"
+								 : ( typ == "array" ) ? "[\n"
 								 					  : "";
+		
 		prefix = "   ";
 	}
 	foreach (idx, val in tbl)
 	{
 		if ( typeof(val) == "table" )
 		{
-			prev += prefix + idx + " = \n" + prefix + "{";
+			prev += prefix + idx + " = \n" + prefix + "{\n";
 			prev = ::VSLib.Utils.GetTableString( val, prefix + "   ", prev );
-			prev += prefix + "}";
+			prev += prefix + "}\n";
 		}
 		else if ( typeof(val) == "array" )
 		{
-			prev += prefix + idx + " = \n" + prefix + "[";
+			prev += prefix + idx + " = \n" + prefix + "[\n";
 			prev = ::VSLib.Utils.GetTableString( val, prefix + "   ", prev );
-			prev += prefix + "]";
+			prev += prefix + "]\n";
 		}
 		else if ( typeof(val) == "string" )
-			prev += prefix + idx + "\t= \"" + val + "\"";
+			prev += prefix + idx + "\t= \"" + val + "\"\n";
 		else
-			prev += prefix + idx + "\t= " + val;
+			prev += prefix + idx + "\t= " + val + "\n";
 	}
 
-	prev += (typ == "table") ? "}" 
-							 : ( typ == "array" ) ? "]"
+	prev += (typ == "table") ? "}\n" 
+							 : ( typ == "array" ) ? "]\n"
 							    				  : "";
 
 	return prev;

@@ -18,11 +18,11 @@ IncludeScript("Particle_Names/Particlenames");
 IncludeScript("Model_Paths/Model");
 
 // Include the Message Class
-IncludeScript("Admin_System/Messages");
+IncludeScript("Messages");
 // Include String Constants
-IncludeScript("Admin_System/Constants");
+IncludeScript("Constants");
 // Include Custom Variables
-IncludeScript("Admin_System/AdminVars");
+IncludeScript("AdminVars");
 
 ::CmdMessages <- ::Messages.BIM.CMD;
 
@@ -98,6 +98,109 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		//"common_female_tankTop_jeans_swamp"
 	]
 
+}
+
+::PrinterSplitDecider <- function(player,splt,messager)
+{
+	switch(messager)
+	{
+		case "warning":
+		case "warn":
+			Messages.WarnPlayer(player,splt);break;
+		case "error":
+		case "throw":
+			Messages.ThrowPlayer(player,splt);break;
+		default:
+			Messages.InformPlayer(player,splt);break;
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::Printer <- function(player,msg,messager=null)
+{
+	local splt = split(msg,"\n");
+	local charname = player.GetCharacterName();
+	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterNameLower()])
+	{
+		local spltlen = splt.len();
+		if(spltlen > 1)	// New-lines
+		{
+			for(local i=0;i<spltlen;i++)
+			{
+				local mlen = splt[i].len();
+				local ms = (mlen.tofloat() / 255.1).tointeger() + 1;
+				if(mlen > 255)	// Too long line
+				{
+					for(local j=0;j<ms;j++)	// Slice into new lines
+					{
+						local offset = 255*j;
+						local len = (j == ms-1) ? mlen%255 : 255;
+						PrinterSplitDecider(player,splt[i].slice(offset,offset + len),messager);
+					}
+				}
+				else	// Valid length line
+				{
+					PrinterSplitDecider(player,splt[i],messager);
+				}
+			}
+		}
+		else	// Valid length message
+		{
+			PrinterSplitDecider(player,msg,messager);
+		}
+	}
+	else
+	{
+		msg = Utils.CleanColoredString(msg);
+		messager = messager == null ? "info" : "error";
+
+		if(splt.len() > 1)
+		{
+			// Do first part seperately, same process as above
+			local mlen = splt[0].len();
+			local ms = (mlen.tofloat() / 255.1).tointeger() + 1;
+			if(mlen > 255)
+			{
+				printB(charname,charname+" -> ",true,messager,true,false);
+				for(local j=0;j<ms;j++)
+				{
+					local offset = 255*j;
+					local len = (j == ms-1) ? mlen%255 : 255;
+					printB(charname,splt[0].slice(offset,offset + len),true,messager,false,false);
+				}
+			}
+			else
+			{
+				printB(charname,charname+" -> "+splt[0],true,messager,true,false);
+			}
+			
+			for(local i=1;i<splt.len();i++)
+			{
+				mlen = splt[i].len();
+				ms = (mlen.tofloat() / 255.1).tointeger() + 1;
+				if(mlen > 255)
+				{
+					for(local j=0;j<ms;j++)
+					{
+						local offset = 255*j;
+						local len = (j == ms-1) ? mlen%255 : 255;
+						printB(charname,splt[i].slice(offset,offset + len),true,"",false,false);
+					}
+				}
+				else
+				{
+					printB(charname,splt[i],true,"",false,false);
+				}
+			}
+			printB(charname,"",false,"",false,true,0.5);
+		}
+		else
+		{
+			printB(charname,charname+" -> "+msg,true,messager,true,true);
+		}
+	}
 }
 
 ::AdminSystem.LoadAdmins <- function ()
@@ -238,6 +341,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 
 /*
  * @authors rhino
+ * TO-DO: Replace compilestring
  */
 ::AdminSystem.LoadApocalypseSettings <- function ()
 {
@@ -261,8 +365,9 @@ Convars.SetValue( "precache_all_survivors", "1" );
 
 /*
  * @authors rhino
+ * TO-DO: Replace compilestring
  */
-::AdminSystem.LoadShowerSettings <- function ()
+::AdminSystem.LoadShowerSettings <- function (recursive=false)
 {
 	local fileContents = FileToString(Constants.Directories.MeteorShowerSettings);
 	local settings = split(fileContents, "\r\n");
@@ -274,10 +379,40 @@ Convars.SetValue( "precache_all_survivors", "1" );
 	{
 		if ( setting != "" )
 		{	
-			if(!(setting in AdminSystem._meteor_shower_args))
-				compilestring("AdminSystem._meteor_shower_args." + Utils.StringReplace(setting, "=", "<-"))();
+			if(setting.find("meteormodelspecific") != null)
+			{
+				try
+				{
+					if(!(setting in AdminSystem._meteor_shower_args))
+						compilestring("AdminSystem._meteor_shower_args." + Utils.StringReplace(setting, "=", "<-"))();
+					else
+						compilestring("AdminSystem._meteor_shower_args." + setting)();
+				}
+				catch(e)
+				{
+					AdminSystem._meteor_shower_args.meteormodelspecific <- Constants.GetMeteorShowerSettingsDefaults().meteormodelspecific;
+					if(!recursive)
+					{
+						AdminSystem.SaveShowerSettings();
+						AdminSystem.LoadShowerSettings(true);
+						return;
+					}
+					else
+					{
+						printl("[Meteor-Shower-Error] Failed to load the meteor_shower_settings.txt, delete the file to fix the issue.");
+						AdminSystem._meteor_shower_args <- Constants.GetMeteorShowerSettingsDefaults();
+						return;
+					}
+				}
+			}
 			else
-				compilestring("AdminSystem._meteor_shower_args." + setting)();
+			{
+				if(!(setting in AdminSystem._meteor_shower_args))
+					compilestring("AdminSystem._meteor_shower_args." + Utils.StringReplace(setting, "=", "<-"))();
+				else
+					compilestring("AdminSystem._meteor_shower_args." + setting)();
+
+			}
 		}
 	}
 }
@@ -287,9 +422,6 @@ Convars.SetValue( "precache_all_survivors", "1" );
  */
 ::AdminSystem.SaveApocalypseSettings <- function ()
 {
-	local fileContents = FileToString(Constants.Directories.ApocalypseSettings);
-	local filesettings = split(fileContents, "\r\n");
-
 	local comments = Constants.GetApocalypseSettingsComments();
 	local newstring = "";
 	local length = AdminSystem._propageddon_args.len()-1;
@@ -309,19 +441,26 @@ Convars.SetValue( "precache_all_survivors", "1" );
  */
 ::AdminSystem.SaveShowerSettings <- function ()
 {
-	local fileContents = FileToString(Constants.Directories.MeteorShowerSettings);
-	local filesettings = split(fileContents, "\r\n");
-
 	local comments = Constants.GetMeteorShowerSettingsComments();
 	local newstring = "";
 	local length = AdminSystem._meteor_shower_args.len()-1;
 	local i = 0;
 	foreach (setting,val in AdminSystem._meteor_shower_args)
 	{	
-		if(val.tostring() == "")
-			val = "\"\""
-		newstring += setting + " = " + val.tostring() + " // " + comments[setting];
-		
+		if(setting == "meteormodelspecific")
+		{
+			if(val.tostring() == "")
+				val = "\""+Constants.GetMeteorShowerSettingsDefaults().meteormodelspecific+"\""
+			else
+				val = "\""+val+"\""
+			newstring += setting + " = " + val.tostring() + " // " + comments[setting];
+		}
+		else
+		{
+			if(val.tostring() == "")
+				val = "\"\""
+			newstring += setting + " = " + val.tostring() + " // " + comments[setting];
+		}
 		if(i < length)
 			newstring += " \r\n"
 	}
@@ -511,7 +650,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	}
 
 	RestoreTable( "admin_variable_data", ::AdminSystem.Vars );
-	IncludeScript("Admin_System/AdminVars");
+	IncludeScript("AdminVars");
 
 	if (::AdminSystem.Vars == null)
 	{
@@ -857,7 +996,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 
 	if(AdminSystem.Vars.RestoreModelsOnJoin)
 	{
-		local name = player.GetCharacterName().tolower();
+		local name = player.GetCharacterNameLower();
 		if(name == "" || name == "survivor")
 			return;
 
@@ -1076,7 +1215,7 @@ function Notifications::OnUse::AdminGiveUpgrade( player, target, params )
  */
 function Notifications::OnPlayerReplacedBot::LetGoHeldPlayer(player,bot,args)
 {
-	printl("Bot #"+bot.GetIndex()+" was replaced with Player #"+player.GetIndex())
+	//printl("Bot #"+bot.GetIndex()+" was replaced with Player #"+player.GetIndex())
 	local botparent = bot.GetParent();
 	if(botparent != null)
 	{
@@ -1092,14 +1231,14 @@ function Notifications::OnPlayerReplacedBot::LetGoHeldPlayer(player,bot,args)
  */
 function Notifications::OnBotReplacedPlayer::LetGoHeldPlayer(player,bot,args)
 {
-	printl("Player #"+player.GetIndex()+" was replaced with Bot #"+bot.GetIndex())
+	//printl("Player #"+player.GetIndex()+" was replaced with Bot #"+bot.GetIndex())
 	
 	if(AdminSystem.IsPrivileged(player,true))
 		AdminSystem.LetgoCmd(player,null);
 
 	foreach(survivor in Players.AliveSurvivors())
 	{
-		if(AdminSystem.Vars._heldEntity[survivor.GetCharacterName().tolower()].entid == player.GetIndex().tostring())
+		if(AdminSystem.Vars._heldEntity[survivor.GetCharacterNameLower()].entid == player.GetIndex().tostring())
 		{
 			AdminSystem.LetgoCmd(survivor,null);
 		}
@@ -2314,7 +2453,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	{
 		args.bot.BotReset();
 		Utils.RemoveCustomThinkTimers(args.bot.GetIndex(),true);
-		AdminSystem.BotOnSearchOrSharePath[args.bot.GetCharacterName().tolower()] = false;
+		AdminSystem.BotOnSearchOrSharePath[args.bot.GetCharacterNameLower()] = false;
 		delete AdminSystem.Vars._currentlyBeingTaken[args.index];
 	}
 }
@@ -2335,7 +2474,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		delete ::VSLib.Timers.TimersID[index+"_bot_think_share_attempt_slot3"];
 	}
 
-	AdminSystem.BotOnSearchOrSharePath[args.bot.GetCharacterName().tolower()] = false;
+	AdminSystem.BotOnSearchOrSharePath[args.bot.GetCharacterNameLower()] = false;
 	AdminSystem.BotBringingItem[args.targetname] = false;
 }
 
@@ -2376,7 +2515,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		}
 		else
 		{
-			AdminSystem.BotOnSearchOrSharePath[bot.GetCharacterName().tolower()] = false;
+			AdminSystem.BotOnSearchOrSharePath[bot.GetCharacterNameLower()] = false;
 
 			if(obj.GetIndex() in AdminSystem.Vars._currentlyBeingTaken)
 				delete AdminSystem.Vars._currentlyBeingTaken[obj.GetIndex()];
@@ -2487,8 +2626,8 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		{
 			if(!target.IsAlive())
 			{
-				AdminSystem.BotOnSearchOrSharePath[bot.GetCharacterName().tolower()] = false;
-				AdminSystem.BotBringingItem[target.GetCharacterName().tolower()] = false;
+				AdminSystem.BotOnSearchOrSharePath[bot.GetCharacterNameLower()] = false;
+				AdminSystem.BotBringingItem[target.GetCharacterNameLower()] = false;
 				if(debug == 1)
 					ClientPrint(null,3,"\x04"+"#" + target.GetIndex() + " target is dead")
 			}
@@ -2504,8 +2643,8 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			}
 			else
 			{
-				AdminSystem.BotOnSearchOrSharePath[bot.GetCharacterName().tolower()] = false;
-				AdminSystem.BotBringingItem[target.GetCharacterName().tolower()] = false;
+				AdminSystem.BotOnSearchOrSharePath[bot.GetCharacterNameLower()] = false;
+				AdminSystem.BotBringingItem[target.GetCharacterNameLower()] = false;
 				
 				local spawnertooclose = false;
 				foreach(spawner in Objects.OfClassnameWithin(args.item.GetClassname()+"_spawn",bot.GetOrigin(),100))
@@ -2527,7 +2666,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				{
 					if(debug == 1)
 						ClientPrint(null,3,"\x03"+"#"+botindex+" gave "+args.classname+" to "+target.GetIndex());
-					bot.Speak(Utils.GetRandValueFromArray(::Survivorlines.ShareItem[bot.GetCharacterName().tolower()]),0.1);
+					bot.Speak(Utils.GetRandValueFromArray(::Survivorlines.ShareItem[bot.GetCharacterNameLower()]),0.1);
 					
 					AdminSystem.Vars._currentlyBeingTaken[args.item.GetIndex()] <- true;
 					Utils.DropThenGive(bot,target,slot,args.item);
@@ -2622,7 +2761,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		AdminSystem._DisableKindnessCmd(player,args);
 	}
 
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 
 	local thinkadder = _CreateLootThinker();
 	AdminSystem.Vars.LastLootThinkState = true;
@@ -2631,11 +2770,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		AdminSystem.BotOnSearchOrSharePath[survivor] = false;
 	}
 
-	if (AdminSystem.Vars._outputsEnabled[name])
-	{Messages.InformAll(CmdMessages.EnableKindness(name,thinkadder));}
-	else
-	{printB(player.GetCharacterName(),CmdMessages.EnableKindness(name,thinkadder),true,"info",true,true);}
-
+	Messages.InformAll(CmdMessages.EnableKindness(name,thinkadder));
 }
 
 /*
@@ -2646,7 +2781,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local ent = null
 	local found = false
 	while (ent = Entities.FindByName(ent, "think_adder_base_entity"))
@@ -2681,11 +2816,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	if(!found)
 		return;
 
-	if (AdminSystem.Vars._outputsEnabled[name])
-	{Messages.InformAll(CmdMessages.DisableKindness(name));}
-	else
-	{printB(player.GetCharacterName(),CmdMessages.EnableKindness(name,thinkadder),true,"info",true,true);}
-	
+	Messages.InformAll(CmdMessages.DisableKindness(name));
 }
 
 /*
@@ -2711,7 +2842,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 {
 	local botindex = arg.index;
 	local bot = Player(botindex.tointeger());
-	local botname = bot.GetCharacterName().tolower();
+	local botname = bot.GetCharacterNameLower();
 	local debug = BotParams.debug;
 	if(!bot.IsBot())
 	{
@@ -2849,7 +2980,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 				if(closest != null)
 				{
-					if(!AdminSystem._CurrentlyTradingItems[closest.GetCharacterName().tolower()] && !AdminSystem.BotBringingItem[closest.GetCharacterName().tolower()])
+					if(!AdminSystem._CurrentlyTradingItems[closest.GetCharacterNameLower()] && !AdminSystem.BotBringingItem[closest.GetCharacterNameLower()])
 					{
 						local closestorigin = closest.GetOrigin();
 						if("slot2" in closest.GetHeldItems())
@@ -2882,10 +3013,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 								bot.BotMoveToLocation(closestorigin);
 
 								AdminSystem.BotOnSearchOrSharePath[botname] = true;
-								AdminSystem.BotBringingItem[closest.GetCharacterName().tolower()] = true;
+								AdminSystem.BotBringingItem[closest.GetCharacterNameLower()] = true;
 								alreadygiving = true;
 
-								Timers.AddTimer(BotParams.ShareTimeout,false,_ShareFailCheckerRemover,{bot=bot,botindex=botindex,targetname=closest.GetCharacterName().tolower()});
+								Timers.AddTimer(BotParams.ShareTimeout,false,_ShareFailCheckerRemover,{bot=bot,botindex=botindex,targetname=closest.GetCharacterNameLower()});
 								Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot2",BotParams.ItemShareTimerDelay,true,_TryAndGiveItem,{bot=bot,target=closest,slot=2,item=inHand,classname=inhandclass.slice(7)})
 							}
 							else if((rand().tofloat()/RAND_MAX) <= BotParams.RandomChanceForShare)
@@ -2895,10 +3026,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 								bot.BotMoveToLocation(closestorigin);
 
 								AdminSystem.BotOnSearchOrSharePath[botname] = true;
-								AdminSystem.BotBringingItem[closest.GetCharacterName().tolower()] = true;
+								AdminSystem.BotBringingItem[closest.GetCharacterNameLower()] = true;
 								alreadygiving = true;
 								
-								Timers.AddTimer(BotParams.ShareTimeout,false,_ShareFailCheckerRemover,{bot=bot,botindex=botindex,targetname=closest.GetCharacterName().tolower()});
+								Timers.AddTimer(BotParams.ShareTimeout,false,_ShareFailCheckerRemover,{bot=bot,botindex=botindex,targetname=closest.GetCharacterNameLower()});
 								Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot2",BotParams.ItemShareTimerDelay,true,_TryAndGiveItem,{bot=bot,target=closest,slot=2,item=inHand,classname=inhandclass.slice(7)})
 							}
 						}
@@ -3008,7 +3139,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				{
 					if(debug == 1)
 						ClientPrint(null,3,"\x05"+"Closest #"+closest.GetIndex());
-					if(!AdminSystem._CurrentlyTradingItems[closest.GetCharacterName().tolower()] && !AdminSystem.BotBringingItem[closest.GetCharacterName().tolower()])
+					if(!AdminSystem._CurrentlyTradingItems[closest.GetCharacterNameLower()] && !AdminSystem.BotBringingItem[closest.GetCharacterNameLower()])
 					{
 						local closestorigin = closest.GetOrigin();
 						if("slot3" in closest.GetHeldItems())
@@ -3041,10 +3172,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 								bot.BotMoveToLocation(closestorigin);
 
 								AdminSystem.BotOnSearchOrSharePath[botname] = true;
-								AdminSystem.BotBringingItem[closest.GetCharacterName().tolower()] = true;
+								AdminSystem.BotBringingItem[closest.GetCharacterNameLower()] = true;
 								alreadygiving = true;
 
-								Timers.AddTimer(BotParams.ShareTimeout,false,_ShareFailCheckerRemover,{bot=bot,botindex=botindex,targetname=closest.GetCharacterName().tolower()});
+								Timers.AddTimer(BotParams.ShareTimeout,false,_ShareFailCheckerRemover,{bot=bot,botindex=botindex,targetname=closest.GetCharacterNameLower()});
 								Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot3",BotParams.ItemShareTimerDelay,true,_TryAndGiveItem,{bot=bot,target=closest,slot=3,item=inHand,classname=inhandclass.slice(7)})
 							}
 							else if((rand().tofloat()/RAND_MAX) <= BotParams.RandomChanceForShare)
@@ -3054,10 +3185,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 								bot.BotMoveToLocation(closestorigin);
 								
 								AdminSystem.BotOnSearchOrSharePath[botname] = true;
-								AdminSystem.BotBringingItem[closest.GetCharacterName().tolower()] = true;
+								AdminSystem.BotBringingItem[closest.GetCharacterNameLower()] = true;
 								alreadygiving = true;
 
-								Timers.AddTimer(BotParams.ShareTimeout,false,_ShareFailCheckerRemover,{bot=bot,botindex=botindex,targetname=closest.GetCharacterName().tolower()});
+								Timers.AddTimer(BotParams.ShareTimeout,false,_ShareFailCheckerRemover,{bot=bot,botindex=botindex,targetname=closest.GetCharacterNameLower()});
 								Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot3",BotParams.ItemShareTimerDelay,true,_TryAndGiveItem,{bot=bot,target=closest,slot=3,item=inHand,classname=inhandclass.slice(7)})
 							}
 						}
@@ -3320,7 +3451,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	if(AdminSystem._CarControl[name].listenerid != -1)
 	{
 		AdminSystem._StopKeyListenerCmd(player,args)
@@ -3364,7 +3495,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 ::AdminSystem._Pusher <- function(args)
 {
 	local ent = args.ent;
-	local name = ent.GetCharacterName().tolower();
+	local name = ent.GetCharacterNameLower();
 	local tbl = AdminSystem._CarControl[name]
 	local speed = tbl.speed;
 	local pushvec = tbl.forward.Scale(speed);
@@ -3473,7 +3604,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	local key = spl[1].tointeger();
 
 	local ent = VSLib.Player(ind.tointeger());
-	local name = ent.GetCharacterName().tolower();
+	local name = ent.GetCharacterNameLower();
 	local currmask = AdminSystem._CarControl[name].keymask;
 
 	AdminSystem._CarControl[name].keymask = currmask ^ key;
@@ -3577,7 +3708,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	if (!AdminSystem.IsPrivileged( ent ))
 		return;
 
-	local name = ent.GetCharacterName().tolower()
+	local name = ent.GetCharacterNameLower()
 	if (name+"_car_push1" in ::VSLib.Timers.TimersID)
 	{
 		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[name+"_car_push1"]);
@@ -3611,7 +3742,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	}
 
 	local listener = Utils.CreateEntityWithTable(keyvals);
-	listener.SetName("listener_"+ent.GetCharacterName().tolower()+UniqueString())
+	listener.SetName("listener_"+ent.GetCharacterNameLower()+UniqueString())
 	listener.SetFlags(64)
 
 	ClientPrint(null,3,"\x04"+forIndex+"->Created listener(#"+listener.GetIndex()+") named "+listener.GetName());
@@ -3632,7 +3763,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 	listener.Input("activate","",0.1,ent.GetBaseEntity())
 
-	local name = ent.GetCharacterName().tolower();
+	local name = ent.GetCharacterNameLower();
 	local forward = ent.GetAngles().Forward();
 	forward = forward.Scale(1/forward.Length())
 
@@ -3932,7 +4063,7 @@ enum __
 		obj.Input(state);
 	}
 
-	printB(player.GetCharacterName(),"Changed env_player_blocker states to "+state+ (applytoPhysicsBlocker !=null ? ", including env_physics_blocker and others": " "));
+	Messages.InformAll(CmdMessages.Blocker.Success(state,applytoPhysicsBlocker));
 }
 
 /*
@@ -3968,7 +4099,8 @@ enum __
 		{	
 			ldr.Input("setteam",AdminSystem.Vars._ladderteams[ldr.GetIndex()]);
 		}
-		printB(player.GetCharacterName(),"Resetting ladder teams");
+
+		Messages.InformAll(CmdMessages.Ladders.Reset());
 		return;
 	}
 
@@ -3987,7 +4119,7 @@ enum __
 			AdminSystem.Vars._ladderteams[ldr.GetIndex()] <- ldr.GetTeam().tostring();
 			ldr.Input("setteam",team)
 		}
-		printl("[Cache] Caching ladder teams...");
+		CmdMessages.Ladders.Cache();
 	}
 	else
 	{
@@ -3997,8 +4129,29 @@ enum __
 		}
 	}
 
-	printB(player.GetCharacterName(),"Changed ladder teams to "+team);
-	
+	switch(team.tointeger())
+	{
+		case UNKNOWN:
+			team = "all"
+			break;
+		case SPECTATORS:
+			team = "spectators"
+			break;
+		case SURVIVORS:
+			team = "survivors"
+			break;
+		case INFECTED:
+			team = "infected"
+			break;
+		case L4D1_SURVIVORS:
+			team = "l4d1 survivors"
+			break;
+		default:
+			team = "unknown";
+			break;
+	}
+
+	Messages.InformAll(CmdMessages.Ladders.Change(team));
 }
 
 //////////////////////////////////////////////////////////
@@ -4036,7 +4189,9 @@ enum __
 		try{val = val.tofloat();}catch(e){return;}
 	}
 	else
-	{
+	{	
+		// TO-DO figure out the escape char checks
+		/*
 		if(val.find("\"") == null) // "
 		{
 			Messages.ThrowPlayer(player,CmdMessages.MeteorShowerSettings.ModelQuotesMissing());
@@ -4056,13 +4211,11 @@ enum __
 				return;
 			}
 		}
+		*/
 	}
 	local name = player.GetCharacterName();
 
-	if (AdminSystem.Vars._outputsEnabled[name.tolower()])
-	{Messages.InformAll(CmdMessages.MeteorShowerSettings.Success(name,setting,AdminSystem._meteor_shower_args[setting],val));}
-	else
-	{printB(name,CmdMessages.MeteorShowerSettings.Success(name,setting,AdminSystem._meteor_shower_args[setting],val),true,"info",true,true);}
+	Messages.InformAll(CmdMessages.MeteorShowerSettings.Success(name,setting,AdminSystem._meteor_shower_args[setting],val));
 	
 	AdminSystem._meteor_shower_args[setting] = val;
 	AdminSystem.SaveShowerSettings();
@@ -4079,12 +4232,24 @@ enum __
 	AdminSystem.LoadShowerSettings();
 
 	local comments = Constants.GetMeteorShowerSettingsComments();
-	printB(player.GetCharacterName(),"",false,"",true,false);
-	foreach(setting,val in AdminSystem._meteor_shower_args)
+
+	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterNameLower()])
 	{
-		printB(player.GetCharacterName(),"[Meteor_Shower-Setting] "+setting+" ----> "+val.tostring()+" ----> "+comments[setting],false,"",false,false)
+		Messages.InformPlayer(player,"Meteor Shower Settings:");
+		foreach(setting,val in AdminSystem._meteor_shower_args)
+		{
+			Messages.InformPlayer(player,"\x05" + setting + "\x03" + " -> " + "\x04" + val.tostring() + "\x01" + " (" + comments[setting] + ")\n")
+		}
 	}
-	printB(player.GetCharacterName(),"",false,"",false,true,0.1);
+	else
+	{
+		printB(player.GetCharacterName(),"",false,"",true,false);
+		foreach(setting,val in AdminSystem._meteor_shower_args)
+		{
+			printB(player.GetCharacterName(),"[Meteor_Shower-Setting] "+setting+" ----> "+val.tostring()+" ----> "+comments[setting],false,"",false,false)
+		}
+		printB(player.GetCharacterName(),"",false,"",false,true,0.1);
+	}
 }
 
 /*
@@ -4440,7 +4605,7 @@ enum __
 
 	AdminSystem._meteor_shower_args.debug = 1 - AdminSystem._meteor_shower_args.debug;
 	
-	printl("[Meteor_Shower-Debug] Meteor shower debug state :"+( AdminSystem._meteor_shower_args.debug == 1 ? " Enabled":" Disabled"));
+	Printer(player,"[Meteor_Shower-Debug] Meteor shower debug state :"+( AdminSystem._meteor_shower_args.debug == 1 ? " Enabled":" Disabled"));
 	AdminSystem.SaveShowerSettings();
 }
 
@@ -4468,10 +4633,7 @@ enum __
 
 	local name = player.GetCharacterName();
 
-	if (AdminSystem.Vars._outputsEnabled[name.tolower()])
-	{Messages.InformAll(CmdMessages.ApocalypseSettings.Success(name,setting,AdminSystem._propageddon_args[setting],val));}
-	else
-	{printB(name,CmdMessages.ApocalypseSettings.Success(name,setting,AdminSystem._propageddon_args[setting],val),true,"info",true,true);}
+	Messages.InformAll(CmdMessages.ApocalypseSettings.Success(name,setting,AdminSystem._propageddon_args[setting],val));
 	
 	AdminSystem._propageddon_args[setting] = val;
 	AdminSystem.SaveApocalypseSettings();
@@ -4488,12 +4650,23 @@ enum __
 	AdminSystem.LoadApocalypseSettings();
 	local comments = Constants.GetApocalypseSettingsComments();
 
-	printB(player.GetCharacterName(),"",false,"",true,false);
-	foreach(setting,val in AdminSystem._propageddon_args)
+	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterNameLower()])
 	{
-		printB(player.GetCharacterName(),"[Apocalypse-Setting] "+setting+" ----> "+val.tostring()+" ----> "+comments[setting],false,"",false,false)
+		Messages.InformPlayer(player,"Apocalypse Settings:");
+		foreach(setting,val in AdminSystem._propageddon_args)
+		{
+			Messages.InformPlayer(player,"\x05"+setting+"\x03"+" -> "+"\x04"+val.tostring()+"\x01"+" ("+comments[setting]+")\n")
+		}
 	}
-	printB(player.GetCharacterName(),"",false,"",false,true,0.1);
+	else
+	{
+		printB(player.GetCharacterName(),"",false,"",true,false);
+		foreach(setting,val in AdminSystem._propageddon_args)
+		{
+			printB(player.GetCharacterName(),"[Apocalypse-Setting] "+setting+" ----> "+val.tostring()+" ----> "+comments[setting],false,"",false,false)
+		}
+		printB(player.GetCharacterName(),"",false,"",false,true,0.1);
+	}
 }
 
 /*
@@ -4977,7 +5150,7 @@ enum __
 
 	AdminSystem._propageddon_args.debug = 1 - AdminSystem._propageddon_args.debug;
 
-	printl("[Apocalypse-Debug] Apocalypse debug state :"+( AdminSystem._propageddon_args.debug == 1 ? " Enabled":" Disabled"));
+	Printer(player,"[Apocalypse-Debug] Apocalypse debug state :"+( AdminSystem._propageddon_args.debug == 1 ? " Enabled":" Disabled"));
 	AdminSystem.SaveApocalypseSettings();
 }
 
@@ -5019,8 +5192,8 @@ enum __
 		trimend = trimend.tofloat();
 		_SceneSequencer(Utils.GetPlayerFromName(character),{scenes=["blank",scene_name],delays=[trimend,0.15]});
 	}
-	
-	printB(player.GetCharacterName(),player.GetCharacterName()+" ->Speak test "+character+" "+scene_name+" "+trimend);
+
+	Printer(player,CmdMessages.CustomSpeak.TestSuccess(character,scene_name,trimend));
 }
 
 /*
@@ -5045,7 +5218,7 @@ enum __
 	if(seq_name==null)
 	{
 		seq_name = character;
-		character = player.GetCharacterName().tolower();
+		character = player.GetCharacterNameLower();
 	}
 	else
 	{
@@ -5061,9 +5234,11 @@ enum __
 	}
 	catch(e)
 	{
-		Messages.ThrowPlayer(player,CmdMessages.CustomSequences.NoSeqFound(character,seq_name));return;
+		Messages.ThrowPlayer(player,CmdMessages.CustomSequences.NoSeqFound(character,seq_name));
+		return;
 	}
-	printB(player.GetCharacterName(),player.GetCharacterName()+" ->Speak custom "+character+" "+seq_name);
+
+	Printer(player,CmdMessages.CustomSpeak.Success(character,seq_name));
 }
 
 
@@ -5107,7 +5282,7 @@ enum __
 
 	if(AdminSystem.Vars._looping[character])
 	{
-		printB(player.GetCharacterName(),player.GetCharacterName()+" ->Stopped loop for "+character);
+		Printer(player,CmdMessages.Loops.Stop(character));
 		AdminSystem.Vars._looping[character] = false;
 	}
 	
@@ -5218,7 +5393,8 @@ enum __
 		_SceneSequencer(Utils.GetPlayerFromName(character),{scenes=[sequencename],delays=[0]})
 		::VSLib.Timers.AddTimerByName(AdminSystem.Vars._loopingTable[character].timername,looplength+0.1, true, _TimedLooper,AdminSystem.Vars._loopingTable[character]);
 	}
-	printB(player.GetCharacterName(),player.GetCharacterName()+" ->Started loop for "+character+" named "+sequencename);
+
+	Printer(player,CmdMessages.Loops.Start(character,sequencename));
 
 }
 
@@ -5235,7 +5411,7 @@ enum __
 	local character = GetArgument(1);
 	local seqnames = "";
 	local steamid = player.GetSteamID();
-	if(AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+	if(AdminSystem.Vars._outputsEnabled[player.GetCharacterNameLower()])
 	{
 		if(character == null || character == "all")
 		{
@@ -5355,7 +5531,7 @@ enum __
 	if(sequencename==null)
 	{
 		sequencename = character;
-		character = player.GetCharacterName().tolower();
+		character = player.GetCharacterNameLower();
 	}
 	else
 	{
@@ -5382,10 +5558,7 @@ enum __
 	str += "\n"
 	str += Utils.ArrayString(AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence[sequencename].delays)
 
-	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
-	{Messages.InformPlayer(player,CmdMessages.CustomSequences.InfoString(character,sequencename,str));}
-	else
-	{printB(player.GetCharacterName(),player.GetCharacterName()+" -> Sequence info "+character+"."+sequencename+str,true,"info",true,true);}
+	Printer(player,CmdMessages.CustomSequences.InfoString(character,sequencename,str));
 }
 
 /*
@@ -5487,11 +5660,8 @@ enum __
 	}
 
 	// Output messages
-	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
-	{Messages.InformPlayer(player,CmdMessages.CustomSequences.EditSuccess(character,sequencename,setting,scene_index,oldvalue,newval));}
-	else
-	{printB(player.GetCharacterName(),player.GetCharacterName()+" -> Sequence info "+character+"."+sequencename+"."+setting+"s["+scene_index+"]-> "+oldvalue+"->"+newval.tostring(),true,"info",true,true);}
-	
+	Printer(player,CmdMessages.CustomSequences.EditSuccess(character,sequencename,setting,scene_index,oldvalue,newval));
+
 	// Save to custom file
 	local contents = FileToString(Constants.Directories.CustomResponses);
 	if(contents == null)
@@ -5646,14 +5816,8 @@ enum __
 				i+=2;
 			}
 		}
-		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
-		{
-			Messages.InformPlayer(player,CmdMessages.CustomSequences.CreateForAll(sequencename));
-		}
-		else
-		{
-			printB(player.GetCharacterName(),player.GetCharacterName()+" ->Created sequence for all characters named "+sequencename,true,"info",true,true);
-		}
+
+		Printer(player,CmdMessages.CustomSequences.CreateForAll(sequencename));
 	}
 	else
 	{
@@ -5678,15 +5842,9 @@ enum __
 			responsetable[steamid][character][sequencename].delays.append(arguments[i+1]);
 			i+=2;
 		}
-
-		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
-		{
-			Messages.InformPlayer(player,CmdMessages.CustomSequences.CreateSuccess(character,sequencename));
-		}
-		else
-		{
-			printB(player.GetCharacterName(),player.GetCharacterName()+" ->Created sequence for "+character+" named "+sequencename,true,"info",true,true);
-		}
+		
+		Printer(player,CmdMessages.CustomSequences.CreateSuccess(character,sequencename));
+		
 	}
 
 	StringToFile(Constants.Directories.CustomResponses, Utils.SceneTableToString(responsetable));
@@ -5728,7 +5886,7 @@ enum __
 
 	if(sequencename in responsetable[steamid][character])
 	{	
-		Messages.InformPlayer(player,CmdMessages.CustomSequences.DeleteSuccess(character,sequencename));
+		Printer(player,CmdMessages.CustomSequences.DeleteSuccess(character,sequencename));
 		delete responsetable[steamid][character][sequencename];
 		
 		if(sequencename in AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence)
@@ -5759,7 +5917,7 @@ enum __
 
 /*
  * @authors rhino
- * @param optiontable = AdminSystem.Vars._CustomResponseOptions[{EventName}][player.GetCharacterName().tolower()]
+ * @param optiontable = AdminSystem.Vars._CustomResponseOptions[{EventName}][player.GetCharacterNameLower()]
  */
 ::_SceneDecider <- function(player,optiontable)
 {	
@@ -5842,8 +6000,8 @@ enum __
 
 ::_TradingStatusWrapper <- function(args)
 {
-	AdminSystem._CurrentlyTradingItems[args.player1.GetCharacterName().tolower()] = false;
-	AdminSystem._CurrentlyTradingItems[args.player2.GetCharacterName().tolower()] = false;
+	AdminSystem._CurrentlyTradingItems[args.player1.GetCharacterNameLower()] = false;
+	AdminSystem._CurrentlyTradingItems[args.player2.GetCharacterNameLower()] = false;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -5861,11 +6019,11 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 		if(!AdminSystem.Vars.AllowCustomSharing)
 			return;
 
-		if(AdminSystem._CurrentlyTradingItems[target.GetCharacterName().tolower()] || AdminSystem._CurrentlyTradingItems[attacker.GetCharacterName().tolower()])
+		if(AdminSystem._CurrentlyTradingItems[target.GetCharacterNameLower()] || AdminSystem._CurrentlyTradingItems[attacker.GetCharacterNameLower()])
 			return;
 
-		AdminSystem._CurrentlyTradingItems[target.GetCharacterName().tolower()] = true;
-		AdminSystem._CurrentlyTradingItems[attacker.GetCharacterName().tolower()] = true;
+		AdminSystem._CurrentlyTradingItems[target.GetCharacterNameLower()] = true;
+		AdminSystem._CurrentlyTradingItems[attacker.GetCharacterNameLower()] = true;
 
 		local inHand = attacker.GetActiveWeapon();
 		local inhandclass = inHand.GetClassname();
@@ -5903,11 +6061,11 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 		if(!AdminSystem.Vars.AllowCustomSharing)
 			return;
 
-		if(AdminSystem._CurrentlyTradingItems[target.GetCharacterName().tolower()] || AdminSystem._CurrentlyTradingItems[attacker.GetCharacterName().tolower()])
+		if(AdminSystem._CurrentlyTradingItems[target.GetCharacterNameLower()] || AdminSystem._CurrentlyTradingItems[attacker.GetCharacterNameLower()])
 			return;
 
-		AdminSystem._CurrentlyTradingItems[target.GetCharacterName().tolower()] = true;
-		AdminSystem._CurrentlyTradingItems[attacker.GetCharacterName().tolower()] = true;
+		AdminSystem._CurrentlyTradingItems[target.GetCharacterNameLower()] = true;
+		AdminSystem._CurrentlyTradingItems[attacker.GetCharacterNameLower()] = true;
 
 		local sharable_grenade = 
 		[
@@ -5999,7 +6157,7 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 	if(!AdminSystem.Vars.AllowCustomResponses)
 		return;
 
-	local targetname = target.GetCharacterName().tolower();
+	local targetname = target.GetCharacterNameLower();
 
 	if(targetname == "") // Was special infected
 	{return;}
@@ -6026,7 +6184,7 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 
 		ents.target.Speak(line);
 		AdminSystem.Vars._CustomResponse[targetname]._SpeakWhenShoved.lastspoken = [line];
-		printl(ents.attacker.GetCharacterName()+" is bullying "+targetname+": "+line);
+		//printl(ents.attacker.GetCharacterName()+" is bullying "+targetname+": "+line);
 	}
 	else // Speak from given sequences
 	{	
@@ -6046,7 +6204,7 @@ function Notifications::OnLeaveSaferoom::_SpeakWhenLeftSaferoomCondition(ent,arg
 	if(ent.GetName() == "" || !::AdminSystem.Vars.AllowCustomResponses)
 		return;
 	
-	local name = ent.GetCharacterName().tolower();
+	local name = ent.GetCharacterNameLower();
 	if(name == "")
 		return;
 		
@@ -6083,7 +6241,7 @@ function Notifications::OnAdrenalineUsed::_SpeakWhenUsedAdrenalineCondition(ent,
 	if(!AdminSystem.Vars.AllowCustomResponses)
 		return;
 
-	local name = ent.GetCharacterName().tolower();
+	local name = ent.GetCharacterNameLower();
 	if((rand().tofloat()/RAND_MAX) <= AdminSystem.Vars._CustomResponse[name]._SpeakWhenUsedAdrenaline.prob)
 		::VSLib.Timers.AddTimer(AdminSystem.Vars._CustomResponse[name]._SpeakWhenUsedAdrenaline.startdelay, false, _SpeakWhenUsedAdrenalineResult,ent);
 }
@@ -6093,7 +6251,7 @@ function Notifications::OnAdrenalineUsed::_SpeakWhenUsedAdrenalineCondition(ent,
  */
 ::_SpeakWhenUsedAdrenalineResult <- function(ent)
 {
-	local name = ent.GetCharacterName().tolower();
+	local name = ent.GetCharacterNameLower();
 	
 	if(AdminSystem.Vars._CustomResponse[name]._SpeakWhenUsedAdrenaline.userandom)
 	{
@@ -6130,11 +6288,11 @@ function Notifications::OnHealStart::_TradeMedPack(target,healer,args)
 	
 	else if(healer.IsPressingReload())
 	{
-		if(AdminSystem._CurrentlyTradingItems[target.GetCharacterName().tolower()] || AdminSystem._CurrentlyTradingItems[healer.GetCharacterName().tolower()])
+		if(AdminSystem._CurrentlyTradingItems[target.GetCharacterNameLower()] || AdminSystem._CurrentlyTradingItems[healer.GetCharacterNameLower()])
 			return;
 			
-		AdminSystem._CurrentlyTradingItems[target.GetCharacterName().tolower()] = true;
-		AdminSystem._CurrentlyTradingItems[healer.GetCharacterName().tolower()] = true;
+		AdminSystem._CurrentlyTradingItems[target.GetCharacterNameLower()] = true;
+		AdminSystem._CurrentlyTradingItems[healer.GetCharacterNameLower()] = true;
 
 		local targetinv = target.GetHeldItems();
 
@@ -6154,20 +6312,6 @@ function Notifications::OnHealStart::_TradeMedPack(target,healer,args)
 	}
 }
 
-/*
- * @authors rhino
- */
-::AdminSystem.Vars._RockThrow <- 
-{
-	enabled = true
-	rockorigin = null
-	rockpushspeed = 900
-	raise = 300
-	friction = 0.01
-	randomized = false
-	randomized_spawn_prop_after = true
-}
-
 function Notifications::OnHurt::_HitByTankRock(player,attacker,args)
 {
 	if(!("weapon" in args))
@@ -6176,7 +6320,7 @@ function Notifications::OnHurt::_HitByTankRock(player,attacker,args)
 		return;
 	else
 	{
-		if(AdminSystem.Vars._RockThrow.enabled)
+		if(AdminSystem.Vars._RockThrow.pushenabled)
 		{
 			if(::VSLib.EasyLogic.Objects.OfClassname("tank_rock").len() != 1)
 			{
@@ -6428,7 +6572,7 @@ function ChatTriggers::script( player, args, text )
 		return;
 	if(!(player.GetSteamID() in ::AdminSystem.ScriptAuths))
 	{
-		Messages.ThrowAll(player.GetCharacterName()+"("+player.GetSteamID()+") doesn't have authority to execute scripts");return;
+		Messages.ThrowAll(Messages.BIM.HasScriptAuth.NoAccess(player));return;
 	}
 	local compiledscript = compilestring(Utils.CombineArray(args));
 	compiledscript();
@@ -8415,13 +8559,20 @@ if ( Director.GetGameMode() == "holdout" )
 	local objects = ::VSLib.EasyLogic.Objects.OfClassname("ambient_generic");
 	if(objects != null)
 	{
+		local found = false;
 		foreach(obj in objects)
 		{	
 			if(obj.GetName().find("caralarm") != null)
+			{
+				found = true;
 				obj.Input("stopsound");
+			}
 		}
 
-		printB(player.GetCharacterName(),"Stopped all car alarms",true,"info",true,true);
+		if(found)
+		{
+			Printer(player,"Stopped all car alarms");
+		}
 	}
 }
 
@@ -8446,7 +8597,7 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			if(tbl.entid == entity.GetIndex().tostring())
 			{
-				printl(player.GetCharacterName().tolower()+"->Ignore attempt to kill entity #"+entity.GetIndex().tostring()+" held by a player");
+				printl(player.GetCharacterNameLower()+"->Ignore attempt to kill entity #"+entity.GetIndex().tostring()+" held by a player");
 				skip = true;break;
 			}
 		}
@@ -8455,7 +8606,7 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			if(tbl.entid.tostring() == entity.GetIndex().tostring())
 			{
-				printl(player.GetCharacterName().tolower()+"->Ignore attempt to kill hat entity #"+entity.GetIndex().tostring()+" worn by a player");
+				printl(player.GetCharacterNameLower()+"->Ignore attempt to kill hat entity #"+entity.GetIndex().tostring()+" worn by a player");
 				skip = true;break;
 			}
 		}
@@ -8871,7 +9022,7 @@ if ( Director.GetGameMode() == "holdout" )
 				ent = args._fromDrive;
 				local model = ent.GetModel();
 				player.SetModel(model);
-				AdminSystem.Vars._modelPreference[player.GetCharacterName().tolower()].lastmodel = model;
+				AdminSystem.Vars._modelPreference[player.GetCharacterNameLower()].lastmodel = model;
 				return;
 			}
 		}
@@ -8918,15 +9069,12 @@ if ( Director.GetGameMode() == "holdout" )
 	else
 	{
 		ent.SetModel(model);
-		AdminSystem.Vars._modelPreference[player.GetCharacterName().tolower()].lastmodel = model;
+		AdminSystem.Vars._modelPreference[player.GetCharacterNameLower()].lastmodel = model;
 	}
 
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	
-	if (AdminSystem.Vars._outputsEnabled[name])
-	{Messages.InformPlayer(player,CmdMessages.Models.ChangeSuccess(ent.GetIndex(),model));}
-	else
-	{printB(player.GetCharacterName(),name+"->Changed model of #"+ent.GetIndex()+" to "+model,true,"info",true,true);}
+	Printer(player,CmdMessages.Models.ChangeSuccess(ent.GetIndex(),model));
 	
 }
 
@@ -8961,15 +9109,11 @@ if ( Director.GetGameMode() == "holdout" )
 
 	try{scale = scale.tofloat()}catch(e){return;}
 
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	
 	ent.SetModelScale(scale);
 
-	if (AdminSystem.Vars._outputsEnabled[name])
-	{Messages.InformPlayer(player,CmdMessages.Models.ScaleChangeSuccess(ent.GetIndex(),scale));}
-	else
-	{printB(player.GetCharacterName(),name+"->Changed model scale of #"+ent.GetIndex()+" to "+scale,true,"info",true,true);}
-	
+	Printer(player,CmdMessages.Models.ScaleChangeSuccess(ent.GetIndex(),scale));
 }
 
 /*
@@ -9014,13 +9158,9 @@ if ( Director.GetGameMode() == "holdout" )
 	else
 		player.SetModel(model);
 
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 
-	if (AdminSystem.Vars._outputsEnabled[name])
-	{Messages.InformPlayer(player,CmdMessages.Models.ChangeSuccess(ent.GetIndex(),model));}
-	else
-	{printB(player.GetCharacterName(),name+"->Changed model of #"+ent.GetIndex()+" to "+model,true,"info",true,true);}
-	
+	Printer(player,CmdMessages.Models.ChangeSuccess(ent.GetIndex(),model));
 }
 
 /*
@@ -9031,7 +9171,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local Particle = GetArgument(1);
 	if (Particle == "random")
 	{
@@ -9045,11 +9185,8 @@ if ( Director.GetGameMode() == "holdout" )
 	local EyePosition = player.GetLookingLocation();
 	
 	g_ModeScript.CreateParticleSystemAt( null, EyePosition, Particle, true );
-	if (AdminSystem.Vars._outputsEnabled[name])
-	{Messages.InformPlayer(player,CmdMessages.Particles.SpawnSuccess(Particle,EyePosition));}
-	else
-	{printB(player.GetCharacterName(),name+"->Spawned particle->"+Particle+" at->"+EyePosition.x+" "+EyePosition.y+" "+EyePosition.z,true,"info",true,true);}
-	
+
+	Printer(player,CmdMessages.Particles.SpawnSuccess(Particle,EyePosition));
 }
 
 /* @authors rhino
@@ -9059,13 +9196,24 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
-
-	printB(player.GetCharacterName(),"",false,"",true,false);
-	foreach(setting,val in AdminSystem.Vars._explosion_settings[player.GetCharacterName().tolower()])
+	
+	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterNameLower()])
 	{
-		printB(player.GetCharacterName(),"[Explosion-Setting] "+setting+"->"+val.tostring(),false,"",false,false)
+		Messages.InformPlayer(player,"Explosion Settings:");
+		foreach(setting,val in AdminSystem.Vars._explosion_settings[player.GetCharacterNameLower()])
+		{
+			Messages.InformPlayer(player,"\x05"+setting+"\x03"+" -> "+"\x04"+val.tostring()+"\x01"+"\n")
+		}
 	}
-	printB(player.GetCharacterName(),"",false,"",false,true,0.1);
+	else
+	{
+		printB(player.GetCharacterName(),"",false,"",true,false);
+		foreach(setting,val in AdminSystem.Vars._explosion_settings[player.GetCharacterNameLower()])
+		{
+			printB(player.GetCharacterName(),"[Explosion-Setting] "+setting+"->"+val.tostring(),false,"",false,false)
+		}
+		printB(player.GetCharacterName(),"",false,"",false,true,0.1);
+	}
 }
 
 /* @authors rhino
@@ -9084,14 +9232,11 @@ if ( Director.GetGameMode() == "holdout" )
 	
 	if(setting != "effect_name")
 		{try{val = val.tofloat();}catch(e){return;}}
-	else if(Utils.GetIDFromArray(::Particlenames.names,val) == null)
+	else if(Utils.GetIDFromArray(::Particlenames.names,val) == -1)
 		{Messages.ThrowPlayer(player,CmdMessages.Particles.UnknownParticle(val));return;}
 
-	if (AdminSystem.Vars._outputsEnabled[name.tolower()])
-	{Messages.InformPlayer(player,CmdMessages.Explosions.SettingSuccess(setting,AdminSystem.Vars._explosion_settings[name.tolower()][setting],val));}
-	else
-	{printB(name,name+" -> Changed explosion setting "+setting+": "+AdminSystem.Vars._explosion_settings[name.tolower()][setting]+"->"+val,true,"info",true,true);}
-	
+	Printer(player,CmdMessages.Explosions.SettingSuccess(setting,AdminSystem.Vars._explosion_settings[name.tolower()][setting],val));
+
 	AdminSystem.Vars._explosion_settings[name.tolower()][setting] = val;
 }
 
@@ -9154,7 +9299,7 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 	
 	local meteorshower = GetArgument(1)
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local aimedlocation = player.GetLookingLocation();
 	local argtable = AdminSystem.Vars._explosion_settings[name];
 
@@ -9243,7 +9388,7 @@ if ( Director.GetGameMode() == "holdout" )
 		
 		Timers.AddTimer(delay, false, _explosionPush, {explosion_sound=explosion_sound,explosion=explosion,ents=closebyents,pushspeed=pushspeed,origin=aimedlocation});
 
-		printl(name+"-> Created explosion with particle(#"+particle.GetIndex()+") "+explosion_particle+"  at "+aimedlocation);
+		//printl(name+"-> Created explosion with particle(#"+particle.GetIndex()+") "+explosion_particle+"  at "+aimedlocation);
 	}
 }
 
@@ -9276,7 +9421,7 @@ if ( Director.GetGameMode() == "holdout" )
 		_AttachDamageOutput(meteor,"RunScriptCode","_MeteorExplosion("+meteor.GetIndex()+")",0,1)
 	}
 		
-	printl(args.name+"-> Created meteor fall explosion with meteor(#"+meteor.GetIndex()+") particle(#"+args.particle.GetIndex()+") "+args.explosion_particle+"  at "+args.aimedlocation);
+	//printl(args.name+"-> Created meteor fall explosion with meteor(#"+meteor.GetIndex()+") particle(#"+args.particle.GetIndex()+") "+args.explosion_particle+"  at "+args.aimedlocation);
 
 }
 
@@ -9323,7 +9468,7 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 	
 	local target = GetArgument(1);
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	if(target != null)
 	{
 		if(target == "!picker")
@@ -9340,19 +9485,13 @@ if ( Director.GetGameMode() == "holdout" )
 		
 		Utils.ResetModels(target.GetCharacterName());
 
-		if (AdminSystem.Vars._outputsEnabled[name])
-		{Messages.InformPlayer(player,CmdMessages.Models.RestoredOrgOther(target.GetCharacterName()));}
-		else
-		{printB(player.GetCharacterName(),name+"->Restored original model for "+target.GetCharacterName(),true,"info",true,true);}
+		Printer(player,CmdMessages.Models.RestoredOrgOther(target.GetCharacterName()));
 	}
 	else
 	{
 		Utils.ResetModels(name);
 
-		if (AdminSystem.Vars._outputsEnabled[name])
-		{Messages.InformPlayer(player,CmdMessages.Models.RestoredOrgSelf());}
-		else
-		{printB(player.GetCharacterName(),name+"->Restored original model",true,"info",true,true);}
+		Printer(player,CmdMessages.Models.RestoredOrgSelf());
 	}
 }
 
@@ -9364,14 +9503,14 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	if(AdminSystem.Vars._RockThrow.enabled)
+	if(AdminSystem.Vars._RockThrow.pushenabled)
 	{
-		AdminSystem.Vars._RockThrow.enabled = false;
+		AdminSystem.Vars._RockThrow.pushenabled = false;
 		Messages.InformAll(CmdMessages.DisableTankRockPush());
 	}
 	else
 	{
-		AdminSystem.Vars._RockThrow.enabled = true;
+		AdminSystem.Vars._RockThrow.pushenabled = true;
 		Messages.InformAll(CmdMessages.EnableTankRockPush());
 	}
 }
@@ -9445,17 +9584,17 @@ if ( Director.GetGameMode() == "holdout" )
 {	
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 
 	if(AdminSystem.Vars._modelPreference[name].keeplast)
 	{
 		AdminSystem.Vars._modelPreference[name].keeplast = false;
-		Messages.InformPlayer(player,CmdMessages.DisableModelKeeping());
+		Printer(player,CmdMessages.DisableModelKeeping());
 	}
 	else
 	{
 		AdminSystem.Vars._modelPreference[name].keeplast = true;
-		Messages.InformPlayer(player,CmdMessages.EnableModelKeeping());
+		Printer(player,CmdMessages.EnableModelKeeping());
 	}
 }
 
@@ -9482,7 +9621,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 
 	local effect = GetArgument(1);
 	if(effect == null)
@@ -9545,11 +9684,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if(micent == null)
 	{Messages.ThrowPlayer(player,CmdMessages.MicSpeaker.MicKeyValsInvalid());return;}
 
-	if (AdminSystem.Vars._outputsEnabled[name])
-	{Messages.InformPlayer(player,CmdMessages.MicSpeaker.MicrophoneSuccess(micent));}
-	else
-	{printB(player.GetCharacterName(),"Created a microphone(#"+micent.GetIndex()+") named "+micent.GetName(),true,"info",true,true);}
-
+	Printer(player,CmdMessages.MicSpeaker.MicrophoneSuccess(micent));
 }
 
 /*
@@ -9561,7 +9696,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	
 	local keyvaltable = 
 	{	
@@ -9576,11 +9711,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if(speakerent == null)
 	{Messages.ThrowPlayer(player,CmdMessages.MicSpeaker.SpeakerKeyValsInvalid());return;}
 
-	if (AdminSystem.Vars._outputsEnabled[name])
-	{Messages.InformPlayer(player,CmdMessages.MicSpeaker.SpeakerSuccess(speakerent));}
-	else
-	{printB(player.GetCharacterName(),name+"->Created a speaker(#"+speakerent.GetIndex()+") named "+speakerent.GetName(),true,"info",true,true);}
-
+	Printer(player,CmdMessages.MicSpeaker.SpeakerSuccess(speakerent));
 }
 
 /*
@@ -9592,7 +9723,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 
 	local speaker = GetArgument(1);
 	local mic = GetArgument(2);
@@ -9613,11 +9744,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	DoEntFire("!self","SetSpeakerName",speaker.GetName(),0,null,mic);
 
-	if (AdminSystem.Vars._outputsEnabled[name])
-	{Messages.InformPlayer(player,CmdMessages.MicSpeaker.ConnectSuccess(speaker.GetEntityIndex(),mic.GetEntityIndex()));}
-	else
-	{printB(player.GetCharacterName(),"Connected speaker(#"+speaker.GetEntityIndex()+") to mic(#"+mic.GetEntityIndex()+")",true,"info",true,true);}
-	
+	Printer(player,CmdMessages.MicSpeaker.ConnectSuccess(speaker.GetEntityIndex(),mic.GetEntityIndex()));
 }
 
 /*
@@ -9629,7 +9756,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local pos = player.GetPosition();
 	local dist = null;
 	local entorigin = null;
@@ -9703,7 +9830,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local entfound = null;
 
 	foreach(index,name in Utils.TableCopy(AdminSystem.Vars._spawnedPianoKeys))
@@ -9716,11 +9843,7 @@ if ( Director.GetGameMode() == "holdout" )
 		delete AdminSystem.Vars._spawnedPianoKeys[index];
 	}
 
-	if (AdminSystem.Vars._outputsEnabled[name])
-	{Messages.InformPlayer(player,CmdMessages.Piano.Remove());}
-	else
-	{printB(player.GetCharacterName(),CmdMessages.Piano.Remove(),true,"info",true,true);}
-	
+	Printer(player,CmdMessages.Piano.Remove());
 }
 
 /*
@@ -9732,7 +9855,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 
 	local lookedloc = player.GetLookingLocation();
 	local eyeforward= player.GetEyeAngles().Forward();
@@ -9779,11 +9902,7 @@ if ( Director.GetGameMode() == "holdout" )
 		AdminSystem.Vars._spawnedPianoKeys[entindex] <- ent.GetName();
 	}
 	
-	if (AdminSystem.Vars._outputsEnabled[name])
-	{Messages.InformPlayer(player,CmdMessages.Piano.Success(startkey));}
-	else
-	{printB(player.GetCharacterName(),CmdMessages.Piano.Success(startkey),true,"info",true,true);}
-	
+	Printer(player,CmdMessages.Piano.Success(startkey));
 }
 
 ::AdminSystem.BarrelCmd <- function ( player, args )
@@ -9966,47 +10085,52 @@ if ( Director.GetGameMode() == "holdout" )
 	
 	GroundPosition.y = EyeAngles.y;
 	GroundPosition.y += 180;
-	
+	local ent = null;
 	if ( MDL == "nick" )
-		Utils.SpawnCommentaryDummy( "models/survivors/survivor_gambler.mdl", "weapon_pistol", "Idle_Calm_Pistol", EyePosition, GroundPosition );
+		ent = Utils.SpawnCommentaryDummy( "models/survivors/survivor_gambler.mdl", "weapon_pistol", "Idle_Calm_Pistol", EyePosition, GroundPosition );
 	else if ( MDL == "rochelle" )
-		Utils.SpawnCommentaryDummy( "models/survivors/survivor_producer.mdl", "weapon_pistol", "Idle_Calm_Pistol", EyePosition, GroundPosition );
+		ent = Utils.SpawnCommentaryDummy( "models/survivors/survivor_producer.mdl", "weapon_pistol", "Idle_Calm_Pistol", EyePosition, GroundPosition );
 	else if ( MDL == "coach" )
-		Utils.SpawnCommentaryDummy( "models/survivors/survivor_coach.mdl", "weapon_pistol", "Idle_Calm_Pistol", EyePosition, GroundPosition );
+		ent = Utils.SpawnCommentaryDummy( "models/survivors/survivor_coach.mdl", "weapon_pistol", "Idle_Calm_Pistol", EyePosition, GroundPosition );
 	else if ( MDL == "ellis" )
-		Utils.SpawnCommentaryDummy( "models/survivors/survivor_mechanic.mdl", "weapon_pistol", "Idle_Calm_Pistol", EyePosition, GroundPosition );
+		ent = Utils.SpawnCommentaryDummy( "models/survivors/survivor_mechanic.mdl", "weapon_pistol", "Idle_Calm_Pistol", EyePosition, GroundPosition );
 	else if ( MDL == "bill" )
-		Utils.SpawnCommentaryDummy( "models/survivors/survivor_namvet.mdl", "weapon_pistol", "Idle_Calm_Pistol", EyePosition, GroundPosition );
+		ent = Utils.SpawnCommentaryDummy( "models/survivors/survivor_namvet.mdl", "weapon_pistol", "Idle_Calm_Pistol", EyePosition, GroundPosition );
 	else if ( MDL == "zoey" )
-		Utils.SpawnCommentaryDummy( "models/survivors/survivor_teenangst.mdl", "weapon_pistol", "Idle_Calm_Pistol", EyePosition, GroundPosition );
+		ent = Utils.SpawnCommentaryDummy( "models/survivors/survivor_teenangst.mdl", "weapon_pistol", "Idle_Calm_Pistol", EyePosition, GroundPosition );
 	else if ( MDL == "francis" )
-		Utils.SpawnCommentaryDummy( "models/survivors/survivor_biker.mdl", "weapon_pistol", "Idle_Calm_Pistol", EyePosition, GroundPosition );
+		ent = Utils.SpawnCommentaryDummy( "models/survivors/survivor_biker.mdl", "weapon_pistol", "Idle_Calm_Pistol", EyePosition, GroundPosition );
 	else if ( MDL == "louis" )
-		Utils.SpawnCommentaryDummy( "models/survivors/survivor_manager.mdl", "weapon_pistol", "Idle_Calm_Pistol", EyePosition, GroundPosition );
+		ent = Utils.SpawnCommentaryDummy( "models/survivors/survivor_manager.mdl", "weapon_pistol", "Idle_Calm_Pistol", EyePosition, GroundPosition );
 	else if ( MDL == "smoker" )
-		Utils.SpawnCommentaryDummy( "models/infected/smoker.mdl", "weapon_claw", "smoker_cough", EyePosition, GroundPosition );
+		ent = Utils.SpawnCommentaryDummy( "models/infected/smoker.mdl", "weapon_claw", "smoker_cough", EyePosition, GroundPosition );
 	else if ( MDL == "boomer" )
-		Utils.SpawnCommentaryDummy( "models/infected/boomer.mdl", "weapon_claw", "Idle_Standing", EyePosition, GroundPosition );
+		ent = Utils.SpawnCommentaryDummy( "models/infected/boomer.mdl", "weapon_claw", "Idle_Standing", EyePosition, GroundPosition );
 	else if ( MDL == "boomette" )
-		Utils.SpawnCommentaryDummy( "models/infected/boomette.mdl", "weapon_claw", "Idle_Standing", EyePosition, GroundPosition );
+		ent = Utils.SpawnCommentaryDummy( "models/infected/boomette.mdl", "weapon_claw", "Idle_Standing", EyePosition, GroundPosition );
 	else if ( MDL == "hunter" )
-		Utils.SpawnCommentaryDummy( "models/infected/hunter.mdl", "weapon_claw", "Idle_Standing_01", EyePosition, GroundPosition );
+		ent = Utils.SpawnCommentaryDummy( "models/infected/hunter.mdl", "weapon_claw", "Idle_Standing_01", EyePosition, GroundPosition );
 	else if ( MDL == "spitter" )
-		Utils.SpawnCommentaryDummy( "models/infected/spitter.mdl", "weapon_claw", "Standing_Idle", EyePosition, GroundPosition );
+		ent = Utils.SpawnCommentaryDummy( "models/infected/spitter.mdl", "weapon_claw", "Standing_Idle", EyePosition, GroundPosition );
 	else if ( MDL == "jockey" )
-		Utils.SpawnCommentaryDummy( "models/infected/jockey.mdl", "weapon_claw", "Standing_Idle", EyePosition, GroundPosition );
+		ent = Utils.SpawnCommentaryDummy( "models/infected/jockey.mdl", "weapon_claw", "Standing_Idle", EyePosition, GroundPosition );
 	else if ( MDL == "charger" )
-		Utils.SpawnCommentaryDummy( "models/infected/charger.mdl", "weapon_claw", "Idle_Upper_KNIFE", EyePosition, GroundPosition );
+		ent = Utils.SpawnCommentaryDummy( "models/infected/charger.mdl", "weapon_claw", "Idle_Upper_KNIFE", EyePosition, GroundPosition );
 	else if ( MDL == "witch" )
-		Utils.SpawnCommentaryDummy( "models/infected/witch.mdl", "weapon_claw", "Idle_Sitting", EyePosition, GroundPosition );
+		ent = Utils.SpawnCommentaryDummy( "models/infected/witch.mdl", "weapon_claw", "Idle_Sitting", EyePosition, GroundPosition );
 	else if ( MDL == "witch_bride" )
-		Utils.SpawnCommentaryDummy( "models/infected/witch_bride.mdl", "weapon_claw", "Idle_Sitting", EyePosition, GroundPosition );
+		ent = Utils.SpawnCommentaryDummy( "models/infected/witch_bride.mdl", "weapon_claw", "Idle_Sitting", EyePosition, GroundPosition );
 	else if ( MDL == "tank" )
-		Utils.SpawnCommentaryDummy( "models/infected/hulk.mdl", "weapon_claw", "Idle", EyePosition, GroundPosition );
+		ent = Utils.SpawnCommentaryDummy( "models/infected/hulk.mdl", "weapon_claw", "Idle", EyePosition, GroundPosition );
 	else if ( MDL == "tank_dlc3" )
-		Utils.SpawnCommentaryDummy( "models/infected/hulk_dlc3.mdl", "weapon_claw", "Idle", EyePosition, GroundPosition );
+		ent = Utils.SpawnCommentaryDummy( "models/infected/hulk_dlc3.mdl", "weapon_claw", "Idle", EyePosition, GroundPosition );
 	else
-		Utils.SpawnCommentaryDummy(MDL, Weapons, Animation, EyePosition);
+		ent = Utils.SpawnCommentaryDummy(MDL, Weapons, Animation, EyePosition);
+
+	if(ent == null)
+		return;
+	
+	Printer(player,CmdMessages.DummyEntity.Success(ent,MDL));
 }
 
 /*
@@ -10017,7 +10141,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local classname = GetArgument(1);
 	local pos = GetArgument(2);
 	if(pos == null)
@@ -10031,19 +10155,10 @@ if ( Director.GetGameMode() == "holdout" )
 	if(keyvals == null)
 		keyvals = {}
 
-	if (AdminSystem.Vars._outputsEnabled[name])
-	{
-		Messages.InformPlayer(player,"Created entity(#"+ent.GetIndex()+"):\nclass = "+classname+"\nposition = "+pos+"\nangles = "+ang+"\nkeyvals = ");
-	}
-	else
-	{
-		printB(player.GetCharacterName(),"Created entity(#"+ent.GetIndex()+"):\nclass = "+classname+"\nposition = "+pos+"\nangles = "+ang+"\nkeyvals = ",true,"info",true,true);
-	}
-
-	Utils.PrintTable(keyvals);
-	
 	local ent = Utils.CreateEntity(classname,pos,ang,keyvals);
 
+	Printer(player,CmdMessages.Ent.EntityCreate(ent.GetIndex(),Utils.GetTableString(keyvals)));
+	
 }
 
 /**
@@ -10073,7 +10188,7 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	//local baseEnt = Utils.CreateEntity(cname,Vector(0,0,0),QAngle(0,0,0),{model="models/props_industrial/wire_spool_01.mdl"});
 	local keyvals = GetArgument(2);
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 
 	local pairsplit = [null,null];
 	local found = false;
@@ -10142,7 +10257,7 @@ if ( Director.GetGameMode() == "holdout" )
 					}
 					else
 					{
-						printB(player.GetCharacterName(),name+" -> Unrecognized TYPE("+str[0]+") for Key->"+pairsplit[0],true,"error",true,true);
+						Printer(player,CmdMessages.Ent.TypeUnknown(str[0],pairsplit[0]),"error");
 						return;
 					}
 				}
@@ -10163,7 +10278,7 @@ if ( Director.GetGameMode() == "holdout" )
 					}
 					else
 					{
-						printB(player.GetCharacterName(),name+" -> Unrecognized TYPE("+str[0]+") for Key->"+pairsplit[0],true,"error",true,true);
+						Printer(player,CmdMessages.Ent.TypeUnknown(str[0],pairsplit[0]),"error");
 						return;
 					}
 				}
@@ -10183,7 +10298,7 @@ if ( Director.GetGameMode() == "holdout" )
 					}
 					else
 					{
-						printB(player.GetCharacterName(),name+" -> Unrecognized TYPE("+str[0]+") for Key->"+pairsplit[0],true,"error",true,true);
+						Printer(player,CmdMessages.Ent.TypeUnknown(str[0],pairsplit[0]),"error");
 						return;
 					}
 				}
@@ -10211,28 +10326,15 @@ if ( Director.GetGameMode() == "holdout" )
 				keyvals[pairsplit[0]] <- pairsplit[1];
 			}
 		}
-		
-
 	}
 
 	local newEntity = Utils.CreateEntityWithTable(keyvals);
 	if (newEntity == null)
 	{
-		printB(player.GetCharacterName(),"Couldn't create the entity",true,"error",true,true);
+		Printer(player,CmdMessages.Ent.Failure(),"error");
 		return;
 	}
-
-	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
-	{
-		Messages.InformPlayer(player, "Created " + cname + " entity(#" + newEntity.GetIndex() + ") with table:\n"
-									  + Utils.GetTableString(keyvals));
-	}
-	else
-	{
-		printB(player.GetCharacterName(), "Created " + cname + " entity(#" + newEntity.GetIndex() + ") with table:", true, "info", true, true);
-		Utils.PrintTable(keyvals);
-	}
-
+	
 	// Apply flags, effects and name after spawning
 	if(spawnflags!=null)
 	{
@@ -10248,6 +10350,11 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		newEntity.SetName(targetname);
 	}
+
+	keyvals["targetname"] <- newEntity.GetName();
+	
+	Printer(player,CmdMessages.Ent.Success(cname,newEntity.GetIndex(), Utils.GetTableString(keyvals)));
+
 }
 
 /*
@@ -10270,7 +10377,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local EyeAngles = player.GetEyeAngles();
 	local GroundPosition = QAngle(0,0,0);
 
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	
 	local propspawnsettings = AdminSystem.Vars._prop_spawn_settings[name];
 
@@ -10445,20 +10552,12 @@ if ( Director.GetGameMode() == "holdout" )
 		Messages.ThrowPlayer(player,CmdMessages.Prop.Failed(Entity));return;
 	}
 
-	if (AdminSystem.Vars._outputsEnabled[name])
-	{
-		Messages.InformPlayer(player,CmdMessages.Prop.Success(Entity,createdent));
-	}
-	else
-	{
-		printB(player.GetCharacterName(),CmdMessages.Prop.Success(Entity,createdent),true,"info",true,true);
-	}
-
+	Printer(player,CmdMessages.Prop.Success(Entity,createdent));
 }
 
 ::AdminSystem.DoorCmd <- function ( player, args )
 {
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local DoorModel = GetArgument(1);
 	local EyePosition = player.GetLookingLocation();
 	local EyeAngles = player.GetEyeAngles();
@@ -10480,14 +10579,7 @@ if ( Director.GetGameMode() == "holdout" )
 			ent = Utils.SpawnDoor(DoorModel, EyePosition, GroundPosition);
 	}
 
-	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
-	{
-		Messages.InformPlayer(player,CmdMessages.Prop.SuccessDoor(ent));
-	}
-	else
-	{
-		printB(player.GetCharacterName(),CmdMessages.Prop.SuccessDoor(ent),true,"info",true,true);
-	}
+	Printer(player,CmdMessages.Prop.SuccessDoor(ent));
 }
 
 ::AdminSystem.GiveCmd <- function ( player, args )
@@ -10836,33 +10928,33 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		catch(err2)
 		{
-			printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->Failed to get "+Cvar,true,"error",true,false);
-			printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->err1 "+err1,true,"error",false,false);
-			printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->err2 "+err2,true,"error",false,true);
+			printB(player.GetCharacterName(),player.GetCharacterNameLower()+"->Failed to get "+Cvar,true,"error",true,false);
+			printB(player.GetCharacterName(),player.GetCharacterNameLower()+"->err1 "+err1,true,"error",false,false);
+			printB(player.GetCharacterName(),player.GetCharacterNameLower()+"->err2 "+err2,true,"error",false,true);
 			return;
 		}
 	}
-
+	// TO-DO printer
 	if(Value == null)
 	{
-		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterNameLower()])
 		{
-			ClientPrint(null,3,"\x04"+player.GetCharacterName().tolower()+"->Current value of "+Cvar+" is "+oldval);
+			ClientPrint(null,3,"\x04"+player.GetCharacterNameLower()+"->Current value of "+Cvar+" is "+oldval);
 		}
 		else
 		{
-			printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->Current value of "+Cvar+" is "+oldval,true,"info",true,true);
+			printB(player.GetCharacterName(),player.GetCharacterNameLower()+"->Current value of "+Cvar+" is "+oldval,true,"info",true,true);
 		}
 		return;
 	}
 
-	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterNameLower()])
 	{
-		ClientPrint(null,3,"\x04"+player.GetCharacterName().tolower()+"->Changed "+Cvar+" from "+oldval+" to "+Value);
+		ClientPrint(null,3,"\x04"+player.GetCharacterNameLower()+"->Changed "+Cvar+" from "+oldval+" to "+Value);
 	}
 	else
 	{
-		printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->Changed "+Cvar+" from "+oldval+" to "+Value,true,"info",true,true);
+		printB(player.GetCharacterName(),player.GetCharacterNameLower()+"->Changed "+Cvar+" from "+oldval+" to "+Value,true,"info",true,true);
 	}
 
 	if ( Cvar && Value )
@@ -10907,21 +10999,21 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	catch(err1)
 	{
-		printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->Failed to get "+Cvar+" of ent(#"+index+")",true,"error",true,false);
-		printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->err1 "+err1,true,"error",false,true);
+		printB(player.GetCharacterName(),player.GetCharacterNameLower()+"->Failed to get "+Cvar+" of ent(#"+index+")",true,"error",true,false);
+		printB(player.GetCharacterName(),player.GetCharacterNameLower()+"->err1 "+err1,true,"error",false,true);
 		return;
 	}
 	
-
+	// TO-DO printer
 	if(Value == null)
 	{
-		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterNameLower()])
 		{
-			ClientPrint(null,3,"\x04"+player.GetCharacterName().tolower()+"->Current value of "+Cvar+" on ent(#"+index+") is "+oldval);
+			ClientPrint(null,3,"\x04"+player.GetCharacterNameLower()+"->Current value of "+Cvar+" on ent(#"+index+") is "+oldval);
 		}
 		else
 		{
-			printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->Current value  of "+Cvar+" on ent(#"+index+") is "+oldval,true,"info",true,true);
+			printB(player.GetCharacterName(),player.GetCharacterNameLower()+"->Current value  of "+Cvar+" on ent(#"+index+") is "+oldval,true,"info",true,true);
 		}
 		return;
 	}
@@ -10931,13 +11023,13 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		AdminSystem._Clientbroadcast(playername,Cvar+" "+Value,1,false);
 
-		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
+		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterNameLower()])
 		{
-			ClientPrint(null,3,"\x04"+player.GetCharacterName().tolower()+"->Attempting to change "+Cvar+" of ent(#"+index+") from "+oldval+" to "+Value);
+			ClientPrint(null,3,"\x04"+player.GetCharacterNameLower()+"->Attempting to change "+Cvar+" of ent(#"+index+") from "+oldval+" to "+Value);
 		}
 		else
 		{
-			printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->Attempting to change "+Cvar+" of ent(#"+index+") from "+oldval+" to "+Value,true,"info",true,true);
+			printB(player.GetCharacterName(),player.GetCharacterNameLower()+"->Attempting to change "+Cvar+" of ent(#"+index+") from "+oldval+" to "+Value,true,"info",true,true);
 		}
 	}
 	catch(err1)
@@ -10980,14 +11072,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	local name = player.GetCharacterName();
 
-	if (AdminSystem.Vars._outputsEnabled[name.tolower()])
-	{
-		Messages.InformPlayer(player,CmdMessages.Force.TeleportSuccess(id,player.GetLookingLocation()));
-	}
-	else
-	{
-		printB(name,name.tolower()+"-> ent_teleport "+id+" "+player.GetLookingLocation(),true,"info",true,true);
-	}
+	Printer(player,CmdMessages.Force.TeleportSuccess(id,player.GetLookingLocation()));
 }
 
 ::AdminSystem.EntFireCmd <- function ( player, args )
@@ -11023,12 +11108,12 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			if (Entity.GetClassname() == "player" && Action == "kill" && Entity.GetSteamID() !="BOT" && AdminSystem.Vars.IgnoreDeletingPlayers)
 			{
-				printl(player.GetCharacterName().tolower()+"->Ignore attempt to kick player:"+Entity.GetName());
+				printl(player.GetCharacterNameLower()+"->Ignore attempt to kick player:"+Entity.GetName());
 				return;
 			}
 			else if (Entity.GetClassname() == "player" && Action == "becomeragdoll")
 			{
-				printl(player.GetCharacterName().tolower()+"->Ignore attempt to make player ragdoll:"+Entity.GetName());
+				printl(player.GetCharacterNameLower()+"->Ignore attempt to make player ragdoll:"+Entity.GetName());
 				return;
 			}
 			else
@@ -11039,7 +11124,7 @@ if ( Director.GetGameMode() == "holdout" )
 					{
 						if(tbl.entid == Entity.GetIndex().tostring())
 						{
-							printl(player.GetCharacterName().tolower()+"->Ignore attempt to kill entity #"+Entity.GetIndex().tostring()+" held by a player");
+							printl(player.GetCharacterNameLower()+"->Ignore attempt to kill entity #"+Entity.GetIndex().tostring()+" held by a player");
 							return;
 						}
 					}
@@ -11048,7 +11133,7 @@ if ( Director.GetGameMode() == "holdout" )
 					{
 						if(tbl.entid.tostring() == Entity.GetIndex().tostring())
 						{
-							printl(player.GetCharacterName().tolower()+"->Ignore attempt to kill hat entity #"+Entity.GetIndex().tostring()+" worn by a player");
+							printl(player.GetCharacterNameLower()+"->Ignore attempt to kill hat entity #"+Entity.GetIndex().tostring()+" worn by a player");
 							return;
 						}
 					}
@@ -11078,15 +11163,10 @@ if ( Director.GetGameMode() == "holdout" )
 			g_MapScript.EntFire( Entnameid, Action, val );
 	}
 
-	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
-	{
-		Messages.InformPlayer(player,"Firing input '"+ Action + "'"+(val == "" ? " " : " with params '"+val+"' ")+"for entity "+(Entity == null ? Entnameid : ("#"+Entity.GetIndex())));
-	}
-	else
-	{
-		printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"-> ent_fire "+(Entity == null ? Entnameid : ("#"+Entity.GetIndex()))+" "+Action+" "+val,true,"info",true,true);
-	}
-
+	Printer(player,
+			Entity == null ? CmdMessages.EntFire.Failure()
+						   : CmdMessages.EntFire.Success(Action,val,Entity.GetIndex())
+			);
 }
 
 /*
@@ -11114,10 +11194,17 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if(uselocal != null)
 	{
-		if(AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid == "")
+		if(AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid == "")
 			return;
 
-		entlooked = Entity("#"+AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid);
+		entlooked = Entity("#"+AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid);
+		if(entlooked == null || !entlooked.IsEntityValid())
+		{
+			if(AdminSystem.Vars._wornHat[player.GetCharacterNameLower()].entid != "")
+				entlooked = Entity("#"+AdminSystem.Vars._wornHat[player.GetCharacterNameLower()].entid);
+			else
+				return;
+		}
 		//entlooked.Input("sleep","",0)
 		newAngle = entlooked.GetLocalAngles();
 		if( axis == "x" )
@@ -11135,6 +11222,8 @@ if ( Director.GetGameMode() == "holdout" )
 			newAngle.y += val;
 			entlooked.SetLocalAngles(newAngle);
 		}
+
+		Printer(player,CmdMessages.Force.RotateSuccess(entlooked.GetIndex(),newAngle));
 	}
 	else if(entlooked)
 	{	
@@ -11180,7 +11269,8 @@ if ( Director.GetGameMode() == "holdout" )
 				entlooked.SetLocalAngles(newAngle);
 			}
 		}
-	
+		
+		Printer(player,CmdMessages.Force.RotateSuccess(entlooked.GetIndex(),newAngle));
 	}
 }
 
@@ -11228,7 +11318,7 @@ if ( Director.GetGameMode() == "holdout" )
 	{	
 		if(entlooked.GetParent() != null)
 		{
-			printl(player.GetCharacterName().tolower()+"->Ignore attempt to push parented entity #"+entlooked.GetIndex().tostring()+", parent #"+entlooked.GetParent().GetIndex());
+			printl(player.GetCharacterNameLower()+"->Ignore attempt to push parented entity #"+entlooked.GetIndex().tostring()+", parent #"+entlooked.GetParent().GetIndex());
 			return;
 		}
 
@@ -11276,15 +11366,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 		entlooked.Push(fwvec);
 		
-		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
-		{
-			Messages.InformPlayer(player,CmdMessages.Force.PushSuccess(entlooked.GetIndex(),scalefactor,direction,pitchofeye));
-		}
-		else
-		{
-			printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->Push("+scalefactor+","+direction+","+pitchofeye+"), Entity index: "+entlooked.GetIndex(),true,"info",true,true);
-		}
-		
+		Printer(player,CmdMessages.Force.PushSuccess(entlooked.GetIndex(),scalefactor,direction,pitchofeye));
 	}
 }
 
@@ -11328,11 +11410,17 @@ if ( Director.GetGameMode() == "holdout" )
 	
 	if(uselocal != null)
 	{
-		if(AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid == "")
+		if(AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid == "")
 			return;
 
-		entlooked = Entity("#"+AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid);
-		
+		entlooked = Entity("#"+AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid);
+		if(entlooked == null || !entlooked.IsEntityValid())
+		{
+			if(AdminSystem.Vars._wornHat[player.GetCharacterNameLower()].entid != "")
+				entlooked = Entity("#"+AdminSystem.Vars._wornHat[player.GetCharacterNameLower()].entid);
+			else
+				return;
+		}
 		local fwvec =  entlooked.GetLocalOrigin();
 		local entpos = entlooked.GetLocalOrigin();
 		if(direction == "backward")
@@ -11368,6 +11456,7 @@ if ( Director.GetGameMode() == "holdout" )
 		
 		fwvec = fwvec.Scale(units/fwvec.Length());
 		entlooked.SetLocalOrigin(Vector(entpos.x+fwvec.x,entpos.y+fwvec.y,entpos.z+fwvec.z));
+		Printer(player,CmdMessages.Force.MoveSuccess(entlooked.GetIndex(),units,direction,pitchofeye));
 	}
 	else if(entlooked)
 	{	
@@ -11455,15 +11544,9 @@ if ( Director.GetGameMode() == "holdout" )
 			
 			entlooked.SetOrigin(Vector(entpos.x+fwvec.x,entpos.y+fwvec.y,entpos.z+fwvec.z));
 		}
+
+		Printer(player,CmdMessages.Force.MoveSuccess(entlooked.GetIndex(),units,direction,pitchofeye));
 		
-		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
-		{
-			Messages.InformPlayer(player,CmdMessages.Force.MoveSuccess(entlooked.GetIndex(),units,direction,pitchofeye));
-		}
-		else
-		{
-			printB(player.GetCharacterName(),player.GetCharacterName().tolower()+" ->Move("+units+","+direction+","+pitchofeye+"), Entity index: "+entlooked.GetIndex(),true,"info",true,true);
-		}
 	}
 }
 
@@ -11497,7 +11580,7 @@ if ( Director.GetGameMode() == "holdout" )
 	{	
 		if(entlooked.GetParent() != null)
 		{
-			printl(player.GetCharacterName().tolower()+"->Ignore attempt to spin parented entity #"+entlooked.GetIndex().tostring()+", parent #"+entlooked.GetParent().GetIndex());
+			printl(player.GetCharacterNameLower()+"->Ignore attempt to spin parented entity #"+entlooked.GetIndex().tostring()+", parent #"+entlooked.GetParent().GetIndex());
 			return;
 		}
 
@@ -11539,15 +11622,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 		entlooked.Spin(fwvec);
 
-		if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
-		{
-			Messages.InformPlayer(player,CmdMessages.Force.SpinSuccess(entlooked.GetIndex(),scalefactor,direction));
-		}
-		else
-		{
-			printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->Spin("+scalefactor+","+direction+"), Entity index: "+entlooked.GetIndex(),true,"info",true,true);
-		}
-
+		Printer(player,CmdMessages.Force.SpinSuccess(entlooked.GetIndex(),scalefactor,direction));
 	}
 }
 
@@ -11589,14 +11664,7 @@ if ( Director.GetGameMode() == "holdout" )
 		Utils.SlowTime(DesiredTimeScale, 2.0, 1.0, 2.0, false);
 	}
 
-	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
-	{
-		Messages.InformPlayer(player,CmdMessages.TimeScale.Success(GetArgument(1)));
-	}
-	else
-	{
-		printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->Changed timescale to "+GetArgument(1),true,"info",true,true);
-	}
+	Messages.InformAll(CmdMessages.TimeScale.Success(GetArgument(1)));
 }
 
 ::AdminSystem.SoundCmd <- function ( player, args )
@@ -13589,14 +13657,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	color_seq();	// Loop starter
 
-	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterName().tolower()])
-	{
-		Messages.InformPlayer(player,CmdMessages.RainbowSuccess(duration,intervals,entlooked.GetIndex()));
-	}
-	else
-	{
-		printB(player.GetCharacterName(),player.GetCharacterName().tolower()+"->Rainbow("+duration+","+intervals+"), Entity index: "+entlooked.GetIndex(),true,"info",true,true);
-	}
+	Printer(player,CmdMessages.RainbowSuccess(duration,intervals,entlooked.GetIndex()));
 }
 
 /*
@@ -13607,12 +13668,11 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local newstate = !AdminSystem.Vars._outputsEnabled[name];
 	AdminSystem.Vars._outputsEnabled[name] = newstate;
 
 	Messages.InformPlayer(player,CmdMessages.OutputState(newstate));
-	
 }
 
 /*
@@ -13623,12 +13683,11 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local newstate = !AdminSystem.Vars._saveLastLine[name];
 	AdminSystem.Vars._saveLastLine[name] = newstate;
 
-	Messages.InformPlayer(player,CmdMessages.LineSaving.State(newstate));
-	
+	Printer(player,CmdMessages.LineSaving.State(newstate));
 }
 
 /*
@@ -13639,7 +13698,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local targetname = GetArgument(1);
 	local linesource = GetArgument(2);
 	if ( linesource == null)
@@ -13650,14 +13709,7 @@ if ( Director.GetGameMode() == "holdout" )
 	AdminSystem.Vars._savedLine[name].target = targetname;
 	AdminSystem.Vars._savedLine[name].source = linesource;
 
-	if (AdminSystem.Vars._outputsEnabled[name])
-	{
-		Messages.InformPlayer(player,CmdMessages.LineSaving.Success(targetname,linesource));
-	}
-	else
-	{
-		printB(player.GetCharacterName(),"Saved for "+name+" -> speak "+targetname+" "+linesource,true,"info",true,true);
-	}
+	Printer(player,CmdMessages.LineSaving.Success(targetname,linesource));
 }
 
 /*
@@ -13668,20 +13720,13 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local lineinfo = AdminSystem.Vars._savedLine[name];
 	if (lineinfo.target != "")
 	{
 		Utils.GetPlayerFromName(lineinfo.target).Speak(lineinfo.source);
 
-		if (AdminSystem.Vars._outputsEnabled[name])
-		{
-			Messages.InformPlayer(player,CmdMessages.LineSaving.MakeSpeak(lineinfo.target,lineinfo.source));
-		}
-		else
-		{
-			printB(player.GetCharacterName(),name+" -> speak "+lineinfo.target+" "+lineinfo.source,true,"info",true,true);
-		}
+		Printer(player,CmdMessages.LineSaving.MakeSpeak(lineinfo.target,lineinfo.source));
 	}
 	else
 	{
@@ -13698,13 +13743,13 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	if (AdminSystem.Vars._saveLastLine[name])
 	{	
 		local lineinfo = AdminSystem.Vars._savedLine[name];
 		if (lineinfo.target != "")
 		{
-			Messages.InformPlayer(player,CmdMessages.LineSaving.Information(lineinfo));
+			Printer(player,CmdMessages.LineSaving.Information(lineinfo));
 		}
 		else
 		{
@@ -13914,7 +13959,7 @@ if ( Director.GetGameMode() == "holdout" )
 		local ent = player.GetLookingEntity();
 		if (ent == null)
 		{
-			printB(playername,Messages.BIM.NoTraceHits(),true,"error",true,true);
+			Printer(player,Messages.BIM.NoTraceHits(),"error");
 			return;
 		}
 		
@@ -14001,7 +14046,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if(arg2 == null){arg2="";}
 	if(arg1 == null){arg1="";}
 	local command = cmd+" "+arg1+" "+arg2+" "+arg3+" "+arg4;
-	printl(player.GetCharacterName().tolower()+"->Executing command->"+command);	
+	printl(player.GetCharacterNameLower()+"->Executing command->"+command);	
 	SendToServerConsole(command);
 }
 
@@ -14013,7 +14058,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local targetname = GetArgument(1);
 	local linesource = GetArgument(2);
 	local randomline_path = "";
@@ -14039,7 +14084,7 @@ if ( Director.GetGameMode() == "holdout" )
 	// Speaker selection
 	if(targetname == "random")
 	{	
-		targetname = Utils.GetRandValueFromArray(Players.AliveSurvivors()).GetCharacterName().tolower();
+		targetname = Utils.GetRandValueFromArray(Players.AliveSurvivors()).GetCharacterNameLower();
 		speaker = Utils.GetPlayerFromName(targetname);
 	}
 	else if(targetname == "self")
@@ -14054,12 +14099,12 @@ if ( Director.GetGameMode() == "holdout" )
 		if(targetname == null){return;}
 		if(targetname.GetClassname() != "player"){return;}
 	
-		targetname = targetname.GetCharacterName().tolower();
+		targetname = targetname.GetCharacterNameLower();
 		speaker = Utils.GetPlayerFromName(targetname);
 	}
 	else if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,targetname) == -1)
 	{
-		printl(Messages.BIM.NotACharacter(GetArgument(1)));return;
+		Printer(player,Messages.BIM.NotACharacter(GetArgument(1)),"error");
 	}
 	else
 	{
@@ -14068,7 +14113,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if(speaker==null)
 	{
-		speaker = Utils.GetPlayerFromName(Utils.GetRandValueFromArray(Players.AliveSurvivors()).GetCharacterName().tolower());
+		speaker = Utils.GetPlayerFromName(Utils.GetRandValueFromArray(Players.AliveSurvivors()).GetCharacterNameLower());
 	}
 
 	randomline_path = (linesource == null) ? Utils.GetRandValueFromArray(::Survivorlines.Paths[targetname]) : Utils.GetRandValueFromArray(::Survivorlines.Paths[linesource.tolower()]);
@@ -14100,13 +14145,21 @@ if ( Director.GetGameMode() == "holdout" )
 	{	
 		if (AdminSystem.Vars._saveLastLine[name])
 		{
-			AdminSystem.Vars._savedLine[name].target = targetname;
-			AdminSystem.Vars._savedLine[name].source = randomline_path;
-			printB(player.GetCharacterName(),"Saved for "+name+" -> speak "+targetname+" "+randomline_path,true,"info",true,true);
+			if(AdminSystem.Vars._savedLine[name].target != targetname
+			   || AdminSystem.Vars._savedLine[name].source != randomline_path)
+			{
+				AdminSystem.Vars._savedLine[name].target = targetname;
+				AdminSystem.Vars._savedLine[name].source = randomline_path;
+				printB(player.GetCharacterName(),CmdMessages.RandomLine.SaveAndSpeak(randomline_path,targetname),true,"info",true,true);
+			}
+			else
+			{
+				printB(player.GetCharacterName(),CmdMessages.LineSaving.MakeSpeak(targetname,randomline_path),true,"info",true,true);
+			}
 		}
 		else
 		{
-			printB(player.GetCharacterName(),name+" -> speak "+targetname+" "+randomline_path,true,"info",true,true);
+			printB(player.GetCharacterName(),CmdMessages.LineSaving.MakeSpeak(targetname,randomline_path),true,"info",true,true);
 		}
 		
 	}
@@ -14128,7 +14181,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!ent.IsEntityValid())
 		return;
 	
-	local name = player.GetCharacterName().tolower();	
+	local name = player.GetCharacterNameLower();	
 	local red = GetArgument(1);
 	local green = GetArgument(2);
 	local blue = GetArgument(3);
@@ -14140,11 +14193,8 @@ if ( Director.GetGameMode() == "holdout" )
 		alpha = 255.0;
 
 	ent.SetColor(red,green,blue,alpha);
-	if (AdminSystem.Vars._outputsEnabled[name])
-	{Messages.InformPlayer(player,CmdMessages.Color(red,green,blue,alpha,ent.GetIndex()));}
-	else
-	{printB(player.GetCharacterName(),name+"-> Changed color:("+red+" "+green+" "+blue+" "+alpha+") of #"+ent.GetIndex(),true,"info",true,true);}
 
+	Printer(player,CmdMessages.Color(red,green,blue,alpha,ent.GetIndex()));
 }
 
 /*
@@ -14162,7 +14212,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!ent.IsEntityValid())
 		return;
 	
-	local name = player.GetCharacterName().tolower();	
+	local name = player.GetCharacterNameLower();	
 	local key = GetArgument(1);
 	local val = GetArgument(2);
 	
@@ -14173,11 +14223,7 @@ if ( Director.GetGameMode() == "holdout" )
 	else
 		ent.SetKeyValue(key,val);
 		
-	if (AdminSystem.Vars._outputsEnabled[name])
-	{Messages.InformPlayer(player,"Changed key:"+key+" value to "+val+" of #"+ent.GetIndex());}
-	else
-	{printB(player.GetCharacterName(),name+" ->Changed key->"+key+" value to->"+val+" of "+ent.GetName(),true,"info",true,true);}
-
+	Printer(player,CmdMessages.KeyVal.Success(key,val,ent.GetIndex()));
 }
 
 /*
@@ -14191,7 +14237,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local typename = GetArgument(1);
 	local setting = GetArgument(2);
 	local val = GetArgument(3);
@@ -14229,7 +14275,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local typename = GetArgument(1);
 	if (typename != null)
 	{	
@@ -14250,7 +14296,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local infostr = "";
 	local typename = GetArgument(1);
 
@@ -14278,7 +14324,7 @@ if ( Director.GetGameMode() == "holdout" )
 			infostr += " 	 " + setting + ": " + val + "\n";
 		}
 	}
-	Messages.InformPlayer(player,infostr);
+	Printer(player,infostr);
 }
 
 /*
@@ -14289,7 +14335,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local source = GetArgument(1);
 	local duration = GetArgument(2);
 	if ( duration == null)
@@ -14299,15 +14345,8 @@ if ( Director.GetGameMode() == "holdout" )
 	
 	AdminSystem.Vars._savedParticle[name].source = source;
 	AdminSystem.Vars._savedParticle[name].duration = duration;
-
-	if (AdminSystem.Vars._outputsEnabled[name])
-	{
-		Messages.InformPlayer(player,"Saved particle "+source+" with duration "+duration+" seconds");
-	}
-	else
-	{
-		printB(player.GetCharacterName(),"Saved for "+name+" -> attach_particle "+source+" "+duration,true,"info",true,true);
-	}
+	
+	Printer(player,CmdMessages.Particles.SaveSuccess(source,duration));
 }
 
 /*
@@ -14325,7 +14364,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!ent.IsEntityValid())
 		return;
 
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local particle = GetArgument(1);
 	local duration = GetArgument(2);
 	if (duration == null)
@@ -14352,12 +14391,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if(duration == -1.0)
 		duration = "infinite"
 
-	if (AdminSystem.Vars._outputsEnabled[name])
-	{Messages.InformPlayer(player,"Attached "+particle+"(#"+createdent.GetIndex()+") for "+duration+" seconds to #"+ent.GetIndex());}
-	else
-	{printB(player.GetCharacterName(),name+" ->Attached particle(#"+createdent.GetIndex()+")("+duration+" sec)->"+particle+" to->"+ent.GetName(),true,"info",true,true);}
-
-	
+	Printer(player,CmdMessages.Particles.AttachSuccess(particle,createdent.GetIndex(),ent.GetIndex(),duration));
 }
 
 /*
@@ -14368,11 +14402,11 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local newstate = !AdminSystem.Vars._attachTargetedLocation[name];
 	AdminSystem.Vars._attachTargetedLocation[name] = newstate;
 
-	Messages.InformPlayer(player,"Particles will be attached to "+( newstate ? " aimed point.":" aimed object's origin."));
+	Printer(player,CmdMessages.Particles.AttachmentPoint(newstate));
 }
 
 /*
@@ -14383,11 +14417,11 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local newstate = !AdminSystem.Vars._saveLastParticle[name];
 	AdminSystem.Vars._saveLastParticle[name] = newstate;
 
-	Messages.InformPlayer(player,"Random particle saving is now "+( newstate ? "enabled":"disabled"));
+	Printer(player,CmdMessages.Particles.SaveState(newstate));
 }
 
 /*
@@ -14398,7 +14432,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local duration = GetArgument(1);
 	if (duration == null)
 	{
@@ -14408,8 +14442,10 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		duration = duration.tofloat();
 	}
+
+	Printer(player,CmdMessages.Particles.AttachmentDuration(AdminSystem.Vars._preferred_duration[name],duration));
+
 	AdminSystem.Vars._preferred_duration[name] = duration;
-	//printl(name +" Updated attachment duration:"+duration);
 }
 
 /*
@@ -14420,17 +14456,17 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	if (AdminSystem.Vars._saveLastLine[name])
 	{	
 		local particleinfo = AdminSystem.Vars._savedParticle[name];
 		if (particleinfo.source != "")
 		{
-			Messages.InformPlayer(player,"Particle name:"+particleinfo.source);
+			Printer(player,CmdMessages.Particles.Information(particleinfo));
 		}
 		else
 		{
-			Messages.ThrowPlayer(player,"No saved particle was found");
+			Messages.ThrowPlayer(player,CmdMessages.Particles.NoneSaved());
 		}
 	}
 	
@@ -14444,21 +14480,14 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local particleinfo = AdminSystem.Vars._savedParticle[name];
 	if (particleinfo.source != "")
 	{
 		local EyePosition = player.GetLookingLocation();
 		g_ModeScript.CreateParticleSystemAt( null, EyePosition, particleinfo.source, true );
 
-		if (AdminSystem.Vars._outputsEnabled[name])
-		{
-			Messages.InformPlayer(player,"Spawned particle "+particleinfo.source);
-		}
-		else
-		{
-			printB(player.GetCharacterName(),name+" -> particle "+particleinfo.source,true,"info",true,true);
-		}
+		Printer(player,CmdMessages.Particles.SpawnSavedSuccess(particleinfo.source,EyePosition));
 	}
 	else
 	{
@@ -14481,7 +14510,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!ent.IsEntityValid())
 		return;
 		
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local particleinfo = AdminSystem.Vars._savedParticle[name];
 	if (particleinfo.source != "")
 	{	
@@ -14489,20 +14518,16 @@ if ( Director.GetGameMode() == "holdout" )
 		if(AdminSystem.Vars._attachTargetedLocation[name])
 			attachpos = player.GetLookingLocation();
 
-		ent.AttachParticle(particleinfo.source, particleinfo.duration, attachpos)
+		local ptc = ent.AttachParticle(particleinfo.source, particleinfo.duration, attachpos)
 
-		if (AdminSystem.Vars._outputsEnabled[name])
+		if(ptc != null)
 		{
-			Messages.InformPlayer(player,"Attached particle "+particleinfo.source+" to #"+ent.GetIndex()+" for "+particleinfo.duration+" seconds");
-		}
-		else
-		{
-			printB(player.GetCharacterName(),name+" -> attach_particle "+particleinfo.source+" "+particleinfo.duration,true,"info",true,true);
+			Printer(player,CmdMessages.Particles.AttachSavedSuccess(particleinfo.source,ptc.GetIndex(),ent.GetIndex(),particleinfo.duration));
 		}
 	}
 	else
 	{
-		Messages.ThrowPlayer(player,"No saved particle was found");
+		Messages.ThrowPlayer(player,CmdMessages.Particles.NoneSaved());
 	}
 }
 
@@ -14511,17 +14536,17 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	local entid = AdminSystem.Vars._wornHat[player.GetCharacterName().tolower()].entid;
+	local entid = AdminSystem.Vars._wornHat[player.GetCharacterNameLower()].entid;
 	if(entid == "")
 		return;
 
 	local ent = Entity(entid);
-	local colgroup = AdminSystem.Vars._wornHat[player.GetCharacterName().tolower()].collisiongroup;
+	local colgroup = AdminSystem.Vars._wornHat[player.GetCharacterNameLower()].collisiongroup;
 
 	if(!ent.IsEntityValid())
 		return;
 	
-	AdminSystem.Vars._wornHat[player.GetCharacterName().tolower()].entid = "";
+	AdminSystem.Vars._wornHat[player.GetCharacterNameLower()].entid = "";
 	ent.SetNetProp("m_CollisionGroup",colgroup);
 
 	ent.Input("ClearParent","",0);
@@ -14569,7 +14594,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 		if(new_ent == null)
 		{
-			printB(player.GetCharacterName(),"Failed to create new entity after taking off hat entity",true,"error",true,true)
+			//printB(player.GetCharacterName(),"Failed to create new entity after taking off hat entity",true,"error",true,true)
 			
 			keyvals["classname"] = "prop_physics_multiplayer"
 			keyvals["model"] = "models/items/l4d_gift.mdl"
@@ -14579,7 +14604,7 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			new_ent.SetNetProp("m_nSkin",skin);
 			new_ent.SetModelScale(scale);
-			printB(player.GetCharacterName(),"Took off hat entity, created new entity #"+new_ent.GetIndex(),true,"info",true,true)
+			//printB(player.GetCharacterName(),"Took off hat entity, created new entity #"+new_ent.GetIndex(),true,"info",true,true)
 		}
 		
 		return;
@@ -14588,11 +14613,11 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if(entclass.find("weapon_") != null) // a weapon spawner entity
 	{
-		printB(player.GetCharacterName(),"Took off the hat entity (spawner) #"+entid,true,"info",true,true)
+		//printB(player.GetCharacterName(),"Took off the hat entity (spawner) #"+entid,true,"info",true,true)
 	}
 	else
 	{
-		printB(player.GetCharacterName(),"Took off the hat entity #"+entid,true,"info",true,true)
+		//printB(player.GetCharacterName(),"Took off the hat entity #"+entid,true,"info",true,true)
 	}
 	ent.Input("RunScriptCode","originWrap(Entity("+ent.GetIndex()+"),Player("+player.GetIndex()+"))",0.1);
 }
@@ -14649,7 +14674,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	local ind = ent.GetIndex();
 
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	if(AdminSystem.Vars._wornHat[name].entid != "")
 	{
 		AdminSystem._TakeOffHatCmd(player,args);
@@ -14696,7 +14721,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if(pos == null)
 		return;
 
-	AdminSystem.Vars._wornHat[player.GetCharacterName().tolower()].wearAttachPos = pos;
+	AdminSystem.Vars._wornHat[player.GetCharacterNameLower()].wearAttachPos = pos;
 }
 
 ::AdminSystem.UpdateAimedEntityDirection <- function(player,args)
@@ -14760,7 +14785,7 @@ if ( Director.GetGameMode() == "holdout" )
 ::AdminSystem._AngleUpdater <- function(args)
 {
 	local player = args.player;
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	local tbl = AdminSystem._GrabControl[name]
 	local mask = tbl.keymask;
 
@@ -14829,7 +14854,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local key = spl[1].tointeger();
 
 	local ent = VSLib.Player(ind.tointeger());
-	local name = ent.GetCharacterName().tolower();
+	local name = ent.GetCharacterNameLower();
 	local currmask = AdminSystem._GrabControl[name].keymask;
 
 	if((ent.IsPressingReload() || ent.IsPressingWalk()) && (ent.IsPressingReload() != ent.IsPressingWalk()))
@@ -14871,27 +14896,27 @@ if ( Director.GetGameMode() == "holdout" )
 				player.AttachOther(ent,false,0,null);
 				//player.SetAttachmentPoint(ent,tbl_heldEnt.grabAttachPos,true,0.1);
 
-				printB(player.GetCharacterName(),"Grabbed #"+entind,true,"info",true,true)
+				//printB(player.GetCharacterName(),"Grabbed #"+entind,true,"info",true,true)
 
-				AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = entind;
+				AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = entind;
 				return;
 			}
 		}
 	}
-	local tbl_heldEnt = AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()];
+	local tbl_heldEnt = AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()];
 	local baseent = null;
 	if(tbl_heldEnt.entid != "")	// Already holding something, validate it
 	{
 		baseent = Ent("#"+tbl_heldEnt.entid);
 		if(baseent == null)						// it doesnt exist, remove it
 		{
-			AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+			AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = "";
 			return;
 		}
 
 		if(!VSLib.Entity(baseent).IsEntityValid())		// invalid entity, remove it
 		{
-			AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+			AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = "";
 			return;
 		}
 
@@ -14951,7 +14976,7 @@ if ( Director.GetGameMode() == "holdout" )
 					local notvalid = false;
 					foreach(survivor in Players.AliveSurvivors())
 					{
-						if(AdminSystem.Vars._heldEntity[survivor.GetCharacterName().tolower()].entid == entind || AdminSystem.Vars._heldEntity[survivor.GetCharacterName().tolower()].entid == player.GetIndex().tostring())
+						if(AdminSystem.Vars._heldEntity[survivor.GetCharacterNameLower()].entid == entind || AdminSystem.Vars._heldEntity[survivor.GetCharacterNameLower()].entid == player.GetIndex().tostring())
 						{
 							notvalid = true;
 							break;
@@ -14993,7 +15018,7 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else if(ent.GetIndex() == player.GetIndex())
 	{
-		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+		AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = "";
 		return;
 	}
 	else if(ent.GetParent() != null) // Parented objects can't be parented by others
@@ -15007,7 +15032,7 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			foreach(survivor in Players.AliveSurvivors())
 			{
-				if(AdminSystem.Vars._heldEntity[survivor.GetCharacterName().tolower()].entid == ent.GetIndex() || AdminSystem.Vars._heldEntity[survivor.GetCharacterName().tolower()].entid == player.GetIndex())
+				if(AdminSystem.Vars._heldEntity[survivor.GetCharacterNameLower()].entid == ent.GetIndex() || AdminSystem.Vars._heldEntity[survivor.GetCharacterNameLower()].entid == player.GetIndex())
 				{
 					return;
 				}
@@ -15067,12 +15092,15 @@ if ( Director.GetGameMode() == "holdout" )
 		player.AttachOther(ent,false,0,null);
 		player.SetAttachmentPoint(ent,tbl_heldEnt.grabAttachPos,true,0.1);
 		
+		/*
 		if(closestgrabbed)
 			printB(player.GetCharacterName(),"Grabbing closest prop at targeted location #"+entind+" "+entclass+" "+entmodel,true,"info",true,true);
 		else
 			printB(player.GetCharacterName(),"Grabbed #"+entind,true,"info",true,true)
+		*/
 
-		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = entind;
+		AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = entind;
+
 		/*
 		local keyvals = 
 		{
@@ -15082,9 +15110,9 @@ if ( Director.GetGameMode() == "holdout" )
 			spawnflags = 0
 		}
 
-		local name = player.GetCharacterName().tolower();
+		local name = player.GetCharacterNameLower();
 		local listener = Utils.CreateEntityWithTable(keyvals);
-		listener.SetName("grab_listener_"+player.GetCharacterName().tolower()+UniqueString())
+		listener.SetName("grab_listener_"+player.GetCharacterNameLower()+UniqueString())
 		listener.SetFlags(0)
 
 		local forIndex = player.GetIndex();
@@ -15119,7 +15147,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	/*
 	if (name+"_item_rotate1" in ::VSLib.Timers.TimersID)
 	{
@@ -15133,13 +15161,13 @@ if ( Director.GetGameMode() == "holdout" )
 		AdminSystem._GrabControl[name].listenerid = -1
 	}
 	*/
-	if(AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid == "")
+	if(AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid == "")
 		return;
 
-	local baseent = Ent("#"+AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid);
+	local baseent = Ent("#"+AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid);
 	if(baseent == null)
 	{
-		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+		AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = "";
 		return;
 	}
 
@@ -15149,13 +15177,13 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if(!ent.IsEntityValid())
 	{
-		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+		AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = "";
 		return;
 	}
 	
 	if(ent.GetParent() == null)
 	{
-		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+		AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = "";
 		return;
 	}
 	else
@@ -15209,7 +15237,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 			if(new_ent == null)
 			{
-				printB(player.GetCharacterName(),"Failed to create new entity after letting go the held item",true,"error",true,true)
+				//printB(player.GetCharacterName(),"Failed to create new entity after letting go the held item",true,"error",true,true)
 				
 				keyvals["classname"] = "prop_physics_multiplayer"
 				keyvals["model"] = "models/items/l4d_gift.mdl"
@@ -15219,23 +15247,23 @@ if ( Director.GetGameMode() == "holdout" )
 			{
 				new_ent.SetNetProp("m_nSkin",skin);
 				new_ent.SetModelScale(scale);
-				printB(player.GetCharacterName(),"Let go the held entity created new entity #"+new_ent.GetIndex(),true,"info",true,true)
+				//printB(player.GetCharacterName(),"Let go the held entity created new entity #"+new_ent.GetIndex(),true,"info",true,true)
 			}
 
-			AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+			AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = "";
 			return;
 		}
 
-		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+		AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = "";
 	}
 
 	if(entclass.find("weapon_") != null) // a weapon spawner entity
 	{
-		printB(player.GetCharacterName(),"Let go the held entity spawner #"+ent.GetIndex(),true,"info",true,true)
+		//printB(player.GetCharacterName(),"Let go the held entity spawner #"+ent.GetIndex(),true,"info",true,true)
 		return;
 	}
 
-	printB(player.GetCharacterName(),"Let go the held entity #"+ent.GetIndex(),true,"info",true,true)
+	//printB(player.GetCharacterName(),"Let go the held entity #"+ent.GetIndex(),true,"info",true,true)
 
 }
 
@@ -15248,7 +15276,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	local name = player.GetCharacterName().tolower();
+	local name = player.GetCharacterNameLower();
 	/*
 	if (name+"_item_rotate1" in ::VSLib.Timers.TimersID)
 	{
@@ -15262,13 +15290,13 @@ if ( Director.GetGameMode() == "holdout" )
 		AdminSystem._GrabControl[name].listenerid = -1
 	}
 	*/
-	if(AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid == "")
+	if(AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid == "")
 		return;
 	
-	local baseent = Ent("#"+AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid);
+	local baseent = Ent("#"+AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid);
 	if(baseent == null)
 	{
-		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+		AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = "";
 		return;
 	}
 	
@@ -15276,13 +15304,13 @@ if ( Director.GetGameMode() == "holdout" )
 	local entclass = null;
 	if(!ent.IsEntityValid())
 	{
-		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+		AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = "";
 		return;
 	}
 
 	if(ent.GetParent() == null)
 	{
-		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+		AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = "";
 		return;
 	}
 	else
@@ -15336,7 +15364,7 @@ if ( Director.GetGameMode() == "holdout" )
 			
 			if(new_ent == null)
 			{
-				printB(player.GetCharacterName(),"Failed to create new entity after letting go the held item",true,"error",true,true)
+				//printB(player.GetCharacterName(),"Failed to create new entity after letting go the held item",true,"error",true,true)
 				
 				keyvals["classname"] = "prop_physics_multiplayer"
 				keyvals["model"] = "models/items/l4d_gift.mdl"
@@ -15347,24 +15375,24 @@ if ( Director.GetGameMode() == "holdout" )
 			{
 				new_ent.SetNetProp("m_nSkin",skin);
 				new_ent.SetModelScale(scale);
-				printB(player.GetCharacterName(),"Let go the held entity created new entity #"+new_ent.GetIndex(),true,"info",true,true)
+				//printB(player.GetCharacterName(),"Let go the held entity created new entity #"+new_ent.GetIndex(),true,"info",true,true)
 			}
 		
 			new_ent.Input("RunScriptCode","_yeetit(Entity("+new_ent.GetIndex()+"), Player("+player.GetIndex()+"))",0);
-			AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+			AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = "";
 			return;
 		}
 
-		AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()].entid = "";
+		AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = "";
 	}
 	
 	if(entclass.find("weapon_") != null) // a weapon spawner entity
 	{
-		printB(player.GetCharacterName(),"Let go the held entity spawner #"+ent.GetIndex(),true,"info",true,true)
+		//printB(player.GetCharacterName(),"Let go the held entity spawner #"+ent.GetIndex(),true,"info",true,true)
 		return;
 	}
 
-	printB(player.GetCharacterName(),"YEEEEETED the held entity #"+ent.GetIndex(),true,"info",true,true)
+	//printB(player.GetCharacterName(),"YEEEEETED the held entity #"+ent.GetIndex(),true,"info",true,true)
 
 }
 
@@ -15382,8 +15410,8 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	_dropit(ent);
 
-	local fwvec = RotateOrientation(p.GetEyeAngles(),QAngle(AdminSystem.Vars._heldEntity[p.GetCharacterName().tolower()].yeetPitch,0,0)).Forward();
-	fwvec = fwvec.Scale(AdminSystem.Vars._heldEntity[p.GetCharacterName().tolower()].yeetSpeed/fwvec.Length());
+	local fwvec = RotateOrientation(p.GetEyeAngles(),QAngle(AdminSystem.Vars._heldEntity[p.GetCharacterNameLower()].yeetPitch,0,0)).Forward();
+	fwvec = fwvec.Scale(AdminSystem.Vars._heldEntity[p.GetCharacterNameLower()].yeetSpeed/fwvec.Length());
 	ent.Push(fwvec);
 }
 
@@ -15409,12 +15437,23 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	printB(player.GetCharacterName(),"",false,"",true,false);
-	foreach(setting,val in AdminSystem.Vars._heldEntity[player.GetCharacterName().tolower()])
+	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterNameLower()])
 	{
-		printB(player.GetCharacterName(),"[YEET-Setting] "+setting+"->"+val.tostring(),false,"",false,false)
+		Messages.InformPlayer(player,"Yeeting Settings:");
+		foreach(setting,val in AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()])
+		{
+			Messages.InformPlayer(player,"\x05"+setting+"\x03"+" -> "+"\x04"+val.tostring()+"\x01"+"\n")
+		}
 	}
-	printB(player.GetCharacterName(),"",false,"",false,true,0.1);
+	else
+	{
+		printB(player.GetCharacterName(),"",false,"",true,false);
+		foreach(setting,val in AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()])
+		{
+			printB(player.GetCharacterName(),"[YEET-Setting] "+setting+" -> "+val.tostring(),false,"",false,false)
+		}
+		printB(player.GetCharacterName(),"",false,"",false,true,0.1);
+	}
 }
 
 /* @authors rhino
@@ -15429,7 +15468,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local val = AdminSystem.Vars._heldEntity[name.tolower()].grabByAimedPart;
 	AdminSystem.Vars._heldEntity[name.tolower()].grabByAimedPart = (1-val).tointeger();
 
-	Messages.InformPlayer(player,"Set grab method to "+(val==1 ? "'grab by center'":"'grab by aimed location'"));
+	Printer(player,"Set grab method to "+(val==1 ? "'grab by center'":"'grab by aimed location'"));
 }
 
 /* @authors rhino
@@ -15476,20 +15515,16 @@ if ( Director.GetGameMode() == "holdout" )
 		AdminSystem.Vars._heldEntity[name.tolower()][setting] = val;
 	}
 
-	else if(Utils.GetIDFromArray(attachment_names,val) == null)
+	else if(Utils.GetIDFromArray(attachment_names,val) == -1)
 	{
-		Messages.ThrowPlayer(player,"No attachment point named "+val+" was found.");
+		Messages.ThrowPlayer(player,CmdMessages.GrabYeet.SettingSuccess(val));
 		ClientPrint(player.GetBaseEntity(),3,"\x04"+"Available attachment point names:"+Utils.ArrayString(attachment_names));
 		return;
 	}
 	else
 		AdminSystem.Vars._heldEntity[name.tolower()].grabAttachPos = val;
 
-	if (AdminSystem.Vars._outputsEnabled[name.tolower()])
-	{Messages.InformPlayer(player,"Changed yeeting setting "+setting+": "+oldval+" to "+val.tostring());}
-	else
-	{printB(name,name+" -> Changed yeeting setting "+setting+": "+oldval+" to "+val.tostring(),true,"info",true,true);}
-	
+	Printer(player,CmdMessages.GrabYeet.SettingSuccess(setting,oldval,newval));
 }
 
 /*
@@ -15503,8 +15538,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local oldval = Convars.GetFloat("sv_cheats");
 	Convars.SetValue("sv_cheats",(1-oldval).tointeger());
 
-	printl(player.GetCharacterName() +" Updated sv_cheats:"+(1-oldval).tointeger());
-
+	//printl(player.GetCharacterName() +" Updated sv_cheats:"+(1-oldval).tointeger());
 }
 
 /*
@@ -15518,7 +15552,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local newstate = !::AdminSystem.Vars.AllowCustomResponses;
 	::AdminSystem.Vars.AllowCustomResponses = newstate;
 
-	Messages.InformAll(player.GetCharacterName()+( newstate ? " enabled":" disabled") + " custom responses");
+	Messages.InformAll(player.GetCharacterName()+( newstate ? "\x03"+" enabled"+"\x01":"\x04"+" disabled"+"\x01") + " custom responses");
 }
 
 /*
@@ -15532,7 +15566,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local newstate = !::AdminSystem.Vars.AllowCustomSharing;
 	::AdminSystem.Vars.AllowCustomSharing = newstate;
 
-	Messages.InformAll(player.GetCharacterName()+( newstate ? " enabled":" disabled")+" custom sharing");
+	Messages.InformAll(player.GetCharacterName()+( newstate ? "\x03"+" enabled"+"\x01":"\x04"+" disabled"+"\x01")+" custom sharing");
 }
 
 ::AdminSystem.GravityCmd <- function ( player, args )

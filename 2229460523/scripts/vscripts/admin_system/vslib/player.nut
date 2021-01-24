@@ -108,6 +108,11 @@ function VSLib::Player::GetCharacterName()
 	return g_MapScript.GetCharacterDisplayName(_ent);
 }
 
+function VSLib::Player::GetCharacterNameLower()
+{
+	return GetCharacterName().tolower();
+}
+
 /**
  * Gets the base character name. E.g. Bill will return "Nick" or Zoey will return "Rochelle"
  */
