@@ -1153,7 +1153,7 @@
     Console Syntax | scripted_user_func *wear_hat,extra_height* 
     ------------- | -------------
     
-    Menu Sequence | _6 9 9 1 1_
+    Menu Sequence | _Top secret_
     ------------- | -------------
 
 ```cpp
@@ -1173,7 +1173,7 @@
     Console Syntax | scripted_user_func *take_off_hat* 
     ------------- | -------------
     
-    Menu Sequence | _6 9 9 1 2_
+    Menu Sequence | _Top secret_
     ------------- | -------------
 
 ---
@@ -1185,7 +1185,7 @@
     Console Syntax | scripted_user_func *hat_position,attachment_point*
     ------------- | -------------
     
-    Menu Sequence | _6 9 9 1 3_ , _6 9 9 1 4_ AND _6 9 9 1 5_
+    Menu Sequence | _Top secret_
     ------------- | -------------
 
 ```cpp
@@ -1201,7 +1201,7 @@
     Console Syntax | scripted_user_func *update_aimed_ent_direction* 
     ------------- | -------------
     
-    Menu Sequence | _6 9 9 1 6_
+    Menu Sequence | _Top secret_
     ------------- | -------------
 
 ---
@@ -1219,6 +1219,18 @@
 ---
 ## Debugging, scripting and settings related
 
+- **update_print_output_state** : Display output messages in chat or in console. Almost all of the messages in chat are only visible to the player.
+
+    Chat Syntax | !update_print_output_state
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *update_print_output_state*
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 4 6_
+    ------------- | -------------
+    
+---
 - **add_script_auth** : Give authorization to an admin to use "script" command
 
     Chat Syntax | !add_script_auth *character*
@@ -1373,18 +1385,6 @@
     ------------- | -------------
 
 ---
-- **update_print_output_state** : Display debug messages for all in chat, or only in server's console
-
-    Chat Syntax | !update_print_output_state
-    ------------- | -------------
-
-    Console Syntax | scripted_user_func *update_print_output_state*
-    ------------- | -------------
-    
-    Menu Sequence | _6 9 4 6_
-    ------------- | -------------
-    
----
 - **debug_info** : Dump information about objects
 
     Chat Syntax | !debug_info *get_player_info*
@@ -1411,9 +1411,11 @@
 ---
 - AdminSystem configuration files are stored in the **"..\Left 4 Dead 2\left4dead2\ems\admin system"** directory.
 
-- This directory contains **configurations(settings.txt)**, **admins(admins.txt)**, **banned players(banned.txt)**, **script authorizations(scriptauths.txt)**, **custom responses(custom_responses.json)**, **apocalypse event settings(apocalypse_settings.txt)** and **meteor shower event settings(meteor_shower_settings.txt)**. Which can all be edited manually (Be careful while formatting! Keep a differently named copy before changing anything!)
+- This directory contains: **configurations(settings.txt)**, **admins(admins.txt)**, **banned players(banned.txt)**, **script authorizations(scriptauths.txt)**, **custom responses(custom_responses.json)**, **default settings(defaults.txt)**, **apocalypse event settings(apocalypse_settings.txt)** and **meteor shower event settings(meteor_shower_settings.txt)**. Which can all be edited manually (Be careful while formatting! Keep a differently named copy before changing anything!)
 
 - **"custom_responses.json"** file can be opened with a text editor and new custom sequences can be defined  for each admin's steam ID with the example format given in the file.
+
+- **"defaults.txt"** file contains most of the customizable settings in the **project_smok**. Follow the instructions given in the file to start editing!
 
 - **"apocalypse_settings.txt"** file contains the settings to use for the _apocalypse_ event.
 
