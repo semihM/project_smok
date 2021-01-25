@@ -1279,6 +1279,11 @@ function EasyLogic::OnTakeDamage::AdminDamage( damageTable )
 			return false;
 	}
 	
+	if(victim.GetIndex() in ::AdminSystem.Vars.IsGodEnabled && ::AdminSystem.Vars.IsGodEnabled[victim.GetIndex()])
+	{
+		printl("Ignoring damage for just unfrozen SI.")
+		return false;
+	}
 	return true;
 }
 
@@ -2284,6 +2289,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.ResumeTimeCmd(player,args);
 			break;
 		}
+		case "ents_around":
+		{
+			AdminSystem.EntitiesAroundCmd(player,args);
+			break;
+		}
 		default:
 			break;
 	}
@@ -2488,7 +2498,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		default:
 		{
 			local ent = player.GetLookingEntity()
-			if(ent == null || !ent.IsEntityValid())
+			if(ent == null || !ent.IsEntityValid() || ent.GetParent() != null)
 			{
 				return;
 			}
@@ -2510,7 +2520,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		if (ent.IsValid())
 		{
 			local libObj = ::VSLib.Player(ent);
-			if (libObj.GetTeam() == INFECTED)
+			if(libObj.GetMoveType() == MOVETYPE_NONE || libObj.GetParent() != null)
+			{
+				continue;
+			}
+			if (libObj.GetTeam() == INFECTED )
 			{
 				libObj.AddFlag(FL_FROZEN)
 				DoEntFire("!self","setcommentarystatuemode","1",0,null,ent)
@@ -2540,15 +2554,22 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		if (ent.IsValid())
 		{
 			local obj = ::VSLib.Entity(ent);
+			if(obj.GetMoveType() == MOVETYPE_NONE || obj.GetParent() != null)
+			{
+				continue;
+			}
 			obj.AddFlag(FL_FROZEN);
-			obj.SetNetPropFloat("m_flFrozen",1);
+			obj.SetNetProp("m_flFrozen",1.0);
+			obj.SetNetProp("m_bSimulatedEveryTick",0);
+			obj.SetNetProp("m_bAnimatedEveryTick",0);
+			obj.SetVelocity(Vector(0,0,0));
 			AdminSystem._FrozenInfected[obj.GetIndex()] <- 
 			{
 				model = obj.GetModel()
 				health = obj.GetHealth()
 				movetype = obj.GetMoveType()
 			};
-			obj.SetMoveType(MOVETYPE_NONE);
+			//obj.SetMoveType(MOVETYPE_NONE);
 		}
 	}
 }
@@ -2569,10 +2590,14 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			if (ent.IsValid())
 			{
 				local obj = ::VSLib.Entity(ent);
+				if(obj.GetMoveType() == MOVETYPE_NONE || obj.GetParent() != null)
+				{
+					continue;
+				}
 				AdminSystem._FrozenPhysics[obj.GetIndex()] <- 
 				{
 					movetype = obj.GetMoveType()
-					velocity = obj.GetVelocity()
+					velocity = obj.GetPhysicsVelocity()
 					classname = obj.GetClassname()
 					model = obj.GetModel()
 					health = obj.GetHealth()
@@ -2585,7 +2610,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 ::FreezeAimed <- function(ent)
 {
-	if(ent == null || !ent.IsEntityValid())
+	if(ent == null 
+		|| !ent.IsEntityValid() 
+		|| ent.GetMoveType() == MOVETYPE_NONE
+		|| ent.GetParent() != null)
 	{
 		return;
 	}
@@ -2593,6 +2621,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	local classname = ent.GetClassname();
 	local classnames = ["prop_physics", "prop_physics_multiplayer" , "prop_car_alarm", "prop_vehicle", "prop_physics_override", "func_physbox", "func_physbox_multiplayer", "prop_ragdoll"]
 
+	// SI
 	if(classname == "player" 
 	   && "_FrozenSI" in AdminSystem
 	   && ent.GetTeam() == INFECTED)
@@ -2608,27 +2637,30 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		};
 		ent.SetMoveType(MOVETYPE_NONE);
 	
-	}
+	} // Common
 	else if(classname == "infected"
 			&& "_FrozenInfected" in AdminSystem)
 	{
 		ent.AddFlag(FL_FROZEN);
-		ent.SetNetPropFloat("m_flFrozen",1);
+		ent.SetNetProp("m_flFrozen",1.0);
+		ent.SetNetProp("m_bSimulatedEveryTick",0);
+		ent.SetNetProp("m_bAnimatedEveryTick",0);
+		ent.SetVelocity(Vector(0,0,0));
 		AdminSystem._FrozenInfected[id] <- 
 		{
 			model = ent.GetModel()
 			health = ent.GetHealth()
 			movetype = ent.GetMoveType()
 		};
-		ent.SetMoveType(MOVETYPE_NONE);
-	}
+		//ent.SetMoveType(MOVETYPE_NONE);
+	} // Phys
 	else if(Utils.GetIDFromArray(classnames,classname) != -1
 			&& "_FrozenPhysics" in AdminSystem)
 	{
 		AdminSystem._FrozenPhysics[id] <- 
 		{
 			movetype = ent.GetMoveType()
-			velocity = ent.GetVelocity()
+			velocity = ent.GetPhysicsVelocity()
 			classname = ent.GetClassname()
 			model = ent.GetModel()
 			health = ent.GetHealth()
@@ -2717,10 +2749,12 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				libObj.SetMoveType(tbl.movetype);
 				libObj.RemoveFlag(FL_FROZEN);
 				libObj.SetNetPropFloat("m_flFrozen",0);
-
+				
 				//libObj.SetOrigin(org);
+				AdminSystem.Vars.IsGodEnabled[libObj.GetIndex()] <- true;
 				DoEntFire("!self","setcommentarystatuemode","0",0,null,ent)
 				DoEntFire("!self","sethealth",tbl.health.tostring(),0,null,ent)
+				DoEntFire("!self","RunScriptCode","delete AdminSystem.Vars.IsGodEnabled["+libObj.GetIndex()+"]",0,null,ent);
 				//libObj.SetHealth(tbl.health);
 			}
 		}
@@ -2748,9 +2782,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			{
 				continue;
 			}
-			obj.SetMoveType(tbl.movetype);
 			obj.RemoveFlag(FL_FROZEN);
-			obj.SetNetPropFloat("m_flFrozen",0);
+			obj.SetNetProp("m_flFrozen",0.0);
+			obj.SetNetProp("m_bSimulatedEveryTick",1);
+			obj.SetNetProp("m_bAnimatedEveryTick",1);
+			//obj.SetMoveType(tbl.movetype);
 			/*
 			local org = obj.GetOrigin();
 			
@@ -2785,16 +2821,17 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			if (ent.IsValid())
 			{
 				local obj = ::VSLib.Entity(ent);
-				if(obj.GetClassname() != tbl.classname ) // || obj.GetModel() != tbl.model)
+				if(obj.GetClassname() != tbl.classname || obj.GetMoveType() != MOVETYPE_NONE || obj.GetParent() != null ) // || obj.GetModel() != tbl.model)
 				{
 					continue;
 				}
+				local org = obj.GetOrigin();
 				obj.SetMoveType(tbl.movetype);
-
+				obj.SetOrigin(org);
+				obj.Push(tbl.velocity);
 				/*
 				if(obj.GetModel() == tbl.model)
 				{
-					local org = obj.GetOrigin();
 
 					obj.SetHealth(tbl.health);
 					obj.SetMoveType(tbl.movetype);
@@ -2817,6 +2854,22 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	}
 	local id = ent.GetIndex();
 	local classname = ent.GetClassname();
+	if( (ent.GetMoveType() != MOVETYPE_NONE && classname != "infected") || ent.GetParent() != null )
+	{
+		if("_FrozenPhysics" in AdminSystem && (id in AdminSystem._FrozenPhysics))
+		{
+			delete AdminSystem._FrozenPhysics[id];
+		}
+		else if("_FrozenSI" in AdminSystem && (id in AdminSystem._FrozenSI))
+		{
+			delete AdminSystem._FrozenSI[id];
+		}
+		else if("_FrozenInfected" in AdminSystem && (id in AdminSystem._FrozenInfected))
+		{
+			delete AdminSystem._FrozenInfected[id];
+		}
+		return;
+	}
 	local classnames = ["prop_physics", "prop_physics_multiplayer" , "prop_car_alarm", "prop_vehicle", "prop_physics_override", "func_physbox", "func_physbox_multiplayer", "prop_ragdoll"]
 
 	if(classname == "player" 
@@ -2831,8 +2884,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		ent.SetNetPropFloat("m_flFrozen",0);
 
 		//ent.SetOrigin(org);
+		AdminSystem.Vars.IsGodEnabled[id] <- true;
 		DoEntFire("!self","setcommentarystatuemode","0",0,null,ent.GetBaseEntity())
 		DoEntFire("!self","sethealth",tbl.health.tostring(),0,null,ent.GetBaseEntity())
+		DoEntFire("!self","RunScriptCode","delete AdminSystem.Vars.IsGodEnabled["+id+"]",0,null,ent.GetBaseEntity());
 		//ent.SetHealth(tbl.health);
 		delete AdminSystem._FrozenSI[id];	
 	}
@@ -2845,9 +2900,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			return;
 		}
 		local tbl = AdminSystem._FrozenInfected[id];
-		ent.SetMoveType(tbl.movetype);
+		//ent.SetMoveType(tbl.movetype);
 		ent.RemoveFlag(FL_FROZEN);
-		ent.SetNetPropFloat("m_flFrozen",0);
+		ent.SetNetProp("m_flFrozen",0.0);
+		ent.SetNetProp("m_bSimulatedEveryTick",1);
+		ent.SetNetProp("m_bAnimatedEveryTick",1);
 		delete AdminSystem._FrozenInfected[id];
 	}
 	else if(Utils.GetIDFromArray(classnames,classname) != -1
@@ -2859,7 +2916,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		{
 			return;
 		}
-		ent.SetMoveType(tbl.movetype);
+		local org = ent.GetOrigin();
+		//ent.SetMoveType(tbl.movetype);
+		ent.SetOrigin(org);
+		ent.Push(tbl.velocity);
 		delete AdminSystem._FrozenPhysics[id];
 	}
 	
@@ -4010,7 +4070,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	// FORWARD+BACKWARD OR NONE
 	if((mask % 2 == 1 && (mask>>1) % 2 == 1) || (mask % 2 == 0 && (mask>>1) % 2 == 0))
 	{
-		ent.Push(ent.GetVelocity().Scale(tbl.reversescale));
+		ent.Push(ent.GetPhysicsVelocity().Scale(tbl.reversescale));
 		if((mask>>4) % 2 == 1)
 			ent.SetForwardVector(pushvec);
 		return;
@@ -4026,11 +4086,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		if((mask>>1) % 2 == 1) // BACKWARD
 		{
 			pushvec = pushvec.Scale(-1);
-			ent.SetVelocity(pushvec);
+			ent.Push(pushvec);
 		}
 		else  // FORWARD
 		{
-			ent.SetVelocity(pushvec);
+			ent.Push(pushvec);
 		}
 	}
 	else
@@ -4038,7 +4098,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		// LEFT
 		if((mask>>2) % 2 == 1)
 		{
-			ent.Push(ent.GetVelocity().Scale(tbl.reversescale));
+			ent.Push(ent.GetPhysicsVelocity().Scale(tbl.reversescale));
 			if((mask>>1) % 2 == 1) // BACKWARD LEFT
 			{
 				pushvec = pushvec.Scale(-1);
@@ -4055,12 +4115,12 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				AdminSystem._CarControl[name].forward = pushvec.Scale(1/speed);
 			}
 			
-			ent.SetVelocity(pushvec);
+			ent.Push(pushvec);
 		}
 		// RIGHT
 		else if((mask>>3) % 2 == 1)
 		{	
-			ent.Push(ent.GetVelocity().Scale(tbl.reversescale));
+			ent.Push(ent.GetPhysicsVelocity().Scale(tbl.reversescale));
 			if((mask>>1) % 2 == 1) // BACKWARD RIGHT
 			{
 				pushvec = pushvec.Scale(-1);
@@ -4077,16 +4137,16 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				AdminSystem._CarControl[name].forward = pushvec.Scale(1/speed)
 			}
 			
-			ent.SetVelocity(pushvec);
+			ent.Push(pushvec);
 		}
 		else if((mask>>1) % 2 == 1) // BACKWARD
 		{
 			pushvec = pushvec.Scale(-1);
-			ent.SetVelocity(pushvec);
+			ent.Push(pushvec);
 		}
 		else // FORWARD
 		{
-			ent.SetVelocity(pushvec);
+			ent.Push(pushvec);
 		}
 		
 	}
@@ -7192,14 +7252,6 @@ function ChatTriggers::update_bots_sharing_preference( player, args, text )
 	AdminSystem.Update_bots_sharing_preferenceCmd( player, args );
 }
 
-function ChatTriggers::stop_time( player, args, text )
-{
-	AdminSystem.StopTimeCmd( player, args );
-}
-function ChatTriggers::resume_time( player, args, text )
-{
-	AdminSystem.ResumeTimeCmd( player, args );
-}
 /*
  * @authors rhino
  */
@@ -7258,11 +7310,6 @@ function ChatTriggers::speak_saved(player,args,text)
 function ChatTriggers::display_saved_line(player,args,text)
 {
 	AdminSystem.Display_saved_lineCmd(player, args);
-}
-
-function ChatTriggers::debug_info(player,args,text)
-{
-	AdminSystem.Debug_infoCmd(player, args);
 }
 
 function ChatTriggers::save_line(player,args,text)
@@ -7409,6 +7456,25 @@ function ChatTriggers::change_grab_method(player,args,text)
 function ChatTriggers::stop_car_alarms( player, args, text )
 {
 	AdminSystem.StopCarAlarmsCmd( player, args );
+}
+
+function ChatTriggers::debug_info(player,args,text)
+{
+	AdminSystem.Debug_infoCmd(player, args);
+}
+
+function ChatTriggers::stop_time( player, args, text )
+{
+	AdminSystem.StopTimeCmd( player, args );
+}
+function ChatTriggers::resume_time( player, args, text )
+{
+	AdminSystem.ResumeTimeCmd( player, args );
+}
+
+function ChatTriggers::ents_around( player, args, text )
+{
+	AdminSystem.EntitiesAroundCmd( player, args );
 }
 /////////////////////////others/////////////////////////////
 
@@ -14479,6 +14545,36 @@ if ( Director.GetGameMode() == "holdout" )
 		PlayerInfo(player,!AdminSystem.Vars._outputsEnabled[playername.tolower()],svcheatsval)
 	}
 	
+}
+
+::AdminSystem.EntitiesAroundCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local aimed = player.GetLookingLocation();
+	local radius = GetArgument(1);
+	radius = radius == null ? 50 : radius.tofloat();
+	
+	local objtable = VSLib.EasyLogic.Objects.AroundRadius(aimed,radius);
+	if(objtable == null)
+	{
+		Printer(player,"No entities within radius of "+radius+" around "+aimed.ToKVString());
+	}
+	else
+	{
+		local str = "Entity " + "\x03" + "#" + "\x01" + " and " + "\x05" + "class" + "\x01" + " within " + "\x04" + radius + " units \x01" + "\n";
+		foreach(obj in objtable)
+		{
+			if(!obj.IsEntityValid())
+			{
+				continue;
+			}
+			str += "\x03" + "#" + obj.GetIndex() + "\x01" + ", " + "\x05" + obj.GetClassname() + (obj.GetParent() == null ? "" : ", "+"\x04"+"Parented!") +"\x01" + "\n"
+		}
+
+		Printer(player,str);
+	}
 }
 
 /* ******************DANGEROUS FUNCTION*******************

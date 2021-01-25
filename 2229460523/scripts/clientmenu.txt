@@ -18227,6 +18227,11 @@
 				"command"	 "play buttons/button14;scripted_user_func update_print_output_state;show_menu smok_debug_info_menu1"
 				"label"		 " Enable/Disable output messages"
 			}
+			"7"
+			{
+				"command"	 "play buttons/button14;scripted_user_func ents_around,50;show_menu smok_debug_info_menu1"
+				"label"		 " Get entity information around aimed point"
+			}
 			"8"
 			{
 					"command"	 "play buttons/button14;show_menu smok_menu2"

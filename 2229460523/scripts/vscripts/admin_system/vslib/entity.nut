@@ -1795,6 +1795,20 @@ function VSLib::Entity::GetLocalVelocity()
 	return _ent.GetLocalVelocity();
 }
 
+/*
+ * Returns the entity's current velocity vector relative to the world's origin.
+ */
+function VSLib::Entity::GetPhysicsVelocity()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return;
+	}
+	
+	return GetPhysVelocity(_ent);
+}
+
 /**
  * Returns the entity's current velocity vector.
  */
