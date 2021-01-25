@@ -2274,9 +2274,82 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.Update_bots_sharing_preferenceCmd(player,args);
 			break;
 		}
+		case "stop_time":
+		{
+			AdminSystem.StopTimeCmd(player,args);
+			break;
+		}
+		case "resume_time":
+		{
+			AdminSystem.ResumeTimeCmd(player,args);
+			break;
+		}
 		default:
 			break;
 	}
+}
+
+::dec2bin <- function(val,bits=32)
+{
+	local b = "";
+	while(val > 0)
+	{
+		b = (val % 2) + b;
+		val = (val/2).tointeger();
+	}
+	local missing = bits-b.len();
+	for(local i=0;i<missing;i++)
+	{
+		b = "0" + b;
+	}
+
+	return b; 
+}
+
+::dec2hex <- function(val,bits=32)
+{
+	local b = "";
+	local letters = ["A","B","C","D","E","F"];
+	while(val > 0)
+	{
+		local m = (val % 16);
+		if( m >= 10 )
+		{
+			m = letters[m % 10];
+		}
+		b = m + b;
+		val = (val/16).tointeger();
+	}
+	local missing = (bits/4).tointeger()-b.len();
+	for(local i=0;i<missing;i++)
+	{
+		b = "0" + b;
+	}
+
+	return "0x"+b; 
+}
+
+::hex2rgba <- function(hexstring)
+{
+	if((typeof hexstring) != "string")
+	{
+		return;
+	}
+
+	local rgba = hexstring.slice(2,10); // aabbggrr
+	local lis = 
+	[
+		compilestring("return 0x"+rgba.slice(6,8))(),
+		compilestring("return 0x"+rgba.slice(4,6))(),
+		compilestring("return 0x"+rgba.slice(2,4))(),
+		compilestring("return 0x"+rgba.slice(0,2))()
+	];
+	return lis;
+}
+
+::dec2rgba <- function(val,bits=32)
+{
+	return hex2rgba(dec2hex(val,bits));
 }
 
 /*
@@ -2364,6 +2437,432 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		else
 			ClientPrint(null,3,color+msg.tostring());
 	}
+}
+
+// Freezing objects
+::AdminSystem._FrozenSI <- {}
+::AdminSystem._FrozenInfected <- {}
+::AdminSystem._FrozenPhysics <- {}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.StopTimeCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local targetclasses = ["all","special","common","physics",null];
+	local target = GetArgument(1);
+
+	if(Utils.GetIDFromArray(targetclasses,target) == -1)
+	{
+		printl("Invalid argument->"+target);
+		return;
+	}
+
+	switch(target)
+	{
+		case "all":
+		{
+			FreezeSI();
+			FreezeInfected();
+			FreezePhysics();
+			break;
+		}
+		case "special":
+		{
+			FreezeSI();
+			break;
+		}
+		case "common":
+		{
+			FreezeInfected();
+			break;
+		}
+		case "physics":
+		{
+			FreezePhysics();
+			break;
+		}
+		default:
+		{
+			local ent = player.GetLookingEntity()
+			if(ent == null || !ent.IsEntityValid())
+			{
+				return;
+			}
+			FreezeAimed(ent);
+		}
+	}
+}
+
+::FreezeSI <- function()
+{
+	if(!("_FrozenSI" in AdminSystem))
+	{
+		AdminSystem._FrozenSI <- {}
+	}
+	
+	local ent = null;
+	while (ent = Entities.FindByClassname(ent, "player"))
+	{
+		if (ent.IsValid())
+		{
+			local libObj = ::VSLib.Player(ent);
+			if (libObj.GetTeam() == INFECTED)
+			{
+				libObj.AddFlag(FL_FROZEN)
+				DoEntFire("!self","setcommentarystatuemode","1",0,null,ent)
+				libObj.SetNetPropFloat("m_flFrozen",1);
+				AdminSystem._FrozenSI[libObj.GetIndex()] <-
+				{
+					model = libObj.GetModel()
+					health = libObj.GetHealth()
+					movetype = libObj.GetMoveType()
+				};
+				libObj.SetMoveType(MOVETYPE_NONE);
+			}
+		}
+	}
+}
+
+::FreezeInfected <- function()
+{
+	if(!("_FrozenInfected" in AdminSystem))
+	{
+		AdminSystem._FrozenInfected <- {}
+	}
+	
+	local ent = null;
+	while (ent = Entities.FindByClassname(ent, "infected"))
+	{
+		if (ent.IsValid())
+		{
+			local obj = ::VSLib.Entity(ent);
+			obj.AddFlag(FL_FROZEN);
+			obj.SetNetPropFloat("m_flFrozen",1);
+			AdminSystem._FrozenInfected[obj.GetIndex()] <- 
+			{
+				model = obj.GetModel()
+				health = obj.GetHealth()
+				movetype = obj.GetMoveType()
+			};
+			obj.SetMoveType(MOVETYPE_NONE);
+		}
+	}
+}
+
+::FreezePhysics <- function()
+{
+	if(!("_FrozenPhysics" in AdminSystem))
+	{
+		AdminSystem._FrozenPhysics <- {}
+	}
+
+	local classnames = ["prop_physics", "prop_physics_multiplayer" , "prop_car_alarm", "prop_vehicle", "prop_physics_override", "func_physbox", "func_physbox_multiplayer", "prop_ragdoll"]
+	foreach(cls in classnames)
+	{
+		local ent = null;
+		while (ent = Entities.FindByClassname(ent, cls))
+		{
+			if (ent.IsValid())
+			{
+				local obj = ::VSLib.Entity(ent);
+				AdminSystem._FrozenPhysics[obj.GetIndex()] <- 
+				{
+					movetype = obj.GetMoveType()
+					velocity = obj.GetVelocity()
+					classname = obj.GetClassname()
+					model = obj.GetModel()
+					health = obj.GetHealth()
+				}
+				obj.SetMoveType(MOVETYPE_NONE);
+			}
+		}
+	}
+}
+
+::FreezeAimed <- function(ent)
+{
+	if(ent == null || !ent.IsEntityValid())
+	{
+		return;
+	}
+	local id = ent.GetIndex();
+	local classname = ent.GetClassname();
+	local classnames = ["prop_physics", "prop_physics_multiplayer" , "prop_car_alarm", "prop_vehicle", "prop_physics_override", "func_physbox", "func_physbox_multiplayer", "prop_ragdoll"]
+
+	if(classname == "player" 
+	   && "_FrozenSI" in AdminSystem
+	   && ent.GetTeam() == INFECTED)
+	{
+		ent.AddFlag(FL_FROZEN)
+		DoEntFire("!self","setcommentarystatuemode","1",0,null,ent.GetBaseEntity())
+		ent.SetNetPropFloat("m_flFrozen",1);
+		AdminSystem._FrozenSI[id] <-
+		{
+			model = ent.GetModel()
+			health = ent.GetHealth()
+			movetype = ent.GetMoveType()
+		};
+		ent.SetMoveType(MOVETYPE_NONE);
+	
+	}
+	else if(classname == "infected"
+			&& "_FrozenInfected" in AdminSystem)
+	{
+		ent.AddFlag(FL_FROZEN);
+		ent.SetNetPropFloat("m_flFrozen",1);
+		AdminSystem._FrozenInfected[id] <- 
+		{
+			model = ent.GetModel()
+			health = ent.GetHealth()
+			movetype = ent.GetMoveType()
+		};
+		ent.SetMoveType(MOVETYPE_NONE);
+	}
+	else if(Utils.GetIDFromArray(classnames,classname) != -1
+			&& "_FrozenPhysics" in AdminSystem)
+	{
+		AdminSystem._FrozenPhysics[id] <- 
+		{
+			movetype = ent.GetMoveType()
+			velocity = ent.GetVelocity()
+			classname = ent.GetClassname()
+			model = ent.GetModel()
+			health = ent.GetHealth()
+		}
+		ent.SetMoveType(MOVETYPE_NONE);
+	}
+	
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.ResumeTimeCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local targetclasses = ["all","special","common","physics",null];
+	local target = GetArgument(1);
+
+	if(Utils.GetIDFromArray(targetclasses,target) == -1)
+	{
+		printl("Invalid argument->"+target);
+		return;
+	}
+
+	switch(target)
+	{
+		case "all":
+		{
+			UnfreezeSI();
+			UnfreezeInfected();
+			UnfreezePhysics();
+			break;
+		}
+		case "special":
+		{
+			UnfreezeSI();
+			break;
+		}
+		case "common":
+		{
+			UnfreezeInfected();
+			break;
+		}
+		case "physics":
+		{
+			UnfreezePhysics();
+			break;
+		}
+		default:
+		{
+			local ent = player.GetLookingEntity()
+			if(ent == null || !ent.IsEntityValid())
+			{
+				return;
+			}
+			UnfreezeAimed(ent);
+		}
+	}
+}
+
+::UnfreezeSI <- function()
+{
+	if(!("_FrozenSI" in AdminSystem))
+		return;
+
+	local ent = null;
+	foreach(id,tbl in AdminSystem._FrozenSI)
+	{
+		ent = Ent(id);
+		if(ent == null)
+		{
+			continue;
+		}
+		if (ent.IsValid())
+		{
+			if(ent.GetClassname() != "player")
+			{
+				continue;
+			}
+			local libObj = ::VSLib.Player(ent);
+			if (libObj.GetTeam() == INFECTED ) // && tbl.model == libObj.GetModel())
+			{
+				//local org = libObj.GetOrigin();
+				libObj.SetMoveType(tbl.movetype);
+				libObj.RemoveFlag(FL_FROZEN);
+				libObj.SetNetPropFloat("m_flFrozen",0);
+
+				//libObj.SetOrigin(org);
+				DoEntFire("!self","setcommentarystatuemode","0",0,null,ent)
+				DoEntFire("!self","sethealth",tbl.health.tostring(),0,null,ent)
+				//libObj.SetHealth(tbl.health);
+			}
+		}
+	}
+	AdminSystem._FrozenSI <- {}
+}
+
+::UnfreezeInfected <- function()
+{
+	if(!("_FrozenInfected" in AdminSystem))
+		return;
+
+	local ent = null;
+	foreach(id,tbl in AdminSystem._FrozenInfected)
+	{
+		ent = Ent(id);
+		if(ent == null)
+		{
+			continue;
+		}
+		if (ent.IsValid())
+		{
+			local obj = ::VSLib.Entity(ent);
+			if(obj.GetClassname() != "infected"  ) // || obj.GetModel() != tbl.model)
+			{
+				continue;
+			}
+			obj.SetMoveType(tbl.movetype);
+			obj.RemoveFlag(FL_FROZEN);
+			obj.SetNetPropFloat("m_flFrozen",0);
+			/*
+			local org = obj.GetOrigin();
+			
+			if(tbl.model == obj.GetModel())
+			{
+				obj.SetHealth(tbl.health);
+				obj.RemoveFlag(FL_FROZEN);
+				obj.SetOrigin(org);
+			}
+			*/
+		}
+	}
+	AdminSystem._FrozenInfected <- {}
+}
+
+::UnfreezePhysics <- function()
+{
+	if(!("_FrozenPhysics" in AdminSystem))
+		return;
+
+	local classnames = ["prop_physics", "prop_physics_multiplayer" , "prop_car_alarm", "prop_vehicle", "prop_physics_override", "func_physbox", "func_physbox_multiplayer", "prop_ragdoll"]
+	foreach(cls in classnames)
+	{
+		local ent = null;
+		foreach(id,tbl in AdminSystem._FrozenPhysics)
+		{
+			ent = Ent(id);
+			if(ent == null)
+			{
+				continue;
+			}
+			if (ent.IsValid())
+			{
+				local obj = ::VSLib.Entity(ent);
+				if(obj.GetClassname() != tbl.classname ) // || obj.GetModel() != tbl.model)
+				{
+					continue;
+				}
+				obj.SetMoveType(tbl.movetype);
+
+				/*
+				if(obj.GetModel() == tbl.model)
+				{
+					local org = obj.GetOrigin();
+
+					obj.SetHealth(tbl.health);
+					obj.SetMoveType(tbl.movetype);
+
+					obj.SetOrigin(org);
+					obj.SetVelocity(tbl.velocity);
+				}
+				*/
+			}
+		}
+	}
+	AdminSystem._FrozenPhysics <- {}
+}
+
+::UnfreezeAimed <- function(ent)
+{
+	if(ent == null || !ent.IsEntityValid())
+	{
+		return;
+	}
+	local id = ent.GetIndex();
+	local classname = ent.GetClassname();
+	local classnames = ["prop_physics", "prop_physics_multiplayer" , "prop_car_alarm", "prop_vehicle", "prop_physics_override", "func_physbox", "func_physbox_multiplayer", "prop_ragdoll"]
+
+	if(classname == "player" 
+	   && "_FrozenSI" in AdminSystem
+	   && ent.GetTeam() == INFECTED
+	   && (id in AdminSystem._FrozenSI))
+	{
+		local tbl = AdminSystem._FrozenSI[id];
+		//local org = ent.GetOrigin();
+		ent.SetMoveType(tbl.movetype);
+		ent.RemoveFlag(FL_FROZEN);
+		ent.SetNetPropFloat("m_flFrozen",0);
+
+		//ent.SetOrigin(org);
+		DoEntFire("!self","setcommentarystatuemode","0",0,null,ent.GetBaseEntity())
+		DoEntFire("!self","sethealth",tbl.health.tostring(),0,null,ent.GetBaseEntity())
+		//ent.SetHealth(tbl.health);
+		delete AdminSystem._FrozenSI[id];	
+	}
+	else if(classname == "infected"
+			&& "_FrozenInfected" in AdminSystem
+			&& (id in AdminSystem._FrozenInfected))
+	{
+		if(ent.GetClassname() != "infected"  ) // || ent.GetModel() != tbl.model)
+		{
+			return;
+		}
+		local tbl = AdminSystem._FrozenInfected[id];
+		ent.SetMoveType(tbl.movetype);
+		ent.RemoveFlag(FL_FROZEN);
+		ent.SetNetPropFloat("m_flFrozen",0);
+		delete AdminSystem._FrozenInfected[id];
+	}
+	else if(Utils.GetIDFromArray(classnames,classname) != -1
+			&& "_FrozenPhysics" in AdminSystem
+			&& (id in AdminSystem._FrozenPhysics))
+	{
+		local tbl = AdminSystem._FrozenPhysics[id];
+		if(ent.GetClassname() != tbl.classname ) // || ent.GetModel() != tbl.model)
+		{
+			return;
+		}
+		ent.SetMoveType(tbl.movetype);
+		delete AdminSystem._FrozenPhysics[id];
+	}
+	
 }
 
 // Bot share and loot functions
@@ -6691,6 +7190,15 @@ function ChatTriggers::selfish_bots( player, args, text )
 function ChatTriggers::update_bots_sharing_preference( player, args, text )
 {
 	AdminSystem.Update_bots_sharing_preferenceCmd( player, args );
+}
+
+function ChatTriggers::stop_time( player, args, text )
+{
+	AdminSystem.StopTimeCmd( player, args );
+}
+function ChatTriggers::resume_time( player, args, text )
+{
+	AdminSystem.ResumeTimeCmd( player, args );
 }
 /*
  * @authors rhino
@@ -13632,7 +14140,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	local t = intervals*(-7.0);
 	local last_t = 0.0;
-
+	local clr = entlooked.GetNetProp("m_clrRender");
 	function color_seq()
 	{
 		entlooked.InputColor(255, 0, 0,t+intervals);
@@ -13651,7 +14159,8 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		else
 		{
-			entlooked.InputColor(255, 255, 255,last_t+intervals);
+			local rgba = dec2rgba(clr)
+			entlooked.InputColor(rgba[0], rgba[1], rgba[2],last_t+intervals);
 		}
 	}
 
@@ -15230,6 +15739,7 @@ if ( Director.GetGameMode() == "holdout" )
 				angles = ent.GetAngles(),
 			};
 			local skin = ent.GetNetProp("m_nSkin");
+			local color = ent.GetNetProp("m_clrRender");
 			local scale = ent.GetModelScale();
 			ent.Kill();
 			
@@ -15245,6 +15755,7 @@ if ( Director.GetGameMode() == "holdout" )
 			}
 			else
 			{
+				new_ent.SetNetProp("m_clrRender",color);
 				new_ent.SetNetProp("m_nSkin",skin);
 				new_ent.SetModelScale(scale);
 				//printB(player.GetCharacterName(),"Let go the held entity created new entity #"+new_ent.GetIndex(),true,"info",true,true)
@@ -15357,6 +15868,7 @@ if ( Director.GetGameMode() == "holdout" )
 				angles = ent.GetAngles(),
 			};
 			local skin = ent.GetNetProp("m_nSkin");
+			local color = ent.GetNetProp("m_clrRender");
 			local scale = ent.GetModelScale();
 			ent.Kill();
 			
@@ -15373,6 +15885,7 @@ if ( Director.GetGameMode() == "holdout" )
 			}
 			else
 			{
+				new_ent.SetNetProp("m_clrRender",color);
 				new_ent.SetNetProp("m_nSkin",skin);
 				new_ent.SetModelScale(scale);
 				//printB(player.GetCharacterName(),"Let go the held entity created new entity #"+new_ent.GetIndex(),true,"info",true,true)
@@ -15403,13 +15916,13 @@ if ( Director.GetGameMode() == "holdout" )
 	ent.GetBaseEntity().SetSequence(0);
 	//ent.Input("wake","",0);
 	ent.SetMoveType(movetype);
-	ent.SetOrigin(a)
+	ent.SetOrigin(a);
+	ent.SetVelocity(Vector(0,0,0));
 }
 
 ::_yeetit <- function(ent,p)
 {
 	_dropit(ent);
-
 	local fwvec = RotateOrientation(p.GetEyeAngles(),QAngle(AdminSystem.Vars._heldEntity[p.GetCharacterNameLower()].yeetPitch,0,0)).Forward();
 	fwvec = fwvec.Scale(AdminSystem.Vars._heldEntity[p.GetCharacterNameLower()].yeetSpeed/fwvec.Length());
 	ent.Push(fwvec);

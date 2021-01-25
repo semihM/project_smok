@@ -19658,6 +19658,11 @@
 				"command"		 "play buttons/button14;scripted_user_func random_model;show_menu ent_fire_menu2"
 				"label"			 " Get a random model path"
 			}
+			"2"
+			{
+				"command"		 "play buttons/button14;show_menu ent_fire_freeze1"
+				"label"			 " Freeze objects in time"
+			}
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu ent_fire_menu1"
@@ -19670,6 +19675,94 @@
 			}
 	}
 
+	"ent_fire_freeze1"
+	{
+			"Title"		 "Freeze Options"
+
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func stop_time,all;show_menu ent_fire_freeze1"
+				"label"			 " Freeze everything (except survivors)"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func resume_time,all;show_menu ent_fire_freeze1"
+				"label"			 " Unfreeze everything"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func stop_time;show_menu ent_fire_freeze1"
+				"label"			 " Freeze aimed object"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func resume_time;show_menu ent_fire_freeze1"
+				"label"			 " Unfreeze aimed object"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func stop_time,physics;show_menu ent_fire_freeze1"
+				"label"			 " Freeze physics objects"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func resume_time,physics;show_menu ent_fire_freeze1"
+				"label"			 " Unfreeze physics objects"
+			}
+
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_fire_menu2"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu ent_fire_freeze2"
+					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ent_fire_freeze2"
+	{
+			"Title"		 "Freeze Options"
+
+			
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func stop_time,common;show_menu ent_fire_freeze2"
+				"label"			 " Freeze common infected"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func resume_time,common;show_menu ent_fire_freeze2"
+				"label"			 " Unfreeze common infected"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func stop_time,special;show_menu ent_fire_freeze2"
+				"label"			 " Freeze special infected"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func resume_time,special;show_menu ent_fire_freeze2"
+				"label"			 " Unfreeze special infected"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_fire_freeze1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
 	"ent_grab_yeet"
 	{	
 			"Title"     "Grab/Let go/Yeet props"
