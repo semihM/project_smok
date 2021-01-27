@@ -796,7 +796,7 @@ getconsttable()["COLOR_OLIVE_GREEN"] <- "\x05";
             {
                 TeleportSuccess = function(id,to)
                 {
-                    return "Teleported " + COLOR_BRIGHT_GREEN + "#" + id + COLOR_DEFAULT + " to " + to;
+                    return "Teleported " + COLOR_BRIGHT_GREEN + id + COLOR_DEFAULT + " to " + to;
                 }
 
                 PushSuccess = function(id,scalefactor,direction,pitchofeye)
@@ -836,6 +836,21 @@ getconsttable()["COLOR_OLIVE_GREEN"] <- "\x05";
 }
 
 ::Messages.SetBIM(::Messages);
+
+/**************************\
+*  COMMAND HELPER MESSAGES  *
+\**************************/
+::Messages.SetCMDHelper <- function(tbl)
+{
+    local t = 
+    {
+
+    }
+
+    tbl.CMDHelper <- t;
+}
+
+::Messages.SetCMDHelper(::Messages);
 
 /**********************\
 *  MESSAGING FUNCTIONS  *

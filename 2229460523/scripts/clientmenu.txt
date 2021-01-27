@@ -78,12 +78,12 @@
 		"4"
 		{
 			"command"	 "play buttons/button14;show_menu ChangeGravity"
-			"label"		 " Change Gravity"
+			"label"		 " Change Gravity  (Currently: <cvar sv_gravity>)"
 		}
 		"5"
 		{
 			"command"	 "play buttons/button14;show_menu ChangeDifficulty"
-			"label"		 " Change Difficulty"
+			"label"		 " Change Difficulty (Currently: <cvar z_difficulty>)"
 		}
         "6"
 		{
@@ -17286,27 +17286,47 @@
 	
 	"ChangeDifficulty"
 	{
-		"Title"		 "Change Difficulty"
+		"Title"		 "Change Difficulty (Currently: <cvar z_difficulty>)"
 
 		"1"
 		{
-			"command"	 "play buttons/button14;scripted_user_func console,z_difficulty,easy;scripted_user_func cvar,vs_tank_damage,24;show_menu ChangeDifficulty"
+			"command"	 "play buttons/button14;z_difficulty Easy;scripted_user_func console,z_difficulty,Easy;scripted_user_func cvar,vs_tank_damage,24;show_menu ChangeDifficulty"
 			"label"		 " Easy"
+			"ignorevar"
+			{
+				"cvar"	"z_difficulty"
+				"value"	"Easy"
+			}
 		}
 		"2"
 		{
-			"command"	 "play buttons/button14;scripted_user_func console,z_difficulty,normal;scripted_user_func cvar,vs_tank_damage,24;show_menu ChangeDifficulty"
+			"command"	 "play buttons/button14;z_difficulty Normal;scripted_user_func console,z_difficulty,Normal;scripted_user_func cvar,vs_tank_damage,24;show_menu ChangeDifficulty"
 			"label"		 " Normal"
+			"ignorevar"
+			{
+				"cvar"	"z_difficulty"
+				"value"	"Normal"
+			}
 		}
 		"3"
 		{
-			"command"	 "play buttons/button14;scripted_user_func console,z_difficulty,hard;scripted_user_func cvar,vs_tank_damage,33;show_menu ChangeDifficulty"
-			"label"		 " Hard"
+			"command"	 "play buttons/button14;z_difficulty Hard;scripted_user_func console,z_difficulty,Hard;scripted_user_func cvar,vs_tank_damage,33;show_menu ChangeDifficulty"
+			"label"		 " Advanced (Hard)"
+			"ignorevar"
+			{
+				"cvar"	"z_difficulty"
+				"value"	"Hard"
+			}
 		}
 		"4"
 		{
-			"command"	 "play buttons/button14;scripted_user_func console,z_difficulty,impossible;scripted_user_func cvar,vs_tank_damage,150;show_menu ChangeDifficulty"
-			"label"		 " Expert"
+			"command"	 "play buttons/button14;z_difficulty Impossible;scripted_user_func console,z_difficulty,Impossible;scripted_user_func cvar,vs_tank_damage,150;show_menu ChangeDifficulty"
+			"label"		 " Expert (Impossible)"
+			"ignorevar"
+			{
+				"cvar"	"z_difficulty"
+				"value"	"Impossible"
+			}
 		}
         "8"
 		{
@@ -17326,42 +17346,77 @@
 	}
 	"ChangeGravity"
 	{
-		"Title"		 "Change Gravity"
+		"Title"		 "Change Gravity (Currently: <cvar sv_gravity>)"
 
 		"1"
 		{
 			"command"	 "play buttons/button14;scripted_user_func cvar,sv_gravity,0;show_menu ChangeGravity"
 			"label"		 " 0"
+			"ignorevar"
+			{
+				"cvar"	"sv_gravity"
+				"value"	"0"
+			}
 		}
 		"2"
 		{
 			"command"	 "play buttons/button14;scripted_user_func cvar,sv_gravity,200;show_menu ChangeGravity"
 			"label"		 " 200"
+			"ignorevar"
+			{
+				"cvar"	"sv_gravity"
+				"value"	"200"
+			}
 		}
 		"3"
 		{
 			"command"	 "play buttons/button14;scripted_user_func cvar,sv_gravity,400;show_menu ChangeGravity"
 			"label"		 " 400"
+			"ignorevar"
+			{
+				"cvar"	"sv_gravity"
+				"value"	"400"
+			}
 		}
 		"4"
 		{
 			"command"	 "play buttons/button14;scripted_user_func cvar,sv_gravity,800;show_menu ChangeGravity"
 			"label"		 " 800 (Default)"
+			"ignorevar"
+			{
+				"cvar"	"sv_gravity"
+				"value"	"800"
+			}
 		}
 		"5"
 		{
 			"command"	 "play buttons/button14;scripted_user_func cvar,sv_gravity,1600;show_menu ChangeGravity"
 			"label"		 " 1600"
+			"ignorevar"
+			{
+				"cvar"	"sv_gravity"
+				"value"	"1600"
+			}
 		}
 		"6"
 		{
 			"command"	 "play buttons/button14;scripted_user_func cvar,sv_gravity,4000;show_menu ChangeGravity"
 			"label"		 " 4000"
+			"ignorevar"
+			{
+				"cvar"	"sv_gravity"
+				"value"	"4000"
+			}
 		}
 		"7"
 		{
 			"command"	 "play buttons/button14;scripted_user_func cvar,sv_gravity,8000;show_menu ChangeGravity"
 			"label"		 " 8000"
+			"ignorevar"
+			{
+				"cvar"	"sv_gravity"
+				"value"	"8000"
+			}
 		}
         "8"
 		{
@@ -17452,7 +17507,13 @@
 		"7"
 		{
 			"command"	 "play buttons/button14;jointeam 0;show_menu CharacterSelector"
-			"label"		 " Go spectator (requires sv_cheats 1)"
+			"label"		 " Go spectator"
+			"invalidLabel"		"Going spectator requires sv_cheats 1"
+			"ignorevar"
+			{
+				"cvar"	"sv_cheats"
+				"value"	"0"
+			}
 		}
 		"8"
 		{
@@ -17725,7 +17786,7 @@
 			"1"
 			{
 					"command"	 "play buttons/button14;show_menu smok_menu_settings1"
-					"label"		 " Enable/Disable some custom stuff"
+					"label"		 " Enable/Disable some custom settings"
 			}
 			"2"
 			{
@@ -17752,6 +17813,11 @@
 					"command"    "play buttons/button14;show_menu models_menus"
 					"label"		 " Change model"
 			}
+			"7"
+			{
+					"command"    "play buttons/button14;show_menu smok_menu_displays1"
+					"label"		 " Change menu display duration (Currently: <cvar cl_menuduration>)"
+			}
 			"8"
 			{
 					"command"	 "play buttons/button14;show_menu smok_menu"
@@ -17761,6 +17827,80 @@
 			{
 					"command"	 "play piano/a2;show_menu secret_commands"
 					"label"		 ""
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	"smok_menu_displays1"
+	{
+			"Title"     "Menu display duration, Currently: <cvar cl_menuduration> seconds"
+			"1"
+			{
+					"command"	 "play buttons/button14;cl_menuduration -1;show_menu smok_menu_displays1"
+					"label"		 " Infinite ( Close manually )"
+					"ignorevar"
+					{
+						"cvar"	"cl_menuduration"
+						"value"	"-1"
+					}
+			}
+			"2"
+			{
+					"command"	 "play buttons/button14;cl_menuduration 3;show_menu smok_menu_displays1"
+					"label"		 " Shorter ( 3 seconds )"
+					"ignorevar"
+					{
+						"cvar"	"cl_menuduration"
+						"value"	"3"
+					}
+			}
+			"3"
+			{
+					"command"	 "play buttons/button14;cl_menuduration 6;show_menu smok_menu_displays1"
+					"label"		 " Short ( 6 seconds )"
+					"ignorevar"
+					{
+						"cvar"	"cl_menuduration"
+						"value"	"6"
+					}
+			}
+			"4"
+			{
+					"command"	 "play buttons/button14;cl_menuduration 10;show_menu smok_menu_displays1"
+					"label"		 " Default ( 10 seconds )"
+					"ignorevar"
+					{
+						"cvar"	"cl_menuduration"
+						"value"	"10"
+					}
+			}
+			"5"
+			{
+					"command"	 "play buttons/button14;cl_menuduration 18;show_menu smok_menu_displays1"
+					"label"		 " Long ( 18 seconds )"
+					"ignorevar"
+					{
+						"cvar"	"cl_menuduration"
+						"value"	"18"
+					}
+			}
+			"6"
+			{
+					"command"	 "play buttons/button14;cl_menuduration 30;show_menu smok_menu_displays1"
+					"label"		 " Longer ( 30 seconds )"
+					"ignorevar"
+					{
+						"cvar"	"cl_menuduration"
+						"value"	"30"
+					}
+			}
+			"8"
+			{
+					"command"	 "play buttons/button14;show_menu smok_menu2"
+					"label"		 " << Back"
 			}
 			"0"
 			{
@@ -18197,25 +18337,38 @@
 	"smok_debug_info_menu1"
 	{
 			"Title"		 "Debug settings"
+			
 			"1"
 			{
 				"command"	 "play buttons/button14;sv_cheats 1;scripted_user_func server_exec,picker;show_menu smok_debug_info_menu1"
 				"label"		 " Enable/Disable picker"
+				"invalidLabel"		"Picker requires sv_cheats 1"
+				"ignorevar"
+				{
+					"cvar"	"sv_cheats"
+					"value"	"0"
+				}
 			}
 			"2"
 			{
 				"command"	 "play buttons/button14;scripted_user_func server_exec,ent_text;show_menu smok_debug_info_menu1"
 				"label"		 " Draw/Hide entity information"
+				"invalidLabel"		"Drawing entity information text requires sv_cheats 1"
+				"ignorevar"
+				{
+					"cvar"	"sv_cheats"
+					"value"	"0"
+				}
 			}
 			"3"
 			{
 				"command"	 "play buttons/button14;scripted_user_func update_svcheats;show_menu smok_debug_info_menu1"
-				"label"		 " Enable/Disable sv_cheats"
+				"label"		 " Update sv_cheats (Currently: <cvar sv_cheats>)"
 			}
 			"4"
 			{
 				"command"	 "play buttons/button14;scripted_user_func debug_info;show_menu smok_debug_info_menu1"
-				"label"		 " Dump info about targeted object"
+				"label"		 "Dump info about targeted object"
 			}
 			"5"
 			{
@@ -18241,7 +18394,7 @@
 			{
 					"command"    "play buttons/button14"
 					"label"      " Exit"
-			}
+			}	
 	}
 	
 	"smok_script_auth_GT"

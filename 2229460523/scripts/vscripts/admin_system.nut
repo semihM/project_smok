@@ -2917,7 +2917,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			return;
 		}
 		local org = ent.GetOrigin();
-		//ent.SetMoveType(tbl.movetype);
+		ent.SetMoveType(tbl.movetype);
 		ent.SetOrigin(org);
 		ent.Push(tbl.velocity);
 		delete AdminSystem._FrozenPhysics[id];
@@ -4170,9 +4170,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 }
 
-::AdminSystem._CarControl <-
-{
-	bill = 
+::AdminSystem._CarControl <- ::AdminVars.RepeatTableForSurvivors(
 	{
 		keymask = 0
 		forward = Vector(0,0,0)
@@ -4183,85 +4181,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		turnpertick = 7
 		listenerid = -1
 	}
-	francis = 
-	{
-		keymask = 0
-		forward = Vector(0,0,0)
-		speed = 400.0
-		reversescale = -4
-		speedscale = 2.75
-		overridefriction = 0.05
-		turnpertick = 7
-		listenerid = -1
-	}
-	louis = 
-	{
-		keymask = 0
-		forward = Vector(0,0,0)
-		speed = 400.0
-		reversescale = -4
-		speedscale = 2.75
-		overridefriction = 0.05
-		turnpertick = 7
-		listenerid = -1
-	}
-	zoey = 
-	{
-		keymask = 0
-		forward = Vector(0,0,0)
-		speed = 400.0
-		reversescale = -4
-		speedscale = 2.75
-		overridefriction = 0.05
-		turnpertick = 7
-		listenerid = -1
-	}
-	nick = 
-	{
-		keymask = 0
-		forward = Vector(0,0,0)
-		speed = 400.0
-		reversescale = -4
-		speedscale = 2.75
-		overridefriction = 0.05
-		turnpertick = 7
-		listenerid = -1
-	}
-	ellis = 
-	{
-		keymask = 0
-		forward = Vector(0,0,0)
-		speed = 400.0
-		reversescale = -4
-		speedscale = 2.75
-		overridefriction = 0.05
-		turnpertick = 7
-		listenerid = -1
-	}
-	coach = 
-	{
-		keymask = 0
-		forward = Vector(0,0,0)
-		speed = 400.0
-		reversescale = -4
-		speedscale = 2.75
-		overridefriction = 0.05
-		turnpertick = 7
-		listenerid = -1
-	}
-	rochelle = 
-	{
-		keymask = 0
-		forward = Vector(0,0,0)
-		speed = 400.0
-		reversescale = -4
-		speedscale = 2.75
-		overridefriction = 0.05
-		turnpertick = 7
-		listenerid = -1
-	}
-}
+);
 
+	
 ::AdminSystem._StopKeyListenerCmd <- function(ent,args)
 {
 	if (!AdminSystem.IsPrivileged( ent ))
@@ -11553,9 +11475,9 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 
 	if(ent == "!picker")
-		ent = player.GetLookingEntity();
+		ent = player.GetLookingEntity().GetBaseEntity();
 	else if(ent == "!self")
-		ent = player;
+		ent = player.GetBaseEntity();
 	else if(Ent(ent))
 		ent = Ent(ent);
 	else
@@ -14575,6 +14497,22 @@ if ( Director.GetGameMode() == "holdout" )
 
 		Printer(player,str);
 	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.UpdateMenuDuration <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+		
+	local dur = GetArgument(1);
+	dur = dur == null ? 10 : ( dur.tofloat() > 0 ? dur.tofloat() : 1);
+	local old = Convars.GetClientConvarValue("cl_menuduration",player.GetIndex());
+	AdminSystem._Clientbroadcast(player.GetCharacterName(),"cl_menuduration "+dur,1,true,0);
+
+	Printer(player,"Updated menu display duration from " + old + " to " + dur);
 }
 
 /* ******************DANGEROUS FUNCTION*******************
