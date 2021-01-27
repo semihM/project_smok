@@ -3,6 +3,21 @@
  
  - Following documentation is for the **new and updated commands**. Commands that aren't included in this documentation can be found in the [Admin System Guide](https://steamcommunity.com/sharedfiles/filedetails/?id=213591107). Be aware that **some of the commands that are not documented may behave differently** than the guide. 
  
+## Downloading and Installing 
+ - Download **Left 4 Dead 2 Authoring Tools** *(Steam>Library>Tools)*
+ 
+ - Download the **.zip** archive and extract the **project_smok-master** folder **OR** clone the **master** branch into a folder
+ 
+ - Locate the folder named "_**2229460523**_" in the extracted or cloned folders
+ 
+ - Locate the _**vpk.exe**_ in the relative path _**"..\Steam\steamapps\common\Left 4 Dead 2\bin\"**_
+ 
+ - Drag and drop the **folder** named "_**2229460523**_" **onto** the _**vpk.exe**_ . This will create the _**2229460523.vpk**_ file
+ 
+ - Put ( or replace the original if already exists ) the created _**2229460523.vpk**_ file into the relative path _**..\Steam\steamapps\common\Left 4 Dead 2\left4dead2\addons\workshop**_
+ 
+ - Launch the game and check the add-on
+ 
 # Commands
  - Commands can be used:
    + ### Via the menu:
@@ -11,7 +26,7 @@
      
          <code>bind k "show_menu Menu"</code>
      
-       + Open up the menu in-game by pressing the key bound in the previous step and use number keys to go throught the categorized sub-menus
+       + Open up the menu in-game by pressing the key bound in the previous step and use number keys to go through the categorized sub-menus
        
        + **Example:** To make your character say a randomline originated by them, use the following key sequence: **k 6 4 1 1 1**
          
@@ -89,7 +104,7 @@
        //Overloads:
        // {type} should be one of (physicsM: physics object, dynamic: non-physics object, ragdoll: ragdolling models)
        // {model_path} follows this format in general: models/props_{category}/{name}.mdl OR !random for a random model
-       // To check out all possible models: Hammer World Editor -> New -> CTRL+SHIFT+M -> Search all models
+       // To check out all possible models: Left 4 Dead 2 Authoring Tools>Hammer World Editor>CTRL+N>CTRL+SHIFT+M>Search all models
        prop {type: (physicsM, dynamic, ragdoll)} {model_path | !random}
 
        // Example create a flower barrel with physics
