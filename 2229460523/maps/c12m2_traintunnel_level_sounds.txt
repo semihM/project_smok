@@ -1,4 +1,16 @@
-Buttons.snd43
+
+"fex_steam"
+{
+	"channel"		"CHAN_STATIC"
+	"volume"		"0.7"
+	"pitch"			"95, 105"
+	"soundlevel"	    "SNDLVL_120dB"
+	"rndwave"
+	{
+		"wave"	"ambient/gas/steam2.wav"
+		"wave"	"ambient/machines/steam_release_2.wav"
+	}
+}Buttons.snd43
 { 
 	"channel"	"CHAN_ITEM"
 	"volume"	"0.8"

@@ -27239,6 +27239,11 @@
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_exteriors/concrete_plant01_conveyors02.mdl,3;show_menu props_street4"
 					"label"      " Concrete plant conveyor"
 			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_update/c11m1_fakewater.mdl;show_menu props_street4"
+					"label"      " Massive fake-water "
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_street4"
@@ -28265,11 +28270,10 @@
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_wasteland/exterior_fence002c.mdl,50;show_menu props_exteriors1"
 					"label"      " Metal fence 2"
 			}
-
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_exteriors1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_update/whitebrick_128.mdl,7;show_menu props_exteriors1"
+					"label"      " White brick wall (horizontal)"
 			}
 			"8"
 			{
@@ -29362,6 +29366,11 @@
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/deadbodies/dead_male_sittingchair.mdl;show_menu props_deadbodies1"
 					"label"      " dead_male_sittingchair"
 			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/deadbodies/chm_fallensurvivor.mdl;show_menu props_deadbodies1"
+					"label"      " chm_fallensurvivor"
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_deadbodies1"
@@ -29536,8 +29545,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_unique1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func fire_extinguisher;show_menu props_unique1"
+					"label"      " Fire Extinguisher"
 			}
 			"8"
 			{
@@ -29802,22 +29811,22 @@
             "Title"     "Vehicles 1"
             "1"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/cara_69sedan.mdl;show_menu props_vehicles1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/cara_69sedan.mdl&models/props_vehicles/cara_69sedan_glass.mdl;show_menu props_vehicles1"
                     "label"		 " 69 Sedan"
             }
             "2"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/cara_84sedan.mdl;show_menu props_vehicles1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/cara_84sedan.mdl&models/props_vehicles/cara_84sedan_glass.mdl;show_menu props_vehicles1"
                     "label"		 " 84 Sedan" 
             }
             "3"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/cara_95sedan.mdl;show_menu props_vehicles1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/cara_95sedan.mdl&models/props_vehicles/cara_95sedan_glass.mdl;show_menu props_vehicles1"
                     "label"		 " 95 Sedan" 
             }
             "4"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/cara_82hatchback.mdl;show_menu props_vehicles1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/cara_82hatchback.mdl&models/props_vehicles/cara_82hatchback_glass.mdl;show_menu props_vehicles1"
                     "label"		 " 82 Hatchback" 
             }
             "5"
@@ -33423,6 +33432,11 @@
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_exteriors/concrete_plant01_conveyors02.mdl,3;show_menu phys_props_street4"
 					"label"      " Concrete plant conveyor"
 			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_update/c11m1_fakewater.mdl;show_menu phys_props_street4"
+					"label"      " Massive fake-water "
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_street4"
@@ -34449,11 +34463,10 @@
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_wasteland/exterior_fence002c.mdl,50;show_menu phys_props_exteriors1"
 					"label"      " Metal fence 2"
 			}
-
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_exteriors1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_update/whitebrick_128.mdl,7;show_menu phys_props_exteriors1"
+					"label"      " White brick wall (horizontal)"
 			}
 			"8"
 			{
@@ -35546,6 +35559,11 @@
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/deadbodies/dead_male_sittingchair.mdl;show_menu phys_props_deadbodies1"
 					"label"      " dead_male_sittingchair"
 			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/deadbodies/chm_fallensurvivor.mdl;show_menu phys_props_deadbodies1"
+					"label"      " chm_fallensurvivor"
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_deadbodies1"
@@ -35720,8 +35738,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_unique1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func fire_extinguisher,physicsM;show_menu phys_props_unique1"
+					"label"      " Fire Extinguisher"
 			}
 			"8"
 			{
@@ -35986,22 +36004,22 @@
             "Title"     "Vehicles 1"
             "1"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/cara_69sedan.mdl;show_menu phys_props_vehicles1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/cara_69sedan.mdl&models/props_vehicles/cara_69sedan_glass.mdl;show_menu phys_props_vehicles1"
                     "label"		 " 69 Sedan"
             }
             "2"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/cara_84sedan.mdl;show_menu phys_props_vehicles1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/cara_84sedan.mdl&models/props_vehicles/cara_84sedan_glass.mdl;show_menu phys_props_vehicles1"
                     "label"		 " 84 Sedan" 
             }
             "3"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/cara_95sedan.mdl;show_menu phys_props_vehicles1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/cara_95sedan.mdl&models/props_vehicles/cara_95sedan_glass.mdl;show_menu phys_props_vehicles1"
                     "label"		 " 95 Sedan" 
             }
             "4"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/cara_82hatchback.mdl;show_menu phys_props_vehicles1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/cara_82hatchback.mdl&models/props_vehicles/cara_82hatchback_glass.mdl;show_menu phys_props_vehicles1"
                     "label"		 " 82 Hatchback" 
             }
             "5"
@@ -36366,7 +36384,7 @@
 			"Title"     "Vehicles 4"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/van_interior.mdl;show_menu phys_props_vehicles4"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/van_interior.mdl,0,0,500;show_menu phys_props_vehicles4"
 					"label"      " van_interior"
 			}
 			"2"
@@ -36431,7 +36449,7 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/deliveryvan_armored.mdl;show_menu phys_props_vehicles5"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/deliveryvan_armored.mdl,0,0,500;show_menu phys_props_vehicles5"
 					"label"      " deliveryvan_armored"
 			}
 			"4"
@@ -36492,12 +36510,12 @@
 			}
             "4"
 			{
-					"command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/helicopter_rescue.mdl;show_menu phys_props_vehicles6"
+					"command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/helicopter_rescue.mdl,0,0,2500;show_menu phys_props_vehicles6"
                     "label"		 " Rescue Helicopter" 
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/c130.mdl;show_menu phys_props_vehicles6"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/c130.mdl,0,0,2500;show_menu phys_props_vehicles6"
 					"label"      " c130"
 			}
 			"6"
@@ -40160,6 +40178,11 @@
 					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_exteriors/concrete_plant01_conveyors02.mdl,3;show_menu models_self_street4"
 					"label"      " Concrete plant conveyor"
 			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_update/c11m1_fakewater.mdl;show_menu models_self_street4"
+					"label"      " Massive fake-water "
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_street4"
@@ -41126,8 +41149,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_exteriors1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_update/whitebrick_128.mdl,7;show_menu models_self_exteriors1"
+					"label"      " White brick wall (horizontal)"
 			}
 			"8"
 			{
@@ -42095,6 +42118,11 @@
 					"command"    "play buttons/button14;scripted_user_func model,!self,models/deadbodies/dead_male_sittingchair.mdl;show_menu models_self_deadbodies1"
 					"label"      " dead_male_sittingchair"
 			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/deadbodies/chm_fallensurvivor.mdl;show_menu models_self_deadbodies1"
+					"label"      " chm_fallensurvivor"
+			}
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu models_self_menu_start5"
@@ -42209,8 +42237,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_unique1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props/cs_office/fire_extinguisher.mdl;show_menu models_self_unique1"
+					"label"      " Fire Extinguisher"
 			}
 			"8"
 			{
@@ -42455,22 +42483,22 @@
             "Title"     "Vehicles 1"
             "1"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/cara_69sedan.mdl;show_menu models_self_vehicles1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/cara_69sedan.mdl&models/props_vehicles/cara_69sedan_glass.mdl;show_menu models_self_vehicles1"
                     "label"		 " 69 Sedan"
             }
             "2"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/cara_84sedan.mdl;show_menu models_self_vehicles1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/cara_84sedan.mdl&models/props_vehicles/cara_84sedan_glass.mdl;show_menu models_self_vehicles1"
                     "label"		 " 84 Sedan" 
             }
             "3"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/cara_95sedan.mdl;show_menu models_self_vehicles1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/cara_95sedan.mdl&models/props_vehicles/cara_95sedan_glass.mdl;show_menu models_self_vehicles1"
                     "label"		 " 95 Sedan" 
             }
             "4"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/cara_82hatchback.mdl;show_menu models_self_vehicles1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/cara_82hatchback.mdl&models/props_vehicles/cara_82hatchback_glass.mdl;show_menu models_self_vehicles1"
                     "label"		 " 82 Hatchback" 
             }
             "5"
@@ -46065,6 +46093,11 @@
 					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_exteriors/concrete_plant01_conveyors02.mdl,3;show_menu models_picker_street4"
 					"label"      " Concrete plant conveyor"
 			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_update/c11m1_fakewater.mdl;show_menu models_picker_street4"
+					"label"      " Massive fake-water "
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_picker_street4"
@@ -47029,6 +47062,11 @@
 			{
 					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_wasteland/exterior_fence002c.mdl,50;show_menu models_picker_exteriors1"
 					"label"      " Metal fence 2"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_update/whitebrick_128.mdl,7;show_menu models_picker_exteriors1"
+					"label"      " White brick wall (horizontal)"
 			}
 			"8"
 			{
@@ -47996,6 +48034,11 @@
 					"command"    "play buttons/button14;scripted_user_func model,!picker,models/deadbodies/dead_male_sittingchair.mdl;show_menu models_picker_deadbodies1"
 					"label"      " dead_male_sittingchair"
 			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/deadbodies/chm_fallensurvivor.mdl;show_menu models_picker_deadbodies1"
+					"label"      " chm_fallensurvivor"
+			}
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu models_picker_menu_start5"
@@ -48110,8 +48153,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_picker_unique1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props/cs_office/fire_extinguisher.mdl;show_menu models_picker_unique1"
+					"label"      " Fire Extinguisher"
 			}
 			"8"
 			{
@@ -48356,22 +48399,22 @@
             "Title"     "Vehicles 1"
             "1"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/cara_69sedan.mdl;show_menu models_picker_vehicles1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/cara_69sedan.mdl&models/props_vehicles/cara_69sedan_glass.mdl;show_menu models_picker_vehicles1"
                     "label"		 " 69 Sedan"
             }
             "2"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/cara_84sedan.mdl;show_menu models_picker_vehicles1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/cara_84sedan.mdl&models/props_vehicles/cara_84sedan_glass.mdl;show_menu models_picker_vehicles1"
                     "label"		 " 84 Sedan" 
             }
             "3"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/cara_95sedan.mdl;show_menu models_picker_vehicles1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/cara_95sedan.mdl&models/props_vehicles/cara_95sedan_glass.mdl;show_menu models_picker_vehicles1"
                     "label"		 " 95 Sedan" 
             }
             "4"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/cara_82hatchback.mdl;show_menu models_picker_vehicles1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/cara_82hatchback.mdl&models/props_vehicles/cara_82hatchback_glass.mdl;show_menu models_picker_vehicles1"
                     "label"		 " 82 Hatchback" 
             }
             "5"

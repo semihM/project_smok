@@ -972,8 +972,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 
 	if(AdminSystem.Vars.LastLootThinkState)
 	{
-		local tadd = _CreateLootThinker();
-		printl("[Bot-Thinker] Enabled looting/sharing thinking for bots via adder #"+tadd.GetIndex());
+		::VSLib.Timers.AddTimer(8,false,DelayedBotLootThinkAdder,{});
 	}
 	else
 	{
@@ -985,6 +984,12 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	{
 		AdminSystem.RestoreModels(survivor);
 	}
+}
+
+::DelayedBotLootThinkAdder <- function(...)
+{
+	local tadd = _CreateLootThinker();
+	printl("[Bot-Thinker] Enabled looting/sharing thinking for bots via adder #"+tadd.GetIndex());
 }
 
 ::AdminSystem.RestoreModels <- function(player)
@@ -1762,6 +1767,12 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.MinigunCmd( player, args );
 			break;
 		}
+		case "fire_extinguisher":
+		case "fire_ex":
+		{
+			AdminSystem.FireExtinguisherCmd( player, args );
+			break;
+		}
 		case "spawn_ammo":
 		{
 			AdminSystem.SpawnAmmoCmd( player, args );
@@ -2299,6 +2310,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	}
 }
 
+// TO-DO: Write a library for handling binary and hex, because squirrel is fucking stupid :)
 ::dec2bin <- function(val,bits=32)
 {
 	local b = "";
@@ -2963,41 +2975,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	debug = 0
 }
 
-::AdminSystem.BotOnSearchOrSharePath <-
-{
-	bill=false,
-	francis=false,
-	louis=false,
-	zoey=false,
-	nick=false,
-	coach=false,
-	ellis=false,
-	rochelle=false
-}
+::AdminSystem.BotOnSearchOrSharePath <- AdminVars.RepeatValueForSurvivors(false);
 
-::AdminSystem.BotBringingItem <-
-{
-	bill=false,
-	francis=false,
-	louis=false,
-	zoey=false,
-	nick=false,
-	coach=false,
-	ellis=false,
-	rochelle=false
-}
+::AdminSystem.BotBringingItem <- AdminVars.RepeatValueForSurvivors(false);
 
-::AdminSystem.BotTemporaryStopState <-
-{
-	bill=false,
-	francis=false,
-	louis=false,
-	zoey=false,
-	nick=false,
-	coach=false,
-	ellis=false,
-	rochelle=false
-}
+::AdminSystem.BotTemporaryStopState <- AdminVars.RepeatValueForSurvivors(false);
 
 ::_ClearBeingTakenStatus <- function(args)
 {
@@ -4040,9 +4022,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	else if(Utils.CalculateDistance(player.GetOrigin(),player.GetLookingLocation())>100)
 		return;
 	
-
-	AdminSystem.ModelCmd(player,{_fromDrive=lookedent});
-
 	lookedent.Kill();
 	
 	AdminSystem._CreateKeyListenerCmd(player,args);
@@ -4263,7 +4242,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 ::_GetEnumString <- function(str)
 {
-	local temp = ["1","2","3","4","5","6","7","8","9",",","="," ","_",";","\""] // "
+	local temp = ["0","1","2","3","4","5","6","7","8","9",",","="," ","_",";","\""] // "
 	local res = ""
 	local ch = ""
 	for(local i=0;i<str.len();i++)
@@ -7398,6 +7377,15 @@ function ChatTriggers::ents_around( player, args, text )
 {
 	AdminSystem.EntitiesAroundCmd( player, args );
 }
+
+function ChatTriggers::fire_ex( player, args, text )
+{
+	AdminSystem.FireExtinguisherCmd( player, args );
+}
+function ChatTriggers::fire_extinguisher( player, args, text )
+{
+	AdminSystem.FireExtinguisherCmd( player, args );
+}
 /////////////////////////others/////////////////////////////
 
 function ChatTriggers::adminmode( player, args, text )
@@ -9508,23 +9496,8 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	local ent = null
-	if(args != null)
-	{
-		if((typeof args) == "table" )
-		{
-			if(("_fromDrive" in args))
-			{
-				ent = args._fromDrive;
-				local model = ent.GetModel();
-				player.SetModel(model);
-				AdminSystem.Vars._modelPreference[player.GetCharacterNameLower()].lastmodel = model;
-				return;
-			}
-		}
-	}
-
-	ent = GetArgument(1);
+	local ent = GetArgument(1);
+	
 	if(ent == "!picker")
 		ent = player.GetLookingEntity();
 	else if(ent == "!self")
@@ -10865,9 +10838,10 @@ if ( Director.GetGameMode() == "holdout" )
 	local MDL = GetArgument(2);
 	if(MDL == "!random")
 		MDL = RandomPick(::Model.paths)
+
 	local raise = GetArgument(3);
-	
 	local yaw = GetArgument(4);
+	local massScale = GetArgument(5);
 
 	local EyePosition = player.GetLookingLocation();
 	local EyeAngles = player.GetEyeAngles();
@@ -10916,6 +10890,20 @@ if ( Director.GetGameMode() == "holdout" )
 		else
 		{
 			EyePosition.z += 0.5;
+		}
+		
+		if(MDL.find("&") != null)
+		{
+			createdent = []
+			foreach(mdl in split(MDL,"&"))
+			{
+				local ent = Utils.SpawnPhysicsProp( mdl, EyePosition, GroundPosition );
+				if(ent)
+					createdent.append(ent);
+			}
+		}
+		else
+		{
 			createdent = Utils.SpawnPhysicsProp( MDL, EyePosition, GroundPosition );
 		}
 	}
@@ -10938,15 +10926,35 @@ if ( Director.GetGameMode() == "holdout" )
 			EyePosition.z += spawn_height.tofloat();
 		}
 		// +++++++++++++++ SETTINGS END
+
 		if ( raise != null )
 		{
 			EyePosition.z += raise.tofloat();
-			createdent = Utils.SpawnPhysicsMProp( MDL, EyePosition, GroundPosition );
 		}
 		else
 		{
 			EyePosition.z += 0.5;
-			createdent = Utils.SpawnPhysicsMProp( MDL, EyePosition, GroundPosition );
+		}
+
+		if(massScale)
+		{
+			try{massScale = massScale.tofloat();}
+			catch(e){printl((typeof massScale)+" couldnt be parsed as float.");return;}
+		}
+
+		if(MDL.find("&") != null)
+		{
+			createdent = []
+			foreach(mdl in split(MDL,"&"))
+			{
+				local ent = Utils.SpawnPhysicsMProp( mdl, EyePosition, GroundPosition, {massScale = massScale} );
+				if(ent)
+					createdent.append(ent);
+			}
+		}
+		else
+		{
+			createdent = Utils.SpawnPhysicsMProp( MDL, EyePosition, GroundPosition, {massScale = massScale} );
 		}
 	}
 	else if ( Entity == "ragdoll" )
@@ -11035,7 +11043,17 @@ if ( Director.GetGameMode() == "holdout" )
 		if ( raise )
 		{
 			EyePosition.z += raise.tofloat();
-			createdent = Utils.SpawnDynamicProp( MDL, EyePosition, GroundPosition );
+		}
+	
+		if(MDL.find("&") != null)
+		{
+			createdent = []
+			foreach(mdl in split(MDL,"&"))
+			{
+				local ent = Utils.SpawnDynamicProp( mdl, EyePosition, GroundPosition );
+				if(ent)
+					createdent.append(ent);
+			}
 		}
 		else
 		{
@@ -11043,12 +11061,24 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 	}
 
-	if(createdent == null)
+	if(createdent == null || createdent == [])
 	{
 		Messages.ThrowPlayer(player,CmdMessages.Prop.Failed(Entity));return;
 	}
 
-	Printer(player,CmdMessages.Prop.Success(Entity,createdent));
+	if(typeof createdent == "array")
+	{
+		local parentent = createdent[0];
+		foreach(e in createdent.slice(1,createdent.len()))
+		{
+			e.Input("setparent","#"+parentent.GetIndex(),0);
+		}
+		Printer(player,CmdMessages.Prop.SuccessParented(Entity,createdent));
+	}
+	else
+	{
+		Printer(player,CmdMessages.Prop.Success(Entity,createdent));
+	}
 }
 
 ::AdminSystem.DoorCmd <- function ( player, args )
@@ -14147,8 +14177,7 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		else
 		{
-			local rgba = dec2rgba(clr)
-			entlooked.InputColor(rgba[0], rgba[1], rgba[2],last_t+intervals);
+			DoEntFire("!self","RunScriptCode","Entity("+entlooked.GetIndex()+").SetNetProp(\""+_GetEnumString("m_clrRender")+"\","+clr+")",last_t+intervals+0.1,null,entlooked.GetBaseEntity());
 		}
 	}
 
@@ -15074,6 +15103,9 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem._TakeOffHatCmd <- function (player,args)
 {
 	if (!AdminSystem.IsPrivileged( player ))
@@ -15129,15 +15161,15 @@ if ( Director.GetGameMode() == "holdout" )
 			angles = ent.GetAngles(),
 		};
 		local skin = ent.GetNetProp("m_nSkin");
+		local color = ent.GetNetProp("m_clrRender");
 		local scale = ent.GetModelScale();
-		ent.Kill();
-		
+
 		new_ent = Utils.CreateEntityWithTable(keyvals);
-		local looked = player.GetLookingLocation();
 
 		if(new_ent == null)
 		{
-			//printB(player.GetCharacterName(),"Failed to create new entity after taking off hat entity",true,"error",true,true)
+			ent.KillHierarchy();
+			//printB(player.GetCharacterName(),"Failed to create new entity after letting go the held item",true,"error",true,true)
 			
 			keyvals["classname"] = "prop_physics_multiplayer"
 			keyvals["model"] = "models/items/l4d_gift.mdl"
@@ -15145,12 +15177,8 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		else
 		{
-			new_ent.SetNetProp("m_nSkin",skin);
-			new_ent.SetModelScale(scale);
-			//printB(player.GetCharacterName(),"Took off hat entity, created new entity #"+new_ent.GetIndex(),true,"info",true,true)
+			RecreateHierarchy(ent,new_ent,{color=color,skin=skin,scale=scale,name=ent.GetName()});
 		}
-		
-		return;
 	}
 	
 
@@ -15164,6 +15192,7 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	ent.Input("RunScriptCode","originWrap(Entity("+ent.GetIndex()+"),Player("+player.GetIndex()+"))",0.1);
 }
+
 ::originWrap <- function(ent,player)
 {
 	local looked = player.GetLookingLocation();
@@ -15179,6 +15208,10 @@ if ( Director.GetGameMode() == "holdout" )
 		ent.SetOrigin(looked);
 	}
 }
+
+/*
+ * @authors rhino
+ */
 ::AdminSystem._WearHatCmd <- function (player,args)
 {
 	if (!AdminSystem.IsPrivileged( player ))
@@ -15256,6 +15289,9 @@ if ( Director.GetGameMode() == "holdout" )
 	roll = 0
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem._HatPosition <- function(player,args)
 {
 	if (!AdminSystem.IsPrivileged( player ))
@@ -15267,6 +15303,9 @@ if ( Director.GetGameMode() == "holdout" )
 	AdminSystem.Vars._wornHat[player.GetCharacterNameLower()].wearAttachPos = pos;
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.UpdateAimedEntityDirection <- function(player,args)
 {
 	if (!AdminSystem.IsPrivileged( player ))
@@ -15775,12 +15814,12 @@ if ( Director.GetGameMode() == "holdout" )
 			local skin = ent.GetNetProp("m_nSkin");
 			local color = ent.GetNetProp("m_clrRender");
 			local scale = ent.GetModelScale();
-			ent.Kill();
-			
+
 			new_ent = Utils.CreateEntityWithTable(keyvals);
 
 			if(new_ent == null)
 			{
+				ent.Kill();
 				//printB(player.GetCharacterName(),"Failed to create new entity after letting go the held item",true,"error",true,true)
 				
 				keyvals["classname"] = "prop_physics_multiplayer"
@@ -15789,10 +15828,7 @@ if ( Director.GetGameMode() == "holdout" )
 			}
 			else
 			{
-				new_ent.SetNetProp("m_clrRender",color);
-				new_ent.SetNetProp("m_nSkin",skin);
-				new_ent.SetModelScale(scale);
-				//printB(player.GetCharacterName(),"Let go the held entity created new entity #"+new_ent.GetIndex(),true,"info",true,true)
+				RecreateHierarchy(ent,new_ent,{color=color,skin=skin,scale=scale,name=ent.GetName()});
 			}
 
 			AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = "";
@@ -15904,27 +15940,23 @@ if ( Director.GetGameMode() == "holdout" )
 			local skin = ent.GetNetProp("m_nSkin");
 			local color = ent.GetNetProp("m_clrRender");
 			local scale = ent.GetModelScale();
-			ent.Kill();
-			
+
 			new_ent = Utils.CreateEntityWithTable(keyvals);
-			
+
 			if(new_ent == null)
 			{
+				ent.Kill();
 				//printB(player.GetCharacterName(),"Failed to create new entity after letting go the held item",true,"error",true,true)
 				
 				keyvals["classname"] = "prop_physics_multiplayer"
 				keyvals["model"] = "models/items/l4d_gift.mdl"
 				new_ent = Utils.CreateEntityWithTable(keyvals);
-				
 			}
 			else
 			{
-				new_ent.SetNetProp("m_clrRender",color);
-				new_ent.SetNetProp("m_nSkin",skin);
-				new_ent.SetModelScale(scale);
-				//printB(player.GetCharacterName(),"Let go the held entity created new entity #"+new_ent.GetIndex(),true,"info",true,true)
+				RecreateHierarchy(ent,new_ent,{color=color,skin=skin,scale=scale,name=ent.GetName()});
 			}
-		
+			
 			new_ent.Input("RunScriptCode","_yeetit(Entity("+new_ent.GetIndex()+"), Player("+player.GetIndex()+"))",0);
 			AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = "";
 			return;
@@ -15968,6 +16000,133 @@ if ( Director.GetGameMode() == "holdout" )
 	delete ::VSLib.Timers.TimersID[name];
 }
 
+::RecreateHierarchy <- function(oldparent,newparent,other)
+{
+	// Create a copy of the old hierarchy
+	local firstchild = oldparent.FirstMoveChild();
+	while(firstchild != null)
+	{
+		local next = firstchild.NextMovePeer();
+
+		// Parent the new child
+		local locorg = firstchild.GetLocalOrigin();
+		local locang = firstchild.GetLocalAngles();
+
+		firstchild.Input("clearparent","",0);
+		firstchild.Input("setparent","#"+newparent.GetIndex(),0);
+		firstchild.SetLocalOrigin(locorg);
+		firstchild.SetLocalAngles(locang);
+
+		// Move the next child in the same level
+		firstchild = next;
+	}
+
+	// Remove old hierarchy
+	oldparent.KillDelayed(0.1);
+
+	newparent.SetName(other.name);
+	newparent.SetNetProp("m_clrRender",other.color);
+	newparent.SetNetProp("m_nSkin",other.skin);
+	newparent.SetModelScale(other.scale);
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.FireExtinguisherCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local typ = GetArgument(1);
+
+	local EyePosition = player.GetLookingLocation();
+	local EyeAngles = player.GetEyeAngles();
+	local GroundPosition = QAngle(0,0,0);
+
+	local name = player.GetCharacterNameLower();
+	
+	GroundPosition.y = EyeAngles.y;
+
+	local ent = typ == "physicsM" 
+		? Utils.SpawnPhysicsMProp( "models/props/cs_office/fire_extinguisher.mdl", EyePosition, GroundPosition )
+		: Utils.SpawnDynamicProp( "models/props/cs_office/fire_extinguisher.mdl", EyePosition, GroundPosition );
+	ent.SetName("project_smok_fire_ex_base_"+UniqueString());
+	
+	local ptc = ent.AttachParticle( "steam_long" , -1, ent.GetOrigin(), false);
+
+	ptc.SetName("project_smok_fire_ex_particle_"+UniqueString());
+	::VSLib.Timers.AddTimer(0.1,false,Fire_Ex_OriginWrap,{ent=ptc});
+	
+	local steam_sound = Utils.CreateEntityWithTable({classname="ambient_generic", message = "fex_steam", spawnflags = 16, origin = ent.GetOrigin()});
+	ent.AttachOther(steam_sound,false,0,null);
+
+	steam_sound.SetName("project_smok_fire_ex_sound_"+UniqueString());
+	::VSLib.Timers.AddTimer(0.1,false,Fire_Ex_OriginWrap,{ent=steam_sound});
+
+	local enumstr = _GetEnumString(ptc.GetIndex()+"__"+steam_sound.GetIndex());
+
+	ent.Input("addoutput","OnTakeDamage !self,RunScriptCode,Fire_Ex_OnTakeDamage(" + enumstr + "),0,1",0.1);
+	
+	// To-DO: Not working...
+	ent.Input("addoutput","OnKilled "+ent.GetName()+",RunScriptCode,Fire_Ex_ReAttach(" + enumstr + "),0,1",0.1);
+	//out("Connected outputs")
+
+	Printer(player,"Fire Extinguisher " + "\x03" + "#" + ent.GetIndex() + "\x01" + ", particle " + "\x03" + "#" + ptc.GetIndex() + "\x01" + ", sound " + "\x03" + "#" + steam_sound.GetIndex());
+}
+
+::Fire_Ex_ReAttach <- function(inds)
+{
+	out("Killed, trying to reconnect outputs")
+	local inds = split(inds,"__");
+
+	local p = Entity(inds[0]);
+	if(!p.IsEntityValid() || p.GetName().find("project_smok_fire_ex_particle_") == null)
+		return;
+
+	local s = Entity(inds[1]);
+	if(!s.IsEntityValid() || s.GetName().find("project_smok_fire_ex_sound_") == null)
+		return;
+	
+	foreach(found_ex in Objects.OfNameWithin("project_smok_fire_ex_base",s.GetOrigin(),60))
+	{
+		local enumstr = _GetEnumString(p.GetIndex()+"__"+s.GetIndex());
+		
+		out("Reattaching outputs to " + "\x03" + "#"+found_ex.GetIndex())
+		found_ex.Input("addoutput","OnTakeDamage !self,RunScriptCode,Fire_Ex_OnTakeDamage(" + enumstr + "),0,1",0.1);
+		found_ex.Input("addoutput","OnKilled "+found_ex.GetName()+",RunScriptCode,Fire_Ex_ReAttach(" + enumstr + "),0,1",0.1);
+		return;
+	}
+}
+
+::Fire_Ex_OriginWrap <- function(args){args.ent.SetLocalOrigin(Vector(3,-1,10));}
+
+::Fire_Ex_OnTakeDamage <- function(inds)
+{
+	//out("Took damage! " + inds)
+	foreach(ind in split(inds,"__"))
+	{
+		local ch = Entity("#"+ind);
+		if(ch.GetParent() == null || !ch.GetParent().IsEntityValid())
+		{
+			return;
+		}
+
+		if(ch.GetClassname() == "ambient_generic" && ch.GetName().find("project_smok_fire_ex_sound_") != null)
+		{
+			ch.Input("ToggleSound");
+			ch.KillDelayed(8);
+			ch.SetName("project_smok_fire_ex_USEDSOUND");
+		}
+		else if(ch.GetClassname() == "info_particle_system" && ch.GetName().find("project_smok_fire_ex_particle_") != null)
+		{
+			ch.Input("Start");
+			ch.KillDelayed(7);
+			ch.SetName("project_smok_fire_ex_USEDPARTICLE");
+		}
+	}
+
+}
 /* @authors rhino
  * Show grabbing and throwing settings
 		entid="",

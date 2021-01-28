@@ -755,7 +755,21 @@ getconsttable()["COLOR_OLIVE_GREEN"] <- "\x05";
 
                 Success = function(classname,ent)
                 {
-                    return "Created " + classname + " entity(" + COLOR_BRIGHT_GREEN + "#" + ent.GetIndex() + COLOR_DEFAULT + ") named " + ent.GetName();
+                    return "Created " + classname + " entity " + COLOR_BRIGHT_GREEN + "#" + ent.GetIndex();
+                }
+
+                SuccessParented = function(classname,ents)
+                {
+                    local childrenents = "";
+                    foreach(i,ent in ents.slice(1,ents.len()))
+                    {
+                        childrenents = COLOR_BRIGHT_GREEN + "#" + ent.GetIndex() + COLOR_DEFAULT;
+                        if(i != ents.len() - 2)
+                        {
+                            childrenents += ", ";
+                        }
+                    }
+                    return "Created " + classname + " parent entity " + COLOR_BRIGHT_GREEN + "#" + ents[0].GetIndex() + COLOR_DEFAULT + " with children:\n" + childrenents;
                 }
 
                 SuccessDoor = function(ent)
@@ -1109,7 +1123,7 @@ class ::Messages.Message
         {
             _tag = Messages.IdxAndTypeCheck(tbl,"_tag","string") ? (tag == "" ? tbl._tag : tag ) : tag;
 
-            _player = Messages.IdxAndTypeCheck(tbl,"_player","string") ? tbl._player : "";
+            _player = Messages.IdxAndTypeCheck(tbl,"_player","string") ? tbl._player : (Messages.IdxAndTypeCheck(tbl,"_player","VSLIB_PLAYER") ? tbl._player.GetCharacterNameLower() : "");
 
             _func = Messages.IdxAndTypeCheck(tbl,"_func","string") ? tbl._func : "";
 
@@ -1152,7 +1166,7 @@ class ::Messages.Message
     function Get(toPlayer=true)
     {
         return _tag + " " 
-                + (toPlayer && _player != "" ? _player + " -> " 
+                + (!toPlayer && _player != "" ? _player + " -> " 
                             : "")
                 + _func  + " "
                 + ::VSLib.Utils.ArrayString(_args,true) + " " 
@@ -1177,7 +1191,7 @@ class ::Messages.Message
             case Messages.MessageType.ERROR:
             {
                 return COLOR_ORANGE + _tag + " " 
-                        + (toPlayer && _player != "" ? COLOR_DEFAULT + _player + COLOR_ORANGE + " -> " 
+                        + (!toPlayer && _player != "" ? COLOR_DEFAULT + _player + COLOR_ORANGE + " -> " 
                                     : "")
                         + (_func == "" ? "" 
                                        : COLOR_BRIGHT_GREEN + _func + " ") 
@@ -1188,7 +1202,7 @@ class ::Messages.Message
             case Messages.MessageType.WARNING:
             {
                 return COLOR_OLIVE_GREEN + _tag + " " 
-                        + (toPlayer && _player != "" ? COLOR_DEFAULT + _player + COLOR_OLIVE_GREEN + " -> " 
+                        + (!toPlayer && _player != "" ? COLOR_DEFAULT + _player + COLOR_OLIVE_GREEN + " -> " 
                                     : "")
                         + (_func == "" ? "" 
                                        : COLOR_BRIGHT_GREEN + _func + " ") 
@@ -1199,7 +1213,7 @@ class ::Messages.Message
             case Messages.MessageType.INFO:
             {
                 return COLOR_BRIGHT_GREEN + _tag + " "
-                        + (toPlayer && _player != "" ? COLOR_DEFAULT + _player + COLOR_BRIGHT_GREEN + " -> " 
+                        + (!toPlayer && _player != "" ? COLOR_DEFAULT + _player + COLOR_BRIGHT_GREEN + " -> " 
                                     : "")
                         + (_func == "" ? "" 
                                        : COLOR_BRIGHT_GREEN + _func + " ") 
@@ -1221,7 +1235,7 @@ class ::Messages.Message
         {
             ClientPrint(player.GetBaseEntity(),
                         2,
-                        colored ? GetColored() : Get());
+                        colored ? GetColored(true) : Get(true));
             return true;
         }
         else
@@ -1248,7 +1262,7 @@ class ::Messages.Message
         {
             ClientPrint(player.GetBaseEntity(),
                         3,
-                        colored ? GetColored() : Get());
+                        colored ? GetColored(true) : Get(true));
             return true;
         }
         else

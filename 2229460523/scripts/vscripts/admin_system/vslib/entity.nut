@@ -2153,7 +2153,10 @@ function VSLib::Entity::SetLocalOrigin(vec)
 	}
 	
 	if(GetParent() == null)
-	{_ent.SetOrigin(vec);return;}
+	{
+		//_ent.SetOrigin(vec);
+		return;
+	}
 
 	_ent.SetLocalOrigin(vec);
 }
@@ -3419,7 +3422,7 @@ function VSLib::Entity::Ignite(time)
  * particle system that was created, so if you need to attach it to a
  * specific attachment point or whatever, you can.
  */
-function VSLib::Entity::AttachParticle(particleName, duration, attachpos=null)
+function VSLib::Entity::AttachParticle(particleName, duration, attachpos=null,start=true)
 {
 	if (!IsEntityValid())
 	{
@@ -3430,7 +3433,7 @@ function VSLib::Entity::AttachParticle(particleName, duration, attachpos=null)
 	particleName = particleName.tostring();
 	duration = duration.tofloat();
 	
-	local particle = g_ModeScript.CreateSingleSimpleEntityFromTable({ classname = "info_particle_system", targetname = "vslib_tmp_" + UniqueString(), origin = GetLocation(), angles = QAngle(0,0,0), start_active = true, effect_name = particleName });
+	local particle = g_ModeScript.CreateSingleSimpleEntityFromTable({ classname = "info_particle_system", targetname = "vslib_tmp_" + UniqueString(), origin = GetLocation(), angles = QAngle(0,0,0), start_active = start, effect_name = particleName });
 	
 	if (!particle)
 	{
@@ -3438,7 +3441,8 @@ function VSLib::Entity::AttachParticle(particleName, duration, attachpos=null)
 		return;
 	}
 	
-	DoEntFire("!self", "Start", "", 0, null, particle);
+	if(start) // probably an unnecessary call
+		DoEntFire("!self", "Start", "", 0, null, particle);
 	
 	local vsParticle = ::VSLib.Entity(particle);
 	
