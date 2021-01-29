@@ -8217,7 +8217,7 @@
 
 		"1"
 		{
-			"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/van_interior.mdl;show_menu VansTrucksBus"
+			"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/van.mdl;show_menu VansTrucksBus"
 			"label"		 " Van"
 		}
 		"2"
@@ -25312,7 +25312,7 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lighthouse/junkyard_crane_arm.mdl,-60;show_menu props_laststand1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lighthouse/junkyard_crane_base.mdl&models/lighthouse/junkyard_crane_arm.mdl&models/lighthouse/junkyard_crane_windows.mdl;show_menu props_laststand1"
 					"label"      " Crane"
 			}
 			"5"
@@ -25363,12 +25363,12 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func door,models/lighthouse/checkpoint_door_lighthouse01.mdl;show_menu props_laststand2"
+					"command"    "play buttons/button14;scripted_user_func door,models/lighthouse/checkpoint_door_lighthouse01.mdl&models/lighthouse/checkpoint_door_lighthouse01_metal.mdl;show_menu props_laststand2"
 					"label"      " Saferoom door 1"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func door,models/lighthouse/checkpoint_door_lighthouse02.mdl;show_menu props_laststand2"
+					"command"    "play buttons/button14;scripted_user_func door,models/lighthouse/checkpoint_door_lighthouse02.mdl&models/lighthouse/checkpoint_door_lighthouse02_metal.mdl;show_menu props_laststand2"
 					"label"      " Saferoom door 2"
 			}
 			"5"
@@ -25459,7 +25459,7 @@
 			
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lighthouse/diesel_pump.mdl;show_menu props_laststand3"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lighthouse/diesel_pump.mdl&models/lighthouse/diesel_pump_fan.mdl&models/lighthouse/diesel_pump_finale.mdl;show_menu props_laststand3"
 					"label"      " Generator"
 			}
 			"2"
@@ -27254,6 +27254,37 @@
 					"command"    "play buttons/button14;show_menu props_street3"
 					"label"      " << Back"
 			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu props_street5"
+					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"props_street5"
+	{
+			"Title"     "More exterior stuff 5"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lighthouse/props/estuary_bridge_beams.mdl&models/lighthouse/props/estuary_bridge_corrug.mdl,130;show_menu props_street5"
+					"label"      " Raise roof on beams"
+			}
+			
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_street5"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu props_street4"
+					"label"      " << Back"
+			}
 			"0"
 			{
 					"command"    "play buttons/button14"
@@ -28307,7 +28338,7 @@
 		}
 		"3"
 		{
-				"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_exteriors/guardshack.mdl;show_menu props_exteriors2"
+				"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_exteriors/guardshack.mdl&models/props_exteriors/guardshack_glass.mdl;show_menu props_exteriors2"
 				"label"      " Guardshack"
 		}
 		"4"
@@ -28358,7 +28389,7 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_industrial/construction_crane.mdl,723;show_menu props_industrial1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_industrial/construction_crane.mdl&models/props_industrial/construction_crane_leverbody.mdl&models/props_industrial/construction_crane_leverhandle.mdl&models/props_industrial/construction_crane_windows.mdl,723;show_menu props_industrial1"
 					"label"      " Crane"
 			}
 			"4"
@@ -28514,13 +28545,57 @@
 					"command"    "play buttons/button14;show_menu prop_menu_start3"
 					"label"      " << Back"
 			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu props_fairgrounds2"
+					"label"      " >> Next"
+			}
 			"0"
 			{
 					"command"    "play buttons/button14"
 					"label"      " Exit"
 			}
 	}
-	
+
+	"props_fairgrounds2"
+	{
+			"Title"     "Fairgrounds stuff 2"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/elephant.mdl;show_menu props_fairgrounds2"
+					"label"      " Toy elephant"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/alligator.mdl;show_menu props_fairgrounds2"
+					"label"      " Toy alligator"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/giraffe.mdl;show_menu props_fairgrounds2"
+					"label"      " Toy giraffe"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/snake.mdl;show_menu props_fairgrounds2"
+					"label"      " Toy snake"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_fairgrounds2"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu props_fairgrounds1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}	
 	"props_fairgrounds_rides1"
 	{
 			"Title"     "Fairground rides"
@@ -28570,7 +28645,6 @@
 					"label"      " Exit"
 			}
 	}
-
 	"props_highway1"
 	{
 			"Title"     "Highway stuff"
@@ -29022,6 +29096,11 @@
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_lab/monitor01a.mdl;show_menu props_lab1"
 					"label"      " Monitor"
 			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_collectables/alchemy_table_glass.mdl;show_menu props_lab1"
+					"label"      " alchemy_table_glass"
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_lab1"
@@ -29247,7 +29326,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func door,models/props_downtown/metal_door_112.mdl;show_menu props_doors2"
+					"command"    "play buttons/button14;scripted_user_func door,models/props_downtown/metal_door_112.mdl,-8;show_menu props_doors2"
 					"label"      " Metal door 2"
 			}
 			"3"
@@ -29255,6 +29334,16 @@
                     "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_equipment/securitycheckpoint.mdl;show_menu props_doors2"
                     "label"		 " Security Checkpoint"
 		    }
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func door,models/lighthouse/checkpoint_door_lighthouse01.mdl&models/lighthouse/checkpoint_door_lighthouse01_metal.mdl;show_menu props_doors2"
+					"label"      " Saferoom door 1 (The Last Stand)"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func door,models/lighthouse/checkpoint_door_lighthouse02.mdl&models/lighthouse/checkpoint_door_lighthouse02_metal.mdl;show_menu props_doors2"
+					"label"      " Saferoom door 2 (The Last Stand)"
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_doors2"
@@ -29475,7 +29564,12 @@
 			"1"
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vents/ventbreakable01.mdl;show_menu props_vents1"
-					"label"      " Vent"
+					"label"      " Vent (Breakable)"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_trailers/window08.mdl;show_menu props_vents1"
+					"label"      " Vent small"
 			}
 			
 			"7"
@@ -29923,7 +30017,7 @@
 
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/boat_ski.mdl,18;show_menu props_boats2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/boat_ski.mdl&models/props_vehicles/boat_ski_glass.mdl,18;show_menu props_boats2"
 					"label"      " Speed boat"
 			}
 			"2"
@@ -30086,33 +30180,33 @@
 			}
 			"2"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/cara_95sedan_wrecked.mdl;show_menu props_vehicles2"
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/cara_95sedan_wrecked.mdl&models/props_vehicles/cara_95sedan_wrecked_glass.mdl;show_menu props_vehicles2"
                     "label"		 " 95 Sedan Wrecked" 
             }
             "3"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/cara_82hatchback_wrecked.mdl;show_menu props_vehicles2"
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/cara_82hatchback_wrecked.mdl&models/props_vehicles/cara_82hatchback_wrecked_glass.mdl;show_menu props_vehicles2"
                     "label"		 " 82 Hatchback Wrecked" 
             }
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/news_van.mdl;show_menu props_vehicles2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/news_van.mdl&models/props_vehicles/van_glass.mdl&models/props_vehicles/van_cab_controls.mdl;show_menu props_vehicles2"
 					"label"      " News van"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/longnose_truck.mdl;show_menu props_vehicles2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/longnose_truck.mdl&models/props_vehicles/longnose_truck_glass.mdl;show_menu props_vehicles2"
 					"label"      " Long-nose Truck"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/flatnose_truck.mdl;show_menu props_vehicles2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/flatnose_truck.mdl&models/props_vehicles/flatnose_truck_glass.mdl;show_menu props_vehicles2"
 					"label"      " Flat-nose Truck"
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_vehicles2"
-					"label"      " Delete object"
+					"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/semi_truck3.mdl&models/props_vehicles/semi_truck_glass.mdl;show_menu props_vehicles2"
+					"label"		 " Semi Truck" 
 			}
 			"8"
 			{
@@ -30136,32 +30230,32 @@
 			"Title"     "Vehicles 3"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/pickup_truck_78.mdl;show_menu props_vehicles3"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/pickup_truck_78.mdl&models/props_vehicles/pickup_truck_78_glass.mdl;show_menu props_vehicles3"
 					"label"      " Pickup truck '78"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/pickup_truck_2004.mdl;show_menu props_vehicles3"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/pickup_truck_2004.mdl&models/props_vehicles/pickup_truck_2004_glass.mdl;show_menu props_vehicles3"
 					"label"      " Pickup truck 2004"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/police_car_rural.mdl;show_menu props_vehicles3"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/police_car_rural.mdl&models/props_vehicles/police_car_rural_trunkopen_glass.mdl;show_menu props_vehicles3"
 					"label"      " Police car"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/suv_2001.mdl;show_menu props_vehicles3"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/suv_2001.mdl&models/props_vehicles/suv_2001_glass.mdl;show_menu props_vehicles3"
 					"label"      " SUV 2001"
 			}
             "5"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/taxi_cab.mdl;show_menu props_vehicles3"
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/taxi_cab.mdl&models/props_vehicles/taxi_city_glass.mdl;show_menu props_vehicles3"
                     "label"		 " Taxi" 
             }
             "6"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/police_car_city.mdl;show_menu props_vehicles3"
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/police_car_city.mdl&models/props_vehicles/police_car_city_glass.mdl;show_menu props_vehicles3"
                     "label"		 " City police car"
             }
 			
@@ -30192,12 +30286,12 @@
 			"Title"     "Vehicles 4"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/van_interior.mdl;show_menu props_vehicles4"
-					"label"      " van_interior"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/van.mdl&models/props_vehicles/van_glass.mdl&models/props_vehicles/van_cab_controls.mdl;show_menu props_vehicles4"
+					"label"      " Van"
 			}
 			"2"
 			{
-					"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/boat_cabin35ft.mdl,35;show_menu props_vehicles4"
+					"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/boat_cabin35ft.mdl&models/props_vehicles/boat_cabin35ft_glass.mdl,35;show_menu props_vehicles4"
                     "label"		 " Boat 35ft2" 
 			}
 			"3"
@@ -30207,12 +30301,12 @@
 			}
 			"4"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/utility_truck.mdl;show_menu props_vehicles4"
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/utility_truck.mdl&models/props_vehicles/utility_truck_windows.mdl;show_menu props_vehicles4"
                     "label"		 " Utility Truck" 
             }
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/de_nuke/truck_nuke.mdl;show_menu props_vehicles4"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/de_nuke/truck_nuke.mdl&models/props/de_nuke/truck_nuke_glass.mdl;show_menu props_vehicles4"
 					"label"      " Truck"
 			}
 			"6"
@@ -30257,7 +30351,7 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/deliveryvan_armored.mdl;show_menu props_vehicles5"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/deliveryvan_armored.mdl&models/props_vehicles/deliveryvan_armored_glass.mdl;show_menu props_vehicles5"
 					"label"      " deliveryvan_armored"
 			}
 			"4"
@@ -30328,7 +30422,7 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/racecar_damaged.mdl;show_menu props_vehicles6"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/racecar_damaged.mdl&models/props_vehicles/racecar_glass.mdl;show_menu props_vehicles6"
 					"label"      " Jimmy Gibbs Jr.'s race car"
 			}
 			"7"
@@ -31505,7 +31599,7 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/junkyard_crane_arm.mdl,-60;show_menu phys_props_laststand1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/junkyard_crane_base.mdl&models/lighthouse/junkyard_crane_arm.mdl&models/lighthouse/junkyard_crane_windows.mdl,0,0,5000;show_menu phys_props_laststand1"
 					"label"      " Crane"
 			}
 			"5"
@@ -31556,12 +31650,12 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/checkpoint_door_lighthouse01.mdl,55;show_menu phys_props_laststand2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/checkpoint_door_lighthouse01.mdl&models/lighthouse/checkpoint_door_lighthouse01_metal.mdl,55;show_menu phys_props_laststand2"
 					"label"      " Saferoom door 1"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/checkpoint_door_lighthouse02.mdl,55;show_menu phys_props_laststand2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/checkpoint_door_lighthouse02.mdl&models/lighthouse/checkpoint_door_lighthouse02_metal.mdl,55;show_menu phys_props_laststand2"
 					"label"      " Saferoom door 2"
 			}
 			"5"
@@ -31652,7 +31746,7 @@
 			
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/diesel_pump.mdl;show_menu phys_props_laststand3"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/diesel_pump.mdl&models/lighthouse/diesel_pump_fan.mdl&models/lighthouse/diesel_pump_finale.mdl;show_menu phys_props_laststand3"
 					"label"      " Generator"
 			}
 			"2"
@@ -33447,6 +33541,36 @@
 					"command"    "play buttons/button14;show_menu phys_props_street3"
 					"label"      " << Back"
 			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_street5"
+					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"phys_props_street5"
+	{
+			"Title"     "More exterior stuff 5"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/props/estuary_bridge_beams.mdl&models/lighthouse/props/estuary_bridge_corrug.mdl,130;show_menu phys_props_street5"
+					"label"      " Raise roof on beams"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_street5"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_street4"
+					"label"      " << Back"
+			}
 			"0"
 			{
 					"command"    "play buttons/button14"
@@ -34500,7 +34624,7 @@
 		}
 		"3"
 		{
-				"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_exteriors/guardshack.mdl;show_menu phys_props_exteriors2"
+				"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_exteriors/guardshack.mdl&models/props_exteriors/guardshack_glass.mdl;show_menu phys_props_exteriors2"
 				"label"      " Guardshack"
 		}
 		"4"
@@ -34551,7 +34675,7 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_industrial/construction_crane.mdl,723;show_menu phys_props_industrial1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_industrial/construction_crane.mdl&models/props_industrial/construction_crane_leverbody.mdl&models/props_industrial/construction_crane_leverhandle.mdl&models/props_industrial/construction_crane_windows.mdl,723;show_menu phys_props_industrial1"
 					"label"      " Crane"
 			}
 			"4"
@@ -34705,6 +34829,51 @@
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu phys_prop_menu_start3"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_fairgrounds2"
+					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"phys_props_fairgrounds2"
+	{
+			"Title"     "Fairgrounds stuff 2"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/elephant.mdl;show_menu phys_props_fairgrounds2"
+					"label"      " Toy elephant"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/alligator.mdl;show_menu phys_props_fairgrounds2"
+					"label"      " Toy alligator"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/giraffe.mdl;show_menu phys_props_fairgrounds2"
+					"label"      " Toy giraffe"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/snake.mdl;show_menu phys_props_fairgrounds2"
+					"label"      " Toy snake"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_fairgrounds2"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_fairgrounds1"
 					"label"      " << Back"
 			}
 			"0"
@@ -35215,6 +35384,11 @@
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_lab/monitor01a.mdl;show_menu phys_props_lab1"
 					"label"      " Monitor"
 			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_collectables/alchemy_table_glass.mdl,0,0,5;show_menu phys_props_lab1"
+					"label"      " alchemy_table_glass"
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_lab1"
@@ -35448,6 +35622,16 @@
                     "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_equipment/securitycheckpoint.mdl;show_menu phys_props_doors2"
                     "label"		 " Security Checkpoint"
 		    }
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/checkpoint_door_lighthouse01.mdl&models/lighthouse/checkpoint_door_lighthouse01_metal.mdl,55;show_menu phys_props_doors2"
+					"label"      " Saferoom door 1 (The Last Stand)"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/checkpoint_door_lighthouse02.mdl&models/lighthouse/checkpoint_door_lighthouse02_metal.mdl,55;show_menu phys_props_doors2"
+					"label"      " Saferoom door 2 (The Last Stand)"
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_doors2"
@@ -35668,9 +35852,14 @@
 			"1"
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vents/ventbreakable01.mdl;show_menu phys_props_vents1"
-					"label"      " Vent"
+					"label"      " Vent (breakable)"
 			}
-			
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_trailers/window08.mdl;show_menu phys_props_vents1"
+					"label"      " Vent small"
+			}
+
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_vents1"
@@ -36116,7 +36305,7 @@
 
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/boat_ski.mdl,18;show_menu phys_props_boats2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/boat_ski.mdl&models/props_vehicles/boat_ski_glass.mdl,18;show_menu phys_props_boats2"
 					"label"      " Speed boat"
 			}
 			"2"
@@ -36278,33 +36467,33 @@
 			}
 			"2"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/cara_95sedan_wrecked.mdl;show_menu phys_props_vehicles2"
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/cara_95sedan_wrecked.mdl&models/props_vehicles/cara_95sedan_wrecked_glass.mdl;show_menu phys_props_vehicles2"
                     "label"		 " 95 Sedan Wrecked" 
             }
             "3"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/cara_82hatchback_wrecked.mdl;show_menu phys_props_vehicles2"
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/cara_82hatchback_wrecked.mdl&models/props_vehicles/cara_82hatchback_wrecked_glass.mdl;show_menu phys_props_vehicles2"
                     "label"		 " 82 Hatchback Wrecked" 
             }
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/news_van.mdl;show_menu phys_props_vehicles2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/news_van.mdl&models/props_vehicles/van_glass.mdl&models/props_vehicles/van_cab_controls.mdl;show_menu phys_props_vehicles2"
 					"label"      " News van"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/longnose_truck.mdl;show_menu phys_props_vehicles2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/longnose_truck.mdl&models/props_vehicles/longnose_truck_glass.mdl;show_menu phys_props_vehicles2"
 					"label"      " Long-nose Truck"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/flatnose_truck.mdl;show_menu phys_props_vehicles2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/flatnose_truck.mdl&models/props_vehicles/flatnose_truck_glass.mdl;show_menu phys_props_vehicles2"
 					"label"      " Flat-nose Truck"
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_vehicles2"
-					"label"      " Delete object"
+					"command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/semi_truck3.mdl&models/props_vehicles/semi_truck_glass.mdl;show_menu phys_props_vehicles2"
+					"label"		 " Semi Truck" 
 			}
 			"8"
 			{
@@ -36328,32 +36517,32 @@
 			"Title"     "Vehicles 3"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/pickup_truck_78.mdl;show_menu phys_props_vehicles3"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/pickup_truck_78.mdl&models/props_vehicles/pickup_truck_78_glass.mdl;show_menu phys_props_vehicles3"
 					"label"      " Pickup truck '78"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/pickup_truck_2004.mdl;show_menu phys_props_vehicles3"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/pickup_truck_2004.mdl&models/props_vehicles/pickup_truck_2004_glass.mdl;show_menu phys_props_vehicles3"
 					"label"      " Pickup truck 2004"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/police_car_rural.mdl;show_menu phys_props_vehicles3"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/police_car_rural.mdl&models/props_vehicles/police_car_rural_trunkopen_glass.mdl;show_menu phys_props_vehicles3"
 					"label"      " Police car"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/suv_2001.mdl;show_menu phys_props_vehicles3"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/suv_2001.mdl&models/props_vehicles/suv_2001_glass.mdl;show_menu phys_props_vehicles3"
 					"label"      " SUV 2001"
 			}
             "5"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/taxi_cab.mdl;show_menu phys_props_vehicles3"
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/taxi_cab.mdl&models/props_vehicles/taxi_city_glass.mdl;show_menu phys_props_vehicles3"
                     "label"		 " Taxi" 
             }
             "6"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/police_car_city.mdl;show_menu phys_props_vehicles3"
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/police_car_city.mdl&models/props_vehicles/police_car_city_glass.mdl;show_menu phys_props_vehicles3"
                     "label"		 " City police car"
             }
 			
@@ -36384,12 +36573,12 @@
 			"Title"     "Vehicles 4"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/van_interior.mdl,0,0,500;show_menu phys_props_vehicles4"
-					"label"      " van_interior"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/van.mdl&models/props_vehicles/van_glass.mdl&models/props_vehicles/van_cab_controls.mdl;show_menu phys_props_vehicles4"
+					"label"      " Van"
 			}
 			"2"
 			{
-					"command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/boat_cabin35ft.mdl,35;show_menu phys_props_vehicles4"
+					"command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/boat_cabin35ft.mdl&models/props_vehicles/boat_cabin35ft_glass.mdl,35;show_menu phys_props_vehicles4"
                     "label"		 " Boat 35ft2" 
 			}
 			"3"
@@ -36399,12 +36588,12 @@
 			}
 			"4"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/utility_truck.mdl;show_menu phys_props_vehicles4"
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/utility_truck.mdl&models/props_vehicles/utility_truck_windows.mdl;show_menu phys_props_vehicles4"
                     "label"		 " Utility Truck" 
             }
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/de_nuke/truck_nuke.mdl;show_menu phys_props_vehicles4"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/de_nuke/truck_nuke.mdl&models/props/de_nuke/truck_nuke_glass.mdl;show_menu phys_props_vehicles4"
 					"label"      " Truck"
 			}
 			"6"
@@ -36449,7 +36638,7 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/deliveryvan_armored.mdl,0,0,500;show_menu phys_props_vehicles5"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/deliveryvan_armored.mdl&models/props_vehicles/deliveryvan_armored_glass.mdl,0,0,500;show_menu phys_props_vehicles5"
 					"label"      " deliveryvan_armored"
 			}
 			"4"
@@ -36520,7 +36709,7 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/racecar_damaged.mdl;show_menu phys_props_vehicles6"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/racecar_damaged.mdl&models/props_vehicles/racecar_glass.mdl;show_menu phys_props_vehicles6"
 					"label"      " Jimmy Gibbs Jr.'s race car"
 			}
 			"7"
@@ -36756,8 +36945,8 @@
 			}
 			"6"
 			{
-				"command"		 "play buttons/button14;scripted_user_func update_aimed_ent_direction;show_menu wear_hat_menu1"
-				"label"			 " Make aimed object face the direction you face"
+				"command"		 "play buttons/button14;show_menu ent_hat_forcesmain"
+				"label"			 " Move or rotate the hat"
 			}
 			"7"
 			{
@@ -36772,6 +36961,570 @@
 			"9"
 			{
 					"command"    "play buttons/button14;show_menu secret_commands2"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"ent_hat_forcesmain"
+	{	
+			"Title"     "Rotate or move your hat (May not work properly)"
+			"1"
+			{
+				"command"	 "play buttons/button14;show_menu ent_hat_rotatemain"
+				"label"		 " Rotate object relative to it's origin"
+			}
+			"2"
+			{
+				"command"	 "play buttons/button14;show_menu ent_hat_movemain"
+				"label"		 " Move object relative to player's origin "
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func update_aimed_ent_direction;show_menu ent_hat_forcesmain"
+				"label"			 " Make aimed object face the direction you face"
+			}
+			"8"
+			{
+					"command"	 "play buttons/button14;show_menu wear_hat_menu1"
+					"label"		 " << Back"
+			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ent_hat_rotatemain"
+	{	
+			"Title"     "Rotation axis"
+			"1"
+			{
+				"command"	 "play buttons/button14;show_menu ent_hat_rotate_x"
+				"label"		 " X (Pitch)"
+			}
+			"2"
+			{
+				"command"	 "play buttons/button14;show_menu ent_hat_rotate_y"
+				"label"		 " Y (Yaw)"
+			}
+			"3"
+			{
+				"command"	 "play buttons/button14;show_menu ent_hat_rotate_z"
+				"label"		 " Z (Roll)"
+			}
+			"8"
+			{
+					"command"	 "play buttons/button14;show_menu ent_hat_forcesmain"
+					"label"		 " << Back"
+			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"ent_hat_rotate_x"
+	{
+			"Title"		 "Rotate around X axis"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,x,-90,1;show_menu ent_hat_rotate_x"
+				"label"			" -90"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,x,-10,1;show_menu ent_hat_rotate_x"
+				"label"			" -10"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,x,-1,1;show_menu ent_hat_rotate_x"
+				"label"			" -1"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,x,1,1;show_menu ent_hat_rotate_x"
+				"label"			" +1"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,x,10,1;show_menu ent_hat_rotate_x"
+				"label"			" +10"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,x,90,1;show_menu ent_hat_rotate_x"
+				"label"			" +90"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,x,180,1;show_menu ent_hat_rotate_x"
+				"label"			" +180"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_hat_rotatemain"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"ent_hat_rotate_y"
+	{
+			"Title"		 "Rotate around Y axis"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,y,-90,1;show_menu ent_hat_rotate_y"
+				"label"			" -90"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,y,-10,1;show_menu ent_hat_rotate_y"
+				"label"			" -10"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,y,-1,1;show_menu ent_hat_rotate_y"
+				"label"			" -1"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,y,1,1;show_menu ent_hat_rotate_y"
+				"label"			" +1"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,y,10,1;show_menu ent_hat_rotate_y"
+				"label"			" +10"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,y,90,1;show_menu ent_hat_rotate_y"
+				"label"			" +90"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,y,180,1;show_menu ent_hat_rotate_y"
+				"label"			" +180"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_hat_rotatemain"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"ent_hat_rotate_z"
+	{
+			"Title"		 "Rotate around Z axis"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,z,-90,1;show_menu ent_hat_rotate_z"
+				"label"			" -90"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,z,-10,1;show_menu ent_hat_rotate_z"
+				"label"			" -10"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,z,-1,1;show_menu ent_hat_rotate_z"
+				"label"			" -1"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,z,1,1;show_menu ent_hat_rotate_z"
+				"label"			" +1"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,z,10,1;show_menu ent_hat_rotate_z"
+				"label"			" +10"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,z,90,1;show_menu ent_hat_rotate_z"
+				"label"			" +90"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_rotate,z,180,1;show_menu ent_hat_rotate_z"
+				"label"			" +180"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_hat_rotatemain"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ent_hat_movemain"
+	{	
+			"Title"     "Move direction"
+			"1"
+			{
+				"command"	 "play buttons/button14;show_menu ent_hat_move_forward"
+				"label"		 " Forward"
+			}
+			"2"
+			{
+				"command"	 "play buttons/button14;show_menu ent_hat_move_backward"
+				"label"		 " Backward"
+			}
+			"3"
+			{
+				"command"	 "play buttons/button14;show_menu ent_hat_move_left"
+				"label"		 " Left"
+			}
+			"4"
+			{
+				"command"	 "play buttons/button14;show_menu ent_hat_move_right"
+				"label"		 " Right"
+			}
+			"5"
+			{
+				"command"	 "play buttons/button14;show_menu ent_hat_move_up"
+				"label"		 " Up"
+			}
+			"6"
+			{
+				"command"	 "play buttons/button14;show_menu ent_hat_move_down"
+				"label"		 " Down"
+			}
+			"8"
+			{
+					"command"	 "play buttons/button14;show_menu ent_hat_forcesmain"
+					"label"		 " << Back"
+			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ent_hat_move_forward"
+	{
+			"Title"		 "Move forward"
+
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1,forward,0,1;show_menu ent_hat_move_forward"
+				"label"			" 1 unit"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,5,forward,0,1;show_menu ent_hat_move_forward"
+				"label"			" 5 units"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,25,forward,0,1;show_menu ent_hat_move_forward"
+				"label"			" 25 units"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,100,forward,0,1;show_menu ent_hat_move_forward"
+				"label"			" 100 units"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,250,forward,0,1;show_menu ent_hat_move_forward"
+				"label"			" 250 units"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,500,forward,0,1;show_menu ent_hat_move_forward"
+				"label"			" 500 units"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1000,forward,0,1;show_menu ent_hat_move_forward"
+				"label"			" 1000 units"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_hat_movemain"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ent_hat_move_backward"
+	{
+			"Title"		 "Move backward"
+
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1,backward,0,1;show_menu ent_hat_move_backward"
+				"label"			" 1 unit"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,5,backward,0,1;show_menu ent_hat_move_backward"
+				"label"			" 5 units"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,25,backward,0,1;show_menu ent_hat_move_backward"
+				"label"			" 25 units"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,100,backward,0,1;show_menu ent_hat_move_backward"
+				"label"			" 100 units"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,250,backward,0,1;show_menu ent_hat_move_backward"
+				"label"			" 250 units"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,500,backward,0,1;show_menu ent_hat_move_backward"
+				"label"			" 500 units"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1000,backward,0,1;show_menu ent_hat_move_backward"
+				"label"			" 1000 units"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_hat_movemain"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"ent_hat_move_left"
+	{
+			"Title"		 "Move left"
+
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1,left,0,1;show_menu ent_hat_move_left"
+				"label"			" 1 unit"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,5,left,0,1;show_menu ent_hat_move_left"
+				"label"			" 5 units"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,25,left,0,1;show_menu ent_hat_move_left"
+				"label"			" 25 units"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,100,left,0,1;show_menu ent_hat_move_left"
+				"label"			" 100 units"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,250,left,0,1;show_menu ent_hat_move_left"
+				"label"			" 250 units"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,500,left,0,1;show_menu ent_hat_move_left"
+				"label"			" 500 units"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1000,left,0,1;show_menu ent_hat_move_left"
+				"label"			" 1000 units"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_hat_movemain"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"ent_hat_move_right"
+	{
+			"Title"		 "Move right"
+
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1,right,0,1;show_menu ent_hat_move_right"
+				"label"			" 1 unit"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,5,right,0,1;show_menu ent_hat_move_right"
+				"label"			" 5 units"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,25,right,0,1;show_menu ent_hat_move_right"
+				"label"			" 25 units"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,100,right,0,1;show_menu ent_hat_move_right"
+				"label"			" 100 units"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,250,right,0,1;show_menu ent_hat_move_right"
+				"label"			" 250 units"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,500,right,0,1;show_menu ent_hat_move_right"
+				"label"			" 500 units"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1000,right,0,1;show_menu ent_hat_move_right"
+				"label"			" 1000 units"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_hat_movemain"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"ent_hat_move_up"
+	{
+			"Title"		 "Move up"
+
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1,up,0,1;show_menu ent_hat_move_up"
+				"label"			" 1 unit"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,5,up,0,1;show_menu ent_hat_move_up"
+				"label"			" 5 units"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,25,up,0,1;show_menu ent_hat_move_up"
+				"label"			" 25 units"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,100,up,0,1;show_menu ent_hat_move_up"
+				"label"			" 100 units"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,250,up,0,1;show_menu ent_hat_move_up"
+				"label"			" 250 units"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,500,up,0,1;show_menu ent_hat_move_up"
+				"label"			" 500 units"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1000,up,0,1;show_menu ent_hat_move_up"
+				"label"			" 1000 units"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_hat_movemain"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"ent_hat_move_down"
+	{
+			"Title"		 "Move down"
+
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1,down,0,1;show_menu ent_hat_move_down"
+				"label"			" 1 unit"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,5,down,0,1;show_menu ent_hat_move_down"
+				"label"			" 5 units"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,25,down,0,1;show_menu ent_hat_move_down"
+				"label"			" 25 units"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,100,down,0,1;show_menu ent_hat_move_down"
+				"label"			" 100 units"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,250,down,0,1;show_menu ent_hat_move_down"
+				"label"			" 250 units"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,500,down,0,1;show_menu ent_hat_move_down"
+				"label"			" 500 units"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func ent_move,1000,down,0,1;show_menu ent_hat_move_down"
+				"label"			" 1000 units"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_hat_movemain"
 					"label"      " << Back"
 			}
 			"0"
@@ -41386,6 +42139,46 @@
 					"command"    "play buttons/button14;show_menu models_self_menu_start3"
 					"label"      " << Back"
 			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu models_self_fairgrounds2"
+					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"models_self_fairgrounds2"
+	{
+			"Title"     "Fairgrounds stuff 2"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/elephant.mdl;show_menu models_self_fairgrounds2"
+					"label"      " Toy elephant"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/alligator.mdl;show_menu models_self_fairgrounds2"
+					"label"      " Toy alligator"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/giraffe.mdl;show_menu models_self_fairgrounds2"
+					"label"      " Toy giraffe"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/snake.mdl;show_menu models_self_fairgrounds2"
+					"label"      " Toy snake"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu models_self_fairgrounds1"
+					"label"      " << Back"
+			}
 			"0"
 			{
 					"command"    "play buttons/button14"
@@ -41834,6 +42627,11 @@
 					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_lab/monitor01a.mdl;show_menu models_self_lab1"
 					"label"      " Monitor"
 			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func  model,!self,models/props_collectables/alchemy_table_glass.mdl;show_menu models_self_lab1"
+					"label"      " alchemy_table_glass"
+			}
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu models_self_menu_start5"
@@ -42047,6 +42845,16 @@
                     "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_equipment/securitycheckpoint.mdl;show_menu models_self_doors2"
                     "label"		 " Security Checkpoint"
 		    }
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/lighthouse/checkpoint_door_lighthouse01.mdl;show_menu models_self_doors2"
+					"label"      " Saferoom door 1 (The Last Stand)"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/lighthouse/checkpoint_door_lighthouse02.mdl;show_menu models_self_doors2"
+					"label"      " Saferoom door 2 (The Last Stand)"
+			}
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu models_self_doors1"
@@ -42188,6 +42996,11 @@
 			{
 					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_vents/ventbreakable01.mdl;show_menu models_self_vents1"
 					"label"      " Vent"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_trailers/window08.mdl;show_menu models_self_vents1"
+					"label"      " Vent small"
 			}
 			
 			"8"
@@ -42783,8 +43596,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_vehicles2"
-					"label"      " Delete object"
+					"command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/semi_truck3.mdl;show_menu models_self_vehicles2"
+					"label"		 " Semi Truck" 
 			}
 			"8"
 			{
@@ -42864,8 +43677,8 @@
 			"Title"     "Vehicles 4"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/van_interior.mdl;show_menu models_self_vehicles4"
-					"label"      " van_interior"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/van.mdl;show_menu models_self_vehicles4"
+					"label"      " Van"
 			}
 			"2"
 			{
@@ -47302,6 +48115,46 @@
 					"command"    "play buttons/button14;show_menu models_picker_menu_start3"
 					"label"      " << Back"
 			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu models_picker_fairgrounds2"
+					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"models_picker_fairgrounds2"
+	{
+			"Title"     "Fairgrounds stuff 2"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/elephant.mdl;show_menu models_picker_fairgrounds2"
+					"label"      " Toy elephant"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/alligator.mdl;show_menu models_picker_fairgrounds2"
+					"label"      " Toy alligator"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/giraffe.mdl;show_menu models_picker_fairgrounds2"
+					"label"      " Toy giraffe"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/snake.mdl;show_menu models_picker_fairgrounds2"
+					"label"      " Toy snake"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu models_picker_fairgrounds1"
+					"label"      " << Back"
+			}
 			"0"
 			{
 					"command"    "play buttons/button14"
@@ -47750,6 +48603,11 @@
 					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_lab/monitor01a.mdl;show_menu models_picker_lab1"
 					"label"      " Monitor"
 			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func  model,!picker,models/props_collectables/alchemy_table_glass.mdl;show_menu models_picker_lab1"
+					"label"      " alchemy_table_glass"
+			}
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu models_picker_menu_start5"
@@ -47963,6 +48821,16 @@
                     "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_equipment/securitycheckpoint.mdl;show_menu models_picker_doors2"
                     "label"		 " Security Checkpoint"
 		    }
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lighthouse/checkpoint_door_lighthouse01.mdl;show_menu models_picker_doors2"
+					"label"      " Saferoom door 1 (The Last Stand)"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lighthouse/checkpoint_door_lighthouse02.mdl;show_menu models_picker_doors2"
+					"label"      " Saferoom door 2 (The Last Stand)"
+			}
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu models_picker_doors1"
@@ -48104,6 +48972,11 @@
 			{
 					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_vents/ventbreakable01.mdl;show_menu models_picker_vents1"
 					"label"      " Vent"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_trailers/window08.mdl;show_menu models_picker_vents1"
+					"label"      " Vent small"
 			}
 			
 			"8"
@@ -48699,8 +49572,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_picker_vehicles2"
-					"label"      " Delete object"
+					"command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/semi_truck3.mdl;show_menu models_picker_vehicles2"
+					"label"		 " Semi Truck" 
 			}
 			"8"
 			{
@@ -48780,8 +49653,8 @@
 			"Title"     "Vehicles 4"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/van_interior.mdl;show_menu models_picker_vehicles4"
-					"label"      " van_interior"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/van.mdl;show_menu models_picker_vehicles4"
+					"label"      " Van"
 			}
 			"2"
 			{
