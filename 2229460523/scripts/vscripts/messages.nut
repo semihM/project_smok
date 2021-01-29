@@ -776,13 +776,25 @@ getconsttable()["COLOR_OLIVE_GREEN"] <- "\x05";
                 {
                     return "Created a door (" + COLOR_BRIGHT_GREEN + "#" + ent.GetIndex() + COLOR_DEFAULT + ") named " + ent.GetName();
                 }
+                FailureDoor = function(mdl)
+                {
+                    return "Failed to create a door with model-> " + COLOR_ORANGE + mdl;
+                }
 
                 SettingSuccess = function(name,typ,setting,val)
                 {
                     printl(name  + " Updated prop(" + typ + ") setting " + setting + " to " + val);
                 }
+                
             }
 
+            FireEx = 
+            {
+                Success = function(e,p,s)
+                {
+                    return "Fire Extinguisher " + COLOR_BRIGHT_GREEN + "#" + e + COLOR_DEFAULT + ", particle " + COLOR_BRIGHT_GREEN + "#" + p + COLOR_DEFAULT + ", sound " + COLOR_BRIGHT_GREEN + "#" + s;
+                }
+            }
             Ent =
             {
                 EntityCreate = function(id,classname,pos,ang,keyvals)

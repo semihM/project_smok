@@ -478,7 +478,7 @@
         "models/props_vehicles/suv_2001.mdl",
         "models/props_vehicles/taxi_cab.mdl",
         "models/props_vehicles/police_car_city.mdl",
-        "models/props_vehicles/van_interior.mdl",
+        "models/props_vehicles/van.mdl",
         "models/props_vehicles/boat_cabin35ft.mdl",
         "models/props_vehicles/boat_trailer35ft.mdl",
         "models/props_vehicles/utility_truck.mdl",
@@ -504,6 +504,17 @@
         "models/props_vehicles/car004a.mdl",
         "models/props_vehicles/car004b.mdl",
         "models/props_vehicles/car005a.mdl",
-        "models/props_vehicles/car005b.mdl"
+        "models/props_vehicles/car005b.mdl",
+        "models/lighthouse/junkyard_crane_base.mdl",
+        "models/lighthouse/props/estuary_bridge_beams.mdl",
+        "models/lighthouse/props/estuary_bridge_corrug.mdl",
+        "models/props_fairgrounds/elephant.mdl",
+        "models/props_fairgrounds/alligator.mdl",
+        "models/props_fairgrounds/giraffe.mdl",
+        "models/props_fairgrounds/snake.mdl",
+        "models/props_collectables/alchemy_table_glass.mdl",
+        "models/props_trailers/window08.mdl",
+        "models/props_vehicles/semi_truck3.mdl",
+        "models/deadbodies/chm_fallensurvivor.mdl"
     ]
 }

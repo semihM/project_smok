@@ -70,6 +70,47 @@
     return res;
 }
 
+// Fix incorrect restoration values
+::AdminVars.FixBooleanTable <- function(tbl,index,lookup,blacklistkeys="")
+{
+    if(lookup == "boolean")
+    {
+        foreach(key,val in tbl[index])
+        {
+            if(blacklistkeys.find(key) != null)
+                continue;
+
+            switch(val)
+            {
+                case 0:
+                    tbl[index][key] = false;break;
+                case 1:
+                    tbl[index][key] = true;break;
+            }
+            
+        }
+    }
+}
+
+// Fix given list of boolean values
+::AdminVars.FixBooleanValues <- function(tbl,lis,lookup)
+{
+    if(lookup == "boolean")
+    {
+        foreach(val in lis)
+        {
+            switch(tbl[val])
+            {
+                case 0:
+                    tbl[val] = false;break;
+                case 1:
+                    tbl[val] = true;break;
+            }
+            
+        }
+    }
+}
+
 /*
  * Default settings setters
  */
@@ -330,6 +371,9 @@
 
     tbl.EnableCustomResponses <- ref.EnableCustomResponses;
     tbl.EnableCommandsForSpecsAndOthers <- ref.EnableCommandsForSpecsAndOthers;
+
+    tbl.FixBooleanTable <- ref.FixBooleanTable;
+    tbl.FixBooleanValues <- ref.FixBooleanValues;
 }
 
 /*

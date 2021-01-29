@@ -792,6 +792,63 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 		printl("[OnRoundStart-Info] No need for fixes in CustomRespose tables");
 		skip = true;
 	}
+
+	// Fix incorrectly restored booleans
+	local fixdata = 
+	{
+		_outputsEnabled = 
+		{
+			lookup = "boolean"
+			blackliststr = ""
+		}
+		_saveLastParticle = 
+		{
+			lookup = "boolean"
+			blackliststr = ""
+		}
+		_saveLastLine = 
+		{
+			lookup = "boolean"
+			blackliststr = ""
+		}
+		_attachTargetedLocation = 
+		{
+			lookup = "boolean"
+			blackliststr = ""
+		}
+		_looping = 
+		{
+			lookup = "boolean"
+			blackliststr = ""
+		}
+		_RockThrow = 
+		{
+			lookup = "boolean"
+			blackliststr = "rockorigin,rockpushspeed,raise,friction"
+		}
+	}
+	
+	local basicbools = 
+	[
+		"RestoreModelsOnJoin",
+		"IgnoreDeletingPlayers",
+		"AllowCustomResponses",
+		"AllowCustomSharing",
+		"AllowAutomatedSharing",
+		"LastLootThinkState",
+		"IgnoreSpeakerClass"
+	]
+
+	foreach(key,datatbl in fixdata)
+	{
+		::AdminSystem.Vars.FixBooleanTable(AdminSystem.Vars,key,datatbl.lookup,datatbl.blackliststr);
+	}
+
+	::AdminSystem.Vars.FixBooleanValues(AdminSystem.Vars,basicbools,"boolean");
+
+	::AdminSystem.Vars._RockThrow.rockorigin = null;
+
+	// Fix custom responses table
 	if(!skip)
 	{
 		///////////////////////////////////////////////
@@ -3142,6 +3199,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	local target = args.target;
 	local slot = args.slot;
 	local debug = BotParams.debug;
+	local item = args.item;
 
 	if(Utils.CalculateDistance(bot.GetOrigin(),target.GetOrigin()) <= BotParams.MaxRadiusToLetShare && (botindex+"_bot_think_share_attempt_slot"+slot in ::VSLib.Timers.TimersID))
 	{
@@ -3188,83 +3246,102 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				AdminSystem.BotBringingItem[target.GetCharacterNameLower()] = false;
 				
 				local spawnertooclose = false;
-				foreach(spawner in Objects.OfClassnameWithin(args.item.GetClassname()+"_spawn",bot.GetOrigin(),100))
+				
+				if(item != null && item.IsEntityValid())
 				{
-					if(spawner.GetNetProp("m_fEffects") == 48 || spawner.GetSpawnFlags() == 10)
+					foreach(spawner in Objects.OfClassnameWithin(args.item.GetClassname()+"_spawn",bot.GetOrigin(),100))
+					{
+						if(spawner.GetNetProp("m_fEffects") == 48 || spawner.GetSpawnFlags() == 10)
+						{
+							if(debug == 1)
+								ClientPrint(null,3,"\x04"+"#"+botindex+" Can't give, spawner too close #"+spawner.GetIndex());
+							spawnertooclose = true;
+							break;
+						}
+					}
+
+					if(spawnertooclose)
+					{
+
+					}
+					else if(("slot"+slot in bot.GetHeldItems()) && !("slot"+slot in target.GetHeldItems()))
 					{
 						if(debug == 1)
-							ClientPrint(null,3,"\x04"+"#"+botindex+" Can't give, spawner too close #"+spawner.GetIndex());
-						spawnertooclose = true;
-						break;
+							ClientPrint(null,3,"\x03"+"#"+botindex+" gave "+args.classname+" to "+target.GetIndex());
+						bot.Speak(Utils.GetRandValueFromArray(::Survivorlines.ShareItem[bot.GetCharacterNameLower()]),0.1);
+						
+						AdminSystem.Vars._currentlyBeingTaken[args.item.GetIndex()] <- true;
+						Utils.DropThenGive(bot,target,slot,args.item);
+						::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=args.item.GetIndex()});
 					}
-				}
-
-				if(spawnertooclose)
-				{
-
-				}
-				else if(("slot"+slot in bot.GetHeldItems()) && !("slot"+slot in target.GetHeldItems()))
-				{
-					if(debug == 1)
-						ClientPrint(null,3,"\x03"+"#"+botindex+" gave "+args.classname+" to "+target.GetIndex());
-					bot.Speak(Utils.GetRandValueFromArray(::Survivorlines.ShareItem[bot.GetCharacterNameLower()]),0.1);
-					
-					AdminSystem.Vars._currentlyBeingTaken[args.item.GetIndex()] <- true;
-					Utils.DropThenGive(bot,target,slot,args.item);
-					::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=args.item.GetIndex()});
+					else
+					{
+						if(debug == 1)
+							ClientPrint(null,3,"\x04"+"Inventories changed")
+					}
 				}
 				else
 				{
 					if(debug == 1)
 						ClientPrint(null,3,"\x04"+"Inventories changed")
 				}
+				
 			}
 			bot.BotReset();
 		}	
 	}
 	else if(botindex+"_bot_think_share_attempt_slot"+slot in ::VSLib.Timers.TimersID)
 	{
-		foreach(inf in Objects.OfClassnameWithin("inferno",args.item.GetOrigin(),275))
+		if(item == null || !item.IsEntityValid())
 		{
-			//out("Found inferno")
-			//DebugDrawText(inf.GetOrigin()+Vector(0,0,25),"INFERNO",false,5);
-			local a = Utils.CalculateDistance(args.item.GetOrigin(),inf.GetOrigin())
-			local b = Utils.CalculateDistance(inf.GetOrigin(),bot.GetOrigin())
-			local f = Utils.CalculateDistance(args.item.GetOrigin(),bot.GetOrigin())
-			local temp = (pow(b,2)-pow(a,2)+pow(f,2))/(2*f)
-			local d = pow((b-temp)*(b+temp),0.5)
-			if(d < 125)
-			{
-				bot.BotReset();
-				//out("Inferno too close: "+d);
-				return;
-			}
+			if(debug == 1)
+				ClientPrint(null,3,"\x04"+"Inventories changed")
+			bot.BotReset();
 		}
-		foreach(inf in Objects.OfClassnameWithin("insect_swarm",args.item.GetOrigin(),275))
+		else
 		{
-			//out("Found spit")
-			//DebugDrawText(inf.GetOrigin()+Vector(0,0,25),"SPIT",false,5);
-			local a = Utils.CalculateDistance(args.item.GetOrigin(),inf.GetOrigin())
-			local b = Utils.CalculateDistance(inf.GetOrigin(),bot.GetOrigin())
-			local f = Utils.CalculateDistance(args.item.GetOrigin(),bot.GetOrigin())
-			local temp = (pow(b,2)-pow(a,2)+pow(f,2))/(2*f)
-			local d = pow((b-temp)*(b+temp),0.5)
-			if(d < 125)
+			foreach(inf in Objects.OfClassnameWithin("inferno",args.item.GetOrigin(),275))
 			{
-				bot.BotReset();
-				//out("Spit too close: "+d);
-				return;
+				//out("Found inferno")
+				//DebugDrawText(inf.GetOrigin()+Vector(0,0,25),"INFERNO",false,5);
+				local a = Utils.CalculateDistance(args.item.GetOrigin(),inf.GetOrigin())
+				local b = Utils.CalculateDistance(inf.GetOrigin(),bot.GetOrigin())
+				local f = Utils.CalculateDistance(args.item.GetOrigin(),bot.GetOrigin())
+				local temp = (pow(b,2)-pow(a,2)+pow(f,2))/(2*f)
+				local d = pow((b-temp)*(b+temp),0.5)
+				if(d < 125)
+				{
+					bot.BotReset();
+					//out("Inferno too close: "+d);
+					return;
+				}
 			}
-		}
-		if((rand().tofloat()/RAND_MAX) <= BotParams.ChanceRelocateWhenTooFarToGive  
-			&& !bot.IsInCombat()
-			&& bot.IsAlive()
-			&& !bot.IsIncapacitated()
-			&& !bot.IsHealing()
-			&& !bot.IsBeingHealed())
-		{
-			//out("No inferno and trying to relocate");
-			bot.BotMoveToLocation(target.GetOrigin())
+			foreach(inf in Objects.OfClassnameWithin("insect_swarm",args.item.GetOrigin(),275))
+			{
+				//out("Found spit")
+				//DebugDrawText(inf.GetOrigin()+Vector(0,0,25),"SPIT",false,5);
+				local a = Utils.CalculateDistance(args.item.GetOrigin(),inf.GetOrigin())
+				local b = Utils.CalculateDistance(inf.GetOrigin(),bot.GetOrigin())
+				local f = Utils.CalculateDistance(args.item.GetOrigin(),bot.GetOrigin())
+				local temp = (pow(b,2)-pow(a,2)+pow(f,2))/(2*f)
+				local d = pow((b-temp)*(b+temp),0.5)
+				if(d < 125)
+				{
+					bot.BotReset();
+					//out("Spit too close: "+d);
+					return;
+				}
+			}
+			if((rand().tofloat()/RAND_MAX) <= BotParams.ChanceRelocateWhenTooFarToGive  
+				&& !bot.IsInCombat()
+				&& bot.IsAlive()
+				&& !bot.IsIncapacitated()
+				&& !bot.IsHealing()
+				&& !bot.IsBeingHealed())
+			{
+				//out("No inferno and trying to relocate");
+				bot.BotMoveToLocation(target.GetOrigin())
+			}
 		}
 	}
 }
@@ -4425,30 +4502,29 @@ enum __
 			if(key in val)
 			{val = val[key];currpath += "."+key;}
 			else
-			{ClientPrint(null,3,"\x04"+"Cant find key: "+key+" in "+currpath+", creating one...");val[key] <- null;return;}
+			{Printer(player,"\x04"+"Cant find key: "+key+" in "+currpath+", creating one...");val[key] <- null;return;}
 		}
 		local newval = GetArgument(2);
 		if(newval == null)
 		{	
 			if(typeof val == "table")
 			{
-				ClientPrint(null,3,"\x04"+varname+" is a table... Printed in console");
-				Utils.PrintTable(val);
+				Printer(player,varname+" is a "+ "\x04" + "table:\n"+Utils.GetTableString(val));
 				return;
 			}
 			else if(typeof val == "array")
 			{
-				ClientPrint(null,3,"\x04"+varname+" is "+Utils.ArrayString(val));
+				Printer(player,varname+" is "+"\x04"+Utils.ArrayString(val));
 				return;
 			}
 			else
 			{
-				ClientPrint(null,3,"\x04"+varname+" is "+val);return;	
+				Printer(player,varname+" is "+"\x04"+val);return;	
 			}
 		}
 		else
 		{
-			ClientPrint(null,3,"\x04"+"Executing: AdminSystem.Vars."+varname+"="+newval);
+			Printer(player,"\x04"+"Executing: AdminSystem.Vars."+varname+"="+newval);
 			compilestring("AdminSystem.Vars."+varname+"="+newval)();
 		}
 	}
@@ -4461,28 +4537,27 @@ enum __
 			{	
 				if(typeof AdminSystem.Vars[varname] == "table")
 				{
-					ClientPrint(null,3,"\x04"+varname+" is a table... Printed in console");
-					Utils.PrintTable(AdminSystem.Vars[varname]);
+					Printer(player,varname+" is a "+"\x04"+"table:\n"+Utils.GetTableString(AdminSystem.Vars[varname]));
 					return;
 				}
 				else if(typeof AdminSystem.Vars[varname] == "array")
 				{
-					ClientPrint(null,3,"\x04"+varname+" is "+Utils.ArrayString(AdminSystem.Vars[varname]));
+					Printer(player,varname+" is "+"\x04"+Utils.ArrayString(AdminSystem.Vars[varname]));
 					return;
 				}
 				else
 				{
-					ClientPrint(null,3,"\x04"+varname+" is "+AdminSystem.Vars[varname]);return;	
+					Printer(player,varname+" is "+"\x04"+AdminSystem.Vars[varname]);return;	
 				}
 			}
 			else
 			{
-				ClientPrint(null,3,"\x04"+"Executing: AdminSystem.Vars."+varname+"="+newval);
+				Printer(player,"\x04"+"Executing: AdminSystem.Vars."+varname+"="+newval);
 				compilestring("AdminSystem.Vars."+varname+"="+newval)();
 			}
 		}
 		else
-		{ClientPrint(null,3,"\x04"+"Cant find key: "+key+" in AdminSystem.Vars, creating one...");AdminSystem.Vars[varname] <- null;return;}
+		{Printer(player,"\x04"+"Cant find key: "+varname+" in AdminSystem.Vars, creating one...");AdminSystem.Vars[varname] <- null;return;}
 	}
 }
 
@@ -10948,8 +11023,20 @@ if ( Director.GetGameMode() == "holdout" )
 			foreach(mdl in split(MDL,"&"))
 			{
 				local ent = Utils.SpawnPhysicsMProp( mdl, EyePosition, GroundPosition, {massScale = massScale} );
-				if(ent)
+				if(ent != null && ent.IsEntityValid())
+				{
 					createdent.append(ent);
+					ent.SetMoveType(MOVETYPE_NONE);
+				}
+				else
+				{
+					ent = Utils.SpawnDynamicProp( mdl, EyePosition, GroundPosition );
+					if(ent != null && ent.IsEntityValid())
+					{
+						createdent.append(ent);
+						ent.SetMoveType(MOVETYPE_NONE);
+					}
+				}
 			}
 		}
 		else
@@ -11051,7 +11138,7 @@ if ( Director.GetGameMode() == "holdout" )
 			foreach(mdl in split(MDL,"&"))
 			{
 				local ent = Utils.SpawnDynamicProp( mdl, EyePosition, GroundPosition );
-				if(ent)
+				if(ent != null && ent.IsEntityValid())
 					createdent.append(ent);
 			}
 		}
@@ -11073,6 +11160,11 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			e.Input("setparent","#"+parentent.GetIndex(),0);
 		}
+		if(Entity == "physicsM")
+		{
+			parentent.SetMoveType(MOVETYPE_VPHYSICS);
+		}
+
 		Printer(player,CmdMessages.Prop.SuccessParented(Entity,createdent));
 	}
 	else
@@ -11089,23 +11181,72 @@ if ( Director.GetGameMode() == "holdout" )
 	local EyeAngles = player.GetEyeAngles();
 	local GroundPosition = QAngle(0,0,0);
 	local ent = null;
+	local raise = GetArgument(2);
+
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
 	GroundPosition.y = EyeAngles.y;
 	
+	if(raise)
+	{
+		raise = raise.tofloat();
+	}
+	else
+	{
+		raise = 52;
+	}
+
 	if ( !DoorModel )
 		ent = Utils.SpawnDoor("models/props_downtown/door_interior_112_01.mdl", EyePosition, GroundPosition);
 	else
 	{
-		EyePosition.z += 52;
-		if ( DoorModel == "saferoom" || DoorModel == "checkpoint" )
-			ent = Utils.SpawnDoor("models/props_doors/checkpoint_door_02.mdl", EyePosition, GroundPosition);
-		else
-			ent = Utils.SpawnDoor(DoorModel, EyePosition, GroundPosition);
-	}
+		EyePosition.z += raise;
+		
+		if(DoorModel.find("&") != null)
+		{
+			ent = []
+			local mdls = split(DoorModel,"&");
+			local d = Utils.SpawnDoor(mdls[0], EyePosition, GroundPosition);
 
-	Printer(player,CmdMessages.Prop.SuccessDoor(ent));
+			if(d != null && d.IsEntityValid())
+				ent.append(d);
+			else
+			{
+				Printer(player,CmdMessages.Prop.FailureDoor(mdls[0]));
+				return;
+			}
+
+			foreach(mdl in mdls.slice(1,mdls.len()))
+			{
+				d = Utils.SpawnDynamicProp(mdl, EyePosition, GroundPosition);
+				if(d != null && d.IsEntityValid())
+					ent.append(d);
+			}
+		}
+		else
+		{
+			if ( DoorModel == "saferoom" || DoorModel == "checkpoint" )
+				ent = Utils.SpawnDoor("models/props_doors/checkpoint_door_02.mdl", EyePosition, GroundPosition);
+			else
+				ent = Utils.SpawnDoor(DoorModel, EyePosition, GroundPosition);
+		}
+	}
+	
+	if(typeof ent == "array")
+	{
+		local parentent = ent[0];
+		foreach(e in ent.slice(1,ent.len()))
+		{
+			e.Input("setparent","#"+parentent.GetIndex(),0);
+		}
+
+		Printer(player,CmdMessages.Prop.SuccessParented("door",ent));
+	}
+	else
+	{
+		Printer(player,CmdMessages.Prop.SuccessDoor(ent));
+	}
 }
 
 ::AdminSystem.GiveCmd <- function ( player, args )
@@ -11720,14 +11861,15 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if(uselocal != null)
 	{
-		if(AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid == "")
+		local name = player.GetCharacterNameLower();
+		if(AdminSystem.Vars._heldEntity[name].entid == "" && AdminSystem.Vars._wornHat[name].entid == "")
 			return;
 
-		entlooked = Entity("#"+AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid);
+		entlooked = Entity("#"+AdminSystem.Vars._heldEntity[name].entid);
 		if(entlooked == null || !entlooked.IsEntityValid())
 		{
-			if(AdminSystem.Vars._wornHat[player.GetCharacterNameLower()].entid != "")
-				entlooked = Entity("#"+AdminSystem.Vars._wornHat[player.GetCharacterNameLower()].entid);
+			if(AdminSystem.Vars._wornHat[name].entid != "")
+				entlooked = Entity("#"+AdminSystem.Vars._wornHat[name].entid);
 			else
 				return;
 		}
@@ -11936,7 +12078,7 @@ if ( Director.GetGameMode() == "holdout" )
 	
 	if(uselocal != null)
 	{
-		if(AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid == "")
+		if(AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid == "" && AdminSystem.Vars._wornHat[player.GetCharacterNameLower()].entid == "")
 			return;
 
 		entlooked = Entity("#"+AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid);
@@ -14159,6 +14301,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local t = intervals*(-7.0);
 	local last_t = 0.0;
 	local clr = entlooked.GetNetProp("m_clrRender");
+	//out("start:"+clr);
 	function color_seq()
 	{
 		entlooked.InputColor(255, 0, 0,t+intervals);
@@ -14177,7 +14320,8 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		else
 		{
-			DoEntFire("!self","RunScriptCode","Entity("+entlooked.GetIndex()+").SetNetProp(\""+_GetEnumString("m_clrRender")+"\","+clr+")",last_t+intervals+0.1,null,entlooked.GetBaseEntity());
+			//out("dur:"+(last_t+intervals*7.0+0.4));
+			Timers.AddTimer(last_t+intervals*7.0+0.4, false, ColorResetWrap, {ent=entlooked,clr=clr});
 		}
 	}
 
@@ -14185,7 +14329,11 @@ if ( Director.GetGameMode() == "holdout" )
 
 	Printer(player,CmdMessages.RainbowSuccess(duration,intervals,entlooked.GetIndex()));
 }
-
+::ColorResetWrap <- function(args)
+{
+	//out("curr:"+args.ent.GetNetProp("m_clrRender"));
+	args.ent.SetNetProp("m_clrRender",args.clr);
+}
 /*
  * @authors rhino
  */
@@ -15454,6 +15602,7 @@ if ( Director.GetGameMode() == "holdout" )
 /*
  * @authors rhino
  * Attach the targeted entity around players arms, make it look and move like player is holding it
+ * TO-DO : Instead of skipping parented entities, check if their parents are close enough and grab by the parent entity
  */
 ::AdminSystem.GrabCmd <- function ( player, args )
 {
@@ -16000,8 +16149,11 @@ if ( Director.GetGameMode() == "holdout" )
 	delete ::VSLib.Timers.TimersID[name];
 }
 
+// TO-DO: Dynamic->Physics objects' children entities' local origins get offset a bit
 ::RecreateHierarchy <- function(oldparent,newparent,other)
 {
+	//newparent.SetMoveType(MOVETYPE_NONE);
+	//oldparent.SetMoveType(MOVETYPE_NONE);
 	// Create a copy of the old hierarchy
 	local firstchild = oldparent.FirstMoveChild();
 	while(firstchild != null)
@@ -16011,12 +16163,13 @@ if ( Director.GetGameMode() == "holdout" )
 		// Parent the new child
 		local locorg = firstchild.GetLocalOrigin();
 		local locang = firstchild.GetLocalAngles();
-
+		//out(locorg);
 		firstchild.Input("clearparent","",0);
 		firstchild.Input("setparent","#"+newparent.GetIndex(),0);
 		firstchild.SetLocalOrigin(locorg);
 		firstchild.SetLocalAngles(locang);
-
+		
+		//out(firstchild.GetLocalOrigin());
 		// Move the next child in the same level
 		firstchild = next;
 	}
@@ -16024,6 +16177,7 @@ if ( Director.GetGameMode() == "holdout" )
 	// Remove old hierarchy
 	oldparent.KillDelayed(0.1);
 
+	//newparent.SetMoveType(MOVETYPE_VPHYSICS);
 	newparent.SetName(other.name);
 	newparent.SetNetProp("m_clrRender",other.color);
 	newparent.SetNetProp("m_nSkin",other.skin);
@@ -16048,55 +16202,97 @@ if ( Director.GetGameMode() == "holdout" )
 	
 	GroundPosition.y = EyeAngles.y;
 
+	// fire_ex prop
 	local ent = typ == "physicsM" 
 		? Utils.SpawnPhysicsMProp( "models/props/cs_office/fire_extinguisher.mdl", EyePosition, GroundPosition )
 		: Utils.SpawnDynamicProp( "models/props/cs_office/fire_extinguisher.mdl", EyePosition, GroundPosition );
-	ent.SetName("project_smok_fire_ex_base_"+UniqueString());
+		
+	local entind = ent.GetIndex();
+	ent.SetName("projectSmokFireExBase_"+entind);
 	
+	// particle
 	local ptc = ent.AttachParticle( "steam_long" , -1, ent.GetOrigin(), false);
 
-	ptc.SetName("project_smok_fire_ex_particle_"+UniqueString());
+	ptc.SetName("projectSmokFireExParticle_"+entind);
 	::VSLib.Timers.AddTimer(0.1,false,Fire_Ex_OriginWrap,{ent=ptc});
 	
-	local steam_sound = Utils.CreateEntityWithTable({classname="ambient_generic", message = "fex_steam", spawnflags = 16, origin = ent.GetOrigin()});
+	// steam
+	local steam_sound = Utils.CreateEntityWithTable({classname="ambient_generic", message = "fex_steam", spawnflags = 48, origin = ent.GetOrigin()});
 	ent.AttachOther(steam_sound,false,0,null);
 
-	steam_sound.SetName("project_smok_fire_ex_sound_"+UniqueString());
+	steam_sound.SetName("projectSmokFireExSound_"+entind);
 	::VSLib.Timers.AddTimer(0.1,false,Fire_Ex_OriginWrap,{ent=steam_sound});
 
+	// outputs
 	local enumstr = _GetEnumString(ptc.GetIndex()+"__"+steam_sound.GetIndex());
 
 	ent.Input("addoutput","OnTakeDamage !self,RunScriptCode,Fire_Ex_OnTakeDamage(" + enumstr + "),0,1",0.1);
 	
-	// To-DO: Not working...
-	ent.Input("addoutput","OnKilled "+ent.GetName()+",RunScriptCode,Fire_Ex_ReAttach(" + enumstr + "),0,1",0.1);
-	//out("Connected outputs")
+	AddThinkToEnt(steam_sound.GetBaseEntity(),"Fire_Ex_ReAttach");
 
-	Printer(player,"Fire Extinguisher " + "\x03" + "#" + ent.GetIndex() + "\x01" + ", particle " + "\x03" + "#" + ptc.GetIndex() + "\x01" + ", sound " + "\x03" + "#" + steam_sound.GetIndex());
+	// TO-DO: Add a phys_motor to create rotating motion from steam 
+
+	Printer(player,CmdMessages.FireEx.Success(entind,ptc.GetIndex(),steam_sound.GetIndex()));
 }
 
-::Fire_Ex_ReAttach <- function(inds)
+// TO-DO : Sound can still get stuck, find a fix
+::Fire_Ex_ReAttach <- function()
 {
-	out("Killed, trying to reconnect outputs")
-	local inds = split(inds,"__");
-
-	local p = Entity(inds[0]);
-	if(!p.IsEntityValid() || p.GetName().find("project_smok_fire_ex_particle_") == null)
-		return;
-
-	local s = Entity(inds[1]);
-	if(!s.IsEntityValid() || s.GetName().find("project_smok_fire_ex_sound_") == null)
-		return;
-	
-	foreach(found_ex in Objects.OfNameWithin("project_smok_fire_ex_base",s.GetOrigin(),60))
+	local ind = self.GetEntityIndex();
+	local s = Entity(ind);
+	local baseind = s.GetName();
+	if(!s.IsEntityValid() || baseind.find("projectSmokFireExSound_") == null)
 	{
-		local enumstr = _GetEnumString(p.GetIndex()+"__"+s.GetIndex());
-		
-		out("Reattaching outputs to " + "\x03" + "#"+found_ex.GetIndex())
-		found_ex.Input("addoutput","OnTakeDamage !self,RunScriptCode,Fire_Ex_OnTakeDamage(" + enumstr + "),0,1",0.1);
-		found_ex.Input("addoutput","OnKilled "+found_ex.GetName()+",RunScriptCode,Fire_Ex_ReAttach(" + enumstr + "),0,1",0.1);
-		return;
+		//out("steam and parent name invalid...")
+		AddThinkToEnt(self,null);
+		return true;
 	}
+
+	baseind = split(baseind,"_")[1].tointeger();
+	//out(baseind);
+
+	if(!Entity(baseind).IsEntityValid())
+	{
+		//out("parent invalid...")
+		if(s.GetParent() == null)
+		{
+			AddThinkToEnt(self,null);
+			return true;
+		}
+		s.SetName("projectSmokFireExSound_"+s.GetParent().GetIndex());
+	}
+	else if(s.GetParent() == null)
+	{
+		//out("no parent...")
+		return true;
+	}
+	else if(s.GetParent().GetIndex() == baseind)
+	{
+		//out("same parent");
+		return true;
+	}
+
+	//out("parent changed...")
+	local p = Objects.AnyOfName("projectSmokFireExParticle_"+baseind);
+	if(p == null)
+	{
+		//out("no particle child found...")
+		AddThinkToEnt(self,null);
+		return true;
+	}
+
+	p.SetName("projectSmokFireExParticle_"+s.GetParent().GetIndex());
+
+	//out("Validated children...")
+
+	local newparent = s.GetParent();
+
+	//out("Reattaching outputs to " + "\x03" + "#"+newparent.GetIndex())
+	
+	newparent.Input("addoutput","OnTakeDamage !self,RunScriptCode,Fire_Ex_OnTakeDamage(" + _GetEnumString(p.GetIndex()+"__"+s.GetIndex()) + "),0,1",0.1);
+	
+	return true;
+
 }
 
 ::Fire_Ex_OriginWrap <- function(args){args.ent.SetLocalOrigin(Vector(3,-1,10));}
@@ -16112,21 +16308,41 @@ if ( Director.GetGameMode() == "holdout" )
 			return;
 		}
 
-		if(ch.GetClassname() == "ambient_generic" && ch.GetName().find("project_smok_fire_ex_sound_") != null)
+		if(ch.GetClassname() == "ambient_generic" && ch.GetName().find("projectSmokFireExSound_") != null)
 		{
 			ch.Input("ToggleSound");
-			ch.KillDelayed(8);
-			ch.SetName("project_smok_fire_ex_USEDSOUND");
+			AddThinkToEnt(ch.GetBaseEntity(),null);
+			//ch.KillDelayed(3);
+			ch.SetName("projectSmokFireExSoundUSED");
+			::VSLib.Timers.AddTimer(3,false,FireExKiller,{ent=ch});
 		}
-		else if(ch.GetClassname() == "info_particle_system" && ch.GetName().find("project_smok_fire_ex_particle_") != null)
+		else if(ch.GetClassname() == "info_particle_system" && ch.GetName().find("projectSmokFireExParticle_") != null)
 		{
 			ch.Input("Start");
-			ch.KillDelayed(7);
-			ch.SetName("project_smok_fire_ex_USEDPARTICLE");
+			//ch.KillDelayed(3);
+			ch.SetName("projectSmokFireExParticleUSED");
+			::VSLib.Timers.AddTimer(3,false,FireExKiller,{ent=ch});
 		}
 	}
-
 }
+
+::FireExKiller <- function(args)
+{
+	local p = args.ent;
+	if(p.IsEntityValid())
+	{
+		if(p.GetClassname() == "info_particle_system")
+		{
+			p.Input("Stop");
+		}
+		else if(p.GetClassname() == "ambient_generic")
+		{
+			p.Input("StopSound");
+		}
+		p.Input("Kill");
+	}
+}
+
 /* @authors rhino
  * Show grabbing and throwing settings
 		entid="",
