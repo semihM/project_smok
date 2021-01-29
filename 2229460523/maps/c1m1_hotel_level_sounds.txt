@@ -20823,15 +20823,12 @@ Buttons.snd46
 		"wave"  "weapons/grenade_launcher/grenadefire/grenade_launcher_explode_2.wav"
 	}
 }
+
 "fex_steam"
 {
 	"channel"		"CHAN_STATIC"
-	"volume"		"0.7"
-	"pitch"			"95, 105"
-	"soundlevel"	    "SNDLVL_120dB"
-	"rndwave"
-	{
-		"wave"	"ambient/gas/steam2.wav"
-		"wave"	"ambient/machines/steam_release_2.wav"
-	}
+	"volume"		"0.9"
+	"pitch"			"90, 115"
+	"soundlevel"	    "SNDLVL_130dB"
+	"wave"	"ambient/machines/steam_release_2.wav"
 }
