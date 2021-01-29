@@ -104,17 +104,21 @@
        //Overloads:
        // {type} should be one of (physicsM: physics object, dynamic: non-physics object, ragdoll: ragdolling models)
        // {model_path} follows this format in general: models/props_{category}/{name}.mdl OR !random for a random model
+       // Multiple models can be given, seperated with "&" character, to create parented props ( parented by first model )
        // To check out all possible models: Left 4 Dead 2 Authoring Tools>Hammer World Editor>CTRL+N>CTRL+SHIFT+M>Search all models
        prop {type: (physicsM, dynamic, ragdoll)} {model_path | !random}
 
-       // Example create a flower barrel with physics
+       // Example: Create a flower barrel with physics
        prop physicsM models/props_foliage/flower_barrel.mdl
        
-       // Example create a BurgerTank sign without physics
+       // Example: Create a BurgerTank sign without physics
        prop dynamic models/props_signs/burgersign.mdl
        
-       // Example create a random object with physics
+       // Example: Create a random object with physics
        prop physicsM !random
+       
+       // Example: Create a physics prop car with its windows attached(parented by the car)
+       prop physics models/props_vehicles/cara_69sedan.mdl&models/props_vehicles/cara_69sedan_glass.mdl
 ```
 ---
 - **ent** : Create an entity of the given class with given key-values
@@ -943,6 +947,54 @@
        meteor_shower_setting meteormodelpick 4
 ```
 ---
+## Freezing Objects
+
+- **stop_time** : Freezes all currently spawned zombies and objects in time
+
+    Chat Syntax | !stop_time *target_type*
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *stop_time,target_type* 
+    ------------- | -------------
+    
+    Menu Sequence | _6 3 9 2 AND 6 3 9 2 9_
+    ------------- | -------------
+
+```cpp
+       //Overloads: 
+       stop_time {target_type:(all,common,special,physics, )}
+       stop_time          // target_type: aimed object
+       
+       // Example: Freeze common infected, special infected and physics objects
+       stop_time all
+       
+       // Example: Freeze object aimed at
+       stop_time
+```
+---
+- **resume_time** : Resumes time for objects
+
+    Chat Syntax | !resume_time *target_type*
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *resume_time,target_type* 
+    ------------- | -------------
+    
+    Menu Sequence | _6 3 9 2 AND 6 3 9 2 9_
+    ------------- | -------------
+
+```cpp
+       //Overloads: 
+       resume_time {target_type:(all,common,special,physics, )}
+       resume_time          // target_type: aimed object
+       
+       // Example: Unfreeze frozen special infected
+       resume_time special
+       
+       // Example: Unfreeze object aimed at
+       stop_time
+```
+---
 ## Piano
 
 - **piano_keys** : Place 25 piano keys starting at looked location placing them to the right
@@ -1277,6 +1329,23 @@
        //Overloads:
        // Host's script authority can not be taken away
        remove_script_auth {character}
+    
+```
+---
+- **ents_around** : Get entity indices and classes around the aimed point
+
+    Chat Syntax | !ents_around *radius*
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *ents_around,radius*
+    ------------- | -------------
+    
+    Menu Sequence | _6 9 4 7_
+    ------------- | -------------
+```cpp
+       //Overloads:
+       ents_around {radius}
+       ents_around        // radius:50
     
 ```
 ---
