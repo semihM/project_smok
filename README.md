@@ -76,6 +76,8 @@
 
 - [**Meteor shower event**](https://github.com/semihM/project_smok#meteor-shower-event)
 
+- [**Freezing objects**](https://github.com/semihM/project_smok#freezing-objects)
+
 - [**Piano keys**](https://github.com/semihM/project_smok#piano)
 
 - [**Microphones and speakers**](https://github.com/semihM/project_smok#microphones-and-speakers)
