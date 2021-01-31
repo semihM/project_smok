@@ -355,10 +355,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 	{
 		if ( setting != "" )
 		{	
-			if(!(setting in AdminSystem._propageddon_args))
-				compilestring("AdminSystem._propageddon_args." + Utils.StringReplace(setting, "=", "<-"))();
-			else
-				compilestring("AdminSystem._propageddon_args." + setting)();
+			compilestring("AdminSystem._propageddon_args." + Utils.StringReplace(setting, "=", "<-"))();
 		}
 	}
 }
@@ -383,10 +380,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 			{
 				try
 				{
-					if(!(setting in AdminSystem._meteor_shower_args))
-						compilestring("AdminSystem._meteor_shower_args." + Utils.StringReplace(setting, "=", "<-"))();
-					else
-						compilestring("AdminSystem._meteor_shower_args." + setting)();
+					compilestring("AdminSystem._meteor_shower_args." + Utils.StringReplace(setting, "=", "<-"))();
 				}
 				catch(e)
 				{
@@ -407,11 +401,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 			}
 			else
 			{
-				if(!(setting in AdminSystem._meteor_shower_args))
-					compilestring("AdminSystem._meteor_shower_args." + Utils.StringReplace(setting, "=", "<-"))();
-				else
-					compilestring("AdminSystem._meteor_shower_args." + setting)();
-
+				compilestring("AdminSystem._meteor_shower_args." + Utils.StringReplace(setting, "=", "<-"))();
 			}
 		}
 	}
@@ -689,61 +679,61 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	// Have to do this because squirrel is restoring "coach" as "Coach"
 	if("Coach" in AdminSystem.Vars._outputsEnabled)
 	{
-		printl("[Custom-Fix] Applying fixes to outputs table...");
+		//printl("[Custom-Fix] Applying fixes to outputs table...");
 		AdminSystem.Vars._outputsEnabled.coach <- AdminSystem.Vars._outputsEnabled.Coach;
 		delete AdminSystem.Vars._outputsEnabled.Coach;
 	}
 	if("Coach" in AdminSystem.Vars._saveLastLine)
 	{
-		printl("[Custom-Fix] Applying fixes to LastLine table...");
+		//printl("[Custom-Fix] Applying fixes to LastLine table...");
 		AdminSystem.Vars._saveLastLine.coach <- AdminSystem.Vars._saveLastLine.Coach;
 		delete AdminSystem.Vars._saveLastLine.Coach;
 	}
 	if("Coach" in AdminSystem.Vars._savedLine)
 	{
-		printl("[Custom-Fix] Applying fixes to SavedLine table...");
+		//printl("[Custom-Fix] Applying fixes to SavedLine table...");
 		AdminSystem.Vars._savedLine.coach <- Utils.TableCopy(AdminSystem.Vars._savedLine.Coach);
 		delete AdminSystem.Vars._savedLine.Coach;
 	}
 	if("Coach" in AdminSystem.Vars._savedParticle)
 	{
-		printl("[Custom-Fix] Applying fixes to SavedParticle table...");
+		//printl("[Custom-Fix] Applying fixes to SavedParticle table...");
 		AdminSystem.Vars._savedParticle.coach <- Utils.TableCopy(AdminSystem.Vars._savedParticle.Coach);
 		delete AdminSystem.Vars._savedParticle.Coach;
 	}
 	if("Coach" in AdminSystem.Vars._saveLastParticle)
 	{
-		printl("[Custom-Fix] Applying fixes to LastParticle table...");
+		//printl("[Custom-Fix] Applying fixes to LastParticle table...");
 		AdminSystem.Vars._saveLastParticle.coach <- AdminSystem.Vars._saveLastParticle.Coach;
 		delete AdminSystem.Vars._saveLastParticle.Coach;
 	}
 	if("Coach" in AdminSystem.Vars._preferred_duration)
 	{
-		printl("[Custom-Fix] Applying fixes to preferred_duration table...");
+		//printl("[Custom-Fix] Applying fixes to preferred_duration table...");
 		AdminSystem.Vars._preferred_duration.coach <- AdminSystem.Vars._preferred_duration.Coach;
 		delete AdminSystem.Vars._preferred_duration.Coach;
 	}
 	if("Coach" in AdminSystem.Vars._prop_spawn_settings_menu_type)
 	{
-		printl("[Custom-Fix] Applying fixes to prop_spawn_settings_menu_type table...");
+		//printl("[Custom-Fix] Applying fixes to prop_spawn_settings_menu_type table...");
 		AdminSystem.Vars._prop_spawn_settings_menu_type.coach <- AdminSystem.Vars._prop_spawn_settings_menu_type.Coach;
 		delete AdminSystem.Vars._prop_spawn_settings_menu_type.Coach;
 	}
 	if("Coach" in AdminSystem.Vars._prop_spawn_settings)
 	{
-		printl("[Custom-Fix] Applying fixes to prop_spawn_settings table...");
+		//printl("[Custom-Fix] Applying fixes to prop_spawn_settings table...");
 		AdminSystem.Vars._prop_spawn_settings.coach <- Utils.TableCopy(AdminSystem.Vars._prop_spawn_settings.Coach);
 		delete AdminSystem.Vars._prop_spawn_settings.Coach;
 	}
 	if("Coach" in AdminSystem.Vars._explosion_settings)
 	{
-		printl("[Custom-Fix] Applying fixes to explosion_settings table...");
+		//printl("[Custom-Fix] Applying fixes to explosion_settings table...");
 		AdminSystem.Vars._explosion_settings.coach <- Utils.TableCopy(AdminSystem.Vars._explosion_settings.Coach);
 		delete AdminSystem.Vars._explosion_settings.Coach;
 	}
 	if("Coach" in AdminSystem.Vars._heldEntity)
 	{
-		printl("[Custom-Fix] Applying fixes to HeldEntity table...");
+		//printl("[Custom-Fix] Applying fixes to HeldEntity table...");
 		AdminSystem.Vars._heldEntity.coach <- Utils.TableCopy(AdminSystem.Vars._heldEntity.Coach);
 		delete AdminSystem.Vars._heldEntity.Coach;
 		AdminSystem.Vars._heldEntity.bill.entid = "";
@@ -757,7 +747,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	}
 	if("Coach" in AdminSystem.Vars._wornHat)
 	{
-		printl("[Custom-Fix] Applying fixes to WornHat table...");
+		//printl("[Custom-Fix] Applying fixes to WornHat table...");
 		AdminSystem.Vars._wornHat.coach <- Utils.TableCopy(AdminSystem.Vars._wornHat.Coach);
 		delete AdminSystem.Vars._wornHat.Coach;
 		AdminSystem.Vars._wornHat.bill.entid = "";
@@ -771,14 +761,14 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	}
 	if("Coach" in AdminSystem.Vars._modelPreference)
 	{
-		printl("[Custom-Fix] Applying fixes to model preference table...");
+		//printl("[Custom-Fix] Applying fixes to model preference table...");
 		AdminSystem.Vars._modelPreference.coach <- Utils.TableCopy(AdminSystem.Vars._modelPreference.Coach);
 		delete AdminSystem.Vars._modelPreference.Coach;
 	}
 	local skip = false;
 	if("Coach" in AdminSystem.Vars._CustomResponseOptions)
 	{	
-		printl("[Custom-Fix] Applying fixes to CustomResponse table...");
+		//printl("[Custom-Fix] Applying fixes to CustomResponse table...");
 		AdminSystem.Vars._CustomResponseOptions.coach <- Utils.TableCopy(AdminSystem.Vars._CustomResponseOptions.Coach);
 		delete AdminSystem.Vars._CustomResponseOptions.Coach;
 		AdminSystem.Vars._CustomResponse.coach <- Utils.TableCopy(AdminSystem.Vars._CustomResponse.Coach);
@@ -789,7 +779,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 		// Apply options created by admins
 		AdminSystem.LoadCustomSequences();
 		//throw("No need for fixes in CustomRespose tables");
-		printl("[OnRoundStart-Info] No need for fixes in CustomRespose tables");
+		//printl("[OnRoundStart-Info] No need for fixes in CustomRespose tables");
 		skip = true;
 	}
 
@@ -1018,13 +1008,13 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	if(AdminSystem.Vars._propageddon_state == 1)
 	{
 		::VSLib.Timers.AddTimer(3,false,Utils.PrintToAllDel,"Madness continues...");
-		::VSLib.Timers.AddTimerByName("propageddon",AdminSystem._propageddon_args.updatedelay, true, _ApocalypseTimer,{});	
+		::VSLib.Timers.AddTimerByName(Constants.TimerNames.Apocalypse,AdminSystem._propageddon_args.updatedelay, true, _ApocalypseTimer,{});	
 	}
 
 	if(AdminSystem.Vars._meteor_shower_state == 1)
 	{
 		::VSLib.Timers.AddTimer(3.2,false,Utils.PrintToAllDel,"Is it still raining?");
-		::VSLib.Timers.AddTimerByName("meteor_shower",AdminSystem._meteor_shower_args.updatedelay, true, _MeteorTimer,{});	
+		::VSLib.Timers.AddTimerByName(Constants.TimerNames.MeteorShower,AdminSystem._meteor_shower_args.updatedelay, true, _MeteorTimer,{});	
 	}
 
 	if(AdminSystem.Vars.LastLootThinkState)
@@ -1081,7 +1071,8 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 
 function Notifications::OnPlayerConnected::RestoreModels(player,args)
 {
-	AdminSystem.RestoreModels(player);
+	if(!::VSLib.EasyLogic.NextMapContinues)
+		AdminSystem.RestoreModels(player);
 }
 
 function Notifications::OnModeStart::AdminLoadFiles( gamemode )
@@ -1343,7 +1334,7 @@ function EasyLogic::OnTakeDamage::AdminDamage( damageTable )
 	
 	if(victim.GetIndex() in ::AdminSystem.Vars.IsGodEnabled && ::AdminSystem.Vars.IsGodEnabled[victim.GetIndex()])
 	{
-		printl("Ignoring damage for just unfrozen SI.")
+		//printl("Ignoring damage for just unfrozen SI.")
 		return false;
 	}
 	return true;
@@ -2362,6 +2353,16 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.EntitiesAroundCmd(player,args);
 			break;
 		}
+		case "wnet":
+		{
+			AdminSystem.WatchNetPropCmd(player,args);
+			break;
+		}
+		case "stop_wnet":
+		{
+			AdminSystem.StopWatchNetPropCmd(player,args);
+			break;
+		}
 		default:
 			break;
 	}
@@ -2596,16 +2597,38 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			if (libObj.GetTeam() == INFECTED )
 			{
 				libObj.AddFlag(FL_FROZEN)
-				DoEntFire("!self","setcommentarystatuemode","1",0,null,ent)
+				//DoEntFire("!self","setcommentarystatuemode","1",0,null,ent)
 				libObj.SetNetPropFloat("m_flFrozen",1);
 				AdminSystem._FrozenSI[libObj.GetIndex()] <-
 				{
 					model = libObj.GetModel()
-					health = libObj.GetHealth()
 					movetype = libObj.GetMoveType()
 				};
 				libObj.SetMoveType(MOVETYPE_NONE);
+				AdminSystem.Vars.IsGodEnabled[libObj.GetIndex()] <- true;
 			}
+		}
+	}
+	while (ent = Entities.FindByClassname(ent, "witch"))
+	{
+		if (ent.IsValid())
+		{
+			local libObj = Entity(ent);
+			if(libObj.GetMoveType() == MOVETYPE_NONE || libObj.GetParent() != null)
+			{
+				continue;
+			}
+
+			libObj.AddFlag(FL_FROZEN)
+			//DoEntFire("!self","setcommentarystatuemode","1",0,null,ent)
+			libObj.SetNetPropFloat("m_flFrozen",1);
+			AdminSystem._FrozenSI[libObj.GetIndex()] <-
+			{
+				model = libObj.GetModel()
+				movetype = libObj.GetMoveType()
+			};
+			libObj.SetMoveType(MOVETYPE_NONE);
+			AdminSystem.Vars.IsGodEnabled[libObj.GetIndex()] <- true;
 		}
 	}
 }
@@ -2696,15 +2719,30 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	   && ent.GetTeam() == INFECTED)
 	{
 		ent.AddFlag(FL_FROZEN)
-		DoEntFire("!self","setcommentarystatuemode","1",0,null,ent.GetBaseEntity())
+		//DoEntFire("!self","setcommentarystatuemode","1",0,null,ent.GetBaseEntity())
 		ent.SetNetPropFloat("m_flFrozen",1);
 		AdminSystem._FrozenSI[id] <-
 		{
 			model = ent.GetModel()
-			health = ent.GetHealth()
 			movetype = ent.GetMoveType()
 		};
 		ent.SetMoveType(MOVETYPE_NONE);
+		AdminSystem.Vars.IsGodEnabled[id] <- true;
+	
+	} // Witch
+	else if(classname == "witch" 		
+	   && "_FrozenSI" in AdminSystem)
+	{
+		ent.AddFlag(FL_FROZEN)
+		//DoEntFire("!self","setcommentarystatuemode","1",0,null,ent.GetBaseEntity())
+		ent.SetNetPropFloat("m_flFrozen",1);
+		AdminSystem._FrozenSI[id] <-
+		{
+			model = ent.GetModel()
+			movetype = ent.GetMoveType()
+		};
+		ent.SetMoveType(MOVETYPE_NONE);
+		AdminSystem.Vars.IsGodEnabled[id] <- true;
 	
 	} // Common
 	else if(classname == "infected"
@@ -2809,6 +2847,15 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		{
 			if(ent.GetClassname() != "player")
 			{
+				if(ent.GetClassname() == "witch")
+				{
+					local libObj = Entity(ent);
+					libObj.SetMoveType(tbl.movetype);
+					libObj.RemoveFlag(FL_FROZEN);
+					libObj.SetNetPropFloat("m_flFrozen",0);
+
+					DoEntFire("!self","RunScriptCode","delete AdminSystem.Vars.IsGodEnabled["+libObj.GetIndex()+"]",0,null,ent);
+				}
 				continue;
 			}
 			local libObj = ::VSLib.Player(ent);
@@ -2820,9 +2867,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				libObj.SetNetPropFloat("m_flFrozen",0);
 				
 				//libObj.SetOrigin(org);
-				AdminSystem.Vars.IsGodEnabled[libObj.GetIndex()] <- true;
-				DoEntFire("!self","setcommentarystatuemode","0",0,null,ent)
-				DoEntFire("!self","sethealth",tbl.health.tostring(),0,null,ent)
+				//AdminSystem.Vars.IsGodEnabled[libObj.GetIndex()] <- true;
+				//DoEntFire("!self","setcommentarystatuemode","0",0,null,ent)
+				//DoEntFire("!self","sethealth",tbl.health.tostring(),0,null,ent)
 				DoEntFire("!self","RunScriptCode","delete AdminSystem.Vars.IsGodEnabled["+libObj.GetIndex()+"]",0,null,ent);
 				//libObj.SetHealth(tbl.health);
 			}
@@ -2953,12 +3000,26 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		ent.SetNetPropFloat("m_flFrozen",0);
 
 		//ent.SetOrigin(org);
-		AdminSystem.Vars.IsGodEnabled[id] <- true;
-		DoEntFire("!self","setcommentarystatuemode","0",0,null,ent.GetBaseEntity())
-		DoEntFire("!self","sethealth",tbl.health.tostring(),0,null,ent.GetBaseEntity())
+		//AdminSystem.Vars.IsGodEnabled[id] <- true;
+		//DoEntFire("!self","setcommentarystatuemode","0",0,null,ent.GetBaseEntity())
+		//DoEntFire("!self","sethealth",tbl.health.tostring(),0.05,null,ent.GetBaseEntity())
 		DoEntFire("!self","RunScriptCode","delete AdminSystem.Vars.IsGodEnabled["+id+"]",0,null,ent.GetBaseEntity());
 		//ent.SetHealth(tbl.health);
 		delete AdminSystem._FrozenSI[id];	
+	}
+	else if(classname == "witch" 		
+	   && "_FrozenSI" in AdminSystem
+	   && (id in AdminSystem._FrozenSI))
+	{
+		local tbl = AdminSystem._FrozenSI[id];
+		ent.SetMoveType(tbl.movetype);
+		ent.RemoveFlag(FL_FROZEN);
+		ent.SetNetPropFloat("m_flFrozen",0);
+
+		DoEntFire("!self","RunScriptCode","delete AdminSystem.Vars.IsGodEnabled["+id+"]",0,null,ent.GetBaseEntity());
+
+		delete AdminSystem._FrozenSI[id];
+	
 	}
 	else if(classname == "infected"
 			&& "_FrozenInfected" in AdminSystem
@@ -2994,10 +3055,43 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	
 }
 
-// Bot share and loot functions
+/*************************\
+* BOT SHARE/LOOT FUNCTIONS *
+\*************************/
 /*
  * @authors rhino
  */
+::AdminSystem.SetBotShareLootSettings <- function()
+{
+	::AdminSystem.BotParams <- Constants.GetBotShareLootSettingsDefaults();
+
+	::AdminSystem.BotOnSearchOrSharePath <- AdminSystem.Vars.RepeatValueForSurvivors(false);
+
+	::AdminSystem.BotBringingItem <- AdminSystem.Vars.RepeatValueForSurvivors(false);
+
+	::AdminSystem.BotTemporaryStopState <- AdminSystem.Vars.RepeatValueForSurvivors(false);
+
+	local fileContents = FileToString(Constants.Directories.BotSettings);
+	
+	if(fileContents == null)
+	{
+		printl("[Bot-Params] Creating bot share/loot settings file for the first time...");
+		StringToFile(Constants.Directories.BotSettings,Constants.GetBotShareLootSettings());
+		fileContents = FileToString(Constants.Directories.BotSettings);
+	}
+
+	local settings = split(fileContents, "\r\n");
+
+	foreach(setting in settings)
+	{
+		if ( setting != "" )
+		{
+			local code = "AdminSystem.BotParams." + Utils.StringReplace(setting, "=", "<-");
+			compilestring(code)();
+		}
+	}
+}
+::AdminSystem.SetBotShareLootSettings();
 
 ::AdminSystem.Update_bots_sharing_preferenceCmd <- function ( player, args )
 {
@@ -3010,47 +3104,53 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	Messages.InformAll(CmdMessages.BotSharingPreference(player.GetCharacterName(),newstate));
 }
 
-::BotParams <- 
-{
-	CanSee_Share = 110,
-	CanSee_Loot = 130,
-	VisibleDistLimit = 400,
-	ShareTimeout = 7,
-	ReachTimeout = 6,
-	PathableDist_Loot = 150,
-	BotOriginLootRadius = 250,
-	ClosestPlayerMaxDist = 250,
-	SpawnerRadiusAroundClosest = 200,
-	MaxRadiusToLetShare = 100,
-	MaxRadiusToTake = 100,
-	RandomChanceForShare = 0.6,
-	ChanceRelocateWhenTooFarToGive = 0.4,
-	ChanceRelocateWhenTooFarToGet = 0.25,
-	Mask = TRACE_MASK_VISIBLE_AND_NPCS,
-	ItemShareTimerDelay = 0.5,
-	ItemReachTimerDelay = 0.5,
-	debug = 0
-}
-
-::AdminSystem.BotOnSearchOrSharePath <- AdminVars.RepeatValueForSurvivors(false);
-
-::AdminSystem.BotBringingItem <- AdminVars.RepeatValueForSurvivors(false);
-
-::AdminSystem.BotTemporaryStopState <- AdminVars.RepeatValueForSurvivors(false);
-
 ::_ClearBeingTakenStatus <- function(args)
 {
 	if(args.item in AdminSystem.Vars._currentlyBeingTaken)
 		delete AdminSystem.Vars._currentlyBeingTaken[args.item];
 }
 
+::RemoveCustomThinkTimers <- function(index,searchonly=false)
+{
+	if(!searchonly)
+	{
+		if(Constants.TimerNames.BotShareAttemptSlot2+index in ::VSLib.Timers.TimersID)
+		{
+			::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[Constants.TimerNames.BotShareAttemptSlot2+index]);
+			delete ::VSLib.Timers.TimersID[Constants.TimerNames.BotShareAttemptSlot2+index];
+		}
+		if(Constants.TimerNames.BotShareAttemptSlot3+index in ::VSLib.Timers.TimersID)
+		{
+			::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[Constants.TimerNames.BotShareAttemptSlot3+index]);
+			delete ::VSLib.Timers.TimersID[Constants.TimerNames.BotShareAttemptSlot3+index];
+		}
+
+		if(Constants.TimerNames.BotThinkAdder+index in ::VSLib.Timers.TimersID)
+		{
+			::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[Constants.TimerNames.BotThinkAdder+index]);
+			delete ::VSLib.Timers.TimersID[Constants.TimerNames.BotThinkAdder+index];
+		}
+	}
+
+	if(Constants.TimerNames.BotSearchAttemptSlot2+index in ::VSLib.Timers.TimersID)
+	{
+		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[Constants.TimerNames.BotSearchAttemptSlot2+index]);
+		delete ::VSLib.Timers.TimersID[Constants.TimerNames.BotSearchAttemptSlot2+index];
+	}
+	if(Constants.TimerNames.BotSearchAttemptSlot3+index in ::VSLib.Timers.TimersID)
+	{
+		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[Constants.TimerNames.BotSearchAttemptSlot3+index]);
+		delete ::VSLib.Timers.TimersID[Constants.TimerNames.BotSearchAttemptSlot3+index];
+	}
+	
+}
 
 ::_TakenFailCheckerRemover <- function(args)
 {
 	if(args.index in AdminSystem.Vars._currentlyBeingTaken)
 	{
 		args.bot.BotReset();
-		Utils.RemoveCustomThinkTimers(args.bot.GetIndex(),true);
+		RemoveCustomThinkTimers(args.bot.GetIndex(),true);
 		AdminSystem.BotOnSearchOrSharePath[args.bot.GetCharacterNameLower()] = false;
 		delete AdminSystem.Vars._currentlyBeingTaken[args.index];
 	}
@@ -3061,15 +3161,15 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	local index = args.botindex;
 	args.bot.BotReset();
 
-	if(index+"_bot_think_share_attempt_slot2" in ::VSLib.Timers.TimersID)
+	if(Constants.TimerNames.BotShareAttemptSlot2+index in ::VSLib.Timers.TimersID)
 	{
-		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[index+"_bot_think_share_attempt_slot2"]);
-		delete ::VSLib.Timers.TimersID[index+"_bot_think_share_attempt_slot2"];
+		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[Constants.TimerNames.BotShareAttemptSlot2+index]);
+		delete ::VSLib.Timers.TimersID[Constants.TimerNames.BotShareAttemptSlot2+index];
 	}
-	if(index+"_bot_think_share_attempt_slot3" in ::VSLib.Timers.TimersID)
+	if(Constants.TimerNames.BotShareAttemptSlot3+index in ::VSLib.Timers.TimersID)
 	{
-		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[index+"_bot_think_share_attempt_slot3"]);
-		delete ::VSLib.Timers.TimersID[index+"_bot_think_share_attempt_slot3"];
+		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[Constants.TimerNames.BotShareAttemptSlot3+index]);
+		delete ::VSLib.Timers.TimersID[Constants.TimerNames.BotShareAttemptSlot3+index];
 	}
 
 	AdminSystem.BotOnSearchOrSharePath[args.bot.GetCharacterNameLower()] = false;
@@ -3081,6 +3181,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
  */
 ::_TryToReachAndGet <- function(args)
 {
+	if(::VSLib.EasyLogic.NextMapContinues)
+		return;
+
 	local obj = args.obj;
 
 	if(!args.obj.IsEntityValid())
@@ -3089,12 +3192,15 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	local bot = args.bot;
 	local botindex = bot.GetIndex();
 	local slot = args.slot;
-	local debug = BotParams.debug;
+	local debug = AdminSystem.BotParams.debug;
+	local timername = slot == 2 
+						? Constants.TimerNames.BotSearchAttemptSlot2+botindex
+						: Constants.TimerNames.BotSearchAttemptSlot3+botindex
 	
-	if(Utils.CalculateDistance(args.bot.GetEyePosition(),obj.GetOrigin()) <= BotParams.MaxRadiusToTake && (botindex+"_bot_think_search_attempt_slot"+slot in ::VSLib.Timers.TimersID))
+	if(Utils.CalculateDistance(args.bot.GetEyePosition(),obj.GetOrigin()) <= AdminSystem.BotParams.MaxRadiusToTake && (timername in ::VSLib.Timers.TimersID))
 	{
-		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[botindex+"_bot_think_search_attempt_slot"+slot]);
-		delete ::VSLib.Timers.TimersID[botindex+"_bot_think_search_attempt_slot"+slot];
+		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[timername]);
+		delete ::VSLib.Timers.TimersID[timername];
 		
 		if(!bot.IsAlive())
 		{
@@ -3140,7 +3246,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			bot.BotReset();
 		}
 	}
-	else if(botindex+"_bot_think_search_attempt_slot"+slot in ::VSLib.Timers.TimersID)
+	else if(timername in ::VSLib.Timers.TimersID)
 	{
 		foreach(inf in Objects.OfClassnameWithin("inferno",obj.GetOrigin(),275))
 		{
@@ -3175,7 +3281,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			}
 		}
 
-		if((rand().tofloat()/RAND_MAX) <= BotParams.ChanceRelocateWhenTooFarToGet 
+		if((rand().tofloat()/RAND_MAX) <= AdminSystem.BotParams.ChanceRelocateWhenTooFarToGet 
 			&& !bot.IsInCombat()
 			&& bot.IsAlive()
 			&& !bot.IsIncapacitated()
@@ -3194,17 +3300,25 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
  */
 ::_TryAndGiveItem <- function(args)
 {
+	if(::VSLib.EasyLogic.NextMapContinues)
+		return;
+
 	local bot = args.bot;
 	local botindex = bot.GetIndex();
+	local botname = bot.GetCharacterNameLower();
 	local target = args.target;
 	local slot = args.slot;
-	local debug = BotParams.debug;
+	local debug = AdminSystem.BotParams.debug;
 	local item = args.item;
-
-	if(Utils.CalculateDistance(bot.GetOrigin(),target.GetOrigin()) <= BotParams.MaxRadiusToLetShare && (botindex+"_bot_think_share_attempt_slot"+slot in ::VSLib.Timers.TimersID))
+	local timername = slot == 2 
+						? Constants.TimerNames.BotShareAttemptSlot2+botindex
+						: Constants.TimerNames.BotShareAttemptSlot3+botindex
+	if(Utils.CalculateDistance(bot.GetOrigin(),target.GetOrigin()) <= AdminSystem.BotParams.MaxRadiusToLetShare 
+		&& (timername in ::VSLib.Timers.TimersID) 
+		&& !AdminSystem.BotTemporaryStopState[botname])
 	{
-		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[botindex+"_bot_think_share_attempt_slot"+slot]);
-		delete ::VSLib.Timers.TimersID[botindex+"_bot_think_share_attempt_slot"+slot];
+		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[timername]);
+		delete ::VSLib.Timers.TimersID[timername];
 
 		if(!bot.IsAlive())
 		{
@@ -3225,7 +3339,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		{
 			if(!target.IsAlive())
 			{
-				AdminSystem.BotOnSearchOrSharePath[bot.GetCharacterNameLower()] = false;
+				AdminSystem.BotOnSearchOrSharePath[botname] = false;
 				AdminSystem.BotBringingItem[target.GetCharacterNameLower()] = false;
 				if(debug == 1)
 					ClientPrint(null,3,"\x04"+"#" + target.GetIndex() + " target is dead")
@@ -3242,7 +3356,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			}
 			else
 			{
-				AdminSystem.BotOnSearchOrSharePath[bot.GetCharacterNameLower()] = false;
+				AdminSystem.BotOnSearchOrSharePath[botname] = false;
 				AdminSystem.BotBringingItem[target.GetCharacterNameLower()] = false;
 				
 				local spawnertooclose = false;
@@ -3268,11 +3382,14 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 					{
 						if(debug == 1)
 							ClientPrint(null,3,"\x03"+"#"+botindex+" gave "+args.classname+" to "+target.GetIndex());
-						bot.Speak(Utils.GetRandValueFromArray(::Survivorlines.ShareItem[bot.GetCharacterNameLower()]),0.1);
+						bot.Speak(Utils.GetRandValueFromArray(::Survivorlines.ShareItem[botname]),0.1);
 						
 						AdminSystem.Vars._currentlyBeingTaken[args.item.GetIndex()] <- true;
 						Utils.DropThenGive(bot,target,slot,args.item);
 						::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=args.item.GetIndex()});
+						
+						AdminSystem.BotTemporaryStopState[botname] <- true;
+						::VSLib.Timers.AddTimer(AdminSystem.BotParams.HoldNewGivenFor, false, _TemporaryStopStatusWrapper,{bot=botname});
 					}
 					else
 					{
@@ -3290,7 +3407,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			bot.BotReset();
 		}	
 	}
-	else if(botindex+"_bot_think_share_attempt_slot"+slot in ::VSLib.Timers.TimersID)
+	else if(timername in ::VSLib.Timers.TimersID)
 	{
 		if(item == null || !item.IsEntityValid())
 		{
@@ -3332,7 +3449,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 					return;
 				}
 			}
-			if((rand().tofloat()/RAND_MAX) <= BotParams.ChanceRelocateWhenTooFarToGive  
+			if((rand().tofloat()/RAND_MAX) <= AdminSystem.BotParams.ChanceRelocateWhenTooFarToGive  
 				&& !bot.IsInCombat()
 				&& bot.IsAlive()
 				&& !bot.IsIncapacitated()
@@ -3344,6 +3461,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			}
 		}
 	}
+}
+
+::_TemporaryStopStatusWrapper <- function(args)
+{
+	AdminSystem.BotTemporaryStopState[args.bot] <- false;
 }
 
 /*
@@ -3416,16 +3538,17 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	{
 		AdminSystem.BotOnSearchOrSharePath[survivor] = false;
 		AdminSystem.BotBringingItem[survivor] = false;
+		AdminSystem.BotTemporaryStopState[survivor] = false;
 	}
 
 	foreach(survivor in Players.AliveSurvivors())
 	{
-		Utils.RemoveCustomThinkTimers(survivor.GetIndex());
+		RemoveCustomThinkTimers(survivor.GetIndex());
 	}
 
 	foreach(survivor in Players.DeadSurvivors())
 	{
-		Utils.RemoveCustomThinkTimers(survivor.GetIndex());
+		RemoveCustomThinkTimers(survivor.GetIndex());
 	}
 
 	AdminSystem.Vars._currentlyBeingTaken <- {};
@@ -3446,9 +3569,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		return;
 	foreach(survivor in Players.AliveSurvivors())
 	{
-		if(!(survivor.GetIndex()+"_bot_think_adder" in ::VSLib.Timers.TimersID) && survivor.IsBot())
+		if(!(Constants.TimerNames.BotThinkAdder+survivor.GetIndex() in ::VSLib.Timers.TimersID) && survivor.IsBot())
 		{
-			Timers.AddTimerByName(survivor.GetIndex()+"_bot_think_adder",1.3+((rand().tofloat()/RAND_MAX)%0.5),true,_LookForLoot,{index=survivor.GetIndex()})
+			Timers.AddTimerByName(Constants.TimerNames.BotThinkAdder+survivor.GetIndex(),AdminSystem.BotParams.MinThinkDelay+((rand().tofloat()/RAND_MAX)%AdminSystem.BotParams.MaxOffsetThinkDelay),true,_LookForLoot,{index=survivor.GetIndex()})
 		}
 	}
 }
@@ -3461,12 +3584,12 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	local botindex = arg.index;
 	local bot = Player(botindex.tointeger());
 	local botname = bot.GetCharacterNameLower();
-	local debug = BotParams.debug;
+	local debug = AdminSystem.BotParams.debug;
 	if(!bot.IsBot())
 	{
 		if(debug == 1)
 			ClientPrint(null,3,"\x04"+"#" + botindex + " is not a bot")
-		Utils.RemoveCustomThinkTimers(botindex);
+		RemoveCustomThinkTimers(botindex);
 		AdminSystem.BotOnSearchOrSharePath[botname] = false;
 		return;
 	}
@@ -3475,7 +3598,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		if(debug == 1)
 			ClientPrint(null,3,"\x04"+"#" + botindex + " bot is dead")
 
-		Utils.RemoveCustomThinkTimers(botindex);
+		RemoveCustomThinkTimers(botindex);
 		AdminSystem.BotOnSearchOrSharePath[botname] = false;
 	}
 	else if(bot.IsIncapacitated())
@@ -3501,14 +3624,15 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		local inhandclass = null;
 		local alreadygiving = false;
 		
-		local hasgrenade = ("slot2" in inv)
-		local haspack = ("slot3" in inv)
-		local share = AdminSystem.Vars.AllowAutomatedSharing
+		local hasgrenade = ("slot2" in inv);
+		local haspack = ("slot3" in inv);
+		local share = AdminSystem.Vars.AllowAutomatedSharing;
+		local temporarlystopped = AdminSystem.BotTemporaryStopState[botname];
 
 		// TRY SHARING EITHER GRENADE OR THE PACK, OR JUST SEARCH FOR NEW ONE
-		if(hasgrenade && share)
+		if(hasgrenade && share && !temporarlystopped)
 		{
-			if(botindex+"_bot_think_share_attempt_slot2" in ::VSLib.Timers.TimersID)
+			if(Constants.TimerNames.BotShareAttemptSlot2+botindex in ::VSLib.Timers.TimersID)
 			{
 				if(debug == 1)
 					ClientPrint(null,3,"\x04"+"Already trying to give the grenade");
@@ -3529,13 +3653,13 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 					if(survivor.IsBot())
 						continue;
 
-					if(bot.CanSeeLocation(survivor.GetEyePosition(),BotParams.CanSee_Share))
+					if(bot.CanSeeLocation(survivor.GetEyePosition(),AdminSystem.BotParams.CanSee_Share))
 					{
 						local valid = false;
 						local begin = bot.GetEyePosition();
 						local finish = survivor.GetEyePosition();
 						
-						local m_trace = { start = begin, end = finish, ignore = bot.GetBaseEntity(), mask = BotParams.Mask };
+						local m_trace = { start = begin, end = finish, ignore = bot.GetBaseEntity(), mask = AdminSystem.BotParams.Mask };
 						TraceLine(m_trace);
 
 						if(debug == 1)
@@ -3606,10 +3730,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 							if(debug == 1)
 								ClientPrint(null,3,"\x04"+"Friend already has grenade");
 						}
-						else if(Utils.CalculateDistance(origin,closestorigin) <= BotParams.ClosestPlayerMaxDist)
+						else if(Utils.CalculateDistance(origin,closestorigin) <= AdminSystem.BotParams.ClosestPlayerMaxDist)
 						{
 							local spawnertooclose = false;
-							foreach(spawner in Objects.OfClassnameWithin(inhandclass+"_spawn",closestorigin,BotParams.SpawnerRadiusAroundClosest))
+							foreach(spawner in Objects.OfClassnameWithin(inhandclass+"_spawn",closestorigin,AdminSystem.BotParams.SpawnerRadiusAroundClosest))
 							{
 								if(spawner.GetNetProp("m_fEffects") == 48 || spawner.GetSpawnFlags() == 10)
 								{
@@ -3634,21 +3758,21 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 								AdminSystem.BotBringingItem[closest.GetCharacterNameLower()] = true;
 								alreadygiving = true;
 
-								Timers.AddTimer(BotParams.ShareTimeout,false,_ShareFailCheckerRemover,{bot=bot,botindex=botindex,targetname=closest.GetCharacterNameLower()});
-								Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot2",BotParams.ItemShareTimerDelay,true,_TryAndGiveItem,{bot=bot,target=closest,slot=2,item=inHand,classname=inhandclass.slice(7)})
+								Timers.AddTimer(AdminSystem.BotParams.ShareTimeout,false,_ShareFailCheckerRemover,{bot=bot,botindex=botindex,targetname=closest.GetCharacterNameLower()});
+								Timers.AddTimerByName(Constants.TimerNames.BotShareAttemptSlot2+botindex,AdminSystem.BotParams.ItemShareTimerDelay,true,_TryAndGiveItem,{bot=bot,target=closest,slot=2,item=inHand,classname=inhandclass.slice(7)})
 							}
-							else if((rand().tofloat()/RAND_MAX) <= BotParams.RandomChanceForShare)
+							else if((rand().tofloat()/RAND_MAX) <= AdminSystem.BotParams.RandomChanceForShare)
 							{
 								if(debug == 1)
-									ClientPrint(null,3,"\x03"+"#"+botindex+" "+BotParams.RandomChanceForShare*100+"% probability hit");
+									ClientPrint(null,3,"\x03"+"#"+botindex+" "+AdminSystem.BotParams.RandomChanceForShare*100+"% probability hit");
 								bot.BotMoveToLocation(closestorigin);
 
 								AdminSystem.BotOnSearchOrSharePath[botname] = true;
 								AdminSystem.BotBringingItem[closest.GetCharacterNameLower()] = true;
 								alreadygiving = true;
 								
-								Timers.AddTimer(BotParams.ShareTimeout,false,_ShareFailCheckerRemover,{bot=bot,botindex=botindex,targetname=closest.GetCharacterNameLower()});
-								Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot2",BotParams.ItemShareTimerDelay,true,_TryAndGiveItem,{bot=bot,target=closest,slot=2,item=inHand,classname=inhandclass.slice(7)})
+								Timers.AddTimer(AdminSystem.BotParams.ShareTimeout,false,_ShareFailCheckerRemover,{bot=bot,botindex=botindex,targetname=closest.GetCharacterNameLower()});
+								Timers.AddTimerByName(Constants.TimerNames.BotShareAttemptSlot2+botindex,AdminSystem.BotParams.ItemShareTimerDelay,true,_TryAndGiveItem,{bot=bot,target=closest,slot=2,item=inHand,classname=inhandclass.slice(7)})
 							}
 						}
 					}
@@ -3663,9 +3787,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			
 		}
 
-		if(haspack && !alreadygiving && share)
+		if(haspack && !alreadygiving && share && !temporarlystopped)
 		{
-			if(botindex+"_bot_think_share_attempt_slot3" in ::VSLib.Timers.TimersID)
+			if(Constants.TimerNames.BotShareAttemptSlot3+botindex in ::VSLib.Timers.TimersID)
 			{
 				if(debug == 1)
 					ClientPrint(null,3,"\x04"+"Already trying to give a pack");
@@ -3686,13 +3810,13 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 					if(survivor.IsBot())
 						continue;
 						
-					if(bot.CanSeeLocation(survivor.GetEyePosition(),BotParams.CanSee_Share))
+					if(bot.CanSeeLocation(survivor.GetEyePosition(),AdminSystem.BotParams.CanSee_Share))
 					{
 						local valid = false;
 						local begin = bot.GetEyePosition();
 						local finish = survivor.GetEyePosition();
 						
-						local m_trace = { start = begin, end = finish, ignore = bot.GetBaseEntity(), mask = BotParams.Mask };
+						local m_trace = { start = begin, end = finish, ignore = bot.GetBaseEntity(), mask = AdminSystem.BotParams.Mask };
 						TraceLine(m_trace);
 						
 						if(debug == 1)
@@ -3765,10 +3889,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 							if(debug == 1)
 								ClientPrint(null,3,"\x04"+"Friend already has a pack");
 						}
-						else if(Utils.CalculateDistance(origin,closestorigin) <= BotParams.ClosestPlayerMaxDist)
+						else if(Utils.CalculateDistance(origin,closestorigin) <= AdminSystem.BotParams.ClosestPlayerMaxDist)
 						{
 							local packspawnertooclose = false;
-							foreach(spawner in Objects.OfClassnameWithin(inhandclass+"_spawn",closestorigin,BotParams.SpawnerRadiusAroundClosest))
+							foreach(spawner in Objects.OfClassnameWithin(inhandclass+"_spawn",closestorigin,AdminSystem.BotParams.SpawnerRadiusAroundClosest))
 							{
 								if(spawner.GetNetProp("m_fEffects") == 48 || spawner.GetSpawnFlags() == 10 )
 								{
@@ -3793,21 +3917,21 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 								AdminSystem.BotBringingItem[closest.GetCharacterNameLower()] = true;
 								alreadygiving = true;
 
-								Timers.AddTimer(BotParams.ShareTimeout,false,_ShareFailCheckerRemover,{bot=bot,botindex=botindex,targetname=closest.GetCharacterNameLower()});
-								Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot3",BotParams.ItemShareTimerDelay,true,_TryAndGiveItem,{bot=bot,target=closest,slot=3,item=inHand,classname=inhandclass.slice(7)})
+								Timers.AddTimer(AdminSystem.BotParams.ShareTimeout,false,_ShareFailCheckerRemover,{bot=bot,botindex=botindex,targetname=closest.GetCharacterNameLower()});
+								Timers.AddTimerByName(Constants.TimerNames.BotShareAttemptSlot3+botindex,AdminSystem.BotParams.ItemShareTimerDelay,true,_TryAndGiveItem,{bot=bot,target=closest,slot=3,item=inHand,classname=inhandclass.slice(7)})
 							}
-							else if((rand().tofloat()/RAND_MAX) <= BotParams.RandomChanceForShare)
+							else if((rand().tofloat()/RAND_MAX) <= AdminSystem.BotParams.RandomChanceForShare)
 							{
 								if(debug == 1)
-									ClientPrint(null,3,"\x03"+"#"+botindex+" "+BotParams.RandomChanceForShare*100+"% probability hit");
+									ClientPrint(null,3,"\x03"+"#"+botindex+" "+AdminSystem.BotParams.RandomChanceForShare*100+"% probability hit");
 								bot.BotMoveToLocation(closestorigin);
 								
 								AdminSystem.BotOnSearchOrSharePath[botname] = true;
 								AdminSystem.BotBringingItem[closest.GetCharacterNameLower()] = true;
 								alreadygiving = true;
 
-								Timers.AddTimer(BotParams.ShareTimeout,false,_ShareFailCheckerRemover,{bot=bot,botindex=botindex,targetname=closest.GetCharacterNameLower()});
-								Timers.AddTimerByName(botindex+"_bot_think_share_attempt_slot3",BotParams.ItemShareTimerDelay,true,_TryAndGiveItem,{bot=bot,target=closest,slot=3,item=inHand,classname=inhandclass.slice(7)})
+								Timers.AddTimer(AdminSystem.BotParams.ShareTimeout,false,_ShareFailCheckerRemover,{bot=bot,botindex=botindex,targetname=closest.GetCharacterNameLower()});
+								Timers.AddTimerByName(Constants.TimerNames.BotShareAttemptSlot3+botindex,AdminSystem.BotParams.ItemShareTimerDelay,true,_TryAndGiveItem,{bot=bot,target=closest,slot=3,item=inHand,classname=inhandclass.slice(7)})
 							}
 						}
 					}
@@ -3843,7 +3967,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 			local closebygrenade_pack = {};
 			local usedorigin = bot.GetOrigin();
-			foreach(obj in Objects.AroundRadius(usedorigin,BotParams.BotOriginLootRadius))
+			foreach(obj in Objects.AroundRadius(usedorigin,AdminSystem.BotParams.BotOriginLootRadius))
 			{
 				if(Utils.GetIDFromArray(sharable_grenade,obj.GetClassname()) != -1)
 				{
@@ -3878,14 +4002,14 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			local randompathable = null
 			if(closebygrenade_pack.len() == 0)
 			{ 
-				randompathable = bot.GetBaseEntity().TryGetPathableLocationWithin(BotParams.BotOriginLootRadius);
+				randompathable = bot.GetBaseEntity().TryGetPathableLocationWithin(AdminSystem.BotParams.BotOriginLootRadius);
 				//eye level
 				randompathable.z += 62;
 
 				if(debug == 1)
 					DebugDrawText(randompathable,"USING RANDOM PATH",false,4);
 
-				foreach(obj in Objects.AroundRadius(randompathable,BotParams.PathableDist_Loot))
+				foreach(obj in Objects.AroundRadius(randompathable,AdminSystem.BotParams.PathableDist_Loot))
 				{
 					if(Utils.GetIDFromArray(sharable_grenade,obj.GetClassname()) != -1)
 					{
@@ -3947,12 +4071,12 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 				obj = Entity(objindex);
 
-				if(bot.CanSeeLocation(obj.GetOrigin(),BotParams.CanSee_Loot))
+				if(bot.CanSeeLocation(obj.GetOrigin(),AdminSystem.BotParams.CanSee_Loot))
 				{
 					local valid = false;
 					local begin = bot.GetEyePosition();
 					local finish = obj.GetOrigin();
-					local m_trace = { start = begin, end = finish, ignore = bot.GetBaseEntity(), mask = BotParams.Mask };
+					local m_trace = { start = begin, end = finish, ignore = bot.GetBaseEntity(), mask = AdminSystem.BotParams.Mask };
 					TraceLine(m_trace);
 					
 					if(debug == 1)
@@ -3981,7 +4105,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 						{
 							if(debug == 1)
 								ClientPrint(null,3,"\x04"+"Trace failed, trying a bit higher");
-							m_trace = { start = begin, end = finish+Vector(0,0,2), ignore = bot.GetBaseEntity(), mask = BotParams.Mask };
+							m_trace = { start = begin, end = finish+Vector(0,0,2), ignore = bot.GetBaseEntity(), mask = AdminSystem.BotParams.Mask };
 							TraceLine(m_trace);
 							if (!m_trace.hit || m_trace.enthit == null || m_trace.enthit == bot.GetBaseEntity())
 							{
@@ -4034,20 +4158,27 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 					return;
 
 				local org = obj.GetOrigin();
-				if(Utils.CalculateDistance(origin,org) > BotParams.VisibleDistLimit)
+				if(Utils.CalculateDistance(origin,org) > AdminSystem.BotParams.VisibleDistLimit)
 				{
 					if(debug == 1)
 						ClientPrint(null,3,"\x04"+"Visible #"+obj.GetIndex()+" is too far");
 				}
 				else
 				{
-					bot.BotMoveToLocation(org);
+					bot.BotMoveToLocation(org)
 
 					AdminSystem.BotOnSearchOrSharePath[botname] = true;
 					AdminSystem.Vars._currentlyBeingTaken[obj.GetIndex()] <- true;
 					
-					Timers.AddTimer(BotParams.ReachTimeout,false,_TakenFailCheckerRemover,{index=obj.GetIndex(),bot=bot});
-					Timers.AddTimerByName(botindex+"_bot_think_search_attempt_slot"+foundclassslot,BotParams.ItemReachTimerDelay,true,_TryToReachAndGet,{bot=bot,obj=obj,slot=foundclassslot,classname=obj.GetClassname().slice(7)})
+					Timers.AddTimer(AdminSystem.BotParams.ReachTimeout,false,_TakenFailCheckerRemover,{index=obj.GetIndex(),bot=bot});
+					
+					Timers.AddTimerByName((foundclassslot == 2 
+												? Constants.TimerNames.BotSearchAttemptSlot2+botindex 
+												: Constants.TimerNames.BotSearchAttemptSlot3+botindex),
+											AdminSystem.BotParams.ItemReachTimerDelay,
+											true,
+											_TryToReachAndGet,
+											{bot=bot,obj=obj,slot=foundclassslot,classname=obj.GetClassname().slice(7)})
 				}
 			}
 		}
@@ -4069,6 +4200,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
+	if(::VSLib.EasyLogic.NextMapContinues)
+		return;
+
 	local name = player.GetCharacterNameLower();
 	if(AdminSystem._CarControl[name].listenerid != -1)
 	{
@@ -4246,10 +4380,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		return;
 
 	local name = ent.GetCharacterNameLower()
-	if (name+"_car_push1" in ::VSLib.Timers.TimersID)
+	if (Constants.TimerNames.CarPush+name in ::VSLib.Timers.TimersID)
 	{
-		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[name+"_car_push1"]);
-		delete ::VSLib.Timers.TimersID[name+"_car_push1"];
+		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[Constants.TimerNames.CarPush+name]);
+		delete ::VSLib.Timers.TimersID[Constants.TimerNames.CarPush+name];
 
 		local id = AdminSystem._CarControl[name].listenerid;
 
@@ -4308,7 +4442,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	AdminSystem._CarControl[name].listenerid = listener.GetIndex();
 	
 	::VSLib.Timers.AddTimer(0.1, false, _SetCarControl,{ent=ent,grav=5,speedscale=AdminSystem._CarControl[name].speedscale});
-	::VSLib.Timers.AddTimerByName(name+"_car_push1",0.1, true, AdminSystem._Pusher,{ent=ent});
+	::VSLib.Timers.AddTimerByName(Constants.TimerNames.CarPush+name,0.1, true, AdminSystem._Pusher,{ent=ent});
 }
 
 ::_SetCarControl <- function(args)
@@ -4807,10 +4941,10 @@ enum __
 	}
 	else
 	{
-		if ("meteor_shower" in ::VSLib.Timers.TimersID)
+		if (Constants.TimerNames.MeteorShower in ::VSLib.Timers.TimersID)
 		{
-			::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID["meteor_shower"]);
-			delete ::VSLib.Timers.TimersID["meteor_shower"];
+			::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[Constants.TimerNames.MeteorShower]);
+			delete ::VSLib.Timers.TimersID[Constants.TimerNames.MeteorShower];
 		}
 		local endmsg = "Meteor shields are back up!";
 		ClientPrint(null,3,"\x03"+endmsg);
@@ -5107,7 +5241,7 @@ enum __
 		AdminSystem.LoadShowerSettings();
 		ClientPrint(null,3,"\x04"+Utils.GetRandValueFromArray(CmdMessages.MeteorShowerSettings.StartingMessages));
 		AdminSystem.Vars._meteor_shower_state = 1;
-		::VSLib.Timers.AddTimerByName("meteor_shower",AdminSystem._meteor_shower_args.updatedelay, true, _MeteorTimer,{});	
+		::VSLib.Timers.AddTimerByName(Constants.TimerNames.MeteorShower,AdminSystem._meteor_shower_args.updatedelay, true, _MeteorTimer,{});	
 	}
 	else
 	{	
@@ -5232,10 +5366,10 @@ enum __
 	}
 	else
 	{
-		if ("propageddon" in ::VSLib.Timers.TimersID)
+		if (Constants.TimerNames.Apocalypse in ::VSLib.Timers.TimersID)
 		{
-			::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID["propageddon"]);
-			delete ::VSLib.Timers.TimersID["propageddon"];
+			::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[Constants.TimerNames.Apocalypse]);
+			delete ::VSLib.Timers.TimersID[Constants.TimerNames.Apocalypse];
 		}
 
 		ClientPrint(null,3,"\x03"
@@ -5493,145 +5627,176 @@ enum __
 				entclass = ent.GetClassname();
 				entmodel = ent.GetModel();
 
-				// Anything with physics
-				if(entclass == "prop_physics" || entclass == "prop_physics_multiplayer"  || entclass == "prop_car_alarm" || entclass == "prop_vehicle" || entclass == "prop_physics_override" || entclass == "func_physbox" ||  entclass == "func_physbox_multiplayer" || entclass == "prop_ragdoll" )
-				{ 	
-					//Damage
-					if((rand().tofloat()/RAND_MAX) < dmgprob)
-					{
-						if(ent.GetHealth() > 0)
+				switch(entclass)
+				{
+					// Anything with physics
+					case "prop_physics":
+					case "prop_physics_multiplayer":
+					case "prop_car_alarm":
+					case "prop_vehicle":
+					case "prop_physics_override":
+					case "func_physbox":
+					case "func_physbox_multiplayer":
+					case "prop_ragdoll":
+					{ 	
+						//Damage
+						if((rand().tofloat()/RAND_MAX) < dmgprob)
 						{
-							ent.Hurt(mindmg+rand()%maxdmg);
+							if(ent.GetHealth() > 0)
+							{
+								ent.Hurt(mindmg+rand()%maxdmg);
+							}
 						}
+
+						//Explosion
+						if((rand().tofloat()/RAND_MAX) < expprob)
+						{
+							if(ent.GetHealth() > 0)
+							{	
+								expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
+								expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
+								expsoundent.Input("ToggleSound","",0.2);
+								expent.Input("Explode","",0.25);
+								expsoundent.Input("Kill","",3.0);
+							}
+						}
+						
+						//Break
+						if(entmodel.find("forklift") != null)
+						{
+							if((rand().tofloat()/RAND_MAX) < breakprob)
+							{
+								ent.Break();
+							}
+						}
+
+						//Push
+						pushvec = QAngle(rand()%360,rand()%360,rand()%360).Forward();
+						pushvec = pushvec.Scale((minspeed+rand()%maxspeed).tofloat()/pushvec.Length())
+						
+						ent.Push(pushvec);
+						break;
 					}
 
-					//Explosion
-					if((rand().tofloat()/RAND_MAX) < expprob)
-					{
-						if(ent.GetHealth() > 0)
+					//Any breakable surface
+					case "func_breakable":
+					case "func_breakable_surf":
+					case "prop_wall_breakable":
+					{	
+						//Damage
+						if((rand().tofloat()/RAND_MAX) < dmgprob)
 						{	
-							expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
-							expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
-							expsoundent.Input("ToggleSound","",0.2);
-							expent.Input("Explode","",0.25);
-							expsoundent.Input("Kill","",3.0);
+							if(ent.GetHealth() > 0)
+							{
+								ent.Hurt(mindmg+rand()%maxdmg);
+							}
 						}
-					}
-					
-					//Break
-					if(entmodel.find("forklift") != null)
-					{
+						
+						//Explosion
+						if((rand().tofloat()/RAND_MAX) < expprob)
+						{
+							if(ent.GetHealth() > 0)
+							{	
+								expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
+								expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
+								expsoundent.Input("ToggleSound","",0.2);
+								expent.Input("Explode","",0.25);
+								expsoundent.Input("Kill","",3.0);
+							}
+						}
+
+						//Break
 						if((rand().tofloat()/RAND_MAX) < breakprob)
 						{
 							ent.Break();
 						}
+						break;
 					}
 
-					//Push
-					pushvec = QAngle(rand()%360,rand()%360,rand()%360).Forward();
-					pushvec = pushvec.Scale((minspeed+rand()%maxspeed).tofloat()/pushvec.Length())
-					
-					ent.Push(pushvec);
-					
-				}
-				else if(entclass == "func_breakable" || entclass == "func_breakable_surf" || entclass == "prop_wall_breakable" ) //Any breakable surface
-				{	
-					//Damage
-					if((rand().tofloat()/RAND_MAX) < dmgprob)
+					//Cables and ropes
+					case "move_rope":
+					case "keyframe_rope":
 					{	
-						if(ent.GetHealth() > 0)
+						//Explosion
+						if((rand().tofloat()/RAND_MAX) < expprob)
 						{
-							ent.Hurt(mindmg+rand()%maxdmg);
+							if(ent.GetHealth() > 0)
+							{	
+								expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
+								expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
+								expsoundent.Input("ToggleSound","",0.2);
+								expent.Input("Explode","",0.25);
+								expsoundent.Input("Kill","",3.0);
+							}
 						}
-					}
-					
-					//Explosion
-					if((rand().tofloat()/RAND_MAX) < expprob)
-					{
-						if(ent.GetHealth() > 0)
-						{	
-							expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
-							expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
-							expsoundent.Input("ToggleSound","",0.2);
-							expent.Input("Explode","",0.25);
-							expsoundent.Input("Kill","",3.0);
-						}
-					}
 
-					//Break
-					if((rand().tofloat()/RAND_MAX) < breakprob)
-					{
-						ent.Break();
-					}
-				}
-				else if(entclass == "move_rope" || entclass == "keyframe_rope")		//Cables and ropes
-				{	
-					//Explosion
-					if((rand().tofloat()/RAND_MAX) < expprob)
-					{
-						if(ent.GetHealth() > 0)
-						{	
-							expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
-							expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
-							expsoundent.Input("ToggleSound","",0.2);
-							expent.Input("Explode","",0.25);
-							expsoundent.Input("Kill","",3.0);
-						}
-					}
-
-					//Break
-					if((rand().tofloat()/RAND_MAX) < ropebreakprob)
-					{
-						ent.Break();
-					}	
-				}
-				else if(entclass == "prop_door_rotating" || entclass == "func_door" || entclass == "func_door_rotating" || entclass == "func_rotating") //Any door except saferoom's
-				{	//Damage
-					if((rand().tofloat()/RAND_MAX) < dmgprob)
-					{
-						if(ent.GetHealth() > 0)
+						//Break
+						if((rand().tofloat()/RAND_MAX) < ropebreakprob)
 						{
-							ent.Hurt(mindmg+rand()%maxdmg);
+							ent.Break();
 						}
-					}
-					
-					//Explosion
-					if((rand().tofloat()/RAND_MAX) < expprob)
-					{
-						if(ent.GetHealth() > 0)
-						{	
-							expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
-							expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
-							expsoundent.Input("ToggleSound","",0.2);
-							expent.Input("Explode","",0.25);
-							expsoundent.Input("Kill","",3.0);
-						}
+						break;
 					}
 
-					//Close and Lock
-					if((rand().tofloat()/RAND_MAX) < doorlockprob)
+					//Any door except saferoom's
+					case "prop_door_rotating":
+					case "func_door":
+					case "func_door_rotating":
+					case "func_rotating":
 					{	
-						ent.Input("close","");
-						ent.Input("lock","",0.5);
+						//Damage
+						if((rand().tofloat()/RAND_MAX) < dmgprob)
+						{
+							if(ent.GetHealth() > 0)
+							{
+								ent.Hurt(mindmg+rand()%maxdmg);
+							}
+						}
+						
+						//Explosion
+						if((rand().tofloat()/RAND_MAX) < expprob)
+						{
+							if(ent.GetHealth() > 0)
+							{	
+								expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
+								expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
+								expsoundent.Input("ToggleSound","",0.2);
+								expent.Input("Explode","",0.25);
+								expsoundent.Input("Kill","",3.0);
+							}
+						}
+
+						//Close and Lock
+						if((rand().tofloat()/RAND_MAX) < doorlockprob)
+						{	
+							ent.Input("close","");
+							ent.Input("lock","",0.5);
+						}
+						else //Open or Close
+						{
+							ent.Input("toggle","");
+						}
+						break;
 					}
-					else //Open or Close
-					{
+
+					//Saferoom door
+					case "prop_door_rotating_checkpoint":
+					{	
+						//Open or Close	
 						ent.Input("toggle","");
+						break;
 					}
-				}
-				else if(entclass == "prop_door_rotating_checkpoint")	//Saferoom door
-				{	
-					//Open or Close	
-					ent.Input("toggle","");
-				}
-				else if(entclass == "prop_health_cabinet")	//Health cabinet
-				{	
-					//Open or Close animation
-					if((rand().tofloat()/RAND_MAX) < 0.5)
-						ent.Input("setanimation","idle");	
-					else
-						ent.Input("setanimation","open");
-
+					
+					//Health cabinet
+					case "prop_health_cabinet":	
+					{	
+						//Open or Close animation
+						if((rand().tofloat()/RAND_MAX) < 0.5)
+							ent.Input("setanimation","idle");	
+						else
+							ent.Input("setanimation","open");
+						break;
+					}
 				}
 			}
 		}
@@ -5652,7 +5817,7 @@ enum __
 		AdminSystem.LoadApocalypseSettings();
 		ClientPrint(null,3,"\x04"+Utils.GetRandValueFromArray(CmdMessages.ApocalypseSettings.StartingMessages));
 		AdminSystem.Vars._propageddon_state = 1;
-		::VSLib.Timers.AddTimerByName("propageddon",AdminSystem._propageddon_args.updatedelay, true, _ApocalypseTimer,{});	
+		::VSLib.Timers.AddTimerByName(Constants.TimerNames.Apocalypse,AdminSystem._propageddon_args.updatedelay, true, _ApocalypseTimer,{});	
 	}
 	else
 	{	
@@ -6535,10 +6700,17 @@ enum __
 
 ::_TradingStatusWrapper <- function(args)
 {
-	AdminSystem._CurrentlyTradingItems[args.player1.GetCharacterNameLower()] = false;
-	AdminSystem._CurrentlyTradingItems[args.player2.GetCharacterNameLower()] = false;
+	if(args.player1 != null)
+		AdminSystem._CurrentlyTradingItems[args.player1.GetCharacterNameLower()] = false;
+	if(args.player2 != null)
+		AdminSystem._CurrentlyTradingItems[args.player2.GetCharacterNameLower()] = false;
 }
 
+::TradeType <-
+{
+	DONATION = 0,
+	EXCHANGE = 1
+}
 /////////////////////////////////////////////////////////////////
 /*
  * Speak a friendly fire line when shoved with given options in AdminSystem.Vars._CustomResponseOptions
@@ -6547,17 +6719,17 @@ enum __
  */
 function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacker,args=null)
 {
-	
+	local targetname = target.GetCharacterNameLower();
 	// Bot was trying to heal with a non-medkit, drop the pack
 	if(attacker.IsBot() && !target.IsBot())
 	{
 		if(!AdminSystem.Vars.AllowCustomSharing)
 			return;
 
-		if(AdminSystem._CurrentlyTradingItems[target.GetCharacterNameLower()] || AdminSystem._CurrentlyTradingItems[attacker.GetCharacterNameLower()])
+		if(AdminSystem._CurrentlyTradingItems[targetname] || AdminSystem._CurrentlyTradingItems[attacker.GetCharacterNameLower()])
 			return;
 
-		AdminSystem._CurrentlyTradingItems[target.GetCharacterNameLower()] = true;
+		AdminSystem._CurrentlyTradingItems[targetname] = true;
 		AdminSystem._CurrentlyTradingItems[attacker.GetCharacterNameLower()] = true;
 
 		local inHand = attacker.GetActiveWeapon();
@@ -6588,6 +6760,7 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 		return;
 	}
 
+	local traded = false;
 	if(attacker.IsPressingReload())
 	{
 		if(!target.IsSurvivor())
@@ -6596,10 +6769,10 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 		if(!AdminSystem.Vars.AllowCustomSharing)
 			return;
 
-		if(AdminSystem._CurrentlyTradingItems[target.GetCharacterNameLower()] || AdminSystem._CurrentlyTradingItems[attacker.GetCharacterNameLower()])
+		if(AdminSystem._CurrentlyTradingItems[targetname] || AdminSystem._CurrentlyTradingItems[attacker.GetCharacterNameLower()])
 			return;
 
-		AdminSystem._CurrentlyTradingItems[target.GetCharacterNameLower()] = true;
+		AdminSystem._CurrentlyTradingItems[targetname] = true;
 		AdminSystem._CurrentlyTradingItems[attacker.GetCharacterNameLower()] = true;
 
 		local sharable_grenade = 
@@ -6624,7 +6797,8 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 			{
 				AdminSystem.Vars._currentlyBeingTaken[inHand.GetIndex()] <- true;
 				Utils.DropThenGive(attacker,target,2,inHand);
-				::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=inHand.GetIndex()});
+				traded = true;
+				TradePostTimerSet({typ=TradeType.DONATION,targetname=targetname,itemID=inHand.GetIndex()});
 			}
 			else if(target.IsBot())
 			{
@@ -6634,9 +6808,8 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 				Utils.ExchangeItems(attacker,target,2,
 				 					atkinv.slot2,
 									targetinv.slot2);
-
-				::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=targetinv.slot2.GetIndex()});
-				::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=atkinv.slot2.GetIndex()});
+				traded = true;
+				TradePostTimerSet({typ=TradeType.EXCHANGE,targetname=targetname,targetitem=targetinv.slot2.GetIndex(),atckitem=atkinv.slot2.GetIndex()});
 			}
 		}
 		else if(Utils.GetIDFromArray(sharable_packs,inhandclass)!=-1) // Give packs
@@ -6645,7 +6818,8 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 			{
 				AdminSystem.Vars._currentlyBeingTaken[inHand.GetIndex()] <- true;
 				Utils.DropThenGive(attacker,target,3,inHand);
-				::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=inHand.GetIndex()});
+				traded = true;
+				TradePostTimerSet({typ=TradeType.DONATION,targetname=targetname,itemID=inHand.GetIndex()});
 			}
 			else if(target.IsBot())
 			{
@@ -6655,9 +6829,8 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 				Utils.ExchangeItems(attacker,target,3,
 				 					atkinv.slot3,
 									targetinv.slot3);
-
-				::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=targetinv.slot3.GetIndex()});
-				::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=atkinv.slot3.GetIndex()});
+				traded = true;
+				TradePostTimerSet({typ=TradeType.EXCHANGE,targetname=targetname,targetitem=targetinv.slot3.GetIndex(),atckitem=atkinv.slot3.GetIndex()});
 			}
 		}
 		else if(target.IsBot()) // Take grenades and packs from bot
@@ -6670,6 +6843,7 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 				{
 					AdminSystem.Vars._currentlyBeingTaken[inHand.GetIndex()] <- true;
 					Utils.DropThenGive(target,attacker,2,inHand);
+					traded = true;
 					::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=inHand.GetIndex()});
 				}
 			}
@@ -6682,6 +6856,7 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 				{
 					AdminSystem.Vars._currentlyBeingTaken[inHand.GetIndex()] <- true;
 					Utils.DropThenGive(target,attacker,3,inHand);
+					traded = true;
 					::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=inHand.GetIndex()});
 				}
 			}
@@ -6689,10 +6864,8 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 		::VSLib.Timers.AddTimer(0.1, false, _TradingStatusWrapper,{player1=target,player2=attacker});
 	}
 
-	if(!AdminSystem.Vars.AllowCustomResponses)
+	if(!AdminSystem.Vars.AllowCustomResponses || traded)
 		return;
-
-	local targetname = target.GetCharacterNameLower();
 
 	if(targetname == "") // Was special infected
 	{return;}
@@ -6728,6 +6901,31 @@ function Notifications::OnPlayerShoved::_SpeakWhenShovedCondition(target,attacke
 	AdminSystem.Vars._CustomResponse[targetname]._SpeakWhenShoved.call_amount += 1;
 }
 
+/*
+ * @authors rhino
+ */
+::TradePostTimerSet <- function(args)
+{
+	switch(args.typ)
+	{
+		case TradeType.EXCHANGE:
+		{
+			AdminSystem.BotTemporaryStopState[args.targetname] <- true;
+
+			::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=args.targetitem});
+			::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=args.atckitem});
+			::VSLib.Timers.AddTimer(AdminSystem.BotParams.HoldNewGivenFor, false, _TemporaryStopStatusWrapper,{bot=args.targetname});
+			break;
+		}	
+		case TradeType.DONATION:
+		{
+			AdminSystem.BotTemporaryStopState[args.targetname] <- true;
+			::VSLib.Timers.AddTimer(0.5, false, _ClearBeingTakenStatus,{item=args.itemID});
+			::VSLib.Timers.AddTimer(AdminSystem.BotParams.HoldNewGivenFor, false, _TemporaryStopStatusWrapper,{bot=args.targetname});
+			break;
+		}
+	}
+}
 /////////////////////////////////////////////////////////////////
 /*
  * Sequences to speak for each player upon leaving saferoom with given options in AdminSystem.Vars._CustomResponse
@@ -7451,6 +7649,14 @@ function ChatTriggers::resume_time( player, args, text )
 function ChatTriggers::ents_around( player, args, text )
 {
 	AdminSystem.EntitiesAroundCmd( player, args );
+}
+function ChatTriggers::wnet( player, args, text )
+{
+	AdminSystem.WatchNetPropCmd( player, args );
+}
+function ChatTriggers::stop_wnet( player, args, text )
+{
+	AdminSystem.StopWatchNetPropCmd( player, args );
 }
 
 function ChatTriggers::fire_ex( player, args, text )
@@ -9570,6 +9776,9 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
+	
+	if(::VSLib.EasyLogic.NextMapContinues)
+		return;
 
 	local ent = GetArgument(1);
 	
@@ -9666,6 +9875,9 @@ if ( Director.GetGameMode() == "holdout" )
 ::AdminSystem.DisguiseCmd <- function ( player, args)
 {
 	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	if(::VSLib.EasyLogic.NextMapContinues)
 		return;
 	
 	local ent = player.GetLookingEntity();
@@ -10748,6 +10960,7 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{
+		keyvals = Utils.CleanColoredString(keyvals);
 		local kvpairs = split(keyvals,"&");
 
 		keyvals = 
@@ -10972,14 +11185,14 @@ if ( Director.GetGameMode() == "holdout" )
 			createdent = []
 			foreach(mdl in split(MDL,"&"))
 			{
-				local ent = Utils.SpawnPhysicsProp( mdl, EyePosition, GroundPosition );
+				local ent = Utils.SpawnPhysicsProp( Utils.CleanColoredString(mdl), EyePosition, GroundPosition );
 				if(ent)
 					createdent.append(ent);
 			}
 		}
 		else
 		{
-			createdent = Utils.SpawnPhysicsProp( MDL, EyePosition, GroundPosition );
+			createdent = Utils.SpawnPhysicsProp( Utils.CleanColoredString(MDL), EyePosition, GroundPosition );
 		}
 	}
 	else if ( Entity == "physicsM" )
@@ -11022,7 +11235,7 @@ if ( Director.GetGameMode() == "holdout" )
 			createdent = []
 			foreach(mdl in split(MDL,"&"))
 			{
-				local ent = Utils.SpawnPhysicsMProp( mdl, EyePosition, GroundPosition, {massScale = massScale} );
+				local ent = Utils.SpawnPhysicsMProp( Utils.CleanColoredString(mdl), EyePosition, GroundPosition, {massScale = massScale} );
 				if(ent != null && ent.IsEntityValid())
 				{
 					createdent.append(ent);
@@ -11030,7 +11243,7 @@ if ( Director.GetGameMode() == "holdout" )
 				}
 				else
 				{
-					ent = Utils.SpawnDynamicProp( mdl, EyePosition, GroundPosition );
+					ent = Utils.SpawnDynamicProp( Utils.CleanColoredString(mdl), EyePosition, GroundPosition );
 					if(ent != null && ent.IsEntityValid())
 					{
 						createdent.append(ent);
@@ -11041,7 +11254,7 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		else
 		{
-			createdent = Utils.SpawnPhysicsMProp( MDL, EyePosition, GroundPosition, {massScale = massScale} );
+			createdent = Utils.SpawnPhysicsMProp( Utils.CleanColoredString(MDL), EyePosition, GroundPosition, {massScale = massScale} );
 		}
 	}
 	else if ( Entity == "ragdoll" )
@@ -11137,14 +11350,14 @@ if ( Director.GetGameMode() == "holdout" )
 			createdent = []
 			foreach(mdl in split(MDL,"&"))
 			{
-				local ent = Utils.SpawnDynamicProp( mdl, EyePosition, GroundPosition );
+				local ent = Utils.SpawnDynamicProp( Utils.CleanColoredString(mdl), EyePosition, GroundPosition );
 				if(ent != null && ent.IsEntityValid())
 					createdent.append(ent);
 			}
 		}
 		else
 		{
-			createdent = Utils.SpawnDynamicProp( MDL, EyePosition, GroundPosition );
+			createdent = Utils.SpawnDynamicProp( Utils.CleanColoredString(MDL), EyePosition, GroundPosition );
 		}
 	}
 
@@ -11207,7 +11420,7 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			ent = []
 			local mdls = split(DoorModel,"&");
-			local d = Utils.SpawnDoor(mdls[0], EyePosition, GroundPosition);
+			local d = Utils.SpawnDoor(Utils.CleanColoredString(mdls[0]), EyePosition, GroundPosition);
 
 			if(d != null && d.IsEntityValid())
 				ent.append(d);
@@ -11219,7 +11432,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 			foreach(mdl in mdls.slice(1,mdls.len()))
 			{
-				d = Utils.SpawnDynamicProp(mdl, EyePosition, GroundPosition);
+				d = Utils.SpawnDynamicProp(Utils.CleanColoredString(mdl), EyePosition, GroundPosition);
 				if(d != null && d.IsEntityValid())
 					ent.append(d);
 			}
@@ -11229,7 +11442,7 @@ if ( Director.GetGameMode() == "holdout" )
 			if ( DoorModel == "saferoom" || DoorModel == "checkpoint" )
 				ent = Utils.SpawnDoor("models/props_doors/checkpoint_door_02.mdl", EyePosition, GroundPosition);
 			else
-				ent = Utils.SpawnDoor(DoorModel, EyePosition, GroundPosition);
+				ent = Utils.SpawnDoor(Utils.CleanColoredString(DoorModel), EyePosition, GroundPosition);
 		}
 	}
 	
@@ -14646,6 +14859,9 @@ if ( Director.GetGameMode() == "holdout" )
 	
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.EntitiesAroundCmd <- function(player,args)
 {
 	if (!AdminSystem.IsPrivileged( player ))
@@ -14679,17 +14895,130 @@ if ( Director.GetGameMode() == "holdout" )
 /*
  * @authors rhino
  */
-::AdminSystem.UpdateMenuDuration <- function(player,args)
+::AdminSystem.WatchNetPropCmd <- function(player,args)
 {
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
-		
-	local dur = GetArgument(1);
-	dur = dur == null ? 10 : ( dur.tofloat() > 0 ? dur.tofloat() : 1);
-	local old = Convars.GetClientConvarValue("cl_menuduration",player.GetIndex());
-	AdminSystem._Clientbroadcast(player.GetCharacterName(),"cl_menuduration "+dur,1,true,0);
+	
+	local entlooked = player.GetLookingEntity() == null 
+						? GetArgument(3) 
+						: player.GetLookingEntity();
+	if(entlooked == null)
+	{	
+		Printer(player,"No entity to watch")
+		return;
+	}
 
-	Printer(player,"Updated menu display duration from " + old + " to " + dur);
+	if(typeof entlooked == "string")
+	{
+		entlooked = Entity(entlooked)
+		if(entlooked == null || !entlooked.IsEntityValid())
+		{
+			Printer(player,"No entity to watch")
+			return;
+		}
+	}
+
+	local netprop = GetArgument(1);
+	if(netprop == null)
+	{
+		return;
+	}
+	
+	if(!entlooked.HasNetProp(netprop))
+	{
+		Printer(player,"Netprop "+"\x04"+netprop+"\x01"+" doesn't exist for " + "\x03" +"#"+entlooked.GetIndex()+"\x01"+", "+"\x03"+entlooked.GetClassname());
+		return;
+	}
+
+	local checksec = GetArgument(2) == null 
+						? 1 
+						: GetArgument(2).tofloat();
+					
+	if(checksec < 0.1)
+	{
+		Printer(player,"Watch rate too high, minimum interval length is 0.1 seconds!");
+		return;
+	}	
+
+	local lastval = entlooked.GetNetProp(netprop);
+	Printer(player,"\x03"+"#"+entlooked.GetIndex()+"\x01"+" "+ netprop + " -> "+ lastval);
+
+	::VSLib.Timers.AddTimerByName(Constants.TimerNames.WatchNetProp+netprop+"_"+entlooked.GetIndex(),checksec,false,WatchNetPropMain,{player=player,checksec=checksec,player=player,ent=entlooked,netprop=netprop,lastval=lastval})
+}
+
+::WatchNetPropMain <- function(args)
+{
+	
+	if(args.ent == null || !args.ent.IsEntityValid() || !args.player.IsEntityValid())
+	{
+		return;
+	}
+
+	local ind = args.ent.GetIndex();
+
+	local currentval = args.ent.GetNetProp(args.netprop);
+	if(currentval != args.lastval)
+	{
+		Printer(args.player,"\x03"+"#"+ind+"\x01"+" "+ args.netprop + " -> "+ currentval);
+		args.lastval = currentval;
+	}
+
+	::VSLib.Timers.AddTimerByName(Constants.TimerNames.WatchNetProp+args.netprop+"_"+ind,args.checksec,false,WatchNetPropMain,args)
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.StopWatchNetPropCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local entlooked = player.GetLookingEntity() == null 
+						? GetArgument(2) 
+						: player.GetLookingEntity();
+	if(entlooked == null)
+	{	
+		Printer(player,"No entity to watch")
+		return;
+	}
+
+	if(typeof entlooked == "string")
+	{
+		entlooked = Entity(entlooked)
+		if(entlooked == null || !entlooked.IsEntityValid())
+		{
+			Printer(player,"No entity to watch")
+			return;
+		}
+	}
+
+	local netprop = GetArgument(1)
+	if(netprop == null)
+	{
+		return;
+	}
+	
+	if(!entlooked.HasNetProp(netprop))
+	{
+		Printer(player,"Netprop "+"\x04"+netprop+"\x01"+" doesn't exist for " + "\x03" +"#"+entlooked.GetIndex()+"\x01"+", "+"\x03"+entlooked.GetClassname());
+		return;
+	}
+
+	local ind = entlooked.GetIndex();
+	local timername = Constants.TimerNames.WatchNetProp+netprop+"_"+ind;
+
+	if(timername in ::VSLib.Timers.TimersID)
+	{
+		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[timername]);
+		delete ::VSLib.Timers.TimersID[timername];
+		Printer(player,"Removed watch for "+"\x03"+"#"+ind+" "+"\x04"+netprop)
+	}
+	else
+	{
+		Printer(player,"No watch timer found for "+"\x03"+"#"+ind+" "+"\x04"+netprop);
+	}
 }
 
 /* ******************DANGEROUS FUNCTION*******************

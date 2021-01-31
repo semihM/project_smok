@@ -34,6 +34,33 @@
 
     /// Customized default settings
     CustomizedDefaults = "admin system/defaults.txt"
+
+    /// Bot sharing/looting settings
+    BotSettings = "admin system/botparams.txt"
+}
+
+/*************************\
+* TIMER NAMES USED BY CMDS *
+\*************************/
+::Constants.TimerNames <-
+{
+    WatchNetProp = "NetPropWatch_"
+
+    Apocalypse = "Propageddon_"
+
+    MeteorShower = "MeteorShower_"
+
+    BotThinkAdder = "BotThinkAdder_"
+
+    BotShareAttemptSlot2 = "BotThinkShareAttemptSlot2_"
+
+    BotShareAttemptSlot3 = "BotThinkShareAttemptSlot3_"
+
+    BotSearchAttemptSlot2 = "BotThinkSearchAttemptSlot2_"
+    
+    BotSearchAttemptSlot3 = "BotThinkSearchAttemptSlot3_"
+
+    CarPush = "CarPushSingle_"
 }
 
 /********************\
@@ -693,6 +720,105 @@ catch(e)
 }
 
 ::Constants.Defaults.MeteorShowerSettings <- ::Constants.GetMeteorShowerSettings();
+
+/// Bot share/loot settings
+/*
+ * Returns default bot share/loot settings
+ */
+::Constants.GetBotShareLootSettingsDefaults <- function()
+{
+    local tbl = 
+    {
+        CanSee_Share = 110,						// Maximum radius to look for visible player to share with
+        CanSee_Loot = 130,						// Maximum radius to look for visible loot to take
+        PathableDist_Loot = 150,				// Maximum radius to look for closeby non-visible loot if nothing visible found
+        VisibleDistLimit = 400,					// Maximum radius to walk for a non-visible loot, works with closeby pathable locations if no item is visible
+        ShareTimeout = 7,						// Maximum time in seconds to abort share attempt
+        ReachTimeout = 6,						// Maximum time in seconds to abort item getting attempt
+        BotOriginLootRadius = 250,				// Maximum radius to declare a loot "closeby"
+        ClosestPlayerMaxDist = 250,				// Maximum radius to declare a player "closeby"
+        SpawnerRadiusAroundClosest = 200,		// Minimum radius to declare a weapon/grenade spawner "closeby"; if target or bot is in radius, no sharing will be done
+        MaxRadiusToLetShare = 100,				// Maximum radius to let bot share their loot
+        MaxRadiusToTake = 100,					// Maximum radius to let bot take the loot
+        MinThinkDelay = 1.3						// Minimum delay between each think cycle
+        MaxOffsetThinkDelay = 0.5				// Maximum extra delay to add to MinThinkDelay
+        RandomChanceForShare = 0.6,				// Chance of share attempt every think cycle (< MinThinkDelay + MaxOffsetThinkDelay) 
+        HoldNewGivenFor = 4,					// Minimum time in seconds to pause sharing for the bot after a new item was given to the them
+        ItemShareTimerDelay = 0.5,				// Time in seconds to check sharing attempt status
+        ItemReachTimerDelay = 0.5,				// Time in seconds to check looting attempt status
+        ChanceRelocateWhenTooFarToGive = 0.4,	// Chance to relocate after unsuccessful sharing attempt
+        ChanceRelocateWhenTooFarToGet = 0.25,	// Chance to relocate after unsuccessful looting attempt
+        Mask = 33579137,						// DON'T CHANGE THIS, bit mask used while tracing loot -> TRACE_MASK_VISIBLE_AND_NPCS = 33579137
+        debug = 0								// Debugging state
+    }
+    return tbl;
+}
+
+/*
+ * Returns default bot share/loot setting explanations
+ */
+::Constants.GetBotShareLootSettingsComments <- function()
+{
+    local tbl = 
+    {
+        CanSee_Share = "Maximum radius to look for visible player to share with",
+        CanSee_Loot = "Maximum radius to look for visible loot to take",
+        PathableDist_Loot = "Maximum radius to look for closeby non-visible loot if nothing visible found",
+        VisibleDistLimit = "Maximum radius to walk for a non-visible loot, works with closeby pathable locations if no item is visible",
+        ShareTimeout = "Maximum time in seconds to abort share attempt",
+        ReachTimeout = "Maximum time in seconds to abort item getting attempt",
+        BotOriginLootRadius = "Maximum radius to declare a loot closeby",
+        ClosestPlayerMaxDist = "Maximum radius to declare a player closeby",
+        SpawnerRadiusAroundClosest = "Minimum radius to declare a weapon/grenade spawner closeby; if target or bot is in radius, no sharing will be done",
+        MaxRadiusToLetShare = "Maximum radius to let bot share their loot",
+        MaxRadiusToTake = "Maximum radius to let bot take the loot",
+        MinThinkDelay = "Minimum delay between each think cycle",
+        MaxOffsetThinkDelay = "Maximum extra delay to add to MinThinkDelay",
+        RandomChanceForShare = "Chance of share attempt every think cycle (< MinThinkDelay + MaxOffsetThinkDelay)",
+        HoldNewGivenFor = "Minimum time in seconds to pause sharing for the bot after a new item was given to the them",
+        ItemShareTimerDelay = "Time in seconds to check sharing attempt status",
+        ItemReachTimerDelay = "Time in seconds to check looting attempt status",
+        ChanceRelocateWhenTooFarToGive = "Chance to relocate after unsuccessful sharing attempt",
+        ChanceRelocateWhenTooFarToGet = "Chance to relocate after unsuccessful looting attempt",
+        Mask = "DON'T CHANGE THIS, bit mask used while tracing loot -> TRACE_MASK_VISIBLE_AND_NPCS = 33579137",
+        debug = "Debugging state"
+    }
+    return tbl;
+}
+
+/*
+ * Returns properly aligned bot share/loot settings string formatted as:
+ *
+ *      setting = default_value // explanation
+ *
+ */
+::Constants.GetBotShareLootSettings <- function()
+{
+    local comments = ::Constants.GetBotShareLootSettingsComments();
+    local settings = 
+    [
+        "CanSee_Share","CanSee_Loot","PathableDist_Loot",
+        "VisibleDistLimit","ShareTimeout","ReachTimeout",
+        "BotOriginLootRadius","ClosestPlayerMaxDist","SpawnerRadiusAroundClosest",
+        "MaxRadiusToLetShare","MaxRadiusToTake","MinThinkDelay",
+        "MaxOffsetThinkDelay","RandomChanceForShare","HoldNewGivenFor",
+        "ItemShareTimerDelay","ItemReachTimerDelay","ChanceRelocateWhenTooFarToGive",
+        "ChanceRelocateWhenTooFarToGet","Mask","debug"
+    ]
+    local defaults = ::Constants.GetBotShareLootSettingsDefaults();
+    
+    local defsettings  = "";
+    local length = settings.len();
+    local setting = "";
+    for(local i = 0; i < length; i++)
+    {
+        setting = settings[i];
+        defsettings += setting + " = " + defaults[setting] + " // " + comments[setting] + (i != length-1 ? "\r\n" : "");
+    }
+    return defsettings;
+}
+
+// ::Constants.Defaults.BotShareLootSettings <- ::Constants.GetBotShareLootSettings();
 
 /// Models
 /*
