@@ -30370,10 +30370,10 @@
                     "label"		 " Baggage Cart" 
             }
             "7"
-			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_vehicles5"
-					"label"      " Delete object"
-			}
+            {
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/airliner_finale_left.mdl&models/props_vehicles/airliner_finale_right.mdl;show_menu props_vehicles5"
+                    "label"		 " Crashed airplane" 
+            }
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu props_vehicles4"
@@ -36657,10 +36657,10 @@
                     "label"		 " Baggage Cart" 
             }
             "7"
-			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_vehicles5"
-					"label"      " Delete object"
-			}
+            {
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/airliner_finale_left.mdl&models/props_vehicles/airliner_finale_right.mdl,0,0,10;show_menu phys_props_vehicles5"
+                    "label"		 " Crashed airplane" 
+            }
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu phys_props_vehicles4"
