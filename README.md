@@ -64,29 +64,29 @@
 
 ---
 # Documentation Contents
-- [**Entities/objects**](https://github.com/semihM/project_smok#entities)
+- [**Entities/objects**](#entities)
 
-- [**Random voice lines**](https://github.com/semihM/project_smok#random-and-saved-voices)
+- [**Random voice lines**](#random-and-saved-voices)
 
-- [**Particle effects**](https://github.com/semihM/project_smok#particle-effects)
+- [**Particle effects**](#particle-effects)
 
-- [**Custom sequences of voice lines**](https://github.com/semihM/project_smok#custom-sequences)
+- [**Custom sequences of voice lines**](#custom-sequences)
 
-- [**Apocalypse event**](https://github.com/semihM/project_smok#apocalypse-event)
+- [**Apocalypse event**](#apocalypse-event)
 
-- [**Meteor shower event**](https://github.com/semihM/project_smok#meteor-shower-event)
+- [**Meteor shower event**](#meteor-shower-event)
 
-- [**Freezing objects**](https://github.com/semihM/project_smok#freezing-objects)
+- [**Freezing objects**](#freezing-objects)
 
-- [**Piano keys**](https://github.com/semihM/project_smok#piano)
+- [**Piano keys**](#piano)
 
-- [**Microphones and speakers**](https://github.com/semihM/project_smok#microphones-and-speakers)
+- [**Microphones and speakers**](#microphones-and-speakers)
 
-- [**Explosions**](https://github.com/semihM/project_smok#explosions)
+- [**Explosions**](#explosions)
 
-- [**Other commands**](https://github.com/semihM/project_smok#other)
+- [**Other commands**](#other)
 
-- [**Debugging, scripting and setting related**](https://github.com/semihM/project_smok#debugging-scripting-and-settings-related)
+- [**Debugging, scripting and setting related**](#debugging-scripting-and-settings-related)
 
 ---
 ## Entities
