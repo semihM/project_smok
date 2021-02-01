@@ -339,6 +339,7 @@
 
             basetbl.BotBringingItem[spec] <- false;
             basetbl.BotOnSearchOrSharePath[spec] <- false;
+            basetbl.BotTemporaryStopState[spec] <- false;
         }
 	}
 }

@@ -9341,45 +9341,45 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.CleanupCmd <- function ( player, args )
 {
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
-	
-	foreach(fuelparta in Objects.OfModel("models/props_industrial/barrel_fuel_parta.mdl"))
-		fuelparta.Kill();
-	foreach(fuelpartb in Objects.OfModel("models/props_industrial/barrel_fuel_partb.mdl"))
-		fuelpartb.Kill();
-	foreach( particle_system in Objects.OfName("_*_our_particles") )
-		particle_system.Kill();
 
-	local skip = false;
+	local killmodels = 
+	[
+		"models/props_industrial/barrel_fuel_parta.mdl",
+		"models/props_industrial/barrel_fuel_partb.mdl"
+	]
 
-	foreach( entity in Objects.OfName("_*_singlesimple") )
-	{	
-		skip = false;
-		foreach(tbl in AdminSystem.Vars._heldEntity)
+	local parented = {}
+	foreach(name,tbl in AdminSystem.Vars._heldEntity)
+	{
+		local tbl2 = AdminSystem.Vars._wornHat[name]
+
+		if(tbl.entid != "")
 		{
-			if(tbl.entid == entity.GetIndex().tostring())
-			{
-				printl(player.GetCharacterNameLower()+"->Ignore attempt to kill entity #"+entity.GetIndex().tostring()+" held by a player");
-				skip = true;break;
-			}
+			parented[tbl.entid.tointeger()] <- tbl.entid.tointeger()
 		}
+
+		if(tbl2.entid != "")
+		{
+			parented[tbl2.entid.tointeger()] <- tbl2.entid.tointeger()
+		}
+	}
+
+	local exp = regexp(@"_\d+(?:_our_particles|_singlesimple)")
+
+	foreach(ent in Objects.All())
+	{
+		if(ent.GetIndex() in parented)
+			continue
 		
-		foreach(tbl in AdminSystem.Vars._wornHat)
-		{
-			if(tbl.entid.tostring() == entity.GetIndex().tostring())
-			{
-				printl(player.GetCharacterNameLower()+"->Ignore attempt to kill hat entity #"+entity.GetIndex().tostring()+" worn by a player");
-				skip = true;break;
-			}
-		}
-
-		if(skip)
-			continue;
-
-		entity.Kill();
+		if(exp.capture(ent.GetName()) != null || Utils.GetIDFromArray(killmodels,ent.GetModel()) != -1)
+			ent.Kill()
 	}
 }
 
@@ -10088,7 +10088,7 @@ if ( Director.GetGameMode() == "holdout" )
 		particle.SetAngles(-90,0,0);
 		particle.SetOrigin(Vector(aimedlocation.x,aimedlocation.y,aimedlocation.z+5.0));
 		if(delay>7)
-			{printB(player.GetCharacterName(),CmdMessages.Explosions.FireworkLength,false,"");particle.KillDelayed(7);}
+			{printB(player.GetCharacterName(),CmdMessages.Explosions.FireworkLength(),false,"");particle.KillDelayed(7);}
 		else
 			particle.KillDelayed(delay);
 		
@@ -16787,7 +16787,7 @@ if ( Director.GetGameMode() == "holdout" )
 	else
 		AdminSystem.Vars._heldEntity[name.tolower()].grabAttachPos = val;
 
-	Printer(player,CmdMessages.GrabYeet.SettingSuccess(setting,oldval,newval));
+	Printer(player,CmdMessages.GrabYeet.SettingSuccess(setting,oldval,val));
 }
 
 /*

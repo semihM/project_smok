@@ -435,7 +435,7 @@ getconsttable()["COLOR_OLIVE_GREEN"] <- "\x05";
 
                 Success = function(name,setting,old,new)
                 {
-                    return name + " " + COLOR_BRIGHT_GREEN + "->" + COLOR_DEFAULT + " Changed apocalypse setting " + setting + " from " + old + " to " + val;
+                    return name + " " + COLOR_BRIGHT_GREEN + "->" + COLOR_DEFAULT + " Changed apocalypse setting " + setting + " from " + old + " to " + new;
                 }
             }
 
@@ -668,7 +668,10 @@ getconsttable()["COLOR_OLIVE_GREEN"] <- "\x05";
                     printl("[Explosion-Warning] Could not create info_particle_system entity.");
                 }
 
-                FireworkLength = "[Explosion-Warning] Fireworks disappear after 7 seconds"
+                FireworkLength = function()
+                {
+                    return "[Explosion-Warning] Fireworks disappear after 7 seconds"
+                }
             }
 
             MicSpeaker =
