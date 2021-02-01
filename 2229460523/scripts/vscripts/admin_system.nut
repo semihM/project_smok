@@ -10,12 +10,14 @@ printl("Activating Admin System");
 // Include the VScript Library
 IncludeScript("Admin_System/VSLib");
 
-// Include custom settings for unused lines
-IncludeScript("Voice_Paths/Survivorlines");
-// Include particle names table
-IncludeScript("Particle_Names/Particlenames");
-// Model paths
-IncludeScript("Model_Paths/Model");
+/// Include resource tables
+IncludeScript("Resource_tables/Survivorlines");
+// Particle names table
+IncludeScript("Resource_tables/Particlenames");
+// Model paths tables
+IncludeScript("Resource_tables/Modelpaths");
+// Netprop tables
+IncludeScript("Resource_tables/Netproptables");
 
 // Include the Message Class
 IncludeScript("Messages");
@@ -7101,7 +7103,7 @@ function Notifications::OnAbilityUsed::_TankRockSpawning(player,ability,args)
 			if(rock.GetName().find("_randomized") == null)
 			{
 				rock.SetName(rock.GetName()+"_randomized");
-				rock.SetModel(RandomPick(::Model.paths));
+				rock.SetModel(RandomPick(::ModelPaths.all));
 				if(AdminSystem.Vars._RockThrow.randomized_spawn_prop_after)
 				{
 					Timers.AddTimer(0.1,false,_replaceRock,{rock=rock});
@@ -9766,7 +9768,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	ClientPrint(player.GetBaseEntity(),3,"\x05"+RandomPick(::Model.paths));
+	ClientPrint(player.GetBaseEntity(),3,"\x05"+RandomPick(::ModelPaths.all));
 }
 
 /*
@@ -9803,7 +9805,7 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 
 	if(model == "!random")
-		model = RandomPick(::Model.paths);
+		model = RandomPick(::ModelPaths.all);
 
 	if(model.find("models/") == null)
 	{
@@ -11125,7 +11127,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local Entity = GetArgument(1);
 	local MDL = GetArgument(2);
 	if(MDL == "!random")
-		MDL = RandomPick(::Model.paths)
+		MDL = RandomPick(::ModelPaths.all)
 
 	local raise = GetArgument(3);
 	local yaw = GetArgument(4);

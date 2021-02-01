@@ -1,5 +1,5 @@
-::Model <- {
-    paths = 
+::ModelPaths <- {
+    all = 
     [
         "models/props_interiors/tv_cabinet.mdl",
         "models/props_interiors/tv.mdl",
