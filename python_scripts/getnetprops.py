@@ -1,6 +1,40 @@
 from bs4 import BeautifulSoup
 from urllib import request
 
+# TO-DO: Issue with parenting with same depth tables back-to-back
+
+class classcollection:
+    def __init__(self,tabledict=dict()):
+        self.tables = tabledict
+
+    def sqtable(self):
+        s = "{\n\t"
+        for classname,tbls in self.tables.items():
+            s += classname + " = \n\t{\n\t\t"
+            for depth,subtbls in tbls.tables.items():
+                for subtbl in subtbls:
+                    if "DT_" in subtbl.name:
+                        for np in subtbl.members:
+                            s += '"' + np.name.replace('"',"") + '" : \n\t\t{\n\t\t\t'
+                            s += 'parentname = "' + subtbl.name + '"\n\t\t\t'
+                            #s += 'fullname = "' + subtbl.printstrparented() + '"\n\t\t\t'
+                            s += "depth = " + str(subtbl.depth) + "\n\t\t\t"
+                            s += 'typ = "' + np.type + '"\n\t\t\t'
+                            s += "offset = " + str(np.offset) + "\n\t\t\t"
+                            s += "bits = " + str(np.bits) + "\n\t\t}\n\t\t"
+                    else:
+                        for np in subtbl.members:
+                            s += '"' + subtbl.name + "." + np.name.replace('"',"") + '" : \n\t\t{\n\t\t\t'
+                            s += 'parentname = "' + subtbl.parent.name + '"\n\t\t\t'
+                            #s += 'fullname = "' + subtbl.printstrparented() + '"\n\t\t\t'
+                            s += "depth = " + str(subtbl.depth) + "\n\t\t\t"
+                            s += 'typ = "' + np.type + '"\n\t\t\t'
+                            s += "offset = " + str(np.offset) + "\n\t\t\t"
+                            s += "bits = " + str(np.bits) + "\n\t\t}\n\t\t"
+            s += "\n\t}\n\t"
+        s += "\n}"
+        return s
+    
 class classtable:
     def __init__(self,name="",subtables={}):
         self.name = name
@@ -239,6 +273,18 @@ for url in urls:
 
 print(netpropdict.__len__())
 
+"""
+print("-------------------------")
+
+totalmembercount = 0
+for cl,tbl in netpropdict.items():
+    mbc = tbl.membercount
+    print(cl+" : "+str(mbc))
+    totalmembercount += mbc
+
+print("-------------------------")
+"""
+
 testclass = "Witch"
 testprop = "lengthprop6"
 subtableprefix = ">"
@@ -249,4 +295,12 @@ print(netpropdict[testclass].tablecount)
 print(netpropdict[testclass].membercount)
 print(netpropdict[testclass].getmember(testprop).printstrparented())
 
-netpropdict[testclass].printbydepthfull(subtableprefix,memberprefix)
+#netpropdict[testclass].printbydepthfull(subtableprefix,memberprefix)
+
+allprops = classcollection(netpropdict)
+#print(allprops.sqtable())
+
+filedir = "./2229460523/scripts/vscripts/resource_tables/netproptables.nut"
+
+with open(filedir, "w") as netpropfile:
+    print("::NetPropTables <- \n" + allprops.sqtable(),file=netpropfile)
