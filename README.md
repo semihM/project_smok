@@ -1351,6 +1351,57 @@
     
 ```
 ---
+- **wnet** : Add a watch to a netprop of an entity, checks netprop of the given entity and only show a message when it changes
+
+    Chat Syntax | !wnet *netprop_name,check_rate,NAME_OR_ID*
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *wnet,netprop_name,check_rate,NAME_OR_ID*
+    ------------- | -------------
+    
+    Menu Sequence | _Not in the menu_
+    ------------- | -------------
+```cpp
+       //Overloads:
+       // netprop_name is the netprop member name
+       // check_rate is the time in seconds to check the netprop value
+       // NAME_OR_ID is the name or the index of the entity to watch
+       // Information is printed at wherever player is using as output state
+       wnet {netprop_name} {check_rate:seconds} {NAME_OR_ID}
+       wnet {netprop_name} {check_rate:seconds}       // NAME_OR_ID = aimed entity
+       wnet {netprop_name}    // check_rate = 1 second , NAME_OR_ID = aimed entity
+
+       // Example: Watch m_clrRender netprop of the entity at index 82, check every half a second
+       wnet m_clrRender 0.5 #82
+
+       // Example: Watch movetype netprop of the aimed entity, check every 2 seconds
+       wnet movetype 2
+```
+---
+- **stop_wnet** : Stop watching a netprop of an entity
+
+    Chat Syntax | !stop_wnet *netprop_name,NAME_OR_ID*
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *stop_wnet,netprop_name,NAME_OR_ID*
+    ------------- | -------------
+    
+    Menu Sequence | _Not in the menu_
+    ------------- | -------------
+```cpp
+       //Overloads:
+       // netprop_name is the netprop member name
+       // NAME_OR_ID is the name or the index of the entity to watch
+       stop_wnet {netprop_name} {NAME_OR_ID}
+       stop_wnet {netprop_name}      // NAME_OR_ID = aimed entity
+    
+       // Example: Stop watching m_fEffects netprop of entity named myEntity999
+       stop_wnet m_fEffects myEntity999
+
+       // Example: Stop watching m_vecOrigin netprop of aimed entity
+       stop_wnet m_vecOrigin
+```
+---
 - **update_custom_response_preference** : Enable/Disable custom responses
 
     Chat Syntax | !update_custom_response_preference
