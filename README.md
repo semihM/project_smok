@@ -120,7 +120,7 @@
        prop physicsM !random
        
        // Example: Create a physics prop car with its windows attached(parented by the car)
-       prop physics models/props_vehicles/cara_69sedan.mdl&models/props_vehicles/cara_69sedan_glass.mdl
+       prop physicsM models/props_vehicles/cara_69sedan.mdl&models/props_vehicles/cara_69sedan_glass.mdl
 ```
 ---
 - **ent** : Create an entity of the given class with given key-values
