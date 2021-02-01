@@ -11186,8 +11186,20 @@ if ( Director.GetGameMode() == "holdout" )
 			foreach(mdl in split(MDL,"&"))
 			{
 				local ent = Utils.SpawnPhysicsProp( Utils.CleanColoredString(mdl), EyePosition, GroundPosition );
-				if(ent)
+				if(ent != null && ent.IsEntityValid())
+				{
 					createdent.append(ent);
+					ent.SetMoveType(MOVETYPE_NONE);
+				}
+				else
+				{
+					ent = Utils.SpawnDynamicProp( Utils.CleanColoredString(mdl), EyePosition, GroundPosition );
+					if(ent != null && ent.IsEntityValid())
+					{
+						createdent.append(ent);
+						ent.SetMoveType(MOVETYPE_NONE);
+					}
+				}
 			}
 		}
 		else
@@ -11373,7 +11385,7 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			e.Input("setparent","#"+parentent.GetIndex(),0);
 		}
-		if(Entity == "physicsM")
+		if(Entity == "physicsM" || Entity == "physics")
 		{
 			parentent.SetMoveType(MOVETYPE_VPHYSICS);
 		}
