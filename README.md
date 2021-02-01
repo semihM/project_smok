@@ -105,6 +105,7 @@
 ```cpp
        //Overloads:
        // {type} should be one of (physicsM: physics object, dynamic: non-physics object, ragdoll: ragdolling models)
+       // {type} also accepts classname "physics", but this class is less flexable than "physicsM" and doesn't work with most models
        // {model_path} follows this format in general: models/props_{category}/{name}.mdl OR !random for a random model
        // Multiple models can be given, seperated with "&" character, to create parented props ( parented by first model )
        // To check out all possible models: Left 4 Dead 2 Authoring Tools>Hammer World Editor>CTRL+N>CTRL+SHIFT+M>Search all models
@@ -121,6 +122,9 @@
        
        // Example: Create a physics prop car with its windows attached(parented by the car)
        prop physicsM models/props_vehicles/cara_69sedan.mdl&models/props_vehicles/cara_69sedan_glass.mdl
+
+       // Example: Create a ragdoll of coach
+       prop ragdoll models/survivors/survivor_coach.mdl
 ```
 ---
 - **ent** : Create an entity of the given class with given key-values
@@ -568,7 +572,7 @@
     Console Syntax | scripted_user_func *randomparticle_save_state*  
     ------------- | -------------
     
-    Menu Sequence | _6->->3->->6->->7->->3_
+    Menu Sequence | _6->3->6->7->3_
     ------------- | -------------
 
 ---
@@ -580,7 +584,7 @@
     Console Syntax | scripted_user_func *display_saved_particle*  
     ------------- | -------------
     
-    Menu Sequence | _6->->3->->6->->7->->4_
+    Menu Sequence | _6->3->6->7->4_
     ------------- | -------------
 ---
 - **save_particle** : Save the given particle
@@ -1410,7 +1414,7 @@
     Console Syntax | scripted_user_func *update_custom_response_preference*
     ------------- | -------------
     
-    Menu Sequence | _6->->9->->1->->1_
+    Menu Sequence | _6->9->1->1_
     ------------- | -------------
 
 ---
