@@ -24290,8 +24290,8 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;show_menu props_barrels1"
-					"label"      " Barrels and crates"
+					"command"    "play buttons/button14;show_menu props_ragdolls1"
+					"label"      " Ragdolls"
 			}
 			"6"
 			{
@@ -24328,36 +24328,35 @@
 					"command"    "play buttons/button14;show_menu props_plants1"
 					"label"      " Plants"
 			}
-
 			"2"
+			{
+					"command"    "play buttons/button14;show_menu props_barrels1"
+					"label"      " Barrels and crates"
+			}
+			"3"
 			{
 					"command"    "play buttons/button14;show_menu props_urban1"
 					"label"      " More interior and stuff"
 			}
-			"3"
+			"4"
 			{
 					"command"    "play buttons/button14;show_menu props_exteriors1"
 					"label"      " Exterior stuff"
 			}
-			"4"
+			"5"
 			{
 					"command"    "play buttons/button14;show_menu props_mall1"
 					"label"      " Mall"
 			}
-			"5"
+			"6"
 			{
 					"command"    "play buttons/button14;show_menu props_vehicles_junk1"
 					"label"      " Other vehicles"
 			}
-			"6"
+			"7"
 			{		
 					"command"    "play buttons/button14;show_menu props_laststand1"
 					"label"      " The Last Stand"
-			}
-			"7"
-			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu prop_menu_start2"
-					"label"      " Delete object"
 			}
 			"8"
 			{
@@ -24565,6 +24564,188 @@
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu prop_menu_start5"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"props_ragdolls1"
+	{
+			"Title"     "Ragdolls ( Stiff, with physics )"
+			
+			"1"
+			{
+					"command"    "play buttons/button14;show_menu props_ragdolls_survivors1"
+					"label"      " Survivors"
+			}
+			"2"
+			{		
+					"command"    "play buttons/button14;show_menu props_ragdolls_infected1"
+					"label"      " Infected"
+			}
+
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_ragdolls1"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu prop_menu_start1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"props_ragdolls_survivors1"
+	{
+			"Title"     "Survivor Ragdolls"
+			
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/survivors/survivor_namvet.mdl;show_menu props_ragdolls_survivors1"
+					"label"      " Bill"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/survivors/survivor_biker.mdl;show_menu props_ragdolls_survivors1"
+					"label"      " Francis"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/survivors/survivor_manager.mdl;show_menu props_ragdolls_survivors1"
+					"label"      " Louis"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/survivors/survivor_teenangst.mdl;show_menu props_ragdolls_survivors1"
+					"label"      " Zoey"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/survivors/survivor_gambler.mdl;show_menu props_ragdolls_survivors1"
+					"label"      " Nick"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/survivors/survivor_mechanic.mdl;show_menu props_ragdolls_survivors1"
+					"label"      " Ellis"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/survivors/survivor_coach.mdl;show_menu props_ragdolls_survivors1"
+					"label"      " Coach"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/survivors/survivor_producer.mdl;show_menu props_ragdolls_survivors1"
+					"label"      " Rochelle"
+			}
+			
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu props_ragdolls1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"props_ragdolls_infected1"
+	{
+			"Title"     "Infected Ragdolls 1"
+			
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/infected/smoker.mdl;show_menu props_ragdolls_infected1"
+					"label"      " Smoker"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/infected/boomer.mdl;show_menu props_ragdolls_infected1"
+					"label"      " Boomer"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/infected/boomette.mdl;show_menu props_ragdolls_infected1"
+					"label"      " Boomette"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/infected/hunter.mdl;show_menu props_ragdolls_infected1"
+					"label"      " Hunter"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/infected/spitter.mdl;show_menu props_ragdolls_infected1"
+					"label"      " Spitter"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/infected/jockey.mdl;show_menu props_ragdolls_infected1"
+					"label"      " Jockey"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/infected/charger.mdl;show_menu props_ragdolls_infected1"
+					"label"      " Charger"
+			}
+
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu props_ragdolls1"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu props_ragdolls_infected2"
+					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	"props_ragdolls_infected2"
+	{
+			"Title"     "Infected Ragdolls 1"
+			
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/infected/hulk.mdl;show_menu props_ragdolls_infected2"
+					"label"      " Tank 1"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/infected/hulk_dlc3.mdl;show_menu props_ragdolls_infected2"
+					"label"      " Tank 2"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/infected/witch.mdl;show_menu props_ragdolls_infected2"
+					"label"      " Witch"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/infected/witch_bride.mdl;show_menu props_ragdolls_infected2"
+					"label"      " Witch bride"
+			}
+
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu props_ragdolls_infected1"
 					"label"      " << Back"
 			}
 			"0"
@@ -25646,7 +25827,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu prop_menu_start1"
+					"command"    "play buttons/button14;show_menu prop_menu_start2"
 					"label"      " << Back"
 			}
 			"9"
@@ -30579,8 +30760,8 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;show_menu phys_props_barrels1"
-					"label"      " Barrels and crates"
+					"command"    "play buttons/button14;show_menu phys_props_ragdolls1"
+					"label"      " Ragdolls"
 			}
 			"6"
 			{
@@ -30617,36 +30798,36 @@
 					"command"    "play buttons/button14;show_menu phys_props_plants1"
 					"label"      " Plants"
 			}
-
 			"2"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_barrels1"
+					"label"      " Barrels and crates"
+			}
+
+			"3"
 			{
 					"command"    "play buttons/button14;show_menu phys_props_urban1"
 					"label"      " More interior and stuff"
 			}
-			"3"
+			"4"
 			{
 					"command"    "play buttons/button14;show_menu phys_props_exteriors1"
 					"label"      " Exterior stuff"
 			}
-			"4"
+			"5"
 			{
 					"command"    "play buttons/button14;show_menu phys_props_mall1"
 					"label"      " Mall"
 			}
-			"5"
+			"6"
 			{
 					"command"    "play buttons/button14;show_menu phys_props_vehicles_junk1"
 					"label"      " Other vehicles"
 			}
-			"6"
+			"7"
 			{		
 					"command"    "play buttons/button14;show_menu phys_props_laststand1"
 					"label"      " The Last Stand"
-			}
-			"7"
-			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_prop_menu_start2"
-					"label"      " Delete object"
 			}
 			"8"
 			{
@@ -30853,6 +31034,188 @@
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu phys_prop_menu_start5"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"phys_props_ragdolls1"
+	{
+			"Title"     "Ragdolls ( Ragdolling, with physics )"
+			
+			"1"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_ragdolls_survivors1"
+					"label"      " Survivor"
+			}
+			"2"
+			{		
+					"command"    "play buttons/button14;show_menu phys_props_ragdolls_infected1"
+					"label"      " Infected"
+			}
+
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_ragdolls1"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu phys_prop_menu_start1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"phys_props_ragdolls_survivors1"
+	{
+			"Title"     "Survivor Ragdolls"
+			
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,ragdoll,models/survivors/survivor_namvet.mdl;show_menu phys_props_ragdolls_survivors1"
+					"label"      " Bill"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,ragdoll,models/survivors/survivor_biker.mdl;show_menu phys_props_ragdolls_survivors1"
+					"label"      " Francis"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,ragdoll,models/survivors/survivor_manager.mdl;show_menu phys_props_ragdolls_survivors1"
+					"label"      " Louis"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,ragdoll,models/survivors/survivor_teenangst.mdl;show_menu phys_props_ragdolls_survivors1"
+					"label"      " Zoey"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,ragdoll,models/survivors/survivor_gambler.mdl;show_menu phys_props_ragdolls_survivors1"
+					"label"      " Nick"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,ragdoll,models/survivors/survivor_mechanic.mdl;show_menu phys_props_ragdolls_survivors1"
+					"label"      " Ellis"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,ragdoll,models/survivors/survivor_coach.mdl;show_menu phys_props_ragdolls_survivors1"
+					"label"      " Coach"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,ragdoll,models/survivors/survivor_producer.mdl;show_menu phys_props_ragdolls_survivors1"
+					"label"      " Rochelle"
+			}
+			
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_ragdolls1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"phys_props_ragdolls_infected1"
+	{
+			"Title"     "Infected Ragdolls 1"
+			
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,ragdoll,models/infected/smoker.mdl;show_menu phys_props_ragdolls_infected1"
+					"label"      " Smoker"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,ragdoll,models/infected/boomer.mdl;show_menu phys_props_ragdolls_infected1"
+					"label"      " Boomer"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,ragdoll,models/infected/boomette.mdl;show_menu phys_props_ragdolls_infected1"
+					"label"      " Boomette"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,ragdoll,models/infected/hunter.mdl;show_menu phys_props_ragdolls_infected1"
+					"label"      " Hunter"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,ragdoll,models/infected/spitter.mdl;show_menu phys_props_ragdolls_infected1"
+					"label"      " Spitter"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,ragdoll,models/infected/jockey.mdl;show_menu phys_props_ragdolls_infected1"
+					"label"      " Jockey"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,ragdoll,models/infected/charger.mdl;show_menu phys_props_ragdolls_infected1"
+					"label"      " Charger"
+			}
+
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_ragdolls1"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_ragdolls_infected2"
+					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	"phys_props_ragdolls_infected2"
+	{
+			"Title"     "Infected Ragdolls 2"
+			
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,ragdoll,models/infected/hulk.mdl;show_menu phys_props_ragdolls_infected2"
+					"label"      " Tank 1"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,ragdoll,models/infected/hulk_dlc3.mdl;show_menu phys_props_ragdolls_infected2"
+					"label"      " Tank 2"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,ragdoll,models/infected/witch.mdl;show_menu phys_props_ragdolls_infected2"
+					"label"      " Witch"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,ragdoll,models/infected/witch_bride.mdl;show_menu phys_props_ragdolls_infected2"
+					"label"      " Witch bride"
+			}
+
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_ragdolls_infected1"
 					"label"      " << Back"
 			}
 			"0"
@@ -31933,7 +32296,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu phys_prop_menu_start1"
+					"command"    "play buttons/button14;show_menu phys_prop_menu_start2"
 					"label"      " << Back"
 			}
 			"9"

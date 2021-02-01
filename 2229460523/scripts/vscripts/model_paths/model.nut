@@ -515,6 +515,25 @@
         "models/props_collectables/alchemy_table_glass.mdl",
         "models/props_trailers/window08.mdl",
         "models/props_vehicles/semi_truck3.mdl",
-        "models/deadbodies/chm_fallensurvivor.mdl"
+        "models/deadbodies/chm_fallensurvivor.mdl",
+        "models/survivors/survivor_namvet.mdl",
+        "models/survivors/survivor_biker.mdl",
+        "models/survivors/survivor_manager.mdl",
+        "models/survivors/survivor_teenangst.mdl",
+        "models/survivors/survivor_gambler.mdl",
+        "models/survivors/survivor_mechanic.mdl",
+        "models/survivors/survivor_coach.mdl",
+        "models/survivors/survivor_producer.mdl",
+        "models/infected/smoker.mdl",
+        "models/infected/boomer.mdl",
+        "models/infected/boomette.mdl",
+        "models/infected/hunter.mdl",
+        "models/infected/spitter.mdl",
+        "models/infected/jockey.mdl",
+        "models/infected/charger.mdl",
+        "models/infected/hulk.mdl",
+        "models/infected/hulk_dlc3.mdl",
+        "models/infected/witch.mdl",
+        "models/infected/witch_bride.mdl"
     ]
 }
