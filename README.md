@@ -16,7 +16,7 @@
  
  - Put ( or replace the original if already exists ) the created _**2229460523.vpk**_ file into the relative path _**..\Steam\steamapps\common\Left 4 Dead 2\left4dead2\addons\workshop**_
  
- - Launch the game and check the add-on
+ - Launch the game and make sure the add-on is checked
  
 # Commands
  - Commands can be used:
@@ -64,7 +64,7 @@
 
 ---
 # Documentation Contents
-- [**Entities/objects**](#entities)
+- [**Entities/Objects**](#entities)
 
 - [**Random voice lines**](#random-and-saved-voices)
 
@@ -99,7 +99,7 @@
     Console Syntax | scripted_user_func *prop,type,model_path* 
     ------------- | -------------
     
-    Menu Sequence | _6 1_ AND _6 2_ 
+    Menu Sequence | _6->1_ AND _6->2_ 
     ------------- | -------------
 
 ```cpp
@@ -157,7 +157,7 @@
     Console Syntax | scripted_user_func *ent_rotate,axis,degrees*
     ------------- | -------------
     
-    Menu Sequence | _6 3 5 4_
+    Menu Sequence | _6->3->5->4_
     ------------- | -------------
 
 ```cpp 
@@ -174,7 +174,7 @@
     Console Syntax | scripted_user_func *ent_push,speed,direction,pitch*
     ------------- | -------------
     
-    Menu Sequence | _6 3 5 1_ AND _6 3 5 2_
+    Menu Sequence | _6->3->5->1_ AND _6->3->5->2_
     ------------- | -------------
 ```cpp 
       //Overloads:
@@ -190,7 +190,7 @@
     Console Syntax | scripted_user_func *ent_move,scale,direction* 
     ------------- | -------------
     
-    Menu Sequence | _6 3 5 5_
+    Menu Sequence | _6->3->5->5_
     ------------- | -------------
 ```cpp 
       //Overloads:
@@ -222,7 +222,7 @@
     Console Syntax | scripted_user_func *rainbow,_total_duration,each_color_duration* 
     ------------- | -------------
     
-    Menu Sequence | _6 3 4 1_
+    Menu Sequence | _6->3->4->1_
     ------------- | -------------
 ```cpp 
        //Overloads: Assert (total_duration/color_duration) <= 2000
@@ -238,7 +238,7 @@
     Console Syntax | scripted_user_func *grab* 
     ------------- | -------------
     
-    Menu Sequence | _6 3 7 1_
+    Menu Sequence | _6->3->7->1_
     ------------- | -------------
 ---    
 - **letgo** : Drops the held entity
@@ -249,7 +249,7 @@
     Console Syntax | scripted_user_func *letgo* 
     ------------- | -------------
     
-    Menu Sequence | _USE 6 3 7 1_
+    Menu Sequence | _USE 6->3->7->1_
     ------------- | -------------
 ---    
 - **yeet** : YEEEEEET
@@ -260,7 +260,7 @@
     Console Syntax | scripted_user_func *yeet* 
     ------------- | -------------
     
-    Menu Sequence | _6 3 7 2_
+    Menu Sequence | _6->3->7->2_
     ------------- | -------------
 ---    
 - **show_yeet_settings** : Shows grabbing settings in console
@@ -271,7 +271,7 @@
     Console Syntax | scripted_user_func *show_yeet_settings* 
     ------------- | -------------
     
-    Menu Sequence | _6 3 7 4_
+    Menu Sequence | _6->3->7->4_
     ------------- | -------------
     
     Setting | Default Value | Description
@@ -294,7 +294,7 @@
     Console Syntax | scripted_user_func *yeet_setting,setting_name,value* 
     ------------- | -------------
     
-    Menu Sequence | _Command hinted at 6 3 7 5_
+    Menu Sequence | _Command hinted at 6->3->7->5_
     ------------- | -------------
     
 ```cpp 
@@ -323,7 +323,7 @@
     Console Syntax | scripted_user_func *change_grab_method* 
     ------------- | -------------
     
-    Menu Sequence | _6 3 7 6_
+    Menu Sequence | _6->3->7->6_
     ------------- | -------------
  
 ---
@@ -335,7 +335,7 @@
     Console Syntax | scripted_user_func *model,target,model_path* 
     ------------- | -------------
     
-    Menu Sequence | _6 9 6 1_ AND _6 9 6 2_
+    Menu Sequence | _6->9->6->1_ AND _6->9->6->2_
     ------------- | -------------
     
 ```cpp 
@@ -360,7 +360,7 @@
     Console Syntax | scripted_user_func *model,target,scale* 
     ------------- | -------------
     
-    Menu Sequence | _6 9 6 3_ AND _6 9 6 4_
+    Menu Sequence | _6->9->6->3_ AND _6->9->6->4_
     ------------- | -------------
     
 ```cpp 
@@ -380,7 +380,7 @@
     Console Syntax | scripted_user_func *disguise* 
     ------------- | -------------
     
-    Menu Sequence | _6 9 6 5_
+    Menu Sequence | _6->9->6->5_
     ------------- | -------------
 
 ---
@@ -392,7 +392,7 @@
     Console Syntax | scripted_user_func *restore_model,target* 
     ------------- | -------------
     
-    Menu Sequence | _6 9 6 7_
+    Menu Sequence | _6->9->6->7_
     ------------- | -------------
 ```cpp
        //Overloads:
@@ -417,7 +417,7 @@
     Console Syntax | scripted_user_func *randomline,speaker,line_source*  
     ------------- | -------------
     
-    Menu Sequence | _6 4 1_ , _6 4 2_ , _6 4 3_ , _6 4 4_ , _6 4 5_ AND _6 4 6_ 
+    Menu Sequence | _6->4->1_ , _6->4->2_ , _6->4->3_ , _6->4->4_ , _6->4->5_ AND _6->4->6_ 
     ------------- | -------------
 ```cpp
        //Overloads:
@@ -434,7 +434,7 @@
     Console Syntax | scripted_user_func *randomline_save_last*  
     ------------- | -------------
     
-    Menu Sequence | _6 4 7 1_
+    Menu Sequence | _6->4->7->1_
     ------------- | -------------
    
 ---
@@ -461,7 +461,7 @@
     Console Syntax | scripted_user_func *display_saved_line*  
     ------------- | -------------
     
-    Menu Sequence | _6 4 7 2_
+    Menu Sequence | _6->4->7->2_
     ------------- | -------------
    
 ---
@@ -472,7 +472,7 @@
     Console Syntax | scripted_user_func *speak_saved*  
     ------------- | -------------
     
-    Menu Sequence | _6 5_
+    Menu Sequence | _6->5_
     ------------- | -------------
     
 ---
@@ -486,7 +486,7 @@
     Console Syntax | scripted_user_func *particle,particle_name*  
     ------------- | -------------
     
-    Menu Sequence | _6 3 6 1_ AND _6 3 6 2_
+    Menu Sequence | _6->3->6->1_ AND _6->3->6->2_
     ------------- | -------------
 ```cpp 
        //Overloads:
@@ -501,7 +501,7 @@
     Console Syntax | scripted_user_func *attach_particle,particle_name,duration*  
     ------------- | -------------
     
-    Menu Sequence | _6 3 6 3_
+    Menu Sequence | _6->3->6->3_
     ------------- | -------------
     
 ---
@@ -513,7 +513,7 @@
     Console Syntax | scripted_user_func *attach_particle,particle_name,duration*  
     ------------- | -------------
     
-    Menu Sequence | _6 3 6 4_ AND _6 3 6 5_
+    Menu Sequence | _6->3->6->4_ AND _6->3->6->5_
     ------------- | -------------
 ```cpp
        //Overloads:
@@ -530,7 +530,7 @@
     Console Syntax | scripted_user_func *attach_particle_saved*  
     ------------- | -------------
     
-    Menu Sequence | _6 3 6 6_
+    Menu Sequence | _6->3->6->6_
     ------------- | -------------
 ---
 - **update_attachment_preference** : Change preferred attachment duration
@@ -541,7 +541,7 @@
     Console Syntax | scripted_user_func *update_attachment_preference,duration*  
     ------------- | -------------
     
-    Menu Sequence | _6 3 6 7 1_
+    Menu Sequence | _6->3->6->7->1_
     ------------- | -------------
 ```cpp 
        //Overloads:
@@ -556,7 +556,7 @@
     Console Syntax | scripted_user_func *attach_to_targeted_position*  
     ------------- | -------------
     
-    Menu Sequence | _6 3 6 7 2_
+    Menu Sequence | _6->3->6->7->2_
     ------------- | -------------
 
 ---
@@ -568,7 +568,7 @@
     Console Syntax | scripted_user_func *randomparticle_save_state*  
     ------------- | -------------
     
-    Menu Sequence | _6 3 6 7 3_
+    Menu Sequence | _6->->3->->6->->7->->3_
     ------------- | -------------
 
 ---
@@ -580,7 +580,7 @@
     Console Syntax | scripted_user_func *display_saved_particle*  
     ------------- | -------------
     
-    Menu Sequence | _6 3 6 7 4_
+    Menu Sequence | _6->->3->->6->->7->->4_
     ------------- | -------------
 ---
 - **save_particle** : Save the given particle
@@ -959,7 +959,7 @@
     Console Syntax | scripted_user_func *stop_time,target_type* 
     ------------- | -------------
     
-    Menu Sequence | _6 3 9 2 AND 6 3 9 2 9_
+    Menu Sequence | _6->3->9->2 AND 6->3->9->2->9_
     ------------- | -------------
 
 ```cpp
@@ -982,7 +982,7 @@
     Console Syntax | scripted_user_func *resume_time,target_type* 
     ------------- | -------------
     
-    Menu Sequence | _6 3 9 2 AND 6 3 9 2 9_
+    Menu Sequence | _6->3->9->2 AND 6->3->9->2->9_
     ------------- | -------------
 
 ```cpp
@@ -1210,7 +1210,7 @@
     Console Syntax | scripted_user_func *stop_car_alarms* 
     ------------- | -------------
     
-    Menu Sequence | _6 9 5_
+    Menu Sequence | _6->9->5_
     ------------- | -------------
  
 ---
@@ -1282,7 +1282,7 @@
     Console Syntax | scripted_user_func *random_model* 
     ------------- | -------------
     
-    Menu Sequence | _6 9 3 9 1_
+    Menu Sequence | _6->9->3->9->1_
     ------------- | -------------
                              
 ---
@@ -1296,7 +1296,7 @@
     Console Syntax | scripted_user_func *update_print_output_state*
     ------------- | -------------
     
-    Menu Sequence | _6 9 4 6_
+    Menu Sequence | _6->9->4->6_
     ------------- | -------------
     
 ---
@@ -1308,7 +1308,7 @@
     Console Syntax | scripted_user_func *add_script_auth,character*
     ------------- | -------------
     
-    Menu Sequence | _6 9 2 1_
+    Menu Sequence | _6->9->2->1_
     ------------- | -------------
 ```cpp
        //Overloads:
@@ -1325,7 +1325,7 @@
     Console Syntax | scripted_user_func *remove_script_auth,character*
     ------------- | -------------
     
-    Menu Sequence | _6 9 2 2_
+    Menu Sequence | _6->9->2->2_
     ------------- | -------------
 ```cpp
        //Overloads:
@@ -1342,7 +1342,7 @@
     Console Syntax | scripted_user_func *ents_around,radius*
     ------------- | -------------
     
-    Menu Sequence | _6 9 4 7_
+    Menu Sequence | _6->9->4->7_
     ------------- | -------------
 ```cpp
        //Overloads:
@@ -1410,7 +1410,7 @@
     Console Syntax | scripted_user_func *update_custom_response_preference*
     ------------- | -------------
     
-    Menu Sequence | _6 9 1 1_
+    Menu Sequence | _6->->9->->1->->1_
     ------------- | -------------
 
 ---
@@ -1422,7 +1422,7 @@
     Console Syntax | scripted_user_func *update_tank_rock_launch_preference*
     ------------- | -------------
     
-    Menu Sequence | _6 9 1 2 1_
+    Menu Sequence | _6->9->1->2->1_
     ------------- | -------------
 
 ---
@@ -1434,7 +1434,7 @@
     Console Syntax | scripted_user_func *update_tank_rock_random_preference*
     ------------- | -------------
     
-    Menu Sequence | _6 9 1 2 2_
+    Menu Sequence | _6->9->1->2->2_
     ------------- | -------------
 
 ---
@@ -1446,7 +1446,7 @@
     Console Syntax | scripted_user_func *update_tank_rock_spawn_preference*
     ------------- | -------------
     
-    Menu Sequence | _6 9 1 2 3_
+    Menu Sequence | _6->9->1->2->3_
     ------------- | -------------
 
 ---
@@ -1458,7 +1458,7 @@
     Console Syntax | scripted_user_func *update_jockey_preference*
     ------------- | -------------
     
-    Menu Sequence | _6 9 1 3_
+    Menu Sequence | _6->9->1->3_
     ------------- | -------------
 
 ---
@@ -1470,7 +1470,7 @@
     Console Syntax | scripted_user_func *update_model_preference*
     ------------- | -------------
     
-    Menu Sequence | _6 9 1 4_
+    Menu Sequence | _6->9->1->4_
     ------------- | -------------
     
 ---
@@ -1482,7 +1482,7 @@
     Console Syntax | scripted_user_func *update_custom_sharing_preference*
     ------------- | -------------
     
-    Menu Sequence | _6 9 1 5_
+    Menu Sequence | _6->9->1->5_
     ------------- | -------------
     
 ---
@@ -1494,7 +1494,7 @@
     Console Syntax | scripted_user_func *update_bots_sharing_preference*
     ------------- | -------------
     
-    Menu Sequence | _6 9 1 6 1_
+    Menu Sequence | _6->9->1->6->1_
     ------------- | -------------
     
 ---
@@ -1506,7 +1506,7 @@
     Console Syntax | scripted_user_func *kind_bots*
     ------------- | -------------
     
-    Menu Sequence | _6 9 1 6 2_
+    Menu Sequence | _6->9->1->6->2_
     ------------- | -------------
     
 ---
@@ -1518,7 +1518,7 @@
     Console Syntax | scripted_user_func *selfish_bots*
     ------------- | -------------
     
-    Menu Sequence | _6 9 1 6 3_
+    Menu Sequence | _6->9->1->6->3_
     ------------- | -------------
 
 ---
@@ -1530,7 +1530,7 @@
     Console Syntax | scripted_user_func *debug_info,get_player_info*
     ------------- | -------------
     
-    Menu Sequence | _6 9 4 4_ AND _6 9 4 5_
+    Menu Sequence | _6->9->4->4_ AND _6->9->4->5_
     ------------- | -------------
 ```cpp
        //Overloads:
@@ -1546,28 +1546,41 @@
 
 ### Changing settings, adding custom responses without launching the game
 ---
+#### Basic configuration structure
 - AdminSystem configuration files are stored in the **"..\Left 4 Dead 2\left4dead2\ems\admin system"** directory.
 
-- This directory contains: **configurations(settings.txt)**, **admins(admins.txt)**, **banned players(banned.txt)**, **script authorizations(scriptauths.txt)**, **custom responses(custom_responses.json)**, **default settings(defaults.txt)**, **bot settings(botparams.txt)**, **apocalypse event settings(apocalypse_settings.txt)** and **meteor shower event settings(meteor_shower_settings.txt)**. Which can all be edited manually (Be careful while formatting! Removing a file can help solve reading issues by letting the addon re-creating the file again)
+- This directory contains:
+ + **Admin system settings : _settings.txt_**
+ + **Admins : _admins.txt_**
+ + **Banned players (only if theres any): _banned.txt_**
+ + **Script authorizations : _scriptauths.txt_**
+ + **Custom responses : _custom_responses.json_**
+ + **Default settings and parameters : _defaults.txt_**
+ + **Bots' sharing/looting parameters : _botparams.txt_**
+ + **Apocalypse event custom settings : _apocalypse_settings.txt_**
+ + **Meteor shower event custom settings : _meteor_shower_settings.txt_**
 
+- These files can all be edited manually with any text editor, but be sure to follow the format present in the file. If an issue occurs while reading the file, it will be printed in **red** in the console. Removing the file can help solve reading issues by letting the addon re-creating the file again in the next reset.
+
+#### Extra Notes
 - **"custom_responses.json"** file can be opened with a text editor and new custom sequences can be defined  for each admin's steam ID with the example format given in the file.
 
 - **"defaults.txt"** file contains most of the customizable settings in the **project_smok**. Follow the instructions given in the file to start editing!
 
-- **"botparams.txt"** file contains the parameters used for bots' sharing and looting abilities.
+- **"botparams.txt"** file contains the parameters used for bots' sharing and looting abilities. Probabilistic values are normalized between 0 and 1.
 
-- **"apocalypse_settings.txt"** file contains the settings to use for the _apocalypse_ event.
+- **"apocalypse_settings.txt"** file contains the settings to use for the _apocalypse_ event. Probabilistic values are normalized between 0 and 1.
 
-- **"meteor_shower_settings.txt"** file contains the settings to use for the _meteor shower_ event.
+- **"meteor_shower_settings.txt"** file contains the settings to use for the _meteor shower_ event. Probabilistic values are normalized between 0 and 1.
 
 ---
 ### Forms
 ---
-- If you have encountered a bug, please report it [here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089552207/)
+- If you have encountered a bug, please [report it here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089552207/)
 
-- If you have any suggestions, write them [here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089554499/)
+- If you have any suggestions, please [write them here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089554499/)
 
-- If you are having trouble with the add-on or have any questions, ask [here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089567424/)
+- If you are having trouble with the add-on or have any questions, please [ask here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089567424/)
 ---
 ## Other Links
 
