@@ -20,11 +20,11 @@ IncludeScript("Resource_tables/Modelpaths");
 IncludeScript("Resource_tables/Netproptables");
 
 // Include the Message Class
-IncludeScript("Messages");
+IncludeScript("Project_smok/Messages");
 // Include String Constants
-IncludeScript("Constants");
+IncludeScript("Project_smok/Constants");
 // Include Custom Variables
-IncludeScript("AdminVars");
+IncludeScript("Project_smok/AdminVars");
 
 ::CmdMessages <- ::Messages.BIM.CMD;
 
@@ -132,13 +132,13 @@ Convars.SetValue( "precache_all_survivors", "1" );
 			for(local i=0;i<spltlen;i++)
 			{
 				local mlen = splt[i].len();
-				local ms = (mlen.tofloat() / 255.1).tointeger() + 1;
-				if(mlen > 255)	// Too long line
+				local ms = (mlen.tofloat() / (PRINTER_CHAR_LIMIT+0.1)).tointeger() + 1;
+				if(mlen > PRINTER_CHAR_LIMIT)	// Too long line
 				{
 					for(local j=0;j<ms;j++)	// Slice into new lines
 					{
-						local offset = 255*j;
-						local len = (j == ms-1) ? mlen%255 : 255;
+						local offset = PRINTER_CHAR_LIMIT*j;
+						local len = (j == ms-1) ? mlen%PRINTER_CHAR_LIMIT : PRINTER_CHAR_LIMIT;
 						PrinterSplitDecider(player,splt[i].slice(offset,offset + len),messager);
 					}
 				}
@@ -150,7 +150,21 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		}
 		else	// Valid length message
 		{
-			PrinterSplitDecider(player,msg,messager);
+			local mlen = splt[0].len();
+			local ms = (mlen.tofloat() / (PRINTER_CHAR_LIMIT+0.1)).tointeger() + 1;
+			if(mlen > PRINTER_CHAR_LIMIT)	// Too long line
+			{
+				for(local j=0;j<ms;j++)	// Slice into new lines
+				{
+					local offset = PRINTER_CHAR_LIMIT*j;
+					local len = (j == ms-1) ? mlen%PRINTER_CHAR_LIMIT : PRINTER_CHAR_LIMIT;
+					PrinterSplitDecider(player,splt[0].slice(offset,offset + len),messager);
+				}
+			}
+			else	// Valid length line
+			{
+				PrinterSplitDecider(player,splt[0],messager);
+			}
 		}
 	}
 	else
@@ -162,14 +176,14 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		{
 			// Do first part seperately, same process as above
 			local mlen = splt[0].len();
-			local ms = (mlen.tofloat() / 255.1).tointeger() + 1;
-			if(mlen > 255)
+			local ms = (mlen.tofloat() / (PRINTER_CHAR_LIMIT+0.1)).tointeger() + 1;
+			if(mlen > PRINTER_CHAR_LIMIT)
 			{
 				printB(charname,charname+" -> ",true,messager,true,false);
 				for(local j=0;j<ms;j++)
 				{
-					local offset = 255*j;
-					local len = (j == ms-1) ? mlen%255 : 255;
+					local offset = PRINTER_CHAR_LIMIT*j;
+					local len = (j == ms-1) ? mlen%PRINTER_CHAR_LIMIT : PRINTER_CHAR_LIMIT;
 					printB(charname,splt[0].slice(offset,offset + len),true,messager,false,false);
 				}
 			}
@@ -181,13 +195,13 @@ Convars.SetValue( "precache_all_survivors", "1" );
 			for(local i=1;i<splt.len();i++)
 			{
 				mlen = splt[i].len();
-				ms = (mlen.tofloat() / 255.1).tointeger() + 1;
-				if(mlen > 255)
+				ms = (mlen.tofloat() / (PRINTER_CHAR_LIMIT+0.1)).tointeger() + 1;
+				if(mlen > PRINTER_CHAR_LIMIT)
 				{
 					for(local j=0;j<ms;j++)
 					{
-						local offset = 255*j;
-						local len = (j == ms-1) ? mlen%255 : 255;
+						local offset = PRINTER_CHAR_LIMIT*j;
+						local len = (j == ms-1) ? mlen%PRINTER_CHAR_LIMIT : PRINTER_CHAR_LIMIT;
 						printB(charname,splt[i].slice(offset,offset + len),true,"",false,false);
 					}
 				}
@@ -332,7 +346,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 			setting = Utils.StringReplace(setting, "//" + ".*", "");
 			setting = rstrip(setting);
 		}
-		if ( setting != "" )
+		if ( strip(setting) != "" )
 		{
 			//setting = Utils.StringReplace(setting, "=", "<-");
 			local compiledscript = compilestring("AdminSystem." + setting);
@@ -355,7 +369,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 
 	foreach (setting in settings)
 	{
-		if ( setting != "" )
+		if ( strip(setting) != "" )
 		{	
 			compilestring("AdminSystem._propageddon_args." + Utils.StringReplace(setting, "=", "<-"))();
 		}
@@ -376,7 +390,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 
 	foreach (setting in settings)
 	{
-		if ( setting != "" )
+		if ( strip(setting) != "" )
 		{	
 			if(setting.find("meteormodelspecific") != null)
 			{
@@ -642,7 +656,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	}
 
 	RestoreTable( "admin_variable_data", ::AdminSystem.Vars );
-	IncludeScript("AdminVars");
+	IncludeScript("Project_smok/AdminVars");
 
 	if (::AdminSystem.Vars == null)
 	{
@@ -838,7 +852,21 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 
 	::AdminSystem.Vars.FixBooleanValues(AdminSystem.Vars,basicbools,"boolean");
 
-	::AdminSystem.Vars._RockThrow.rockorigin = null;
+	::AdminSystem.Vars._RockThrow.rockorigin = "";
+
+	// Fix prop spawn settings tables, restores "flags" as "FLAGS"... smart
+	foreach(i,name in AdminSystem.Vars.CharacterNamesLower)
+	{
+		local settingtbl = AdminSystem.Vars._prop_spawn_settings[name]
+		foreach(setting,valtbl in settingtbl)
+		{
+			if("FLAGS" in valtbl)
+			{
+				AdminSystem.Vars._prop_spawn_settings[name][setting].flags <- valtbl.FLAGS
+				delete AdminSystem.Vars._prop_spawn_settings[name][setting].FLAGS
+			}
+		}
+	}
 
 	// Fix custom responses table
 	if(!skip)
@@ -997,7 +1025,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 				AdminSystem.Vars._meteor_models._custom = Utils.ArrayCopy(newmodelarray);
 			}
 			else
-				throw("No need for meteor shower model array fixes, "+label+" "+(typeof modelarr))
+				throw("[Custom] No need for meteor shower model array fixes, "+label+" "+(typeof modelarr))
 		}
 	
 	}
@@ -1006,22 +1034,22 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	//catch(e){printl("[OnRoundStart-AdminLoadFiles] "+e);}
 	
 	printl("[Custom] Loaded custom responses created by admins");
-
+	
 	if(AdminSystem.Vars._propageddon_state == 1)
 	{
-		::VSLib.Timers.AddTimer(3,false,Utils.PrintToAllDel,"Madness continues...");
+		::VSLib.Timers.AddTimer(Constants.TimerDelays.RoundStart.Apocalypse,false,Utils.PrintToAllDel,"Madness continues...");
 		::VSLib.Timers.AddTimerByName(Constants.TimerNames.Apocalypse,AdminSystem._propageddon_args.updatedelay, true, _ApocalypseTimer,{});	
 	}
 
 	if(AdminSystem.Vars._meteor_shower_state == 1)
 	{
-		::VSLib.Timers.AddTimer(3.2,false,Utils.PrintToAllDel,"Is it still raining?");
+		::VSLib.Timers.AddTimer(Constants.TimerDelays.RoundStart.MeteorShower,false,Utils.PrintToAllDel,"Is it still raining?");
 		::VSLib.Timers.AddTimerByName(Constants.TimerNames.MeteorShower,AdminSystem._meteor_shower_args.updatedelay, true, _MeteorTimer,{});	
 	}
 
 	if(AdminSystem.Vars.LastLootThinkState)
 	{
-		::VSLib.Timers.AddTimer(8,false,DelayedBotLootThinkAdder,{});
+		::VSLib.Timers.AddTimerByName(Constants.TimerNames.RoundStartBotShareEnable,Constants.TimerDelays.RoundStart.BotShareLoot,false,DelayedBotLootThinkAdder,{});
 	}
 	else
 	{
@@ -1037,6 +1065,12 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 
 ::DelayedBotLootThinkAdder <- function(...)
 {
+	local found = Objects.AnyOfName("think_adder_base_entity")
+	if(found != null)
+	{
+		printl("[Bot-Thinker] Bot looting/sharing thinking already enabled via adder #"+found.GetIndex());
+		return;
+	}
 	local tadd = _CreateLootThinker();
 	printl("[Bot-Thinker] Enabled looting/sharing thinking for bots via adder #"+tadd.GetIndex());
 }
@@ -1632,6 +1666,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.Update_svcheatsCmd(player, args);
 			break;
 		}
+		case "prop_spawn_setting":
 		case "update_prop_spawn_setting":
 		{
 			AdminSystem.Update_prop_spawn_settingCmd(player, args);
@@ -2053,6 +2088,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.StopCarAlarmsCmd( player, args );
 			break;
 		}
+		case "remove_fall_cams":
+		{
+			AdminSystem.RemoveFallCamsCmd( player, args );
+			break;
+		}
 		case "sound":
 		{
 			AdminSystem.SoundCmd( player, args );
@@ -2365,73 +2405,29 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.StopWatchNetPropCmd(player,args);
 			break;
 		}
+		case "flag_lookup":
+		{
+			AdminSystem.FlagLookUpCmd(player,args);
+			break;
+		}
+		case "go_ragdoll":
+		{
+			AdminSystem.GoRagdollCmd(player,args);
+			break;
+		}
+		case "recover_ragdoll":
+		{
+			AdminSystem.RecoverRagdollCmd(player,args);
+			break;
+		}
+		case "give_physics":
+		{
+			AdminSystem.GivePhysicsCmd(player,args);
+			break;
+		}
 		default:
 			break;
 	}
-}
-
-// TO-DO: Write a library for handling binary and hex, because squirrel is fucking stupid :)
-::dec2bin <- function(val,bits=32)
-{
-	local b = "";
-	while(val > 0)
-	{
-		b = (val % 2) + b;
-		val = (val/2).tointeger();
-	}
-	local missing = bits-b.len();
-	for(local i=0;i<missing;i++)
-	{
-		b = "0" + b;
-	}
-
-	return b; 
-}
-
-::dec2hex <- function(val,bits=32)
-{
-	local b = "";
-	local letters = ["A","B","C","D","E","F"];
-	while(val > 0)
-	{
-		local m = (val % 16);
-		if( m >= 10 )
-		{
-			m = letters[m % 10];
-		}
-		b = m + b;
-		val = (val/16).tointeger();
-	}
-	local missing = (bits/4).tointeger()-b.len();
-	for(local i=0;i<missing;i++)
-	{
-		b = "0" + b;
-	}
-
-	return "0x"+b; 
-}
-
-::hex2rgba <- function(hexstring)
-{
-	if((typeof hexstring) != "string")
-	{
-		return;
-	}
-
-	local rgba = hexstring.slice(2,10); // aabbggrr
-	local lis = 
-	[
-		compilestring("return 0x"+rgba.slice(6,8))(),
-		compilestring("return 0x"+rgba.slice(4,6))(),
-		compilestring("return 0x"+rgba.slice(2,4))(),
-		compilestring("return 0x"+rgba.slice(0,2))()
-	];
-	return lis;
-}
-
-::dec2rgba <- function(val,bits=32)
-{
-	return hex2rgba(dec2hex(val,bits));
 }
 
 /*
@@ -3057,6 +3053,268 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	
 }
 
+/*
+ * @authors rhino
+ */
+::AdminSystem.GivePhysicsCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local rad = GetArgument(1);
+
+	if(rad == "!picker")
+	{
+		local looked = player.GetLookingEntity();
+		if(looked == null || looked.GetParent() != null)
+			return;
+		if(looked.GetClassname() == "player")
+			return;
+		if(looked.GetParent() != null)
+			return; 
+
+		local entclass = looked.GetClassname();
+
+		if(!(entclass in AdminSystem.Vars._grabAvailable) || (entclass.find("weapon_") != null))
+			return;
+		else if(entclass.find("physics") != null || entclass == "prop_car_alarm") // physics entity
+		{
+			if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics")
+			{	
+				local flags = looked.GetFlags();
+				local effects = looked.GetNetProp("m_fEffects")
+
+				if((flags% 2) == 1)	// Disable start asleep flag
+					looked.SetFlags(flags-1)
+
+				flags = looked.GetFlags();
+				
+				if((flags>>3) % 2 == 1)	// Disable motion disabled flag
+					looked.SetFlags(flags-8)
+				
+				looked.Input("EnableMotion","",0);
+				looked.SetEffects(effects);
+			}
+			looked.Input("RunScriptCode","_dropit(Entity("+looked.GetIndex()+"))",0);
+		}
+		else // non physics, try creating entity with its model
+		{
+			local new_ent = null;
+			local keyvals = 
+			{
+				classname = "prop_physics_multiplayer",
+				model = looked.GetModel(),
+				origin = looked.GetOrigin(),
+				angles = looked.GetAngles(),
+			};
+			local skin = looked.GetNetProp("m_nSkin");
+			local color = looked.GetNetProp("m_clrRender");
+			local scale = looked.GetModelScale();
+
+			new_ent = Utils.CreateEntityWithTable(keyvals);
+
+			if(new_ent != null)
+			{
+				RecreateHierarchy(looked,new_ent,{color=color,skin=skin,scale=scale,name=looked.GetName()});
+			}
+
+			return;
+		}
+	}
+	else
+	{
+		if(rad == null)
+			rad = 150;
+		else
+			rad = rad.tofloat();
+
+		local looked = player.GetLookingLocation();
+		foreach(ent in Objects.AroundRadius(looked,rad))
+		{
+			if(ent.GetParent() != null)
+				continue; 
+			if(ent.GetClassname() == "player")
+				continue;
+
+			local entclass = ent.GetClassname();
+
+			if(!(entclass in AdminSystem.Vars._grabAvailable) || (entclass.find("weapon_") != null))
+				continue;
+			else if(entclass.find("physics") != null || entclass == "prop_car_alarm") // physics entity
+			{
+				if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics")
+				{	
+					local flags = ent.GetFlags();
+					local effects = ent.GetNetProp("m_fEffects")
+
+					if((flags% 2) == 1)	// Disable start asleep flag
+						ent.SetFlags(flags-1)
+
+					flags = ent.GetFlags();
+					
+					if((flags>>3) % 2 == 1)	// Disable motion disabled flag
+						ent.SetFlags(flags-8)
+					
+					ent.Input("EnableMotion","",0);
+					ent.SetEffects(effects);
+				}
+				ent.Input("RunScriptCode","_dropit(Entity("+ent.GetIndex()+"))",0);
+			}
+			else // non physics, try creating entity with its model
+			{
+				local new_ent = null;
+				local keyvals = 
+				{
+					classname = "prop_physics_multiplayer",
+					model = ent.GetModel(),
+					origin = ent.GetOrigin(),
+					angles = ent.GetAngles(),
+				};
+				local skin = ent.GetNetProp("m_nSkin");
+				local color = ent.GetNetProp("m_clrRender");
+				local scale = ent.GetModelScale();
+
+				new_ent = Utils.CreateEntityWithTable(keyvals);
+
+				if(new_ent != null)
+				{
+					RecreateHierarchy(ent,new_ent,{color=color,skin=skin,scale=scale,name=ent.GetName()});
+				}
+			}
+		}
+	}
+}
+
+///////////////////////////
+/// Ragdoll
+/*
+ * @authors rhino
+ */ 
+::AdminSystem.GoRagdollCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local rag = Objects.AnyOfName("project_smok_ragdoll_"+player.GetIndex())
+	if(rag != null && rag.IsEntityValid())
+		return;
+
+	local ang = QAngle(0,player.GetEyeAngles().Yaw(),0);
+	local org = player.GetOrigin();
+	local mdl = player.GetModel()
+	local v = player.GetPhysicsVelocity();
+	local playerseq = player.GetNetProp("m_nSequence")
+	local playercycle = player.GetNetProp("m_flCycle")
+	
+	if(player.GetParent() != null)
+	{
+		player.Input("clearparent","",0);
+		player.Input("RunScriptCode","_dropit(Player(self.GetEntityIndex()))",0.1);
+	}
+	
+	player.SetNetProp("m_flFrozen",1);
+	player.SetMoveType(MOVETYPE_NONE);
+	player.SetRenderEffects(RENDERFX_RAGDOLL);
+	player.SetRenderMode(RENDER_NONE);
+	player.SetNetProp("m_fEffects",513)
+
+	local keyvals = 
+	{
+		spawnflags = 32772
+	}
+
+	rag = Utils.SpawnRagdoll( mdl, org, ang , keyvals);
+	rag.SetName("project_smok_ragdoll_"+player.GetIndex());
+
+	rag.SetNetProp("m_nSequence",playerseq);
+	rag.SetNetProp("m_flCycle",playercycle);
+
+	rag.Push(v);
+
+	player.Input("setparent","#"+rag.GetIndex())
+	player.Input("setparentattachment","bleedout")
+
+	player.SetNetProp("m_TimeForceExternalView", Time()+999999.0);
+	rag.SetEFlags(EFL_IN_SKYBOX)
+
+	DoEntFire("!self","RunScriptCode","AddThinkToEnt(self,"+_GetEnumString("RagWepDisable")+")",0,null,rag.GetBaseEntity())
+	
+	Printer(player,"Created ragdoll #"+rag.GetIndex());
+}
+
+::RagWepDisable <- function()
+{
+	NetProps.SetPropFloat(self,"m_stunTimer.m_duration", 999999);
+	NetProps.SetPropFloat(self,"m_stunTimer.m_timestamp", Time()+999999);
+	local ch = self.FirstMoveChild();
+	if(ch == null)
+		return;
+	
+	// TO-DO: Doesn't work
+	local w = ch.GetActiveWeapon();
+	if (w != null && w.IsValid())
+	{
+		NetProps.SetPropFloat(self,"m_flNextPrimaryAttack", 999999);
+		NetProps.SetPropFloat(self,"m_flNextSecondaryAttack", 999999);
+	}
+}
+
+::AdminSystem.RecoverRagdollCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+		
+	local rag = Objects.AnyOfName("project_smok_ragdoll_"+player.GetIndex())
+
+	if(rag == null || !rag.IsEntityValid())
+		return;
+	
+	local ragseq = rag.GetNetProp("m_nSequence")
+	local ragcycle = rag.GetNetProp("m_flCycle")
+	local v = rag.GetPhysicsVelocity();
+
+	DoEntFire("!self","clearparent","",0,null,player.GetBaseEntity())
+	local en = _GetEnumString(v.ToKVString()+"_"+rag.GetOrigin().ToKVString());
+	
+	DoEntFire("!self","RunScriptCode","RecoverRagdollPost("+en+")",0,null,player.GetBaseEntity())
+	
+	rag.SetNetProp("m_stunTimer.m_duration", 0);
+	rag.SetNetProp("m_stunTimer.m_timestamp", Time());
+
+	local w = player.GetActiveWeapon();
+	if (w != null && w.IsEntityValid())
+	{
+		player.SetNetProp("m_hActiveWeapon", -1);
+		player.GetBaseEntity().SwitchToItem(w.GetClassname());
+	}
+	rag.Input("Kill","",0.1)
+
+	player.SetNetProp("m_nSequence",ragseq);
+	player.SetNetProp("m_flCycle",ragcycle);
+	player.SetNetProp("m_flFrozen",0);
+	player.SetNetProp("m_fEffects",0)
+}
+
+::RecoverRagdollPost <- function(vec)
+{
+	local vecs = split(vec,"_")
+	local v = split(vecs[0]," ")
+	local org = split(vecs[1]," ")
+
+	v = Vector(v[0].tofloat(),v[1].tofloat(),v[2].tofloat())
+	org = Vector(org[0].tofloat(),org[1].tofloat(),org[2].tofloat())
+
+	local player = Player(self.GetEntityIndex());
+	player.SetVelocity(Vector(0,0,0))
+	player.SetMoveType(MOVETYPE_WALK);
+	player.SetRenderEffects(RENDERFX_NONE);
+	player.SetRenderMode(RENDER_NORMAL);
+
+	player.SetNetProp("m_TimeForceExternalView", Time());
+	
+	player.SetOrigin(org+Vector(0,0,5))
+	player.Push(v);
+}
 /*************************\
 * BOT SHARE/LOOT FUNCTIONS *
 \*************************/
@@ -3086,7 +3344,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 	foreach(setting in settings)
 	{
-		if ( setting != "" )
+		if ( strip(setting) != "" )
 		{
 			local code = "AdminSystem.BotParams." + Utils.StringReplace(setting, "=", "<-");
 			compilestring(code)();
@@ -4235,6 +4493,8 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	else if(Utils.CalculateDistance(player.GetOrigin(),player.GetLookingLocation())>100)
 		return;
 	
+	// TO-DO: Maybe try with parenting
+	player.SetModel(lookedent.GetModel())
 	lookedent.Kill();
 	
 	AdminSystem._CreateKeyListenerCmd(player,args);
@@ -4253,6 +4513,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	local mask = tbl.keymask;
 	local turnangle = tbl.turnpertick;
 
+	ent.SetNetProp("m_stunTimer.m_duration",0.5);
+	ent.SetNetProp("m_stunTimer.m_timestamp",Time()+0.5);
+
 	if(mask == 0)
 		return;
 	
@@ -4262,7 +4525,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	// FORWARD+BACKWARD OR NONE
 	if((mask % 2 == 1 && (mask>>1) % 2 == 1) || (mask % 2 == 0 && (mask>>1) % 2 == 0))
 	{
-		ent.Push(ent.GetPhysicsVelocity().Scale(tbl.reversescale));
 		if((mask>>4) % 2 == 1)
 			ent.SetForwardVector(pushvec);
 		return;
@@ -4277,7 +4539,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 		if((mask>>1) % 2 == 1) // BACKWARD
 		{
-			pushvec = pushvec.Scale(-1);
+			pushvec = pushvec.Scale(tbl.reversescale);
 			ent.Push(pushvec);
 		}
 		else  // FORWARD
@@ -4290,7 +4552,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		// LEFT
 		if((mask>>2) % 2 == 1)
 		{
-			ent.Push(ent.GetPhysicsVelocity().Scale(tbl.reversescale));
 			if((mask>>1) % 2 == 1) // BACKWARD LEFT
 			{
 				pushvec = pushvec.Scale(-1);
@@ -4312,7 +4573,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		// RIGHT
 		else if((mask>>3) % 2 == 1)
 		{	
-			ent.Push(ent.GetPhysicsVelocity().Scale(tbl.reversescale));
 			if((mask>>1) % 2 == 1) // BACKWARD RIGHT
 			{
 				pushvec = pushvec.Scale(-1);
@@ -4333,7 +4593,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		}
 		else if((mask>>1) % 2 == 1) // BACKWARD
 		{
-			pushvec = pushvec.Scale(-1);
+			pushvec = pushvec.Scale(tbl.reversescale);
 			ent.Push(pushvec);
 		}
 		else // FORWARD
@@ -4366,11 +4626,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	{
 		keymask = 0
 		forward = Vector(0,0,0)
-		speed = 400.0
-		reversescale = -4
-		speedscale = 2.75
+		speed = 475.0
+		reversescale = -0.12
+		speedscale = 3
 		overridefriction = 0.05
-		turnpertick = 7
+		turnpertick = 8
 		listenerid = -1
 	}
 );
@@ -4455,7 +4715,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 ::_GetEnumString <- function(str)
 {
-	local temp = ["0","1","2","3","4","5","6","7","8","9",",","="," ","_",";","\""] // "
+	local temp = ["0","1","2","3","4","5","6","7","8","9",",","="," ","-","_",";",".","\""] // "
 	local res = ""
 	local ch = ""
 	for(local i=0;i<str.len();i++)
@@ -4496,6 +4756,16 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 					ch = "sc";
 					break;
 				}
+				case ".":
+				{
+					ch = "p";
+					break;
+				}
+				case "-":
+				{
+					ch = "d";
+					break;
+				}
 				case "\"": // "
 				{
 					ch = "q";
@@ -4534,12 +4804,14 @@ enum __
 	_9 = "9"
 	_0 = "0"
 	////SPECIALS
+	_p = "."
 	_c = ","
 	_sc = ";"
 	_e = "="
 	_q = "\"" // "
 	_s = " "
 	_u = "_"
+	_d = "-"
 	////LETTERS
 	//LOWERCASE
 	a = "a"
@@ -5070,10 +5342,34 @@ enum __
 		}
 	}
 
+	local clsname = "prop_physics_multiplayer"
+	if(entmodel.find("models/survivors/") != null 
+		|| entmodel.find("models/infected/") != null 
+		|| entmodel.find("models/deadbodies/") != null)
+	{
+		clsname = "prop_ragdoll"
+	}
+	else
+	{
+		local rexp = regexp(@"\\(\w+)\.mdl");
+		local res = rexp.capture(entmodel);
+		if(res != null)
+		{
+			foreach(i,mdl in res)
+			{
+				if(entmodel.slice(mdl.begin,mdl.end) in AdminSystem.ZombieModels)
+				{
+					clsname = "prop_ragdoll"
+					break;
+				}
+
+			}
+		}
+	}
 	local keyvals = 
 	{
 		targetname = "meteorspawn"
-		classname = "prop_physics_multiplayer"
+		classname = clsname
 		model = entmodel
 		origin = ceiling
 		angles = QAngle(0,0,0)
@@ -7323,6 +7619,10 @@ function ChatTriggers::update_svcheats(player,args,text)
 	AdminSystem.Update_svcheatsCmd(player, args);
 }
 
+function ChatTriggers::prop_spawn_setting(player,args,text)
+{
+	AdminSystem.Update_prop_spawn_settingCmd(player, args);
+}
 function ChatTriggers::update_prop_spawn_setting(player,args,text)
 {
 	AdminSystem.Update_prop_spawn_settingCmd(player, args);
@@ -7633,6 +7933,10 @@ function ChatTriggers::stop_car_alarms( player, args, text )
 {
 	AdminSystem.StopCarAlarmsCmd( player, args );
 }
+function ChatTriggers::remove_fall_cams( player, args, text )
+{
+	AdminSystem.RemoveFallCamsCmd( player, args );
+}
 
 function ChatTriggers::debug_info(player,args,text)
 {
@@ -7659,6 +7963,25 @@ function ChatTriggers::wnet( player, args, text )
 function ChatTriggers::stop_wnet( player, args, text )
 {
 	AdminSystem.StopWatchNetPropCmd( player, args );
+}
+
+function ChatTriggers::flag_lookup( player, args, text )
+{
+	AdminSystem.FlagLookUpCmd( player, args );
+}
+
+function ChatTriggers::go_ragdoll( player, args, text )
+{
+	AdminSystem.GoRagdollCmd( player, args );
+}
+function ChatTriggers::recover_ragdoll( player, args, text )
+{
+	AdminSystem.RecoverRagdollCmd( player, args );
+}
+
+function ChatTriggers::give_physics( player, args, text )
+{
+	AdminSystem.GivePhysicsCmd( player, args );
 }
 
 function ChatTriggers::fire_ex( player, args, text )
@@ -9346,6 +9669,26 @@ if ( Director.GetGameMode() == "holdout" )
 /*
  * @authors rhino
  */
+::AdminSystem.RemoveFallCamsCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local objects = ::VSLib.EasyLogic.Objects.OfClassname("point_deathfall_camera");
+	if(objects != null)
+	{
+		foreach(obj in objects)
+		{	
+			obj.Input("Kill");
+		}
+
+		Printer(player,"Removed all death fall cameras");
+	}
+}
+
+/*
+ * @authors rhino
+ */
 ::AdminSystem.CleanupCmd <- function ( player, args )
 {
 	if (!AdminSystem.IsPrivileged( player ))
@@ -10997,70 +11340,9 @@ if ( Director.GetGameMode() == "holdout" )
 			// Manually type casting
 			if(pairsplit[1].find("|") != null)
 			{	
-				local str = split(pairsplit[1],"|");
-
-				// Three values, Possible position, angle, rgb value
-				if(str.len()==4)
-				{
-					if(str[0] == "ang")
-					{
-						pairsplit[1] = QAngle(str[1].tofloat(),str[2].tofloat(),str[3].tofloat());
-					}
-					else if(str[0]=="pos")
-					{
-						pairsplit[1] = Vector(str[1].tofloat(),str[2].tofloat(),str[3].tofloat());
-					}
-					else if(str[0]=="str")
-					{
-						pairsplit[1] = str[1]+" "+str[2]+" "+str[3];
-					}
-					else
-					{
-						Printer(player,CmdMessages.Ent.TypeUnknown(str[0],pairsplit[0]),"error");
-						return;
-					}
-				}
-				// Single value
-				else if(str.len()==2)
-				{
-					if(str[0] == "float")
-					{
-						pairsplit[1] = str[1].tofloat();
-					}
-					else if(str[0]=="int")
-					{
-						pairsplit[1] = str[1].tointeger();
-					}
-					else if(str[0]=="str")
-					{
-						pairsplit[1] = str[1];
-					}
-					else
-					{
-						Printer(player,CmdMessages.Ent.TypeUnknown(str[0],pairsplit[0]),"error");
-						return;
-					}
-				}
-				// string with multiple spaces
-				else
-				{
-					if(str[0]=="str")
-					{
-						pairsplit[1] = ""
-						for(local i=1;i<str.len();i++)
-							pairsplit[1] += str[i]+" ";
-						
-					}
-					else if(str.len() == 1)
-					{
-						pairsplit[1] = str[0]
-					}
-					else
-					{
-						Printer(player,CmdMessages.Ent.TypeUnknown(str[0],pairsplit[0]),"error");
-						return;
-					}
-				}
+				pairsplit[1] = CastCustomSetting(player,pairsplit);
+				if(pairsplit[1] == null)
+					return;
 			}
 			// Store to apply after spawn
 			if(pairsplit[0]=="spawnflags")
@@ -11116,6 +11398,384 @@ if ( Director.GetGameMode() == "holdout" )
 
 }
 
+::CastCustomSetting <- function(player,pairs)
+{
+	local str = split(pairs[1],"|");
+	// Three values, Possible position, angle, rgb value
+	if(str.len()==4)
+	{
+		switch(str[0])
+		{
+			case "ang":
+			{
+				return QAngle(str[1].tofloat(),str[2].tofloat(),str[3].tofloat());
+			}
+			case "pos":
+			case "vec":
+			{
+				return Vector(str[1].tofloat(),str[2].tofloat(),str[3].tofloat());
+			}
+			case "str":
+			{
+				return str[1]+" "+str[2]+" "+str[3];
+			}
+			case "flg":
+			{
+				local flags = 0;
+				for(local i=1;i<4;i++)
+				{
+					if(!(str[i] in getconsttable()))
+					{
+						printl("[FLAG-MISSING] " + str[i] + " is unknown!")
+						continue;
+					}
+					flags = flags | getconsttable()[str[i]]
+				}
+				return flags;
+			}
+			default:
+			{
+				Printer(player,CmdMessages.Ent.TypeUnknown(str[0],pairs[0]),"error");
+				return;
+			}
+		}
+	}
+	// Single value
+	else if(str.len()==2)
+	{
+		switch(str[0])
+		{
+			case "float":
+			{
+				return str[1].tofloat();
+			}
+			case "int":
+			{
+				return str[1].tointeger();
+			}
+			case "str":
+			{
+				return str[1];
+			}
+			case "flg":
+			{
+				local flags = 0;
+				if(str[1] in getconsttable())
+				{
+					flags = flags | getconsttable()[str[1]]
+				}
+				else
+				{
+					printl("[FLAG-MISSING] " + str[i] + " is unknown!")
+				}
+				return flags;
+			}
+			default:
+			{
+				Printer(player,CmdMessages.Ent.TypeUnknown(str[0],pairs[0]),"error");
+				return;
+			}
+		}
+	}
+	// string with multiple spaces
+	else
+	{
+		if(str.len() == 1)
+		{
+			return str[0];
+		}
+		else if(str[0] == "str")
+		{
+			local s = ""
+			for(local i=1;i<str.len();i++)
+				s += str[i]+" ";
+
+			return s;
+		}  
+		else if(str[0] == "flg")
+		{
+			local flags = 0;
+			for(local i=1;i<str.len();i++)
+			{
+				if(!(str[i] in getconsttable()))
+				{
+					printl("[FLAG-MISSING] " + str[i] + " is unknown!")
+					continue;
+				}
+				flags = flags | getconsttable()[str[i]]
+			}
+			return flags;
+		}
+		else
+		{
+			Printer(player,CmdMessages.Ent.TypeUnknown(str[0],pairs[0]),"error");
+			return;
+		}
+		
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::ApplyAngleSettings <- function(player,_ang,tbl)
+{
+	local flags = tbl.flags
+	local ang = QAngle(_ang.x,_ang.y,_ang.z);
+
+	local extraang = QAngle(0,0,0)
+	if(typeof tbl.val == "string")
+	{
+		local spl = split(tbl.val," ")
+		switch(spl.len())
+		{
+			case 1:
+			{
+				local v = 0
+				try
+				{
+					v = spl[0].tofloat();
+					extraang = QAngle(v,v,v);
+				}
+				catch(e)
+				{
+					printl("[Defaults-Error] Formatting of spawn_angles.val in Tables.PropSpawn is wrong, using QAngle(0,0,0) instead...")
+				}
+				break;
+			}
+			case 3:
+			{
+				try
+				{
+					extraang = QAngle(spl[0].tofloat(),spl[1].tofloat(),spl[2].tofloat())
+				}
+				catch(e)
+				{
+					printl("[Defaults-Error] Formatting of spawn_angles.val in Tables.PropSpawn is wrong, using QAngle(0,0,0) instead...")
+				}
+				break;
+			}
+			default:
+			{
+				printl("[Defaults-Error] Formatting of spawn_angles.val in Tables.PropSpawn is wrong, using QAngle(0,0,0) instead...")
+				break;
+			}
+		}
+	}
+	else if(typeof tbl.val != "QAngle")
+	{
+		printl("[Defaults-Error] Formatting of spawn_angles in Tables.PropSpawn is wrong, using QAngle(0,0,0) instead...")
+	}
+	else
+	{
+		extraang = tbl.val;
+	}
+
+	if(flags == ANGLE_NO_ADDITION)
+		return ang;
+
+	function HasFlag(flags,flag)
+	{
+		return (flags & flag) != 0
+	}
+	function GetRandAngle(min,max)
+	{
+		if(max == 0)
+		{
+			return QAngle(-(rand() % (min - 1)),-(rand() % (min - 1)),-(rand() % (min - 1)))
+		}
+		return QAngle(min + (rand() % (max - min + 1)),min + (rand() % (max - min + 1)),min + (rand() % (max - min + 1)))
+	}
+
+	/// Assignments
+	if(HasFlag(flags,ANGLE_USE_VAL))
+		ang = extraang;
+	if(HasFlag(flags,ANGLE_EYES_EXACT))
+		ang = player.GetEyeAngles();
+	if(HasFlag(flags,ANGLE_EYES_PITCH))
+		ang.x = player.GetEyeAngles().x;
+	if(HasFlag(flags,ANGLE_EYES_YAW))
+		ang.y = player.GetEyeAngles().y;
+	// Random
+	if(HasFlag(flags,ANGLE_RANDOM_0_90))
+		ang = GetRandAngle(0,90);
+	if(HasFlag(flags,ANGLE_RANDOM_90_180))
+		ang = GetRandAngle(90,180);
+	if(HasFlag(flags,ANGLE_RANDOM_0_180))
+		ang = GetRandAngle(0,180);
+	if(HasFlag(flags,ANGLE_RANDOM_M90_0))
+		ang = GetRandAngle(-90,0);
+	if(HasFlag(flags,ANGLE_RANDOM_M180_M90))
+		ang = GetRandAngle(-180,-90);
+	if(HasFlag(flags,ANGLE_RANDOM_M180_0))
+		ang = GetRandAngle(-180,0);
+	if(HasFlag(flags,ANGLE_RANDOM_M15_15))
+		ang = GetRandAngle(-15,15);
+	if(HasFlag(flags,ANGLE_RANDOM_M30_30))
+		ang = GetRandAngle(-30,30);
+	if(HasFlag(flags,ANGLE_RANDOM_M60_60))
+		ang = GetRandAngle(-60,60);
+	if(HasFlag(flags,ANGLE_RANDOM_M90_90))
+		ang = GetRandAngle(-90,90);
+	if(HasFlag(flags,ANGLE_RANDOM_GIVEN))
+		ang = GetRandAngle(tbl.min,tbl.max);
+
+	/// Additions
+	if(HasFlag(flags,ANGLE_ADD_VAL))
+		ang += extraang;
+	// Pitch
+	if(HasFlag(flags,ANGLE_PULL_UP))
+		ang += QAngle(-90,0,0);
+	if(HasFlag(flags,ANGLE_PULL_AROUND))
+		ang += QAngle(180,0,0);
+	if(HasFlag(flags,ANGLE_PULL_DOWN))
+		ang += QAngle(90,0,0);
+	// Yaw
+	if(HasFlag(flags,ANGLE_TURN_RIGHT))
+		ang += QAngle(0,-90,0);
+	if(HasFlag(flags,ANGLE_TURN_AROUND))
+		ang += QAngle(0,180,0);
+	if(HasFlag(flags,ANGLE_TURN_LEFT))
+		ang += QAngle(0,90,0);
+	// Roll
+	if(HasFlag(flags,ANGLE_ROLLOVER_RIGHT))
+		ang += QAngle(0,0,-90);
+	if(HasFlag(flags,ANGLE_ROLLOVER))
+		ang += QAngle(0,0,180);
+	if(HasFlag(flags,ANGLE_ROLLOVER_LEFT))
+		ang += QAngle(0,0,90);
+	// Random
+	if(HasFlag(flags,ANGLE_ADD_RANDOM_0_45))
+		ang += GetRandAngle(0,45);
+	if(HasFlag(flags,ANGLE_ADD_RANDOM_45_90))
+		ang += GetRandAngle(45,90);
+	if(HasFlag(flags,ANGLE_ADD_RANDOM_M45_0))
+		ang += GetRandAngle(-45,0);
+	if(HasFlag(flags,ANGLE_ADD_RANDOM_M90_M45))
+		ang += GetRandAngle(-90,-45);
+	if(HasFlag(flags,ANGLE_ADD_RANDOM_M15_15))
+		ang += GetRandAngle(-15,15);
+	if(HasFlag(flags,ANGLE_ADD_RANDOM_M45_45))
+		ang += GetRandAngle(-45,45);
+	if(HasFlag(flags,ANGLE_ADD_RANDOM_GIVEN))
+		ang += GetRandAngle(tbl.min,tbl.max);
+	
+	return ang;
+}
+
+/*
+ * @authors rhino
+ */
+::ApplyHeightSettings <- function(player,_vec,tbl)
+{
+	local flags = tbl.flags
+	local vec = Vector(_vec.x,_vec.y,_vec.z);
+	
+	if(flags == HEIGHT_NO_ADDITION)
+		return vec;
+
+	function HasFlag(flags,flag)
+	{
+		return (flags & flag) != 0
+	}
+	function GetRandHeight(min,max)
+	{
+		if(max == 0)
+		{
+			return -(rand() % (min - 1))
+		}
+		return min + (rand() % (max - min + 1))
+	}
+
+	/// Assignments
+	if(HasFlag(flags,HEIGHT_EYELEVEL))
+		vec.z = player.GetEyePosition().z;
+	if(HasFlag(flags,HEIGHT_USE_VAL))
+		vec.z = tbl.val;
+	// Random
+	if(HasFlag(flags,HEIGHT_RANDOM_0_10))
+		vec.z = GetRandHeight(0,10);
+	if(HasFlag(flags,HEIGHT_RANDOM_0_50))
+		vec.z = GetRandHeight(0,50);
+	if(HasFlag(flags,HEIGHT_RANDOM_0_100))
+		vec.z = GetRandHeight(0,100);
+	if(HasFlag(flags,HEIGHT_RANDOM_0_500))
+		vec.z = GetRandHeight(0,500);
+	if(HasFlag(flags,HEIGHT_RANDOM_M10_0))
+		vec.z = GetRandHeight(-10,0);
+	if(HasFlag(flags,HEIGHT_RANDOM_M50_0))
+		vec.z = GetRandHeight(-50,0);
+	if(HasFlag(flags,HEIGHT_RANDOM_M100_0))
+		vec.z = GetRandHeight(-100,0);
+	if(HasFlag(flags,HEIGHT_RANDOM_M500_0))
+		vec.z = GetRandHeight(-500,0);
+	if(HasFlag(flags,HEIGHT_RANDOM_M10_10))
+		vec.z = GetRandHeight(-10,10);
+	if(HasFlag(flags,HEIGHT_RANDOM_M50_50))
+		vec.z = GetRandHeight(-50,50);
+	if(HasFlag(flags,HEIGHT_RANDOM_M100_100))
+		vec.z = GetRandHeight(-100,100);
+	if(HasFlag(flags,HEIGHT_RANDOM_M250_250))
+		vec.z = GetRandHeight(-250,250);
+	if(HasFlag(flags,HEIGHT_RANDOM_M500_500))
+		vec.z = GetRandHeight(-500,500);
+	if(HasFlag(flags,HEIGHT_RANDOM_GIVEN))
+		vec.z = GetRandHeight(tbl.min,tbl.max);
+	
+	/// Additions
+	if(HasFlag(flags,HEIGHT_ADD_VAL))
+		vec.z += tbl.val;
+	//Random
+	if(HasFlag(flags,HEIGHT_ADD_RANDOM_0_10))
+		vec.z += GetRandHeight(0,10);
+	if(HasFlag(flags,HEIGHT_ADD_RANDOM_0_50))
+		vec.z += GetRandHeight(0,50);
+	if(HasFlag(flags,HEIGHT_ADD_RANDOM_0_100))
+		vec.z += GetRandHeight(0,100);
+	if(HasFlag(flags,HEIGHT_ADD_RANDOM_0_500))
+		vec.z += GetRandHeight(0,500);
+	if(HasFlag(flags,HEIGHT_ADD_RANDOM_M10_0))
+		vec.z += GetRandHeight(-10,0);
+	if(HasFlag(flags,HEIGHT_ADD_RANDOM_M50_0))
+		vec.z += GetRandHeight(-50,0);
+	if(HasFlag(flags,HEIGHT_ADD_RANDOM_M100_0))
+		vec.z += GetRandHeight(-100,0);
+	if(HasFlag(flags,HEIGHT_ADD_RANDOM_M500_0))
+		vec.z += GetRandHeight(-500,0);
+	if(HasFlag(flags,HEIGHT_ADD_RANDOM_M10_10))
+		vec.z += GetRandHeight(-10,10);
+	if(HasFlag(flags,HEIGHT_ADD_RANDOM_M50_50))
+		vec.z += GetRandHeight(-50,50);
+	if(HasFlag(flags,HEIGHT_ADD_RANDOM_M100_100))
+		vec.z += GetRandHeight(-100,100);
+	if(HasFlag(flags,HEIGHT_ADD_RANDOM_M250_250))
+		vec.z += GetRandHeight(-250,250);
+	if(HasFlag(flags,HEIGHT_ADD_RANDOM_GIVEN))
+		vec.z += GetRandHeight(tbl.min,tbl.max);
+
+	/* TO-DO
+	if((flags & HEIGHT_TOP_TOUCH) != 0)
+		vec = vec
+	if((flags & HEIGHT_BOTTOM_TOUCH) != 0)
+		vec = vec
+	*/
+
+	return vec;
+}
+
+/*
+ * @authors rhino
+ */
+::ApplyPropSettingsToTable <- function(player,typename,settings)
+{
+	local name = player.GetCharacterNameLower();
+	local settingstable = AdminSystem.Vars._prop_spawn_settings[name][typename];
+
+	settings.origin = ApplyHeightSettings(player,settings.origin,settingstable["spawn_height"])
+	settings.angles = ApplyAngleSettings(player,settings.angles,settingstable["spawn_angles"])
+
+}
+
 /*
  * @authors rhino
  */
@@ -11124,7 +11784,36 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	local Entity = GetArgument(1);
+	function PostSettingsManualChanges(raise,yaw,tbl)
+	{
+		if(raise != null)
+		{
+			try
+			{
+				raise = raise.tofloat();
+			}
+			catch(e)
+			{
+				printl("<"+(typeof raise)+"> type "+raise+" couldnt be parsed as float.");
+				raise = 0
+			}
+			tbl.origin = tbl.origin + Vector(0,0,raise);
+		}
+		if(yaw != null)
+		{
+			try
+			{
+				yaw = yaw.tofloat();
+			}
+			catch(e)
+			{
+				printl("<"+(typeof yaw)+"> type "+yaw+" couldnt be parsed as float.");
+				yaw = 0
+			}
+			tbl.angles = tbl.angles + QAngle(0,yaw,0);
+		}
+	}
+	local typename = GetArgument(1);
 	local MDL = GetArgument(2);
 	if(MDL == "!random")
 		MDL = RandomPick(::ModelPaths.all)
@@ -11133,61 +11822,34 @@ if ( Director.GetGameMode() == "holdout" )
 	local yaw = GetArgument(4);
 	local massScale = GetArgument(5);
 
-	local EyePosition = player.GetLookingLocation();
-	local EyeAngles = player.GetEyeAngles();
-	local GroundPosition = QAngle(0,0,0);
+	local origin = player.GetLookingLocation();
+	local angles = QAngle(0,0,0);
 
 	local name = player.GetCharacterNameLower();
 	
-	local propspawnsettings = AdminSystem.Vars._prop_spawn_settings[name];
-
-	GroundPosition.y = EyeAngles.y;
-
 	local createdent = null;
 
-	if(yaw)
-	{
-		try{yaw = yaw.tofloat();}
-		catch(e){printl((typeof yaw)+" couldnt be parsed as float.");return;}
-		GroundPosition = GroundPosition + QAngle(0,yaw,0);
-	}
-
-	if ( Entity == "physics" )
+	if ( typename == "physics" )
 	{	
 		// +++++++++++++++ SETTINGS START 
-		local settings = propspawnsettings["physics"];
-		// Spawn height
-		local spawn_height = settings["spawn_height"];
-		if (spawn_height == "top_touch")
+		local settings = 
 		{
-			// TO DO
+			origin = origin,
+			angles = angles,
 		}
-		else if (spawn_height == "bottom_touch")
-		{
-			// TO DO
-		}
-		else
-		{	
-			EyePosition.z += spawn_height.tofloat();
-		}
+		ApplyPropSettingsToTable(player,"physics",settings);
+		PostSettingsManualChanges(raise,yaw,settings);
+
+		origin = settings.origin
+		angles = settings.angles
 		// +++++++++++++++ SETTINGS END 
 
-		if ( raise != null )
-		{
-			EyePosition.z += raise.tofloat();
-			createdent = Utils.SpawnPhysicsProp( MDL, EyePosition, GroundPosition );
-		}
-		else
-		{
-			EyePosition.z += 0.5;
-		}
-		
 		if(MDL.find("&") != null)
 		{
 			createdent = []
 			foreach(mdl in split(MDL,"&"))
 			{
-				local ent = Utils.SpawnPhysicsProp( Utils.CleanColoredString(mdl), EyePosition, GroundPosition );
+				local ent = Utils.SpawnPhysicsProp( Utils.CleanColoredString(mdl), origin, angles );
 				if(ent != null && ent.IsEntityValid())
 				{
 					createdent.append(ent);
@@ -11195,7 +11857,7 @@ if ( Director.GetGameMode() == "holdout" )
 				}
 				else
 				{
-					ent = Utils.SpawnDynamicProp( Utils.CleanColoredString(mdl), EyePosition, GroundPosition );
+					ent = Utils.SpawnDynamicProp( Utils.CleanColoredString(mdl), origin, angles );
 					if(ent != null && ent.IsEntityValid())
 					{
 						createdent.append(ent);
@@ -11206,50 +11868,44 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		else
 		{
-			createdent = Utils.SpawnPhysicsProp( Utils.CleanColoredString(MDL), EyePosition, GroundPosition );
+			createdent = Utils.SpawnPhysicsProp( Utils.CleanColoredString(MDL), origin, angles );
 		}
 	}
-	else if ( Entity == "physicsM" )
+	else if ( typename == "physicsM" )
 	{
 		// +++++++++++++++ SETTINGS START 
-		local settings = propspawnsettings["physics"];
-		// Spawn height
-		local spawn_height = settings["spawn_height"];
-		if (spawn_height == "top_touch")
+		local settings = 
 		{
-			// TO DO
+			origin = origin,
+			angles = angles,
 		}
-		else if (spawn_height == "bottom_touch")
-		{
-			// TO DO
-		}
-		else
-		{	
-			EyePosition.z += spawn_height.tofloat();
-		}
-		// +++++++++++++++ SETTINGS END
-
-		if ( raise != null )
-		{
-			EyePosition.z += raise.tofloat();
-		}
-		else
-		{
-			EyePosition.z += 0.5;
-		}
+		ApplyPropSettingsToTable(player,"physics",settings);
+		PostSettingsManualChanges(raise,yaw,settings);
 
 		if(massScale)
 		{
-			try{massScale = massScale.tofloat();}
-			catch(e){printl((typeof massScale)+" couldnt be parsed as float.");return;}
+			try
+			{
+				massScale = massScale.tofloat();
+			}
+			catch(e)
+			{
+				printl("<"+(typeof massScale)+"> type "+massScale+" couldnt be parsed as float.");
+				massScale = 1;
+			}
 		}
+
+		origin = settings.origin
+		angles = settings.angles
+		// +++++++++++++++ SETTINGS END
+
 
 		if(MDL.find("&") != null)
 		{
 			createdent = []
 			foreach(mdl in split(MDL,"&"))
 			{
-				local ent = Utils.SpawnPhysicsMProp( Utils.CleanColoredString(mdl), EyePosition, GroundPosition, {massScale = massScale} );
+				local ent = Utils.SpawnPhysicsMProp( Utils.CleanColoredString(mdl), origin, angles, {massScale = massScale} );
 				if(ent != null && ent.IsEntityValid())
 				{
 					createdent.append(ent);
@@ -11257,7 +11913,7 @@ if ( Director.GetGameMode() == "holdout" )
 				}
 				else
 				{
-					ent = Utils.SpawnDynamicProp( Utils.CleanColoredString(mdl), EyePosition, GroundPosition );
+					ent = Utils.SpawnDynamicProp( Utils.CleanColoredString(mdl), origin, angles );
 					if(ent != null && ent.IsEntityValid())
 					{
 						createdent.append(ent);
@@ -11268,116 +11924,100 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		else
 		{
-			createdent = Utils.SpawnPhysicsMProp( Utils.CleanColoredString(MDL), EyePosition, GroundPosition, {massScale = massScale} );
+			createdent = Utils.SpawnPhysicsMProp( Utils.CleanColoredString(MDL), origin, angles, {massScale = massScale} );
 		}
 	}
-	else if ( Entity == "ragdoll" )
+	else if ( typename == "ragdoll" )
 	{
 		// +++++++++++++++ SETTINGS START 
-		local settings = propspawnsettings["ragdoll"];
-		// Spawn height
-		local spawn_height = settings["spawn_height"];
-		if (spawn_height == "top_touch")
+		local settings = 
 		{
-			// TO DO
+			origin = origin,
+			angles = angles,
 		}
-		else if (spawn_height == "bottom_touch")
-		{
-			// TO DO
-		}
-		else
-		{	
-			EyePosition.z += spawn_height.tofloat();
-		}
+		ApplyPropSettingsToTable(player,"ragdoll",settings);
+		PostSettingsManualChanges(raise,yaw,settings);
+
+		origin = settings.origin
+		angles = settings.angles
 		// +++++++++++++++ SETTINGS END 
 
-		EyePosition.z += 2;
-		GroundPosition.y += 180;
 		if ( MDL == "nick" )
-			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_gambler.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_gambler.mdl", origin, angles );
 		else if ( MDL == "rochelle" )
-			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_producer.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_producer.mdl", origin, angles );
 		else if ( MDL == "coach" )
-			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_coach.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_coach.mdl", origin, angles );
 		else if ( MDL == "ellis" )
-			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_mechanic.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_mechanic.mdl", origin, angles );
 		else if ( MDL == "bill" )
-			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_namvet.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_namvet.mdl", origin, angles );
 		else if ( MDL == "zoey" )
-			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_teenangst.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_teenangst.mdl", origin, angles );
 		else if ( MDL == "francis" )
-			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_biker.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_biker.mdl", origin, angles );
 		else if ( MDL == "louis" )
-			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_manager.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_manager.mdl", origin, angles );
 		else if ( MDL == "smoker" )
-			createdent = Utils.SpawnRagdoll( "models/infected/smoker.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/smoker.mdl", origin, angles );
 		else if ( MDL == "boomer" )
-			createdent = Utils.SpawnRagdoll( "models/infected/boomer.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/boomer.mdl", origin, angles );
 		else if ( MDL == "boomette" )
-			createdent = Utils.SpawnRagdoll( "models/infected/boomette.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/boomette.mdl", origin, angles );
 		else if ( MDL == "hunter" )
-			createdent = Utils.SpawnRagdoll( "models/infected/hunter.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/hunter.mdl", origin, angles );
 		else if ( MDL == "spitter" )
-			createdent = Utils.SpawnRagdoll( "models/infected/spitter.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/spitter.mdl", origin, angles );
 		else if ( MDL == "jockey" )
-			createdent = Utils.SpawnRagdoll( "models/infected/jockey.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/jockey.mdl", origin, angles );
 		else if ( MDL == "charger" )
-			createdent = Utils.SpawnRagdoll( "models/infected/charger.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/charger.mdl", origin, angles );
 		else if ( MDL == "witch" )
-			createdent = Utils.SpawnRagdoll( "models/infected/witch.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/witch.mdl", origin, angles );
 		else if ( MDL == "witch_bride" )
-			createdent = Utils.SpawnRagdoll( "models/infected/witch_bride.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/witch_bride.mdl", origin, angles );
 		else if ( MDL == "tank" )
-			createdent = Utils.SpawnRagdoll( "models/infected/hulk.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/hulk.mdl", origin, angles );
 		else if ( MDL == "tank_dlc3" )
-			createdent = Utils.SpawnRagdoll( "models/infected/hulk_dlc3.mdl", EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( "models/infected/hulk_dlc3.mdl", origin, angles );
 		else
-			createdent = Utils.SpawnRagdoll( MDL, EyePosition, GroundPosition );
+			createdent = Utils.SpawnRagdoll( MDL, origin, angles );
 	}
 	else
 	{	
 		// +++++++++++++++ SETTINGS START 
-		local settings = propspawnsettings["dynamic"];
-		// Spawn height
-		local spawn_height = settings["spawn_height"];
-		if (spawn_height == "top_touch")
+		local settings = 
 		{
-			// TO DO
+			origin = origin,
+			angles = angles,
 		}
-		else if (spawn_height == "bottom_touch")
-		{
-			// TO DO
-		}
-		else
-		{	
-			EyePosition.z += spawn_height.tofloat();
-		}
+		ApplyPropSettingsToTable(player,"dynamic",settings);
+		PostSettingsManualChanges(raise,yaw,settings);
+
+		origin = settings.origin
+		angles = settings.angles
 		// +++++++++++++++ SETTINGS END 
 		
-		if ( raise )
-		{
-			EyePosition.z += raise.tofloat();
-		}
-	
 		if(MDL.find("&") != null)
 		{
 			createdent = []
 			foreach(mdl in split(MDL,"&"))
 			{
-				local ent = Utils.SpawnDynamicProp( Utils.CleanColoredString(mdl), EyePosition, GroundPosition );
+				local ent = Utils.SpawnDynamicProp( Utils.CleanColoredString(mdl), origin, angles );
 				if(ent != null && ent.IsEntityValid())
 					createdent.append(ent);
 			}
 		}
 		else
 		{
-			createdent = Utils.SpawnDynamicProp( Utils.CleanColoredString(MDL), EyePosition, GroundPosition );
+			createdent = Utils.SpawnDynamicProp( Utils.CleanColoredString(MDL), origin, angles );
 		}
 	}
 
 	if(createdent == null || createdent == [])
 	{
-		Messages.ThrowPlayer(player,CmdMessages.Prop.Failed(Entity));return;
+		Messages.ThrowPlayer(player,CmdMessages.Prop.Failed(typename));
+		return;
 	}
 
 	if(typeof createdent == "array")
@@ -11387,16 +12027,16 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			e.Input("setparent","#"+parentent.GetIndex(),0);
 		}
-		if(Entity == "physicsM" || Entity == "physics")
+		if(typename == "physicsM" || typename == "physics")
 		{
 			parentent.SetMoveType(MOVETYPE_VPHYSICS);
 		}
 
-		Printer(player,CmdMessages.Prop.SuccessParented(Entity,createdent));
+		Printer(player,CmdMessages.Prop.SuccessParented(typename,createdent));
 	}
 	else
 	{
-		Printer(player,CmdMessages.Prop.Success(Entity,createdent));
+		Printer(player,CmdMessages.Prop.Success(typename,createdent));
 	}
 }
 
@@ -11404,7 +12044,7 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	local name = player.GetCharacterNameLower();
 	local DoorModel = GetArgument(1);
-	local EyePosition = player.GetLookingLocation();
+	local origin = player.GetLookingLocation();
 	local EyeAngles = player.GetEyeAngles();
 	local GroundPosition = QAngle(0,0,0);
 	local ent = null;
@@ -11425,16 +12065,16 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 
 	if ( !DoorModel )
-		ent = Utils.SpawnDoor("models/props_downtown/door_interior_112_01.mdl", EyePosition, GroundPosition);
+		ent = Utils.SpawnDoor("models/props_downtown/door_interior_112_01.mdl", origin, GroundPosition);
 	else
 	{
-		EyePosition.z += raise;
+		origin.z += raise;
 		
 		if(DoorModel.find("&") != null)
 		{
 			ent = []
 			local mdls = split(DoorModel,"&");
-			local d = Utils.SpawnDoor(Utils.CleanColoredString(mdls[0]), EyePosition, GroundPosition);
+			local d = Utils.SpawnDoor(Utils.CleanColoredString(mdls[0]), origin, GroundPosition);
 
 			if(d != null && d.IsEntityValid())
 				ent.append(d);
@@ -11446,7 +12086,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 			foreach(mdl in mdls.slice(1,mdls.len()))
 			{
-				d = Utils.SpawnDynamicProp(Utils.CleanColoredString(mdl), EyePosition, GroundPosition);
+				d = Utils.SpawnDynamicProp(Utils.CleanColoredString(mdl), origin, GroundPosition);
 				if(d != null && d.IsEntityValid())
 					ent.append(d);
 			}
@@ -11454,9 +12094,9 @@ if ( Director.GetGameMode() == "holdout" )
 		else
 		{
 			if ( DoorModel == "saferoom" || DoorModel == "checkpoint" )
-				ent = Utils.SpawnDoor("models/props_doors/checkpoint_door_02.mdl", EyePosition, GroundPosition);
+				ent = Utils.SpawnDoor("models/props_doors/checkpoint_door_02.mdl", origin, GroundPosition);
 			else
-				ent = Utils.SpawnDoor(Utils.CleanColoredString(DoorModel), EyePosition, GroundPosition);
+				ent = Utils.SpawnDoor(Utils.CleanColoredString(DoorModel), origin, GroundPosition);
 		}
 	}
 	
@@ -12008,6 +12648,11 @@ if ( Director.GetGameMode() == "holdout" )
 			else if (Entity.GetClassname() == "player" && Action == "becomeragdoll")
 			{
 				printl(player.GetCharacterNameLower()+"->Ignore attempt to make player ragdoll:"+Entity.GetName());
+				return;
+			}
+			else if(Entity.GetClassname() == "prop_ragdoll" && Entity.GetName().find("project_smok_ragdoll_") != null)
+			{
+				printl(player.GetCharacterNameLower()+"->Ignore attempt to kill player ragdoll:"+Entity.GetName());
 				return;
 			}
 			else
@@ -14888,18 +15533,18 @@ if ( Director.GetGameMode() == "holdout" )
 	local objtable = VSLib.EasyLogic.Objects.AroundRadius(aimed,radius);
 	if(objtable == null)
 	{
-		Printer(player,"No entities within radius of "+radius+" around "+aimed.ToKVString());
+		Printer(player,CmdMessages.Debug.EntsAroundNone(radius,aimed.ToKVString()));
 	}
 	else
 	{
-		local str = "Entity " + "\x03" + "#" + "\x01" + " and " + "\x05" + "class" + "\x01" + " within " + "\x04" + radius + " units \x01" + "\n";
+		local str = CmdMessages.Debug.EntsAroundStart(radius);
 		foreach(obj in objtable)
 		{
 			if(!obj.IsEntityValid())
 			{
 				continue;
 			}
-			str += "\x03" + "#" + obj.GetIndex() + "\x01" + ", " + "\x05" + obj.GetClassname() + (obj.GetParent() == null ? "" : ", "+"\x04"+"Parented!") +"\x01" + "\n"
+			str += CmdMessages.Debug.EntsAroundValid(obj);
 		}
 
 		Printer(player,str);
@@ -14908,6 +15553,8 @@ if ( Director.GetGameMode() == "holdout" )
 
 /*
  * @authors rhino
+ * wnet {netprop} {rate} {target}
+ * wnet &{handlename}&{max_depth} {rate} {target}
  */
 ::AdminSystem.WatchNetPropCmd <- function(player,args)
 {
@@ -14919,7 +15566,7 @@ if ( Director.GetGameMode() == "holdout" )
 						: player.GetLookingEntity();
 	if(entlooked == null)
 	{	
-		Printer(player,"No entity to watch")
+		Printer(player,CmdMessages.Debug.WatchNoEntity())
 		return;
 	}
 
@@ -14928,7 +15575,7 @@ if ( Director.GetGameMode() == "holdout" )
 		entlooked = Entity(entlooked)
 		if(entlooked == null || !entlooked.IsEntityValid())
 		{
-			Printer(player,"No entity to watch")
+			Printer(player,CmdMessages.Debug.WatchNoEntity())
 			return;
 		}
 	}
@@ -14939,26 +15586,92 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 	}
 	
-	if(!entlooked.HasNetProp(netprop))
-	{
-		Printer(player,"Netprop "+"\x04"+netprop+"\x01"+" doesn't exist for " + "\x03" +"#"+entlooked.GetIndex()+"\x01"+", "+"\x03"+entlooked.GetClassname());
-		return;
-	}
-
 	local checksec = GetArgument(2) == null 
 						? 1 
 						: GetArgument(2).tofloat();
 					
 	if(checksec < 0.1)
 	{
-		Printer(player,"Watch rate too high, minimum interval length is 0.1 seconds!");
+		Printer(player,CmdMessages.Debug.WatchIntervalFailure());
 		return;
 	}	
 
-	local lastval = entlooked.GetNetProp(netprop);
-	Printer(player,"\x03"+"#"+entlooked.GetIndex()+"\x01"+" "+ netprop + " -> "+ lastval);
+	// Script handle name in the table
+	if(netprop[0].tochar() == "&")
+	{
+		local handlename = null
+		local depth = null
+		
+		netprop = split(netprop,"&")
+		if(netprop.len() != 2)
+		{
+			handlename = netprop[0]
+			depth = 99
+		}
+		else
+		{
+			handlename = netprop[0]
+			depth = netprop[1].tointeger()
+		}
 
-	::VSLib.Timers.AddTimerByName(Constants.TimerNames.WatchNetProp+netprop+"_"+entlooked.GetIndex(),checksec,false,WatchNetPropMain,{player=player,checksec=checksec,player=player,ent=entlooked,netprop=netprop,lastval=lastval})
+		if(!(handlename in ::NetPropTables))
+		{
+			Printer(player,CmdMessages.Debug.WatchUnknownHandle(handlename))
+			return;
+		}
+
+		foreach(member,tbl in ::NetPropTables[handlename])
+		{
+			if(tbl.depth > depth)
+				continue;
+			
+			if(!entlooked.HasNetProp(member))
+			{
+				Printer(player,CmdMessages.Debug.WatchWrongTableEntry(member))
+			}
+			else
+			{
+				local lastval = entlooked.GetNetProp(member);
+				local argtable =
+				{
+					handlename=handlename
+					player=player,
+					checksec=checksec,
+					ent=entlooked,
+					netprop=member,
+					lastval=lastval,
+					timername=Constants.TimerNames.WatchNetPropScriptHandle,
+					timersep = ">"
+				}
+				Printer(player,CmdMessages.Debug.WatchCurrentValue(entlooked.GetIndex(),handlename,member,lastval));
+
+				::VSLib.Timers.AddTimerByName(Constants.TimerNames.WatchNetPropScriptHandle+member+">"+entlooked.GetIndex(),checksec,false,WatchNetPropMain,argtable)
+			}
+		}
+		return;
+	}
+
+	if(!entlooked.HasNetProp(netprop))
+	{
+		Printer(player,CmdMessages.Debug.WatchDoesntHaveNetProp(netprop,entlooked.GetIndex(),entlooked.GetClassname()));
+		return;
+	}
+
+	local lastval = entlooked.GetNetProp(netprop);
+	local argtable =
+	{
+		handlename=""
+		player = player,
+		checksec = checksec,
+		ent = entlooked,
+		netprop = netprop,
+		lastval = lastval,
+		timername = Constants.TimerNames.WatchNetProp,
+		timersep = "_"
+	}
+	Printer(player,CmdMessages.Debug.WatchCurrentValue(entlooked.GetIndex(),"",netprop,lastval));
+
+	::VSLib.Timers.AddTimerByName(Constants.TimerNames.WatchNetProp+netprop+"_"+entlooked.GetIndex(),checksec,true,WatchNetPropMain,argtable)
 }
 
 ::WatchNetPropMain <- function(args)
@@ -14972,13 +15685,101 @@ if ( Director.GetGameMode() == "holdout" )
 	local ind = args.ent.GetIndex();
 
 	local currentval = args.ent.GetNetProp(args.netprop);
-	if(currentval != args.lastval)
+
+	local changed = false;
+	switch(typeof currentval)
 	{
-		Printer(args.player,"\x03"+"#"+ind+"\x01"+" "+ args.netprop + " -> "+ currentval);
-		args.lastval = currentval;
+		case "string":
+		case "float":
+		case "integer":
+		case "bool":
+			{
+				if(currentval != args.lastval)
+				{
+					changed = true;
+					Printer(args.player,CmdMessages.Debug.WatchCurrentValue(ind,args.handlename,args.netprop,currentval));
+					args.lastval = currentval;
+				}
+				break;
+			}
+		case "QAngle":
+		case "Vector":
+			{
+				if((currentval-args.lastval).Length() >= 0.0001)
+				{
+					changed = true;
+					Printer(args.player,CmdMessages.Debug.WatchCurrentValue(ind,args.handlename,args.netprop,currentval.ToKVString()));
+					args.lastval = currentval;
+				}
+				break;
+			}
+		case "array":
+			{
+				if(currentval == null || currentval.len() != args.lastval.len())
+				{
+					changed = true;
+					Printer(args.player,CmdMessages.Debug.WatchCurrentValue(ind,args.handlename,args.netprop,currentval));
+					args.lastval = currentval;
+				}
+				else
+				{
+					for(local i=0;i<currentval.len();i++)
+					{
+						if(currentval[i] != args.lastval[i])
+						{
+							changed = true;
+							Printer(args.player,CmdMessages.Debug.WatchCurrentValue(ind,args.handlename,args.netprop,currentval));
+							args.lastval = currentval;
+							break;
+						}
+					}
+				}
+				break;
+			}
+		default:
+			{
+				if(currentval != args.lastval)
+				{
+					changed = true;
+					Printer(args.player,CmdMessages.Debug.WatchCurrentValue(ind,args.handlename,args.netprop,currentval));
+					args.lastval = currentval;
+				}
+				break;
+			}
+	}
+	if(changed)
+	{
+		local timername = args.timername+args.netprop+args.timersep+ind;
+		if(timername in ::VSLib.Timers.TimersID)
+		{
+			::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[timername]);
+			delete ::VSLib.Timers.TimersID[timername];
+
+			::VSLib.Timers.AddTimerByName(timername,args.checksec,true,WatchNetPropMain,args)
+		}
 	}
 
-	::VSLib.Timers.AddTimerByName(Constants.TimerNames.WatchNetProp+args.netprop+"_"+ind,args.checksec,false,WatchNetPropMain,args)
+}
+
+::TryRemoveWNetTimers <- function(args)
+{
+	local ind = args.entlooked.GetIndex();
+	local l = Constants.TimerNames.WatchNetPropScriptHandle.len()
+	foreach(timername,i in ::VSLib.Timers.TimersID)
+	{
+		if(timername.find(Constants.TimerNames.WatchNetPropScriptHandle) != null 
+			&& timername.find(">") != null
+			&& split(timername,">")[1].tointeger() == ind)
+		{
+			::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[timername]);
+			delete ::VSLib.Timers.TimersID[timername];
+
+			local netpropname = split(timername,">")[0]
+			netpropname = netpropname.slice(l,netpropname.len())
+			
+			Printer(args.player,CmdMessages.Debug.WatchRemove(ind,netpropname))
+		}
+	}
 }
 
 /*
@@ -14994,7 +15795,7 @@ if ( Director.GetGameMode() == "holdout" )
 						: player.GetLookingEntity();
 	if(entlooked == null)
 	{	
-		Printer(player,"No entity to watch")
+		Printer(player,CmdMessages.Debug.WatchNoEntity())
 		return;
 	}
 
@@ -15003,7 +15804,7 @@ if ( Director.GetGameMode() == "holdout" )
 		entlooked = Entity(entlooked)
 		if(entlooked == null || !entlooked.IsEntityValid())
 		{
-			Printer(player,"No entity to watch")
+			Printer(player,CmdMessages.Debug.WatchNoEntity())
 			return;
 		}
 	}
@@ -15013,11 +15814,36 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		return;
 	}
-	
-	if(!entlooked.HasNetProp(netprop))
+
+	if(netprop.find("&") != null)
 	{
-		Printer(player,"Netprop "+"\x04"+netprop+"\x01"+" doesn't exist for " + "\x03" +"#"+entlooked.GetIndex()+"\x01"+", "+"\x03"+entlooked.GetClassname());
+		local handlename = null
+		
+		netprop = split(netprop,"&")
+		handlename = netprop[0]
+
+		if(!(handlename in ::NetPropTables))
+		{
+			Printer(player,CmdMessages.Debug.WatchUnknownHandle(handlename))
+			return;
+		}
+		
+		// TO-DO : Find a reliable way
+		local trytimes = 7
+		local intv = 0.5
+		for(local i=0;i<trytimes;i++)
+		{
+			::VSLib.Timers.AddTimer(0.1 + intv * i,false,TryRemoveWNetTimers,{player=player,entlooked=entlooked})
+		}
 		return;
+	}
+	else
+	{
+		if(!entlooked.HasNetProp(netprop))
+		{
+			Printer(player,CmdMessages.Debug.WatchDoesntHaveNetProp(netprop,entlooked.GetIndex(),entlooked.GetClassname()));
+			return;
+		}
 	}
 
 	local ind = entlooked.GetIndex();
@@ -15027,12 +15853,43 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[timername]);
 		delete ::VSLib.Timers.TimersID[timername];
-		Printer(player,"Removed watch for "+"\x03"+"#"+ind+" "+"\x04"+netprop)
+
+		Printer(player,CmdMessages.Debug.WatchRemove(ind,netprop))
 	}
 	else
 	{
-		Printer(player,"No watch timer found for "+"\x03"+"#"+ind+" "+"\x04"+netprop);
+		Printer(player,CmdMessages.Debug.WatchNothingToRemove(ind,netprop))
 	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.FlagLookUpCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local prefix = GetArgument(1);
+	local val = GetArgument(2);
+
+	if(prefix == null)
+		return;
+
+	if(val != null)
+	{
+		try
+		{
+			val = val.tointeger()
+		}
+		catch(e)
+		{
+			Printer(player,CmdMessages.Debug.FlagLookupFailure(val))
+			return;
+		}
+	}
+
+	Printer(player,CmdMessages.Debug.FlagLookupSuccess(Constants.ConstStrLookUp(prefix,val)))
 }
 
 /* ******************DANGEROUS FUNCTION*******************
@@ -15303,24 +16160,55 @@ if ( Director.GetGameMode() == "holdout" )
 	local name = player.GetCharacterNameLower();
 	local typename = GetArgument(1);
 	local setting = GetArgument(2);
-	local val = GetArgument(3);
-	if (typename != null && setting != null && val != null)
+	local valorflag = GetArgument(3);
+	local val = GetArgument(4);
+	if (val != null)
 	{	
 		if(typename=="ptr")
 		{
 			typename = AdminSystem.Vars._prop_spawn_settings_menu_type[name];
 		}
-
-		if(typename=="all")
+		
+		val = CastCustomSetting(player,["val",val]);
+		if(valorflag[0].tochar() == "+") // Add flags or bitwise operation with a value
 		{
-			AdminSystem.Vars._prop_spawn_settings[name]["physics"][setting] = val;
-			AdminSystem.Vars._prop_spawn_settings[name]["dynamic"][setting] = val;
-			AdminSystem.Vars._prop_spawn_settings[name]["ragdoll"][setting] = val;
+			valorflag = valorflag.slice(1,valorflag.len());
+			if(typename=="all")
+			{
+				AdminSystem.Vars._prop_spawn_settings[name]["physics"][setting][valorflag] = AdminSystem.Vars._prop_spawn_settings[name]["physics"][setting][valorflag] | val;
+				AdminSystem.Vars._prop_spawn_settings[name]["dynamic"][setting][valorflag] = AdminSystem.Vars._prop_spawn_settings[name]["dynamic"][setting][valorflag] | val;
+				AdminSystem.Vars._prop_spawn_settings[name]["ragdoll"][setting][valorflag] = AdminSystem.Vars._prop_spawn_settings[name]["ragdoll"][setting][valorflag] | val;
+			}
+			else
+				AdminSystem.Vars._prop_spawn_settings[name][typename][setting][valorflag] = AdminSystem.Vars._prop_spawn_settings[name][typename][setting][valorflag] | val;
+
+		}
+		else if(valorflag[0].tochar() == "-")	// Remove flags or bitwise operation with a value
+		{
+			valorflag = valorflag.slice(1,valorflag.len());
+			if(typename=="all")
+			{
+				AdminSystem.Vars._prop_spawn_settings[name]["physics"][setting][valorflag] = AdminSystem.Vars._prop_spawn_settings[name]["physics"][setting][valorflag] & ~val;
+				AdminSystem.Vars._prop_spawn_settings[name]["dynamic"][setting][valorflag] = AdminSystem.Vars._prop_spawn_settings[name]["dynamic"][setting][valorflag] & ~val;
+				AdminSystem.Vars._prop_spawn_settings[name]["ragdoll"][setting][valorflag] = AdminSystem.Vars._prop_spawn_settings[name]["ragdoll"][setting][valorflag] & ~val;
+			}
+			else
+				AdminSystem.Vars._prop_spawn_settings[name][typename][setting][valorflag] = AdminSystem.Vars._prop_spawn_settings[name][typename][setting][valorflag] & ~val;
+
 		}
 		else
-			AdminSystem.Vars._prop_spawn_settings[name][typename][setting] = val;
+		{
+			if(typename=="all")
+			{
+				AdminSystem.Vars._prop_spawn_settings[name]["physics"][setting][valorflag] = val;
+				AdminSystem.Vars._prop_spawn_settings[name]["dynamic"][setting][valorflag] = val;
+				AdminSystem.Vars._prop_spawn_settings[name]["ragdoll"][setting][valorflag] = val;
+			}
+			else
+				AdminSystem.Vars._prop_spawn_settings[name][typename][setting][valorflag] = val;
 
-		CmdMessages.Prop.SettingSuccess(name,typename,setting,val);
+		}
+		Printer(player,CmdMessages.Prop.SettingSuccess(typename,setting,valorflag,AdminSystem.Vars._prop_spawn_settings[name][typename][setting][valorflag]));
 	}
 	else
 	{	
@@ -15365,13 +16253,13 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if(typename == null || typename == "all")
 	{
-		infostr += "\nProp spawn settings for: "+name+"\n";
+		infostr += CmdMessages.PropSpawn.Start(name);
 		foreach(typename,setting_val in AdminSystem.Vars._prop_spawn_settings[name])
 		{
-			infostr += "Type("+typename+"):\n";
+			infostr += CmdMessages.PropSpawn.Type(typename);
 			foreach(setting,val in setting_val)
 			{
-				infostr += " 	 " + setting + ": " + val + "\n";
+				infostr += CmdMessages.PropSpawn.Details(setting,val);
 			}
 		}
 	}
@@ -15380,11 +16268,10 @@ if ( Director.GetGameMode() == "holdout" )
 		if(typename == "ptr")
 			typename = AdminSystem.Vars._prop_spawn_settings_menu_type[name];
 
-		infostr += "\nProp spawn settings for: "+name+"\n";
-		infostr += "Type("+typename+"):\n";
+		infostr += CmdMessages.PropSpawn.Start(name) + CmdMessages.PropSpawn.Type(typename);
 		foreach(setting,val in AdminSystem.Vars._prop_spawn_settings[name][typename])
 		{
-			infostr += " 	 " + setting + ": " + val + "\n";
+			infostr += CmdMessages.PropSpawn.Details(setting,val);
 		}
 	}
 	Printer(player,infostr);

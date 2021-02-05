@@ -538,6 +538,94 @@ if (!("Notifications" in ::VSLib.EasyLogic))
 /**
  * Global constants
  */
+ 
+/**************************\
+* PROP SPAWN SETTING FLAGS *
+\**************************/
+/// Height
+getconsttable()["HEIGHT_NO_ADDITION"] <- 0;				// No changes, origin at aimed point
+getconsttable()["HEIGHT_EYELEVEL"] <- 1 << 0;		// Origin raised to eye height
+getconsttable()["HEIGHT_USE_VAL"] <- 1 << 1;			// Use whatever vector is given
+getconsttable()["HEIGHT_ADD_VAL"] <- 1 << 2;		// Add whatever vector is given
+getconsttable()["HEIGHT_TOP_TOUCH"] <- 1 << 3;		// TO-DO : Make model box's top touch aimed point
+getconsttable()["HEIGHT_BOTTOM_TOUCH"] <- 1 << 4;	// TO-DO : Make model box's bottom touch aimed point
+// Use random height
+getconsttable()["HEIGHT_RANDOM_0_10"] <- 1 << 5;	// Use random height ranged [0,10]
+getconsttable()["HEIGHT_RANDOM_0_50"] <- 1 << 6;	// Use random height ranged [0,50]
+getconsttable()["HEIGHT_RANDOM_0_100"] <- 1 << 7;	// Use random height ranged [0,100]
+getconsttable()["HEIGHT_RANDOM_0_500"] <- 1 << 8;	// Use random height ranged [0,500]
+getconsttable()["HEIGHT_RANDOM_M10_0"] <- 1 << 9;	// Use random height ranged [-10,0]
+getconsttable()["HEIGHT_RANDOM_M50_0"] <- 1 << 10;	// Use random height ranged [-50,0]
+getconsttable()["HEIGHT_RANDOM_M100_0"] <- 1 << 11;	// Use random height ranged [-100,0]
+getconsttable()["HEIGHT_RANDOM_M500_0"] <- 1 << 12;	// Use random height ranged [-500,0]
+getconsttable()["HEIGHT_RANDOM_M10_10"] <- 1 << 13;	// Use random height ranged [-10,10]
+getconsttable()["HEIGHT_RANDOM_M50_50"] <- 1 << 14;	// Use random height ranged [-50,50]
+getconsttable()["HEIGHT_RANDOM_M100_100"] <- 1 << 15;	// Use random height ranged [-100,100]
+getconsttable()["HEIGHT_RANDOM_M250_250"] <- 1 << 16;	// Use random height ranged [-250,250]
+getconsttable()["HEIGHT_RANDOM_M500_500"] <- 1 << 17;	// Use random height ranged [-500,500]
+getconsttable()["HEIGHT_RANDOM_GIVEN"] <- 1 << 18;	// Use random height ranged [min,max] taken from flags' table
+// Add random height
+getconsttable()["HEIGHT_ADD_RANDOM_0_10"] <- 1 << 19;	// Add random height ranged [0,10]
+getconsttable()["HEIGHT_ADD_RANDOM_0_50"] <- 1 << 20;	// Add random height ranged [0,50]
+getconsttable()["HEIGHT_ADD_RANDOM_0_100"] <- 1 << 21;	// Add random height ranged [0,100]
+getconsttable()["HEIGHT_ADD_RANDOM_0_500"] <- 1 << 22;	// Add random height ranged [0,500]
+getconsttable()["HEIGHT_ADD_RANDOM_M10_0"] <- 1 << 23;	// Add random height ranged [-10,0]
+getconsttable()["HEIGHT_ADD_RANDOM_M50_0"] <- 1 << 24;	// Add random height ranged [-50,0]
+getconsttable()["HEIGHT_ADD_RANDOM_M100_0"] <- 1 << 25;	// Add random height ranged [-100,0]
+getconsttable()["HEIGHT_ADD_RANDOM_M500_0"] <- 1 << 26;	// Add random height ranged [-500,0]
+getconsttable()["HEIGHT_ADD_RANDOM_M10_10"] <- 1 << 27;	// Add random height ranged [-10,10]
+getconsttable()["HEIGHT_ADD_RANDOM_M50_50"] <- 1 << 28;	// Add random height ranged [-50,50]
+getconsttable()["HEIGHT_ADD_RANDOM_M100_100"] <- 1 << 29;	// Add random height ranged [-100,100]
+getconsttable()["HEIGHT_ADD_RANDOM_M250_250"] <- 1 << 30;	// Add random height ranged [-250,250]
+getconsttable()["HEIGHT_ADD_RANDOM_GIVEN"] <- 1 << 31;	// Add random height ranged [min,max] taken from flags' table
+
+/// Angles
+getconsttable()["ANGLE_NO_ADDITION"] <- 0;					// No changes, QAngle(0,0,0)
+getconsttable()["ANGLE_USE_VAL"] <- 1 << 0;				// Use whatever angle is given
+getconsttable()["ANGLE_EYES_EXACT"] <- 1 << 1;			// Use exact eye angles of the player
+getconsttable()["ANGLE_EYES_PITCH"] <- 1 << 2;			// Use pitch of player's eyes
+getconsttable()["ANGLE_EYES_YAW"] <- 1 << 3;			// Use yaw of player's eyes, DEFAULT
+getconsttable()["ANGLE_ADD_VAL"] <- 1 << 4;			// Add whatever angle is given
+getconsttable()["ANGLE_PULL_UP"] <- 1 << 5;				// Add 90 degrees pitch
+getconsttable()["ANGLE_PULL_AROUND"] <- 1 << 6;			// Add 180 degrees pitch
+getconsttable()["ANGLE_PULL_DOWN"] <- 1 << 7;			// Add -90 degrees pitch
+getconsttable()["ANGLE_TURN_RIGHT"] <- 1 << 8;			// Add 90 degrees yaw
+getconsttable()["ANGLE_TURN_AROUND"] <- 1 << 9;			// Add 180 degrees yaw
+getconsttable()["ANGLE_TURN_LEFT"] <- 1 << 10;			// Add -90 degrees yaw
+getconsttable()["ANGLE_ROLLOVER_RIGHT"] <- 1 << 11;		// Add 90 degrees roll
+getconsttable()["ANGLE_ROLLOVER"] <- 1 << 12;			// Add 180 degrees roll
+getconsttable()["ANGLE_ROLLOVER_LEFT"] <- 1 << 13;		// Add -90 degrees roll
+// Use random angles
+getconsttable()["ANGLE_RANDOM_0_90"] <- 1 << 14;		// Use random filled angle ranged [0,90]
+getconsttable()["ANGLE_RANDOM_90_180"] <- 1 << 15;		// Use random filled angle ranged [90,180]
+getconsttable()["ANGLE_RANDOM_0_180"] <- 1 << 16;		// Use random filled angle ranged [0,180]
+getconsttable()["ANGLE_RANDOM_M90_0"] <- 1 << 17;		// Use random filled angle ranged [-90,0]
+getconsttable()["ANGLE_RANDOM_M180_M90"] <- 1 << 18;	// Use random filled angle ranged [-180,-90]
+getconsttable()["ANGLE_RANDOM_M180_0"] <- 1 << 19;		// Use random filled angle ranged [-180,0]
+getconsttable()["ANGLE_RANDOM_M15_15"] <- 1 << 20;		// Use random filled angle ranged [-15,15]
+getconsttable()["ANGLE_RANDOM_M30_30"] <- 1 << 21;		// Use random filled angle ranged [-30,30]
+getconsttable()["ANGLE_RANDOM_M60_60"] <- 1 << 22;		// Use random filled angle ranged [-60,60]
+getconsttable()["ANGLE_RANDOM_M90_90"] <- 1 << 23;		// Use random filled angle ranged [-90,90]
+getconsttable()["ANGLE_RANDOM_GIVEN"] <- 1 << 24;		// Use random filled angle ranged [min,max] taken from flags' table
+// Add random angles
+getconsttable()["ANGLE_ADD_RANDOM_0_45"] <- 1 << 25;		// Add random filled angle ranged [0,45]
+getconsttable()["ANGLE_ADD_RANDOM_45_90"] <- 1 << 26;		// Add random filled angle ranged [45,90]
+getconsttable()["ANGLE_ADD_RANDOM_M45_0"] <- 1 << 27;		// Add random filled angle ranged [-45,0]
+getconsttable()["ANGLE_ADD_RANDOM_M90_M45"] <- 1 << 28;		// Add random filled angle ranged [-90,-45]
+getconsttable()["ANGLE_ADD_RANDOM_M15_15"] <- 1 << 29;		// Add random filled angle ranged [-15,15]
+getconsttable()["ANGLE_ADD_RANDOM_M45_45"] <- 1 << 30;		// Add random filled angle ranged [-45,45]
+getconsttable()["ANGLE_ADD_RANDOM_GIVEN"] <- 1 << 31;	// Add random height ranged [min,max] taken from flags' table
+
+/*************\
+* COLOR CHARS *
+\*************/
+getconsttable()["COLOR_DEFAULT"] <- "\x01";
+getconsttable()["COLOR_BRIGHT_GREEN"] <- "\x03";
+getconsttable()["COLOR_ORANGE"] <- "\x04";
+getconsttable()["COLOR_OLIVE_GREEN"] <- "\x05";
+getconsttable()["PRINTER_CHAR_LIMIT"] <- 230;		// Normally 255, lowering it to be safe with extra wraps around messages
+
+////////////////////////////////////////////////////////////////
 // Difficulty to be used with OnDifficulty()
 getconsttable()["EASY"] <- "easy";
 getconsttable()["NORMAL"] <- "normal";
