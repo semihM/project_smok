@@ -14,23 +14,11 @@
     INFO = "project_smok_Message_Info"
 }
 
-/* This bit started causing issues... might be multiple includes or wrong scopes
-getconsttable()["COLOR_DEFAULT"] <- "\x01";
-getconsttable()["COLOR_BRIGHT_GREEN"] <- "\x03";
-getconsttable()["COLOR_ORANGE"] <- "\x04";
-getconsttable()["COLOR_OLIVE_GREEN"] <- "\x05";
-*/
-
 /*********************\
 *  BUILT-IN MESSAGES  *
 \*********************/
 ::Messages.SetBIM <- function(tbl)
 {
-    local COLOR_DEFAULT = "\x01";
-    local COLOR_BRIGHT_GREEN = "\x03";
-    local COLOR_ORANGE = "\x04";
-    local COLOR_OLIVE_GREEN = "\x05";
-
     local t = 
     {
         // Event messages
@@ -421,7 +409,7 @@ getconsttable()["COLOR_OLIVE_GREEN"] <- "\x05";
                 }
                 Success = function(name,setting,old,new)
                 {
-                    return name + " " + COLOR_BRIGHT_GREEN + "->" + COLOR_DEFAULT + " Changed meteor shower setting " + setting + " from " + old + " to " + new;
+                    return name + " " + COLOR_BRIGHT_GREEN + "->" + COLOR_DEFAULT + " Changed meteor shower setting " + COLOR_ORANGE + setting + COLOR_DEFAULT + " from " + COLOR_OLIVE_GREEN + old + COLOR_DEFAULT + " to " + COLOR_BRIGHT_GREEN + new;
                 }
             }
 
@@ -435,7 +423,7 @@ getconsttable()["COLOR_OLIVE_GREEN"] <- "\x05";
 
                 Success = function(name,setting,old,new)
                 {
-                    return name + " " + COLOR_BRIGHT_GREEN + "->" + COLOR_DEFAULT + " Changed apocalypse setting " + setting + " from " + old + " to " + new;
+                    return name + " " + COLOR_BRIGHT_GREEN + "->" + COLOR_DEFAULT + " Changed apocalypse setting " + COLOR_ORANGE + setting + COLOR_DEFAULT + " from " + COLOR_OLIVE_GREEN + old + COLOR_DEFAULT + " to " + COLOR_BRIGHT_GREEN + new;
                 }
             }
 
@@ -542,6 +530,7 @@ getconsttable()["COLOR_OLIVE_GREEN"] <- "\x05";
                     return "Saving line " + randomline_path + " for " + targetname;
                 }
             }
+
             LineSaving =
             {    
                 State = function(newstate)
@@ -569,6 +558,7 @@ getconsttable()["COLOR_OLIVE_GREEN"] <- "\x05";
                     return "Speaker" + COLOR_BRIGHT_GREEN + "->" + COLOR_DEFAULT + lineinfo.target + ", Line" + COLOR_BRIGHT_GREEN + "->" + COLOR_DEFAULT + lineinfo.source;
                 }
             }
+
             CustomSpeak =
             {
                 TestSuccess = function(character,scene_name,trimend)
@@ -784,9 +774,9 @@ getconsttable()["COLOR_OLIVE_GREEN"] <- "\x05";
                     return "Failed to create a door with model-> " + COLOR_ORANGE + mdl;
                 }
 
-                SettingSuccess = function(name,typ,setting,val)
+                SettingSuccess = function(typ,setting,vf,val)
                 {
-                    printl(name  + " Updated prop(" + typ + ") setting " + setting + " to " + val);
+                    return "Updated " + COLOR_ORANGE + typ + COLOR_DEFAULT + " spawn setting " + COLOR_OLIVE_GREEN + setting + COLOR_ORANGE + "." + COLOR_OLIVE_GREEN + vf + COLOR_DEFAULT  + " to " + COLOR_ORANGE + val;
                 }
                 
             }
@@ -798,6 +788,7 @@ getconsttable()["COLOR_OLIVE_GREEN"] <- "\x05";
                     return "Fire Extinguisher " + COLOR_BRIGHT_GREEN + "#" + e + COLOR_DEFAULT + ", particle " + COLOR_BRIGHT_GREEN + "#" + p + COLOR_DEFAULT + ", sound " + COLOR_BRIGHT_GREEN + "#" + s;
                 }
             }
+
             Ent =
             {
                 EntityCreate = function(id,classname,pos,ang,keyvals)
@@ -818,6 +809,36 @@ getconsttable()["COLOR_OLIVE_GREEN"] <- "\x05";
                 TypeUnknown = function(typ,key)
                 {
                     return "Unrecognized type <" + typ + "> for key-> " + key;
+                }
+            }
+
+            PropSpawn =
+            {
+                Start = function(name)
+                {
+                    return "Prop spawn settings for " + COLOR_OLIVE_GREEN + name + COLOR_DEFAULT + ":\n";
+                }
+                Type = function(typename)
+                {
+                    return "Type <" + COLOR_ORANGE + typename + COLOR_DEFAULT + ">\n";
+                }
+                Details = function(setting,val)
+                {
+                    switch(typeof val)
+                    {
+                        case "table":
+                        {  
+                            return "\t" + COLOR_ORANGE + setting + COLOR_OLIVE_GREEN + " -> " + COLOR_BRIGHT_GREEN + ::VSLib.Utils.GetTableString(val) + COLOR_DEFAULT + "\n";
+                        }
+                        case "array":
+                        {  
+                            return "\t" + COLOR_ORANGE + setting + COLOR_OLIVE_GREEN + " -> " + COLOR_BRIGHT_GREEN + ::VSLib.Utils.ArrayString(val)  + COLOR_DEFAULT + "\n";
+                        }
+                        default:
+                        {
+                            return "\t" + COLOR_ORANGE + setting + COLOR_OLIVE_GREEN + " -> " + COLOR_BRIGHT_GREEN + val + COLOR_DEFAULT + "\n";
+                        }
+                    }
                 }
             }
 
@@ -857,6 +878,74 @@ getconsttable()["COLOR_OLIVE_GREEN"] <- "\x05";
             Color = function(r,g,b,a,id)
             {
                 return "Changed color of " + COLOR_BRIGHT_GREEN + "#" + id + COLOR_DEFAULT + " to rgba(" + r + "," + g + "," + b + "," + a + ")";
+            }
+
+            Debug = 
+            {
+                FlagLookupFailure = function(val)
+                {
+                    return COLOR_ORANGE + val + COLOR_DEFAULT + " value couldn't be parsed as " + COLOR_OLIVE_GREEN + " integer";
+                }
+                FlagLookupSuccess = function(flags)
+                {
+                    if(flags == "")
+                    {
+                        return COLOR_ORANGE + " No flags found " + COLOR_DEFAULT + "matching the given value.";
+                    }
+                    return COLOR_BRIGHT_GREEN + "Found"+ COLOR_ORANGE +": " + COLOR_DEFAULT + flags;
+                }
+
+                EntsAroundNone = function(radius,org)
+                {
+                    return "No entities within radius of " + COLOR_ORANGE + radius + COLOR_DEFAULT + " around " + COLOR_BRIGHT_GREEN + org;
+                }
+
+                EntsAroundStart = function(radius)
+                {
+                    return "Entity " + COLOR_BRIGHT_GREEN + "#" + COLOR_DEFAULT + " and " + COLOR_OLIVE_GREEN + "class" + COLOR_DEFAULT + " within " + COLOR_ORANGE + radius + COLOR_DEFAULT + " units" + "\n";
+                }
+                EntsAroundValid = function(obj)
+                {
+                    return COLOR_BRIGHT_GREEN + "#" + obj.GetIndex() + COLOR_DEFAULT + ", " + COLOR_OLIVE_GREEN + obj.GetClassname() + (obj.GetParent() == null ? "" : ", "+COLOR_ORANGE+"Parented!") + COLOR_DEFAULT + "\n";
+                }
+
+                WatchIntervalFailure = function()
+                {
+                    return "Watch rate too high, minimum interval length is " + COLOR_ORANGE + "0.1" + COLOR_DEFAULT + "seconds!";
+                } 
+                WatchNoEntity = function()
+                {
+                    return "No entity to watch";
+                } 
+                WatchUnknownHandle = function(handlename)
+                {
+                    return handlename+" is not a known script handle name";
+                }
+                WatchWrongTableEntry = function(member)
+                {
+                    return "Skipping " + COLOR_ORANGE + member;
+                }
+                WatchDoesntHaveNetProp = function(netprop,index,classname)
+                {
+                    return COLOR_ORANGE + netprop + COLOR_DEFAULT + " doesn't exist for " + COLOR_BRIGHT_GREEN + "#" + index + COLOR_DEFAULT + ", " + COLOR_OLIVE_GREEN + classname;
+                }
+
+                WatchCurrentValue = function(index,handlename,member,val)
+                {
+                    if(handlename == "")
+                        return COLOR_BRIGHT_GREEN + "#" + index + " " + COLOR_ORANGE + member + COLOR_DEFAULT + " -> " + COLOR_OLIVE_GREEN + val;
+                    return COLOR_BRIGHT_GREEN + "#" + index + " " + COLOR_ORANGE + handlename + COLOR_DEFAULT + "." + COLOR_BRIGHT_GREEN + member + COLOR_DEFAULT + " -> " + COLOR_OLIVE_GREEN + val;
+                }
+                
+                WatchNothingToRemove = function(index,member)
+                {
+                    return "No watch timer found for "+ COLOR_BRIGHT_GREEN + "#" + index + " " + COLOR_ORANGE + member;
+                }
+                WatchRemove = function(index,member)
+                {
+                    return "Removed watch for "+ COLOR_BRIGHT_GREEN + "#" + index + " " + COLOR_ORANGE + member;
+                }
+
             }
         }
     }
@@ -1192,10 +1281,6 @@ class ::Messages.Message
      */
     function GetColored(toPlayer=true)
     {
-        local COLOR_DEFAULT = "\x01";
-        local COLOR_BRIGHT_GREEN = "\x03";
-        local COLOR_ORANGE = "\x04";
-        local COLOR_OLIVE_GREEN = "\x05";
         local argstr = ::VSLib.Utils.ArrayString(_args,true);
         switch(typeof this)
         {
