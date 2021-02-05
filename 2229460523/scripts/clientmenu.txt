@@ -17805,8 +17805,8 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func stop_car_alarms;show_menu smok_menu2"
-					"label"		 " Stop car alarms"
+					"command"    "play buttons/button14;show_menu smok_menu_stop_anno1"
+					"label"		 " Remove/stop some annoying things"
 			}
 			"6"
 			{
@@ -17825,8 +17825,8 @@
 			}
 			"9"
 			{
-					"command"	 "play piano/a2;show_menu secret_commands"
-					"label"		 ""
+					"command"	 "play buttons/button14;show_menu smok_menu3"
+					"label"		 " >> Next"
 			}
 			"0"
 			{
@@ -17834,6 +17834,33 @@
 					"label"      " Exit"
 			}
 	}
+
+	"smok_menu_stop_anno1"
+	{	
+			"Title"     "Get rid of some annoying things"
+			
+			"1"
+			{
+					"command"	 "play buttons/button14;scripted_user_func stop_car_alarms;show_menu smok_menu_stop_anno1"
+					"label"		 " Stop currently ringing car alarms"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func remove_fall_cams;show_menu smok_menu_stop_anno1"
+					"label"		 " Remove death fall cameras (no-mercy roof fall cams etc.)"
+			}
+			"8"
+			{
+					"command"	 "play buttons/button14;show_menu smok_menu2"
+					"label"		 " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
 	"smok_menu_displays1"
 	{
 			"Title"     "Menu display duration, Currently: <cvar cl_menuduration> seconds"
@@ -18222,7 +18249,11 @@
 				"command"	 "play buttons/button14;show_menu prop_settings_height1"
 				"label"		 " Spawning height"
 			}
-			
+			"2"
+			{
+				"command"	 "play buttons/button14;show_menu prop_settings_angles1"
+				"label"		 " Spawning angles"
+			}
 			"7"
 			{		
 					"command"    "play buttons/button14;scripted_user_func display_prop_spawn_settings,ptr;show_menu prop_settings_menu1"
@@ -18243,52 +18274,98 @@
 
 	"prop_settings_height1"
 	{	
-			"Title"     "Change spawn height 1"
+			"Title"     "Height value or flags(how it's handled)"
 			"1"
 			{
-				"command"	 "play buttons/button10;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,bottom_touch;show_menu prop_settings_height1"
-				"label"		 " Prop's bottom touch looked place"
+				"command"	 "play buttons/button14;show_menu prop_settings_height_val1"
+				"label"		 " Spawning height value"
 			}
 			"2"
 			{
-				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,0;show_menu prop_settings_height1"
-				"label"		 " 0 (Origin at looked position)"
+				"command"	 "play buttons/button14;show_menu prop_settings_height_flags1"
+				"label"		 " Spawning height flags"
 			}
-			"3"
-			{
-				"command"	 "play buttons/button10;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,top_touch;show_menu prop_settings_height1"
-				"label"		 " Prop's top touch looked place"
-			}
-			
-			"4"
-			{
-				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,20;show_menu prop_settings_height1"
-				"label"		 " +20"
-			}
-			"5"
-			{
-				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,60;show_menu prop_settings_height1"
-				"label"		 " +60"
-			}
-			"6"
-			{
-				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,120;show_menu prop_settings_height1"
-				"label"		 " +120"
-			}
-			"7"
-			{
-				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,300;show_menu prop_settings_height1"
-				"label"		 " +300"
-			}
-			
 			"8"
 			{
 					"command"	 "play buttons/button14;show_menu prop_settings_menu1"
 					"label"		 " << Back"
 			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"prop_settings_angles1"
+	{	
+			"Title"     "Spawning angles or flags(how it's handled)"
+			"1"
+			{
+				"command"	 "play buttons/button14;show_menu prop_settings_angles_val1"
+				"label"		 " Spawning angles value"
+			}
+			"2"
+			{
+				"command"	 "play buttons/button14;show_menu prop_settings_angles_flags1"
+				"label"		 " Spawning angles flags"
+			}
+			"8"
+			{
+					"command"	 "play buttons/button14;show_menu prop_settings_menu1"
+					"label"		 " << Back"
+			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"prop_settings_height_val1"
+	{	
+			"Title"     "Change spawn height 1 (Used with flags)"
+			"1"
+			{
+				"command"	 "play buttons/button11;show_menu prop_settings_height_val1"
+				"label"		 " Use !update_prop_spawn_setting {classname} spawn_height val float|{height}"
+			}
+			"2"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,val,float|0;show_menu prop_settings_height_val1"
+				"label"		 " 0 (Origin at looked position)"
+			}
+			"3"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,val,float|20;show_menu prop_settings_height_val1"
+				"label"		 " +20"
+			}
+			"4"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,val,float|60;show_menu prop_settings_height_val1"
+				"label"		 " +60"
+			}
+			"5"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,val,float|120;show_menu prop_settings_height_val1"
+				"label"		 " +120"
+			}
+			"6"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,val,float|300;show_menu prop_settings_height_val1"
+				"label"		 " +300"
+			}
+			
+			"8"
+			{
+					"command"	 "play buttons/button14;show_menu prop_settings_height1"
+					"label"		 " << Back"
+			}
 			"9"
 			{
-					"command"	 "play buttons/button14;show_menu prop_settings_height2"
+					"command"	 "play buttons/button14;show_menu prop_settings_height_val2"
 					"label"		 " >> Next"
 			}
 			"0"
@@ -18298,33 +18375,214 @@
 			}
 	}
 
-	"prop_settings_height2"
+	"prop_settings_height_val2"
 	{	
-			"Title"     "Change spawn height 2"
+			"Title"     "Change spawn height 2 (Used with flags)"
 			"1"
 			{
-				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,-20;show_menu prop_settings_height2"
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,val,float|-20;show_menu prop_settings_height_val2"
 				"label"		 " -20"
 			}
 			"2"
 			{
-				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,-60;show_menu prop_settings_height2"
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,val,float|-60;show_menu prop_settings_height_val2"
 				"label"		 " -60"
 			}
 			"3"
 			{
-				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,-120;show_menu prop_settings_height2"
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,val,float|-120;show_menu prop_settings_height_val2"
 				"label"		 " -120"
 			}
 			"4"
 			{
-				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,-300;show_menu prop_settings_height2"
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,val,float|-300;show_menu prop_settings_height_val2"
 				"label"		 " -300"
 			}
 			
 			"8"
 			{
+					"command"	 "play buttons/button14;show_menu prop_settings_height_val1"
+					"label"		 " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"prop_settings_height_flags1"
+	{	
+			"Title"     "Change spawn height flags (Check !flag_lookup HEIGHT_ )"
+			"1"
+			{
+				"command"	 "play buttons/button11;show_menu prop_settings_height_flags1"
+				"label"		 " Use !update_prop_spawn_setting {classname} spawn_height flags flg|{flag1|flag2|...}"
+			}
+			"2"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,flags,flg|HEIGHT_NO_ADDITION;show_menu prop_settings_height_flags1"
+				"label"		 " Ignore all, spawn at aimed point"
+			}
+			"3"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,flags,flg|HEIGHT_ADD_VAL;show_menu prop_settings_height_flags1"
+				"label"		 " Raise by value given (DEFAULT)"
+			}
+			"4"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,flags,flg|HEIGHT_EYELEVEL;show_menu prop_settings_height_flags1"
+				"label"		 " Match eye-level"
+			}
+			"5"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,flags,flg|HEIGHT_EYELEVEL|HEIGHT_ADD_VAL;show_menu prop_settings_height_flags1"
+				"label"		 " Raise by value given above eye-level"
+			}
+			"6"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_height,flags,flg|HEIGHT_EXACT_VAL;show_menu prop_settings_height_flags1"
+				"label"		 " Use given value as height (uses world's origin)"
+			}
+			"8"
+			{
 					"command"	 "play buttons/button14;show_menu prop_settings_height1"
+					"label"		 " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"prop_settings_angles_val1"
+	{	
+			"Title"     "Change spawn angles 1 (Used with flags)"
+			"1"
+			{
+				"command"	 "play buttons/button11;show_menu prop_settings_angles_val1"
+				"label"		 " Use !update_prop_spawn_setting {classname} spawn_angles val str|{pitch|yaw|roll}"
+			}
+			"2"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_angles,val,str|0|0|0;show_menu prop_settings_angles_val1"
+				"label"		 " Pitch,Yaw,Roll: 0, 0, 0 (Default)"
+			}
+			"3"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_angles,val,str|90|0|0;show_menu prop_settings_angles_val1"
+				"label"		 " Pitch,Yaw,Roll: 90, 0, 0 (Point down)"
+			}
+			"4"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_angles,val,str|-90|0|0;show_menu prop_settings_angles_val1"
+				"label"		 " Pitch,Yaw,Roll: -90, 0, 0 (Point up)"
+			}
+			"5"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_angles,val,str|0|90|0;show_menu prop_settings_angles_val1"
+				"label"		 " Pitch,Yaw,Roll: 0, 90, 0 (Point right)"
+			}
+			"6"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_angles,val,str|0|-90|0;show_menu prop_settings_angles_val1"
+				"label"		 " Pitch,Yaw,Roll: 0, -90, 0 (Point left)"
+			}
+			"7"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_angles,val,str|0|180|0;show_menu prop_settings_angles_val1"
+				"label"		 " Pitch,Yaw,Roll: 0, 180, 0 (Point player)"
+			}
+			
+			"8"
+			{
+					"command"	 "play buttons/button14;show_menu prop_settings_angles1"
+					"label"		 " << Back"
+			}
+			"9"
+			{
+					"command"	 "play buttons/button14;show_menu prop_settings_angles_val2"
+					"label"		 " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"prop_settings_angles_val2"
+	{	
+			"Title"     "Change spawn angles 2 (Used with flags)"
+			"1"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_angles,val,str|180|0|0;show_menu prop_settings_angles_val2"
+				"label"		 " Pitch,Yaw,Roll: 180, 0, 0 (Point player, rolled around)"
+			}
+			"2"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_angles,val,str|0|0|90;show_menu prop_settings_angles_val2"
+				"label"		 " Pitch,Yaw,Roll: 0, 0, 90 (Rolled right)"
+			}
+			"3"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_angles,val,str|0|0|-90;show_menu prop_settings_angles_val2"
+				"label"		 " Pitch,Yaw,Roll: 0, 0, -90 (Rolled left)"
+			}
+			"4"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_angles,val,str|0|0|180;show_menu prop_settings_angles_val2"
+				"label"		 " Pitch,Yaw,Roll: 0, 0, 180 (Rolled around)"
+			}
+			"8"
+			{
+					"command"	 "play buttons/button14;show_menu prop_settings_height_val1"
+					"label"		 " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"prop_settings_angles_flags1"
+	{	
+			"Title"     "Change spawn angles flags (Check !flag_lookup ANGLE_ )"
+			"1"
+			{
+				"command"	 "play buttons/button11;show_menu prop_settings_angles_flags1"
+				"label"		 " Use !update_prop_spawn_setting {classname} spawn_angles flags flg|{flag1|flag2|...}"
+			}
+			"2"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_angles,flags,flg|ANGLE_NO_ADDITION;show_menu prop_settings_angles_flags1"
+				"label"		 " Ignore all, use model angles"
+			}
+			"3"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_angles,flags,flg|ANGLE_EYES_YAW|ANGLE_ADD_VAL;show_menu prop_settings_angles_flags1"
+				"label"		 " Eyes' yaw, add given value (= player's direction)(DEFAULT)"
+			}
+			"4"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_angles,flags,flg|ANGLE_EYES_EXACT|ANGLE_ADD_VAL;show_menu prop_settings_angles_flags1"
+				"label"		 " Eyes' pitch & yaw, add given value (= player's direction exact)"
+			}
+			"5"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_angles,flags,flg|ANGLE_EYES_YAW|ANGLE_ADD_VAL|ANGLE_TURN_AROUND;show_menu prop_settings_angles_flags1"
+				"label"		 " Eyes' yaw, add given value, turn around"
+			}
+			"6"
+			{
+				"command"	 "play buttons/button14;scripted_user_func update_prop_spawn_setting,ptr,spawn_angles,flags,flg|ANGLE_EYES_EXACT|ANGLE_ADD_VAL|ANGLE_TURN_AROUND;show_menu prop_settings_angles_flags1"
+				"label"		 " Eyes' pitch & yaw, add given value, turn around"
+			}
+			"8"
+			{
+					"command"	 "play buttons/button14;show_menu prop_settings_angles1"
 					"label"		 " << Back"
 			}
 			"0"
@@ -37204,9 +37462,9 @@
 			}
 	}
 
-	"secret_commands"
+	"smok_menu3"
 	{
-			"Title"		"Secret commands 1"
+			"Title"		"Events and more commands"
 			"1"
 			{
 				"command"		 "play buttons/button14;show_menu apocalypse1"
@@ -37244,12 +37502,12 @@
 			}
 			"8"
 			{
-				"command"		 "play buttons/button14;show_menu drivemenu1"
-				"label"			" Enable drive mechanics (experimental)"
+					"command"    "play buttons/button14;show_menu smok_menu2"
+					"label"      " << Back"
 			}
 			"9"
 			{
-					"command"    "play buttons/button14;show_menu secret_commands2"
+					"command"    "play buttons/button14;show_menu smok_menu4"
 					"label"      " >> Next"
 			}
 			"0"
@@ -37258,17 +37516,33 @@
 					"label"      " Exit"
 			}
 	}
-	"secret_commands2"
+
+	"smok_menu4"
 	{
-			"Title"		"Secret commands 2"
+			"Title"		"More commands (some experimental)"
 			"1"
 			{
 				"command"		 "play buttons/button14;show_menu wear_hat_menu1"
 				"label"			 " Wear hats (Experimental)"
 			}
+			"2"
+			{
+				"command"		 "play buttons/button14;show_menu ragdolling_menu1"
+				"label"			 " Ragdolling (Experimental)"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;show_menu drivemenu1"
+				"label"			" Enable drive mechanics (Experimental)"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;show_menu givephys_menu1"
+				"label"			 " Give objects physics"
+			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu secret_commands"
+					"command"    "play buttons/button14;show_menu smok_menu3"
 					"label"      " << Back"
 			}
 			"0"
@@ -37278,6 +37552,69 @@
 			}
 	}
 
+	"ragdolling_menu1"
+	{
+			"Title"		"Ragdolling commands"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func go_ragdoll;show_menu ragdolling_menu1"
+				"label"			 " Go ragdolling"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func recover_ragdoll;show_menu ragdolling_menu1"
+				"label"			 " Recover from ragdolling"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu smok_menu4"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	"givephys_menu1"
+	{
+			"Title"		"Give physics abilities to"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func give_physics,!picker;show_menu givephys_menu1"
+				"label"			 " Aimed object"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func give_physics,75;show_menu givephys_menu1"
+				"label"			 " Objects around 75 units radius of aimed location"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func give_physics,150;show_menu givephys_menu1"
+				"label"			 " Objects around 150 units radius of aimed location"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func give_physics,300;show_menu givephys_menu1"
+				"label"			 " Objects around 300 units radius of aimed location"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func give_physics,900;show_menu givephys_menu1"
+				"label"			 " Objects around 900 units radius of aimed location"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu smok_menu4"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
 	"wear_hat_menu1"
 	{
 			"Title"		"Hat menu"
@@ -37323,7 +37660,7 @@
 			}
 			"9"
 			{
-					"command"    "play buttons/button14;show_menu secret_commands2"
+					"command"    "play buttons/button14;show_menu smok_menu4"
 					"label"      " << Back"
 			}
 			"0"
@@ -37928,7 +38265,7 @@
 
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu secret_commands"
+					"command"    "play buttons/button14;show_menu smok_menu4"
 					"label"      " << Back"
 			}
 			"0"
@@ -37963,7 +38300,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu secret_commands"
+					"command"    "play buttons/button14;show_menu smok_menu3"
 					"label"      " << Back"
 			}
 			"0"
@@ -37998,7 +38335,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu secret_commands"
+					"command"    "play buttons/button14;show_menu smok_menu3"
 					"label"      " << Back"
 			}
 			"0"
@@ -38043,7 +38380,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu secret_commands"
+					"command"    "play buttons/button14;show_menu smok_menu3"
 					"label"      " << Back"
 			}
 			"0"
@@ -38073,7 +38410,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu secret_commands"
+					"command"    "play buttons/button14;show_menu smok_menu3"
 					"label"      " << Back"
 			}
 			"0"
@@ -38119,7 +38456,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu secret_commands"
+					"command"    "play buttons/button14;show_menu smok_menu3"
 					"label"      " << Back"
 			}
 			"0"
@@ -38159,7 +38496,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu secret_commands"
+					"command"    "play buttons/button14;show_menu smok_menu3"
 					"label"      " << Back"
 			}
 			"0"
@@ -38304,7 +38641,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu secret_commands"
+					"command"    "play buttons/button14;show_menu smok_menu3"
 					"label"      " << Back"
 			}
 			"0"
