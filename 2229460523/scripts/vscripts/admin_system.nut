@@ -830,7 +830,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 		_RockThrow = 
 		{
 			lookup = "boolean"
-			blackliststr = "rockorigin,rockpushspeed,raise,friction"
+			blackliststr = "rockorigin,rockpushspeed,raise,friction,mass_scale,rockspawnheight,modelspecific,custommodels,modelpick,modelchangedelay"
 		}
 	}
 	
@@ -852,18 +852,18 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 
 	::AdminSystem.Vars.FixBooleanValues(AdminSystem.Vars,basicbools,"boolean");
 
-	::AdminSystem.Vars._RockThrow.rockorigin = "";
-
 	// Fix prop spawn settings tables, restores "flags" as "FLAGS"... smart
-	foreach(i,name in AdminSystem.Vars.CharacterNamesLower)
+	foreach(name,cstbl in AdminSystem.Vars._prop_spawn_settings)
 	{
-		local settingtbl = AdminSystem.Vars._prop_spawn_settings[name]
-		foreach(setting,valtbl in settingtbl)
+		foreach(clsname,vals in cstbl)
 		{
-			if("FLAGS" in valtbl)
+			foreach(setting,valtbl in vals)
 			{
-				AdminSystem.Vars._prop_spawn_settings[name][setting].flags <- valtbl.FLAGS
-				delete AdminSystem.Vars._prop_spawn_settings[name][setting].FLAGS
+				if("FLAGS" in valtbl)
+				{
+					AdminSystem.Vars._prop_spawn_settings[name][clsname][setting].flags <- valtbl.FLAGS
+					delete AdminSystem.Vars._prop_spawn_settings[name][clsname][setting].FLAGS
+				}
 			}
 		}
 	}
@@ -1024,10 +1024,25 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 
 				AdminSystem.Vars._meteor_models._custom = Utils.ArrayCopy(newmodelarray);
 			}
-			else
-				throw("[Custom] No need for meteor shower model array fixes, "+label+" "+(typeof modelarr))
 		}
-	
+
+		// Tank rock models
+		foreach(label,modelarr in AdminSystem.Vars._RockThrow)
+		{
+			//_rocks
+			if((label=="custommodels") && ((typeof modelarr) != "array"))
+			{	
+				newmodelarray = []
+				i = 0;
+				while(i.tostring() in modelarr)
+				{
+					newmodelarray.append(modelarr[i.tostring()]);
+					i += 1;
+				}
+
+				AdminSystem.Vars._RockThrow.custommodels = Utils.ArrayCopy(newmodelarray);
+			}
+		}
 	}
 		
 	//}
@@ -2663,7 +2678,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		}
 	}
 }
-
+// TO-DO: Ragdolls dont stop 
 ::FreezePhysics <- function()
 {
 	if(!("_FrozenPhysics" in AdminSystem))
@@ -2671,7 +2686,18 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		AdminSystem._FrozenPhysics <- {}
 	}
 
-	local classnames = ["prop_physics", "prop_physics_multiplayer" , "prop_car_alarm", "prop_vehicle", "prop_physics_override", "func_physbox", "func_physbox_multiplayer", "prop_ragdoll"]
+	local classnames = 
+	[
+		"prop_physics",
+		"prop_physics_multiplayer",
+		"prop_car_alarm",
+		"prop_vehicle",
+		"prop_physics_override",
+		"func_physbox",
+		"func_physbox_multiplayer",
+		"prop_ragdoll",
+		"tank_rock"
+	]
 	foreach(cls in classnames)
 	{
 		local ent = null;
@@ -2693,6 +2719,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 					health = obj.GetHealth()
 				}
 				obj.SetMoveType(MOVETYPE_NONE);
+				obj.AddFlag(FL_FROZEN);
+				obj.SetNetProp("m_flFrozen",1.0);
+				obj.SetNetProp("m_bSimulatedEveryTick",0);
+				obj.SetNetProp("m_bAnimatedEveryTick",0);
 			}
 		}
 	}
@@ -2709,7 +2739,18 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	}
 	local id = ent.GetIndex();
 	local classname = ent.GetClassname();
-	local classnames = ["prop_physics", "prop_physics_multiplayer" , "prop_car_alarm", "prop_vehicle", "prop_physics_override", "func_physbox", "func_physbox_multiplayer", "prop_ragdoll"]
+	local classnames = 
+	[
+		"prop_physics",
+		"prop_physics_multiplayer",
+		"prop_car_alarm",
+		"prop_vehicle",
+		"prop_physics_override",
+		"func_physbox",
+		"func_physbox_multiplayer",
+		"prop_ragdoll",
+		"tank_rock"
+	]
 
 	// SI
 	if(classname == "player" 
@@ -2771,6 +2812,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			health = ent.GetHealth()
 		}
 		ent.SetMoveType(MOVETYPE_NONE);
+		ent.AddFlag(FL_FROZEN);
+		ent.SetNetProp("m_flFrozen",1.0);
+		ent.SetNetProp("m_bSimulatedEveryTick",0);
+		ent.SetNetProp("m_bAnimatedEveryTick",0);
 	}
 	
 }
@@ -2921,7 +2966,18 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	if(!("_FrozenPhysics" in AdminSystem))
 		return;
 
-	local classnames = ["prop_physics", "prop_physics_multiplayer" , "prop_car_alarm", "prop_vehicle", "prop_physics_override", "func_physbox", "func_physbox_multiplayer", "prop_ragdoll"]
+	local classnames = 
+	[
+		"prop_physics",
+		"prop_physics_multiplayer",
+		"prop_car_alarm",
+		"prop_vehicle",
+		"prop_physics_override",
+		"func_physbox",
+		"func_physbox_multiplayer",
+		"prop_ragdoll",
+		"tank_rock"
+	]
 	foreach(cls in classnames)
 	{
 		local ent = null;
@@ -2940,6 +2996,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 					continue;
 				}
 				local org = obj.GetOrigin();
+				obj.RemoveFlag(FL_FROZEN);
+				obj.SetNetProp("m_flFrozen",0);
+				obj.SetNetProp("m_bSimulatedEveryTick",1);
+				obj.SetNetProp("m_bAnimatedEveryTick",1);
 				obj.SetMoveType(tbl.movetype);
 				obj.SetOrigin(org);
 				obj.Push(tbl.velocity);
@@ -2984,7 +3044,18 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		}
 		return;
 	}
-	local classnames = ["prop_physics", "prop_physics_multiplayer" , "prop_car_alarm", "prop_vehicle", "prop_physics_override", "func_physbox", "func_physbox_multiplayer", "prop_ragdoll"]
+	local classnames = 
+	[
+		"prop_physics",
+		"prop_physics_multiplayer",
+		"prop_car_alarm",
+		"prop_vehicle",
+		"prop_physics_override",
+		"func_physbox",
+		"func_physbox_multiplayer",
+		"prop_ragdoll",
+		"tank_rock"
+	]
 
 	if(classname == "player" 
 	   && "_FrozenSI" in AdminSystem
@@ -3045,6 +3116,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			return;
 		}
 		local org = ent.GetOrigin();
+		ent.RemoveFlag(FL_FROZEN);
+		ent.SetNetProp("m_flFrozen",0);
+		ent.SetNetProp("m_bSimulatedEveryTick",1);
+		ent.SetNetProp("m_bAnimatedEveryTick",1);
 		ent.SetMoveType(tbl.movetype);
 		ent.SetOrigin(org);
 		ent.Push(tbl.velocity);
@@ -4626,10 +4701,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	{
 		keymask = 0
 		forward = Vector(0,0,0)
-		speed = 475.0
+		speed = 575.0
 		reversescale = -0.12
 		speedscale = 3
-		overridefriction = 0.05
+		overridefriction = 0.03
 		turnpertick = 8
 		listenerid = -1
 	}
@@ -5256,6 +5331,10 @@ enum __
 
 	// Create the meteor
 	local meteor = _CreateAndPushMeteor(metargs.meteormodelpick,ceiling,minspeed,(metargs.maxspeed - minspeed),true)
+	if(meteor == null)
+	{
+		return;
+	}
 	
 	if((rand().tofloat()/RAND_MAX) < metargs.expprob)
 	{
@@ -5341,31 +5420,9 @@ enum __
 			break;
 		}
 	}
-
-	local clsname = "prop_physics_multiplayer"
-	if(entmodel.find("models/survivors/") != null 
-		|| entmodel.find("models/infected/") != null 
-		|| entmodel.find("models/deadbodies/") != null)
-	{
-		clsname = "prop_ragdoll"
-	}
-	else
-	{
-		local rexp = regexp(@"\\(\w+)\.mdl");
-		local res = rexp.capture(entmodel);
-		if(res != null)
-		{
-			foreach(i,mdl in res)
-			{
-				if(entmodel.slice(mdl.begin,mdl.end) in AdminSystem.ZombieModels)
-				{
-					clsname = "prop_ragdoll"
-					break;
-				}
-
-			}
-		}
-	}
+	if(entmodel == null)
+		return;
+	local clsname = RagdollOrPhysicsDecider(entmodel);
 	local keyvals = 
 	{
 		targetname = "meteorspawn"
@@ -7343,6 +7400,10 @@ function Notifications::OnHealStart::_TradeMedPack(target,healer,args)
 	}
 }
 
+// TANK ROCKS
+/*
+ * @authors rhino
+ */
 function Notifications::OnHurt::_HitByTankRock(player,attacker,args)
 {
 	if(!("weapon" in args))
@@ -7385,27 +7446,71 @@ function Notifications::OnAbilityUsed::_TankRockSpawning(player,ability,args)
 		return;
 	else
 	{
-		Timers.AddTimer(2.25,false,_findAndChangeRock,{});
-		AdminSystem.Vars._RockThrow.rockorigin = player.GetOrigin()+Vector(0,0,45);
+		Timers.AddTimer(AdminSystem.Vars._RockThrow.modelchangedelay,false,_findAndChangeRock,{});
+		AdminSystem.Vars._RockThrow.rockorigin = player.GetOrigin()+Vector(0,0,AdminSystem.Vars._RockThrow.rockspawnheight);
 	}
 }
 
 ::_findAndChangeRock <- function(args)
 {
-	if(AdminSystem.Vars._RockThrow.randomized)
-	{
-		foreach( rock in ::VSLib.EasyLogic.Objects.OfClassname("tank_rock") )
+	switch(AdminSystem.Vars._RockThrow.modelpick)
+	{	// TO-DO: Enumerate
+		case 0:
 		{
-			if(rock.GetName().find("_randomized") == null)
+			if(AdminSystem.Vars._RockThrow.randomized)
 			{
-				rock.SetName(rock.GetName()+"_randomized");
-				rock.SetModel(RandomPick(::ModelPaths.all));
-				if(AdminSystem.Vars._RockThrow.randomized_spawn_prop_after)
+				foreach( rock in ::VSLib.EasyLogic.Objects.OfClassname("tank_rock") )
 				{
-					Timers.AddTimer(0.1,false,_replaceRock,{rock=rock});
+					if(rock.GetName().find("_project_smok_tankrock") == null)
+					{
+						rock.SetName(rock.GetName()+"_project_smok_tankrock");
+						rock.SetModel(RandomPick(::ModelPaths.all));
+						if(AdminSystem.Vars._RockThrow.spawn_prop_after)
+						{
+							Timers.AddTimer(0.1,false,_replaceRock,{rock=rock});
+						}
+					}
 				}
 			}
+			break;
 		}
+		case 1:
+		{
+			foreach( rock in ::VSLib.EasyLogic.Objects.OfClassname("tank_rock") )
+			{
+				if(rock.GetName().find("_project_smok_tankrock") == null)
+				{
+					rock.SetName(rock.GetName()+"_project_smok_tankrock");
+					rock.SetModel(AdminSystem.Vars._RockThrow.modelspecific);
+					if(AdminSystem.Vars._RockThrow.spawn_prop_after)
+					{
+						Timers.AddTimer(0.1,false,_replaceRock,{rock=rock});
+					}
+				}
+			}
+			break;
+		}
+		case 2:
+		{	
+			if(AdminSystem.Vars._RockThrow.custommodels.len() == 0)
+				break;
+
+			foreach( rock in ::VSLib.EasyLogic.Objects.OfClassname("tank_rock") )
+			{
+				if(rock.GetName().find("_project_smok_tankrock") == null)
+				{
+					rock.SetName(rock.GetName()+"_project_smok_tankrock");
+					rock.SetModel(RandomPick(AdminSystem.Vars._RockThrow.custommodels));
+					if(AdminSystem.Vars._RockThrow.spawn_prop_after)
+					{
+						Timers.AddTimer(0.1,false,_replaceRock,{rock=rock});
+					}
+				}
+			}
+			break;
+		}
+		default:
+			break;
 	}
 }
 
@@ -7417,13 +7522,14 @@ function Notifications::OnAbilityUsed::_TankRockSpawning(player,ability,args)
 		return;
 	local keyvals = 
 	{
-		classname = "prop_physics_multiplayer",
+		classname = RagdollOrPhysicsDecider(args.rock.GetModel()),
 		model = args.rock.GetModel(),
 		origin = args.rock.GetOrigin(),
 		angles = args.rock.GetAngles(),
-		massscale = 10.0
+		massScale = AdminSystem.Vars._RockThrow.mass_scale
 	};
 	local velocity = args.rock.GetVelocity();
+	args.rock.SetNetProp("m_CollisionGroup",1)
 	args.rock.Kill();
 	local newent = Utils.CreateEntityWithTable(keyvals);
 
@@ -7436,6 +7542,36 @@ function Notifications::OnAbilityUsed::_TankRockSpawning(player,ability,args)
 ::RandomPick <- function(arr)
 {
 	return Utils.GetRandValueFromArray(arr);
+}
+
+::RagdollOrPhysicsDecider <- function(mdl)
+{
+	local clsname = "prop_physics_multiplayer"
+
+	if(mdl.find("models/survivors/") != null 
+		|| mdl.find("models/infected/") != null 
+		|| mdl.find("models/deadbodies/") != null)
+	{
+		clsname = "prop_ragdoll"
+	}
+	else
+	{
+		local rexp = regexp(@"\\(\w+)\.mdl");
+		local res = rexp.capture(mdl);
+		if(res != null)
+		{
+			foreach(i,m in res)
+			{
+				if(mdl.slice(m.begin,m.end) in AdminSystem.ZombieModels)
+				{
+					clsname = "prop_ragdoll"
+					break;
+				}
+
+			}
+		}
+	}
+	return clsname;
 }
 
 /*
@@ -10644,14 +10780,14 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	if(AdminSystem.Vars._RockThrow.randomized_spawn_prop_after)
+	if(AdminSystem.Vars._RockThrow.spawn_prop_after)
 	{
-		AdminSystem.Vars._RockThrow.randomized_spawn_prop_after = false;
+		AdminSystem.Vars._RockThrow.spawn_prop_after = false;
 		Messages.InformAll(CmdMessages.DisableTankRockPhys());
 	}
 	else
 	{
-		AdminSystem.Vars._RockThrow.randomized_spawn_prop_after = true;
+		AdminSystem.Vars._RockThrow.spawn_prop_after = true;
 		Messages.InformAll(CmdMessages.EnableTankRockPhys());
 	}
 }
@@ -11632,11 +11768,11 @@ if ( Director.GetGameMode() == "holdout" )
 		ang += QAngle(90,0,0);
 	// Yaw
 	if(HasFlag(flags,ANGLE_TURN_RIGHT))
-		ang += QAngle(0,-90,0);
+		ang += QAngle(0,90,0);
 	if(HasFlag(flags,ANGLE_TURN_AROUND))
 		ang += QAngle(0,180,0);
 	if(HasFlag(flags,ANGLE_TURN_LEFT))
-		ang += QAngle(0,90,0);
+		ang += QAngle(0,-90,0);
 	// Roll
 	if(HasFlag(flags,ANGLE_ROLLOVER_RIGHT))
 		ang += QAngle(0,0,-90);
@@ -15645,7 +15781,7 @@ if ( Director.GetGameMode() == "holdout" )
 				}
 				Printer(player,CmdMessages.Debug.WatchCurrentValue(entlooked.GetIndex(),handlename,member,lastval));
 
-				::VSLib.Timers.AddTimerByName(Constants.TimerNames.WatchNetPropScriptHandle+member+">"+entlooked.GetIndex(),checksec,false,WatchNetPropMain,argtable)
+				::VSLib.Timers.AddTimerByName(Constants.TimerNames.WatchNetPropScriptHandle+member+">"+entlooked.GetIndex(),checksec,true,WatchNetPropMain,argtable)
 			}
 		}
 		return;

@@ -116,37 +116,37 @@
         RestoreModelsOnJoin =
         {
             Value = true
-            Comment = "// Restore model from last chapter"
+            Comment = "// true: Allow keeping models unchanged between chapters/resets, false: Don't allow restoring original model between chapters/resets"
         }
         IgnoreDeletingPlayers = 	
         {
             Value = true
-            Comment = "// Ignore when \"kill\" or \"becomeragdoll\" inputs fired by a player on another player"
+            Comment = "// true: Ignore \"kill\" or \"becomeragdoll\" inputs fired by a player on another player, false: (NOT RECOMMENDED) Allow kicking players with \"kill\" and \"becomeragdoll\" inputs"
         }
         AllowCustomResponses = 	
         {
             Value = true
-            Comment = "// Allow custom sequences and custom responses"
+            Comment = "// true: Custom responses allowed(round start talks, shoving response etc.), false: Disable custom responses"
         }
         AllowCustomSharing =  	
         {
             Value = true
-            Comment = "// Allow sharing of packs and grenades by holding R and rightclick"
+            Comment = "// true: Allow sharing of packs and grenades by holding R and rightclick, false: Don't allow sharing grenades and packs for players"
         }
         AllowAutomatedSharing = 	
         {
             Value = true
-            Comment = "// Allow bots to share their packs and grenades"
+            Comment = "// true: Allow bots to share their packs and grenades for bots, false: Don't allow bots sharing the packs/grenades they pick up"
         }
         LastLootThinkState = 	
         {
             Value = true
-            Comment = "// State of the bots thinking about looking for grenades/packs and sharing "
+            Comment = "// true: Make bots start looking for grenades and packs at the round start, false: Use default bot abilities and stop them from looting and sharing"
         }
         IgnoreSpeakerClass = 	
         {
             Value = true
-            Comment = "// Ignore entity's class to be considered as a \"speaker\""
+            Comment = "// true: Use any object as a \"speaker\" for a microphone, false: Force entity's class to be \"info_target\" to be used as a \"speaker\""
         }
     }
 
@@ -171,7 +171,7 @@
             GrabRadiusTolerance = 
             {
                 Value = 30
-                Comment =  "// Radius within the aimed location to grab closest if not aiming at an object"
+                Comment =  "// Radius around the aimed location to grab closest if not aiming at an object"
             }
             
             SurvivorSettings =
@@ -189,7 +189,7 @@
                 }
                 ValueComments =
                 {
-                    entid = "// DON'T CHANGE THIS"
+                    entid = "// DON'T CHANGE THIS, gets updated with index of the object being held"
                     yeetSpeed = "// Yeeting speed"
                     yeetPitch = "// Pitch of the yeeting relative to player, below zero to throw higher"
                     grabRange =  "// Maximum range for grabbing"
@@ -214,7 +214,8 @@
                     prop_vehicle = true,
                     prop_car_alarm = true,
                     prop_door_rotating = true,
-                    prop_door_rotating_checkpoint = true
+                    prop_door_rotating_checkpoint = true,
+					commentary_dummy = true
                 }
                 Comment = "// Class names available for grab; remove any class you don't want grabbed, or add if you want (some classes may crash the game)"
             }
@@ -245,7 +246,7 @@
                     entid = "// DON'T CHANGE THIS"
                     wearAttachPos = "// Default attachment point, one of the above"
                     wearAbove = "// Extra height above the given attachment point"
-                    collisiongroup = "// DON'T CHANGE UNLESS YOU KNOW THE COLLISION GROUP CONSTANTS. Collision group of the hat"
+                    collisiongroup = "// Collision group of the hat, check m_CollisionGroup netprops of the objects"
                 }
                 Comment = "// Default settings for all survivors"
             }
@@ -341,7 +342,7 @@
                                     val = "// Height to use with given flags"
 									min = "// Minimum value for random numbers range to use with flags: HEIGHT_RANDOM_GIVEN and HEIGHT_ADD_RANDOM_GIVEN"
 									max = "// Maximum value for random numbers range to use with flags: HEIGHT_RANDOM_GIVEN and HEIGHT_ADD_RANDOM_GIVEN"
-                                    flags = @"// Flags to use with the value, can be combined with ""|"" character.
+                                    flags = @"// Flags to use with the values in this table, can be combined with ""|"" character.
 						// Flags and explanations:
 						// 	HEIGHT_NO_ADDITION		No changes, ignore all flags, origin at aimed point
 						// 	HEIGHT_EYELEVEL		Origin raised to eye height
@@ -395,7 +396,7 @@
                                     val = "// Angles to use with given flags. Formatted as \"Pitch Yaw Roll\" in degrees"
 									min = "// Minimum value for random numbers range to use with flags: ANGLE_RANDOM_GIVEN and ANGLE_ADD_RANDOM_GIVEN"
 									max = "// Maximum value for random numbers range to use with flags: ANGLE_RANDOM_GIVEN and ANGLE_ADD_RANDOM_GIVEN"
-                                    flags = @"// Flags to use with the value, can be combined with ""|"" character.
+                                    flags = @"// Flags to use with the values in this table, can be combined with ""|"" character.
 						// Flags and explanations:
 						// 	ANGLE_NO_ADDITION		No changes, ignore all flags, QAngle(0,0,0) = ""0 0 0""
 						// 	ANGLE_USE_VAL		Use whatever angle is given in ""val""
@@ -462,7 +463,7 @@
                                     val = "// Height to use with given flags"
 									min = "// Minimum value for random numbers range to use with flags: HEIGHT_RANDOM_GIVEN and HEIGHT_ADD_RANDOM_GIVEN"
 									max = "// Maximum value for random numbers range to use with flags: HEIGHT_RANDOM_GIVEN and HEIGHT_ADD_RANDOM_GIVEN"
-                                    flags = "// Flags to use with the value, can be combined with \"|\" character. Check explanations above"
+                                    flags = "// Flags to use with the values in this table, can be combined with \"|\" character. Check explanations above"
                                 }
                                 Comment = "// Spawn height"
                             }
@@ -481,7 +482,7 @@
                                     val = "// Angles to use with given flags. Formatted as \"Pitch Yaw Roll\" in degrees"
 									min = "// Minimum value for random numbers range to use with flags: ANGLE_RANDOM_GIVEN and ANGLE_ADD_RANDOM_GIVEN"
 									max = "// Maximum value for random numbers range to use with flags: ANGLE_RANDOM_GIVEN and ANGLE_ADD_RANDOM_GIVEN"
-                                    flags = "// Flags to use with the value, can be combined with \"|\" character. Check explanations above"
+                                    flags = "// Flags to use with the values in this table, can be combined with \"|\" character. Check explanations above"
                                 }
                                 Comment = "// Spawn angles"
                             }
@@ -505,7 +506,7 @@
                                     val = "// Height to use with given flags"
 									min = "// Minimum value for random numbers range to use with flags: HEIGHT_RANDOM_GIVEN and HEIGHT_ADD_RANDOM_GIVEN"
 									max = "// Maximum value for random numbers range to use with flags: HEIGHT_RANDOM_GIVEN and HEIGHT_ADD_RANDOM_GIVEN"
-                                    flags = "// Flags to use with the value, can be combined with \"|\" character. Check explanations above"
+                                    flags = "// Flags to use with the values in this table, can be combined with \"|\" character. Check explanations above"
                                 }
                                 Comment = "// Spawn height"
                             }
@@ -524,7 +525,7 @@
                                     val = "// Angles to use with given flags. Formatted as \"Pitch Yaw Roll\" in degrees"
 									min = "// Minimum value for random numbers range to use with flags: ANGLE_RANDOM_GIVEN and ANGLE_ADD_RANDOM_GIVEN"
 									max = "// Maximum value for random numbers range to use with flags: ANGLE_RANDOM_GIVEN and ANGLE_ADD_RANDOM_GIVEN"
-                                    flags = "// Flags to use with the value, can be combined with \"|\" character. Check explanations above"
+                                    flags = "// Flags to use with the values in this table, can be combined with \"|\" character. Check explanations above"
                                 }
                                 Comment = "// Spawn angles"
                             }
@@ -533,11 +534,11 @@
                 }
                 ValueComments =
                 {
-                    dynamic = "// Dynamic class props"	
+                    dynamic = "// Dynamic class props, objects which cant move but be animated"	
                     
-                    physics = "// Physics class props"		
+                    physics = "// Physics class props, objects with physics simulation enabled"		
                    
-                    ragdoll = "// Ragdoll class props"		  
+                    ragdoll = "// Ragdoll class props, all ragdoll objects"		  
                 }
                 Comment = "// Default extra spawn settings for props for all survivors"
             }
@@ -577,7 +578,7 @@
         
         ModelPreferences =
         {
-			Title = "\t\t/// Model keeping state"
+			Title = "\t\t/// Model keeping state for all players, value gets repeated for all characters"
             State = 
 			{
 				Value = true
@@ -640,7 +641,7 @@
 				{
 					_rocks = "// Default meteor models to pick randomly from"
 					_chunks = "// Default smaller meteor chunk models"
-					_custom = "// List of custom model paths to use with meteor shower setting \"meteormodelpick\" values 1, 2 and 3. RANDOM_CUSTOM = 1, FIRST_CUSTOM = 2, LAST_CUSTOM = 3"
+					_custom = "// List of custom model paths to use with meteor shower setting \"meteormodelpick\" values 1 = RANDOM_CUSTOM , 2 = FIRST_CUSTOM and 3 = LAST_CUSTOM"
 				}
                 Comment = "// Models used for meteor rocks and chunks, add or remove any models"
             }
@@ -657,8 +658,14 @@
 				rockpushspeed = 900,                 // Speed of rock hit launching players
 				raise = 300,                         // Speed (direction normal to ground) to push players up to help launching
 				friction = 0.01,                     // Friction scale to help launch effect, causes sliding
-				randomized = false,                  // true: random rock models, false: default rock model
-				randomized_spawn_prop_after = true   // (Requires randomized=true) true: Keep random model after hit, false: Destroy random model after hit
+				randomized = false,                  // true: random rock models, false: default rock model, used with modelpick = 0
+				mass_scale = 8,						 // Scale of mass to apply to random models
+				rockspawnheight = 50				 // Additional height to add to rock's spawn point, equal to height from ground
+				spawn_prop_after = true,   			// true: Keep rock after hit(EXCEPT DEFAULT ROCK), false: Destroy rock after hit
+				modelspecific = "models/survivors/survivor_coach.mdl"	// Specific model name to use for rocks, used with modelpick = 1
+				custommodels = []					// List of models to pick from randomly, used with modelpick = 2
+				modelpick = 0						// 0: Use randomized if enabled otherwise default rock model, 1: Use given model in modelspecific, 2: Pick random models from custommodels list
+				modelchangedelay = 2.3				// BE CAREFUL CHANGING THIS VALUE, time in seconds to wait after rock spawns to change it's model
 			}
             ValueComments =
 			{
@@ -668,7 +675,13 @@
 				raise = "// Speed (direction normal to ground) to push players up to help launching"
 				friction = "// Friction scale to help launch effect, causes sliding"
 				randomized = "// true: random rock models, false: default rock model"
-				randomized_spawn_prop_after = "// (Requires randomized=true) true: Keep random model after hit, false: Destroy random model after hit"
+				mass_scale = "// Scale of mass to apply to random models"
+				rockspawnheight = "// Additional height to add to rock's spawn point, equal to height from ground"
+				spawn_prop_after =  "// true: Keep rock after hit(EXCEPT DEFAULT ROCK), false: Destroy rock after hit"
+				modelspecific = "// Specific model name to use for rocks, used with modelpick = 1"	
+				custommodels = "// List of models to pick from randomly, used with modelpick = 2"	
+				modelpick = "// 0: Use randomized if enabled otherwise default rock model, 1: Use given model in modelspecific, 2: Pick random models from custommodels list"	
+				modelchangedelay = "// BE CAREFUL CHANGING THIS VALUE, time in seconds to wait after rock spawns to change it's model"	
 			}
         }
     }
@@ -998,7 +1011,29 @@
 		local s = ""
 		foreach(setting,val in maintbl.Value)
 		{
-			s += "\t\t\t" + setting + " = " + ((typeof val == "string") ? "\""+val+"\"": val) + "\t" + maintbl.ValueComments[setting] + "\n\r"
+			if(typeof val == "array")
+			{
+				s += "\t\t\t" + setting 
+				if(val.len() == 0)
+					s += " = []\n\r"
+				else
+				{
+					s += " = \n\r\t\t\t\t[\n\r"
+					local len = val.len()
+					for(local i=0;i<len;i++)
+					{
+						s += "\t\t\t\t\t\"" + val[i] + "\""
+						if(i != len-1)
+							s += ","
+						s += "\n\r"
+					}
+					s += "\t\t\t\t]\n\r"
+				}
+			}
+			else
+			{
+				s += "\t\t\t" + setting + " = " + ((typeof val == "string") ? "\""+val+"\"": val) + "\t" + maintbl.ValueComments[setting] + "\n\r"
+			}
 		}
 
 		return s;
@@ -1010,8 +1045,31 @@
 
 		local s = ""
 		foreach(setting,val in maintbl.Value)
-		{
-			s += "\t\t\t" + setting + " = " + ((typeof maintblref[setting] == "string") ? "\""+maintblref[setting]+"\"": maintblref[setting]) + "\t" + maintbl.ValueComments[setting] + "\n\r"
+		{	
+			if(typeof maintblref[setting] == "array")
+			{
+				s += "\t\t\t" + setting 
+				if(maintblref[setting].len() == 0)
+					s += " = []\n\r"
+				else
+				{
+					s += " = \n\r\t\t\t\t[\n\r"
+					local len = maintblref[setting].len()
+					for(local i=0;i<len;i++)
+					{
+						s += "\t\t\t\t\t\"" + maintblref[setting][i] + "\""
+						if(i != len-1)
+							s += ","
+						s += "\n\r"
+					}
+					s += "\t\t\t\t]\n\r"
+				}
+			}
+			else
+			{
+				s += "\t\t\t" + setting + " = " + ((typeof maintblref[setting] == "string") ? "\""+maintblref[setting]+"\"": maintblref[setting]) + "\t" + maintbl.ValueComments[setting] + "\n\r"
+			}
+			
 		}
 
 		return s;
@@ -1239,7 +1297,7 @@
 		return (typeof tbl[key]) == typ;
 	}
 
-	function ValidateSimilarTyp(tbl,org,key)
+	function ValidateSimilarTyp(tbl,org,key,arrtyp="string")
 	{
 		local given = typeof tbl[key]
 		local typ = typeof org[key]
@@ -1250,6 +1308,26 @@
 			{
 				return (given == "integer") || (given == "float")
 			}
+			case "array":
+			{	
+				if(given != "array")
+				{
+					return false;
+				}
+				local cleanarr = []
+				local len = tbl[key].len();
+				for(local i=0;i<len;i++)
+				{	
+					if(typeof tbl[key][i] != arrtyp)	// Remove wrong types in array
+					{
+						continue; 
+					}
+					cleanarr.append(tbl[key][i]);
+				}
+				local res = cleanarr.len() == tbl[key].len();
+				tbl[key] <- cleanarr;
+				return res;
+			}
 			default:
 			{
 				return given == typ
@@ -1259,7 +1337,7 @@
 
 	local fixapplied = [];
 
-	local correcttbl = ::Constants.GetFullDefaultTable()
+	local correcttbl = ::Constants.GetFullDefaultTable(null,false,false,true)
 	
 	// Basics
 	if(!ValidateTbl(tbl,"Basics"))

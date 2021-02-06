@@ -328,11 +328,11 @@
             {
                 keymask = 0
                 forward = Vector(0,0,0)
-                speed = 400.0
-                reversescale = -4
-                speedscale = 2.75
-                overridefriction = 0.05
-                turnpertick = 7
+                speed = 575.0
+                reversescale = -0.12
+                speedscale = 3
+                overridefriction = 0.03
+                turnpertick = 8
                 listenerid = -1
             };
             basetbl._CurrentlyTradingItems[spec] <- false;
