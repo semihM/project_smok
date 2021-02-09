@@ -3,6 +3,46 @@ from helperclasses.entities import flag,keyvalpair,tempref,errlis,categorycollec
     NO_DESCRIPTION, NO_KEYNAME, NO_TYPE, NO_EXTRA, NO_IMG_ALT, PREDICTED_FLAG_VAL
 import re
 
+# TO-DO: Keep reference and other links
+
+mainelementtag = "div"
+mainelementclass = "mw-parser-output"
+contentheaderclass = "mw-headline"
+collapsed_desc_class = "mw-collapsible"
+collapsed_desc_class_inner = "mw-collapsible-content"
+descriptiontag = "p"
+
+navstrtyp = "<class 'bs4.element.NavigableString'>"
+tagtyp = "<class 'bs4.element.NavigableString'>"
+
+keyvalreg = re.compile("(.*)\((.+)\)\s+<(.+)>\s*(.*)")
+backupkvreg = re.compile("(.*)\s+<(.+)>\s*(.*)")
+keyval_descdictpattern = re.compile("(\d+)\s*(?:\.|\:)\s*(.*)")
+
+cattbl = mtbl.categories
+
+# Debug
+enable_cat = False
+enable_limit = False
+enable_index = False
+
+LIMITCALL = 1
+testindex = 3
+
+cattest = "weapon"
+if enable_cat:
+    cattbl = dict()
+    cattbl[cattest] = mtbl.categories[cattest]
+
+print_desc = False
+print_flags = False
+print_kvs = False
+
+print_sqt = False
+
+print_err = True
+#######
+
 def getTextFromTag(tag):
     s = ""
     for ch in tag.children:
@@ -25,6 +65,7 @@ def getTextFromChildrenTag(ch):
     else:
         return getTextFromTag(ch)
 
+# TO-DO: Add keyval categories
 def __handlekvpairtag(descch,foundkvs,desc_continues,ent,errorlist=errlis()):
     while descch.ref is not None: #dl->dt,dd
         typ = str(type(descch.ref))
@@ -34,7 +75,7 @@ def __handlekvpairtag(descch,foundkvs,desc_continues,ent,errorlist=errlis()):
             descch.ref = descch.ref.find_next_sibling()
             continue
 
-        if descch.ref.name == "dt":
+        if descch.ref.name == "dt" or descch.ref.name == "b":
             fulltxt = getTextFromChildrenTag(descch.ref)
             desc_continues = False
             #print(fulltxt)
@@ -211,13 +252,21 @@ def readflags(desctagtrail,flagcategory,flags,ent,errorlist=errlis()):
         else:
             desc_continues = True
             while nextc.name != "ul":
-                fulltxt = getTextFromChildrenTag(nextc)
+                fulltxt = getTextFromChildrenTag(nextc).strip()
                 #print(nextc.name + " -> " + fulltxt)
                 if nextc.name == "h2":
                     desctagtrail.ref = nextc
                     break
                 elif nextc.name == "p":
-                    flagcategory = fulltxt.strip()
+                    flagcategory = fulltxt
+                    desc_continues = False
+                elif nextc.name == "dl":
+                    if len(flags) == 0:
+                        ent.flagnotestypes.append("Details:")
+                        ent.flagnotesvals.append(fulltxt)
+                    else:    
+                        flags[-1].notetypes.append("Details:")
+                        flags[-1].notevals.append(fulltxt)
                     desc_continues = False
                 elif nextc.name == "strong":
                     if len(flags) == 0:
@@ -255,44 +304,6 @@ def readflags(desctagtrail,flagcategory,flags,ent,errorlist=errlis()):
 
         desctagtrail.ref = nextc
     return flags
-
-mainelementtag = "div"
-mainelementclass = "mw-parser-output"
-contentheaderclass = "mw-headline"
-collapsed_desc_class = "mw-collapsible"
-collapsed_desc_class_inner = "mw-collapsible-content"
-descriptiontag = "p"
-
-navstrtyp = "<class 'bs4.element.NavigableString'>"
-tagtyp = "<class 'bs4.element.NavigableString'>"
-
-keyvalreg = re.compile("(.*)\((.+)\)\s+<(.+)>\s*(.*)")
-backupkvreg = re.compile("(.*)\s+<(.+)>\s*(.*)")
-keyval_descdictpattern = re.compile("(\d+)\s*(?:\.|\:)\s*(.*)")
-
-cattbl = mtbl.categories
-
-# Debug
-enable_cat = False
-enable_limit = False
-enable_index = False
-
-LIMITCALL = 1
-testindex = 3
-
-cattest = "func"
-if enable_cat:
-    cattbl = dict()
-    cattbl[cattest] = mtbl.categories[cattest]
-
-print_desc = False
-print_flags = False
-print_kvs = False
-
-print_sqt = False
-
-print_err = True
-#######
 
 errors = errlis()
 

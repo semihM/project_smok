@@ -46,7 +46,7 @@ class flag:
         catstr = ""
         if self.category != "":
             catstr = f" ({self.category})"
-        return str(self.val) + catstr +": " + self.description + notestr
+        return str(self.val) + catstr +": " + self.description + ". " + notestr
 
 class keyvalpair:
     def __init__(self,lis,desc=""):
@@ -199,7 +199,7 @@ class entity:
             else:
                 s += prefix + "\t\"" + kv.key + "\":\n"
             s += prefix + "\t{\n"
-            s += prefix + "\t\ttype = \"" + escapes(kv.typ) + "\"\n"
+            s += prefix + "\t\ttypename = \"" + escapes(kv.typ) + "\"\n"
             s += prefix + "\t\tshortinfo = \"" + escapes(kv.shortinfo) + "\"\n"
             s += prefix + "\t\textra = \"" + escapes(kv.extra) + "\"\n" 
             s += prefix + "\t\tnotes = \"" + escapes(kv.getnotes()) + "\"\n" 
@@ -258,7 +258,7 @@ class categorycollection:
             keyvalnotes
             keyvalues /
                 +key /
-                    type
+                    typename
                     shortinfo
                     extra
                     notes
