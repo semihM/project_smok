@@ -18,6 +18,8 @@ IncludeScript("Resource_tables/Particlenames");
 IncludeScript("Resource_tables/Modelpaths");
 // Netprop tables
 IncludeScript("Resource_tables/Netproptables");
+// Entity detail tables
+IncludeScript("Resource_tables/EntityDetailTables");
 
 // Include the Message Class
 IncludeScript("Project_smok/Messages");
