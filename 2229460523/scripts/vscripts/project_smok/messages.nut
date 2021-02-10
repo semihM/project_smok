@@ -531,6 +531,38 @@
                 }
             }
 
+            ModelSaving = 
+            {
+                State = function(newstate)
+                {
+                    return "Random model saving is now " + ( newstate ? COLOR_BRIGHT_GREEN + "enabled" + COLOR_DEFAULT:COLOR_ORANGE + "disabled" + COLOR_DEFAULT);
+                }
+
+                Success = function(classname,modelname)
+                {
+                    return "Saved model " + COLOR_OLIVE_GREEN + modelname + COLOR_DEFAULT + " as " + COLOR_ORANGE + classname;
+                }
+
+                NoneSaved = function(name)
+                {
+                    return "No saved model was found for " + COLOR_ORANGE + name;
+                }
+
+                SpawnSaved = function(id,classname,modelname)
+                {
+                    return "Spawned "+ COLOR_BRIGHT_GREEN + "#" + id + COLOR_ORANGE + classname + COLOR_DEFAULT + ", model->" + COLOR_OLIVE_GREEN + modelname;
+                }
+                FailureSpawn = function(classname,modelname)
+                {
+                    return "Couldn't spawn model " + COLOR_OLIVE_GREEN + modelname + COLOR_DEFAULT + " as " + COLOR_ORANGE + classname;
+                }
+
+                Information = function(mdltbl)
+                {
+                    return "Class" + COLOR_BRIGHT_GREEN + "->" + COLOR_DEFAULT + mdltbl.classname + ", Model" + COLOR_BRIGHT_GREEN + "->" + COLOR_DEFAULT + mdltbl.modelname;
+                }
+            }
+
             LineSaving =
             {    
                 State = function(newstate)

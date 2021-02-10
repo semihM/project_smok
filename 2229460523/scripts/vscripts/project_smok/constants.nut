@@ -96,7 +96,7 @@
 // >>> This file gets compiled directly within the project_smok, so be careful with the formatting and what is written here!
 // >>> Errors and fixes done by the add-on will be reported to console, so check the console if you've made a change and wheter it caused a fix to be used
 //
-// >>> Values with comment DON'T CHANGE THIS are expected to stay same, they are critical!
+// >>> Values with comment DON'T CHANGE THIS are expected to stay same, they are critical and will generally be changing during the game!
 // >>> No key-value pair should be removed if there isn't a comment about saying otherwise!
 // >>> Format follows ""key = value"" pairings. Example pair: RestoreModelsOnJoin = true
 // !!!!!!!
@@ -217,7 +217,15 @@
                     prop_door_rotating_checkpoint = true,
 					commentary_dummy = true
                 }
-                Comment = "// Class names available for grab; remove any class you don't want grabbed, or add if you want (some classes may crash the game)"
+                Comment = @"
+			// Class names available for grab, format: ""class_name = is_enabled""
+			// >>> To enable/disable classes, change value on the right side to true/false
+			// >>> To add new classes, add a new key-value pair following the format described above: my_class_name = true
+			// Classes written here by defaults can't be removed, they will get re-written if they are removed 
+			// Class names SHOULD NOT be repeated, when repeated, latest pair will overwrite the previous one(s) and dupes will be removed after any fix gets applied
+			// Weapon spawners are enabled by default (props with 'weapon_' in their class name), you can disable any of them by adding them here:
+			// 		Example: Disable grabbing the ammo spawners
+			//			weapon_ammo_spawn = false" 
             }
         }
 
@@ -252,6 +260,29 @@
             }
         }
 
+        ModelSaving =
+        {
+            Title = "\t\t/// Model saving"
+            State = 
+            {
+                Value = true
+                Comment = "// true: save last randomly spawned prop's class and model, false: don't save last random model"
+            }    	
+            SurvivorSettings =  
+            {
+                Value = 
+                {
+                    classname="",
+                    model=""
+                }
+                ValueComments =
+                {
+                    classname = "// Class name of the prop to use the model, example: \"prop_dynamic\""
+                    model = "// Model path, example: \"models/props_interiors/tv.mdl\""
+                }
+                Comment = "// Default saved model and classname for all survivors to spawn a prop"
+            }
+        }
         
         LineSaving =
         {
@@ -578,11 +609,11 @@
         
         ModelPreferences =
         {
-			Title = "\t\t/// Model keeping state for all players, value gets repeated for all characters"
+			Title = "\t\t/// Player models' keeping state for all players, value gets repeated for all characters"
             State = 
 			{
 				Value = true
-				Comment = "// true: restore last model for the next chapter/reset, false: restore original model after the chapter/reset"
+				Comment = "// true: restore last player model for the next chapter/reset, false: restore original player model after the chapter/reset"
 			}
         }
 
@@ -690,6 +721,7 @@
 /********************************\
 *  STRINGIFYING DEFAULT SETTINGS  *
 \********************************/
+// TO-DO: Shorten these, mostly repetitive
 ::__SingleValWithComment <- function(tbl,key,tblref=null)
 {
 	if(tblref == null)
@@ -775,10 +807,18 @@
 		}
 		s += "\t\t\t}\n\r"
 
-		s += "\t\t\tValidGrabClasses = " + maintbl.ValidGrabClasses.Comment + "\n\r\t\t\t{\n\r"
+		local customizedtbl = ::VSLib.Utils.TableCopy(maintbl.ValidGrabClasses.Value)
 		foreach(cls,val in maintblref.ValidGrabClasses)
 		{
-			s += "\t\t\t\t" + cls + " = true\n\r"
+			if(cls in customizedtbl)
+				customizedtbl[cls] = val
+			else
+				customizedtbl[cls] <- val
+		}
+		s += "\t\t\tValidGrabClasses = " + maintbl.ValidGrabClasses.Comment + "\n\r\t\t\t{\n\r"
+		foreach(cls,val in customizedtbl)
+		{
+			s += "\t\t\t\t" + cls + " = "+(val ? "true" : "false")+"\n\r"
 		}
 		s += "\t\t\t}\n\r"
 
@@ -838,6 +878,40 @@
 	{
 		local maintbl = ::Constants.DefaultsDetailed.Tables.LineSaving;
 		local maintblref = tblref.Tables.LineSaving
+
+		local s = __SingleValWithComment(maintbl,"State",maintblref) + "\n\r";
+
+		s += "\t\t\tSurvivorSettings = " + maintbl.SurvivorSettings.Comment + "\n\r\t\t\t{\n\r"
+		foreach(setting,val in maintbl.SurvivorSettings.Value)
+		{
+			s += "\t\t\t\t" + setting + " = " + ((typeof maintblref.SurvivorSettings[setting] == "string") ? "\""+maintblref.SurvivorSettings[setting]+"\"": maintblref.SurvivorSettings[setting]) + "\t" + maintbl.SurvivorSettings.ValueComments[setting] + "\n\r"
+		}
+		s += "\t\t\t}\n\r"
+
+		return s;
+	}
+}
+::__StringifyModelSavingSettings <- function(tblref=null)
+{
+	if(tblref == null)
+	{
+		local maintbl = ::Constants.DefaultsDetailed.Tables.ModelSaving;
+
+		local s = __SingleValWithComment(maintbl,"State") + "\n\r";
+
+		s += "\t\t\tSurvivorSettings = " + maintbl.SurvivorSettings.Comment + "\n\r\t\t\t{\n\r"
+		foreach(setting,val in maintbl.SurvivorSettings.Value)
+		{
+			s += "\t\t\t\t" + setting + " = " + ((typeof val == "string") ? "\""+val+"\"": val) + "\t" + maintbl.SurvivorSettings.ValueComments[setting] + "\n\r"
+		}
+		s += "\t\t\t}\n\r"
+
+		return s;
+	}
+	else
+	{
+		local maintbl = ::Constants.DefaultsDetailed.Tables.ModelSaving;
+		local maintblref = tblref.Tables.ModelSaving
 
 		local s = __SingleValWithComment(maintbl,"State",maintblref) + "\n\r";
 
@@ -1198,6 +1272,11 @@
 		+ __StringifyHatsSettings(tbl)
 		+ "\n\r\t\t}\n\r"
 
+		+ Constants.DefaultsDetailed.Tables.ModelSaving.Title + "\n\r\t\t"
+		+ "ModelSaving =\n\r\t\t{\n\r"
+		+ __StringifyModelSavingSettings(tbl)
+		+ "\n\r\t\t}\n\r"
+
 		+ Constants.DefaultsDetailed.Tables.LineSaving.Title + "\n\r\t\t"
 		+ "LineSaving =\n\r\t\t{\n\r"
 		+ __StringifyLineSavingSettings(tbl)
@@ -1271,7 +1350,6 @@
 	return tbl;
 }
 
-// TO-DO : Report what changes were made
 ::Constants.ValidateDefaultsTable <- function(tbl)
 {
 	function ValidateTbl(tbl,key,typ="table")
@@ -1417,6 +1495,17 @@
 				fixapplied.append("Re-create default Tables.GrabYeet.ValidGrabClasses")
 				tbl.Tables.GrabYeet.ValidGrabClasses <- correcttbl.Tables.GrabYeet.ValidGrabClasses
 			}
+			else
+			{
+				foreach(setting,val in correcttbl.Tables.GrabYeet.ValidGrabClasses)
+				{
+					if(!ValidateTbl(tbl.Tables.GrabYeet.ValidGrabClasses,setting,"bool"))
+					{
+						fixapplied.append("Use default Tables.GrabYeet.ValidGrabClasses."+setting)
+						tbl.Tables.GrabYeet.ValidGrabClasses[setting] <- correcttbl.Tables.GrabYeet.ValidGrabClasses[setting]
+					}
+				}
+			}
 		}
 
 		// Hats
@@ -1446,6 +1535,39 @@
 			}
 		}
 		
+		// Model saving
+		if(!ValidateTbl(tbl.Tables,"ModelSaving"))
+		{
+			fixapplied.append("Re-create default Tables.ModelSaving")
+			tbl.Tables.ModelSaving <- correcttbl.Tables.ModelSaving
+		}
+		else
+		{
+			if(!ValidateTbl(tbl.Tables.ModelSaving,"State","bool"))
+			{
+				fixapplied.append("Re-create default Tables.ModelSaving.State")
+				tbl.Tables.ModelSaving.State <- correcttbl.Tables.ModelSaving.State
+			}
+
+			if(!ValidateTbl(tbl.Tables.ModelSaving,"SurvivorSettings"))
+			{
+				fixapplied.append("Re-create default Tables.ModelSaving.SurvivorSettings")
+				tbl.Tables.ModelSaving.SurvivorSettings <- correcttbl.Tables.ModelSaving.SurvivorSettings
+			}
+			else
+			{
+				foreach(setting,val in correcttbl.Tables.ModelSaving.SurvivorSettings)
+				{
+					if(!ValidateTbl(tbl.Tables.ModelSaving.SurvivorSettings,setting,false) 
+					|| !ValidateSimilarTyp(tbl.Tables.ModelSaving.SurvivorSettings,correcttbl.Tables.ModelSaving.SurvivorSettings,setting))
+					{
+						fixapplied.append("Use default Tables.ModelSaving.SurvivorSettings."+setting)
+						tbl.Tables.ModelSaving.SurvivorSettings[setting] <- correcttbl.Tables.ModelSaving.SurvivorSettings[setting]
+					}
+				}
+			}
+		}
+
 		// Line saving
 		if(!ValidateTbl(tbl.Tables,"LineSaving"))
 		{
@@ -1666,7 +1788,7 @@
 	if(fixapplied.len() != 0)
 	{
 		printl("---------------------------------------------------------")
-		printl("[Default-Fix-List] Defaults table fixed following values:")
+		printl("[Default-Fix-List] Defaults table has had the following fixes applied:")
 		foreach(i,fix in fixapplied)
 		{
 			printl("\t[*] "+fix)

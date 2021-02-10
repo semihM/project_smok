@@ -154,6 +154,14 @@
     tbl._savedLine <- AdminVars.RepeatTableForSurvivors(::Constants.Defaults.Tables.LineSaving.SurvivorSettings);
 }
 
+// Random model
+::AdminVars.SetDefaultModelSaveSettings <- function(tbl)
+{
+    tbl._saveLastModel <- AdminVars.RepeatValueForSurvivors(::Constants.Defaults.Tables.ModelSaving.State);
+
+    tbl._savedModel <- AdminVars.RepeatTableForSurvivors(::Constants.Defaults.Tables.ModelSaving.SurvivorSettings);
+}
+
 // Particle stuff
 ::AdminVars.SetDefaultParticleSettings <- function(tbl)
 {
@@ -285,6 +293,11 @@
 
 		tbl._attachTargetedLocation[spec] <- ::Constants.Defaults.Tables.Particles.AttachAtAimedPointState;
 
+        //Random model
+		tbl._savedModel[spec] <- ::VSLib.Utils.TableCopy(::Constants.Defaults.Tables.ModelSaving.SurvivorSettings)
+		
+		tbl._saveLastModel[spec] <- ::Constants.Defaults.Tables.ModelSaving.State;
+
         //Lines
 		tbl._savedLine[spec] <- ::VSLib.Utils.TableCopy(::Constants.Defaults.Tables.LineSaving.SurvivorSettings)
 		
@@ -363,6 +376,8 @@
 
     tbl.SetDefaultGrabYeetSettings <- ref.SetDefaultGrabYeetSettings;
 
+    tbl.SetDefaultModelSaveSettings <- ref.SetDefaultModelSaveSettings;
+
     tbl.SetDefaultHatSettings <- ref.SetDefaultHatSettings;
     tbl.SetDefaultModelSettings <- ref.SetDefaultModelSettings;
 
@@ -396,6 +411,8 @@
 ::AdminVars.SetDefaultExplosionSettings(::AdminVars);
 
 ::AdminVars.SetDefaultGrabYeetSettings(::AdminVars);
+
+::AdminVars.SetDefaultModelSaveSettings(::AdminVars);
 
 ::AdminVars.SetDefaultHatSettings(::AdminVars);
 ::AdminVars.SetDefaultModelSettings(::AdminVars);

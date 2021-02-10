@@ -713,6 +713,18 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 		AdminSystem.Vars._savedLine.coach <- Utils.TableCopy(AdminSystem.Vars._savedLine.Coach);
 		delete AdminSystem.Vars._savedLine.Coach;
 	}
+	if("Coach" in AdminSystem.Vars._saveLastModel)
+	{
+		//printl("[Custom-Fix] Applying fixes to LastModel table...");
+		AdminSystem.Vars._saveLastModel.coach <- AdminSystem.Vars._saveLastModel.Coach;
+		delete AdminSystem.Vars._saveLastModel.Coach;
+	}
+	if("Coach" in AdminSystem.Vars._savedModel)
+	{
+		//printl("[Custom-Fix] Applying fixes to SavedModel table...");
+		AdminSystem.Vars._savedModel.coach <- Utils.TableCopy(AdminSystem.Vars._savedModel.Coach);
+		delete AdminSystem.Vars._savedModel.Coach;
+	}
 	if("Coach" in AdminSystem.Vars._savedParticle)
 	{
 		//printl("[Custom-Fix] Applying fixes to SavedParticle table...");
@@ -819,6 +831,11 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			lookup = "boolean"
 			blackliststr = ""
 		}
+		_saveLastModel = 
+		{
+			lookup = "boolean"
+			blackliststr = ""
+		}
 		_attachTargetedLocation = 
 		{
 			lookup = "boolean"
@@ -865,6 +882,21 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 				{
 					AdminSystem.Vars._prop_spawn_settings[name][clsname][setting].flags <- valtbl.FLAGS
 					delete AdminSystem.Vars._prop_spawn_settings[name][clsname][setting].FLAGS
+				}
+			}
+		}
+	}
+	// Fix model saving tables, restores "model" as "Model"... even smarter
+	foreach(name,cstbl in AdminSystem.Vars._savedModel)
+	{
+		foreach(clsname,vals in cstbl)
+		{
+			foreach(setting,valtbl in vals)
+			{
+				if("Model" in valtbl)
+				{
+					AdminSystem.Vars._prop_spawn_settings[name][clsname][setting].model <- valtbl.Model
+					delete AdminSystem.Vars._prop_spawn_settings[name][clsname][setting].Model
 				}
 			}
 		}
@@ -1631,6 +1663,26 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		case "attach_to_targeted_position":
 		{
 			AdminSystem.Attach_to_targeted_positionCmd(player, args);
+			break;
+		}
+		case "save_model":
+		{
+			AdminSystem.Save_modelCmd(player, args);
+			break;
+		}
+		case "random_model_save_state":
+		{
+			AdminSystem.Randommodel_save_lastCmd(player, args);
+			break;
+		}
+		case "display_saved_model":
+		{
+			AdminSystem.Display_saved_modelCmd(player, args);
+			break;
+		}
+		case "spawn_model_saved":
+		{
+			AdminSystem.Spawn_saved_modelCmd(player, args);
 			break;
 		}
 		case "randomparticle_save_state":
@@ -3152,9 +3204,20 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 		local entclass = looked.GetClassname();
 
-		if(!(entclass in AdminSystem.Vars._grabAvailable) || (entclass.find("weapon_") != null))
+		// Not in table, in the table but disabled
+		if(!(entclass in AdminSystem.Vars._grabAvailable))
+		{	
+			// It's not even a weapon spawn
+			if(entclass.find("weapon_") == null)
+				return
+		}
+		else if(!AdminSystem.Vars._grabAvailable[entclass])
+			return
+			
+		if(looked.GetModel().find("*") != null)
 			return;
-		else if(entclass.find("physics") != null || entclass == "prop_car_alarm") // physics entity
+
+		if(entclass.find("physics") != null || entclass == "prop_car_alarm") // physics entity
 		{
 			if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics")
 			{	
@@ -3214,10 +3277,21 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				continue;
 
 			local entclass = ent.GetClassname();
-
-			if(!(entclass in AdminSystem.Vars._grabAvailable) || (entclass.find("weapon_") != null))
+	
+			// Not in table, in the table but disabled
+			if(!(entclass in AdminSystem.Vars._grabAvailable))
+			{	
+				// It's not even a weapon spawn
+				if(entclass.find("weapon_") == null)
+					continue
+			}
+			else if(!AdminSystem.Vars._grabAvailable[entclass])
+				continue
+				
+			if(ent.GetModel().find("*") != null)
 				continue;
-			else if(entclass.find("physics") != null || entclass == "prop_car_alarm") // physics entity
+			
+			if(entclass.find("physics") != null || entclass == "prop_car_alarm") // physics entity
 			{
 				if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics")
 				{	
@@ -4558,6 +4632,12 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				angles=QAngle(0,0,0)
 			})
 		printl("New replica #"+replica.GetIndex())
+		player.Input("enableledgehang","")
+		local targetID = AdminSystem.GetID( player );
+		if ( targetID in ::AdminSystem.Vars.IsGodEnabled && ::AdminSystem.Vars.IsGodEnabled[targetID] )
+		{
+			AdminSystem.Vars.IsGodEnabled[targetID] <- false;
+		}
 		return;
 	}
 
@@ -4572,9 +4652,20 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	
 	// TO-DO: Maybe try with parenting
 	player.SetModel(lookedent.GetModel())
-	lookedent.Kill();
 	
+	local targetID = AdminSystem.GetID( player );
+	AdminSystem.Vars.IsGodEnabled[targetID] <- true;
+	foreach(s in Players.AliveSurvivors())
+	{
+		if(s.GetIndex() == lookedent.GetIndex())
+		{
+			AdminSystem._CreateKeyListenerCmd(player,args);
+			player.Input("disableledgehand","")
+			return
+		}
+	}
 	AdminSystem._CreateKeyListenerCmd(player,args);
+	lookedent.Kill();
 }
 
 /*
@@ -4590,8 +4681,8 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	local mask = tbl.keymask;
 	local turnangle = tbl.turnpertick;
 
-	ent.SetNetProp("m_stunTimer.m_duration",0.5);
-	ent.SetNetProp("m_stunTimer.m_timestamp",Time()+0.5);
+	ent.SetNetProp("m_stunTimer.m_duration",0.2);
+	ent.SetNetProp("m_stunTimer.m_timestamp",Time()+0.2);
 
 	if(mask == 0)
 		return;
@@ -4607,7 +4698,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		return;
 	}
 
-	ent.OverrideFriction(2.5,tbl.overridefriction)
 	// CANCEL LEFT+RIGHT
 	if((mask>>2) % 2 == 1 && (mask>>3) % 2 == 1)
 	{
@@ -4616,11 +4706,13 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 		if((mask>>1) % 2 == 1) // BACKWARD
 		{
+			ent.OverrideFriction(0.5,tbl.overridefriction)
 			pushvec = pushvec.Scale(tbl.reversescale);
 			ent.Push(pushvec);
 		}
 		else  // FORWARD
 		{
+			ent.OverrideFriction(1,tbl.overridefriction/2)
 			ent.Push(pushvec);
 		}
 	}
@@ -4629,6 +4721,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		// LEFT
 		if((mask>>2) % 2 == 1)
 		{
+			ent.OverrideFriction(0.5,tbl.overridefriction)
 			if((mask>>1) % 2 == 1) // BACKWARD LEFT
 			{
 				pushvec = pushvec.Scale(-1);
@@ -4650,6 +4743,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		// RIGHT
 		else if((mask>>3) % 2 == 1)
 		{	
+			ent.OverrideFriction(0.5,tbl.overridefriction)
 			if((mask>>1) % 2 == 1) // BACKWARD RIGHT
 			{
 				pushvec = pushvec.Scale(-1);
@@ -4670,12 +4764,16 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		}
 		else if((mask>>1) % 2 == 1) // BACKWARD
 		{
+			ent.OverrideFriction(0.5,tbl.overridefriction)
 			pushvec = pushvec.Scale(tbl.reversescale);
 			ent.Push(pushvec);
 		}
 		else // FORWARD
 		{
-			ent.Push(pushvec);
+			if((mask>>4) % 2 == 1)
+				ent.SetForwardVector(pushvec);
+			ent.OverrideFriction(1.5,tbl.overridefriction/2)
+			ent.Push(RotatePosition(Vector(0,0,0),QAngle(-8,0,0),pushvec));
 		}
 		
 	}
@@ -4703,10 +4801,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	{
 		keymask = 0
 		forward = Vector(0,0,0)
-		speed = 575.0
+		speed = 675.0
 		reversescale = -0.12
-		speedscale = 3
-		overridefriction = 0.03
+		speedscale = 4
+		overridefriction = 0.04
 		turnpertick = 8
 		listenerid = -1
 	}
@@ -7301,18 +7399,32 @@ function Notifications::OnLeaveSaferoom::_SpeakWhenLeftSaferoomCondition(ent,arg
 	if(!AdminSystem.Vars._CustomResponse[name]._SpeakWhenLeftSaferoom.enabled)
 		return;	
 	
+	local rnum = rand().tofloat()/RAND_MAX
+	//out(rnum)
 	// Add timer to ignore changes during map loading
-	if((rand().tofloat()/RAND_MAX) <= AdminSystem.Vars._CustomResponse[name]._SpeakWhenLeftSaferoom.prob && AdminSystem.Vars._CustomResponse[name]._SpeakWhenLeftSaferoom.call_amount == 0)
-		::VSLib.Timers.AddTimer(AdminSystem.Vars._CustomResponse[name]._SpeakWhenLeftSaferoom.startdelay, false, _SpeakWhenLeftSaferoomResult, {player=ent,name=name});
+	if(AdminSystem.Vars._CustomResponse[name]._SpeakWhenLeftSaferoom.call_amount == 0
+		&& "_inSafeRoom" in ::VSLib.EasyLogic.Cache[ent.GetIndex()] && !::VSLib.EasyLogic.Cache[ent.GetIndex()]._inSafeRoom
+		&& "_inSafeSpot" in ::VSLib.EasyLogic.Cache[ent.GetIndex()]
+		&& rnum <= AdminSystem.Vars._CustomResponse[name]._SpeakWhenLeftSaferoom.prob)
+	{
+		::VSLib.Timers.AddTimer(0.1, false, _SpeakWhenLeftSaferoomMid, {player=ent,name=name});
+	}
 	return;
 }
 
+::_SpeakWhenLeftSaferoomMid <- function(ent_table)
+{
+	if(::VSLib.EasyLogic.Cache[ent_table.player.GetIndex()]._inSafeSpot == 0)
+		::VSLib.Timers.AddTimer(AdminSystem.Vars._CustomResponse[ent_table.name]._SpeakWhenLeftSaferoom.startdelay, false, _SpeakWhenLeftSaferoomResult, ent_table);
+}
 /*
  * @authors rhino
  */
 ::_SpeakWhenLeftSaferoomResult <- function(ent_table)
 {
-	if(!::VSLib.EasyLogic.Cache[ent_table.player.GetIndex()]._inSafeRoom && AdminSystem.Vars._CustomResponse[ent_table.name]._SpeakWhenLeftSaferoom.call_amount == 0)
+	if(AdminSystem.Vars._CustomResponse[ent_table.name]._SpeakWhenLeftSaferoom.call_amount == 0
+		&& "_inSafeRoom" in ::VSLib.EasyLogic.Cache[ent_table.player.GetIndex()] && !::VSLib.EasyLogic.Cache[ent_table.player.GetIndex()]._inSafeRoom
+		&& "_inSafeSpot" in ::VSLib.EasyLogic.Cache[ent_table.player.GetIndex()] && ::VSLib.EasyLogic.Cache[ent_table.player.GetIndex()]._inSafeSpot == 0)
 	{	
 		_SceneDecider(ent_table.player,AdminSystem.Vars._CustomResponse[ent_table.name]._SpeakWhenLeftSaferoom);
 		printl(ent_table.name+" spoken: LeftSafeRoom");
@@ -8300,6 +8412,23 @@ function ChatTriggers::prop( player, args, text )
 function ChatTriggers::door( player, args, text )
 {
 	AdminSystem.DoorCmd( player, args );
+}
+
+function ChatTriggers::spawn_model_saved( player, args, text )
+{
+	AdminSystem.Spawn_saved_modelCmd( player, args );
+}
+function ChatTriggers::display_saved_model( player, args, text )
+{
+	AdminSystem.Display_saved_modelCmd( player, args );
+}
+function ChatTriggers::random_model_save_state( player, args, text )
+{
+	AdminSystem.Randommodel_save_lastCmd( player, args );
+}
+function ChatTriggers::save_model( player, args, text )
+{
+	AdminSystem.Save_modelCmd( player, args );
 }
 
 function ChatTriggers::survivor( player, args, text )
@@ -11439,7 +11568,12 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if(keyvals == null)
 	{
-		keyvals = {};
+		keyvals =
+		{
+			classname = cname,
+			origin = player.GetLookingLocation(),
+			angles = QAngle(0,0,0)
+		};
 	}
 	else
 	{
@@ -11953,8 +12087,12 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	local typename = GetArgument(1);
 	local MDL = GetArgument(2);
+	local israndom = false
 	if(MDL == "!random")
+	{
+		israndom = true
 		MDL = RandomPick(::ModelPaths.all)
+	}
 
 	local raise = GetArgument(3);
 	local yaw = GetArgument(4);
@@ -12158,6 +12296,16 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 	}
 
+	if(israndom)
+	{
+		if(AdminSystem.Vars._saveLastModel[name])
+		{
+			AdminSystem.Vars._savedModel[name].model = MDL
+			AdminSystem.Vars._savedModel[name].classname = typename
+
+			Printer(player,CmdMessages.ModelSaving.Success(typename,MDL));
+		}
+	}
 	if(typeof createdent == "array")
 	{
 		local parentent = createdent[0];
@@ -15377,6 +15525,21 @@ if ( Director.GetGameMode() == "holdout" )
 /*
  * @authors rhino
  */
+::AdminSystem.Randommodel_save_lastCmd <- function(player, args)
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local name = player.GetCharacterNameLower();
+	local newstate = !AdminSystem.Vars._saveLastModel[name];
+	AdminSystem.Vars._saveLastModel[name] = newstate;
+
+	Printer(player,CmdMessages.ModelSaving.State(newstate));
+}
+
+/*
+ * @authors rhino
+ */
 ::AdminSystem.Save_lineCmd <- function(player, args)
 {	
 	if (!AdminSystem.IsPrivileged( player ))
@@ -15399,6 +15562,27 @@ if ( Director.GetGameMode() == "holdout" )
 /*
  * @authors rhino
  */
+::AdminSystem.Save_modelCmd <- function(player, args)
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local name = player.GetCharacterNameLower();
+	local classname = GetArgument(1);
+	local model = GetArgument(2);
+	if (model == null)
+	{
+		return;
+	}
+	
+	AdminSystem.Vars._savedModel[name].classname = classname;
+	AdminSystem.Vars._savedModel[name].model = model;
+
+	Printer(player,CmdMessages.ModelSaving.Success(classname,model));
+}
+/*
+ * @authors rhino
+ */
 ::AdminSystem.Speak_savedCmd <- function(player, args)
 {	
 	if (!AdminSystem.IsPrivileged( player ))
@@ -15415,6 +15599,84 @@ if ( Director.GetGameMode() == "holdout" )
 	else
 	{
 		Messages.ThrowPlayer(player,CmdMessages.LineSaving.NoneSaved(name));
+	}
+	
+}
+/*
+ * @authors rhino
+ */
+::AdminSystem.Spawn_saved_modelCmd <- function(player, args)
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local name = player.GetCharacterNameLower();
+	local classname = AdminSystem.Vars._savedModel[name].classname;
+	local model = AdminSystem.Vars._savedModel[name].model;
+	if (model != "")
+	{
+		local ent = null
+		local settings = 
+		{
+			origin = player.GetLookingLocation(),
+			angles = QAngle(0,0,0)
+		}
+		local spawner = function(a,b,c){return null;}
+		
+		if(classname.find("physics") != null)
+		{
+			ApplyPropSettingsToTable(player,"physics",settings);
+			spawner = Utils.SpawnPhysicsMProp
+		}
+		else if(classname == "ragdoll")
+		{
+			ApplyPropSettingsToTable(player,"ragdoll",settings);
+			spawner = Utils.SpawnRagdoll
+		}
+		else
+		{
+			ApplyPropSettingsToTable(player,"dynamic",settings);
+			spawner = Utils.SpawnDynamicProp
+		}
+
+		if(model.find("&") != null)
+		{
+			createdent = []
+			foreach(mdl in split(model,"&"))
+			{
+				local ent = spawner( Utils.CleanColoredString(mdl), settings.origin, settings.angles );
+				if(ent != null && ent.IsEntityValid())
+					createdent.append(ent);
+			}
+		}
+		else
+		{
+			createdent = spawner( Utils.CleanColoredString(model), settings.origin, settings.angles );
+		}
+
+		if(typeof createdent == "array")
+		{
+			local parentent = createdent[0];
+			foreach(e in createdent.slice(1,createdent.len()))
+			{
+				e.Input("setparent","#"+parentent.GetIndex(),0);
+			}
+			if(classname.find("physics") != null)
+			{
+				parentent.SetMoveType(MOVETYPE_VPHYSICS);
+			}
+
+			Printer(player,CmdMessages.Prop.SuccessParented(classname,createdent));
+		}
+
+		if(createdent == null)
+			Printer(player,CmdMessages.ModelSaving.FailureSpawn(classname,model));
+		else
+			Printer(player,CmdMessages.ModelSaving.SpawnSaved(createdent.GetIndex(),classname,model));
+	}
+	else
+	{
+		Messages.ThrowPlayer(player,CmdMessages.ModelSaving.NoneSaved(name));
 	}
 	
 }
@@ -15438,6 +15700,35 @@ if ( Director.GetGameMode() == "holdout" )
 		else
 		{
 			Messages.ThrowPlayer(player,CmdMessages.LineSaving.NoneSaved(name));
+		}
+	}
+	
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.Display_saved_modelCmd <- function(player, args)
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local name = player.GetCharacterNameLower();
+	if (AdminSystem.Vars._saveLastModel[name])
+	{	
+		local tbl = 
+		{
+			classname = AdminSystem.Vars._savedModel[name].classname
+			modelname = AdminSystem.Vars._savedModel[name].model
+		}
+
+		if (tbl.modelname != "")
+		{
+			Printer(player,CmdMessages.ModelSaving.Information(tbl));
+		}
+		else
+		{
+			Messages.ThrowPlayer(player,CmdMessages.ModelSaving.NoneSaved(name));
 		}
 	}
 	
@@ -16545,7 +16836,7 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 	
 	local name = player.GetCharacterNameLower();
-	if (AdminSystem.Vars._saveLastLine[name])
+	if (AdminSystem.Vars._saveLastParticle[name])
 	{	
 		local particleinfo = AdminSystem.Vars._savedParticle[name];
 		if (particleinfo.source != "")
@@ -16750,16 +17041,15 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if(entclass == "player")
 		return;
-
-	if(!(entclass in AdminSystem.Vars._grabAvailable) && (entclass.find("weapon_") == null))
-		return;
-
-	if((ent.GetModel().find("_glass") != null || entclass.find("_glass") != null) 
-		&& (entclass.find("_car") != null || entclass.find("car_") != null || entclass.find("vehicle") != null || entclass.find("dynamic") != null || entclass.find("prop_physics") == null))
-		{return;}
-
-	if((entclass.find("props_vehicles") != null)) // Vehicle glasses ignored
-		return;
+	// Not in table, in the table but disabled
+	if(!(entclass in AdminSystem.Vars._grabAvailable))
+	{	
+		// It's not even a weapon spawn
+		if(entclass.find("weapon_") == null)
+			return
+	}
+	else if(!AdminSystem.Vars._grabAvailable[entclass])
+		return
 
 	if(ent.GetModel().find("*") != null)
 		return;
@@ -16967,10 +17257,10 @@ if ( Director.GetGameMode() == "holdout" )
 
 }
 
+// TO-DO: Update how _grabAvailable is referenced
 /*
  * @authors rhino
  * Attach the targeted entity around players arms, make it look and move like player is holding it
- * TO-DO : Instead of skipping parented entities, check if their parents are close enough and grab by the parent entity
  */
 ::AdminSystem.GrabCmd <- function ( player, args )
 {
@@ -17036,7 +17326,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local entmodel = null;
 	local taken = null;
 	local closestgrabbed = false;
-	// TO-DO use masks instead
+	
 	if(ent == null)
 	{
 		objtable = VSLib.EasyLogic.Objects.AroundRadius(lookedpoint,AdminSystem.Vars._grabRadiusTolerance);	// Get entities within radius
@@ -17049,25 +17339,28 @@ if ( Director.GetGameMode() == "holdout" )
 				if(obj.GetParent() != null) // Parented objects can't be parented by others
 					continue;
 
+				if(obj.GetIndex() == player.GetIndex())
+					continue;
+
 				entclass = obj.GetClassname();	
 				entmodel = obj.GetModel();
 
-				if(!(entclass in AdminSystem.Vars._grabAvailable) && (entclass.find("weapon_") == null) )	// Validate class name
-					continue;
-				
-				if((entmodel.find("_glass") != null || entclass.find("_glass") != null) 
-					&& (entclass.find("_car") != null || entclass.find("car_") != null || entclass.find("vehicle") != null || entclass.find("dynamic") != null || entclass.find("prop_physics") == null))
-					{continue;}
-				
-				if(entmodel.find("*") != null)
+				// Not in table, in the table but disabled
+				if(!(entclass in AdminSystem.Vars._grabAvailable))
+				{	
+					// It's not even a weapon spawn
+					if(entclass.find("weapon_") == null)
+						continue
+				}
+				else if(!AdminSystem.Vars._grabAvailable[entclass])
+					continue
+					
+				if(obj.GetModel().find("*") != null)
 					continue;
 
 				if((entmodel.find("hybridphysx") != null)) // Animation props etc ignored
 					continue;
 
-				if(obj.GetIndex() == player.GetIndex())
-					continue;
-				
 				entind = obj.GetIndex().tostring();
 
 				if(obj.GetClassname() == "player")
@@ -17138,13 +17431,18 @@ if ( Director.GetGameMode() == "holdout" )
 			}
 		}
 		entmodel = ent.GetModel();
-		if(!(entclass in AdminSystem.Vars._grabAvailable) && (entclass.find("weapon_") == null))
-			return;
-		if((entmodel.find("_glass") != null || entclass.find("_glass") != null) 
-			&& (entclass.find("_car") != null || entclass.find("car_") != null || entclass.find("vehicle") != null || entclass.find("dynamic") != null || entclass.find("prop_physics") == null))
-			{return;}
 		
-		if(entmodel.find("*") != null)
+		// Not in table, in the table but disabled
+		if(!(entclass in AdminSystem.Vars._grabAvailable))
+		{	
+			// It's not even a weapon spawn
+			if(entclass.find("weapon_") == null)
+				return
+		}
+		else if(!AdminSystem.Vars._grabAvailable[entclass])
+			return
+			
+		if(ent.GetModel().find("*") != null)
 			return;
 
 		entind = ent.GetIndex().tostring();
@@ -17603,7 +17901,6 @@ if ( Director.GetGameMode() == "holdout" )
 	Printer(player,CmdMessages.FireEx.Success(entind,ptc.GetIndex(),steam_sound.GetIndex()));
 }
 
-// TO-DO : Sound can still get stuck, find a fix
 ::Fire_Ex_ReAttach <- function()
 {
 	local ind = self.GetEntityIndex();
