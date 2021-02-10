@@ -17713,13 +17713,13 @@
     
 		"1"
 		{
-			"command"	 "play buttons/button14;show_menu prop_menu_start1"
-			"label"		 " Dynamic props"
+			"command"	 "play buttons/button14;show_menu smok_menu_prop_main1"
+			"label"		 " Dynamic/Physics props"
 		}
 		"2"
 		{
-			"command"	 "play buttons/button14;show_menu phys_prop_menu_start1"
-			"label"		 " Physics props"
+			"command"	 "play buttons/button14;scripted_user_func spawn_model_saved;show_menu smok_menu"
+			"label"		 " Spawn saved model"
 		}
 		"3"
 		{
@@ -17733,7 +17733,7 @@
 		}
 		"5"
 		{
-			"command"	 "play buttons/button14;scripted_user_func speak_saved;show_menu smok_menu"
+			"command"	 "scripted_user_func speak_saved;show_menu smok_menu"
 			"label"		 " Speak saved line"
 		}
         "6"
@@ -17779,6 +17779,63 @@
 			}
 	}
 	
+	"smok_menu_prop_main1"
+	{
+			"Title"     "Dynamic or physics"
+			
+			"1"
+			{
+				"command"	 "play buttons/button14;show_menu prop_menu_start1"
+				"label"		 " Dynamic props"
+			}
+			"2"
+			{
+				"command"	 "play buttons/button14;show_menu phys_prop_menu_start1"
+				"label"		 " Physics props"
+			}
+			"3"
+			{
+				"command"	 "play buttons/button14;show_menu smok_menu_model_settings1"
+				"label"		 " Model saving settings"
+			}
+			"8"
+			{
+					"command"	 "play buttons/button14;show_menu smok_menu"
+					"label"		 " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"smok_menu_model_settings1"
+	{
+			"Title"     "Model saving settings"
+			
+			"1"
+			{
+				"command"	 "play buttons/button14;scripted_user_func random_model_save_state;show_menu smok_menu_model_settings1"
+				"label"		 " Enable/Disable saving last randomly spawned prop"
+			}
+			"2"
+			{
+				"command"	 "play buttons/button14;scripted_user_func display_saved_model;show_menu smok_menu_model_settings1"
+				"label"		 " Display saved model and class name"
+			}
+			"8"
+			{
+					"command"	 "play buttons/button14;show_menu smok_menu_prop_main1"
+					"label"		 " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
 	"smok_menu2"
 	{	
 			"Title"     "Smok Menu 2"
@@ -24563,7 +24620,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu smok_menu"
+					"command"    "play buttons/button14;show_menu smok_menu_prop_main1"
 					"label"      " << Back"
 			}
 			"9"
@@ -31033,7 +31090,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu smok_menu"
+					"command"    "play buttons/button14;show_menu smok_menu_prop_main1"
 					"label"      " << Back"
 			}
 			"9"
@@ -38240,7 +38297,7 @@
 			"1"
 			{
 				"command"		 "play buttons/button10;show_menu drivemenu1"
-				"label"			 " Hold shift/crouch for better movement, Hold left-click to keep aim forward"
+				"label"			 " Hold left-click to keep aim forward, don't jump with movement keys!"
 			}
 			"2"
 			{
