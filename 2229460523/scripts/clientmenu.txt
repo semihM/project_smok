@@ -37521,7 +37521,7 @@
 
 	"smok_menu3"
 	{
-			"Title"		"Events and more commands"
+			"Title"		"Smok Menu 3"
 			"1"
 			{
 				"command"		 "play buttons/button14;show_menu apocalypse1"
@@ -37576,7 +37576,7 @@
 
 	"smok_menu4"
 	{
-			"Title"		"More commands (some experimental)"
+			"Title"		"Smok Menu 4 (some experimental)"
 			"1"
 			{
 				"command"		 "play buttons/button14;show_menu wear_hat_menu1"
@@ -37622,6 +37622,11 @@
 				"command"		 "play buttons/button14;scripted_user_func recover_ragdoll;show_menu ragdolling_menu1"
 				"label"			 " Recover from ragdolling"
 			}
+			"3"
+			{
+				"command"		 "play buttons/button10;show_menu ragdolling_menu1"
+				"label"			 " Mouse1/Mouse2 to ascend/descend faster"
+			}
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu smok_menu4"
@@ -37660,6 +37665,16 @@
 			{
 				"command"		 "play buttons/button14;scripted_user_func give_physics,900;show_menu givephys_menu1"
 				"label"			 " Objects around 900 units radius of aimed location"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func give_physics,1500;show_menu givephys_menu1"
+				"label"			 " Objects around 1500 units radius of aimed location"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func give_physics,3000;show_menu givephys_menu1"
+				"label"			 " Objects around 3000 units radius of aimed location(may lag)"
 			}
 			"8"
 			{
@@ -38585,6 +38600,11 @@
 			{
 				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,RPG_Smoke;show_menu explosion_effects1"
 				"label"			 " Intense smoke cloud(lags if spammed)"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func explosion_setting,effect_name,no_effect;show_menu explosion_effects1"
+				"label"			 " No particle effects"
 			}
 			"8"
 			{
