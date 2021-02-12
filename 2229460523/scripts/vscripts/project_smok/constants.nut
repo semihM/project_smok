@@ -43,6 +43,17 @@
     BotSettings = "admin system/botparams.txt"
 }
 
+/**************************\
+* ENTITY NAMES USED BY CMDS *
+\**************************/
+::Constants.Targetnames <-
+{
+	Ragdoll = "project_smok_ragdoll_"
+
+	TankRock = "project_smok_tank_rock_"
+
+}
+
 /*************************\
 * TIMER NAMES USED BY CMDS *
 \*************************/
@@ -69,6 +80,8 @@
     BotSearchAttemptSlot3 = "BotThinkSearchAttemptSlot3_"
 
     CarPush = "CarPushSingle_"
+
+	RagdollControl = "RagdollControl_"
 }
 
 /*************\
@@ -174,6 +187,22 @@
                 Comment =  "// Radius around the aimed location to grab closest if not aiming at an object"
             }
             
+			BackUpProp =
+			{
+				Value =
+				{
+					enabled = false
+					modelname = "models/items/l4d_gift.mdl"
+					classname = "prop_physics_multiplayer"
+				}
+				ValueComments =
+				{
+					enabled = "// true: Spawn backup prop upon failure, false: Keep the held object as is"
+					modelname = "// Backup prop model path"
+					classname = "// Backup prop class name"
+				}
+				Comment = "// Backup prop to use in case physics covnersion weren't successful"
+			}
             SurvivorSettings =
             {
                 Value =
@@ -216,6 +245,7 @@
                     prop_door_rotating = true,
                     prop_door_rotating_checkpoint = true,
 					commentary_dummy = true
+					prop_fuel_barrel = true
                 }
                 Comment = @"
 			// Class names available for grab, format: ""class_name = is_enabled""
@@ -594,7 +624,7 @@
 				ValueComments =
 				{
 					delay = "// Explosion delay"
-					effect_name = "// Particle to use until explosion"
+					effect_name = "// Particle to use until explosion, use \"no_effect\" for no particle effects"
 					dmgmin = "// Minimum damage from explosion"
 					dmgmax = "// Maximum damage from explosion"
 					radiusmin = "// Minimum damage and push radius of explosion"
@@ -776,6 +806,13 @@
 
 		s += __SingleValWithComment(maintbl,"GrabRadiusTolerance") + "\n\r";
 		
+		s += "\t\t\tBackUpProp = " + maintbl.BackUpProp.Comment + "\n\r\t\t\t{\n\r"
+		foreach(setting,val in maintbl.BackUpProp.Value)
+		{
+			s += "\t\t\t\t" + setting + " = " + ((typeof val == "string") ? "\""+val+"\"": val) + "\t" + maintbl.BackUpProp.ValueComments[setting] + "\n\r"
+		}
+		s += "\t\t\t}\n\r"
+
 		s += "\t\t\tSurvivorSettings = " + maintbl.SurvivorSettings.Comment + "\n\r\t\t\t{\n\r"
 		foreach(setting,val in maintbl.SurvivorSettings.Value)
 		{
@@ -800,6 +837,13 @@
 
 		s += __SingleValWithComment(maintbl,"GrabRadiusTolerance",maintblref) + "\n\r";
 		
+		s += "\t\t\tBackUpProp = " + maintbl.BackUpProp.Comment + "\n\r\t\t\t{\n\r"
+		foreach(setting,val in maintbl.BackUpProp.Value)
+		{
+			s += "\t\t\t\t" + setting + " = " + ((typeof maintblref.BackUpProp[setting] == "string") ? "\""+maintblref.BackUpProp[setting]+"\"": maintblref.BackUpProp[setting]) + "\t" + maintbl.BackUpProp.ValueComments[setting] + "\n\r"
+		}
+		s += "\t\t\t}\n\r"
+
 		s += "\t\t\tSurvivorSettings = " + maintbl.SurvivorSettings.Comment + "\n\r\t\t\t{\n\r"
 		foreach(setting,val in maintbl.SurvivorSettings.Value)
 		{
@@ -1470,6 +1514,24 @@
 			{
 				fixapplied.append("Re-create default Tables.GrabYeet.GrabRadiusTolerance")
 				tbl.Tables.GrabYeet.GrabRadiusTolerance <- correcttbl.Tables.GrabYeet.GrabRadiusTolerance
+			}
+
+			if(!ValidateTbl(tbl.Tables.GrabYeet,"BackUpProp"))
+			{
+				fixapplied.append("Re-create default Tables.GrabYeet.BackUpProp")
+				tbl.Tables.GrabYeet.BackUpProp <- correcttbl.Tables.GrabYeet.BackUpProp
+			}
+			else
+			{
+				foreach(setting,val in correcttbl.Tables.GrabYeet.BackUpProp)
+				{
+					if(!ValidateTbl(tbl.Tables.GrabYeet.BackUpProp,setting,false) 
+					|| !ValidateSimilarTyp(tbl.Tables.GrabYeet.BackUpProp,correcttbl.Tables.GrabYeet.BackUpProp,setting))
+					{
+						fixapplied.append("Use default Tables.GrabYeet.BackUpProp."+setting)
+						tbl.Tables.GrabYeet.BackUpProp[setting] <- correcttbl.Tables.GrabYeet.BackUpProp[setting]
+					}
+				}
 			}
 
 			if(!ValidateTbl(tbl.Tables.GrabYeet,"SurvivorSettings"))
@@ -2482,7 +2544,7 @@ if(!("Defaults" in ::Constants))
                 call_amount = 0
                 lastspoken = []
                 enabled = false
-                prob = 0.15
+                prob = 0.08
                 startdelay = 2.5
                 userandom = false
                 randomlinepaths = null
@@ -2497,7 +2559,7 @@ if(!("Defaults" in ::Constants))
                 call_amount = 0
                 lastspoken = []
                 enabled = false
-                prob = 0.9
+                prob = 0.2
                 startdelay = 1.0
                 userandom = true
                 randomlinepaths = null
@@ -2533,7 +2595,7 @@ if(!("Defaults" in ::Constants))
                 call_amount = 0
                 lastspoken = []
                 enabled = false
-                prob = 0.15
+                prob = 0.08
                 startdelay = 2.5
                 userandom = false
                 randomlinepaths = null
@@ -2548,7 +2610,7 @@ if(!("Defaults" in ::Constants))
                 call_amount = 0
                 lastspoken = []
                 enabled = true
-                prob = 0.9
+                prob = 0.2
                 startdelay = 1.0
                 userandom = true
                 randomlinepaths = ::Survivorlines.Excited[survivor]

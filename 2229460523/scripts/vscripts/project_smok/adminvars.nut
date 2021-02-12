@@ -2,6 +2,7 @@
 {
     // Old stuff
     IsBashDisabled = {}
+    IsFreezeEnabled = {}
     IsBashLimited = {}
     IsNoclipEnabled = {}
     IsFlyingEnabled = {}
@@ -134,6 +135,8 @@
 ::AdminVars.SetDefaultGrabYeetSettings <- function(tbl)
 {
     tbl._grabRadiusTolerance <- ::Constants.Defaults.Tables.GrabYeet.GrabRadiusTolerance;
+
+    tbl._grabbackupprop <- ::VSLib.Utils.TableCopy(::Constants.Defaults.Tables.GrabYeet.BackUpProp);
 
     tbl._grabAvailable <- ::VSLib.Utils.TableCopy(::Constants.Defaults.Tables.GrabYeet.ValidGrabClasses);
 
@@ -332,11 +335,6 @@
         //Others
         if(basetbl != null)
         {
-            basetbl._GrabControl[spec] <- 
-            {
-                keymask = 0
-                listenerid = -1
-            };
             basetbl._CarControl[spec] <- 
             {
                 keymask = 0
@@ -348,6 +346,15 @@
                 turnpertick = 8
                 listenerid = -1
             };
+            basetbl._RagdollControl[spec] <- 
+            {
+                keymask = 0
+                speed = 250.0
+                overridefriction = 0.3
+                frictionduration = 1
+                listenerid = -1
+            }
+
             basetbl._CurrentlyTradingItems[spec] <- false;
 
             basetbl.BotBringingItem[spec] <- false;
