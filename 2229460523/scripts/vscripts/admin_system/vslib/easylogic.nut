@@ -542,6 +542,7 @@ if (!("Notifications" in ::VSLib.EasyLogic))
 /**************************\
 * PROP SPAWN SETTING FLAGS *
 \**************************/
+// TO-DO: Add combined flags too
 /// Height
 getconsttable()["HEIGHT_NO_ADDITION"] <- 0;				// No changes, origin at aimed point
 getconsttable()["HEIGHT_EYELEVEL"] <- 1 << 0;		// Origin raised to eye height
@@ -615,6 +616,16 @@ getconsttable()["ANGLE_ADD_RANDOM_M90_M45"] <- 1 << 28;		// Add random filled an
 getconsttable()["ANGLE_ADD_RANDOM_M15_15"] <- 1 << 29;		// Add random filled angle ranged [-15,15]
 getconsttable()["ANGLE_ADD_RANDOM_M45_45"] <- 1 << 30;		// Add random filled angle ranged [-45,45]
 getconsttable()["ANGLE_ADD_RANDOM_GIVEN"] <- 1 << 31;	// Add random height ranged [min,max] taken from flags' table
+
+/******************************\
+* RAGDOLL CONTROLS BUTTON MASKS *
+\******************************/
+getconsttable()["LISTENER_FORWARD"] <- 1 << 0;			// Forward
+getconsttable()["LISTENER_BACKWARD"] <- 1 << 1;			// Backward
+getconsttable()["LISTENER_LEFT"] <- 1 << 2;			// Left
+getconsttable()["LISTENER_RIGHT"] <- 1 << 3;		// Right
+getconsttable()["LISTENER_ATTACK"] <- 1 << 4;			// Mouse 1
+getconsttable()["LISTENER_ATTACK2"] <- 1 << 5;		// Mouse 2
 
 /*************\
 * COLOR CHARS *
@@ -1549,7 +1560,6 @@ g_MapScript.ScriptMode_AddCriteria <- function ( )
 ::VSLib.EasyLogic.Events.OnGameEvent_map_transition <- function (params)
 {
 	::VSLib.EasyLogic.NextMapContinues <- true;
-	Utils.ResetModels();
 	foreach (func in ::VSLib.EasyLogic.Notifications.OnMapEnd)
 		func();
 }

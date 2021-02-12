@@ -791,41 +791,49 @@ function VSLib::Utils::ResetModels(name = null)
 			case "bill":
 			{
 				GetPlayerFromName("Bill").SetModel("models/survivors/survivor_namvet.mdl");
+				::AdminSystem.Vars._modelPreference.bill.lastmodel = "models/survivors/survivor_namvet.mdl";
 				break;
 			}
 			case "francis":
 			{
 				GetPlayerFromName("Francis").SetModel("models/survivors/survivor_biker.mdl");
+				::AdminSystem.Vars._modelPreference.francis.lastmodel = "models/survivors/survivor_biker.mdl";
 				break;
 			}
 			case "louis":
 			{
 				GetPlayerFromName("Louis").SetModel("models/survivors/survivor_manager.mdl");
+				::AdminSystem.Vars._modelPreference.louis.lastmodel = "models/survivors/survivor_manager.mdl";
 				break;
 			}
 			case "zoey":
 			{
 				GetPlayerFromName("Zoey").SetModel("models/survivors/survivor_teenangst.mdl");
+				::AdminSystem.Vars._modelPreference.zoey.lastmodel = "models/survivors/survivor_teenangst.mdl";
 				break;
 			}
 			case "nick":
 			{
 				GetPlayerFromName("Nick").SetModel("models/survivors/survivor_gambler.mdl");
+				::AdminSystem.Vars._modelPreference.nick.lastmodel = "models/survivors/survivor_gambler.mdl";
 				break;
 			}
 			case "ellis":
 			{
 				GetPlayerFromName("Ellis").SetModel("models/survivors/survivor_mechanic.mdl");
+				::AdminSystem.Vars._modelPreference.ellis.lastmodel = "models/survivors/survivor_mechanic.mdl";
 				break;
 			}
 			case "coach":
 			{
 				GetPlayerFromName("Coach").SetModel("models/survivors/survivor_coach.mdl");
+				::AdminSystem.Vars._modelPreference.coach.lastmodel = "models/survivors/survivor_coach.mdl";
 				break;
 			}
 			case "rochelle":
 			{
 				GetPlayerFromName("Rochelle").SetModel("models/survivors/survivor_producer.mdl");
+				::AdminSystem.Vars._modelPreference.rochelle.lastmodel = "models/survivors/survivor_producer.mdl";
 				break;
 			}
 			default:
@@ -841,41 +849,49 @@ function VSLib::Utils::ResetModels(name = null)
 			case "bill":
 			{
 				p.SetModel("models/survivors/survivor_namvet.mdl");
+				::AdminSystem.Vars._modelPreference.bill.lastmodel = "models/survivors/survivor_namvet.mdl";
 				break;
 			}
 			case "francis":
 			{
 				p.SetModel("models/survivors/survivor_biker.mdl");
+				::AdminSystem.Vars._modelPreference.francis.lastmodel = "models/survivors/survivor_biker.mdl";
 				break;
 			}
 			case "louis":
 			{
 				p.SetModel("models/survivors/survivor_manager.mdl");
+				::AdminSystem.Vars._modelPreference.louis.lastmodel = "models/survivors/survivor_manager.mdl";
 				break;
 			}
 			case "zoey":
 			{
 				p.SetModel("models/survivors/survivor_teenangst.mdl");
+				::AdminSystem.Vars._modelPreference.zoey.lastmodel = "models/survivors/survivor_teenangst.mdl";
 				break;
 			}
 			case "nick":
 			{
 				p.SetModel("models/survivors/survivor_gambler.mdl");
+				::AdminSystem.Vars._modelPreference.nick.lastmodel = "models/survivors/survivor_gambler.mdl";
 				break;
 			}
 			case "ellis":
 			{
 				p.SetModel("models/survivors/survivor_mechanic.mdl");
+				::AdminSystem.Vars._modelPreference.ellis.lastmodel = "models/survivors/survivor_mechanic.mdl";
 				break;
 			}
 			case "coach":
 			{
 				p.SetModel("models/survivors/survivor_coach.mdl");
+				::AdminSystem.Vars._modelPreference.coach.lastmodel = "models/survivors/survivor_coach.mdl";
 				break;
 			}
 			case "rochelle":
 			{
 				p.SetModel("models/survivors/survivor_producer.mdl");
+				::AdminSystem.Vars._modelPreference.rochelle.lastmodel = "models/survivors/survivor_producer.mdl";
 				break;
 			}
 			default:
@@ -2531,6 +2547,22 @@ function VSLib::Utils::TableCopy(tbl)
 		{tablecopy[key]<-val} 
 	}
 	return tablecopy;
+}
+
+/*
+ * @author rhino
+ */
+function VSLib::Utils::TableKeyMatch(tbl,exp)
+{
+	local re = regexp(exp)
+	foreach(key,val in tbl)
+	{
+		if(re.match(key))
+		{
+			return true
+		}
+	}
+	return false
 }
 
 /*
