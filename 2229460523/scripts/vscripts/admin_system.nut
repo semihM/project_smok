@@ -12139,18 +12139,18 @@ if ( Director.GetGameMode() == "holdout" )
 		ang += QAngle(90,0,0);
 	// Yaw
 	if(HasFlag(flags,ANGLE_TURN_RIGHT))
-		ang += QAngle(0,90,0);
+		ang += QAngle(0,-90,0);
 	if(HasFlag(flags,ANGLE_TURN_AROUND))
 		ang += QAngle(0,180,0);
 	if(HasFlag(flags,ANGLE_TURN_LEFT))
-		ang += QAngle(0,-90,0);
+		ang += QAngle(0,90,0);
 	// Roll
 	if(HasFlag(flags,ANGLE_ROLLOVER_RIGHT))
-		ang += QAngle(0,0,-90);
+		ang += QAngle(0,0,90);
 	if(HasFlag(flags,ANGLE_ROLLOVER))
 		ang += QAngle(0,0,180);
 	if(HasFlag(flags,ANGLE_ROLLOVER_LEFT))
-		ang += QAngle(0,0,90);
+		ang += QAngle(0,0,-90);
 	// Random
 	if(HasFlag(flags,ANGLE_ADD_RANDOM_0_45))
 		ang += GetRandAngle(0,45);
