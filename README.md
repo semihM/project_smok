@@ -84,6 +84,8 @@
 
 - [**Explosions**](#explosions)
 
+- [**Ragdolling**](#ragdoll)
+
 - [**Other commands**](#other)
 
 - [**Debugging, scripting and setting related**](#debugging-scripting-and-settings-related)
@@ -99,7 +101,7 @@
     Console Syntax | scripted_user_func *prop,type,model_path* 
     ------------- | -------------
     
-    Menu Sequence | _6->1_ AND _6->2_ 
+    Menu Sequence | _6->1->1_ AND _6->1->2_ 
     ------------- | -------------
 
 ```cpp
@@ -143,15 +145,70 @@
        // Class names and their keys and possible values can be
        //      found through the Valve Developer Wikis and Hammer World Editor
        // value accepts following formats:
-       //     For single values (int,float,str) :
+       //     For single values (int,float,str,flg) :
        //           value = single_value
-       //     For multi-values (angle,position,array) :
+       //     For multi-values (angle,position(vector),array(spaced values)) :
        //           value = {type:(ang,pos,str)}|val1|val2|val3
        ent {class} {key1}>{value1}&{key2}>{value2}...
        
        // Example (dynamic prop with Gift model with color rgb(90,30,60) and angles Pitch,Yaw,Roll->(-30,10,0) ): 
        ent prop_dynamic model>models\items\l4d_gift.mdl&rendercolor>str|90|30|60&angles>ang|-30|10|0
 ```
+---
+- **save_model** : Save a model with a class to be spawn a prop easily
+
+    Chat Syntax | !save_model *classname modelpath*
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *save_model,classname,modelpath*
+    ------------- | -------------
+    
+    Menu Sequence | _Not in the menu_
+    ------------- | -------------
+
+```cpp 
+        // Overloads:
+        save_model {classname : (physics,ragdoll,dynamic)} {modelpath}
+        
+        // Example (save physics prop with tv model
+        save_model physics models/props_interiors/tv.mdl
+```
+---
+- **random_model_save_state** : Update the state of saving the last randomly spawned prop
+
+    Chat Syntax | !random_model_save_state
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *random_model_save_state*
+    ------------- | -------------
+    
+    Menu Sequence | _6->1->3->1_
+    ------------- | -------------
+
+---
+- **spawn_model_saved** : Spawn a prop with saved model and class 
+
+    Chat Syntax | !spawn_model_saved
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *spawn_model_saved*
+    ------------- | -------------
+    
+    Menu Sequence | _6->2_
+    ------------- | -------------
+
+---
+- **display_saved_model** : Display the saved model information if there is any
+
+    Chat Syntax | !display_saved_model
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *display_saved_model*
+    ------------- | -------------
+    
+    Menu Sequence | _6->1->3->2_
+    ------------- | -------------
+
 ---
 - **ent_rotate** : Rotate the targeted entity
 
@@ -409,6 +466,45 @@
        restore_model bill
        //Example: Restore the model of your player
        restore_model
+```
+---
+- **prop_spawn_setting** : Update default settings used for spawning props of a certain class. Check **prop_defaults.txt** for details
+
+    Chat Syntax | !prop_spawn_setting *classname,setting,subsetting,newvalue*
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *prop_spawn_setting,classname,setting,subsetting,newvalue* 
+    ------------- | -------------
+    
+    Menu Sequence | _6->9->4_
+    ------------- | -------------
+```cpp
+       //Overloads:
+       prop_spawn_setting {classname:(physics,dynamic,ragdoll,all)} {setting:(spawn_height,spawn_angles)} {AddRemoveSet:(+,-, )}{subsetting:(flags,val,min,max)} {cast:(flg,int,float,str, )}{newval}
+       
+       //Example: Add random value to spawn height between [-250,250] for dynamic props
+       prop_spawn_setting dynamic spawn_height +flags flg|HEIGHT_ADD_RANDOM_M250_250
+       
+       //Example: Remove the previous random value addition to spawn height between [-250,250] for dynamic props
+       prop_spawn_setting dynamic spawn_height -flags flg|HEIGHT_ADD_RANDOM_M250_250
+       
+       //Example: Spawn all props at eye level height
+       prop_spawn_setting all spawn_height flags flg|HEIGHT_EYE_LEVEL
+       
+       //Example: Spawn dynamic props rolled over
+       prop_spawn_setting dynamic spawn_angles +flags flg|ANGLE_ROLLOVER
+       
+       //Example: Spawn dynamic props with exact eye angles of the player, then turn it around
+       prop_spawn_setting dynamic spawn_angles flags flg|ANGLE_EYES_EXACT|ANGLE_TURN_AROUND
+       
+       //Example: Set value to be used if needed with spawn angle to "0 30 0", meaning a 30 degree turn to right for physics props
+       prop_spawn_setting physics spawn_angles val str|30|0|0
+       
+       //Example: Use the value given in the previous example as an addition to eye angles' yaw, resulting all physics props to spawn facing slighty right of the player
+       prop_spawn_setting physics spawn_angles flags flg|ANGLE_EYES_YAW|ANGLE_ADD_VAL
+       
+       //Example: Use random angles using range [min,max], by default it is [-45,45], to get pitch yaw roll values 
+       prop_spawn_setting dynamic spawn_angles flags flg|ANGLE_RANDOM_GIVEN
 ```
 ---
 ## Random and saved voices
@@ -801,7 +897,7 @@
     Console Syntax | scripted_user_func *start_the_apocalypse* 
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _6->9->9->1->1_
     ------------- | -------------
 
 ---
@@ -813,7 +909,7 @@
     Console Syntax | scripted_user_func *pause_the_apocalypse* 
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _6->9->9->1->1_
     ------------- | -------------
 
 ---
@@ -825,7 +921,7 @@
     Console Syntax | scripted_user_func *show_apocalypse_settings* 
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _6->9->9->1->2_
     ------------- | -------------
 
     Setting | Default Value | Description
@@ -842,7 +938,7 @@
     expmaxradius | 300   | explosion radius maximum
     expdmgmin | 5        | explosion damage minimum
     expdmgmax | 40       | explosion damage maximum
-    expprob | 0.022      | probability of explosion 
+    expprob | 0.015      | probability of explosion 
     breakprob | 0.04     | probability of entity being broken
     doorlockprob | 0.02  | probability of doors getting locked, saferoom doors excluded
     ropebreakprob | 0.05 | probability of a cable or sorts to be broken from its connection point
@@ -858,7 +954,7 @@
     Console Syntax | scripted_user_func *apocalypse_setting,setting,new_value* 
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _Command hinted at 6->9->9->1->3_
     ------------- | -------------
 
 ```cpp
@@ -882,7 +978,7 @@
     Console Syntax | scripted_user_func *start_the_shower* 
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _6->9->9->2->1_
     ------------- | -------------
 
 ---
@@ -894,7 +990,7 @@
     Console Syntax | scripted_user_func *pause_the_shower* 
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _6->9->9->2->1_
     ------------- | -------------
 
 ---
@@ -906,7 +1002,7 @@
     Console Syntax | scripted_user_func *show_meteor_shower_settings* 
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _6->9->9->2->2_
     ------------- | -------------
 
     Setting | Default Value | Description
@@ -926,7 +1022,7 @@
     scatterprob | 0.55			| probability of the meteor scattering into smaller pieces after hitting the ground
     minscatterchunk | 4			| minimum amount of smaller chunks created if scattering probably was met
     maxscatterchunk | 15		| maximum amount of smaller chunks created
-    meteormodelspecific | ""	| specific model for meteors
+    meteormodelspecific | "models/props_interiors/tv.mdl"	| specific model for meteors
     meteormodelpick | 0			| enumerated: RANDOM_ROCK = 0, RANDOM_CUSTOM = 1, FIRST_CUSTOM = 2, LAST_CUSTOM = 3, SPECIFIC = 4
     debug | 0					| Print meteor spawn and hit points, explosions, scatters and breaks
 
@@ -939,7 +1035,7 @@
     Console Syntax | scripted_user_func *meteor_shower_setting,setting,new_value* 
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _Command hinted at 6->9->9->2->3_
     ------------- | -------------
 
 ```cpp
@@ -1011,7 +1107,7 @@
     Console Syntax | scripted_user_func *piano_keys* 
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _6->9->9->3->1_
     ------------- | -------------
 
 ---
@@ -1023,7 +1119,7 @@
     Console Syntax | scripted_user_func *remove_piano_keys* 
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _6->9->9->3->2_
     ------------- | -------------
 ---
 ## Microphones and speakers
@@ -1036,7 +1132,7 @@
     Console Syntax | scripted_user_func *microphone,effect,hearing_range,speaker_to_connect* 
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _6->9->9->4->1_
     ------------- | -------------
 ```cpp
        //Overloads:
@@ -1055,8 +1151,20 @@
     Console Syntax | scripted_user_func *speaker* 
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _6->9->9->4->2_
     ------------- | -------------
+---
+- **display_mics_speakers** : Get index,name and distance information about spawned mics and speakers
+
+    Chat Syntax | !display_mics_speakers
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *display_mics_speakers* 
+    ------------- | -------------
+    
+    Menu Sequence | _6->9->9->4->3_
+    ------------- | -------------
+
 ---
 - **speaker2mic** : Connect a speaker to a microphone ( "#" is needed before indices !)
 
@@ -1066,7 +1174,7 @@
     Console Syntax | scripted_user_func *speaker2mic,speaker_ID_OR_NAME,microphone_ID_OR_NAME* 
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _Command hinted at 6->9->9->4->4_
     ------------- | -------------
 ```cpp
        //Overloads:
@@ -1079,18 +1187,6 @@
        speaker2mic #33 myMic
 ```
 ---
-- **display_mics_speakers** : Get index,name and distance information about spawned mics and speakers
-
-    Chat Syntax | !display_mics_speakers
-    ------------- | -------------
-
-    Console Syntax | scripted_user_func *display_mics_speakers* 
-    ------------- | -------------
-    
-    Menu Sequence | _Top secret_
-    ------------- | -------------
-
----
 ## Explosions
 
 - **explosion** : Create a delayed explosion or a meteor strike at aimed location, with a particle effect until explosion
@@ -1101,7 +1197,7 @@
     Console Syntax | scripted_user_func *explosion,option* 
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _6->9->9->5->1 AND 6->9->9->5->2_
     ------------- | -------------
 
 ```cpp
@@ -1122,7 +1218,7 @@
     Console Syntax | scripted_user_func *show_explosion_settings* 
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _6->9->9->5->3_
     ------------- | -------------
 
     Setting | Default Value | Description
@@ -1145,7 +1241,7 @@
     Console Syntax | scripted_user_func *explosion_setting,setting,new_value* 
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _Command hinted at 6->9->9->5->5_
     ------------- | -------------
 
 ```cpp
@@ -1157,25 +1253,34 @@
        explosion_setting delay 5
 ```
 ---
+## Ragdoll
+
+- **go_ragdoll** : Start ragdolling with controls, hold **mouse1** to ascend, **mouse2** to descend. 
+
+    Chat Syntax | !go_ragdoll
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *go_ragdoll* 
+    ------------- | -------------
+    
+    Menu Sequence | _6->9->9->9->2->1_
+    ------------- | -------------
+
+---
+- **recover_ragdoll** : Recover your ragdoll 
+
+    Chat Syntax | !recover_ragdoll
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *recover_ragdoll* 
+    ------------- | -------------
+    
+    Menu Sequence | _6->9->9->9->2->2_
+    ------------- | -------------
+
+---
 ## Other
 
-- **ladder_team** : Change teams of ladders
-
-    Chat Syntax | !ladder_team *team*
-    ------------- | -------------
-
-    Console Syntax | scripted_user_func *ladder_team,team* 
-    ------------- | -------------
-    
-    Menu Sequence | _Top secret_
-    ------------- | -------------
-```cpp
-       //Overloads:
-       // "reset" to reset ladders back to their default teams
-       ladder_team {team : (all,survivor,infected,spectator,l4d1) | reset}
-    
-```
----
 - **invisible_walls** : Enable/Disable **most if not all** of the invisible walls around. Some of them can not be disabled.
 
     Chat Syntax | !invisible_walls *state apply_to_all*
@@ -1184,7 +1289,7 @@
     Console Syntax | scripted_user_func *invisible_walls,state,apply_to_all* 
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _6->9->9->6_
     ------------- | -------------
 ```cpp
        //Overloads:
@@ -1194,7 +1299,24 @@
        invisible_walls disable all
 ```
 ---
-- **drive** : "Drive" targeted car/object or stop driving. **Hold shift** or crouch to move smoother. **Hold left-click** to keep aiming forward
+- **ladder_team** : Change teams of ladders
+
+    Chat Syntax | !ladder_team *team*
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *ladder_team,team* 
+    ------------- | -------------
+    
+    Menu Sequence | _6->9->9->7_
+    ------------- | -------------
+```cpp
+       //Overloads:
+       // "reset" to reset ladders back to their default teams
+       ladder_team {team : (all,survivor,infected,spectator,l4d1) | reset}
+    
+```
+---
+- **drive** : (**EXPERIMENTAL**)"Drive" targeted car/object or stop driving. **Hold left-click** to keep aiming forward, **DO NOT** jump while moving
 
     Chat Syntax | !drive
     ------------- | -------------
@@ -1202,7 +1324,7 @@
     Console Syntax | scripted_user_func *drive* 
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _6->9->9->9->3->1_
     ------------- | -------------
 
 ---
@@ -1214,7 +1336,19 @@
     Console Syntax | scripted_user_func *stop_car_alarms* 
     ------------- | -------------
     
-    Menu Sequence | _6->9->5_
+    Menu Sequence | _6->9->5->1_
+    ------------- | -------------
+ 
+---
+- **remove_fall_cams** : Remove falling follower cameras which lock movement and view. Example: Views on the No Mercy rooftop while falling
+
+    Chat Syntax | !remove_fall_cams
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *remove_fall_cams* 
+    ------------- | -------------
+    
+    Menu Sequence | _6->9->5->2_
     ------------- | -------------
  
 ---
@@ -1226,7 +1360,7 @@
     Console Syntax | scripted_user_func *wear_hat,extra_height* 
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _6->9->9->9->1->1_
     ------------- | -------------
 
 ```cpp
@@ -1246,7 +1380,7 @@
     Console Syntax | scripted_user_func *take_off_hat* 
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _6->9->9->9->1->2_
     ------------- | -------------
 
 ---
@@ -1258,7 +1392,7 @@
     Console Syntax | scripted_user_func *hat_position,attachment_point*
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _6->9->9->9->1->3 , 6->9->9->9->1->4 AND 6->9->9->9->1->5_
     ------------- | -------------
 
 ```cpp
@@ -1274,7 +1408,7 @@
     Console Syntax | scripted_user_func *update_aimed_ent_direction* 
     ------------- | -------------
     
-    Menu Sequence | _Top secret_
+    Menu Sequence | _6->9->9->9->1->6->3_
     ------------- | -------------
 
 ---
@@ -1289,6 +1423,29 @@
     Menu Sequence | _6->9->3->9->1_
     ------------- | -------------
                              
+---
+- **give_physics** : Enable physics on object(s) around a radius or of which aimed at
+
+    Chat Syntax | !give_physics *radius*
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *give_physics,radius*
+    ------------- | -------------
+    
+    Menu Sequence | _6->9->9->9->4_
+    ------------- | -------------
+
+```cpp
+       //Overloads
+       give_physics {radius:positive_number|!picker}
+       give_physics     // radius = 150 units
+       
+       // Example (give physics to aimed object (if possible))
+       give_physics !picker
+       
+       // Example (give physics to objects within 500 units around aimed point)
+       give_physics 500
+```
 ---
 ## Debugging, scripting and settings related
 
@@ -1355,12 +1512,12 @@
     
 ```
 ---
-- **wnet** : Add a watch to a netprop of an entity, checks netprop of the given entity and only show a message when it changes
+- **wnet** : Add a watch to a netprop of an entity or all netprops defined under given class, checks netprop of the given entity and only show a message when it changes
 
-    Chat Syntax | !wnet *netprop_name,check_rate,NAME_OR_ID*
+    Chat Syntax | !wnet *netprop_or_baseclass,check_rate,NAME_OR_ID*
     ------------- | -------------
 
-    Console Syntax | scripted_user_func *wnet,netprop_name,check_rate,NAME_OR_ID*
+    Console Syntax | scripted_user_func *wnet,netprop_or_baseclass,check_rate,NAME_OR_ID*
     ------------- | -------------
     
     Menu Sequence | _Not in the menu_
@@ -1374,15 +1531,25 @@
        wnet {netprop_name} {check_rate:seconds} {NAME_OR_ID}
        wnet {netprop_name} {check_rate:seconds}       // NAME_OR_ID = aimed entity
        wnet {netprop_name}    // check_rate = 1 second , NAME_OR_ID = aimed entity
-
+       
        // Example: Watch m_clrRender netprop of the entity at index 82, check every half a second
        wnet m_clrRender 0.5 #82
 
        // Example: Watch movetype netprop of the aimed entity, check every 2 seconds
        wnet movetype 2
+       
+       //Overloads:
+       // Use "&" to watch all the members defined under a class (which are defined in the NetPropTables table)
+       wnet &{baseclass}&{depth:integer} {check_rate:seconds} {NAME_OR_ID}
+       
+       // Example: Watch netprop members at less than depth 4 defined under CBaseEntity for the entity #99 every second
+       wnet &CBaseEntity&4 1 #99
+
+       // Example: Watch all CBaseAnimating members of the aimed object every half a second
+       wnet &CBaseAnimating 0.5
 ```
 ---
-- **stop_wnet** : Stop watching a netprop of an entity
+- **stop_wnet** : Stop watching a netprop or class members of an entity
 
     Chat Syntax | !stop_wnet *netprop_name,NAME_OR_ID*
     ------------- | -------------
@@ -1404,6 +1571,14 @@
 
        // Example: Stop watching m_vecOrigin netprop of aimed entity
        stop_wnet m_vecOrigin
+       
+       //Overloads:
+       // Use "&" to use base class names
+       stop_wnet &{baseclass} {NAME_OR_ID}
+    
+       // Example: Stop watching CBaseAnimating members of object at index 22
+       stop_wnet &CBaseAnimating #22
+
 ```
 ---
 - **update_custom_response_preference** : Enable/Disable custom responses
@@ -1544,6 +1719,29 @@
        // Example: Get information about your player's current state
        debug_info player
 ```
+---
+- **flag_lookup** : Check what flags/constants are defined with a given prefix or check what flags/constants correspond to a given integer value
+
+    Chat Syntax | !flag_lookup *prefix,value*
+    ------------- | -------------
+
+    Console Syntax | scripted_user_func *flag_lookup,prefix,value*
+    ------------- | -------------
+    
+    Menu Sequence | _Not in the menu_
+    ------------- | -------------
+```cpp
+       //Overloads:
+       flag_lookup {prefix} {value:integer}      // Get flags with bitwise OR "|" equal to given value, starting with given prefix in their name 
+       flag_lookup {prefix}             // Show all flags bitwise OR'd starting with given prefix in their names
+       
+       // Example: Get corresponding flags to value 44 using HEIGHT_ flags
+       flag_lookup HEIGHT_ 44
+       
+       // Example: Get all flags starting with prefix ANGLE_ADD
+       flag_lookup ANGLE_ADD
+```
+
 - **and more...**
 
 ## Extra
@@ -1554,15 +1752,17 @@
 - AdminSystem configuration files are stored in the **"..\Left 4 Dead 2\left4dead2\ems\admin system"** directory.
 
 - This directory contains:
- + **Admin system settings : _settings.txt_**
- + **Admins : _admins.txt_**
- + **Banned players (only if theres any): _banned.txt_**
- + **Script authorizations : _scriptauths.txt_**
- + **Custom responses : _custom_responses.json_**
- + **Default settings and parameters : _defaults.txt_**
- + **Bots' sharing/looting parameters : _botparams.txt_**
- + **Apocalypse event custom settings : _apocalypse_settings.txt_**
- + **Meteor shower event custom settings : _meteor_shower_settings.txt_**
+  + **_settings.txt_ : Admin system settings**
+  + **_admins.txt_ : Admins**
+  + **_banned.txt_ : Banned players (only if theres any)**
+  + **_scriptauths.txt_ : Script authorizations**
+  + **_custom_responses.json_ : Custom responses**
+  + **_defaults.txt_ : Default settings and parameters**
+  + **_prop_defaults.txt_ : Default prop spawning settings**
+  + **_botparams.txt_ : Bots' sharing/looting parameters**
+  + **_apocalypse_settings.txt_ : Apocalypse event custom settings**
+  + **_meteor_shower_settings.txt_ : Meteor shower event custom settings**
+
 
 - These files can all be edited manually with any text editor, but be sure to follow the format present in the file. If an issue occurs while reading the file, it will be printed in **red** in the console. Removing the file can help solve reading issues by letting the addon re-creating the file again in the next reset.
 
@@ -1571,12 +1771,24 @@
 
 - **"defaults.txt"** file contains most of the customizable settings in the **project_smok**. Follow the instructions given in the file to start editing!
 
+- **"prop_defaults.txt"** file contains prop spawning settings tables and flag explanations. Follow the instructions given in the file to start editing!
+
 - **"botparams.txt"** file contains the parameters used for bots' sharing and looting abilities. Probabilistic values are normalized between 0 and 1.
 
 - **"apocalypse_settings.txt"** file contains the settings to use for the _apocalypse_ event. Probabilistic values are normalized between 0 and 1.
 
 - **"meteor_shower_settings.txt"** file contains the settings to use for the _meteor shower_ event. Probabilistic values are normalized between 0 and 1.
 
+---
+### Detailed Tables
+---
+- There are currently **2** big tables containing detailed information about the objects in the game.
+  + **_NetPropTables_ : Contains network property members and their basic information for every base class defined.** 
+     - **Example:** access to render color member information of props: _NetPropTables.CBaseEntity.m_clrRender_
+  
+  + **_EntityDetailTables_ : Contains most if not all the information on every entity class wiki page there is categorized under basic headers:(Description,Flags,KeyValues,Inputs,Outputs).**
+     - **Example:** access to flags of prop_ragdoll class: _EntityDetailTables.prop.prop_ragdoll.flags_
+  
 ---
 ### Forms
 ---
