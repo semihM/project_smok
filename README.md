@@ -1094,7 +1094,7 @@
        resume_time special
        
        // Example: Unfreeze object aimed at
-       stop_time
+       resume_time
 ```
 ---
 ## Piano
@@ -1224,7 +1224,7 @@
     Setting | Default Value | Description
     ------------ | ------------- | -------------
     delay | 1 | delay for explosion in seconds
-    effect_name | "flame_blue" | [particle effect name](https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/particle_names/particlenames.nut) to spawn until explosion. 
+    effect_name | "flame_blue" | [particle effect name](https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/particle_names/particlenames.nut) to spawn until explosion. "no_effect" to disable particle effects 
     radiusmin | 300 | explosion's minimum radius to damage and push entities in
     radiusmax | 450 | explosion's maximum radius to damage and push entities in
     dmgmin | 10 | minimum damage to give entities in the radius
