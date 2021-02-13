@@ -11933,7 +11933,7 @@ if ( Director.GetGameMode() == "holdout" )
 				{
 					if(!(str[i] in getconsttable()))
 					{
-						printl("[FLAG-MISSING] " + str[i] + " is unknown!")
+						Printer(player,COLOR_ORANGE+"[FLAG-MISSING] " + COLOR_OLIVE_GREEN + str[i] + COLOR_DEFAULT + " is unknown!","warning")
 						continue;
 					}
 					flags = flags | getconsttable()[str[i]]
@@ -11973,7 +11973,7 @@ if ( Director.GetGameMode() == "holdout" )
 				}
 				else
 				{
-					printl("[FLAG-MISSING] " + str[i] + " is unknown!")
+					Printer(player,COLOR_ORANGE+"[FLAG-MISSING] " + COLOR_OLIVE_GREEN + str[1] + COLOR_DEFAULT + " is unknown!","warning")
 				}
 				return flags;
 			}
@@ -12006,7 +12006,7 @@ if ( Director.GetGameMode() == "holdout" )
 			{
 				if(!(str[i] in getconsttable()))
 				{
-					printl("[FLAG-MISSING] " + str[i] + " is unknown!")
+					Printer(player,COLOR_ORANGE+"[FLAG-MISSING] " + COLOR_OLIVE_GREEN + str[i] + COLOR_DEFAULT + " is unknown!","warning")
 					continue;
 				}
 				flags = flags | getconsttable()[str[i]]
@@ -16873,7 +16873,16 @@ if ( Director.GetGameMode() == "holdout" )
 				AdminSystem.Vars._prop_spawn_settings[name][typename][setting][valorflag] = val;
 
 		}
-		Printer(player,CmdMessages.Prop.SettingSuccess(typename,setting,valorflag,AdminSystem.Vars._prop_spawn_settings[name][typename][setting][valorflag]));
+		if(typename=="all")
+		{
+			Printer(player,CmdMessages.Prop.SettingSuccess("physics",setting,valorflag,AdminSystem.Vars._prop_spawn_settings[name]["physics"][setting][valorflag]));
+			Printer(player,CmdMessages.Prop.SettingSuccess("dynamic",setting,valorflag,AdminSystem.Vars._prop_spawn_settings[name]["dynamic"][setting][valorflag]));
+			Printer(player,CmdMessages.Prop.SettingSuccess("ragdoll",setting,valorflag,AdminSystem.Vars._prop_spawn_settings[name]["ragdoll"][setting][valorflag]));
+		}
+		else
+		{
+			Printer(player,CmdMessages.Prop.SettingSuccess(typename,setting,valorflag,AdminSystem.Vars._prop_spawn_settings[name][typename][setting][valorflag]));
+		}
 	}
 	else
 	{	
