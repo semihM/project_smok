@@ -489,7 +489,7 @@
        prop_spawn_setting dynamic spawn_height -flags flg|HEIGHT_ADD_RANDOM_M250_250
        
        //Example: Spawn all props at eye level height
-       prop_spawn_setting all spawn_height flags flg|HEIGHT_EYE_LEVEL
+       prop_spawn_setting all spawn_height flags flg|HEIGHT_EYELEVEL
        
        //Example: Spawn dynamic props rolled over
        prop_spawn_setting dynamic spawn_angles +flags flg|ANGLE_ROLLOVER
@@ -497,8 +497,8 @@
        //Example: Spawn dynamic props with exact eye angles of the player, then turn it around
        prop_spawn_setting dynamic spawn_angles flags flg|ANGLE_EYES_EXACT|ANGLE_TURN_AROUND
        
-       //Example: Set value to be used if needed with spawn angle to "0 30 0", meaning a 30 degree turn to right for physics props
-       prop_spawn_setting physics spawn_angles val str|30|0|0
+       //Example: Set value to be used if needed with spawn angle to "0 -30 0", meaning a 30 degree turn to right for physics props
+       prop_spawn_setting physics spawn_angles val str|0|-30|0
        
        //Example: Use the value given in the previous example as an addition to eye angles' yaw, resulting all physics props to spawn facing slighty right of the player
        prop_spawn_setting physics spawn_angles flags flg|ANGLE_EYES_YAW|ANGLE_ADD_VAL
@@ -524,6 +524,12 @@
        randomline {speaker: survivor | random} {line_source: line_owner | random}
        randomline {speaker: survivor | random}             // line_source = speaker
        randomline              // speaker = self , line_source = self
+       
+       // Example: Make Louis speak a randomline from Nick
+       randomline louis nick
+       
+       // Example: Make Coach speak a randomline from himself
+       randomline coach
 ```
 ---
 - **randomline_save_last** : Change state of saving the last random line spoken
@@ -551,6 +557,9 @@
 ```cpp
        //Overloads:
        save_line {speaker: survivor} {line_source: path_to_line}
+       
+       // Example: Save the line scenes/namvet/c6dlc3openingdoor01.vcd by Bill to be spoken by Zoey
+       save_line zoey scenes/namvet/c6dlc3openingdoor01.vcd
 ```
 ---
 - **display_saved_line** : Display saved line information 
@@ -946,7 +955,7 @@
     debug | 0            | Print which entities are effected (0 = off , 1 = on) 
 
 --- 
-- **apocalypse_setting** : Change apocalypse event settings
+- **apocalypse_setting** : Change apocalypse event settings, updates **apocalypse_settings.txt** file
 
     Chat Syntax | !apocalypse_setting *setting new_value*
     ------------- | -------------
@@ -1027,7 +1036,7 @@
     debug | 0					| Print meteor spawn and hit points, explosions, scatters and breaks
 
 --- 
-- **meteor_shower_setting** : Change apocalypse event settings
+- **meteor_shower_setting** : Change apocalypse event settings, updates **meteor_shower_settings.txt** file
 
     Chat Syntax | !meteor_shower_setting *setting new_value*
     ------------- | -------------
