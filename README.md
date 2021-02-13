@@ -476,7 +476,7 @@
     Console Syntax | scripted_user_func *prop_spawn_setting,classname,setting,subsetting,newvalue* 
     ------------- | -------------
     
-    Menu Sequence | _6->9->4_
+    Menu Sequence | _6->9->3_
     ------------- | -------------
 ```cpp
        //Overloads:
