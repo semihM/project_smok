@@ -29,6 +29,7 @@ IncludeScript("Project_smok/Constants");
 IncludeScript("Project_smok/AdminVars");
 
 ::CmdMessages <- ::Messages.BIM.CMD;
+::CmdDocs <- ::Messages.BIM.Docs;
 
 if ( SessionState.ModeName == "coop" || SessionState.ModeName == "realism" || SessionState.ModeName == "survival" || SessionState.ModeName == "versus" || SessionState.ModeName == "scavenge" )
 {
@@ -1765,6 +1766,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.RandomlineCmd(player, args);
 			break;
 		}
+		case "help":
+		{
+			AdminSystem.HelpCmd(player, args);
+			break;
+		}
 		case "update_print_output_state":
 		{
 			AdminSystem.Update_print_output_stateCmd(player, args);
@@ -2421,16 +2427,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		case "show_apocalypse_settings":
 		{
 			AdminSystem.Show_apocalypse_settingsCmd(player,args);
-			break;
-		}
-		case "create_listener":
-		{
-			AdminSystem._CreateKeyListenerCmd(player,args);
-			break;
-		}
-		case "stop_listener":
-		{
-			AdminSystem._StopKeyListenerCmd(player,args);
 			break;
 		}
 		case "drive":
@@ -5060,9 +5056,27 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 }
 ::AdminSystem._CreateKeyListenerCmd <- function(ent,args,forcar=true)
 {
-	if (!AdminSystem.IsPrivileged( ent ))
-		return;
+	if(typeof ent == "string")
+	{
+		ent = Player(ent)
+		if(ent == null || !ent.IsEntityValid())
+			return
+	}
 
+	if(typeof forcar != "bool")
+	{
+		switch(forcar.tostring().tolower())
+		{
+			case "true":
+			case "1":
+			case "yes":
+				forcar = true
+				break;
+			default:
+				forcar = false
+				break;
+		}
+	}
 	local forIndex = ent.GetIndex();
 
 	local keyvals = 
@@ -7950,46 +7964,73 @@ function ChatTriggers::loop( player, args, text )
 {
 	AdminSystem.Speak_loopCmd( player, args );
 }
+::ChatTriggerDocs.loop <- @(player,args) AdminSystem.IsPrivileged(player) && "loop" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.loop(player,args))
+					: null
 
 function ChatTriggers::loop_stop( player, args, text )
 {
 	AdminSystem.Speak_loop_stopCmd( player, args );
 }
+::ChatTriggerDocs.loop_stop <- @(player,args) AdminSystem.IsPrivileged(player) && "loop_stop" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.loop_stop(player,args))
+					: null
 
 function ChatTriggers::speak_test( player, args, text )
 {
 	AdminSystem.Speak_testCmd( player, args );
 }
+::ChatTriggerDocs.speak_test <- @(player,args) AdminSystem.IsPrivileged(player) && "speak_test" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.speak_test(player,args))
+					: null
 
 function ChatTriggers::speak_custom( player, args, text )
 {
 	AdminSystem.Speak_customCmd( player, args );
 }
+::ChatTriggerDocs.speak_custom <- @(player,args) AdminSystem.IsPrivileged(player) && "speak_custom" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.speak_custom(player,args))
+					: null
 
 function ChatTriggers::show_custom_sequences( player, args, text )
 {
 	AdminSystem.Show_custom_sequencesCmd( player, args );
 }
+::ChatTriggerDocs.show_custom_sequences <- @(player,args) AdminSystem.IsPrivileged(player) && "show_custom_sequences" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.show_custom_sequences(player,args))
+					: null
 
 function ChatTriggers::seq_info( player, args, text )
 {
 	AdminSystem.Sequence_infoCmd( player, args );
 }
+::ChatTriggerDocs.seq_info <- @(player,args) AdminSystem.IsPrivileged(player) && "seq_info" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.seq_info(player,args))
+					: null
 
 function ChatTriggers::seq_edit( player, args, text )
 {
 	AdminSystem.Sequence_editCmd( player, args );
 }
+::ChatTriggerDocs.seq_edit <- @(player,args) AdminSystem.IsPrivileged(player) && "seq_edit" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.seq_edit(player,args))
+					: null
 
 function ChatTriggers::create_seq( player, args, text )
 {
 	AdminSystem.CreateSequenceCmd( player, args );
 }
+::ChatTriggerDocs.create_seq <- @(player,args) AdminSystem.IsPrivileged(player) && "create_seq" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.create_seq(player,args))
+					: null
 
 function ChatTriggers::delete_seq( player, args, text )
 {
 	AdminSystem.DeleteSequenceCmd( player, args );
 }
+::ChatTriggerDocs.delete_seq <- @(player,args) AdminSystem.IsPrivileged(player) && "delete_seq" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.delete_seq(player,args))
+					: null
 
 /*
  * @authors rhino
@@ -8000,26 +8041,41 @@ function ChatTriggers::start_the_shower( player, args, text )
 {
 	AdminSystem.Start_the_showerCmd( player, args );
 }
+::ChatTriggerDocs.start_the_shower <- @(player,args) AdminSystem.IsPrivileged(player) && "start_the_shower" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.start_the_shower(player,args))
+					: null
 
 function ChatTriggers::pause_the_shower( player, args, text )
 {
 	AdminSystem.Pause_the_showerCmd( player, args );
 }
+::ChatTriggerDocs.pause_the_shower <- @(player,args) AdminSystem.IsPrivileged(player) && "pause_the_shower" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.pause_the_shower(player,args))
+					: null
 
 function ChatTriggers::show_meteor_shower_settings( player, args, text )
 {
 	AdminSystem.Show_meteor_shower_settingsCmd( player, args );
 }
+::ChatTriggerDocs.show_meteor_shower_settings <- @(player,args) AdminSystem.IsPrivileged(player) && "show_meteor_shower_settings" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.show_meteor_shower_settings(player,args))
+					: null
 
 function ChatTriggers::meteor_shower_setting( player, args, text )
 {
 	AdminSystem.Meteor_shower_settingCmd( player, args );
 }
+::ChatTriggerDocs.meteor_shower_setting <- @(player,args) AdminSystem.IsPrivileged(player) && "meteor_shower_setting" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.meteor_shower_setting(player,args))
+					: null
 
 function ChatTriggers::meteor_shower_debug( player, args, text )
 {
 	AdminSystem.Meteor_shower_debugCmd( player, args );
 }
+::ChatTriggerDocs.meteor_shower_debug <- @(player,args) AdminSystem.IsPrivileged(player) && "meteor_shower_debug" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.meteor_shower_debug(player,args))
+					: null
 
 /*
  * @authors rhino
@@ -8030,26 +8086,41 @@ function ChatTriggers::start_the_apocalypse( player, args, text )
 {
 	AdminSystem.Start_the_apocalypseCmd( player, args );
 }
+::ChatTriggerDocs.start_the_apocalypse <- @(player,args) AdminSystem.IsPrivileged(player) && "start_the_apocalypse" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.start_the_apocalypse(player,args))
+					: null
 
 function ChatTriggers::pause_the_apocalypse( player, args, text )
 {
 	AdminSystem.Pause_the_apocalypseCmd( player, args );
 }
+::ChatTriggerDocs.pause_the_apocalypse <- @(player,args) AdminSystem.IsPrivileged(player) && "pause_the_apocalypse" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.pause_the_apocalypse(player,args))
+					: null
 
 function ChatTriggers::apocalypse_debug( player, args, text )
 {
 	AdminSystem.Apocalypse_debugCmd( player, args );
 }
+::ChatTriggerDocs.apocalypse_debug <- @(player,args) AdminSystem.IsPrivileged(player) && "apocalypse_debug" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.apocalypse_debug(player,args))
+					: null
 
 function ChatTriggers::show_apocalypse_settings( player, args, text )
 {
 	AdminSystem.Show_apocalypse_settingsCmd( player, args );
 }
+::ChatTriggerDocs.show_apocalypse_settings <- @(player,args) AdminSystem.IsPrivileged(player) && "show_apocalypse_settings" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.show_apocalypse_settings(player,args))
+					: null
 
 function ChatTriggers::apocalypse_setting( player, args, text )
 {
 	AdminSystem.Apocalypse_settingCmd( player, args );
 }
+::ChatTriggerDocs.apocalypse_setting <- @(player,args) AdminSystem.IsPrivileged(player) && "apocalypse_setting" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.apocalypse_setting(player,args))
+					: null
 
 /*
  * @authors rhino
@@ -8060,46 +8131,81 @@ function ChatTriggers::update_print_output_state(player,args,text)
 {
 	AdminSystem.Update_print_output_stateCmd(player, args);
 }
+::ChatTriggerDocs.update_print_output_state <- @(player,args) AdminSystem.IsPrivileged(player) && "update_print_output_state" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.update_print_output_state(player,args))
+					: null
+
+function ChatTriggers::help(player,args,text)
+{
+	AdminSystem.HelpCmd(player, args);
+}
+::ChatTriggerDocs.help <- @(player,args) AdminSystem.IsPrivileged(player) && "help" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.help(player,args))
+					: null
 
 function ChatTriggers::attach_to_targeted_position(player,args,text)
 {
 	AdminSystem.Attach_to_targeted_positionCmd(player, args);
 }
+::ChatTriggerDocs.attach_to_targeted_position <- @(player,args) AdminSystem.IsPrivileged(player) && "attach_to_targeted_position" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.attach_to_targeted_position(player,args))
+					: null
 
 function ChatTriggers::randomparticle_save_state(player,args,text)
 {
 	AdminSystem.Randomparticle_save_stateCmd(player, args);
 }
+::ChatTriggerDocs.randomparticle_save_state <- @(player,args) AdminSystem.IsPrivileged(player) && "randomparticle_save_state" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.randomparticle_save_state(player,args))
+					: null
 
 function ChatTriggers::update_attachment_preference(player,args,text)
 {
 	AdminSystem.Update_attachment_preferenceCmd(player, args);
 }
+::ChatTriggerDocs.update_attachment_preference <- @(player,args) AdminSystem.IsPrivileged(player) && "update_attachment_preference" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.update_attachment_preference(player,args))
+					: null
 
 function ChatTriggers::display_saved_particle(player,args,text)
 {
 	AdminSystem.Display_saved_particleCmd(player, args);
 }
+::ChatTriggerDocs.display_saved_particle <- @(player,args) AdminSystem.IsPrivileged(player) && "display_saved_particle" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.display_saved_particle(player,args))
+					: null
 
 function ChatTriggers::admin_var( player, args, text )
 {
 	AdminSystem.Admin_varCmd( player, args );
 }
+::ChatTriggerDocs.admin_var <- @(player,args) AdminSystem.IsPrivileged(player) && "admin_var" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.admin_var(player,args))
+					: null
 
 function ChatTriggers::add_script_auth( player, args, text )
 {
 	AdminSystem.AddScriptAuthCmd( player, args );
 }
+::ChatTriggerDocs.add_script_auth <- @(player,args) AdminSystem.IsPrivileged(player) && "add_script_auth" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.add_script_auth(player,args))
+					: null
 
 function ChatTriggers::remove_script_auth( player, args, text )
 {
 	AdminSystem.RemoveScriptAuthCmd( player, args );
 }
+::ChatTriggerDocs.remove_script_auth <- @(player,args) AdminSystem.IsPrivileged(player) && "remove_script_auth" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.remove_script_auth(player,args))
+					: null
 
 function ChatTriggers::server_exec(player,args,text)
 {
 	AdminSystem.Server_execCmd(player, args);
 }
+::ChatTriggerDocs.server_exec <- @(player,args) AdminSystem.IsPrivileged(player) && "server_exec" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.server_exec(player,args))
+					: null
 
 function ChatTriggers::script( player, args, text )
 {
@@ -8112,125 +8218,184 @@ function ChatTriggers::script( player, args, text )
 	local compiledscript = compilestring(Utils.CombineArray(args));
 	compiledscript();
 }
+::ChatTriggerDocs.script <- @(player,args) AdminSystem.IsPrivileged(player) && "script" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.script(player,args))
+					: null
 
 function ChatTriggers::setkeyval(player,args,text)
 {
 	AdminSystem.SetkeyvalCmd(player, args);
 }
+::ChatTriggerDocs.setkeyval <- @(player,args) AdminSystem.IsPrivileged(player) && "setkeyval" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.setkeyval(player,args))
+					: null
 
 function ChatTriggers::update_svcheats(player,args,text)
 {
 	AdminSystem.Update_svcheatsCmd(player, args);
 }
+::ChatTriggerDocs.update_svcheats <- @(player,args) AdminSystem.IsPrivileged(player) && "update_svcheats" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.update_svcheats(player,args))
+					: null
 
 function ChatTriggers::prop_spawn_setting(player,args,text)
 {
 	AdminSystem.Update_prop_spawn_settingCmd(player, args);
 }
+::ChatTriggerDocs.prop_spawn_setting <- @(player,args) AdminSystem.IsPrivileged(player) && "prop_spawn_setting" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.prop_spawn_setting(player,args))
+					: null
 function ChatTriggers::update_prop_spawn_setting(player,args,text)
 {
 	AdminSystem.Update_prop_spawn_settingCmd(player, args);
 }
+::ChatTriggerDocs.update_prop_spawn_setting <- @(player,args) AdminSystem.IsPrivileged(player) && "prop_spawn_setting" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.prop_spawn_setting(player,args))
+					: null
 
 function ChatTriggers::update_prop_spawn_menu_type(player,args,text)
 {
 	AdminSystem.Update_prop_spawn_menu_typeCmd(player, args);
 }
+::ChatTriggerDocs.update_prop_spawn_menu_type <- @(player,args) AdminSystem.IsPrivileged(player) && "update_prop_spawn_menu_type" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.update_prop_spawn_menu_type(player,args))
+					: null
 
 function ChatTriggers::display_prop_spawn_settings(player,args,text)
 {
 	AdminSystem.Display_prop_spawn_settingsCmd(player, args);
 }
+::ChatTriggerDocs.display_prop_spawn_settings <- @(player,args) AdminSystem.IsPrivileged(player) && "display_prop_spawn_settings" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.display_prop_spawn_settings(player,args))
+					: null
 
 function ChatTriggers::update_custom_response_preference(player,args,text)
 {
 	AdminSystem.Update_custom_response_preferenceCmd(player, args);
 }
+::ChatTriggerDocs.update_custom_response_preference <- @(player,args) AdminSystem.IsPrivileged(player) && "update_custom_response_preference" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.update_custom_response_preference(player,args))
+					: null
 
 function ChatTriggers::update_custom_sharing_preference(player,args,text)
 {
 	AdminSystem.Update_custom_sharing_preferenceCmd(player, args);
 }
+::ChatTriggerDocs.update_custom_sharing_preference <- @(player,args) AdminSystem.IsPrivileged(player) && "update_custom_sharing_preference" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.update_custom_sharing_preference(player,args))
+					: null
 
 function ChatTriggers::explosion( player, args, text )
 {
 	AdminSystem._AimedExplosionCmd( player, args );
 }
+::ChatTriggerDocs.explosion <- @(player,args) AdminSystem.IsPrivileged(player) && "explosion" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.explosion(player,args))
+					: null
 
 function ChatTriggers::show_explosion_settings( player, args, text )
 {
 	AdminSystem.Show_explosion_settingsCmd( player, args );
 }
+::ChatTriggerDocs.show_explosion_settings <- @(player,args) AdminSystem.IsPrivileged(player) && "show_explosion_settings" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.show_explosion_settings(player,args))
+					: null
 
 function ChatTriggers::explosion_setting( player, args, text )
 {
 	AdminSystem.Explosion_settingCmd( player, args );
 }
+::ChatTriggerDocs.explosion_setting <- @(player,args) AdminSystem.IsPrivileged(player) && "explosion_setting" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.explosion_setting(player,args))
+					: null
 
 function ChatTriggers::update_jockey_preference( player, args, text )
 {
 	AdminSystem.UpdateJockeyPreferenceCmd( player, args );
 }
+::ChatTriggerDocs.update_jockey_preference <- @(player,args) AdminSystem.IsPrivileged(player) && "update_jockey_preference" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.update_jockey_preference(player,args))
+					: null
 
 function ChatTriggers::update_tank_rock_launch_preference( player, args, text )
 {
 	AdminSystem.UpdateTankRockPreferenceCmd( player, args );
 }
+::ChatTriggerDocs.update_tank_rock_launch_preference <- @(player,args) AdminSystem.IsPrivileged(player) && "update_tank_rock_launch_preference" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.update_tank_rock_launch_preference(player,args))
+					: null
 
 function ChatTriggers::update_tank_rock_random_preference( player, args, text )
 {
 	AdminSystem.UpdateTankRockRandomPreferenceCmd( player, args );
 }
+::ChatTriggerDocs.update_tank_rock_random_preference <- @(player,args) AdminSystem.IsPrivileged(player) && "update_tank_rock_random_preference" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.update_tank_rock_random_preference(player,args))
+					: null
 
 function ChatTriggers::update_tank_rock_respawn_preference( player, args, text )
 {
 	AdminSystem.UpdateTankRockSpawnAfterPreferenceCmd( player, args );
 }
+::ChatTriggerDocs.update_tank_rock_respawn_preference <- @(player,args) AdminSystem.IsPrivileged(player) && "update_tank_rock_respawn_preference" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.update_tank_rock_respawn_preference(player,args))
+					: null
 
 function ChatTriggers::update_model_preference( player, args, text )
 {
 	AdminSystem.UpdateModelPreferenceCmd( player, args );
 }
+::ChatTriggerDocs.update_model_preference <- @(player,args) AdminSystem.IsPrivileged(player) && "update_model_preference" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.update_model_preference(player,args))
+					: null
 
 function ChatTriggers::restore_model( player, args, text )
 {
 	AdminSystem.RestoreModelCmd( player, args );
 }
+::ChatTriggerDocs.restore_model <- @(player,args) AdminSystem.IsPrivileged(player) && "restore_model" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.restore_model(player,args))
+					: null
 
 function ChatTriggers::random_model( player, args, text )
 {
 	AdminSystem.RandomModelCmd( player, args );
 }
-
-function ChatTriggers::create_listener( player, args, text )
-{
-	AdminSystem._CreateKeyListenerCmd( player, args );
-}
-
-function ChatTriggers::stop_listener( player, args, text )
-{
-	AdminSystem._StopKeyListenerCmd( player, args );
-}
+::ChatTriggerDocs.random_model <- @(player,args) AdminSystem.IsPrivileged(player) && "random_model" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.random_model(player,args))
+					: null
 
 function ChatTriggers::drive( player, args, text )
 {
 	AdminSystem.DriveCmd( player, args );
 }
+::ChatTriggerDocs.drive <- @(player,args) AdminSystem.IsPrivileged(player) && "drive" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.drive(player,args))
+					: null
 
 function ChatTriggers::kind_bots( player, args, text )
 {
 	AdminSystem._EnableKindnessCmd( player, args );
 }
+::ChatTriggerDocs.kind_bots <- @(player,args) AdminSystem.IsPrivileged(player) && "kind_bots" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.kind_bots(player,args))
+					: null
 
 function ChatTriggers::selfish_bots( player, args, text )
 {
 	AdminSystem._DisableKindnessCmd( player, args );
 }
+::ChatTriggerDocs.selfish_bots <- @(player,args) AdminSystem.IsPrivileged(player) && "selfish_bots" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.selfish_bots(player,args))
+					: null
 
 function ChatTriggers::update_bots_sharing_preference( player, args, text )
 {
 	AdminSystem.Update_bots_sharing_preferenceCmd( player, args );
 }
+::ChatTriggerDocs.update_bots_sharing_preference <- @(player,args) AdminSystem.IsPrivileged(player) && "update_bots_sharing_preference" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.update_bots_sharing_preference(player,args))
+					: null
 
 /*
  * @authors rhino
@@ -8241,31 +8406,49 @@ function ChatTriggers::piano_keys( player, args, text )
 {
 	AdminSystem.Piano_keysCmd( player, args );
 }
+::ChatTriggerDocs.piano_keys <- @(player,args) AdminSystem.IsPrivileged(player) && "piano_keys" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.piano_keys(player,args))
+					: null
 
 function ChatTriggers::remove_piano_keys( player, args, text )
 {
 	AdminSystem.Remove_piano_keysCmd( player, args );
 }
+::ChatTriggerDocs.remove_piano_keys <- @(player,args) AdminSystem.IsPrivileged(player) && "remove_piano_keys" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.remove_piano_keys(player,args))
+					: null
 
 function ChatTriggers::display_mics_speakers( player, args, text )
 {
 	AdminSystem.Display_mics_speakersCmd( player, args );
 }
+::ChatTriggerDocs.display_mics_speakers <- @(player,args) AdminSystem.IsPrivileged(player) && "display_mics_speakers" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.display_mics_speakers(player,args))
+					: null
 
 function ChatTriggers::speaker2mic( player, args, text )
 {
 	AdminSystem.Speaker2micCmd( player, args );
 }
+::ChatTriggerDocs.speaker2mic <- @(player,args) AdminSystem.IsPrivileged(player) && "speaker2mic" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.speaker2mic(player,args))
+					: null
 
 function ChatTriggers::speaker( player, args, text )
 {
 	AdminSystem.SpeakerCmd( player, args );
 }
+::ChatTriggerDocs.speaker <- @(player,args) AdminSystem.IsPrivileged(player) && "speaker" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.speaker(player,args))
+					: null
 
 function ChatTriggers::microphone( player, args, text )
 {
 	AdminSystem.MicrophoneCmd( player, args );
 }
+::ChatTriggerDocs.microphone <- @(player,args) AdminSystem.IsPrivileged(player) && "microphone" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.microphone(player,args))
+					: null
 
 /*
  * @authors rhino
@@ -8276,31 +8459,49 @@ function ChatTriggers::randomline(player,args,text)
 {
 	AdminSystem.RandomlineCmd(player, args);
 }
+::ChatTriggerDocs.randomline <- @(player,args) AdminSystem.IsPrivileged(player) && "randomline" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.randomline(player,args))
+					: null
 
 function ChatTriggers::randomline_save_last(player,args,text)
 {
 	AdminSystem.Randomline_save_lastCmd(player, args);
 }
+::ChatTriggerDocs.randomline_save_last <- @(player,args) AdminSystem.IsPrivileged(player) && "randomline_save_last" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.randomline_save_last(player,args))
+					: null
 
 function ChatTriggers::speak_saved(player,args,text)
 {
 	AdminSystem.Speak_savedCmd(player, args);
 }
+::ChatTriggerDocs.speak_saved <- @(player,args) AdminSystem.IsPrivileged(player) && "speak_saved" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.speak_saved(player,args))
+					: null
 
 function ChatTriggers::display_saved_line(player,args,text)
 {
 	AdminSystem.Display_saved_lineCmd(player, args);
 }
+::ChatTriggerDocs.display_saved_line <- @(player,args) AdminSystem.IsPrivileged(player) && "display_saved_line" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.display_saved_line(player,args))
+					: null
 
 function ChatTriggers::save_line(player,args,text)
 {
 	AdminSystem.Save_lineCmd(player, args);
 }
+::ChatTriggerDocs.save_line <- @(player,args) AdminSystem.IsPrivileged(player) && "save_line" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.save_line(player,args))
+					: null
 
 function ChatTriggers::save_particle(player,args,text)
 {
 	AdminSystem.Save_particleCmd(player, args);
 }
+::ChatTriggerDocs.save_particle <- @(player,args) AdminSystem.IsPrivileged(player) && "save_particle" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.save_particle(player,args))
+					: null
 
 /*
  * @authors rhino
@@ -8311,614 +8512,992 @@ function ChatTriggers::ent( player, args, text )
 {
 	AdminSystem.EntityWithTableCmd( player, args );
 }
+::ChatTriggerDocs.ent <- @(player,args) AdminSystem.IsPrivileged(player) && "ent" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.ent(player,args))
+					: null
 
 function ChatTriggers::entcvar( player, args, text )
 {
 	AdminSystem.EntCvarCmd( player, args );
 }
+::ChatTriggerDocs.entcvar <- @(player,args) AdminSystem.IsPrivileged(player) && "entcvar" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.entcvar(player,args))
+					: null
 
 function ChatTriggers::ent_rotate( player, args, text )
 {
 	AdminSystem.EntRotateCmd( player, args );
 }
+::ChatTriggerDocs.ent_rotate <- @(player,args) AdminSystem.IsPrivileged(player) && "ent_rotate" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.ent_rotate(player,args))
+					: null
 
 function ChatTriggers::ladder_team( player, args, text )
 {
 	AdminSystem.Ladder_teamCmd( player, args );
 }
+::ChatTriggerDocs.ladder_team <- @(player,args) AdminSystem.IsPrivileged(player) && "ladder_team" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.ladder_team(player,args))
+					: null
 
 function ChatTriggers::invisible_walls( player, args, text )
 {
 	AdminSystem.BlockerStateCmd( player, args );
 }
+::ChatTriggerDocs.invisible_walls <- @(player,args) AdminSystem.IsPrivileged(player) && "invisible_walls" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.invisible_walls(player,args))
+					: null
 
 function ChatTriggers::ent_push( player, args, text )
 {
 	AdminSystem.EntPushCmd( player, args );
 }
+::ChatTriggerDocs.ent_push <- @(player,args) AdminSystem.IsPrivileged(player) && "ent_push" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.ent_push(player,args))
+					: null
 
 function ChatTriggers::ent_move( player, args, text )
 {
 	AdminSystem.EntMoveCmd( player, args );
 }
+::ChatTriggerDocs.ent_move <- @(player,args) AdminSystem.IsPrivileged(player) && "ent_move" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.ent_move(player,args))
+					: null
 
 function ChatTriggers::ent_spin( player, args, text )
 {
 	AdminSystem.EntSpinCmd( player, args );
 }
+::ChatTriggerDocs.ent_spin <- @(player,args) AdminSystem.IsPrivileged(player) && "ent_spin" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.ent_spin(player,args))
+					: null
 
 function ChatTriggers::ent_teleport( player, args, text )
 {
 	AdminSystem.EntTeleportCmd( player, args );
 }
+::ChatTriggerDocs.ent_teleport <- @(player,args) AdminSystem.IsPrivileged(player) && "ent_teleport" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.ent_teleport(player,args))
+					: null
 
 function ChatTriggers::rainbow(player,args,text)
 {
 	AdminSystem.RainbowCmd(player, args);
 }
+::ChatTriggerDocs.rainbow <- @(player,args) AdminSystem.IsPrivileged(player) && "rainbow" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.rainbow(player,args))
+					: null
 
 function ChatTriggers::color(player,args,text)
 {
 	AdminSystem.ColorCmd(player, args);
 }
+::ChatTriggerDocs.color <- @(player,args) AdminSystem.IsPrivileged(player) && "color" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.color(player,args))
+					: null
 
 function ChatTriggers::model(player,args,text)
 {
 	AdminSystem.ModelCmd(player, args);
 }
+::ChatTriggerDocs.model <- @(player,args) AdminSystem.IsPrivileged(player) && "model" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.model(player,args))
+					: null
 
 function ChatTriggers::model_scale(player,args,text)
 {
 	AdminSystem.ModelScaleCmd(player, args);
 }
+::ChatTriggerDocs.model_scale <- @(player,args) AdminSystem.IsPrivileged(player) && "model_scale" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.model_scale(player,args))
+					: null
 
 function ChatTriggers::disguise(player,args,text)
 {
 	AdminSystem.DisguiseCmd(player, args);
 }
+::ChatTriggerDocs.disguise <- @(player,args) AdminSystem.IsPrivileged(player) && "disguise" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.disguise(player,args))
+					: null
 
 function ChatTriggers::attach_particle(player,args,text)
 {
 	AdminSystem.Attach_particleCmd(player, args);
 }
+::ChatTriggerDocs.attach_particle <- @(player,args) AdminSystem.IsPrivileged(player) && "attach_particle" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.attach_particle(player,args))
+					: null
 
 function ChatTriggers::spawn_particle_saved(player,args,text)
 {
 	AdminSystem.Spawn_particle_savedCmd(player, args);
 }
+::ChatTriggerDocs.spawn_particle_saved <- @(player,args) AdminSystem.IsPrivileged(player) && "spawn_particle_saved" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.spawn_particle_saved(player,args))
+					: null
 
 function ChatTriggers::attach_particle_saved(player,args,text)
 {
 	AdminSystem.Attach_particle_savedCmd(player, args);
 }
+::ChatTriggerDocs.attach_particle_saved <- @(player,args) AdminSystem.IsPrivileged(player) && "attach_particle_saved" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.attach_particle_saved(player,args))
+					: null
 
 function ChatTriggers::hat_position(player,args,text)
 {
 	AdminSystem._HatPosition(player, args);
 }
+::ChatTriggerDocs.hat_position <- @(player,args) AdminSystem.IsPrivileged(player) && "hat_position" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.hat_position(player,args))
+					: null
 function ChatTriggers::update_aimed_ent_direction(player,args,text)
 {
 	AdminSystem.UpdateAimedEntityDirection(player, args);
 }
+::ChatTriggerDocs.update_aimed_ent_direction <- @(player,args) AdminSystem.IsPrivileged(player) && "update_aimed_ent_direction" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.update_aimed_ent_direction(player,args))
+					: null
 function ChatTriggers::take_off_hat(player,args,text)
 {
 	AdminSystem._TakeOffHatCmd(player, args);
 }
+::ChatTriggerDocs.take_off_hat <- @(player,args) AdminSystem.IsPrivileged(player) && "take_off_hat" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.take_off_hat(player,args))
+					: null
 function ChatTriggers::wear_hat(player,args,text)
 {
 	AdminSystem._WearHatCmd(player, args);
 }
+::ChatTriggerDocs.wear_hat <- @(player,args) AdminSystem.IsPrivileged(player) && "wear_hat" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.wear_hat(player,args))
+					: null
 
 function ChatTriggers::grab(player,args,text)
 {
 	AdminSystem.GrabCmd(player, args);
 }
+::ChatTriggerDocs.grab <- @(player,args) AdminSystem.IsPrivileged(player) && "grab" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.grab(player,args))
+					: null
 function ChatTriggers::letgo(player,args,text)
 {
 	AdminSystem.LetgoCmd(player, args);
 }
+::ChatTriggerDocs.letgo <- @(player,args) AdminSystem.IsPrivileged(player) && "letgo" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.letgo(player,args))
+					: null
 function ChatTriggers::yeet(player,args,text)
 {
 	AdminSystem.YeetCmd(player, args);
 }
+::ChatTriggerDocs.yeet <- @(player,args) AdminSystem.IsPrivileged(player) && "yeet" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.yeet(player,args))
+					: null
 function ChatTriggers::show_yeet_settings(player,args,text)
 {
 	AdminSystem.ShowYeetSettingsCmd(player, args);
 }
+::ChatTriggerDocs.show_yeet_settings <- @(player,args) AdminSystem.IsPrivileged(player) && "show_yeet_settings" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.show_yeet_settings(player,args))
+					: null
 function ChatTriggers::yeet_setting(player,args,text)
 {
 	AdminSystem.YeetSettingCmd(player, args);
 }
+::ChatTriggerDocs.yeet_setting <- @(player,args) AdminSystem.IsPrivileged(player) && "yeet_setting" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.yeet_setting(player,args))
+					: null
 function ChatTriggers::change_grab_method(player,args,text)
 {
 	AdminSystem.GrabMethodCmd(player, args);
 }
+::ChatTriggerDocs.change_grab_method <- @(player,args) AdminSystem.IsPrivileged(player) && "change_grab_method" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.change_grab_method(player,args))
+					: null
 function ChatTriggers::stop_car_alarms( player, args, text )
 {
 	AdminSystem.StopCarAlarmsCmd( player, args );
 }
+::ChatTriggerDocs.stop_car_alarms <- @(player,args) AdminSystem.IsPrivileged(player) && "stop_car_alarms" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.stop_car_alarms(player,args))
+					: null
 function ChatTriggers::remove_fall_cams( player, args, text )
 {
 	AdminSystem.RemoveFallCamsCmd( player, args );
 }
+::ChatTriggerDocs.remove_fall_cams <- @(player,args) AdminSystem.IsPrivileged(player) && "remove_fall_cams" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.remove_fall_cams(player,args))
+					: null
 
 function ChatTriggers::debug_info(player,args,text)
 {
 	AdminSystem.Debug_infoCmd(player, args);
 }
+::ChatTriggerDocs.debug_info <- @(player,args) AdminSystem.IsPrivileged(player) && "debug_info" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.debug_info(player,args))
+					: null
 
 function ChatTriggers::stop_time( player, args, text )
 {
 	AdminSystem.StopTimeCmd( player, args );
 }
+::ChatTriggerDocs.stop_time <- @(player,args) AdminSystem.IsPrivileged(player) && "stop_time" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.stop_time(player,args))
+					: null
 function ChatTriggers::resume_time( player, args, text )
 {
 	AdminSystem.ResumeTimeCmd( player, args );
 }
+::ChatTriggerDocs.resume_time <- @(player,args) AdminSystem.IsPrivileged(player) && "resume_time" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.resume_time(player,args))
+					: null
 
 function ChatTriggers::ents_around( player, args, text )
 {
 	AdminSystem.EntitiesAroundCmd( player, args );
 }
+::ChatTriggerDocs.ents_around <- @(player,args) AdminSystem.IsPrivileged(player) && "ents_around" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.ents_around(player,args))
+					: null
 function ChatTriggers::wnet( player, args, text )
 {
 	AdminSystem.WatchNetPropCmd( player, args );
 }
+::ChatTriggerDocs.wnet <- @(player,args) AdminSystem.IsPrivileged(player) && "wnet" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.wnet(player,args))
+					: null
 function ChatTriggers::stop_wnet( player, args, text )
 {
 	AdminSystem.StopWatchNetPropCmd( player, args );
 }
+::ChatTriggerDocs.stop_wnet <- @(player,args) AdminSystem.IsPrivileged(player) && "stop_wnet" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.stop_wnet(player,args))
+					: null
 
 function ChatTriggers::flag_lookup( player, args, text )
 {
 	AdminSystem.FlagLookUpCmd( player, args );
 }
+::ChatTriggerDocs.flag_lookup <- @(player,args) AdminSystem.IsPrivileged(player) && "flag_lookup" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.flag_lookup(player,args))
+					: null
 
 function ChatTriggers::go_ragdoll( player, args, text )
 {
 	AdminSystem.GoRagdollCmd( player, args );
 }
+::ChatTriggerDocs.go_ragdoll <- @(player,args) AdminSystem.IsPrivileged(player) && "go_ragdoll" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.go_ragdoll(player,args))
+					: null
 function ChatTriggers::recover_ragdoll( player, args, text )
 {
 	AdminSystem.RecoverRagdollCmd( player, args );
 }
+::ChatTriggerDocs.recover_ragdoll <- @(player,args) AdminSystem.IsPrivileged(player) && "recover_ragdoll" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.recover_ragdoll(player,args))
+					: null
 
 function ChatTriggers::give_physics( player, args, text )
 {
 	AdminSystem.GivePhysicsCmd( player, args );
 }
+::ChatTriggerDocs.give_physics <- @(player,args) AdminSystem.IsPrivileged(player) && "give_physics" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.give_physics(player,args))
+					: null
 
 function ChatTriggers::fire_ex( player, args, text )
 {
 	AdminSystem.FireExtinguisherCmd( player, args );
 }
+::ChatTriggerDocs.fire_ex <- @(player,args) AdminSystem.IsPrivileged(player) && "fire_ex" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.fire_ex(player,args))
+					: null
 function ChatTriggers::fire_extinguisher( player, args, text )
 {
 	AdminSystem.FireExtinguisherCmd( player, args );
 }
+::ChatTriggerDocs.fire_extinguisher <- @(player,args) AdminSystem.IsPrivileged(player) && "fire_ex" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.fire_ex(player,args))
+					: null
 /////////////////////////others/////////////////////////////
 
 function ChatTriggers::adminmode( player, args, text )
 {
 	AdminSystem.AdminModeCmd( player, args );
 }
+::ChatTriggerDocs.adminmode <- @(player,args) AdminSystem.IsPrivileged(player) && "adminmode" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.adminmode(player,args))
+					: null
 
 function ChatTriggers::add_admin( player, args, text )
 {
 	AdminSystem.AddAdminCmd( player, args );
 }
+::ChatTriggerDocs.add_admin <- @(player,args) AdminSystem.IsPrivileged(player) && "add_admin" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.add_admin(player,args))
+					: null
 
 function ChatTriggers::remove_admin( player, args, text )
 {
 	AdminSystem.RemoveAdminCmd( player, args );
 }
+::ChatTriggerDocs.remove_admin <- @(player,args) AdminSystem.IsPrivileged(player) && "remove_admin" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.remove_admin(player,args))
+					: null
 
 function ChatTriggers::kick( player, args, text )
 {
 	AdminSystem.KickCmd( player, args );
 }
+::ChatTriggerDocs.kick <- @(player,args) AdminSystem.IsPrivileged(player) && "kick" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.kick(player,args))
+					: null
 
 function ChatTriggers::ban( player, args, text )
 {
 	AdminSystem.BanCmd( player, args );
 }
+::ChatTriggerDocs.ban <- @(player,args) AdminSystem.IsPrivileged(player) && "ban" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.ban(player,args))
+					: null
 
 function ChatTriggers::god( player, args, text )
 {
 	AdminSystem.GodCmd( player, args );
 }
+::ChatTriggerDocs.god <- @(player,args) AdminSystem.IsPrivileged(player) && "god" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.god(player,args))
+					: null
 
 function ChatTriggers::bash( player, args, text )
 {
 	AdminSystem.BashCmd( player, args );
 }
+::ChatTriggerDocs.bash <- @(player,args) AdminSystem.IsPrivileged(player) && "bash" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.bash(player,args))
+					: null
 
 function ChatTriggers::freeze( player, args, text )
 {
 	AdminSystem.FreezeCmd( player, args );
 }
+::ChatTriggerDocs.freeze <- @(player,args) AdminSystem.IsPrivileged(player) && "freeze" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.freeze(player,args))
+					: null
 
 function ChatTriggers::noclip( player, args, text )
 {
 	AdminSystem.NoclipCmd( player, args );
 }
+::ChatTriggerDocs.noclip <- @(player,args) AdminSystem.IsPrivileged(player) && "noclip" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.noclip(player,args))
+					: null
 
 function ChatTriggers::speed( player, args, text )
 {
 	AdminSystem.SpeedCmd( player, args );
 }
+::ChatTriggerDocs.speed <- @(player,args) AdminSystem.IsPrivileged(player) && "speed" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.speed(player,args))
+					: null
 
 function ChatTriggers::fly( player, args, text )
 {
 	AdminSystem.FlyCmd( player, args );
 }
+::ChatTriggerDocs.fly <- @(player,args) AdminSystem.IsPrivileged(player) && "fly" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.fly(player,args))
+					: null
 
 function ChatTriggers::infinite_ammo( player, args, text )
 {
 	AdminSystem.InfiniteAmmoCmd( player, args );
 }
+::ChatTriggerDocs.infinite_ammo <- @(player,args) AdminSystem.IsPrivileged(player) && "infinite_ammo" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.infinite_ammo(player,args))
+					: null
 
 function ChatTriggers::unlimited_ammo( player, args, text )
 {
 	AdminSystem.UnlimitedAmmoCmd( player, args );
 }
+::ChatTriggerDocs.unlimited_ammo <- @(player,args) AdminSystem.IsPrivileged(player) && "unlimited_ammo" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.unlimited_ammo(player,args))
+					: null
 
 function ChatTriggers::infinite_upgrade( player, args, text )
 {
 	AdminSystem.InfiniteUpgradeCmd( player, args );
 }
+::ChatTriggerDocs.infinite_upgrade <- @(player,args) AdminSystem.IsPrivileged(player) && "infinite_upgrade" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.infinite_upgrade(player,args))
+					: null
 
 function ChatTriggers::cleanup( player, args, text )
 {
 	AdminSystem.CleanupCmd( player, args );
 }
+::ChatTriggerDocs.cleanup <- @(player,args) AdminSystem.IsPrivileged(player) && "cleanup" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.cleanup(player,args))
+					: null
 
 function ChatTriggers::adrenaline( player, args, text )
 {
 	AdminSystem.AdrenalineCmd( player, args );
 }
+::ChatTriggerDocs.adrenaline <- @(player,args) AdminSystem.IsPrivileged(player) && "adrenaline" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.adrenaline(player,args))
+					: null
 
 function ChatTriggers::move( player, args, text )
 {
 	AdminSystem.MoveCmd( player, args );
 }
+::ChatTriggerDocs.move <- @(player,args) AdminSystem.IsPrivileged(player) && "move" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.move(player,args))
+					: null
 
 function ChatTriggers::chase( player, args, text )
 {
 	AdminSystem.ChaseCmd( player, args );
 }
+::ChatTriggerDocs.chase <- @(player,args) AdminSystem.IsPrivileged(player) && "chase" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.chase(player,args))
+					: null
 
 function ChatTriggers::health( player, args, text )
 {
 	AdminSystem.HealthCmd( player, args );
 }
+::ChatTriggerDocs.health <- @(player,args) AdminSystem.IsPrivileged(player) && "health" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.health(player,args))
+					: null
 
 function ChatTriggers::max_health( player, args, text )
 {
 	AdminSystem.MaxHealthCmd( player, args );
 }
+::ChatTriggerDocs.max_health <- @(player,args) AdminSystem.IsPrivileged(player) && "max_health" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.max_health(player,args))
+					: null
 
 function ChatTriggers::melee( player, args, text )
 {
 	AdminSystem.MeleeCmd( player, args );
 }
+::ChatTriggerDocs.melee <- @(player,args) AdminSystem.IsPrivileged(player) && "melee" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.melee(player,args))
+					: null
 
 function ChatTriggers::particle( player, args, text )
 {
 	AdminSystem.ParticleCmd( player, args );
 }
+::ChatTriggerDocs.particle <- @(player,args) AdminSystem.IsPrivileged(player) && "particle" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.particle(player,args))
+					: null
 
 function ChatTriggers::barrel( player, args, text )
 {
 	AdminSystem.BarrelCmd( player, args );
 }
+::ChatTriggerDocs.barrel <- @(player,args) AdminSystem.IsPrivileged(player) && "barrel" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.barrel(player,args))
+					: null
 
 function ChatTriggers::gascan( player, args, text )
 {
 	AdminSystem.GascanCmd( player, args );
 }
+::ChatTriggerDocs.gascan <- @(player,args) AdminSystem.IsPrivileged(player) && "gascan" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.gascan(player,args))
+					: null
 
 function ChatTriggers::propanetank( player, args, text )
 {
 	AdminSystem.PropaneTankCmd( player, args );
 }
+::ChatTriggerDocs.propanetank <- @(player,args) AdminSystem.IsPrivileged(player) && "propanetank" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.propanetank(player,args))
+					: null
 
 function ChatTriggers::oxygentank( player, args, text )
 {
 	AdminSystem.OxygenTankCmd( player, args );
 }
+::ChatTriggerDocs.oxygentank <- @(player,args) AdminSystem.IsPrivileged(player) && "oxygentank" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.oxygentank(player,args))
+					: null
 
 function ChatTriggers::fireworkcrate( player, args, text )
 {
 	AdminSystem.FireworkCrateCmd( player, args );
 }
+::ChatTriggerDocs.fireworkcrate <- @(player,args) AdminSystem.IsPrivileged(player) && "fireworkcrate" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.fireworkcrate(player,args))
+					: null
 
 function ChatTriggers::minigun( player, args, text )
 {
 	AdminSystem.MinigunCmd( player, args );
 }
+::ChatTriggerDocs.minigun <- @(player,args) AdminSystem.IsPrivileged(player) && "minigun" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.minigun(player,args))
+					: null
 
 function ChatTriggers::weapon( player, args, text )
 {
 	AdminSystem.WeaponCmd( player, args );
 }
+::ChatTriggerDocs.weapon <- @(player,args) AdminSystem.IsPrivileged(player) && "weapon" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.weapon(player,args))
+					: null
 
 function ChatTriggers::spawn_ammo( player, args, text )
 {
 	AdminSystem.SpawnAmmoCmd( player, args );
 }
+::ChatTriggerDocs.spawn_ammo <- @(player,args) AdminSystem.IsPrivileged(player) && "spawn_ammo" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.spawn_ammo(player,args))
+					: null
 
 function ChatTriggers::dummy( player, args, text )
 {
 	AdminSystem.DummyCmd( player, args );
 }
+::ChatTriggerDocs.dummy <- @(player,args) AdminSystem.IsPrivileged(player) && "dummy" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.dummy(player,args))
+					: null
 
 function ChatTriggers::entity( player, args, text )
 {
 	AdminSystem.EntityCmd( player, args );
 }
+::ChatTriggerDocs.entity <- @(player,args) AdminSystem.IsPrivileged(player) && "entity" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.entity(player,args))
+					: null
 
 function ChatTriggers::prop( player, args, text )
 {
 	AdminSystem.PropCmd( player, args );
 }
+::ChatTriggerDocs.prop <- @(player,args) AdminSystem.IsPrivileged(player) && "prop" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.prop(player,args))
+					: null
 
 function ChatTriggers::door( player, args, text )
 {
 	AdminSystem.DoorCmd( player, args );
 }
+::ChatTriggerDocs.door <- @(player,args) AdminSystem.IsPrivileged(player) && "door" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.door(player,args))
+					: null
 
 function ChatTriggers::spawn_model_saved( player, args, text )
 {
 	AdminSystem.Spawn_saved_modelCmd( player, args );
 }
+::ChatTriggerDocs.spawn_model_saved <- @(player,args) AdminSystem.IsPrivileged(player) && "spawn_model_saved" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.spawn_model_saved(player,args))
+					: null
 function ChatTriggers::display_saved_model( player, args, text )
 {
 	AdminSystem.Display_saved_modelCmd( player, args );
 }
+::ChatTriggerDocs.display_saved_model <- @(player,args) AdminSystem.IsPrivileged(player) && "display_saved_model" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.display_saved_model(player,args))
+					: null
 function ChatTriggers::random_model_save_state( player, args, text )
 {
 	AdminSystem.Randommodel_save_lastCmd( player, args );
 }
+::ChatTriggerDocs.random_model_save_state <- @(player,args) AdminSystem.IsPrivileged(player) && "random_model_save_state" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.random_model_save_state(player,args))
+					: null
 function ChatTriggers::save_model( player, args, text )
 {
 	AdminSystem.Save_modelCmd( player, args );
 }
+::ChatTriggerDocs.save_model <- @(player,args) AdminSystem.IsPrivileged(player) && "save_model" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.save_model(player,args))
+					: null
 
 function ChatTriggers::survivor( player, args, text )
 {
 	AdminSystem.SurvivorCmd( player, args );
 }
+::ChatTriggerDocs.survivor <- @(player,args) AdminSystem.IsPrivileged(player) && "survivor" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.survivor(player,args))
+					: null
 
 function ChatTriggers::l4d1_survivor( player, args, text )
 {
 	AdminSystem.L4D1SurvivorCmd( player, args );
 }
+::ChatTriggerDocs.l4d1_survivor <- @(player,args) AdminSystem.IsPrivileged(player) && "l4d1_survivor" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.l4d1_survivor(player,args))
+					: null
 
 function ChatTriggers::client( player, args, text )
 {
 	AdminSystem.ClientCmd( player, args );
 }
+::ChatTriggerDocs.client <- @(player,args) AdminSystem.IsPrivileged(player) && "client" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.client(player,args))
+					: null
 
 function ChatTriggers::console( player, args, text )
 {
 	AdminSystem.ConsoleCmd( player, args );
 }
+::ChatTriggerDocs.console <- @(player,args) AdminSystem.IsPrivileged(player) && "console" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.console(player,args))
+					: null
 
 function ChatTriggers::cvar( player, args, text )
 {
 	AdminSystem.CvarCmd( player, args );
 }
+::ChatTriggerDocs.cvar <- @(player,args) AdminSystem.IsPrivileged(player) && "cvar" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.cvar(player,args))
+					: null
 
 function ChatTriggers::ent_fire( player, args, text )
 {
 	AdminSystem.EntFireCmd( player, args );
 }
+::ChatTriggerDocs.ent_fire <- @(player,args) AdminSystem.IsPrivileged(player) && "ent_fire" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.ent_fire(player,args))
+					: null
 
 function ChatTriggers::timescale( player, args, text )
 {
 	AdminSystem.TimescaleCmd( player, args );
 }
+::ChatTriggerDocs.timescale <- @(player,args) AdminSystem.IsPrivileged(player) && "timescale" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.timescale(player,args))
+					: null
 
 function ChatTriggers::sound( player, args, text )
 {
 	AdminSystem.SoundCmd( player, args );
 }
+::ChatTriggerDocs.sound <- @(player,args) AdminSystem.IsPrivileged(player) && "sound" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.sound(player,args))
+					: null
 
 function ChatTriggers::give( player, args, text )
 {
 	AdminSystem.GiveCmd( player, args );
 }
+::ChatTriggerDocs.give <- @(player,args) AdminSystem.IsPrivileged(player) && "give" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.give(player,args))
+					: null
 
 function ChatTriggers::remove( player, args, text )
 {
 	AdminSystem.RemoveCmd( player, args );
 }
+::ChatTriggerDocs.remove <- @(player,args) AdminSystem.IsPrivileged(player) && "remove" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.remove(player,args))
+					: null
 
 function ChatTriggers::drop( player, args, text )
 {
 	AdminSystem.DropCmd( player, args );
 }
+::ChatTriggerDocs.drop <- @(player,args) AdminSystem.IsPrivileged(player) && "drop" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.drop(player,args))
+					: null
 
 function ChatTriggers::use( player, args, text )
 {
 	AdminSystem.UseCmd( player, args );
 }
+::ChatTriggerDocs.use <- @(player,args) AdminSystem.IsPrivileged(player) && "use" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.use(player,args))
+					: null
 
 function ChatTriggers::speak( player, args, text )
 {
 	AdminSystem.SpeakCmd( player, args );
 }
+::ChatTriggerDocs.speak <- @(player,args) AdminSystem.IsPrivileged(player) && "speak" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.speak(player,args))
+					: null
 
 function ChatTriggers::revivecount( player, args, text )
 {
 	AdminSystem.ReviveCountCmd( player, args );
 }
+::ChatTriggerDocs.revivecount <- @(player,args) AdminSystem.IsPrivileged(player) && "revivecount" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.revivecount(player,args))
+					: null
 
 function ChatTriggers::revive( player, args, text )
 {
 	AdminSystem.ReviveCmd( player, args );
 }
+::ChatTriggerDocs.revive <- @(player,args) AdminSystem.IsPrivileged(player) && "revive" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.revive(player,args))
+					: null
 
 function ChatTriggers::defib( player, args, text )
 {
 	AdminSystem.DefibCmd( player, args );
 }
+::ChatTriggerDocs.defib <- @(player,args) AdminSystem.IsPrivileged(player) && "defib" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.defib(player,args))
+					: null
 
 function ChatTriggers::rescue( player, args, text )
 {
 	AdminSystem.RescueCmd( player, args );
 }
+::ChatTriggerDocs.rescue <- @(player,args) AdminSystem.IsPrivileged(player) && "rescue" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.rescue(player,args))
+					: null
 
 function ChatTriggers::incap( player, args, text )
 {
 	AdminSystem.IncapCmd( player, args );
 }
+::ChatTriggerDocs.incap <- @(player,args) AdminSystem.IsPrivileged(player) && "incap" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.incap(player,args))
+					: null
 
 function ChatTriggers::kill( player, args, text )
 {
 	AdminSystem.KillCmd( player, args );
 }
+::ChatTriggerDocs.kill <- @(player,args) AdminSystem.IsPrivileged(player) && "kill" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.kill(player,args))
+					: null
 
 function ChatTriggers::hurt( player, args, text )
 {
 	AdminSystem.HurtCmd( player, args );
 }
+::ChatTriggerDocs.hurt <- @(player,args) AdminSystem.IsPrivileged(player) && "hurt" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.hurt(player,args))
+					: null
 
 function ChatTriggers::respawn( player, args, text )
 {
 	AdminSystem.RespawnCmd( player, args );
 }
+::ChatTriggerDocs.respawn <- @(player,args) AdminSystem.IsPrivileged(player) && "respawn" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.respawn(player,args))
+					: null
 
 function ChatTriggers::extinguish( player, args, text )
 {
 	AdminSystem.ExtinguishCmd( player, args );
 }
+::ChatTriggerDocs.extinguish <- @(player,args) AdminSystem.IsPrivileged(player) && "extinguish" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.extinguish(player,args))
+					: null
 
 function ChatTriggers::ignite( player, args, text )
 {
 	AdminSystem.IgniteCmd( player, args );
 }
+::ChatTriggerDocs.ignite <- @(player,args) AdminSystem.IsPrivileged(player) && "ignite" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.ignite(player,args))
+					: null
 
 function ChatTriggers::vomit( player, args, text )
 {
 	AdminSystem.VomitCmd( player, args );
 }
+::ChatTriggerDocs.vomit <- @(player,args) AdminSystem.IsPrivileged(player) && "vomit" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.vomit(player,args))
+					: null
 
 function ChatTriggers::stagger( player, args, text )
 {
 	AdminSystem.StaggerCmd( player, args );
 }
+::ChatTriggerDocs.stagger <- @(player,args) AdminSystem.IsPrivileged(player) && "stagger" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.stagger(player,args))
+					: null
 
 function ChatTriggers::warp( player, args, text )
 {
 	AdminSystem.WarpCmd( player, args );
 }
+::ChatTriggerDocs.warp <- @(player,args) AdminSystem.IsPrivileged(player) && "warp" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.warp(player,args))
+					: null
 
 function ChatTriggers::warp_here( player, args, text )
 {
 	AdminSystem.WarpHereCmd( player, args );
 }
+::ChatTriggerDocs.warp_here <- @(player,args) AdminSystem.IsPrivileged(player) && "warp_here" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.warp_here(player,args))
+					: null
 
 function ChatTriggers::warp_saferoom( player, args, text )
 {
 	AdminSystem.WarpSaferoomCmd( player, args );
 }
+::ChatTriggerDocs.warp_saferoom <- @(player,args) AdminSystem.IsPrivileged(player) && "warp_saferoom" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.warp_saferoom(player,args))
+					: null
 
 function ChatTriggers::ammo( player, args, text )
 {
 	AdminSystem.AmmoCmd( player, args );
 }
+::ChatTriggerDocs.ammo <- @(player,args) AdminSystem.IsPrivileged(player) && "ammo" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.ammo(player,args))
+					: null
 
 function ChatTriggers::upgrade_add( player, args, text )
 {
 	AdminSystem.UpgradeAddCmd( player, args );
 }
+::ChatTriggerDocs.upgrade_add <- @(player,args) AdminSystem.IsPrivileged(player) && "upgrade_add" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.upgrade_add(player,args))
+					: null
 
 function ChatTriggers::upgrade_remove( player, args, text )
 {
 	AdminSystem.UpgradeRemoveCmd( player, args );
 }
+::ChatTriggerDocs.upgrade_remove <- @(player,args) AdminSystem.IsPrivileged(player) && "upgrade_remove" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.upgrade_remove(player,args))
+					: null
 
 function ChatTriggers::netprop( player, args, text )
 {
 	AdminSystem.NetPropCmd( player, args );
 }
+::ChatTriggerDocs.netprop <- @(player,args) AdminSystem.IsPrivileged(player) && "netprop" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.netprop(player,args))
+					: null
 
 function ChatTriggers::friction( player, args, text )
 {
 	AdminSystem.FrictionCmd( player, args );
 }
+::ChatTriggerDocs.friction <- @(player,args) AdminSystem.IsPrivileged(player) && "friction" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.friction(player,args))
+					: null
 
 function ChatTriggers::gravity( player, args, text )
 {
 	AdminSystem.GravityCmd( player, args );
 }
+::ChatTriggerDocs.gravity <- @(player,args) AdminSystem.IsPrivileged(player) && "gravity" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.gravity(player,args))
+					: null
 
 function ChatTriggers::velocity( player, args, text )
 {
 	AdminSystem.VelocityCmd( player, args );
 }
+::ChatTriggerDocs.velocity <- @(player,args) AdminSystem.IsPrivileged(player) && "velocity" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.velocity(player,args))
+					: null
 
 function ChatTriggers::drop_fire( player, args, text )
 {
 	AdminSystem.DropFireCmd( player, args );
 }
+::ChatTriggerDocs.drop_fire <- @(player,args) AdminSystem.IsPrivileged(player) && "drop_fire" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.drop_fire(player,args))
+					: null
 
 function ChatTriggers::drop_spit( player, args, text )
 {
 	AdminSystem.DropSpitCmd( player, args );
 }
+::ChatTriggerDocs.drop_spit <- @(player,args) AdminSystem.IsPrivileged(player) && "drop_spit" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.drop_spit(player,args))
+					: null
 
 function ChatTriggers::director( player, args, text )
 {
 	AdminSystem.DirectorCmd( player, args );
 }
+::ChatTriggerDocs.director <- @(player,args) AdminSystem.IsPrivileged(player) && "director" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.director(player,args))
+					: null
 
 function ChatTriggers::finale( player, args, text )
 {
 	AdminSystem.FinaleCmd( player, args );
 }
+::ChatTriggerDocs.finale <- @(player,args) AdminSystem.IsPrivileged(player) && "finale" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.finale(player,args))
+					: null
 
 function ChatTriggers::restart( player, args, text )
 {
 	AdminSystem.RestartCmd( player, args );
 }
+::ChatTriggerDocs.restart <- @(player,args) AdminSystem.IsPrivileged(player) && "restart" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.restart(player,args))
+					: null
 
 function ChatTriggers::limit( player, args, text )
 {
 	AdminSystem.LimitCmd( player, args );
 }
+::ChatTriggerDocs.limit <- @(player,args) AdminSystem.IsPrivileged(player) && "limit" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.limit(player,args))
+					: null
 
 function ChatTriggers::zombie( player, args, text )
 {
 	AdminSystem.ZombieCmd( player, args );
 }
+::ChatTriggerDocs.zombie <- @(player,args) AdminSystem.IsPrivileged(player) && "zombie" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.zombie(player,args))
+					: null
 
 function ChatTriggers::z_spawn( player, args, text )
 {
 	AdminSystem.ZSpawnCmd( player, args );
 }
+::ChatTriggerDocs.z_spawn <- @(player,args) AdminSystem.IsPrivileged(player) && "z_spawn" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.z_spawn(player,args))
+					: null
 
 function ChatTriggers::exec( player, args, text )
 {
 	AdminSystem.ExecCmd( player, args );
 }
+::ChatTriggerDocs.exec <- @(player,args) AdminSystem.IsPrivileged(player) && "exec" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.exec(player,args))
+					: null
 
 function ChatTriggers::endgame( player, args, text )
 {
 	AdminSystem.EndGameCmd( player, args );
 }
+::ChatTriggerDocs.endgame <- @(player,args) AdminSystem.IsPrivileged(player) && "endgame" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.endgame(player,args))
+					: null
 
 function ChatTriggers::alarmcar( player, args, text )
 {
 	AdminSystem.AlarmCarCmd( player, args );
 }
+::ChatTriggerDocs.alarmcar <- @(player,args) AdminSystem.IsPrivileged(player) && "alarmcar" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.alarmcar(player,args))
+					: null
 
 function ChatTriggers::gun( player, args, text )
 {
 	AdminSystem.GunCmd( player, args );
 }
+::ChatTriggerDocs.gun <- @(player,args) AdminSystem.IsPrivileged(player) && "gun" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.gun(player,args))
+					: null
 
 if ( Director.GetGameMode() == "holdout" )
 {
@@ -8926,6 +9505,9 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		AdminSystem.ResourceCmd( player, args );
 	}
+	::ChatTriggerDocs.resource <- @(player,args) AdminSystem.IsPrivileged(player) && "resource" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.resource(player,args))
+					: null
 }
 
 ::AdminSystem.AdminModeCmd <- function ( player, args )
@@ -10653,11 +11235,11 @@ if ( Director.GetGameMode() == "holdout" )
 		ent = player;
 	else if(ent.find("#") != null)
 	{
-		ent = VSLib.Entity(Ent(ent))
+		ent = Entity(ent)
 	}
 	else
 	{
-		try{ent = VSLib.Entity(Ent(ent))}catch(e){return;}
+		try{ent = Entity(ent)}catch(e){return;}
 	}
 
 	if(ent == null)
@@ -12946,7 +13528,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 ::AdminSystem.ConsoleCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
+	if (!AdminSystem.IsPrivileged( player ) && !AdminSystem.HasScriptAuth(player))
 		return;
 
 	local Command = GetArgument(1);
@@ -13352,7 +13934,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if(scalefactor == null)
 	{
-		scalefactor = 10;
+		scalefactor = 500;
 	}
 	else
 	{
@@ -13624,7 +14206,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if(scalefactor == null)
 	{
-		scalefactor = 10;
+		scalefactor = 500;
 	}
 	else
 	{
@@ -15714,7 +16296,7 @@ if ( Director.GetGameMode() == "holdout" )
 		else
 		{
 			//out("dur:"+(last_t+intervals*7.0+0.4));
-			Timers.AddTimer(last_t+intervals*7.0+0.4, false, ColorResetWrap, {ent=entlooked,clr=clr});
+			Timers.AddTimer(last_t+intervals+0.4, false, ColorResetWrap, {ent=entlooked,clr=clr});
 		}
 	}
 
@@ -15727,6 +16309,27 @@ if ( Director.GetGameMode() == "holdout" )
 	//out("curr:"+args.ent.GetNetProp("m_clrRender"));
 	args.ent.SetNetProp("m_clrRender",args.clr);
 }
+/*
+ * @authors rhino
+ */
+::AdminSystem.HelpCmd <- function(player, args)
+{	
+	if (!AdminSystem.IsPrivileged(player,true))
+	{
+		Messages.WarnPlayer(player,"Command's can only be used by admins!")
+		return;
+	}
+
+	local cmd = GetArgument(1);
+	if(cmd == null)
+		cmd = "help"
+
+	if(cmd in CmdDocs)
+		Messages.DocCmdPlayer(player,CmdDocs[cmd](player,args))
+	else
+		Messages.ThrowPlayer(player,cmd+" is not a known command!")
+}
+
 /*
  * @authors rhino
  */
@@ -16619,7 +17222,7 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Server_execCmd <- function(player, args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
+	if (!AdminSystem.IsPrivileged( player ) && !AdminSystem.HasScriptAuth(player))
 		return;
 	local cmd = GetArgument(1);
 	local arg1 = GetArgument(2);
@@ -16771,7 +17374,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local green = GetArgument(2);
 	local blue = GetArgument(3);
 	local alpha = GetArgument(4);
-	if (red==null)
+	if (blue==null)
 		return;
 
 	if (alpha==null)

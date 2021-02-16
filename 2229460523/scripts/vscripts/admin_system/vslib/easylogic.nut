@@ -34,6 +34,8 @@ if (!("EasyLogic" in ::VSLib))
 		_itChatTextIndex = {}
 		_itChatCount = 0
 		_triggerStart = "!"
+		_hiddentriggerStart = "/"
+		_helpStart = "?"
 		
 		// Intercept chat hooks
 		_interceptCount = 0
@@ -48,6 +50,9 @@ if (!("EasyLogic" in ::VSLib))
 		
 		// Easier chat triggers
 		Triggers = {}
+
+		// Short documentation strings for Triggers triggers 
+		TriggerDocs = {}
 		
 		// Easier damage hooks
 		OnDamage = {}
@@ -4602,7 +4607,8 @@ function VSLib::EasyLogic::RemoveInterceptChat(func)
 if (!("InterceptChat" in getroottable()))
 {
 	::InterceptChat <- function (str, srcEnt)
-	{
+	{	
+		local hidden = false;
 		if (srcEnt != null)
 		{
 			// Strip the name from the chat text
@@ -4654,6 +4660,126 @@ if (!("InterceptChat" in getroottable()))
 					}
 				}
 			}
+			else if (text.find(::VSLib.EasyLogic._helpStart) == 0)
+			{
+				hidden = true
+				if(text[1].tochar() == "?")
+				{	
+					local prefix = ""
+					local len = text.len()
+					if(len > 2)
+					{
+						prefix = text.slice(2,len)
+					}
+					Messages.DocCmdPlayer(::VSLib.Player(srcEnt),"List of commands:")
+					local i = 0
+					foreach(cmd,func in ::VSLib.EasyLogic.TriggerDocs)
+					{
+						if(cmd.len() >= prefix.len() && cmd.slice(0,prefix.len()) == prefix)
+						{
+							i += 1
+							ClientPrint(srcEnt,3,"\x04"+i+"\x01"+". "+cmd)
+						}
+					}
+				}
+				else
+				{
+					// Separate the commands and arguments
+					local arr = split(text, " ");
+					
+					// Identify the command
+					local cmd = arr[0];
+					
+					// Build an argument array
+					local args = {};
+					local idx = 0;
+					foreach (k, v in arr)
+					{
+						if (k != 0 && v != null && v != "")
+						{
+							args[idx] <- v;
+							idx++;
+						}
+					}
+					
+					// Store it.
+					::VSLib.EasyLogic.LastArgs <- args;
+					
+					local player = ::VSLib.Player(srcEnt);
+					
+					// Execute the permanent triggers
+					local baseCmd = split(cmd, ::VSLib.EasyLogic._helpStart);
+					if (0 in baseCmd)
+					{
+						if (baseCmd[0] in ::VSLib.EasyLogic.TriggerDocs)
+						{
+							::VSLib.EasyLogic.TriggerDocs[baseCmd[0]](player, args);
+						}
+						else if (baseCmd[0].tolower() in ::VSLib.EasyLogic.TriggerDocs)
+						{
+							::VSLib.EasyLogic.TriggerDocs[baseCmd[0].tolower()](player, args);
+						}
+						else
+						{
+							ClientPrint(srcEnt,3,"Unknown command: "+baseCmd[0])
+						}
+					}
+				}
+			}
+			else if (text.find(::VSLib.EasyLogic._hiddentriggerStart) == 0)
+			{
+				hidden = true
+				// Separate the commands and arguments
+				local arr = split(text, " ");
+				
+				// Identify the command
+				local cmd = arr[0];
+				
+				// Build an argument array
+				local args = {};
+				local idx = 0;
+				foreach (k, v in arr)
+				{
+					if (k != 0 && v != null && v != "")
+					{
+						args[idx] <- v;
+						idx++;
+					}
+				}
+				
+				// Store it.
+				::VSLib.EasyLogic.LastArgs <- args;
+				
+				local player = ::VSLib.Player(srcEnt);
+				
+				// Execute the permanent triggers
+				local baseCmd = split(cmd, ::VSLib.EasyLogic._hiddentriggerStart);
+				if (0 in baseCmd)
+				{
+					if (baseCmd[0] in ::VSLib.EasyLogic.Triggers)
+					{
+						::VSLib.EasyLogic.Triggers[baseCmd[0]](player, args, text);
+					}
+					else if (baseCmd[0].tolower() in ::VSLib.EasyLogic.Triggers)
+					{
+						::VSLib.EasyLogic.Triggers[baseCmd[0].tolower()](player, args, text);
+					}
+					else
+					{
+						ClientPrint(srcEnt,3,"Unknown command: "+baseCmd[0])
+					}
+				}
+				
+				// Execute the removable trigger (if it is a trigger).
+				foreach (i, trigger in ::VSLib.EasyLogic._itChatTextIndex)
+				{
+					if (trigger == cmd || trigger.tolower() == cmd.tolower())
+					{
+						::VSLib.EasyLogic._itChatFunction[i](player, args, text);
+						break;
+					}
+				}
+			}
 		}
 		
 		local player = null;
@@ -4692,6 +4818,11 @@ if (!("InterceptChat" in getroottable()))
 			ModeInterceptChat(str, srcEnt);
 		if ( "MapInterceptChat" in g_ModeScript )
 			MapInterceptChat(str, srcEnt);
+
+		if (hidden)
+		{
+			return false
+		}
 	}
 }
 
@@ -5767,6 +5898,7 @@ else
 ::SessionVars <- ::VSLib.EasyLogic.SessionVars.weakref();
 ::Notifications <- ::VSLib.EasyLogic.Notifications.weakref();
 ::ChatTriggers <- ::VSLib.EasyLogic.Triggers.weakref();
+::ChatTriggerDocs <- ::VSLib.EasyLogic.TriggerDocs.weakref();
 ::Players <- ::VSLib.EasyLogic.Players.weakref();
 ::Zombies <- ::VSLib.EasyLogic.Zombies.weakref();
 ::Objects <- ::VSLib.EasyLogic.Objects.weakref();

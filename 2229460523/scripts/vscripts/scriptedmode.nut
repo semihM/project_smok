@@ -432,7 +432,7 @@ _entHelper <- function ( ent, funcname )
 	}
 }
 
-scripthelp_Ent <- "Takes an entity index name or classname, calls the passed function name on all that match";
+scripthelp_EntCall <- "Takes an entity index name or classname, calls the passed function name on all that match";
 ::EntCall <- function ( idxorname, funcname )
 {
 	local hEnt = null;

@@ -12,6 +12,7 @@
     ERROR = "project_smok_Message_Error"
     WARNING = "project_smok_Message_Warning"
     INFO = "project_smok_Message_Info"
+    DOCS = "project_smok_Message_Docs"
 }
 
 /*********************\
@@ -980,27 +981,1179 @@
 
             }
         }
+
+        Docs = 
+        {
+            help = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "help",
+                    [
+                        CMDParam("command_name","Command name",true,"help command")
+                    ],
+                    "Get the documentation written for a given command"
+                    )
+                return cmd.Describe();
+            }
+            loop = function(player,args)
+            {   
+                local cmd = CMDDocs(
+                    "loop",
+                    [
+                        CMDParam("character","Character name"),
+                        CMDParam("scene_or_sequence","Scene name or >Sequence name"),
+                        CMDParam("loop_length","positive real number")
+                    ],
+                    "Start looping given scene or sequence repeating every loop_length seconds"
+                    )
+                return cmd.Describe();
+            }
+            loop_stop = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "loop_stop",
+                    [
+                        CMDParam("character","Character name",true,"uses player")
+                    ],
+                    "Stop looping for given character"
+                    )
+                return cmd.Describe();
+            }
+            speak_test = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "speak_test",
+                    [
+                        CMDParam("character","Character name"),
+                        CMDParam("scene","Scene name"),
+                        CMDParam("duration","positive real number",true,"speak the whole scene")
+                    ],
+                    "Speak given scene for given duration in seconds"
+                    )
+                return cmd.Describe();
+            }
+            speak_custom = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "speak_custom",
+                    [
+                        CMDParam("character","Character name"),
+                        CMDParam("sequence","Sequence name")
+                    ],
+                    "Speak a custom sequence created for given character by player"
+                    )
+                return cmd.Describe();
+            }
+            show_custom_sequences = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "show_custom_sequences",
+                    [
+                        CMDParam("character","Character name",true,"all characters")
+                    ],
+                    "Show custom sequences created for given character or all characters by player"
+                    )
+                return cmd.Describe();
+            }
+            seq_info = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "seq_info",
+                    [
+                        [
+                            CMDParam("character","Character name"),
+                            CMDParam("sequence","Sequence name")
+                        ],
+                        [
+                            CMDParam("sequence","Sequence name defined for player")
+                        ],
+                    ],
+                    "Show information about given custom sequence of given character"
+                    )
+                return cmd.Describe();
+            }
+            seq_edit = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "seq_edit",
+                    [
+                        CMDParam("character","Character name"),
+                        CMDParam("sequence","Sequence name"),
+                        CMDParam("scene_or_index","Scene name or >scene index"),
+                        CMDParam("scene_or_delay","scene>new_scene_name or delay>new_delay")
+                    ],
+                    "Edit a custom sequence's scene or delay"
+                    )
+                return cmd.Describe();
+            }
+            create_seq = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "create_seq",
+                    [
+                        CMDParam("character","Character name"),
+                        CMDParam("name","Sequence name"),
+                        CMDParam("scene_x","Scene name"),
+                        CMDParam("delay_x","Start time of scene_x"),
+                        CMDParam("...","Repeat 3. and 4. parameters")
+                    ],
+                    "Create a custom sequence for a character"
+                    )
+                return cmd.Describe();
+            }
+            delete_seq = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "delete_seq",
+                    [
+                        CMDParam("character","Character name"),
+                        CMDParam("name","Sequence name")
+                    ],
+                    "Delete a custom sequence of a character"
+                    )
+                return cmd.Describe();
+            }
+            start_the_shower = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "start_the_shower",
+                    [],
+                    "Start(or stop if already started) the meteor shower!"
+                    )
+                return cmd.Describe();
+            }
+            pause_the_shower = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "pause_the_shower",
+                    [],
+                    "Stop the meteor shower!"
+                    )
+                return cmd.Describe();
+            }
+            show_meteor_shower_settings = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "show_meteor_shower_settings",
+                    [],
+                    "Show current meteor shower event settings"
+                    )
+                return cmd.Describe();
+            }
+            meteor_shower_setting = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "meteor_shower_setting",
+                    [
+                        CMDParam("setting","Setting name"),
+                        CMDParam("value","New value")
+                    ],
+                    "Change a meteor shower event setting. Check show_meteor_shower_settings command"
+                    )
+                return cmd.Describe();
+            }
+            meteor_shower_debug = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "meteor_shower_debug",
+                    [],
+                    "Change debug messages of meteor shower event"
+                    )
+                return cmd.Describe();
+            }
+            start_the_apocalypse = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "start_the_apocalypse",
+                    [],
+                    "Start(or stop if already started) the apocalypse propageddon!"
+                    )
+                return cmd.Describe();
+            }
+            pause_the_apocalypse = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "pause_the_apocalypse",
+                    [],
+                    "Stop the apocalypse propageddon!"
+                    )
+                return cmd.Describe();
+            }
+            show_apocalypse_settings = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "show_apocalypse_settings",
+                    [],
+                    "Show current apocalypse propageddon event settings"
+                    )
+                return cmd.Describe();
+            }
+            apocalypse_setting = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "apocalypse_setting",
+                    [
+                        CMDParam("setting","Setting name"),
+                        CMDParam("value","New value")
+                    ],
+                    "Change a apocalypse propageddon event setting. Check show_apocalypse_settings command"
+                    )
+                return cmd.Describe();
+            }
+            apocalypse_debug = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "apocalypse_debug",
+                    [],
+                    "Change debug messages of apocalypse propageddon event"
+                    )
+                return cmd.Describe();
+            }
+            update_print_output_state = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "update_print_output_state",
+                    [],
+                    "Change output message target between chat/console"
+                    )
+                return cmd.Describe();
+            }
+            attach_to_targeted_position = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "attach_to_targeted_position",
+                    [],
+                    "Change attachment position for particles between aimed point and origin of the object"
+                    )
+                return cmd.Describe();
+            }
+            randomparticle_save_state = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "randomparticle_save_state",
+                    [],
+                    "Change state of saving the last randomly spawned particle"
+                    )
+                return cmd.Describe();
+            }
+            update_attachment_preference = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "update_attachment_preference",
+                    [
+                        CMDParam("duration","Attachment duration in seconds",true,"30 seconds")
+                    ],
+                    "Change duration of attaching particles to objects, -1 = infinite duration"
+                    )
+                return cmd.Describe();
+            }
+            display_saved_particle = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "display_saved_particle",
+                    [],
+                    "Show currently saved particle information"
+                    )
+                return cmd.Describe();
+            }
+            admin_var = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "admin_var",
+                    [
+                        CMDParam("var_name","Variable name"),
+                        CMDParam("new_value","New value to be compiled",true,"Print current value")
+                    ],
+                    "Get/Create/Change a AdminSystem.Vars value"
+                    )
+                return cmd.Describe();
+            }
+            add_script_auth = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "add_script_auth",
+                    [
+                        CMDParam("character","Character name of the player")
+                    ],
+                    "Give a player authority to execute scripts"
+                    )
+                return cmd.Describe();
+            }
+            remove_script_auth = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "remove_script_auth",
+                    [
+                        CMDParam("character","Character name of the player")
+                    ],
+                    "Take away a player's authority to execute scripts"
+                    )
+                return cmd.Describe();
+            }
+            server_exec = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "server_exec",
+                    [
+                        CMDParam("command","Command name"),
+                        CMDParam("argument_1","Argument 1",true,"empty"),
+                        CMDParam("argument_2","Argument 2",true,"empty"),
+                        CMDParam("argument_3","Argument 3",true,"empty"),
+                        CMDParam("argument_4","Argument 4",true,"empty")
+                    ],
+                    "Execute a command on the server console with given arguments"
+                    )
+                return cmd.Describe();
+            }
+            script = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "script",
+                    [
+                        CMDParam("code","Squirrel code to compile and execute")
+                    ],
+                    "Execute scripts on the global scope"
+                    )
+                return cmd.Describe();
+            }
+            setkeyval = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "setkeyval",
+                    [
+                        CMDParam("key","Key name"),
+                        CMDParam("value","New value")
+                    ],
+                    "Change the value of a key present in aimed object"
+                    )
+                return cmd.Describe();
+            }
+            update_svcheats = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "update_svcheats",
+                    [],
+                    "Change the sv_cheats cvar of the server between 0 and 1"
+                    )
+                return cmd.Describe();
+            }
+            prop_spawn_setting = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "prop_spawn_setting",
+                    [
+                        CMDParam("class_name","Class: physics|dynamic|ragdoll|all|ptr(last class menu visited)"),
+                        CMDParam("setting","Setting name"),
+                        CMDParam("sub_setting","Actual setting name:\n\t  Possible values: val|flags|min|max\n\t Prefixes:\n\t\t Set: (no prefix)\n\t\t Add: +\n\t\t Remove: -"),
+                        CMDParam("value","Value to set/add/remove. Can be casted (flg|flag1|flag2|... etc.)")
+                    ],
+                    "Update a prop spawn setting of given class. Check display_prop_spawn_settings command"
+                    )
+                return cmd.Describe();
+            }
+            update_prop_spawn_menu_type = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "update_prop_spawn_menu_type",
+                    [
+                        CMDParam("class_name","Class: physics|dynamic|ragdoll|all")
+                    ],
+                    "Used to store which prop spawn menu player used last. Uses ptr as class_name with prop_spawn_setting command"
+                    )
+                return cmd.Describe();
+            }
+            display_prop_spawn_settings = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "display_prop_spawn_settings",
+                    [
+                        CMDParam("class_name","Class: physics|dynamic|ragdoll|all",true,"assumes \"all\"")
+                    ],
+                    "Show prop spawn settings of a class or all classes"
+                    )
+                return cmd.Describe();
+            }
+            update_custom_response_preference = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "update_custom_response_preference",
+                    [],
+                    "Enable/disable custom responses"
+                    )
+                return cmd.Describe();
+            }
+            update_custom_sharing_preference = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "update_custom_sharing_preference",
+                    [],
+                    "Enable/disable custom sharing of grenades and packs"
+                    )
+                return cmd.Describe();
+            }
+            explosion = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "explosion",
+                    [
+                        CMDParam("option","Options: meteor(drop a meteor)",true,"only a delayed explosion")
+                    ],
+                    "Create a delayed explosion"
+                    )
+                return cmd.Describe();
+            }
+            show_explosion_settings = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "show_explosion_settings",
+                    [],
+                    "Show current explosion settings"
+                    )
+                return cmd.Describe();
+            }
+            explosion_setting = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "explosion_setting",
+                    [
+                        CMDParam("setting","Setting to change"),
+                        CMDParam("value","New value")
+                    ],
+                    "Change an explosion settings. Check show_explosion_settings command"
+                    )
+                return cmd.Describe();
+            }
+            update_jockey_preference = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "update_jockey_preference",
+                    [],
+                    "Enable/disable jockeys"
+                    )
+                return cmd.Describe();
+            }
+            update_tank_rock_launch_preference = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "update_tank_rock_launch_preference",
+                    [],
+                    "Enable/disable tank rocks' launch effect"
+                    )
+                return cmd.Describe();
+            }
+            update_tank_rock_random_preference = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "update_tank_rock_random_preference",
+                    [],
+                    "Enable/disable using random models for tank rocks"
+                    )
+                return cmd.Describe();
+            }
+            update_tank_rock_respawn_preference = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "update_tank_rock_respawn_preference",
+                    [],
+                    "Enable/disable keeping random models for tank rocks after they are thrown"
+                    )
+                return cmd.Describe();
+            }
+            update_model_preference = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "update_model_preference",
+                    [],
+                    "Enable/disable keeping last player model between chapters/resets"
+                    )
+                return cmd.Describe();
+            }
+            restore_model = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "restore_model",
+                    [
+                        CMDParam("character","Character name or !picker",true,"uses player")
+                    ],
+                    "Restore the original model of a player"
+                    )
+                return cmd.Describe();
+            }
+            random_model = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "random_model",
+                    [],
+                    "Prints out a random model path to chat only visible to caller"
+                    )
+                return cmd.Describe();
+            }
+            drive = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "drive",
+                    [],
+                    "Start(or stop if driving) to drive aimed object"
+                    )
+                return cmd.Describe();
+            }
+            kind_bots = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "kind_bots",
+                    [],
+                    "Add a think adder entity which enables bots' to start looting and sharing grenades and packs"
+                    )
+                return cmd.Describe();
+            }
+            selfish_bots = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "selfish_bots",
+                    [],
+                    "Remove the existing think adders to disable bots' looting and sharing grenades and packs"
+                    )
+                return cmd.Describe();
+            }
+            update_bots_sharing_preference = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "update_bots_sharing_preference",
+                    [],
+                    "Enable/disable sharing ability of bots for packs and grenades"
+                    )
+                return cmd.Describe();
+            }
+            piano_keys = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "piano_keys",
+                    [],
+                    "Spawn 25 piano keys at aimed point, placing all 25 to the right"
+                    )
+                return cmd.Describe();
+            }
+            remove_piano_keys = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "remove_piano_keys",
+                    [],
+                    "Remove all spawned piano keys"
+                    )
+                return cmd.Describe();
+            }
+            display_mics_speakers = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "display_mics_speakers",
+                    [],
+                    "Display all microphones and speakers and their current distances to player"
+                    )
+                return cmd.Describe();
+            }
+            speaker2mic = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "speaker2mic",
+                    [
+                        CMDParam("speaker_ID_or_NAME","Speaker #id or name"),
+                        CMDParam("mic_ID_or_NAME","Microphone #id or name")
+                    ],
+                    "Connect a speaker to a microphone"
+                    )
+                return cmd.Describe();
+            }
+            speaker = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "speaker",
+                    [],
+                    "Create an entity to be used as a speaker"
+                    )
+                return cmd.Describe();
+            }
+            microphone = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "microphone",
+                    [
+                        CMDParam("effect","Effects: standard|no_effect|tiny|small|very_small|loud|loud_echo",true,"standard"),
+                        CMDParam("max_range","Max listening range",true,"120 unit radius"),
+                        CMDParam("speaker_ID_or_NAME","Speaker #id or name to connect",true,"can be connected later")
+                    ],
+                    "Create a microphone entity"
+                    )
+                return cmd.Describe();
+            }
+            randomline = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "randomline",
+                    [
+                        CMDParam("speaker_character","Speaker: Character name|random",true,"uses player"),
+                        CMDParam("line_source_character","Lines from: Character name|random",true,"speaker_character's own lines")
+                    ],
+                    "Speak or make a character speak a randomline from the source given"
+                    )
+                return cmd.Describe();
+            }
+            randomline_save_last = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "randomline_save_last",
+                    [],
+                    "Enable/disable saving last randomly spoken line"
+                    )
+                return cmd.Describe();
+            }
+            speak_saved = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "speak_saved",
+                    [],
+                    "Speak last saved line"
+                    )
+                return cmd.Describe();
+            }
+            display_saved_line = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "display_saved_line",
+                    [],
+                    "Display last saved line"
+                    )
+                return cmd.Describe();
+            }
+            save_line = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "save_line",
+                    [
+                        CMDParam("speaker_character","Speaker, character name"),
+                        CMDParam("scene","Scene to be spoken by speaker_character")
+                    ],
+                    "Save given line to be spoken by given character"
+                    )
+                return cmd.Describe();
+            }
+            save_particle = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "save_particle",
+                    [
+                        CMDParam("particle_effect","Effect name"),
+                        CMDParam("duration","Delay to kill the particle, -1 for infinite",true,"uses player's preferred duration")
+                    ],
+                    "Save given particle to be spawned for given duration"
+                    )
+                return cmd.Describe();
+            }
+            ent = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "ent",
+                    [
+                        CMDParam("class_name","Class name for entity"),
+                        CMDParam("keyvals","Key-values formatted as key_1>cast|value_1&key_2>cast|value_2...\n\t Single-value casts->int|float|flg\n\t Multi-value casts->str|ang|pos|flg\n\t ",true,"uses aimed point as origin")
+                    ],
+                    "Create an entity of given class with given key-value pairs"
+                    )
+                return cmd.Describe();
+            }
+            entcvar = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "entcvar",
+                    [
+                        CMDParam("entity","Object #id, name or !picker (aimed object) or !self (player)"),
+                        CMDParam("cvar","Console variable name"),
+                        CMDParam("value","New value for the cvar",true,"prints the current value")
+                    ],
+                    "Get or set a cvar of an entity"
+                    )
+                return cmd.Describe();
+            }
+            ent_rotate = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "ent_rotate",
+                    [
+                        CMDParam("axis","Rotation axis: x|y|z"),
+                        CMDParam("rotation","Rotation in degrees"),
+                        CMDParam("use_local","Any value: rotate grabbed object or worn hat",true,"rotates aimed object")
+                    ],
+                    "Rotate an object along some axis given amount"
+                    )
+                return cmd.Describe();
+            }
+            ladder_team = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "ladder_team",
+                    [
+                        CMDParam("team","New team for all ladders: all|spectator|survivor|infected|l4d1\nUse 'reset' to reset back to original.")
+                    ],
+                    "Change/reset which team(s) can use the ladders"
+                    )
+                return cmd.Describe();
+            }
+            invisible_walls = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "invisible_walls",
+                    [
+                        CMDParam("state","New state for the invisible blockers: enable|disable",true,"disables"),
+                        CMDParam("try_all","Apply to all blockers",true,"only enables/disables clipping blocks")
+                    ],
+                    "Enable/disable most if not all the invisible walls. Some of them can't be changed."
+                    )
+                return cmd.Describe();
+            }
+            ent_push = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "ent_push",
+                    [
+                        CMDParam("strength","Push strength/speed, walking speed is 220",true,"uses 500"),
+                        CMDParam("direction","Direction relative to player: forward|backward|left|right|up|down",true,"uses forward"),
+                        CMDParam("pitch","Pitch angle in degrees, positive value to push higher",true,"no extra pitch")
+                    ],
+                    "Push an object to given direction by applying an impulse with given strength"
+                    )
+                return cmd.Describe();
+            }
+            ent_move = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "ent_move",
+                    [
+                        CMDParam("units","How many units to move",true,"uses 1"),
+                        CMDParam("direction","Direction relative to player: forward|backward|left|right|up|down",true,"uses forward"),
+                        CMDParam("pitch","Pitch angle in degrees, positive value to push higher",true,"no extra pitch"),
+                        CMDParam("use_local","Any value: move grabbed object or worn hat",true,"moves aimed object")
+                    ],
+                    "Move an object to given direction by teleporting"
+                    )
+                return cmd.Describe();
+            }
+            ent_spin = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "ent_spin",
+                    [
+                        CMDParam("strength","Spin strength/speed, walking speed is 220",true,"uses 500"),
+                        CMDParam("direction","Direction relative to player: forward|backward|left|right|up|down",true,"uses forward")
+                    ],
+                    "Spin an object by applying an angular impulse in given direction and strength. Assume three finger rule, this vector is the thumb"
+                    )
+                return cmd.Describe();
+            }
+            ent_teleport = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "ent_teleport",
+                    [
+                        CMDParam("object","Object's #id or name")
+                    ],
+                    "Teleport an object to aimed point"
+                    )
+                return cmd.Describe();
+            }
+            rainbow = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "rainbow",
+                    [
+                        CMDParam("duration","Total duration",true,"uses 12 seconds"),
+                        CMDParam("interval","Duration of each color",true,"uses 0.15 second intervals")
+                    ],
+                    "Apply rainbow effect to aimed object"
+                    )
+                return cmd.Describe();
+            }
+            color = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "color",
+                    [
+                        CMDParam("r","Red 0-255"),
+                        CMDParam("g","Green 0-255"),
+                        CMDParam("b","Blue 0-255"),
+                        CMDParam("a","Alpha 0-255, 0: invisible")
+                    ],
+                    "Change 32-bit color of the aimed object"
+                    )
+                return cmd.Describe();
+            }
+            model = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "model",
+                    [
+                        CMDParam("object","Object #id or name or !picker (aimed object) or !self (player)"),
+                        CMDParam("model","New model's path")
+                    ],
+                    "Change the model of given object"
+                    )
+                return cmd.Describe();
+            }
+            model_scale = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "model_scale",
+                    [
+                        CMDParam("object","Object #id or name or !picker (aimed object) or !self (player)"),
+                        CMDParam("model_scale","New model scale")
+                    ],
+                    "Change the model scale of given object, non-player objects may not scale"
+                    )
+                return cmd.Describe();
+            }
+            disguise = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "disguise",
+                    [],
+                    "Change player's model to aimed object's model"
+                    )
+                return cmd.Describe();
+            }
+            attach_particle = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "attach_particle",
+                    [
+                        CMDParam("particle","Particle name|random"),
+                        CMDParam("duration","Duration of the spawned particle, -1 for infinite",true,"uses preferred duration of player")
+                    ],
+                    "Attach given particle for given duration to aimed object"
+                    )
+                return cmd.Describe();
+            }
+            spawn_particle_saved = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "spawn_particle_saved",
+                    [],
+                    "Spawn saved particle at aimed point"
+                    )
+                return cmd.Describe();
+            }
+            attach_particle_saved = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "attach_particle_saved",
+                    [],
+                    "Attach saved particle at aimed object. Attachment point can be updated attach_to_targeted_position command"
+                    )
+                return cmd.Describe();
+            }
+            hat_position = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "hat_position",
+                    [
+                        CMDParam("attachment_point","An attachment point of aimed object")
+                    ],
+                    "Update which attachment point the hat is worn at. Some points: eyes|mouth|survivor_neck"
+                    )
+                return cmd.Describe();
+            }
+            update_aimed_ent_direction = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "update_aimed_ent_direction",
+                    [],
+                    "Make aimed object face the exact same direction as player's"
+                    )
+                return cmd.Describe();
+            }
+            take_off_hat = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "take_off_hat",
+                    [],
+                    "Take off worn hat and place it at aimed point"
+                    )
+                return cmd.Describe();
+            }
+            wear_hat = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "wear_hat",
+                    [
+                        CMDParam("extra_height","Height to add to player's preference",true,"no extra height")
+                    ],
+                    "Wear aimed object as a hat"
+                    )
+                return cmd.Describe();
+            }
+            grab = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "grab",
+                    [],
+                    "Grab aimed object"
+                    )
+                return cmd.Describe();
+            }
+            letgo = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "letgo",
+                    [],
+                    "Letgo off the held object"
+                    )
+                return cmd.Describe();
+            }
+            yeet = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "yeet",
+                    [],
+                    "Yeet the held object"
+                    )
+                return cmd.Describe();
+            }
+            show_yeet_settings = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "show_yeet_settings",
+                    [],
+                    "Show player's yeeting settings"
+                    )
+                return cmd.Describe();
+            }
+            yeet_setting = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "yeet_setting",
+                    [
+                        CMDParam("setting","Setting name"),
+                        CMDParam("value","New value")
+                    ],
+                    "Change a setting of yeeting. Check show_yeet_settings command"
+                    )
+                return cmd.Describe();
+            }
+            change_grab_method = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "change_grab_method",
+                    [],
+                    "Change grabbing method between grabbing by aimed point and grabbing by object's center"
+                    )
+                return cmd.Describe();
+            }
+            stop_car_alarms = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "stop_car_alarms",
+                    [],
+                    "Stop all the car alarms currently ringing"
+                    )
+                return cmd.Describe();
+            }
+            remove_fall_cams = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "remove_fall_cams",
+                    [],
+                    "Remove all fall following cameras. Example: No mercy rooftop falling cameras"
+                    )
+                return cmd.Describe();
+            }
+            debug_info = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "debug_info",
+                    [
+                        CMDParam("options","Options: player(get player information)",true,"uses aimed object")
+                    ],
+                    "Prints detailed information about an object"
+                    )
+                return cmd.Describe();
+            }
+            stop_time = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "stop_time",
+                    [
+                        CMDParam("targets","Targets: all|special|common|physics",true,"freezes aimed object")
+                    ],
+                    "Freeze objects in time"
+                    )
+                return cmd.Describe();
+            }
+            resume_time = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "resume_time",
+                    [
+                        CMDParam("targets","Targets: all|special|common|physics",true,"unfreezes aimed object")
+                    ],
+                    "Unfreeze objects in time which were frozen with stop_time command"
+                    )
+                return cmd.Describe();
+            }
+            ents_around = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "ents_around",
+                    [
+                        CMDParam("radius","Radius to search for objects",true,"uses 50 unit radius")
+                    ],
+                    "Prints objects' #id, class and parent status within given radius of aimed point"
+                    )
+                return cmd.Describe();
+            }
+            wnet = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "wnet",
+                    [
+                        [
+                            CMDParam("netprop","Network property name"),
+                            CMDParam("intervals","Checking interval in seconds",true,"checks every second"),
+                            CMDParam("object","Object's #id or name",true,"uses aimed object")
+                        ],
+                        [
+                            CMDParam("baseclass_n_depth","&base_classname&max_depth . &max_depth is optional, & symbols are required"),
+                            CMDParam("intervals","Checking interval in seconds",true,"checks every second"),
+                            CMDParam("object","Object's #id or name",true,"uses aimed object")
+                        ]
+                    ],
+                    "Watch network properties of an object, get informed as they update"
+                    )
+                return cmd.Describe();
+            }
+            stop_wnet = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "stop_wnet",
+                    [
+                        [
+                            CMDParam("netprop","Network property name"),
+                            CMDParam("object","Object's #id or name",true,"uses aimed object")
+                        ],
+                        [
+                            CMDParam("baseclass","&base_classname"),
+                            CMDParam("object","Object's #id or name",true,"uses aimed object")
+                        ]
+                    ],
+                    "Stop watching network properties of an object"
+                    )
+                return cmd.Describe();
+            }
+            flag_lookup = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "flag_lookup",
+                    [
+                        CMDParam("prefix","Flag/Constant prefix"),
+                        CMDParam("value","Value to match flags with",true,"prints all flags/constants starting with given prefix")
+                    ],
+                    "Lookup flags starting with a prefix or get flags representing given value starting with given prefix"
+                    )
+                return cmd.Describe();
+            }
+            go_ragdoll = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "go_ragdoll",
+                    [],
+                    "Start ragdolling with controls"
+                    )
+                return cmd.Describe();
+            }
+            recover_ragdoll = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "recover_ragdoll",
+                    [],
+                    "Recover from ragdolling"
+                    )
+                return cmd.Describe();
+            }
+            give_physics = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "give_physics",
+                    [
+                        CMDParam("radius","Radius to select objects within or !picker (aimed object)",true,"uses 150 units radius")
+                    ],
+                    "Give physics abilities to objects"
+                    )
+                return cmd.Describe();
+            }
+            fire_ex = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "fire_ex",
+                    [
+                        CMDParam("physics_class","physicsM: Create with physics, else no physics",true,"spawns non-physics")
+                    ],
+                    "Spawn a fire extinguisher which has steam effect and sound when shot"
+                    )
+                return cmd.Describe();
+            }
+            particle = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "particle",
+                    [
+                        CMDParam("effect_name","Particle effect name|random")
+                    ],
+                    "Spawn a particle effect at aimed point"
+                    )
+                return cmd.Describe();
+            }
+            spawn_model_saved = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "spawn_model_saved",
+                    [],
+                    "Spawn a prop with saved model and class"
+                    )
+                return cmd.Describe();
+            }
+            display_saved_model = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "display_saved_model",
+                    [],
+                    "Display saved model and class information"
+                    )
+                return cmd.Describe();
+            }
+            random_model_save_state = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "random_model_save_state",
+                    [],
+                    "Enable/disable saving last randomly spawned prop's model and class"
+                    )
+                return cmd.Describe();
+            }
+            save_model = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "save_model",
+                    [
+                        CMDParam("class_name","Class name: physics|dynamic|ragdoll"),
+                        CMDParam("model","Model path to use")
+                    ],
+                    "Save a prop with given class and model"
+                    )
+                return cmd.Describe();
+            }
+        }
     }
 
     tbl.BIM <- t;
 }
 
 ::Messages.SetBIM(::Messages);
-
-/**************************\
-*  COMMAND HELPER MESSAGES  *
-\**************************/
-::Messages.SetCMDHelper <- function(tbl)
-{
-    local t = 
-    {
-
-    }
-
-    tbl.CMDHelper <- t;
-}
-
-::Messages.SetCMDHelper(::Messages);
 
 /**********************\
 *  MESSAGING FUNCTIONS  *
@@ -1238,6 +2391,17 @@
         Messages.Error({_func=func,_args=args,_msg=msg}).PrintToAllConsole(true);
     }
 }
+/// Docs
+/*
+ * Player's chat
+ */
+::Messages.DocCmdPlayer <- function(player,msg)
+{
+    if(!Messages.Docs({_player=player,_msg=msg}).SayToPlayerChat(true))
+    {
+        printl("Couldn't send documentation message to " + player);
+    }
+}
 
 /// Utility
 /*
@@ -1352,6 +2516,10 @@ class ::Messages.Message
                         + (argstr == "" ? ""
                                         : COLOR_OLIVE_GREEN + argstr + " ") 
                         + COLOR_DEFAULT + _msg;
+            }
+            case Messages.MessageType.DOCS:
+            {
+                return _tag + " " + _msg;
             }
         }
     }
@@ -1470,3 +2638,124 @@ class ::Messages.Info extends ::Messages.Message
 	}
 }
 
+/************************\
+*  DOCUMENTATION MESSAGE  *
+\************************/
+class ::Messages.Docs extends ::Messages.Message
+{
+    constructor(tbl)
+    {
+        if(tbl != null && (typeof tbl) == "table")
+        {
+            base.constructor(tbl,COLOR_BRIGHT_GREEN+"["+COLOR_ORANGE+"DOCS"+COLOR_BRIGHT_GREEN+"]");
+        }
+    }
+
+	function _typeof()
+	{
+		return Messages.MessageType.DOCS;
+	}
+}
+
+
+/***********************\
+*  DOCS RELATED CLASSES  *
+\***********************/
+
+class ::CMDParam
+{
+    constructor(name,expected="",nullable=false,defaultval="")
+    {
+        _name = name;
+
+        _expected = expected;
+
+        _nullable = nullable;
+
+        _default = defaultval;
+
+    }
+
+	function _typeof()
+	{
+		return "Parameter";
+	}
+	
+	function _cmp(other)
+	{
+        return other._name == _name;
+    }
+    
+    _name = null;
+    _expected = null;
+    _nullable = null;
+    _default = null;
+    static _type = "Parameter";
+
+    function Describe()
+    {
+        if(_nullable)
+        {
+            return COLOR_ORANGE + _name + COLOR_DEFAULT + ": " + COLOR_OLIVE_GREEN + _expected + COLOR_DEFAULT + "(" + COLOR_BRIGHT_GREEN + "if nothing given: " + COLOR_OLIVE_GREEN + _default + COLOR_DEFAULT + ")"
+        }
+        return COLOR_ORANGE + _name + COLOR_DEFAULT + ": " + COLOR_OLIVE_GREEN + _expected
+    }
+}
+
+class ::CMDDocs
+{
+    constructor(name,params=[],description="")
+    {
+        _name = name;
+
+        _params = params;
+
+        _desc = description;
+    }
+
+	function _typeof()
+	{
+		return "Documentation";
+	}
+	
+	function _cmp(other)
+	{
+        return other._name == _name;
+    }
+
+    _name = null;
+    _params = null;
+    _desc = null;
+    static _type = "Documentation";
+
+    function Describe()
+    {
+        local paramstr = ""
+        local len = _params.len()
+        if(len != 0)
+        {
+            paramstr += COLOR_ORANGE+"Parameters"+COLOR_DEFAULT+":\n"
+        }
+        foreach(i,p in _params)
+        {
+            if(typeof p == "array")
+            {   
+                local formatparam = COLOR_BRIGHT_GREEN + "Format " + (i+1) + COLOR_DEFAULT + "\n"
+                foreach(j,formatp in p)
+                {
+                    formatparam += "\t " + COLOR_OLIVE_GREEN + (j+1) + "." + COLOR_DEFAULT + formatp.Describe() + "\n"
+                }
+                paramstr += formatparam 
+                if(i != len - 1)
+                    paramstr += "\n"
+            }
+            else
+            {
+                paramstr += " " + COLOR_OLIVE_GREEN + (i+1) + "." + COLOR_DEFAULT + p.Describe() + "\n"
+            }
+        }
+        return COLOR_BRIGHT_GREEN + _name + COLOR_DEFAULT + ":\n" 
+                + COLOR_ORANGE + ">>> " + COLOR_DEFAULT + _desc + "\n" 
+                + paramstr
+    }
+}
