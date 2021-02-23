@@ -623,9 +623,9 @@ function VSLib::Entity::GetNetProp( prop, element = 0 )
 	if (!HasNetProp( prop ))
 		return null;
 	
-	local type = GetNetPropType( prop );
+	local typ = GetNetPropType( prop );
 	
-	if (type == "integer")
+	if (typ == "integer")
 	{
 		local entity = GetNetPropEntity( prop, element );
 		
@@ -634,13 +634,13 @@ function VSLib::Entity::GetNetProp( prop, element = 0 )
 		else
 			return GetNetPropInt( prop, element );
 	}
-	else if (type == "float")
+	else if (typ == "float")
 		return GetNetPropFloat( prop, element );
-	else if (type == "string")
+	else if (typ == "string")
 		return GetNetPropString( prop, element );
-	else if (type == "Vector")
+	else if (typ == "Vector")
 		return GetNetPropVector( prop, element );
-	
+
 	return null;
 }
 
@@ -2050,6 +2050,26 @@ function VSLib::Entity::GetEyeAngles()
 	}
 	
 	return _ent.EyeAngles();
+}
+
+/**
+ * Sets the direction that the entity's eyes are facing. Roll is limited to +/-60
+ */
+function VSLib::Entity::SetEyeAngles(pitch=0,yaw=0,roll=0)
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return;
+	}
+	
+	if (!("EyeAngles" in _ent))
+	{
+		printl("VSLib Warning: Entity " + _idx + " does not have Eye Angles.");
+		return;
+	}
+	
+	return _ent.SnapEyeAngles(QAngle(pitch,yaw,roll));
 }
 
 /**
