@@ -3891,10 +3891,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	if(RagdollStateCheck(player))
 		return;
 	
-	local targetID = AdminSystem.GetID( player );
-	AdminSystem.Vars.IsGodEnabled[targetID] <- true;
-	AdminSystem.Vars.IsNoclipEnabled[targetID] <- false;
-	AdminSystem.Vars.IsFreezeEnabled[targetID] <- false;
+	local idx = player.GetIndex();
+	AdminSystem.Vars.IsGodEnabled[idx] <- true;
+	AdminSystem.Vars.IsNoclipEnabled[idx] <- false;
+	AdminSystem.Vars.IsFreezeEnabled[idx] <- false;
 
 
 	local ang = QAngle(0,player.GetEyeAngles().Yaw(),0);
@@ -4022,8 +4022,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	player.SetNetProp("m_fEffects",0)
 	
 	player.Input("enableledgehang","")
-	local targetID = AdminSystem.GetID( player );
-	AdminSystem.Vars.IsGodEnabled[targetID] <- false;
+	AdminSystem.Vars.IsGodEnabled[player.GetIndex()] <- false;
 
 	local v = rag.GetPhysicsVelocity();
 
@@ -10636,13 +10635,13 @@ if ( Director.GetGameMode() == "holdout" )
 			foreach(survivor in Players.AliveSurvivors())
 			{
 				local survivorID = AdminSystem.GetID( survivor );
+
+				local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+survivor.GetIndex())
+				if(rag != null && rag.IsEntityValid())
+					continue;
+
 				if ( survivorID in ::AdminSystem.Vars.IsGodEnabled && ::AdminSystem.Vars.IsGodEnabled[survivorID] )
 				{
-					local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+survivor.GetIndex())
-
-					if(rag != null || rag.IsEntityValid())	// Don't allow turning off god mode while ragdolling via god command
-						continue;
-
 					AdminSystem.Vars.IsGodEnabled[survivorID] <- false;
 					if ( AdminSystem.DisplayMsgs )
 						Utils.PrintToAllDel("God mode has been disabled on %s.", survivor.GetName());
@@ -10691,13 +10690,13 @@ if ( Director.GetGameMode() == "holdout" )
 				return;
 			
 			local targetID = AdminSystem.GetID( Target );
+
+			local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+Target.GetIndex())
+			if(rag != null && rag.IsEntityValid())
+				return;
+
 			if ( targetID in ::AdminSystem.Vars.IsGodEnabled && ::AdminSystem.Vars.IsGodEnabled[targetID] )
 			{
-				local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+targetID)
-
-				if(rag != null || rag.IsEntityValid())	// Don't allow turning off god mode while ragdolling via god command
-					return;
-					
 				AdminSystem.Vars.IsGodEnabled[targetID] <- false;
 				if ( AdminSystem.DisplayMsgs )
 					Utils.PrintToAllDel("God mode has been disabled on %s.", Target.GetName());
@@ -10712,13 +10711,12 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{
+		local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+player.GetIndex())
+		if(rag != null && rag.IsEntityValid())
+			return;
+
 		if ( ID in ::AdminSystem.Vars.IsGodEnabled && ::AdminSystem.Vars.IsGodEnabled[ID] )
 		{
-			local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+ID)
-
-			if(rag != null || rag.IsEntityValid())	// Don't allow turning off god mode while ragdolling via god command
-				return;
-					
 			AdminSystem.Vars.IsGodEnabled[ID] <- false;
 			if ( AdminSystem.DisplayMsgs )
 				Utils.PrintToAllDel("%s has disabled god mode.", player.GetName());
@@ -10861,6 +10859,10 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			foreach(survivor in Players.AliveSurvivors())
 			{
+				local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+survivor.GetIndex())
+				if(rag != null && rag.IsEntityValid())
+					continue;
+
 				local survivorID = AdminSystem.GetID( survivor );
 				if ( survivorID in ::AdminSystem.Vars.IsFreezeEnabled && ::AdminSystem.Vars.IsFreezeEnabled[survivorID] )
 				{
@@ -10883,6 +10885,10 @@ if ( Director.GetGameMode() == "holdout" )
 			if ( !Target )
 				return;
 			
+			local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+Target.GetIndex())
+			if(rag != null && rag.IsEntityValid())
+				return;
+
 			local targetID = AdminSystem.GetID( Target );
 			if ( targetID in ::AdminSystem.Vars.IsFreezeEnabled && ::AdminSystem.Vars.IsFreezeEnabled[targetID] )
 			{
@@ -10902,6 +10908,10 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{
+		local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+player.GetIndex())
+		if(rag != null && rag.IsEntityValid())
+			return;
+
 		if ( ID in ::AdminSystem.Vars.IsFreezeEnabled && ::AdminSystem.Vars.IsFreezeEnabled[ID] )
 		{
 			player.RemoveFlag(FL_FROZEN);
@@ -10935,6 +10945,11 @@ if ( Director.GetGameMode() == "holdout" )
 			foreach(survivor in Players.AliveSurvivors())
 			{
 				local survivorID = AdminSystem.GetID( survivor );
+
+				local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+survivor.GetIndex())
+				if(rag != null && rag.IsEntityValid())
+					continue;
+
 				if ( survivorID in ::AdminSystem.Vars.IsNoclipEnabled && ::AdminSystem.Vars.IsNoclipEnabled[survivorID] )
 				{
 					survivor.SetNetProp("movetype", 2);
@@ -10956,7 +10971,10 @@ if ( Director.GetGameMode() == "holdout" )
 			if ( !Target )
 				return;
 			
-			local targetID = AdminSystem.GetID( Target );
+			local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+Target.GetIndex())
+			if(rag != null && rag.IsEntityValid())
+				return;
+
 			if ( targetID in ::AdminSystem.Vars.IsNoclipEnabled && ::AdminSystem.Vars.IsNoclipEnabled[targetID] )
 			{
 				Target.SetNetProp("movetype", 2);
@@ -10975,6 +10993,10 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{
+		local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+player.GetIndex())
+		if(rag != null && rag.IsEntityValid())
+			return;
+
 		if ( ID in ::AdminSystem.Vars.IsNoclipEnabled && ::AdminSystem.Vars.IsNoclipEnabled[ID] )
 		{
 			player.SetNetProp("movetype", 2);
