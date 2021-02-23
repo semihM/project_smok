@@ -41,6 +41,15 @@
 
     /// Bot sharing/looting settings
     BotSettings = "admin system/botparams.txt"
+
+    /// Command restrictions
+    CommandRestrictions = "admin system/command_limits.txt"
+    CommandRestrictionsBadFormat = "admin system/command_limits_BAD_FORMAT.txt"
+	
+    DisabledCommands = "admin system/disabled_commands.txt"
+
+	/// Command aliasing
+	CommandAliases = "admin system/aliases/command_aliases_1.txt"
 }
 
 /**************************\
@@ -51,7 +60,6 @@
 	Ragdoll = "project_smok_ragdoll_"
 
 	TankRock = "project_smok_tank_rock_"
-
 }
 
 /*************************\
@@ -93,18 +101,473 @@
 	{
 		Apocalypse = 7
 	
-		MeteorShower = 9
+		MeteorShower = 9 
 
 		BotShareLoot = 15
 	}
 }
+
+::Constants.CommandAliasesDefaults <-
+@"// This file contains aliases for the commands present in project_smok add-on
+// Characters // indicate the start of a comment, which are ignored while reading the file
+// Creating aliases lets players use commands in a way that isn't possible or ideal otherwise
+// Aliases allow:
+//	1. Calling multiple commands or other alliases with a single command
+//	2. Using custom parameters and default values for all commands
+//	3. Repeating and delaying
+// !!!!! IT IS POSSIBLE TO CREATE INFINITE LOOPS BY REFERRING ALIASES TO EACH OTHER, BE CAREFUL !!!!!!
+// Alias names CAN NOT:
+//	1. Have special characters(except underscore _) or spaces in it
+//	2. Start with a number 
+// 	3. Be same as an existing command or alias
+//	4. Be same as the example alias names (basic_alias_1, basic_alias_2, advanced_alias_1)
+// !!!!!!!
+// >>> FILE SIZE SHOULD NOT EXCEED 16.5 KB, OR FILE WILL NOT BE READ
+// !!!!!!!
+// If the file size is bigger than 16.5 KB:
+// 		1. Create a file named ""command_aliases_2.txt"" 
+// 		2. Follow the format present in this file, don't forget to write the { and } characters at the begining and the end
+//		3. Increment the file name index if you need more files created: ""command_aliases_3.txt"", ""command_aliases_4.txt"" ... 
+{	
+	// BASIC
+	//  o Create a table with the alias name you want, and include which commands are called with which values in this table
+	//  o From chat:  !basic_alias_1 OR /basic_alias_1
+	//  o From console:  scripted_user_func basic_alias_1
+	//  o Result will be same as calling ""!command_name_1"" and ""!command_name_2 first_arg second_arg""
+	basic_alias_1 =
+	{
+		Commands =
+		{	
+			// Call command_name_1 without arguments
+			command_name_1 = {}
+			
+			// Call command_name_2 with given arguments, values should be given in quotes """"
+			command_name_2 = 
+			{
+				arg_1 = ""first_arg""		// First argument
+				arg_2 = ""second_arg""		// Seconds argument ...
+				// ... follow the naming format arg_x for xth argument
+			}
+		}
+	}
+	//  o From chat:  !basic_alias_2 OR /basic_alias_2 
+	//  o From console:  scripted_user_func basic_alias_2 
+	//  o Result can't be replicated because there is a null argument
+	basic_alias_2 =
+	{
+		// Write the commands or other alliases you want aliased in a table called Commands
+		// Add as many commands as you'd like, commands can be delayed and repeated and all of their arguments can be parameterized
+
+		Commands =
+		{	
+			// Call command_name_1 with given arguments, values HAVE TO BE given in quotes """" (unless they are null)
+			// Creating aliases allows skipping (using nulls) arguments, but using this can result in the command not working as intended
+			command_name_1 = 
+			{
+				arg_1 = ""first_arg""		// First argument
+				arg_2 = ""second_arg""		// Seconds argument ...
+				// ... follow the naming format arg_x for xth argument
+				arg_4 = ""forth_arg""		// If argument is desired to be null, it can be skipped
+			}
+		}
+	}
+	// ADVANCED:
+	//  o Aliases can have parameters and default values for their parameters
+	//  o Commands can be delayed and repeated
+	//  o Check out the table for explanations, some of the calls this table allows(in chat):
+	//	->Use with default values (same as ""!command_name_1 400 default_value_1 25.0 #599 repeat_1"")
+	// 		!advanced_alias_1
+	//
+	//	->Use different arguments (same as !command_name_1 400 my_value 25.0 #611 repeat_1 third_as_sixth)
+	//		!advanced_alias_1 my_value 111 third_as_sixth
+	advanced_alias_1 =
+	{
+		// Restrict the usage of this alias
+		ScriptAuthOnly = false	// true: Player needs to have script authorization, false: All admins can use
+
+		HostOnly = false	// true: Only host can use(overrides ScriptAuthOnly), false: All admins can use
+
+		// Write any parameters you want the alias command to have under a table named Parameters
+		// Arguments to these parameters are read from the chat/console when you call the advanced_alias_1 command
+		// Default value should be given in quotes ""default_val"", unless it is null
+		Parameters =
+		{
+			param_1 = ""default_value_1""	// If no argument is passed, ""default_value_1"" is used as param_1 value
+			param_2 = ""99""			// Add as many parameters as you'd like following the naming format ""param_x"" for xth parameter
+			param_3 = null			// Parameter with no default value
+		}
+		
+		// Add information about this alias and it's parameters to keep it maintainable
+		Help =
+		{
+			docs = ""Information about this alias""
+			param_1 = ""Short information about the first parameter""
+			param_2 = ""Short information about the second parameter""
+			// ... follow the format: param_x = ""xth parameter information""
+		}
+		
+		// Add the commands or other alliases in a table called Commands
+		// Parameters can be referred with $param_x format for xth parameter
+		// Expressions can be given in $[expression] format to be evaluated every command call
+		// $[expression] and parameter references can be used with both options and arguments
+		Commands =
+		{
+			command_name_1 =	// Create a table for the commands you add
+			{	
+				/// Options for calling the command
+				// Time in seconds to delay the start of this commands call, have to be >= 0, gets evaluated once at start
+				start_delay = 0		
+
+				// Times to repeat this command every delay_between seconds; have to be >= 1, gets evaluated once at start
+				// Repeat number of every call is named as repeat_id. This value incements by 1 after every call, can be referred with $repeat_id directly or within $[expression] blocks
+				repeat = 1	
+
+				// Waiting duration in seconds between repeats, have to be >= 0.1, gets re-evaluated after every call
+				// This delay is generally inconsistant, 0.1 second delay may generally end up being a 0.2 second delay
+				delay_between = 0.1	
+
+				/// Arguments
+				// Expressions given here gets re-evaluated every call
+				arg_1 = ""400""		// If you don't want an argument to be referring to a parameter, just write the value you'd like it to have
+				arg_2 = ""$param_1""	// Example parameter reference
+				arg_3 = ""$[10 * 2.5]""	// Example expression which will always evaluate to 25.0
+				arg_4 = ""$[\""#\"" + ($param_2 + 500)]""	// If you need to use quotes inside quotes, they have to be escaped (add \ before each one inside), this example will result in #599 when param_2 is 99
+				arg_5 = ""$[\""repeat_\"" + $repeat_id]""	// This value will change every repeat: repeat_1, repeat_2, repeat_3 ...
+				arg_6 = ""$param_3""	// If param_3 value was null, arg_6 will be null 
+
+				/// Reference patterns summary
+				/// 		Format		   |			Description
+				// -----------------------------------------------------------------
+				//		$param_x		xth parameter's value
+				//	   	$repeat_id		current call number, increments by 1 after every call, don't use it with ""repeat""
+				//		$repeats_left		amount of repeats left, don't use it with ""repeat""
+				//		$last_call_time		Time() value stored from last call, can be used to check the accuracy of delay_between, don't use it with ""repeat""
+				//		$[expression]		result of given expression evaluated, follows Squirrel-lang format but allows references given above
+				//
+				/// How References Are Replaced
+				// 		o Consider expression: ""$[($repeat_id % 2) + $param_1]"" and param_1 given as 5, repeat given as 4
+				//		o In each command call this expression will evaluate as following:
+				//				$repeat_id  |  		  $param_1  |				  result
+				// 			------------------------------------------------------------------------------
+				//					 1			  5			  (1 % 2) + 5 = 6
+				//					 2			  5			  (2 % 2) + 5 = 5
+				//					 3			  5			  (3 % 2) + 5 = 6
+				//					 4			  5			  (4 % 2) + 5 = 5
+			}	
+		}
+	}
+}"
+
+// Initial proposal
+// TO-DO: Move default values to parameters instead
+// TO-DO: Fix regexps
+/*
+::Constants.CommandAliasesDefaults <-
+@"// This file is for aliasing and combining commands
+// Characters // indicate the start of a comment, which are ignored while reading the file
+// Format can be shown as:
+// 		alias_name parameter_1_for_command_1 parameter_2_for_command_1 ... ; parameter_1_for_command_2 parameter_1_for_command_2 ... {command_1 default_val_1_1 default_val_1_2 ... ; command_2 default_val_2_1 default_val_2_2 ... ; ...}
+// Default values are not necessary while creating the commands, but may be required for the original command so be careful and check the command documentations
+// Check out the given shorter format examples before writing aliases
+// ------------------------------------------------------------------
+// FORMAT EXAMPLES:
+// ->Creating a new command alias_1 as an alias to command_name_1 command
+// 		alias_1 {command_name_1}
+//
+// ->Creating a new command parsed_alias_1 as an alias which passes default values as arguments to original command
+// 		parsed_alias_1 {command_name_1 argument_1 argument_2}
+//
+// ->Creating a new command parametered_alias_1 as an alias which passes its parameters as arguments to original command
+//   	o Positions of the parameters can be changed in the {command_name_1 ...} if desired
+// 		parametered_alias_1 parameter_1 parameter_2 {command_name_1 $parameter_1 $parameter_2}
+//
+// ->Creating a new command parametered_parsed_alias_1 as an alias which passes its parameters as arguments to original command and uses default values if called with it's parameters missing values
+// 		o If no arguments passed while calling this alias, default_value_1 will be used as first argument and second argument will be null
+//		o If parameter_1 has an argument passed to it, it will overwrite the default_value_1
+// 		parametered_parsed_alias_1 parameter_1 parameter_2 {command_name_1 $parameter_1:default_value_1 $parameter_2}
+//
+// ->Creating a new command combined_alias_1 as an alias for calling multiple commands
+// 		combined_alias_1 {command_name_1;command_name_2}
+//
+// ->Creating a new command combined_parsed_alias_1 as an alias for calling multiple commands with default values
+// 		combined_parsed_alias_1 {command_name_1 default_value_1_1 default_value_1_2 ; command_name_2 default_value_2_1}
+//
+// ->Creating a new command combined_parametered_alias_1 as an alias which is a multi-command format of parametered_alias_1 alias example above
+// 		combined_parametered_alias_1 parameter_1_1 parameter_1_2 ; parameter_2_1 {command_name_1 $parameter_1_1 $parameter_1_2; command_name_2 $parameter_2_1}
+//
+// ->Creating a new command combined_parametered_alias_2 as an alias which is a multi-command format of parametered_alias_1 alias example above but uses it's parameter for more than a single command
+// 		combined_parametered_alias_2 parameter_1_1 parameter_1_2 {command_name_1 $parameter_1_1 $parameter_1_2; command_name_2 $parameter_1_1 ; command_name_3 $parameter_1_2}
+//
+// ->Creating a new command combined_parametered_parsed_alias_1 as an alias which is a multi-command format of parametered_parsed_alias_1 alias example above
+// 		combined_parametered_parsed_alias_1 parameter_1_1 parameter_1_2 ; parameter_2_1 {command_name_1 $parameter_1_1:default_value_1_1 $parameter_1_2:default_value_1_2 ; command_name_2 $parameter_2_1:default_value_2_1}
+// ------------------------------------------------------------------
+// REAL EXAMPLES:
+// ->Create a new command rotate_y with ""degrees"" parameter which is passed to the original command's degrees parameter
+// 		o Call example from chat: !rotate_y 90
+// 		rotate_y degrees {ent_rotate y $degrees}
+//
+// ->Set all survivors model to mdl, in this case mdl can be !random which would randomize all survivors' models
+// 		o Call example from chat: !set_survivor_models !random
+// 		set_survivor_models mdl {model !bill $mdl ; model !francis $mdl ; model !louis $mdl ; model !zoey $mdl}
+//
+// ->Create a new command do_the_work which applies 180 degrees around yaw axis, applies rainbow effect for 30 seconds with 0.5 intervals and pushes the object towards the player at 2000 units/s
+// 		do_the_work {ent_rotate y 180 ; rainbow 30 0.5 ; ent_push backward 2000}
+//
+// ->Previous example parameterized with default values 
+// 		o Call examples from chat: 
+//			!do_the_work_params y 90 10 0.1 forward 1500
+//			!do_the_work_params z 180
+// 		do_the_work_params axis rotation duration interval direction speed {ent_rotate $axis:y $rotation:180 ; rainbow $duration:30 $interval:0.5 ; ent_push $direction:backward $speed:2000}
+// ------------------------------------------------------------------
+"
+*/
+::Constants.ValidateAliasTableFromChat <- function(player,als,code,triggertbl)
+{
+	local tbl = null
+	try
+	{
+		tbl = compilestring("local __tempvar__ ={"+code+"};return __tempvar__;")()
+	}
+	catch(e)
+	{
+		ClientPrint(player.GetBaseEntity(),3,"Table format was invalid, no alias created! Error: "+e)
+		return null;
+	}
+
+	if(tbl == null || typeof tbl != "table")
+	{
+		ClientPrint(player.GetBaseEntity(),3,"Table format was invalid, no alias created!")
+		return null;
+	}
+	else
+	{	
+		if(als in ::AliasCompiler.ForbiddenAliasNames)
+			return null
+
+		if((als in getroottable()[triggertbl]))
+		{
+			ClientPrint(player.GetBaseEntity(),3,COLOR_ORANGE+als+COLOR_DEFAULT+" is already a known alias. Use "+COLOR_OLIVE_GREEN+" !replace_alias"+COLOR_DEFAULT+" if you want to replace an existing alias!")
+			return null
+		}
+		else
+		{
+			if("Commands" in tbl)
+			{
+				if(typeof tbl.Commands != "table")
+				{
+					ClientPrint(player.GetBaseEntity(),3,"Commands present in the table should be a table, formatted as: Commands = { \"command_name\" : {} }")
+					tbl.Commands <- {}
+				}
+			}
+			if("Parameters" in tbl)
+			{
+				if(typeof tbl.Parameters != "table")
+				{
+					ClientPrint(player.GetBaseEntity(),3,"Parameters present in the table should be a table, formatted as: Parameters = { \"param_x\" : \"default_value_x\" }")
+					tbl.Parameters <- {}
+				}
+			}
+			if("ScriptAuthOnly" in tbl)
+			{
+				if(typeof tbl.ScriptAuthOnly != "bool")
+				{
+					ClientPrint(player.GetBaseEntity(),3,"ScriptAuthOnly present in the table should be true or false, formatted as: ScriptAuthOnly = requires_script_auth")
+					tbl.ScriptAuthOnly <- false
+				}
+			}
+			if("HostOnly" in tbl)
+			{
+				if(typeof tbl.HostOnly != "bool")
+				{
+					ClientPrint(player.GetBaseEntity(),3,"HostOnly present in the table should be true or false, formatted as: HostOnly = host_only")
+					tbl.HostOnly <- false
+				}
+			}
+		}
+			
+		return tbl;
+	}
+}
+::Constants.ValidateAliasTable <- function(fileContents,filename,first=false,reload=false,triggertbl="ChatTriggers")
+{
+	local news = {}
+	local tbl = null
+	try
+	{
+		tbl = compilestring("local __tempvar__="+fileContents+";return __tempvar__;")()
+	}
+	catch(e){printl("[Alias-Compile-Error] Failed to compile "+filename+". Error: "+e)}
+
+	if(tbl == null || typeof tbl != "table")
+	{
+		printl("[Alias-Error] "+filename+" was formatted entirely wrong, check {} and \"\" characters!")
+		printl("[Alias-Error] Keeping incorrectly formatted file named differently and replacing it with the default one...")
+
+		StringToFile(filename.slice(0,filename.find(".txt"))+"_BAD_FORMAT.txt",fileContents);
+
+		StringToFile(filename,Constants.CommandAliasesDefaults);
+
+		fileContents = FileToString(filename);
+		return compilestring("local __tempvar__="+fileContents+";return __tempvar__;")()
+	}
+	else
+	{	
+		if(tbl.len() != 0)
+		{	
+			local deletes = []
+			local issuesfound = false
+			if(first)
+				printl("[Alias-Checks] Doing alias table checks...")
+
+			foreach(als,valtbl in tbl)
+			{
+				if(als in ::AliasCompiler.ForbiddenAliasNames)
+					continue
+
+				if((als in getroottable()[triggertbl]))
+				{
+					if(reload)
+					{
+						news[als] <- valtbl
+					}
+					else
+					{
+						printl("[Alias-Duplicate] "+als+" is already created! Consider removing the duplicate one.")
+						deletes.append(als)
+						issuesfound = true
+						continue;
+					}
+				}
+				else
+				{
+					news[als] <- valtbl
+				}
+
+				if("Commands" in valtbl)
+				{
+					if(typeof valtbl.Commands != "table")
+					{
+						printl("\t["+als+"-Error] Commands present in the table should be a table, formatted as: Commands = { \"command_name\" : {} }")
+						tbl[als].Commands <- {}
+						issuesfound = true
+					}
+				}
+				if("Parameters" in valtbl)
+				{
+					if(typeof valtbl.Parameters != "table")
+					{
+						printl("\t["+als+"-Error] Parameters present in the table should be a table, formatted as: Parameters = { \"param_x\" : \"default_value_x\" }")
+						tbl[als].Parameters <- {}
+						issuesfound = true
+					}
+				}
+				if("Help" in valtbl)
+				{
+					if(typeof valtbl.Help != "table")
+					{
+						printl("\t["+als+"-Error] Help present in the table should be a table, formatted as: Help = { \"docs\" : \"Short alias information\", \"param_x\" : \"Short parameter information\" }")
+						tbl[als].Help <- {}
+						issuesfound = true
+					}
+				}
+				if("ScriptAuthOnly" in valtbl)
+				{
+					if(typeof valtbl.ScriptAuthOnly != "bool")
+					{
+						printl("\t["+als+"-Error] ScriptAuthOnly present in the table should be true or false, formatted as: ScriptAuthOnly = requires_script_auth")
+						tbl[als].ScriptAuthOnly <- false
+						issuesfound = true
+					}
+				}
+				if("HostOnly" in valtbl)
+				{
+					if(typeof valtbl.HostOnly != "bool")
+					{
+						printl("\t["+als+"-Error] HostOnly present in the table should be true or false, formatted as: HostOnly = host_only")
+						tbl[als].HostOnly <- false
+						issuesfound = true
+					}
+				}
+			}
+			foreach(i,a in deletes)
+			{
+				delete tbl[a]
+			}
+			
+			if(issuesfound)
+				printl("[Alias-Checks] Applied fixes to current session, consider checking "+filename+" file to correct the mistakes.")
+			else
+				printl("[Alias-Checks] No issues found for "+filename)
+			
+			if(news.len() > 0)
+			{	
+				if(reload)
+					printl("[Alias-Table] New aliases after reloading "+filename+" ("+news.len()+"):")
+				else
+					printl("[Alias-Table] Aliases loaded from "+filename+" ("+news.len()+"):")
+
+				foreach(al,vl in news)
+				{
+					printl("\t[*] "+al)
+				}
+			}
+			else 
+			{
+				if(reload)
+					printl("[Alias-Table] No new valid aliases were loaded from "+filename)
+				else
+					printl("[Alias-Table] No valid aliases were loaded from "+filename)
+			}
+
+		}
+		return tbl;
+	}
+}
+
+::Constants.DisabledCommandsDefaults <-
+@"// This file contains names of the commands you want disabled
+// Characters // indicate the start of a comment, which are ignored while reading the file
+// Examples given for disabling command_name_1 and command_name_2 commands
+
+command_name_1 //Add names of the commands below these examples
+command_name_2 //Take notes by adding // after the command name if needed"
+
+
+::Constants.CommandRestrictionsDefault <- 
+@"// This file contains restrictions to be applied to desired commands
+// Characters // indicate the start of a comment, which are ignored while reading the file
+// Follow the example ""command_name_1"" table's format to add new commands
+{
+	command_name_1 =
+	{
+		// SteamIDs of banned player for using ""command_name_1"" command
+		// Doesn't need to be written if there's no bans needed
+		// To ban everyone from using this command, place it into the ""disabled_commands.txt""
+		BanList =
+		{
+				""STEAM_1:X:XXXXXX"" : true 	// Add player's SteamID to left hand side, right hand side value doesn't matter but needs to be legal. Check https://steamidfinder.com/ for SteamIDs
+		}
+
+		// SteamIDs of players who need to wait given time in seconds after using the command to use it again
+		// Doesn't need to be written if there's no cooldowns needed
+		CoolDown =	
+		{
+				""STEAM_1:X:XXXXXX"" : 3 	// Add player's SteamID to left hand side and waiting duration in second to right hand side.
+		}
+			
+		// Cooldown time in seconds apply to everyone, if player's SteamID is in CoolDown table, this value is ignored for them
+		// If not written, assumed to be 0 seconds
+		CoolDownAll = 0
+	}
+}"
 
 /********************\
 *  DEFAULT SETTINGS  *
 \********************/
 ::Constants.DefaultsDetailed <-
 {
-    FormattingIntro =  @"// >>> This file contains some editable default settings
+    FormattingIntro =  
+@"// >>> This file contains some editable default settings
 // >>> The characters // and /// indicate comments starting after them, which are ignored
 // >>> This file gets compiled directly within the project_smok, so be careful with the formatting and what is written here!
 // >>> Errors and fixes done by the add-on will be reported to console, so check the console if you've made a change and wheter it caused a fix to be used
@@ -161,6 +624,11 @@
             Value = true
             Comment = "// true: Use any object as a \"speaker\" for a microphone, false: Force entity's class to be \"info_target\" to be used as a \"speaker\""
         }
+		CompileHexAndSpecialsInArguments =
+		{
+			Value = true
+			Comment = "// true: Try to compile all arguments before using, false: Use arguments as is\n\t\t// When this setting is true:\n\t\t//\t o Offers a somewhat complex way of getting around chat and console limitations\n\t\t//\t o Allows $[expression] format for arguments\n\t\t//\t o Allows usage of \"__\" enum class for special characters\n\t\t//\t o Allows a few common hex characters:\n\t\t//\t\t -> \\x20 gets replaced with \x20 which is \" \"\n\t\t//\t\t -> \\x2C gets replaced with \x2C which is \",\"\n\t\t//\t\t -> \\x2E gets replaced with \x2E which is \".\"\n\t\t//\t\t -> \\x3F gets replaced with \x3F which is \"?\""
+		}
     }
 
     Tables =
@@ -1372,7 +1840,7 @@
 			+ "\n\r\t\t}\n\r"
 			+ "\t}\n\r}";
 
-		props = compilestring("local t="+ps+";return t;")();
+		props = compilestring("local __tempvar__="+ps+";return __tempvar__;")();
 		
 		if(propsavetofile)
 		{
@@ -1380,7 +1848,7 @@
 		}
 	}
 
-    local tbl = compilestring("local t="+s+";return t;")();
+    local tbl = compilestring("local __tempvar__="+s+";return __tempvar__;")();
 
     if(defsavetofile)
     {
@@ -2024,10 +2492,10 @@
         ::Constants.GetFullDefaultTable(null,defs==null,propdefs==null)
 
         defs = FileToString(::Constants.Directories.CustomizedDefaults);
-        df = compilestring("local t="+defs+";return t;")();
+        df = compilestring("local __tempvar__="+defs+";return __tempvar__;")();
 
     	propdefs = FileToString(::Constants.Directories.CustomizedPropSpawnDefaults);
-		props = compilestring("local t="+propdefs+";return t;")();
+		props = compilestring("local __tempvar__="+propdefs+";return __tempvar__;")();
 		
 		df.Tables.PropSpawn <- props.Tables.PropSpawn;
 
@@ -2041,7 +2509,7 @@
 		local perr = ""
 		try
 		{
-        	df = compilestring("local t="+defs+";return t;")();
+        	df = compilestring("local __tempvar__="+defs+";return __tempvar__;")();
 		}
 		catch(e)
 		{
@@ -2053,7 +2521,7 @@
 
 		try
 		{
-			props = compilestring("local t="+propdefs+";return t;")();
+			props = compilestring("local __tempvar__="+propdefs+";return __tempvar__;")();
 		}
 		catch(e2)
 		{
@@ -2119,6 +2587,76 @@
 }
 
 ::Constants.ReadDefaultsFile();
+
+::Constants.ValidateCommandRestrictionTable <- function(tbl,fileContents)
+{
+	if(typeof tbl != "table")
+	{
+		printl("[Commands-Error] command_limits.txt was formatted entirely wrong, do NOT remove { and } characters at the start and the end of the file!...")
+		printl("[Commands-Error] Keeping incorrectly formatted file named differently and replacing it with the default one...")
+
+		StringToFile(Constants.Directories.CommandRestrictionsBadFormat,fileContents);
+
+		StringToFile(Constants.Directories.CommandRestrictions,Constants.CommandRestrictionsDefault);
+
+		fileContents = FileToString(Constants.Directories.CommandRestrictions);
+		return compilestring("local __tempvar__="+fileContents+";return __tempvar__;")()
+	}
+	else
+	{
+		if(tbl.len() != 0)
+		{	
+			local issuesfound = false
+			printl("[Command-Checks] Doing command limit table checks...")
+			foreach(cmd,valtbl in tbl)
+			{
+				if(cmd == "command_name_1" || cmd == "command_name_2")
+					continue
+
+				if(!(cmd in ::ChatTriggers))
+				{
+					printl("\t[Commands-Missing] "+cmd+" is not a known command! Consider checking the name or removing it to save space.")
+					issuesfound = true
+				}
+				else
+				{
+					if("BanList" in valtbl)
+					{
+						if(typeof valtbl.BanList != "table")
+						{
+							printl("\t["+cmd+"-Error] BanList present in the table should be a table, formatted as: BanList = { \"steamid\" : true }")
+							tbl[cmd].Banlist <- {}
+							issuesfound = true
+						}
+					}
+					if("CoolDown" in valtbl)
+					{
+						if(typeof valtbl.CoolDown != "table")
+						{
+							printl("\t["+cmd+"-Error] CoolDown present in the table should be a table, formatted as: CoolDown = { \"steamid\" : cooldown_duration }")
+							tbl[cmd].CoolDown <- {}
+							issuesfound = true
+						}
+					}
+					if("CoolDownAll" in valtbl)
+					{
+						if((typeof valtbl.CoolDownAll != "integer" && typeof valtbl.CoolDownAll != "float") || valtbl.CoolDownAll < 0)
+						{
+							printl("\t["+cmd+"-Error] CoolDownAll present in the table should be a real positive number, formatted as: CoolDownAll = cooldown_duration")
+							tbl[cmd].CoolDownAll <- 0
+							issuesfound = true
+						}
+					}
+				}
+			}
+			if(issuesfound)
+				printl("[Command-Checks] Applied fixes to current session, consider checking command_limits.txt file to correct the mistakes.")
+			else
+				printl("[Command-Checks] No issues found for command restrictions.")
+		}
+		return tbl;
+	}
+}
 
 if(!("Defaults" in ::Constants))
 {
