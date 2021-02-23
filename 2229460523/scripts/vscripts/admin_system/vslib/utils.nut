@@ -144,10 +144,10 @@ function VSLib::Utils::SearchMainTables(idx)
 /**
  * Combines all elements of an array into one string
  */
-function VSLib::Utils::CombineArray(args, delimiter = " ")
+function VSLib::Utils::CombineArray(args, delimiter = " ",startidx = 0)
 {
 	local str = "";
-	for (local i = 0; i < args.len(); i++)
+	for (local i = startidx; i < args.len() + startidx; i++)
 		str += args[i].tostring() + delimiter;
 	return str;
 }
@@ -2549,6 +2549,20 @@ function VSLib::Utils::TableCopy(tbl)
 	return tablecopy;
 }
 
+/*
+ * @author rhino
+ */
+function VSLib::Utils::ExtendTable(tbl,other)
+{
+	foreach(key,val in other)
+	{	
+		if(key in tbl)
+			continue;
+
+		tbl[key] <- val
+	}
+	return tbl;
+}
 /*
  * @author rhino
  */

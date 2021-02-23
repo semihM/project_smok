@@ -27,6 +27,8 @@ IncludeScript("Project_smok/Messages");
 IncludeScript("Project_smok/Constants");
 // Include Custom Variables
 IncludeScript("Project_smok/AdminVars");
+// Include Aliasing Compiler
+IncludeScript("Project_smok/AliasCompiler");
 
 ::CmdMessages <- ::Messages.BIM.CMD;
 ::CmdDocs <- ::Messages.BIM.Docs;
@@ -129,48 +131,13 @@ Convars.SetValue( "precache_all_survivors", "1" );
 	local charname = player.GetCharacterName();
 	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterNameLower()])
 	{
-		local spltlen = splt.len();
-		if(spltlen > 1)	// New-lines
+		local lines = ::Messages.MessageSplit(splt)
+		foreach(i,line in lines)
 		{
-			for(local i=0;i<spltlen;i++)
-			{
-				local mlen = splt[i].len();
-				local ms = (mlen.tofloat() / (PRINTER_CHAR_LIMIT+0.1)).tointeger() + 1;
-				if(mlen > PRINTER_CHAR_LIMIT)	// Too long line
-				{
-					for(local j=0;j<ms;j++)	// Slice into new lines
-					{
-						local offset = PRINTER_CHAR_LIMIT*j;
-						local len = (j == ms-1) ? mlen%PRINTER_CHAR_LIMIT : PRINTER_CHAR_LIMIT;
-						PrinterSplitDecider(player,splt[i].slice(offset,offset + len),messager);
-					}
-				}
-				else	// Valid length line
-				{
-					PrinterSplitDecider(player,splt[i],messager);
-				}
-			}
-		}
-		else	// Valid length message
-		{
-			local mlen = splt[0].len();
-			local ms = (mlen.tofloat() / (PRINTER_CHAR_LIMIT+0.1)).tointeger() + 1;
-			if(mlen > PRINTER_CHAR_LIMIT)	// Too long line
-			{
-				for(local j=0;j<ms;j++)	// Slice into new lines
-				{
-					local offset = PRINTER_CHAR_LIMIT*j;
-					local len = (j == ms-1) ? mlen%PRINTER_CHAR_LIMIT : PRINTER_CHAR_LIMIT;
-					PrinterSplitDecider(player,splt[0].slice(offset,offset + len),messager);
-				}
-			}
-			else	// Valid length line
-			{
-				PrinterSplitDecider(player,splt[0],messager);
-			}
+			PrinterSplitDecider(player,line,messager);
 		}
 	}
-	else
+	else	// Using echo allows much longer messages (TO-DO: limit unknown)
 	{
 		msg = Utils.CleanColoredString(msg);
 		messager = messager == null ? "info" : "error";
@@ -220,6 +187,307 @@ Convars.SetValue( "precache_all_survivors", "1" );
 			printB(charname,charname+" -> "+msg,true,messager,true,true);
 		}
 	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.CreateAliasCommandCmd <- function(player,args,text)
+{
+	if(!AdminSystem.HasScriptAuth(player))
+		return;
+	
+	local alias = GetArgument(1);
+	if(alias == null)
+		return;
+
+	delete args[0]
+
+	local code = Utils.CombineArray(args," ",1)
+	local aliastbl = ::Constants.ValidateAliasTableFromChat(player,alias,code,"ChatTriggers");
+	if(aliastbl == null)
+		return;
+		
+	local a = ::AliasCompiler.CreateAlias(alias,aliastbl,"ChatTriggers");
+
+	if(a==null)
+		Printer(player,"No alias was created. Check for formatting errors","error")
+	else
+		Printer(player,"Created an alias named "+a._name+" referring "+a._cmds.len()+" commands")
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.ReplaceAliasCommandCmd <- function(player,args,text)
+{
+	if(!AdminSystem.HasScriptAuth(player))
+		return;
+	
+	local alias = GetArgument(1);
+	if(alias == null)
+		return;
+	
+	if(!(alias in ::ChatTriggers))
+	{
+		Printer(player,COLOR_ORANGE+alias+COLOR_DEFAULT+" is not a known alias. Use "+COLOR_OLIVE_GREEN+"!create_alias "+COLOR_DEFAULT+"to create new aliases!")
+		return;
+	}
+	else
+	{
+		delete ::ChatTriggers[alias]
+	}
+
+	delete args[0]
+
+	local code = Utils.CombineArray(args," ",1)
+	local aliastbl = ::Constants.ValidateAliasTableFromChat(player,alias,code,"ChatTriggers");
+	if(aliastbl == null)
+		return;
+
+	local a = ::AliasCompiler.CreateAlias(alias,aliastbl,"ChatTriggers");
+
+	if(a==null)
+		Printer(player,"No alias was created. Check for formatting errors","error")
+	else
+		Printer(player,"Created an alias named "+a._name+" referring "+a._cmds.len()+" commands")
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.LoadAliasedCommands <- function(reload=false)
+{
+	local fileContents = FileToString(Constants.Directories.CommandAliases);
+	if(fileContents == null)
+	{
+		printl("[Commands] Creating aliases/command_aliases_1.txt for the first time...")
+		StringToFile(Constants.Directories.CommandAliases,Constants.CommandAliasesDefaults);
+		fileContents = FileToString(Constants.Directories.CommandAliases);
+	}
+	local tbl = ::Constants.ValidateAliasTable(fileContents,Constants.Directories.CommandAliases,true,reload,"ChatTriggers");
+	::AliasCompiler.CreateAliasFromTable(tbl,"ChatTriggers")
+
+	local i = 2
+	local extras = FileToString("admin system/aliases/command_aliases_2.txt")
+	while(extras != null)
+	{
+	 	tbl = ::Constants.ValidateAliasTable(extras,"admin system/aliases/command_aliases_"+i+".txt",false,reload,"ChatTriggers");
+
+		::AliasCompiler.CreateAliasFromTable(tbl,"ChatTriggers")
+		i += 1
+		extras = FileToString("admin system/aliases/command_aliases_"+i+".txt")
+	}
+
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.AddDisabledCommandCmd <- function(player,args)
+{
+	if(!AdminSystem.IsPrivileged(player) || !AdminSystem.HasScriptAuth(player))
+	{
+		return;
+	}
+
+	local cmd = GetArgument(1);
+	if(cmd != null && cmd in ::ChatTriggers && !(cmd in ::VSLib.EasyLogic.DisabledCommands))
+	{
+		::VSLib.EasyLogic.DisabledCommands[cmd] <- true
+		Printer(player,"Disabled command: "+cmd)
+	}
+
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.RemoveDisabledCommandCmd <- function(player,args)
+{
+	if(!AdminSystem.IsPrivileged(player) || !AdminSystem.HasScriptAuth(player))
+	{
+		return;
+	}
+
+	local cmd = GetArgument(1);
+	if(cmd != null && cmd in ::ChatTriggers && cmd in ::VSLib.EasyLogic.DisabledCommands)
+	{
+		delete ::VSLib.EasyLogic.DisabledCommands[cmd]
+		Printer(player,"Re-enabled command: "+cmd)
+	}
+
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.LoadDisabledCommands <- function ()
+{
+	local fileContents = FileToString(Constants.Directories.DisabledCommands);
+	if(fileContents == null)
+	{
+		printl("[Commands] Creating disabled_commands.txt for the first time...")
+		StringToFile(Constants.Directories.DisabledCommands,Constants.DisabledCommandsDefaults);
+		fileContents = FileToString(Constants.Directories.DisabledCommands);
+	}
+
+	local commands = split(fileContents, "\r\n");
+	local missingfound = false
+	foreach (i,cmd in commands)
+	{	
+		cmd = strip(cmd)
+		if(cmd.find("//") == 0)
+			continue;
+		else if(cmd.find("//") != null)
+		{
+			cmd = strip(split(cmd,"//")[0])
+		}
+
+		if(cmd in ::ChatTriggers)
+		{
+			::VSLib.EasyLogic.DisabledCommands[cmd] <- true
+		}
+		else if(cmd != "command_name_1" && cmd != "command_name_2")
+		{
+			if(!missingfound)
+			{
+				missingfound = true
+				printl("[Commands] Found unknown command names in the disabled_commands.txt, consider removing them to save space:")
+			}
+			printl("\t[Row "+(i+1)+"] "+cmd)
+		}
+
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.AddCommandBanCmd <- function(player,args)
+{
+	if(!AdminSystem.IsPrivileged(player) || !AdminSystem.HasScriptAuth(player))
+	{
+		return;
+	}
+
+	local character = GetArgument(1);
+	if(character == null)
+		return;
+	
+	local target = Player(character)
+	if(target == null || !target.IsEntityValid())
+	{
+		target = Utils.GetPlayerFromName(character.tolower())
+		if(target == null || !target.IsEntityValid())
+			return
+	}
+
+	local banfromall = false
+	local cmd = GetArgument(2);
+	if(cmd == null)
+		banfromall = true
+
+	local duration = GetArgument(3);
+	if(duration == null)
+		duration = 999999
+	else
+		duration = duration.tofloat()
+
+	local steamid = target.GetSteamID()
+	if(banfromall)
+	{
+		foreach(command in ::ChatTriggers)
+		{
+			if(!(command in ::VSLib.EasyLogic.TemporaryCmdBanList))
+			{
+				::VSLib.EasyLogic.TemporaryCmdBanList[command] <- {}
+			}
+			::VSLib.EasyLogic.TemporaryCmdBanList[command][steamid] <- Time() + duration
+		}
+		Printer(player,"Banned "+target.GetCharacterNameLower()+" from using all commands for "+duration+" seconds")
+	}
+	else
+	{
+		if(cmd in ::ChatTriggers)
+		{
+			if(!(cmd in ::VSLib.EasyLogic.TemporaryCmdBanList))
+			{
+				::VSLib.EasyLogic.TemporaryCmdBanList[cmd] <- {}
+			}
+			::VSLib.EasyLogic.TemporaryCmdBanList[cmd][steamid] <- Time() + duration
+			Printer(player,"Banned "+target.GetCharacterNameLower()+" from using "+cmd+" for "+duration+" seconds")
+		}
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.RemoveCommandBanCmd <- function(player,args)
+{
+	if(!AdminSystem.IsPrivileged(player) || !AdminSystem.HasScriptAuth(player))
+	{
+		return;
+	}
+
+	local character = GetArgument(1);
+	if(character == null)
+		return;
+	
+	local target = Player(character)
+	if(target == null || !target.IsEntityValid())
+	{
+		target = Utils.GetPlayerFromName(character.tolower())
+		if(target == null || !target.IsEntityValid())
+			return
+	}
+
+	local unbanfromall = false
+	local cmd = GetArgument(2);
+	if(cmd == null)
+		unbanfromall = true
+
+	local steamid = target.GetSteamID()
+	if(unbanfromall)
+	{
+		foreach(command,bantbl in ::VSLib.EasyLogic.TemporaryCmdBanList)
+		{
+			if(steamid in bantbl)
+			{
+				delete ::VSLib.EasyLogic.TemporaryCmdBanList[command][steamid]
+			}
+		}
+		Printer(player,"Unbanned "+target.GetCharacterNameLower()+" from using all commands")
+	}
+	else
+	{
+		if(cmd in ::VSLib.EasyLogic.TemporaryCmdBanList && steamid in ::VSLib.EasyLogic.TemporaryCmdBanList[cmd])
+		{
+			delete ::VSLib.EasyLogic.TemporaryCmdBanList[cmd][steamid]
+			Printer(player,"Unbanned "+target.GetCharacterNameLower()+" from using "+cmd)
+		}
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.LoadCommandRestrictions <- function ()
+{
+	local fileContents = FileToString(Constants.Directories.CommandRestrictions);
+	if(fileContents == null)
+	{
+		printl("[Commands] Creating command_limits.txt for the first time...")
+		StringToFile(Constants.Directories.CommandRestrictions,Constants.CommandRestrictionsDefault);
+		fileContents = FileToString(Constants.Directories.CommandRestrictions);
+	}
+	
+	local tbl = compilestring("local __tempvar__="+fileContents+";return __tempvar__;")()
+
+	tbl = ::Constants.ValidateCommandRestrictionTable(tbl,fileContents);
+
+	::VSLib.EasyLogic.CommandRestrictions <- tbl
 }
 
 ::AdminSystem.LoadAdmins <- function ()
@@ -518,7 +786,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 /*
  * @authors rhino
  */
-::AdminSystem.HasScriptAuth <- function ( player )
+::AdminSystem.HasScriptAuth <- function ( player , quiet = false)
 {
 	if ( Director.IsSinglePlayerGame() || player.IsServerHost() )
 		return true;
@@ -528,7 +796,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 
 	if ( !(steamid in ::AdminSystem.ScriptAuths) )
 	{
-		if ( AdminSystem.DisplayMsgs )
+		if ( AdminSystem.DisplayMsgs && !quiet)
 			Messages.BIM.HasScriptAuth.NoAccess(player);
 		return false;
 	}
@@ -610,6 +878,35 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 
 	local MessageTable = Messages.BIM.Events.OnRoundStart.AdminLoadFiles;
 
+	AdminSystem.LoadDisabledCommands()
+	AdminSystem.LoadCommandRestrictions()
+	AdminSystem.LoadAliasedCommands()
+	
+	if(::AliasCompiler.Tables.len() > 0)
+	{	
+		printl("---------------------------------------------------------")
+		printl("[Aliases] Aliased commands for this session ("+::AliasCompiler.Tables.len()+"):")
+		local i = 0;
+		foreach(name,al in ::AliasCompiler.Tables)
+		{
+			i += 1
+			printl("\t["+i+"] "+name)
+		}
+		printl("---------------------------------------------------------")
+	}
+
+	if(::VSLib.EasyLogic.DisabledCommands.len() > 0)
+	{	
+		printl("---------------------------------------------------------")
+		printl("[Commands] Disabled commands for this session ("+::VSLib.EasyLogic.DisabledCommands.len()+"):")
+		local i = 0;
+		foreach(cmd,_v in ::VSLib.EasyLogic.DisabledCommands)
+		{
+			i += 1
+			printl("\t["+i+"] "+cmd)
+		}
+		printl("---------------------------------------------------------")
+	}
 	if ( adminList != null )
 	{
 		MessageTable.LoadAdmins();
@@ -1159,10 +1456,10 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	}
 }
 
-function Notifications::OnPlayerConnected::RestoreModels(player,args)
+function Notifications::OnPlayerConnected::FixEyeAngles(player,args)
 {
-	if(!::VSLib.EasyLogic.NextMapContinues)
-		AdminSystem.RestoreModels(player);
+	local ang = player.GetEyeAngles()
+	player.SetEyeAngles(ang.x,ang.y,0);
 }
 
 function Notifications::OnModeStart::AdminLoadFiles( gamemode )
@@ -1379,6 +1676,13 @@ function Notifications::OnBotReplacedPlayer::LetGoHeldPlayer(player,bot,args)
 	if(AdminSystem.IsPrivileged(player,true))
 		AdminSystem.LetgoCmd(player,null);
 
+	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+player.GetIndex())
+
+	if(rag == null || !rag.IsEntityValid())
+		return;
+	
+	RecoverRagdollInitial(rag);
+	
 	foreach(survivor in Players.AliveSurvivors())
 	{
 		if(AdminSystem.Vars._heldEntity[survivor.GetCharacterNameLower()].entid == player.GetIndex().tostring())
@@ -1408,6 +1712,20 @@ function EasyLogic::OnTakeDamage::AdminDamage( damageTable )
 	local attacker = Utils.GetEntityOrPlayer(damageTable.Attacker);
 	local victim = Utils.GetEntityOrPlayer(damageTable.Victim);
 	local ID = AdminSystem.GetID(victim);
+	
+	local parent = victim.GetParent()
+	if(parent != null)
+	{	
+		
+		// Charger missed charge impact
+		if(parent.GetName().find(Constants.Targetnames.Ragdoll) != null
+			&& (attacker.GetName().find("charger") != null || attacker.GetModel().find("charger")!=null)
+			&& victim.GetNetProp("m_staggerDist").tointeger() != 0
+			&& damageTable.DamageDone == 2)
+		{
+			return true;
+		}
+	}
 	
 	if (ID in ::AdminSystem.Vars.IsGodEnabled && ::AdminSystem.Vars.IsGodEnabled[ID])
 		return false; // return 0 damage
@@ -1472,9 +1790,132 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
+
+	local cleanBaseCmd = null 
+
+	if(Command != null)
+	{	
+		Command = strip(Command);
+		cleanBaseCmd = Command in ::ChatTriggers
+							? Command
+							: Command.tolower() in ::ChatTriggers
+								? Command.tolower()
+								: null
+	}
 	
-	switch ( Command )
+	// Check restrictions
+	if (cleanBaseCmd != null)
 	{
+		if(cleanBaseCmd in ::VSLib.EasyLogic.DisabledCommands)
+		{
+			Printer(player,"Host has disabled the "+cleanBaseCmd+" command by default!")
+			return false;
+		}
+
+		if(player != null && player.IsEntityValid())
+		{
+			local steamid = player.GetSteamID()
+			if(cleanBaseCmd in ::VSLib.EasyLogic.CommandRestrictions)
+			{
+				local restrictions = ::VSLib.EasyLogic.CommandRestrictions[cleanBaseCmd]
+
+				// Perma ban
+				if(("BanList" in restrictions) && (steamid in restrictions.BanList))
+				{
+					Printer(player,"Host has banned you from using "+cleanBaseCmd+" command!")
+					return false;
+				}
+				
+				// Spam limiter
+				if(("CoolDown" in restrictions) && (steamid in restrictions.CoolDown))
+				{	
+					if(!(cleanBaseCmd in ::VSLib.EasyLogic.CommandCallTimes))
+					{
+						::VSLib.EasyLogic.CommandCallTimes[cleanBaseCmd] <- {}
+					}
+					else if((steamid in ::VSLib.EasyLogic.CommandCallTimes[cleanBaseCmd]))
+					{
+						local timeleft = Time() - ::VSLib.EasyLogic.CommandCallTimes[cleanBaseCmd][steamid];
+						if(timeleft < restrictions.CoolDown[steamid])
+						{
+							Printer(player,"You can't use this command for "+timeleft+" more seconds!")
+							return false;
+						}
+					}
+				}
+				else if(("CoolDownAll" in restrictions))
+				{
+					local timeleft = Time() - ::VSLib.EasyLogic.CommandCallTimes[cleanBaseCmd][steamid];
+					if(timeleft < restrictions.CoolDownAll)
+					{
+						Printer(player,"You can't use this command for "+timeleft+" more seconds!")
+						return false;
+					}
+				}
+				// Save call time
+				::VSLib.EasyLogic.CommandCallTimes[cleanBaseCmd][steamid] <- Time()
+			}
+			// Temp ban
+			if((cleanBaseCmd in ::VSLib.EasyLogic.TemporaryCmdBanList) && (steamid in ::VSLib.EasyLogic.TemporaryCmdBanList[cleanBaseCmd]))
+			{
+				local banleft = Time() - ::VSLib.EasyLogic.TemporaryCmdBanList[cleanBaseCmd][steamid]
+				if(banleft < 0)
+				{
+					Printer(player,"Host has temporarly banned you from using "+cleanBaseCmd+" command for "+(-banleft)+" more seconds!")
+					return false;
+				}
+				delete ::VSLib.EasyLogic.TemporaryCmdBanList[cleanBaseCmd][steamid]
+			}
+		}
+	}
+	else
+	{
+		Printer(player,"Unknown command: "+Command)
+	}
+
+	switch ( cleanBaseCmd )
+	{
+		case "reload_aliases":
+		{
+			if(!AdminSystem.HasScriptAuth(player))
+				return;
+			AdminSystem.LoadAliasedCommands(true);
+			break;
+		}
+		case "replace_alias":
+		{
+			if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
+				return;
+			
+			AdminSystem.ReplaceAliasCommandCmd(player,args,text);
+		}
+		case "create_alias":
+		{
+			if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
+				return;
+			
+			AdminSystem.CreateAliasCommandCmd(player,args,text);
+			break;
+		}
+		case "enum_string":
+		{
+			if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
+				return;
+			
+			ClientPrint(player.GetBaseEntity(),3,::AdminSystem._GetEnumString(GetArgument(1)));
+			break;
+		}
+		case "out":
+		{
+			if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
+				return;
+			
+			local Code = Utils.StringReplace(text, "out,", "");
+			Code = Utils.StringReplace(Code, "'", "\""); //"
+			local res = compilestring("local __tempvar__="+Code+";return __tempvar__;")();
+			::AdminSystem.out(res,player);
+			break;
+		}
 		case "adminmode":
 		{
 			AdminSystem.AdminModeCmd( player, args );
@@ -2124,11 +2565,8 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		}
 		case "script":
 		{	
-			if(!(player.GetSteamID() in ::AdminSystem.ScriptAuths))
-			{
-				Messages.ThrowAll(Messages.BIM.HasScriptAuth.NoAccess(player));
+			if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
 				return;
-			}
 			local Code = Utils.StringReplace(text, "script,", "");
 			Code = Utils.StringReplace(Code, "'", "\""); //"
 			local compiledscript = compilestring(Code);
@@ -2264,33 +2702,65 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		case "say":
 		{
 			local Entity = GetArgument(1);
-			local Text = text;
 			local Target = Utils.GetPlayerFromName(GetArgument(1));
-			
-			if ( Entity == "all" )
-			{
-				foreach(player in Players.All())
+			if(::AdminSystem.Vars.CompileHexAndSpecialsInArguments)
+			{	
+				local Text = ""
+				switch(args.len())
 				{
-					Text = Utils.StringReplace(Text, "say,all,", "");
-					Text = Utils.StringReplace(Text, ",", " ");
-					player.Say(Text);
+					case 1:
+						Text = args[0]
+						break;
+					case 2:
+						Text = args[1]
+						break;
+				}
+				
+				if ( Entity == "all" )
+				{
+					foreach(player in Players.All())
+					{
+						player.Say(Text);
+					}
+				}
+				else
+				{
+					if ( !Target )
+					{
+						Say(null, Text, false);
+						return;
+					}
+					Target.Say(Text);
 				}
 			}
 			else
 			{
-				if ( !Target )
-				{
-					Text = Utils.StringReplace(Text, "say,", "");
-					Text = Utils.StringReplace(Text, ",", " ");
-					Say(null, Text, false);
-					return;
-				}
+				local Text = text;
 				
-				Text = Utils.StringReplace(Text, "say," + Entity + ",", "");
-				Text = Utils.StringReplace(Text, ",", " ");
-				Target.Say(Text);
+				if ( Entity == "all" )
+				{
+					foreach(player in Players.All())
+					{
+						Text = Utils.StringReplace(Text, "say,all,", "");
+						Text = Utils.StringReplace(Text, ",", " ");
+						player.Say(Text);
+					}
+				}
+				else
+				{
+					if ( !Target )
+					{
+						Text = Utils.StringReplace(Text, "say,", "");
+						Text = Utils.StringReplace(Text, ",", " ");
+						Say(null, Text, false);
+						return;
+					}
+					
+					Text = Utils.StringReplace(Text, "say," + Entity + ",", "");
+					Text = Utils.StringReplace(Text, ",", " ");
+					Target.Say(Text);
+				}
 			}
-			
 			break;
 		}
 		case "password":
@@ -2494,8 +2964,39 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.GivePhysicsCmd(player,args);
 			break;
 		}
-		default:
+		case "command_ban":
+		{
+			AdminSystem.AddCommandBanCmd(player,args);
 			break;
+		}
+		case "command_unban":
+		{
+			AdminSystem.RemoveCommandBanCmd(player,args);
+			break;
+		}
+		case "disable_command":
+		{
+			AdminSystem.AddDisabledCommandCmd(player,args);
+			break;
+		}
+		case "enable_command":
+		{
+			AdminSystem.RemoveDisabledCommandCmd(player,args);
+			break;
+		}
+		default:
+		{
+			if(cleanBaseCmd in ::ChatTriggers)
+			{
+				::ChatTriggers[cleanBaseCmd](player,args,text);
+				break;
+			}
+			else
+			{
+				Printer(player,"Unknown command: "+Command)
+				break;
+			}
+		}
 	}
 }
 
@@ -2511,7 +3012,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
  * @authors rhino
  * For debugging in-game
  */
-::out <- function(msg="",target=null,color="\x04")
+::AdminSystem.out <- function(msg="",target=null,color="\x04")
 {
 	local msgtype = typeof msg;
 	if(target != null)
@@ -3387,12 +3888,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	if(rag != null && rag.IsEntityValid())
 		return;
 	
-	if(player.IsIncapacitated() 
-		|| player.IsHangingFromLedge() 
-		|| player.IsDying() 
-		|| player.IsDead() 
-		|| player.IsHealing() 
-		|| player.IsBeingHealed())
+	if(RagdollStateCheck(player))
 		return;
 	
 	local targetID = AdminSystem.GetID( player );
@@ -3447,7 +3943,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 	rag.Push(v);
 
-	DoEntFire("!self","RunScriptCode","AddThinkToEnt(self,"+_GetEnumString("RagWepDisable")+")",0,null,rag.GetBaseEntity())
+	DoEntFire("!self","RunScriptCode","AddThinkToEnt(self,"+::AdminSystem._GetEnumString("RagWepDisable")+")",0,null,rag.GetBaseEntity())
 	
 	Printer(player,"Created ragdoll #"+rag.GetIndex());
 	AdminSystem._CreateKeyListenerCmd(player,args,false)
@@ -3455,20 +3951,32 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 ::RagWepDisable <- function()
 {
-	local ch = self.FirstMoveChild();
-	if(ch == null)
+	local ch = Player(split(self.GetName(),Constants.Targetnames.Ragdoll)[0].tointeger());
+	if(ch == null || !ch.IsEntityValid())
+		return
+
+	if(ch.GetNetProp("m_staggerDist").tostring() != "0")	// Staggered from hunter/charger/boomer
+	{
+		RecoverRagdollInitial(Entity(self.GetEntityIndex()));
 		return;
-	
+	}
+
+	ch = ch.GetBaseEntity()
+
 	NetProps.SetPropFloat(ch,"m_TimeForceExternalView", Time()+1);
 	NetProps.SetPropFloat(ch,"m_stunTimer.m_duration", 1);
 	NetProps.SetPropFloat(ch,"m_stunTimer.m_timestamp", Time()+1);
 	
-	local w = ch.GetActiveWeapon();
-	if (w != null && w.IsValid() && RagParams.disableguns)
+	try
 	{
-		NetProps.SetPropFloat(w,"m_flNextPrimaryAttack", 99999);
-		NetProps.SetPropFloat(w,"m_flNextSecondaryAttack", 99999);
+		local w = ch.GetActiveWeapon();
+		if (w != null && w.IsValid() && RagParams.disableguns)
+		{
+			NetProps.SetPropFloat(w,"m_flNextPrimaryAttack", 99999);
+			NetProps.SetPropFloat(w,"m_flNextSecondaryAttack", 99999);
+		}
 	}
+	catch(e){}
 	
 }
 
@@ -3487,11 +3995,12 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 ::RecoverRagdollInitial <- function(rag)
 {
-	local player = rag.FirstMoveChild();
+	local player = Player(split(rag.GetName(),Constants.Targetnames.Ragdoll)[0].tointeger());
 	if(player == null || !player.IsEntityValid())
 		return;
 	
-	player = Player(player.GetIndex());
+	local eyeangles = player.GetEyeAngles()
+	player.SetEyeAngles(eyeangles.x,eyeangles.y,0);
 
 	local ragseq = 0
 	local ragcycle = 0
@@ -3519,7 +4028,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	local v = rag.GetPhysicsVelocity();
 
 	DoEntFire("!self","clearparent","",0,null,player.GetBaseEntity())
-	local en = _GetEnumString(v.ToKVString()+"_"+rag.GetOrigin().ToKVString());
+	local en = ::AdminSystem._GetEnumString(v.ToKVString()+"_"+rag.GetOrigin().ToKVString());
 	
 	DoEntFire("!self","RunScriptCode","RecoverRagdollPost("+en+")",0.05,null,player.GetBaseEntity())
 
@@ -3542,9 +4051,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 	local w = self.GetActiveWeapon();
 	player.SetNetProp("m_hActiveWeapon", -1);
-	self.SwitchToItem(w.GetClassname());
 	if(w != null && w.IsValid())
 	{
+		self.SwitchToItem(w.GetClassname());
 		NetProps.SetPropFloat(w,"m_flNextPrimaryAttack", 0);
 		NetProps.SetPropFloat(w,"m_flNextSecondaryAttack", 0);
 	}
@@ -3754,7 +4263,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	{
 		foreach(inf in Objects.OfClassnameWithin("inferno",obj.GetOrigin(),275))
 		{
-			//out("Found inferno")
+			//::AdminSystem.out("Found inferno")
 			//DebugDrawText(inf.GetOrigin()+Vector(0,0,25),"INFERNO",false,5);
 			local a = Utils.CalculateDistance(obj.GetOrigin(),inf.GetOrigin())
 			local b = Utils.CalculateDistance(inf.GetOrigin(),bot.GetOrigin())
@@ -3764,13 +4273,13 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			if(d < 125)
 			{
 				bot.BotReset();
-				//out("Inferno too close: "+d);
+				//::AdminSystem.out("Inferno too close: "+d);
 				return;
 			}
 		}
 		foreach(inf in Objects.OfClassnameWithin("insect_swarm",obj.GetOrigin(),275))
 		{
-			//out("Found spit")
+			//::AdminSystem.out("Found spit")
 			//DebugDrawText(inf.GetOrigin()+Vector(0,0,25),"SPIT",false,5);
 			local a = Utils.CalculateDistance(obj.GetOrigin(),inf.GetOrigin())
 			local b = Utils.CalculateDistance(inf.GetOrigin(),bot.GetOrigin())
@@ -3780,7 +4289,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			if(d < 125)
 			{
 				bot.BotReset();
-				//out("Spit too close: "+d);
+				//::AdminSystem.out("Spit too close: "+d);
 				return;
 			}
 		}
@@ -3793,7 +4302,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			&& !bot.IsBeingHealed()
 			)
 		{
-			//out("No inferno and trying to relocate");
+			//::AdminSystem.out("No inferno and trying to relocate");
 			bot.BotMoveToLocation(obj.GetOrigin())
 		}
 	}
@@ -3923,7 +4432,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		{
 			foreach(inf in Objects.OfClassnameWithin("inferno",args.item.GetOrigin(),275))
 			{
-				//out("Found inferno")
+				//::AdminSystem.out("Found inferno")
 				//DebugDrawText(inf.GetOrigin()+Vector(0,0,25),"INFERNO",false,5);
 				local a = Utils.CalculateDistance(args.item.GetOrigin(),inf.GetOrigin())
 				local b = Utils.CalculateDistance(inf.GetOrigin(),bot.GetOrigin())
@@ -3933,13 +4442,13 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				if(d < 125)
 				{
 					bot.BotReset();
-					//out("Inferno too close: "+d);
+					//::AdminSystem.out("Inferno too close: "+d);
 					return;
 				}
 			}
 			foreach(inf in Objects.OfClassnameWithin("insect_swarm",args.item.GetOrigin(),275))
 			{
-				//out("Found spit")
+				//::AdminSystem.out("Found spit")
 				//DebugDrawText(inf.GetOrigin()+Vector(0,0,25),"SPIT",false,5);
 				local a = Utils.CalculateDistance(args.item.GetOrigin(),inf.GetOrigin())
 				local b = Utils.CalculateDistance(inf.GetOrigin(),bot.GetOrigin())
@@ -3949,7 +4458,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				if(d < 125)
 				{
 					bot.BotReset();
-					//out("Spit too close: "+d);
+					//::AdminSystem.out("Spit too close: "+d);
 					return;
 				}
 			}
@@ -3960,7 +4469,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				&& !bot.IsHealing()
 				&& !bot.IsBeingHealed())
 			{
-				//out("No inferno and trying to relocate");
+				//::AdminSystem.out("No inferno and trying to relocate");
 				bot.BotMoveToLocation(target.GetOrigin())
 			}
 		}
@@ -4951,10 +5460,12 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		return;
 	}
 	local eyeangles = ent.GetEyeAngles()
+	if(!eyeangles)
+		return
 	local fw = eyeangles.Forward()
 
-	//out(Constants.ConstStrLookUp("LISTENER_",mask))
-	//out(eyeangles)
+	//::AdminSystem.out(Constants.ConstStrLookUp("LISTENER_",mask))
+	//::AdminSystem.out(eyeangles)
 
 	if(mask == 0)
 		return;
@@ -5100,19 +5611,19 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	forward = forward.Scale(1/forward.Length())
 	if(forcar)
 	{
-		listener.Input("addoutput",__.FP+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+LISTENER_FORWARD)+"),0,-1",0,null)
-		listener.Input("addoutput",__.FU+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+LISTENER_FORWARD)+"),0,-1",0,null)
-		listener.Input("addoutput",__.BP+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+LISTENER_BACKWARD)+"),0,-1",0,null)
-		listener.Input("addoutput",__.BU+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+LISTENER_BACKWARD)+"),0,-1",0,null)
-		listener.Input("addoutput",__.LP+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+LISTENER_LEFT)+"),0,-1",0,null)
-		listener.Input("addoutput",__.LU+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+LISTENER_LEFT)+"),0,-1",0,null)
-		listener.Input("addoutput",__.RP+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+LISTENER_RIGHT)+"),0,-1",0,null)
-		listener.Input("addoutput",__.RU+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+LISTENER_RIGHT)+"),0,-1",0,null)
+		listener.Input("addoutput",__.FP+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_FORWARD)+"),0,-1",0,null)
+		listener.Input("addoutput",__.FU+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_FORWARD)+"),0,-1",0,null)
+		listener.Input("addoutput",__.BP+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_BACKWARD)+"),0,-1",0,null)
+		listener.Input("addoutput",__.BU+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_BACKWARD)+"),0,-1",0,null)
+		listener.Input("addoutput",__.LP+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_LEFT)+"),0,-1",0,null)
+		listener.Input("addoutput",__.LU+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_LEFT)+"),0,-1",0,null)
+		listener.Input("addoutput",__.RP+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_RIGHT)+"),0,-1",0,null)
+		listener.Input("addoutput",__.RU+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_RIGHT)+"),0,-1",0,null)
 
-		listener.Input("addoutput",__.aP+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+LISTENER_ATTACK)+"),0,-1",0,null)
-		listener.Input("addoutput",__.aU+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+LISTENER_ATTACK)+"),0,-1",0,null)
-		listener.Input("addoutput",__.AP+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+LISTENER_ATTACK2)+"),0,-1",0,null)
-		listener.Input("addoutput",__.AU+" !self,RunScriptCode,AdminSystem._KeyMasker("+_GetEnumString(forIndex+"__"+LISTENER_ATTACK2)+"),0,-1",0,null)
+		listener.Input("addoutput",__.aP+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_ATTACK)+"),0,-1",0,null)
+		listener.Input("addoutput",__.aU+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_ATTACK)+"),0,-1",0,null)
+		listener.Input("addoutput",__.AP+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_ATTACK2)+"),0,-1",0,null)
+		listener.Input("addoutput",__.AU+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_ATTACK2)+"),0,-1",0,null)
 
 		listener.Input("activate","",0,ent.GetBaseEntity())
 
@@ -5125,19 +5636,19 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	}
 	else
 	{
-		listener.Input("addoutput",__.FP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+_GetEnumString(forIndex+"__"+LISTENER_FORWARD)+"),0,-1",0,null)
-		listener.Input("addoutput",__.FU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+_GetEnumString(forIndex+"__"+LISTENER_FORWARD)+"),0,-1",0,null)
-		listener.Input("addoutput",__.BP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+_GetEnumString(forIndex+"__"+LISTENER_BACKWARD)+"),0,-1",0,null)
-		listener.Input("addoutput",__.BU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+_GetEnumString(forIndex+"__"+LISTENER_BACKWARD)+"),0,-1",0,null)
-		listener.Input("addoutput",__.LP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+_GetEnumString(forIndex+"__"+LISTENER_LEFT)+"),0,-1",0,null)
-		listener.Input("addoutput",__.LU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+_GetEnumString(forIndex+"__"+LISTENER_LEFT)+"),0,-1",0,null)
-		listener.Input("addoutput",__.RP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+_GetEnumString(forIndex+"__"+LISTENER_RIGHT)+"),0,-1",0,null)
-		listener.Input("addoutput",__.RU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+_GetEnumString(forIndex+"__"+LISTENER_RIGHT)+"),0,-1",0,null)
+		listener.Input("addoutput",__.FP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_FORWARD)+"),0,-1",0,null)
+		listener.Input("addoutput",__.FU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_FORWARD)+"),0,-1",0,null)
+		listener.Input("addoutput",__.BP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_BACKWARD)+"),0,-1",0,null)
+		listener.Input("addoutput",__.BU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_BACKWARD)+"),0,-1",0,null)
+		listener.Input("addoutput",__.LP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_LEFT)+"),0,-1",0,null)
+		listener.Input("addoutput",__.LU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_LEFT)+"),0,-1",0,null)
+		listener.Input("addoutput",__.RP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_RIGHT)+"),0,-1",0,null)
+		listener.Input("addoutput",__.RU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_RIGHT)+"),0,-1",0,null)
 
-		listener.Input("addoutput",__.aP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+_GetEnumString(forIndex+"__"+LISTENER_ATTACK)+"),0,-1",0,null)
-		listener.Input("addoutput",__.aU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+_GetEnumString(forIndex+"__"+LISTENER_ATTACK)+"),0,-1",0,null)
-		listener.Input("addoutput",__.AP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+_GetEnumString(forIndex+"__"+LISTENER_ATTACK2)+"),0,-1",0,null)
-		listener.Input("addoutput",__.AU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+_GetEnumString(forIndex+"__"+LISTENER_ATTACK2)+"),0,-1",0,null)
+		listener.Input("addoutput",__.aP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_ATTACK)+"),0,-1",0,null)
+		listener.Input("addoutput",__.aU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_ATTACK)+"),0,-1",0,null)
+		listener.Input("addoutput",__.AP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_ATTACK2)+"),0,-1",0,null)
+		listener.Input("addoutput",__.AU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_ATTACK2)+"),0,-1",0,null)
 
 		listener.Input("activate","",0,ent.GetBaseEntity())
 
@@ -5154,9 +5665,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	args.ent.SetNetProp("m_flLaggedMovementValue",args.speedscale)
 }
 
-::_GetEnumString <- function(str)
+::AdminSystem._GetEnumString <- function(str)
 {
-	local temp = ["0","1","2","3","4","5","6","7","8","9",",","="," ","-","_",";",".","\""] // "
+	if(str == null)
+		return
+	local temp = ["0","1","2","3","4","5","6","7","8","9",",","="," ","-","+","_",";",".","^","$","<",">","!","?",":","(",")","[","]","/","\\","@","\""] // "
 	local res = ""
 	local ch = ""
 	for(local i=0;i<str.len();i++)
@@ -5207,9 +5720,94 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 					ch = "d";
 					break;
 				}
+				case "+":
+				{
+					ch = "add";
+					break;
+				}
+				case "@":
+				{
+					ch = "at";
+					break;
+				}
 				case "\"": // "
 				{
 					ch = "q";
+					break;
+				}
+				case "\\":
+				{
+					ch = "bs";
+					break;
+				}
+				case "/":
+				{
+					ch = "fs";
+					break;
+				}
+				case "]":
+				{
+					ch = "sbe";
+					break;
+				}
+				case "[":
+				{
+					ch = "sbs";
+					break;
+				}
+				case ")":
+				{
+					ch = "rbe";
+					break;
+				}
+				case "(":
+				{
+					ch = "rbs";
+					break;
+				}
+				case ":":
+				{
+					ch = "col";
+					break;
+				}
+				case "?":
+				{
+					ch = "qm";
+					break;
+				}
+				case "!":
+				{
+					ch = "em";
+					break;
+				}
+				case ">":
+				{
+					ch = "gt";
+					break;
+				}
+				case "<":
+				{
+					ch = "lt";
+					break;
+				}
+				case "$":
+				{
+					ch = "usd";
+					break;
+				}
+				case "^":
+				{
+					ch = "xor";
+					break;
+				}
+				case "|":
+				{
+					ch = "or";
+					break;
+				}
+				case "&":
+				{
+					ch = "and";
 					break;
 				}
 				default:
@@ -5246,6 +5844,23 @@ enum __
 	_s = " "
 	_u = "_"
 	_d = "-"
+	_add = "+"
+	_and = "&"
+	_or = "|"
+	_xor = "^"
+	_usd = "$"
+	_lt = "<"
+	_gt = ">"
+	_em = "!"
+	_qm	= "?"
+	_col = ":"
+	_rbs = "("
+	_rbe = ")"
+	_sbs = "["
+	_sbe = "]"
+	_fs = "/"
+	_bs = "\\" 
+	_at = "@"
 	////LETTERS
 	//LOWERCASE
 	a = "a"
@@ -7646,7 +8261,7 @@ function Notifications::OnLeaveSaferoom::_SpeakWhenLeftSaferoomCondition(ent,arg
 		return;	
 	
 	local rnum = rand().tofloat()/RAND_MAX
-	//out(rnum)
+	//::AdminSystem.out(rnum)
 	// Add timer to ignore changes during map loading
 	if(AdminSystem.Vars._CustomResponse[name]._SpeakWhenLeftSaferoom.call_amount == 0
 		&& "_inSafeRoom" in ::VSLib.EasyLogic.Cache[ent.GetIndex()] && !::VSLib.EasyLogic.Cache[ent.GetIndex()]._inSafeRoom
@@ -7760,9 +8375,31 @@ function Notifications::OnHealStart::_TradeMedPack(target,healer,args)
 	}
 }
 
+// Ragdoll
 /*
  * @authors rhino
  */
+::RagdollStateCheck <- function(player)
+{
+	return player.IsIncapacitated()
+			|| !player.IsAlive() 
+			|| player.IsDead() 
+			|| player.IsDying() 
+			|| player.IsGoingToDie() 
+			|| player.IsHangingFromLedge() 
+			|| player.IsHealing() 
+			//|| player.IsBeingHealed()
+			|| player.IsHangingFromTongue() 
+			|| player.IsBeingJockeyed() 
+			|| player.IsPounceVictim() 
+			|| player.IsTongueVictim() 
+			|| player.IsCarryVictim() 
+			|| player.IsPummelVictim() 
+			|| (player.GetIndex() in ::VSLib.EasyLogic.Cache 
+				&& "_curAttker" in ::VSLib.EasyLogic.Cache[player.GetIndex()] 
+				&& ::VSLib.EasyLogic.Cache[player.GetIndex()]._curAttker != null)
+}
+
 function Notifications::OnMapEnd::_RecoverRagdolls()
 {
 	foreach(obj in Objects.All())
@@ -7773,13 +8410,107 @@ function Notifications::OnMapEnd::_RecoverRagdolls()
 		}
 	}
 }
+function Notifications::OnIncapacitatedStart::_RecoverRagdolls(victim,attacker,args)
+{
+	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+victim.GetIndex())
+	if(rag == null || !rag.IsEntityValid())
+		return;
+	
+	RecoverRagdollInitial(rag);
+}
+function Notifications::OnDeath::_RecoverRagdolls(victim,attacker,args)
+{
+	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+victim.GetIndex())
+	if(rag == null || !rag.IsEntityValid())
+		return;
+	
+	RecoverRagdollInitial(rag);
+}
+//smoker
+function Notifications::OnSmokerTongueGrab::_RecoverRagdolls(smoker,victim,args)
+{
+	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+victim.GetIndex())
+	if(rag == null || !rag.IsEntityValid())
+		return;
+	
+	RecoverRagdollInitial(rag);
+}
+function Notifications::OnSmokerChokeBegin::_RecoverRagdolls(smoker,victim,args)
+{
+	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+victim.GetIndex())
+	if(rag == null || !rag.IsEntityValid())
+		return;
+	
+	RecoverRagdollInitial(rag);
+}
+//hunter
+function Notifications::OnHunterPouncedVictim::_RecoverRagdolls(hunter,victim,args)
+{
+	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+victim.GetIndex())
+	if(rag == null || !rag.IsEntityValid())
+		return;
+	
+	RecoverRagdollInitial(rag);
+}
+//jockey
+function Notifications::OnJockeyRideStart::_RecoverRagdolls(jockey,victim,args)
+{
+	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+victim.GetIndex())
+	if(rag == null || !rag.IsEntityValid())
+		return;
+	
+	RecoverRagdollInitial(rag);
+}
+//charger
+function Notifications::OnChargerCarryVictim::_RecoverRagdolls(charger,victim,args)
+{
+	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+victim.GetIndex())
+	if(rag == null || !rag.IsEntityValid())
+		return;
+	
+	RecoverRagdollInitial(rag);
+}
+function Notifications::OnChargerImpact::_RecoverRagdolls(charger,victim,args)
+{
+	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+victim.GetIndex())
+	if(rag == null || !rag.IsEntityValid())
+		return;
+	
+	RecoverRagdollInitial(rag);
+}
+function Notifications::OnChargerPummelBegin::_RecoverRagdolls(charger,victim,args)
+{
+	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+victim.GetIndex())
+	if(rag == null || !rag.IsEntityValid())
+		return;
+	
+	RecoverRagdollInitial(rag);
+}
+function Notifications::OnChargerChargeEnd::_RecoverRagdolls(charger,args)
+{
+	local victim = ::VSLib.EasyLogic.GetEventPlayer(args, "victim");
+	if(victim == null)
+		return;
+	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+victim.GetEntityIndex())
+	if(rag == null || !rag.IsEntityValid())
+		return;
+	
+	RecoverRagdollInitial(rag);
+}
 
+// Model restoration
 /*
  * @authors rhino
  */
 function Notifications::OnMapEnd::_RestoreModels()
 {
 	Utils.ResetModels();
+}
+
+function Notifications::OnPlayerConnected::RestoreModels(player,args)
+{
+	if(!::VSLib.EasyLogic.NextMapContinues)
+		AdminSystem.RestoreModels(player);
 }
 
 // TANK ROCKS
@@ -7797,7 +8528,7 @@ function Notifications::OnHurt::_HitByTankRock(player,attacker,args)
 		if(AdminSystem.Vars._RockThrow.pushenabled)
 		{
 			if(::VSLib.EasyLogic.Objects.OfClassname("tank_rock").len() != 1)
-			{
+			{	// TO-DO: Maybe add origin kv to name and get it from there ?
 				//printl("Too many rocks, not pushing")
 				return;
 			}
@@ -7925,7 +8656,7 @@ function Notifications::OnAbilityUsed::_TankRockSpawning(player,ability,args)
 {
 	return Utils.GetRandValueFromArray(arr);
 }
-
+// TO-DO: Extend this for barrels etc
 ::RagdollOrPhysicsDecider <- function(mdl)
 {
 	local clsname = "prop_physics_multiplayer"
@@ -7955,6 +8686,24 @@ function Notifications::OnAbilityUsed::_TankRockSpawning(player,ability,args)
 	}
 	return clsname;
 }
+/*
+ * @authors rhino
+ */
+/////////////////////place_holders/////////////////////////
+function ChatTriggers::say( player, args, text )
+{
+}
+::ChatTriggerDocs.say <- @(player,args) AdminSystem.IsPrivileged(player) && "say" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.say(player,args))
+					: null
+
+function ChatTriggers::password( player, args, text )
+{
+}
+::ChatTriggerDocs.password <- @(player,args) AdminSystem.IsPrivileged(player) && "password" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.password(player,args))
+					: null
+
 
 /*
  * @authors rhino
@@ -8127,6 +8876,63 @@ function ChatTriggers::apocalypse_setting( player, args, text )
  */
 ///////////////////////script_related//////////////////////////////
 
+function ChatTriggers::out( player, args, text )
+{
+	if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
+		return;
+	if(args.len() == 0)
+		return;
+		
+	local res = compilestring("local __tempvar__="+Utils.CombineArray(args)+";return __tempvar__;")();
+	::AdminSystem.out(res,player);
+}
+::ChatTriggerDocs.out <- @(player,args) AdminSystem.IsPrivileged(player) && "out" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.out(player,args))
+					: null
+
+function ChatTriggers::enum_string( player, args, text )
+{
+	if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
+		return;
+
+	ClientPrint(player.GetBaseEntity(),3,::AdminSystem._GetEnumString(GetArgument(1)));
+}
+::ChatTriggerDocs.enum_string <- @(player,args) AdminSystem.IsPrivileged(player) && "enum_string" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.enum_string(player,args))
+					: null
+
+function ChatTriggers::create_alias( player, args, text )
+{
+	if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
+		return;
+	
+	AdminSystem.CreateAliasCommandCmd(player,args,text);
+}
+::ChatTriggerDocs.create_alias <- @(player,args) AdminSystem.IsPrivileged(player) && "create_alias" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.create_alias(player,args))
+					: null
+
+function ChatTriggers::replace_alias( player, args, text )
+{
+	if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
+		return;
+	
+	AdminSystem.ReplaceAliasCommandCmd(player,args,text);
+}
+::ChatTriggerDocs.replace_alias <- @(player,args) AdminSystem.IsPrivileged(player) && "replace_alias" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.replace_alias(player,args))
+					: null
+
+function ChatTriggers::reload_aliases( player, args, text )
+{
+	if(!AdminSystem.HasScriptAuth(player))
+		return;
+	AdminSystem.LoadAliasedCommands(true);
+}
+::ChatTriggerDocs.reload_aliases <- @(player,args) AdminSystem.IsPrivileged(player) && "reload_aliases" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.reload_aliases(player,args))
+					: null
+
 function ChatTriggers::update_print_output_state(player,args,text)
 {
 	AdminSystem.Update_print_output_stateCmd(player, args);
@@ -8209,12 +9015,8 @@ function ChatTriggers::server_exec(player,args,text)
 
 function ChatTriggers::script( player, args, text )
 {
-	if (!AdminSystem.IsPrivileged( player ))
+	if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
 		return;
-	if(!(player.GetSteamID() in ::AdminSystem.ScriptAuths))
-	{
-		Messages.ThrowAll(Messages.BIM.HasScriptAuth.NoAccess(player));return;
-	}
 	local compiledscript = compilestring(Utils.CombineArray(args));
 	compiledscript();
 }
@@ -9499,6 +10301,38 @@ function ChatTriggers::gun( player, args, text )
 					? Messages.DocCmdPlayer(player,CmdDocs.gun(player,args))
 					: null
 
+function ChatTriggers::command_ban( player, args, text )
+{
+	AdminSystem.AddCommandBanCmd( player, args );
+}
+::ChatTriggerDocs.command_ban <- @(player,args) AdminSystem.IsPrivileged(player) && "command_ban" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.command_ban(player,args))
+					: null
+
+function ChatTriggers::command_unban( player, args, text )
+{
+	AdminSystem.RemoveCommandBanCmd( player, args );
+}
+::ChatTriggerDocs.command_unban <- @(player,args) AdminSystem.IsPrivileged(player) && "command_unban" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.command_unban(player,args))
+					: null
+
+function ChatTriggers::disable_command( player, args, text )
+{
+	AdminSystem.AddDisabledCommandCmd( player, args );
+}
+::ChatTriggerDocs.disable_command <- @(player,args) AdminSystem.IsPrivileged(player) && "disable_command" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.disable_command(player,args))
+					: null
+
+function ChatTriggers::enable_command( player, args, text )
+{
+	AdminSystem.RemoveDisabledCommandCmd( player, args );
+}
+::ChatTriggerDocs.enable_command <- @(player,args) AdminSystem.IsPrivileged(player) && "enable_command" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.enable_command(player,args))
+					: null
+
 if ( Director.GetGameMode() == "holdout" )
 {
 	function ChatTriggers::resource( player, args, text )
@@ -9804,6 +10638,11 @@ if ( Director.GetGameMode() == "holdout" )
 				local survivorID = AdminSystem.GetID( survivor );
 				if ( survivorID in ::AdminSystem.Vars.IsGodEnabled && ::AdminSystem.Vars.IsGodEnabled[survivorID] )
 				{
+					local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+survivor.GetIndex())
+
+					if(rag != null || rag.IsEntityValid())	// Don't allow turning off god mode while ragdolling via god command
+						continue;
+
 					AdminSystem.Vars.IsGodEnabled[survivorID] <- false;
 					if ( AdminSystem.DisplayMsgs )
 						Utils.PrintToAllDel("God mode has been disabled on %s.", survivor.GetName());
@@ -9854,6 +10693,11 @@ if ( Director.GetGameMode() == "holdout" )
 			local targetID = AdminSystem.GetID( Target );
 			if ( targetID in ::AdminSystem.Vars.IsGodEnabled && ::AdminSystem.Vars.IsGodEnabled[targetID] )
 			{
+				local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+targetID)
+
+				if(rag != null || rag.IsEntityValid())	// Don't allow turning off god mode while ragdolling via god command
+					return;
+					
 				AdminSystem.Vars.IsGodEnabled[targetID] <- false;
 				if ( AdminSystem.DisplayMsgs )
 					Utils.PrintToAllDel("God mode has been disabled on %s.", Target.GetName());
@@ -9870,6 +10714,11 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		if ( ID in ::AdminSystem.Vars.IsGodEnabled && ::AdminSystem.Vars.IsGodEnabled[ID] )
 		{
+			local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+ID)
+
+			if(rag != null || rag.IsEntityValid())	// Don't allow turning off god mode while ragdolling via god command
+				return;
+					
 			AdminSystem.Vars.IsGodEnabled[ID] <- false;
 			if ( AdminSystem.DisplayMsgs )
 				Utils.PrintToAllDel("%s has disabled god mode.", player.GetName());
@@ -13920,7 +14769,7 @@ if ( Director.GetGameMode() == "holdout" )
 /*
  * Pushes the looked entity in the given direction
  * Directions are relative to the eyes of the player
- *
+ * TO-DO: Update mask to pick ragdolls
  * @authors rhino
  */
 ::AdminSystem.EntPushCmd <- function ( player, args )
@@ -13943,7 +14792,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if(direction == null)
 	{
-		direction == "forward";
+		direction = "forward";
 	}
 
 	if(pitchofeye == null)
@@ -14037,7 +14886,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if(direction == null)
 	{
-		direction == "forward";
+		direction = "forward";
 	}
 
 	if(pitchofeye == null)
@@ -14215,7 +15064,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if(direction == null)
 	{
-		direction == "forward";
+		direction = "forward";
 	}
 
 	local entlooked = player.GetLookingEntity();
@@ -16276,7 +17125,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local t = intervals*(-7.0);
 	local last_t = 0.0;
 	local clr = entlooked.GetNetProp("m_clrRender");
-	//out("start:"+clr);
+	//::AdminSystem.out("start:"+clr);
 	function color_seq()
 	{
 		entlooked.InputColor(255, 0, 0,t+intervals);
@@ -16295,7 +17144,7 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		else
 		{
-			//out("dur:"+(last_t+intervals*7.0+0.4));
+			//::AdminSystem.out("dur:"+(last_t+intervals*7.0+0.4));
 			Timers.AddTimer(last_t+intervals+0.4, false, ColorResetWrap, {ent=entlooked,clr=clr});
 		}
 	}
@@ -16306,7 +17155,7 @@ if ( Director.GetGameMode() == "holdout" )
 }
 ::ColorResetWrap <- function(args)
 {
-	//out("curr:"+args.ent.GetNetProp("m_clrRender"));
+	//::AdminSystem.out("curr:"+args.ent.GetNetProp("m_clrRender"));
 	args.ent.SetNetProp("m_clrRender",args.clr);
 }
 /*
@@ -16641,28 +17490,28 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		if(player != null)
 			printB(playername,"",false,"",true,false,0);
-		out("=================basic==================",player);
-		out("Name"+"\x05"+"-> "+"\x03"+ ent.GetName(),player);
-		out("Index"+"\x05"+"-> "+"\x03"+ ent.GetIndex(),player);
-		out("Class"+"\x05"+"-> "+"\x03"+ ent.GetClassname(),player);
-		out("Parent #"+"\x05"+"-> "+"\x03"+ (ent.GetParent() == null ? "No parent" : ent.GetParent().GetIndex()),player);
-		out("Model"+"\x05"+"-> "+"\x03" + ent.GetModel(),player);
-		out("Scale"+"\x05"+"-> "+"\x03" + ent.GetModelScale(),player);
+		::AdminSystem.out("=================basic==================",player);
+		::AdminSystem.out("Name"+"\x05"+"-> "+"\x03"+ ent.GetName(),player);
+		::AdminSystem.out("Index"+"\x05"+"-> "+"\x03"+ ent.GetIndex(),player);
+		::AdminSystem.out("Class"+"\x05"+"-> "+"\x03"+ ent.GetClassname(),player);
+		::AdminSystem.out("Parent #"+"\x05"+"-> "+"\x03"+ (ent.GetParent() == null ? "No parent" : ent.GetParent().GetIndex()),player);
+		::AdminSystem.out("Model"+"\x05"+"-> "+"\x03" + ent.GetModel(),player);
+		::AdminSystem.out("Scale"+"\x05"+"-> "+"\x03" + ent.GetModelScale(),player);
 
-		out("=================flags===================",player);
-		out("SpawnFlags"+"\x05"+"-> "+"\x03"+ ent.GetSpawnFlags(),player);
-		out("Effects"+"\x05"+"-> "+"\x03"+ ent.GetNetProp("m_fEffects"),player);
-		out("Flags"+"\x05"+"-> "+"\x03"+ ent.GetFlags() +" | EFlags-> " + ent.GetEFlags()+" | Sense flags-> "+ ent.GetSenseFlags(),player);
+		::AdminSystem.out("=================flags===================",player);
+		::AdminSystem.out("SpawnFlags"+"\x05"+"-> "+"\x03"+ ent.GetSpawnFlags(),player);
+		::AdminSystem.out("Effects"+"\x05"+"-> "+"\x03"+ ent.GetNetProp("m_fEffects"),player);
+		::AdminSystem.out("Flags"+"\x05"+"-> "+"\x03"+ ent.GetFlags() +" | EFlags-> " + ent.GetEFlags()+" | Sense flags-> "+ ent.GetSenseFlags(),player);
 
-		out("===============positional=================",player);
-		out("Location"+"\x05"+"-> "+"\x03"+ent.GetLocation().ToKVString(),player);
-		out("Angles"+"\x05"+"-> "+"\x03" + ent.GetAngles().ToKVString(),player);
+		::AdminSystem.out("===============positional=================",player);
+		::AdminSystem.out("Location"+"\x05"+"-> "+"\x03"+ent.GetLocation().ToKVString(),player);
+		::AdminSystem.out("Angles"+"\x05"+"-> "+"\x03" + ent.GetAngles().ToKVString(),player);
 
 		if(ent.GetClassname() == "player")
 		{
-			out("Looking at"+"\x05"+"-> "+"\x03"+ent.GetLookingLocation().ToKVString(),player);
-			out("Eye Position"+"\x05"+"-> "+"\x03"+ent.GetEyePosition().ToKVString(),player);
-			out("Eye angles"+"\x05"+"-> "+"\x03"+ent.GetEyeAngles().ToKVString(),player);
+			::AdminSystem.out("Looking at"+"\x05"+"-> "+"\x03"+ent.GetLookingLocation().ToKVString(),player);
+			::AdminSystem.out("Eye Position"+"\x05"+"-> "+"\x03"+ent.GetEyePosition().ToKVString(),player);
+			::AdminSystem.out("Eye angles"+"\x05"+"-> "+"\x03"+ent.GetEyeAngles().ToKVString(),player);
 		}
 		
 		if(player != null)
@@ -16724,30 +17573,30 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{
-		out("==================basic====================",player);
-		out("Name"+"\x05"+"-> "+"\x03"+ player.GetName(),player);
-		out("Index"+"\x05"+"-> "+"\x03"+ player.GetIndex(),player);
-		out("Team"+"\x05"+"-> "+"\x03"+ player.GetTeam(),player);
-		out("Parent"+"\x05"+"-> #"+"\x03"+  (player.GetParent() == null ? "No parent" : player.GetParent().GetIndex()),player);
-		out("Model"+"\x05"+"-> "+"\x03"+ player.GetModel(),player);
-		out("Scale"+"\x05"+"-> "+"\x03"+ player.GetModelScale(),player);
+		::AdminSystem.out("==================basic====================",player);
+		::AdminSystem.out("Name"+"\x05"+"-> "+"\x03"+ player.GetName(),player);
+		::AdminSystem.out("Index"+"\x05"+"-> "+"\x03"+ player.GetIndex(),player);
+		::AdminSystem.out("Team"+"\x05"+"-> "+"\x03"+ player.GetTeam(),player);
+		::AdminSystem.out("Parent"+"\x05"+"-> #"+"\x03"+  (player.GetParent() == null ? "No parent" : player.GetParent().GetIndex()),player);
+		::AdminSystem.out("Model"+"\x05"+"-> "+"\x03"+ player.GetModel(),player);
+		::AdminSystem.out("Scale"+"\x05"+"-> "+"\x03"+ player.GetModelScale(),player);
 
-		out("==================flags====================",player);
-		out("SpawnFlags"+"\x05"+"-> "+"\x03"+ player.GetSpawnFlags(),player);
-		out("Effects"+"\x05"+"-> "+"\x03"+ player.GetNetProp("m_fEffects"),player);
-		out("Flags"+"\x05"+"-> "+"\x03"+ player.GetFlags() +" | EFlags-> " + player.GetEFlags()+" | Sense flags-> "+ player.GetSenseFlags(),player);
+		::AdminSystem.out("==================flags====================",player);
+		::AdminSystem.out("SpawnFlags"+"\x05"+"-> "+"\x03"+ player.GetSpawnFlags(),player);
+		::AdminSystem.out("Effects"+"\x05"+"-> "+"\x03"+ player.GetNetProp("m_fEffects"),player);
+		::AdminSystem.out("Flags"+"\x05"+"-> "+"\x03"+ player.GetFlags() +" | EFlags-> " + player.GetEFlags()+" | Sense flags-> "+ player.GetSenseFlags(),player);
 
-		out("===============positional==================",player);
-		out("Player location"+"\x05"+"-> "+"\x03"+player.GetPosition().ToKVString(),player);
-		out("Player angles"+"\x05"+"-> "+"\x03" + player.GetAngles().ToKVString(),player);
-		out("Looked location"+"\x05"+"-> "+"\x03"+player.GetLookingLocation().ToKVString(),player);
-		out("Eye location"+"\x05"+"-> "+"\x03"+player.GetEyePosition().ToKVString(),player);
-		out("Eye angles"+"\x05"+"-> "+"\x03"+player.GetEyeAngles().ToKVString(),player);
+		::AdminSystem.out("===============positional==================",player);
+		::AdminSystem.out("Player location"+"\x05"+"-> "+"\x03"+player.GetPosition().ToKVString(),player);
+		::AdminSystem.out("Player angles"+"\x05"+"-> "+"\x03" + player.GetAngles().ToKVString(),player);
+		::AdminSystem.out("Looked location"+"\x05"+"-> "+"\x03"+player.GetLookingLocation().ToKVString(),player);
+		::AdminSystem.out("Eye location"+"\x05"+"-> "+"\x03"+player.GetEyePosition().ToKVString(),player);
+		::AdminSystem.out("Eye angles"+"\x05"+"-> "+"\x03"+player.GetEyeAngles().ToKVString(),player);
 		/*
-		out(playername,"=================player_stats===================");
+		::AdminSystem.out(playername,"=================player_stats===================");
 		foreach(key,value in player.GetStats())
 		{
-			out(playername,"[Stats] "+key+" -> "+value.tostring());
+			::AdminSystem.out(playername,"[Stats] "+key+" -> "+value.tostring());
 		}
 		*/
 	}
@@ -18342,13 +19191,13 @@ if ( Director.GetGameMode() == "holdout" )
 		// Parent the new child
 		local locorg = firstchild.GetLocalOrigin();
 		local locang = firstchild.GetLocalAngles();
-		//out(locorg);
+		//::AdminSystem.out(locorg);
 		firstchild.Input("clearparent","",0);
 		firstchild.Input("setparent","#"+newparent.GetIndex(),0);
 		firstchild.SetLocalOrigin(locorg);
 		firstchild.SetLocalAngles(locang);
 		
-		//out(firstchild.GetLocalOrigin());
+		//::AdminSystem.out(firstchild.GetLocalOrigin());
 		// Move the next child in the same level
 		firstchild = next;
 	}
@@ -18403,7 +19252,7 @@ if ( Director.GetGameMode() == "holdout" )
 	::VSLib.Timers.AddTimer(0.1,false,Fire_Ex_OriginWrap,{ent=steam_sound});
 
 	// outputs
-	local enumstr = _GetEnumString(ptc.GetIndex()+"__"+steam_sound.GetIndex());
+	local enumstr = ::AdminSystem._GetEnumString(ptc.GetIndex()+"__"+steam_sound.GetIndex());
 
 	ent.Input("addoutput","OnTakeDamage !self,RunScriptCode,Fire_Ex_OnTakeDamage(" + enumstr + "),0,1",0.1);
 	
@@ -18421,17 +19270,17 @@ if ( Director.GetGameMode() == "holdout" )
 	local baseind = s.GetName();
 	if(!s.IsEntityValid() || baseind.find("projectSmokFireExSound_") == null)
 	{
-		//out("steam and parent name invalid...")
+		//::AdminSystem.out("steam and parent name invalid...")
 		AddThinkToEnt(self,null);
 		return true;
 	}
 
 	baseind = split(baseind,"_")[1].tointeger();
-	//out(baseind);
+	//::AdminSystem.out(baseind);
 
 	if(!Entity(baseind).IsEntityValid())
 	{
-		//out("parent invalid...")
+		//::AdminSystem.out("parent invalid...")
 		if(s.GetParent() == null)
 		{
 			AddThinkToEnt(self,null);
@@ -18441,33 +19290,33 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else if(s.GetParent() == null)
 	{
-		//out("no parent...")
+		//::AdminSystem.out("no parent...")
 		return true;
 	}
 	else if(s.GetParent().GetIndex() == baseind)
 	{
-		//out("same parent");
+		//::AdminSystem.out("same parent");
 		return true;
 	}
 
-	//out("parent changed...")
+	//::AdminSystem.out("parent changed...")
 	local p = Objects.AnyOfName("projectSmokFireExParticle_"+baseind);
 	if(p == null)
 	{
-		//out("no particle child found...")
+		//::AdminSystem.out("no particle child found...")
 		AddThinkToEnt(self,null);
 		return true;
 	}
 
 	p.SetName("projectSmokFireExParticle_"+s.GetParent().GetIndex());
 
-	//out("Validated children...")
+	//::AdminSystem.out("Validated children...")
 
 	local newparent = s.GetParent();
 
-	//out("Reattaching outputs to " + "\x03" + "#"+newparent.GetIndex())
+	//::AdminSystem.out("Reattaching outputs to " + "\x03" + "#"+newparent.GetIndex())
 	
-	newparent.Input("addoutput","OnTakeDamage !self,RunScriptCode,Fire_Ex_OnTakeDamage(" + _GetEnumString(p.GetIndex()+"__"+s.GetIndex()) + "),0,1",0.1);
+	newparent.Input("addoutput","OnTakeDamage !self,RunScriptCode,Fire_Ex_OnTakeDamage(" + ::AdminSystem._GetEnumString(p.GetIndex()+"__"+s.GetIndex()) + "),0,1",0.1);
 	
 	return true;
 
@@ -18477,7 +19326,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 ::Fire_Ex_OnTakeDamage <- function(inds)
 {
-	//out("Took damage! " + inds)
+	//::AdminSystem.out("Took damage! " + inds)
 	foreach(ind in split(inds,"__"))
 	{
 		local ch = Entity("#"+ind);
