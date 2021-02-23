@@ -197,7 +197,7 @@
 	{
 		commentary_dummy = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½commentary_dummy is a  point entity available in the Left 4 Dead series. It is used in the Developer Commentary mode of both Left 4 Dead and Left 4 Dead 2 to display a model to the player, such as a Survivor model."
+			description = "[Left 4 Dead][Left 4 Dead 2] commentary_dummy is a  point entity available in the Left 4 Dead series. It is used in the Developer Commentary mode of both Left 4 Dead and Left 4 Dead 2 to display a model to the player, such as a Survivor model."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -299,14 +299,14 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
 		}
 		commentary_zombie_spawner = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½commentary_zombie_spawner is a  point entity available in the Left 4 Dead series. It is a manual spawning point for specific types of zombies for the commentary mode."
+			description = "[Left 4 Dead][Left 4 Dead 2] commentary_zombie_spawner is a  point entity available in the Left 4 Dead series. It is a manual spawning point for specific types of zombies for the commentary mode."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -336,7 +336,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -365,7 +365,7 @@
 	{
 		env_airstrike_indoors = 
 		{
-			description = "[Left 4 Dead 2]ï¿½env_airstrike_indoors is a  point entity available in Left 4 Dead 2. It simulates an airstrike effect for indoors (crumbling ceiling)."
+			description = "[Left 4 Dead 2] env_airstrike_indoors is a  point entity available in Left 4 Dead 2. It simulates an airstrike effect for indoors (crumbling ceiling)."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -404,14 +404,14 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
 		}
 		env_airstrike_outdoors = 
 		{
-			description = "[Left 4 Dead 2]ï¿½env_airstrike_outdoors is a  point entity available in Left 4 Dead 2. It simulates an airstrike effect for outdoors (exploding roof, ground)."
+			description = "[Left 4 Dead 2] env_airstrike_outdoors is a  point entity available in Left 4 Dead 2. It simulates an airstrike effect for outdoors (exploding roof, ground)."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -477,7 +477,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -577,7 +577,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -638,7 +638,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -665,7 +665,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -674,7 +674,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -683,7 +683,7 @@
 		}
 		env_outtro_stats = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½env_outtro_stats is a  point entity available in the Left 4 Dead series. It controls the outtro stats at the end of a campaign."
+			description = "[Left 4 Dead][Left 4 Dead 2] env_outtro_stats is a  point entity available in the Left 4 Dead series. It controls the outtro stats at the end of a campaign."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -713,14 +713,14 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
 		}
 		env_physics_blocker = 
 		{
-			description = "[Left 4 Dead 2]ï¿½env_physics_blocker is a  point entity available in Left 4 Dead 2. It blocks players and physics objects."
+			description = "[Left 4 Dead 2] env_physics_blocker is a  point entity available in Left 4 Dead 2. It blocks players and physics objects."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -750,7 +750,7 @@
 					shortinfo = "Initial State"
 					extra = ""
 					notes = ""
-					description = "Initial state of the blocker\n0ï¿½: Disabled\n1ï¿½: Enabled"
+					description = "Initial state of the blocker\n0 : Disabled\n1 : Enabled"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_4":
@@ -795,14 +795,14 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
 		}
 		env_player_blocker = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½env_player_blocker is a  point entity available in the Left 4 Dead series. It blocks any PC/NPC from entering of the specified type."
+			description = "[Left 4 Dead][Left 4 Dead 2] env_player_blocker is a  point entity available in the Left 4 Dead series. It blocks any PC/NPC from entering of the specified type."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -832,7 +832,7 @@
 					shortinfo = "Initial State"
 					extra = ""
 					notes = ""
-					description = "Initial state of the blocker\n0ï¿½: Disabled\n1ï¿½: Enabled"
+					description = "Initial state of the blocker\n0 : Disabled\n1 : Enabled"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_4":
@@ -841,7 +841,7 @@
 					shortinfo = "Blocks"
 					extra = ""
 					notes = ""
-					description = "What should be blocked\n0ï¿½: Everyone\n1ï¿½: Survivors\n2ï¿½: Player Infected\n3ï¿½: All Special Infected (Player and AI)"
+					description = "What should be blocked\n0 : Everyone\n1 : Survivors\n2 : Player Infected\n3 : All Special Infected (Player and AI)"
 					choices = {}
 				}
 				"targetname":
@@ -868,14 +868,14 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
 		}
 		env_rock_launcher = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½env_rock_launcher is a  point entity available in the Left 4 Dead series. This entity spawns and launches rocks that are typically spawned by the Tank in the Left 4 Dead Series. It is useful for cutscenes or other scripted events."
+			description = "[Left 4 Dead][Left 4 Dead 2] env_rock_launcher is a  point entity available in the Left 4 Dead series. This entity spawns and launches rocks that are typically spawned by the Tank in the Left 4 Dead Series. It is useful for cutscenes or other scripted events."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -923,7 +923,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -939,7 +939,7 @@
 		}
 		env_weaponfire = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½env_weaponfire is a  point entity available in the Left 4 Dead series. This entity is used to mimic weapon fire from the guns in L4D. It does damage, muzzle flash, tracers, and impact effects. While it is great for intro cinematics, the entity is not 100% faithful to L4D weapon behavior (shots don't penetrate multiple zombies, for example). All effects are done client side, and so bandwidth usage is pretty low but it isn't perfectly in-sync with the server-side damage calculation."
+			description = "[Left 4 Dead][Left 4 Dead 2] env_weaponfire is a  point entity available in the Left 4 Dead series. This entity is used to mimic weapon fire from the guns in L4D. It does damage, muzzle flash, tracers, and impact effects. While it is great for intro cinematics, the entity is not 100% faithful to L4D weapon behavior (shots don't penetrate multiple zombies, for example). All effects are done client side, and so bandwidth usage is pretty low but it isn't perfectly in-sync with the server-side damage calculation."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -987,7 +987,7 @@
 					shortinfo = "Weapon Type"
 					extra = ""
 					notes = ""
-					description = "Type of weapon for the effects\n1ï¿½: Assault Rifle\n2ï¿½: Hunting Rifle\n3ï¿½: Auto Shotgun"
+					description = "Type of weapon for the effects\n1 : Assault Rifle\n2 : Hunting Rifle\n3 : Auto Shotgun"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_6":
@@ -996,7 +996,7 @@
 					shortinfo = "Target Team"
 					extra = ""
 					notes = ""
-					description = "Team to shoot at\n3ï¿½: Zombies\n2ï¿½: Survivors\n-1ï¿½: Either"
+					description = "Team to shoot at\n3 : Zombies\n2 : Survivors\n-1 : Either"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_7":
@@ -1032,7 +1032,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -1374,7 +1374,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -1435,7 +1435,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -1462,7 +1462,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -1471,7 +1471,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -1555,7 +1555,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -1616,7 +1616,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -1643,7 +1643,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -1652,7 +1652,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -1789,7 +1789,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -1850,7 +1850,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -1877,7 +1877,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -1886,7 +1886,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -2023,7 +2023,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -2084,7 +2084,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -2111,7 +2111,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -2120,7 +2120,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -2186,7 +2186,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -2247,7 +2247,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -2274,7 +2274,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -2283,7 +2283,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -2304,7 +2304,7 @@
 					shortinfo = "Cubemap Size"
 					extra = ""
 					notes = ""
-					description = "The resolution of each face of the cubemap. Remember that the actual number of pixels stored will be your selection times six, so higher numbers will make for very large file sizes!\n0: Default (usually 32x32, depending on the game)\n1: 1x1\n2: 2x2\n3: 4x4\n4: 8x8\n5: 16x16\n6: 32x32\n7: 64x64\n8: 128x128\n9: 256x256\n10: 512x512 ï¿½ !FGD\n11: 1024x1024 ï¿½ !FGD\n12: 2048x2048 ï¿½ !FGD"
+					description = "The resolution of each face of the cubemap. Remember that the actual number of pixels stored will be your selection times six, so higher numbers will make for very large file sizes!\n0: Default (usually 32x32, depending on the game)\n1: 1x1\n2: 2x2\n3: 4x4\n4: 8x8\n5: 16x16\n6: 32x32\n7: 64x64\n8: 128x128\n9: 256x256\n10: 512x512 ¹ !FGD\n11: 1024x1024 ¹ !FGD\n12: 2048x2048 ¹ !FGD"
 					choices = {}
 				}
 				"sides":
@@ -2458,7 +2458,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -2519,7 +2519,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -2546,7 +2546,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -2555,7 +2555,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -2648,7 +2648,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -2709,7 +2709,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -2736,7 +2736,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -2745,7 +2745,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -2802,7 +2802,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Method of collision for this entity.\n0: None\n1: BSP (QPhysics) !FGD ï¿½Bug:ï¿½In [Portal 2] Portal 2, if an entity using QPhysics collisions is hit by Gel, the game will crash!\n2: Bounding Box\n3: Oriented Bounding Box !FGD\n4: Oriented Bounding Box, constrained to Yaw only !FGD\n5: Custom/Test !FGD\n6: VPhysics"
+					description = "Method of collision for this entity.\n0: None\n1: BSP (QPhysics) !FGD  Bug: In [Portal 2] Portal 2, if an entity using QPhysics collisions is hit by Gel, the game will crash!\n2: Bounding Box\n3: Oriented Bounding Box !FGD\n4: Oriented Bounding Box, constrained to Yaw only !FGD\n5: Custom/Test !FGD\n6: VPhysics"
 					choices = {}
 				}
 				"body_or_SetBodyGroup":
@@ -3009,7 +3009,7 @@
 					shortinfo = "Ember type"
 					extra = "[Obsolete]"
 					notes = ""
-					description = "Deprecated.ï¿½Not present in code. The manner in which embers should appear and disappear.\n0: Normal\n1: Smooth Fade\n2: Pulled"
+					description = "Deprecated. Not present in code. The manner in which embers should appear and disappear.\n0: Normal\n1: Smooth Fade\n2: Pulled"
 					choices = {}
 				}
 				"density":
@@ -3135,7 +3135,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -3196,7 +3196,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -3223,7 +3223,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -3232,7 +3232,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -3316,7 +3316,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -3377,7 +3377,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -3404,7 +3404,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -3413,7 +3413,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -3556,7 +3556,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -3617,7 +3617,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -3644,7 +3644,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -3653,7 +3653,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -3874,7 +3874,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -3935,7 +3935,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -3962,7 +3962,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -3971,7 +3971,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -4108,7 +4108,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -4169,7 +4169,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -4196,7 +4196,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -4205,7 +4205,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -4392,8 +4392,8 @@
 					typename = "boolean"
 					shortinfo = "Start Disabled"
 					extra = ""
-					notes = ""
-					description = "Stay dormant until activated (probably with the Enable input)."
+					notes = "Note: Unless you also checked the 'Start On' flag, env_fire will not automatically ignite even if you set this keyvalue to No. Likewise, env_fire will still ignite if you have the 'Start On' flag checked, even if this key value is set to Yes"
+					description = "Stay dormant until activated."
 					choices = {}
 				}
 				"classname":
@@ -4447,7 +4447,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -4508,7 +4508,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -4535,7 +4535,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -4544,7 +4544,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -4645,7 +4645,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -4706,7 +4706,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -4733,7 +4733,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -4742,7 +4742,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -4834,7 +4834,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -4895,7 +4895,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -4922,7 +4922,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -4931,7 +4931,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -5077,7 +5077,7 @@
 					shortinfo = "Minimum DX Level"
 					extra = ""
 					notes = ""
-					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\nï¿½Warning:ï¿½If these are used, the object may break when the user switches their DirectX settings."
+					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\n Warning: If these are used, the object may break when the user switches their DirectX settings."
 					choices = {}
 				}
 				"maxdxlevel":
@@ -5176,7 +5176,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -5237,7 +5237,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -5264,7 +5264,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -5273,7 +5273,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -5347,7 +5347,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -5408,7 +5408,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -5435,7 +5435,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -5444,7 +5444,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -5460,7 +5460,7 @@
 				"1":
 				{
 					category = ""
-					description = "All Players - Show the message to everyone on the server (otherwise show toï¿½!activator only) (doesn't exist in Left 4 Dead and later)"
+					description = "All Players - Show the message to everyone on the server (otherwise show to !activator only) (doesn't exist in Left 4 Dead and later)"
 					notes = ""
 				}
 			}
@@ -5473,7 +5473,7 @@
 					shortinfo = "Hint Text (localized)"
 					extra = ""
 					notes = "Warning: Entering raw text will not allow the message to be translated between user languages."
-					description = "This should be match a HUD hint entry in hl2/resource/valve_english.txt or its localized equivalent. Example: entering '#Valve_Hint_Zoom' (without the quotation marks) will display the following hint text: '%+zoom% ZOOM VIEW', withï¿½%+zoom% being the key currently bound to the zoom function."
+					description = "This should be match a HUD hint entry in hl2/resource/valve_english.txt or its localized equivalent. Example: entering '#Valve_Hint_Zoom' (without the quotation marks) will display the following hint text: '%+zoom% ZOOM VIEW', with %+zoom% being the key currently bound to the zoom function."
 					choices = {}
 				}
 				"classname":
@@ -5527,7 +5527,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -5588,7 +5588,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -5615,7 +5615,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -5624,7 +5624,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -5843,7 +5843,7 @@
 					shortinfo = "Only Local Player"
 					extra = "(in all games since [Alien Swarm])"
 					notes = ""
-					description = "Note:ï¿½This keyvalue appears to have not been coded into the FGD correctly. You must put 0 for 'No' and 1 for 'Yes'."
+					description = "Note: This keyvalue appears to have not been coded into the FGD correctly. You must put 0 for 'No' and 1 for 'Yes'."
 					choices = {}
 				}
 				"hint_gamepad_binding":
@@ -5906,7 +5906,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -5967,7 +5967,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -5994,7 +5994,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -6003,7 +6003,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -6248,7 +6248,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -6309,7 +6309,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -6336,7 +6336,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -6345,7 +6345,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -6491,7 +6491,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -6552,7 +6552,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -6579,7 +6579,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -6588,7 +6588,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -6704,7 +6704,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -6765,7 +6765,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -6792,7 +6792,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -6801,7 +6801,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -6929,7 +6929,7 @@
 					shortinfo = "Sound Mask"
 					extra = "!FGD"
 					notes = ""
-					description = "To do:ï¿½Some kind of alternative to the Hears X spawnflags?"
+					description = "To do: Some kind of alternative to the Hears X spawnflags?"
 					choices = {}
 				}
 				"StartDisabled":
@@ -6992,7 +6992,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -7053,7 +7053,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -7080,7 +7080,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -7089,7 +7089,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -7155,7 +7155,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -7216,7 +7216,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -7243,7 +7243,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -7252,7 +7252,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -7354,7 +7354,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -7415,7 +7415,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -7442,7 +7442,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -7451,7 +7451,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -7490,7 +7490,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Method of collision for this entity.\n0: None\n1: BSP (QPhysics) !FGD ï¿½Bug:ï¿½In [Portal 2] Portal 2, if an entity using QPhysics collisions is hit by Gel, the game will crash!\n2: Bounding Box\n3: Oriented Bounding Box !FGD\n4: Oriented Bounding Box, constrained to Yaw only !FGD\n5: Custom/Test !FGD\n6: VPhysics"
+					description = "Method of collision for this entity.\n0: None\n1: BSP (QPhysics) !FGD  Bug: In [Portal 2] Portal 2, if an entity using QPhysics collisions is hit by Gel, the game will crash!\n2: Bounding Box\n3: Oriented Bounding Box !FGD\n4: Oriented Bounding Box, constrained to Yaw only !FGD\n5: Custom/Test !FGD\n6: VPhysics"
 					choices = {}
 				}
 				"body_or_SetBodyGroup":
@@ -7796,7 +7796,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -7857,7 +7857,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -7884,7 +7884,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -7893,7 +7893,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -8012,7 +8012,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -8073,7 +8073,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -8100,7 +8100,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -8109,7 +8109,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -8269,7 +8269,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Simple Projection"
-					extra = "(in all games since [Alien Swarm])ï¿½!FGD"
+					extra = "(in all games since [Alien Swarm]) !FGD"
 					notes = ""
 					description = "Indicates if this is a simple, non-light casting texture projection."
 					choices = {}
@@ -8278,7 +8278,7 @@
 				{
 					typename = "float"
 					shortinfo = "Simple Projection Size"
-					extra = "(in all games since [Alien Swarm])ï¿½!FGD"
+					extra = "(in all games since [Alien Swarm]) !FGD"
 					notes = ""
 					description = "Size of the simple projection."
 					choices = {}
@@ -8287,7 +8287,7 @@
 				{
 					typename = "float"
 					shortinfo = "Simple Projection Rotation"
-					extra = "(in all games since [Alien Swarm])ï¿½!FGD"
+					extra = "(in all games since [Alien Swarm]) !FGD"
 					notes = ""
 					description = ""
 					choices = {}
@@ -8314,7 +8314,7 @@
 				{
 					typename = "choices"
 					shortinfo = "Appearance"
-					extra = "(in all games since [Portal 2])ï¿½(also in [Garry's Mod])"
+					extra = "(in all games since [Portal 2]) (also in [Garry's Mod])"
 					notes = ""
 					description = "Light Appearances\n\n\nLiteral Value\nDescription\nSequence\nPreview\n\n\n0\nNormal\nm\nSequence 0.gif\n\n\n10\nFluorescent flicker\nmmamammmmammamamaaamammma\nSequence 10.gif\n\n\n2\nSlow, strong pulse\nabcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcba\nSequence 2.gif\n\n\n11\nSlow pulse, noblack\nabcdefghijklmnopqrrqponmlkjihgfedcba\nSequence 11.gif\n\n\n5\nGentle pulse\njklmnopqrstuvwxyzyxwvutsrqponmlkj\nSequence 5.gif\n\n\n1\nFlicker A\nmmnmmommommnonmmonqnmmo\nSequence 1.gif\n\n\n6\nFlicker B\nnmonqnmomnmomomno\nSequence 6.gif\n\n\n3\nCandle A\nmmmmmaaaaammmmmaaaaaabcdefgabcdefg\nSequence 3.gif\n\n\n7\nCandle B\nmmmaaaabcdefgmmmmaaaammmaamm\nSequence 7.gif\n\n\n8\nCandle C\nmmmaaammmaaammmabcdefaaaammmmabcdefmmmaaaa\nSequence 8.gif\n\n\n4\nFast strobe\nmamamamamama\nSequence 4.gif\n\n\n9\nSlow strobe\naaaaaaaazzzzzzzz\nSequence 9.gif\n\n\n12 !FGD\nUnderwater light mutation\nmmnnmmnnnmmnn\nSequence 12.gif"
 					choices = {}
@@ -8323,7 +8323,7 @@
 				{
 					typename = "string"
 					shortinfo = "Custom Appearance"
-					extra = "(in all games since [Portal 2])ï¿½(also in [Garry's Mod])"
+					extra = "(in all games since [Portal 2]) (also in [Garry's Mod])"
 					notes = ""
 					description = "Set a custom pattern of light brightness for this light. Pattern format is a string of characters, where a is total darkness, z fully bright. i.e. aaggnnttzz would be a steppy fade in from dark to light."
 					choices = {}
@@ -8406,7 +8406,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -8467,7 +8467,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -8494,7 +8494,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -8503,7 +8503,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -8857,7 +8857,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -8918,7 +8918,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -8945,7 +8945,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -8954,7 +8954,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -9029,7 +9029,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -9090,7 +9090,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -9117,7 +9117,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -9126,7 +9126,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -9218,7 +9218,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -9279,7 +9279,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -9306,7 +9306,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -9315,7 +9315,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -9383,7 +9383,7 @@
 					shortinfo = "Effect Radius"
 					extra = ""
 					notes = ""
-					description = "The radius around this entity in which to affect players.ï¿½Note:ï¿½Players within the effect radius will be affected by the shaking for the set duration, regardless of whether they remain within the radius after the shaking begins."
+					description = "The radius around this entity in which to affect players. Note: Players within the effect radius will be affected by the shaking for the set duration, regardless of whether they remain within the radius after the shaking begins."
 					choices = {}
 				}
 				"duration":
@@ -9455,7 +9455,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -9516,7 +9516,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -9543,7 +9543,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -9552,7 +9552,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -10023,7 +10023,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -10084,7 +10084,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -10111,7 +10111,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -10120,7 +10120,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -10258,7 +10258,7 @@
 					shortinfo = "Fire Sprite"
 					extra = "[Obsolete]"
 					notes = ""
-					description = "Deprecated.ï¿½Not present in code. Sprite to use for fire particles."
+					description = "Deprecated. Not present in code. Sprite to use for fire particles."
 					choices = {}
 				}
 				"smokesprite":
@@ -10267,7 +10267,7 @@
 					shortinfo = "Smoke Puff"
 					extra = "[Obsolete]"
 					notes = ""
-					description = "Deprecated.ï¿½Not present in code. Sprite to use for smoke puffs."
+					description = "Deprecated. Not present in code. Sprite to use for smoke puffs."
 					choices = {}
 				}
 				"classname":
@@ -10321,7 +10321,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -10382,7 +10382,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -10409,7 +10409,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -10418,7 +10418,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -10520,7 +10520,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -10581,7 +10581,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -10608,7 +10608,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -10617,7 +10617,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -10701,7 +10701,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -10762,7 +10762,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -10789,7 +10789,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -10798,7 +10798,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -10900,7 +10900,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -10961,7 +10961,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -10988,7 +10988,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -10997,7 +10997,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -11116,7 +11116,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -11177,7 +11177,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -11204,7 +11204,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -11213,7 +11213,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -11302,7 +11302,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -11363,7 +11363,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -11390,7 +11390,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -11399,7 +11399,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -11488,7 +11488,7 @@
 					shortinfo = "Minimum DX Level"
 					extra = ""
 					notes = ""
-					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\nï¿½Warning:ï¿½If these are used, the object may break when the user switches their DirectX settings."
+					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\n Warning: If these are used, the object may break when the user switches their DirectX settings."
 					choices = {}
 				}
 				"maxdxlevel":
@@ -11707,7 +11707,7 @@
 					shortinfo = "Minimum DX Level"
 					extra = ""
 					notes = ""
-					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\nï¿½Warning:ï¿½If these are used, the object may break when the user switches their DirectX settings."
+					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\n Warning: If these are used, the object may break when the user switches their DirectX settings."
 					choices = {}
 				}
 				"maxdxlevel":
@@ -11894,7 +11894,7 @@
 					shortinfo = "Animated"
 					extra = "!FGD"
 					notes = ""
-					description = "To do:ï¿½Untested. Tells the sprite to animate if it can. All the keyvalues, flags, and inputs from env_sprite may be used."
+					description = "To do: Untested. Tells the sprite to animate if it can. All the keyvalues, flags, and inputs from env_sprite may be used."
 					choices = {}
 				}
 				"rendermode":
@@ -12161,7 +12161,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -12222,7 +12222,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -12249,7 +12249,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -12258,7 +12258,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -12432,7 +12432,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -12493,7 +12493,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -12520,7 +12520,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -12529,7 +12529,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -12604,7 +12604,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -12665,7 +12665,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -12692,7 +12692,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -12701,7 +12701,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -12775,7 +12775,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -12836,7 +12836,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -12863,7 +12863,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -12872,7 +12872,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -12881,7 +12881,7 @@
 		}
 		env_tonemap_controller_ghost = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½env_tonemap_controller_ghost is a  point entity available in the Left 4 Dead series.\nAn entity that controls the HDR tonemapping for ghost player. Think of it as a method of controlling the exposure of the player's eyes."
+			description = "[Left 4 Dead][Left 4 Dead 2] env_tonemap_controller_ghost is a  point entity available in the Left 4 Dead series.\nAn entity that controls the HDR tonemapping for ghost player. Think of it as a method of controlling the exposure of the player's eyes."
 			flagnotes = ""
 			flags = 
 			{
@@ -12897,7 +12897,7 @@
 		}
 		env_tonemap_controller_infected = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½env_tonemap_controller_infected is a  point entity available in the Left 4 Dead series.\nAn entity that controls the HDR tonemapping for infected player. Think of it as a method of controlling the exposure of the player's eyes."
+			description = "[Left 4 Dead][Left 4 Dead 2] env_tonemap_controller_infected is a  point entity available in the Left 4 Dead series.\nAn entity that controls the HDR tonemapping for infected player. Think of it as a method of controlling the exposure of the player's eyes."
 			flagnotes = ""
 			flags = 
 			{
@@ -12975,7 +12975,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -13129,7 +13129,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -13190,7 +13190,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -13217,7 +13217,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -13226,7 +13226,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -13318,7 +13318,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -13379,7 +13379,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -13406,7 +13406,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -13415,7 +13415,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -13428,7 +13428,7 @@
 	{
 		filter_activator_infected_class = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½filter_activator_infected_class is a  point entity available in the Left 4 Dead series. It is a filter that checks the activator's infected class."
+			description = "[Left 4 Dead][Left 4 Dead 2] filter_activator_infected_class is a  point entity available in the Left 4 Dead series. It is a filter that checks the activator's infected class."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -13503,7 +13503,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -13564,7 +13564,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -13591,7 +13591,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -13675,7 +13675,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -13736,7 +13736,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -13763,7 +13763,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -13772,7 +13772,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -13781,7 +13781,7 @@
 		}
 		filter_health = 
 		{
-			description = "[Left 4 Dead 2]ï¿½filter_health is a  point entity available in Left 4 Dead 2. It is a damage filter that checks if the entity causing the damage has adrenaline active or not."
+			description = "[Left 4 Dead 2] filter_health is a  point entity available in Left 4 Dead 2. It is a damage filter that checks if the entity causing the damage has adrenaline active or not."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -13874,7 +13874,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -13935,7 +13935,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -13962,7 +13962,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -13971,7 +13971,7 @@
 		}
 		filter_melee_damage = 
 		{
-			description = "[Left 4 Dead 2]ï¿½filter_melee_damage is a  point entity available in Left 4 Dead 2. It is a damage filter that filters by the damage, allowing only melee damage. It can also filter between slicing and bludgeoning damage."
+			description = "[Left 4 Dead 2] filter_melee_damage is a  point entity available in Left 4 Dead 2. It is a damage filter that filters by the damage, allowing only melee damage. It can also filter between slicing and bludgeoning damage."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -14046,7 +14046,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -14107,7 +14107,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -14134,7 +14134,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -14218,7 +14218,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -14279,7 +14279,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -14306,7 +14306,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -14315,7 +14315,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -14390,7 +14390,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -14451,7 +14451,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -14478,7 +14478,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -14487,7 +14487,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -14571,7 +14571,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -14632,7 +14632,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -14659,7 +14659,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -14668,7 +14668,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -14752,7 +14752,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -14813,7 +14813,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -14840,7 +14840,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -14849,7 +14849,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -14870,7 +14870,7 @@
 					shortinfo = "Filter Name"
 					extra = ""
 					notes = ""
-					description = "The name to filter by.\nï¿½Note:ï¿½Entities without any targetname can be filtered by leaving the Filter Name blank."
+					description = "The name to filter by.\n Note: Entities without any targetname can be filtered by leaving the Filter Name blank."
 					choices = {}
 				}
 				"Negated":
@@ -14933,7 +14933,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -14994,7 +14994,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -15021,7 +15021,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -15030,14 +15030,14 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
 				}
 			}
 		}
-		filter_damage_typename = 
+		filter_damage_type = 
 		{
 			description = "filter_damage_type is a  point entity available in all Source games. It is a damage filter that filters by the type of damage inflicted\n In code, it is represented by class FilterDamageType, defined in filters.cpp."
 			flagnotes = ""
@@ -15168,7 +15168,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -15229,7 +15229,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -15256,7 +15256,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -15265,7 +15265,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -15367,7 +15367,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -15428,7 +15428,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -15455,7 +15455,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -15464,7 +15464,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -15534,7 +15534,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"StartDisabled":
@@ -15554,7 +15554,7 @@
 	{
 		func_block_charge = 
 		{
-			description = "[Left 4 Dead 2]ï¿½func_block_charge is a  brush entity available in Left 4 Dead 2. Chargers will not charge through this brush."
+			description = "[Left 4 Dead 2] func_block_charge is a  brush entity available in Left 4 Dead 2. Chargers will not charge through this brush."
 			flagnotes = ""
 			flags = 
 			{
@@ -15628,7 +15628,7 @@
 					shortinfo = "Start Disabled"
 					extra = ""
 					notes = ""
-					description = "Stay dormant until activated (probably with the Enable input). ï¿½Tip:ï¿½If Solidity is Toggle, disabling func_brush also makes it non-solid."
+					description = "Stay dormant until activated (probably with the Enable input).  Tip: If Solidity is Toggle, disabling func_brush also makes it non-solid."
 					choices = {}
 				}
 				"origin":
@@ -15664,7 +15664,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -15682,7 +15682,7 @@
 					shortinfo = "Parent"
 					extra = ""
 					notes = ""
-					description = "Specifies a movement parent. An entity will maintain its initial offset from its parent. An attachment point can be added to the end of the name, separated by a comma.ï¿½Warning:ï¿½In [Counter-Strike: Source], parenting this entity to another can break your map."
+					description = "Specifies a movement parent. An entity will maintain its initial offset from its parent. An attachment point can be added to the end of the name, separated by a comma. Warning: In [Counter-Strike: Source], parenting this entity to another can break your map."
 					choices = {}
 				}
 				"rendermode":
@@ -15712,7 +15712,7 @@
 		}
 		func_buildable_button = 
 		{
-			description = "[Left 4 Dead 2]ï¿½func_buildable_button is a  brush entity available in Left 4 Dead 2. It appears to be a brush based button similar to func_button_timed, intended to interface with VScripts instead of entity logic. It has likely been removed in favor of point_script_use_target."
+			description = "[Left 4 Dead 2] func_buildable_button is a  brush entity available in Left 4 Dead 2. It appears to be a brush based button similar to func_button_timed, intended to interface with VScripts instead of entity logic. It has likely been removed in favor of point_script_use_target."
 			flagnotes = ""
 			flags = 
 			{
@@ -15759,7 +15759,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -15784,7 +15784,7 @@
 		}
 		func_button_timed = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½func_button_timed is a  brush entity available in the Left 4 Dead series. It is a button that takes time to use."
+			description = "[Left 4 Dead][Left 4 Dead 2] func_button_timed is a  brush entity available in the Left 4 Dead series. It is a button that takes time to use."
 			flagnotes = ""
 			flags = 
 			{
@@ -15876,7 +15876,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -15988,7 +15988,7 @@
 		}
 		func_elevator = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½func_elevator is a  brush entity available in the Left 4 Dead series. It is an elevator that moves vertically.\nExample map: sdk_content/mapsrc/No Mercy/l4d_hospital04_interior.vmf."
+			description = "[Left 4 Dead][Left 4 Dead 2] func_elevator is a  brush entity available in the Left 4 Dead series. It is an elevator that moves vertically.\nExample map: sdk_content/mapsrc/No Mercy/l4d_hospital04_interior.vmf."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -16090,7 +16090,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -16202,7 +16202,7 @@
 		}
 		func_extinguisher = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½func_extinguisher is a  brush entity available in the Left 4 Dead series. This volume entity will extinguish 'infernos' set from molotovs, gas cans, etc. In other words it is a brush entity that will delete inferno entities that touch it."
+			description = "[Left 4 Dead][Left 4 Dead 2] func_extinguisher is a  brush entity available in the Left 4 Dead series. This volume entity will extinguish 'infernos' set from molotovs, gas cans, etc. In other words it is a brush entity that will delete inferno entities that touch it."
 			flagnotes = ""
 			flags = 
 			{
@@ -16252,7 +16252,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"StartDisabled":
@@ -16276,7 +16276,7 @@
 		}
 		func_nav_attribute_region = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½func_nav_attribute_region is a  brush entity available in the Left 4 Dead series. It holds attributes to be applied to regions of nav areas during generation."
+			description = "[Left 4 Dead][Left 4 Dead 2] func_nav_attribute_region is a  brush entity available in the Left 4 Dead series. It holds attributes to be applied to regions of nav areas during generation."
 			flagnotes = ""
 			flags = 
 			{
@@ -16386,7 +16386,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_1":
@@ -16395,7 +16395,7 @@
 					shortinfo = "Precise"
 					extra = ""
 					notes = ""
-					description = "0ï¿½: Off\n1ï¿½: On"
+					description = "0 : Off\n1 : On"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_2":
@@ -16404,7 +16404,7 @@
 					shortinfo = "Crouch"
 					extra = ""
 					notes = ""
-					description = "0ï¿½: Off\n1ï¿½: On"
+					description = "0 : Off\n1 : On"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_3":
@@ -16413,7 +16413,7 @@
 					shortinfo = "Stairs"
 					extra = ""
 					notes = ""
-					description = "0ï¿½: Off\n1ï¿½: On"
+					description = "0 : Off\n1 : On"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_4":
@@ -16422,7 +16422,7 @@
 					shortinfo = "Tank Only"
 					extra = ""
 					notes = ""
-					description = "0ï¿½: Off\n1ï¿½: On"
+					description = "0 : Off\n1 : On"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_5":
@@ -16431,7 +16431,7 @@
 					shortinfo = "Mob Only"
 					extra = ""
 					notes = ""
-					description = "0ï¿½: Off\n1ï¿½: On"
+					description = "0 : Off\n1 : On"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_6":
@@ -16447,7 +16447,7 @@
 		}
 		func_nav_avoidance_obstacle = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½func_nav_avoidance_obstacle is a  brush entity available in the Left 4 Dead series. It is a brush entity that tells bots to avoid nav areas touching its AABB."
+			description = "[Left 4 Dead][Left 4 Dead 2] func_nav_avoidance_obstacle is a  brush entity available in the Left 4 Dead series. It is a brush entity that tells bots to avoid nav areas touching its AABB."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -16477,7 +16477,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"StartDisabled":
@@ -16493,7 +16493,7 @@
 		}
 		func_nav_blocker = 
 		{
-			description = "Available in [Left 4 Dead] [Left 4 Dead 2] [Counter-Strike: Global Offensive] [Team Fortress 2]. It is a brush entity that can block nav areas touching its AABB used to restrict NPCs from crossing over nav areas.\nTo do:ï¿½Any other games?\nTo do:ï¿½Use templates to display which games include this entity."
+			description = "Available in [Left 4 Dead] [Left 4 Dead 2] [Counter-Strike: Global Offensive] [Team Fortress 2]. It is a brush entity that can block nav areas touching its AABB used to restrict NPCs from crossing over nav areas.\nTo do: Any other games?\nTo do: Use templates to display which games include this entity."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -16505,7 +16505,7 @@
 					shortinfo = "Team(s) to block"
 					extra = ""
 					notes = ""
-					description = "Team(s) this entity should block\n-1ï¿½: Everyone\n2ï¿½: [Left 4 Dead][Left 4 Dead 2] Survivors, [Counter-Strike: Global Offensive] Terrorists\n3ï¿½: [Left 4 Dead][Left 4 Dead 2] Infected, [Counter-Strike: Global Offensive] Counter-Terrorists"
+					description = "Team(s) this entity should block\n-1 : Everyone\n2 : [Left 4 Dead][Left 4 Dead 2] Survivors, [Counter-Strike: Global Offensive] Terrorists\n3 : [Left 4 Dead][Left 4 Dead 2] Infected, [Counter-Strike: Global Offensive] Counter-Terrorists"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_2":
@@ -16541,7 +16541,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"StartDisabled":
@@ -16566,7 +16566,7 @@
 		}
 		func_nav_connection_blocker = 
 		{
-			description = "[Left 4 Dead 2]ï¿½func_nav_connection_blocker is a  brush entity available in Left 4 Dead 2. It is a brush entity that prevents navigation mesh (on creation) connections to be made through its volume."
+			description = "[Left 4 Dead 2] func_nav_connection_blocker is a  brush entity available in Left 4 Dead 2. It is a brush entity that prevents navigation mesh (on creation) connections to be made through its volume."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -16596,7 +16596,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -16612,7 +16612,7 @@
 		}
 		func_playerghostinfected_clip = 
 		{
-			description = "[Left 4 Dead 2]ï¿½func_playerghostinfected_clip is a  brush entity available in Left 4 Dead 2. It is a simple clip brush that blocks player ghost infected movement."
+			description = "[Left 4 Dead 2] func_playerghostinfected_clip is a  brush entity available in Left 4 Dead 2. It is a simple clip brush that blocks player ghost infected movement."
 			flagnotes = ""
 			flags = 
 			{
@@ -16632,7 +16632,7 @@
 					shortinfo = "Solidity"
 					extra = ""
 					notes = ""
-					description = "Used to control the solidity/collision of these brushes.\n0ï¿½: Toggle\n1ï¿½: Never Solid\n2ï¿½: Always Solid"
+					description = "Used to control the solidity/collision of these brushes.\n0 : Toggle\n1 : Never Solid\n2 : Always Solid"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_2":
@@ -16668,7 +16668,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -16771,7 +16771,7 @@
 		}
 		func_playerinfected_clip = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½func_playerinfected_clip is a  brush entity available in the Left 4 Dead series. It is a simple clip brush that blocks player infected movement. In other words, the entity is used to prevent player infected (also known as 'PZ') in versus from accessing an area."
+			description = "[Left 4 Dead][Left 4 Dead 2] func_playerinfected_clip is a  brush entity available in the Left 4 Dead series. It is a simple clip brush that blocks player infected movement. In other words, the entity is used to prevent player infected (also known as 'PZ') in versus from accessing an area."
 			flagnotes = ""
 			flags = 
 			{
@@ -16791,7 +16791,7 @@
 					shortinfo = "Solidity"
 					extra = ""
 					notes = ""
-					description = "Used to control the solidity/collision of these brushes.\n0ï¿½: Toggle\n1ï¿½: Never Solid\n2ï¿½: Always Solid"
+					description = "Used to control the solidity/collision of these brushes.\n0 : Toggle\n1 : Never Solid\n2 : Always Solid"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_2":
@@ -16827,7 +16827,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -16930,7 +16930,7 @@
 		}
 		func_ragdoll_fader = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½func_ragdoll_fader is a  brush entity available in the Left 4 Dead series. It is a brush entity that will fade out any ragdolls that touch it. In other words, this entity can be used to immediately fade out server and client ragdolls. This is useful when it is necessary clear part of the map for an event, like a complex moving object."
+			description = "[Left 4 Dead][Left 4 Dead 2] func_ragdoll_fader is a  brush entity available in the Left 4 Dead series. It is a brush entity that will fade out any ragdolls that touch it. In other words, this entity can be used to immediately fade out server and client ragdolls. This is useful when it is necessary clear part of the map for an event, like a complex moving object."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -16960,7 +16960,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"StartDisabled":
@@ -16976,7 +16976,7 @@
 		}
 		func_simpleladder = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½func_simpleladder is a  brush entity available in the Left 4 Dead series. It is used to designate climbable ladder areas. func_ladder brushes are automatically converted to this entity by VBSP during map compile. It doesn't exist in the FGD and is not designed to be created by Hammer."
+			description = "[Left 4 Dead][Left 4 Dead 2] func_simpleladder is a  brush entity available in the Left 4 Dead series. It is used to designate climbable ladder areas. func_ladder brushes are automatically converted to this entity by VBSP during map compile. It doesn't exist in the FGD and is not designed to be created by Hammer."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -17015,7 +17015,7 @@
 					shortinfo = "team"
 					extra = ""
 					notes = ""
-					description = "Team that can climb this ladder.\n0ï¿½: Any team\n1ï¿½: Survivors\n2ï¿½: Infected"
+					description = "Team that can climb this ladder.\n0 : Any team\n1 : Survivors\n2 : Infected"
 					choices = {}
 				}
 			}
@@ -17097,7 +17097,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -17158,7 +17158,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -17185,7 +17185,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -17194,7 +17194,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -17305,7 +17305,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -17366,7 +17366,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -17393,7 +17393,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -17402,7 +17402,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -17461,7 +17461,7 @@
 					shortinfo = "Prop Data"
 					extra = ""
 					notes = ""
-					description = "Note:ï¿½Some settings can make the brush unbreakable."
+					description = "Note: Some settings can make the brush unbreakable."
 					choices = 
 					{
 						"0" : "None"
@@ -17582,7 +17582,7 @@
 					shortinfo = "error"
 					extra = "!FGD"
 					notes = ""
-					description = "Set automatically by Hammer to indicate an invalid glass/tile surface, when non-zero the entity will be removed when spawned, and a error message will be thrown in the console. This keyvalue is not included in Valve's FGDs, but is still fully functional.\n0: No Error\n1: Multiple Textured Faces\nï¿½Note:ï¿½You must use tools/toolsnodraw to no draw the 5 remaining sides, or otherwise this error will be thrown!\n2: Non-Square Face"
+					description = "Set automatically by Hammer to indicate an invalid glass/tile surface, when non-zero the entity will be removed when spawned, and a error message will be thrown in the console. This keyvalue is not included in Valve's FGDs, but is still fully functional.\n0: No Error\n1: Multiple Textured Faces\n Note: You must use tools/toolsnodraw to no draw the 5 remaining sides, or otherwise this error will be thrown!\n2: Non-Square Face"
 					choices = {}
 				}
 				"propdata":
@@ -17591,7 +17591,7 @@
 					shortinfo = "Prop Data"
 					extra = ""
 					notes = ""
-					description = "Note:ï¿½Some settings can make the brush unbreakable."
+					description = "Note: Some settings can make the brush unbreakable."
 					choices = 
 					{
 						"0" : "None"
@@ -17700,7 +17700,7 @@
 					shortinfo = "Start Disabled"
 					extra = ""
 					notes = ""
-					description = "Stay dormant until activated (probably with the Enable input).\nï¿½Tip:ï¿½If Solidity is Toggle, disabling will also make the entity non-solid."
+					description = "Stay dormant until activated (probably with the Enable input).\n Tip: If Solidity is Toggle, disabling will also make the entity non-solid."
 					choices = {}
 				}
 				"_minlight":
@@ -18109,7 +18109,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -18170,7 +18170,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -18197,7 +18197,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -18206,7 +18206,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -18344,7 +18344,7 @@
 					shortinfo = "Minimum DX Level"
 					extra = ""
 					notes = ""
-					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\nï¿½Warning:ï¿½If these are used, the object may break when the user switches their DirectX settings."
+					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\n Warning: If these are used, the object may break when the user switches their DirectX settings."
 					choices = {}
 				}
 				"maxdxlevel":
@@ -18453,7 +18453,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -18514,7 +18514,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -18541,7 +18541,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -18550,7 +18550,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -18750,7 +18750,7 @@
 					shortinfo = "Health"
 					extra = "[Obsolete]"
 					notes = ""
-					description = "Deprecated.ï¿½Do not use."
+					description = "Deprecated. Do not use."
 					choices = {}
 				}
 				"message":
@@ -18759,7 +18759,7 @@
 					shortinfo = "Message If Triggered"
 					extra = "[Obsolete]"
 					notes = ""
-					description = "Deprecated.ï¿½Do not use."
+					description = "Deprecated. Do not use."
 					choices = {}
 				}
 				"locked_sound":
@@ -19119,7 +19119,7 @@
 					shortinfo = "Health"
 					extra = "[Obsolete]"
 					notes = ""
-					description = "Deprecated.ï¿½Do not use."
+					description = "Deprecated. Do not use."
 					choices = {}
 				}
 				"message":
@@ -19128,7 +19128,7 @@
 					shortinfo = "Message If Triggered"
 					extra = "[Obsolete]"
 					notes = ""
-					description = "Deprecated.ï¿½Do not use."
+					description = "Deprecated. Do not use."
 					choices = {}
 				}
 				"locked_sound":
@@ -19321,7 +19321,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_4":
@@ -19466,7 +19466,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_4":
@@ -19575,7 +19575,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -19693,7 +19693,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -19835,7 +19835,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -19844,7 +19844,7 @@
 					shortinfo = "Parent"
 					extra = ""
 					notes = ""
-					description = "Specifies a movement parent. An entity will maintain its initial offset from its parent. An attachment point can be added to the end of the name, separated by a comma.ï¿½Warning:ï¿½In [Counter-Strike: Source], parenting this entity to another can break your map."
+					description = "Specifies a movement parent. An entity will maintain its initial offset from its parent. An attachment point can be added to the end of the name, separated by a comma. Warning: In [Counter-Strike: Source], parenting this entity to another can break your map."
 					choices = {}
 				}
 				"origin":
@@ -19967,7 +19967,7 @@
 					typename = "string"
 					shortinfo = "Fix Up Name"
 					extra = ""
-					notes = "Note: Entity names that start with the @ symbol e.g. @exit_door will not be changed by the instance name fix up. To do:ï¿½only confirmed for Portal 2"
+					notes = "Note: Entity names that start with the @ symbol e.g. @exit_door will not be changed by the instance name fix up. To do: only confirmed for Portal 2"
 					description = "Essentially the name of the instance. All entities within it will have this string added to them based upon the fix up style. If no name is provided, InstanceAutoX or AutoInstanceX will be used, where X is a number that is incremented with each instance."
 					choices = {}
 				}
@@ -20060,7 +20060,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -20124,7 +20124,7 @@
 					shortinfo = "Solid"
 					extra = ""
 					notes = ""
-					description = "Set whether or not these brushes should collide with other entities.\n0ï¿½: Solid\n1ï¿½: Nonsolid"
+					description = "Set whether or not these brushes should collide with other entities.\n0 : Solid\n1 : Nonsolid"
 					choices = {}
 				}
 				"targetname":
@@ -20151,7 +20151,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -20353,14 +20353,14 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
 		}
 		func_orator = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½func_orator is a  point entity available in the Left 4 Dead series."
+			description = "[Left 4 Dead][Left 4 Dead 2] func_orator is a  point entity available in the Left 4 Dead series."
 			flagnotes = ""
 			flags = 
 			{
@@ -20407,7 +20407,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -20623,7 +20623,7 @@
 					shortinfo = "Impact Damage Type"
 					extra = ""
 					notes = ""
-					description = "Sets the 'sharpness' of the brush. Sharp objects are far more damaging.\n0ï¿½: Blunt\n1ï¿½: Sharp"
+					description = "Sets the 'sharpness' of the brush. Sharp objects are far more damaging.\n0 : Blunt\n1 : Sharp"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_3":
@@ -20686,7 +20686,7 @@
 					shortinfo = "Not solid to world"
 					extra = ""
 					notes = ""
-					description = "If set, the object will pass through world geometry.\n0ï¿½: Solid to World\n1ï¿½: Passes through World"
+					description = "If set, the object will pass through world geometry.\n0 : Solid to World\n1 : Passes through World"
 					choices = {}
 				}
 				"propdata":
@@ -20695,7 +20695,7 @@
 					shortinfo = "Prop Data"
 					extra = ""
 					notes = ""
-					description = "Note:ï¿½Some settings can make the brush unbreakable."
+					description = "Note: Some settings can make the brush unbreakable."
 					choices = 
 					{
 						"0" : "None"
@@ -20852,7 +20852,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -21030,7 +21030,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -21076,7 +21076,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -21112,7 +21112,7 @@
 					shortinfo = "Solidity"
 					extra = ""
 					notes = ""
-					description = "Used to control the solidity/collision of these brushes. ï¿½Bug:ï¿½ physics objects can behave oddly when placed directly on top of this brush, to prevent this make this brush never solid and add invisible or clip_brush floor on top.\n0: Toggle - The solidity can be toggled together with its visibility.\n1: Never Solid\n2: Always Solid"
+					description = "Used to control the solidity/collision of these brushes.  Bug:  physics objects can behave oddly when placed directly on top of this brush, to prevent this make this brush never solid and add invisible or clip_brush floor on top.\n0: Toggle - The solidity can be toggled together with its visibility.\n1: Never Solid\n2: Always Solid"
 					choices = {}
 				}
 				"solidbsp":
@@ -21148,7 +21148,7 @@
 					shortinfo = "Start Disabled"
 					extra = ""
 					notes = ""
-					description = "Stay dormant until activated (probably with the Enable input).\nï¿½Tip:ï¿½If Solidity is Toggle, disabling will also make the entity non-solid."
+					description = "Stay dormant until activated (probably with the Enable input).\n Tip: If Solidity is Toggle, disabling will also make the entity non-solid."
 					choices = {}
 				}
 				"_minlight":
@@ -21298,7 +21298,7 @@
 					shortinfo = "Master"
 					extra = "[Obsolete]"
 					notes = ""
-					description = "Deprecated.ï¿½Legacy support: The name of a master entity. If the master hasn't been activated, this button cannot be used."
+					description = "Deprecated. Legacy support: The name of a master entity. If the master hasn't been activated, this button cannot be used."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_1":
@@ -21316,7 +21316,7 @@
 					shortinfo = "Health"
 					extra = "[Obsolete]"
 					notes = ""
-					description = "Deprecated.ï¿½Legacy method of specifying whether or not the button can be shot to activate it. Use the 'Damage Activates' spawnflag instead."
+					description = "Deprecated. Legacy method of specifying whether or not the button can be shot to activate it. Use the 'Damage Activates' spawnflag instead."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_2":
@@ -21379,7 +21379,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -21520,7 +21520,7 @@
 					shortinfo = "Friction"
 					extra = ""
 					notes = ""
-					description = "The amount of rotational friction. Value must be between 0 and 100ï¿½%. The lower the friction is, the slower it spins up and spins down. This is the opposite of how it would work in real life."
+					description = "The amount of rotational friction. Value must be between 0 and 100 %. The lower the friction is, the slower it spins up and spins down. This is the opposite of how it would work in real life."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_2":
@@ -21565,7 +21565,7 @@
 					shortinfo = "Solid Type"
 					extra = ""
 					notes = ""
-					description = "Brush solidity type\n0ï¿½: VPhysics\n1ï¿½: BSP"
+					description = "Brush solidity type\n0 : VPhysics\n1 : BSP"
 					choices = {}
 				}
 				"targetname":
@@ -21592,7 +21592,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -21832,7 +21832,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -21931,7 +21931,7 @@
 					shortinfo = "Change Velocity"
 					extra = ""
 					notes = ""
-					description = "The method through which this train changes its velocity as it moves along the path.\n0ï¿½: Instantaneously\n1ï¿½: Linear blend\n2ï¿½: Ease in/ease out"
+					description = "The method through which this train changes its velocity as it moves along the path.\n0 : Instantaneously\n1 : Linear blend\n2 : Ease in/ease out"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_4":
@@ -21940,7 +21940,7 @@
 					shortinfo = "Change angles"
 					extra = ""
 					notes = ""
-					description = "The method through which this train changes its orientation as it moves along the path.\n0ï¿½: Never (always fixed orientation)\n1ï¿½: Near paths\n2ï¿½: Linear blend\n3ï¿½: Ease in/ease out"
+					description = "The method through which this train changes its orientation as it moves along the path.\n0 : Never (always fixed orientation)\n1 : Near paths\n2 : Linear blend\n3 : Ease in/ease out"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_5":
@@ -21949,7 +21949,7 @@
 					shortinfo = "Distance Between the Wheels"
 					extra = ""
 					notes = ""
-					description = "Used for turning and stopping.\nï¿½Tip:ï¿½Increase the value for smoother turns."
+					description = "Used for turning and stopping.\n Tip: Increase the value for smoother turns."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_6":
@@ -22093,7 +22093,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -22141,7 +22141,7 @@
 		}
 		func_timescale = 
 		{
-			description = "[Left 4 Dead 2]ï¿½func_timescale is a  point entity available in Left 4 Dead 2."
+			description = "[Left 4 Dead 2] func_timescale is a  point entity available in Left 4 Dead 2."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -22207,7 +22207,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -22354,7 +22354,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -22524,7 +22524,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -22646,7 +22646,7 @@
 					shortinfo = "Change Velocity"
 					extra = ""
 					notes = ""
-					description = "The method through which this train changes its velocity as it moves along the path.\n0ï¿½: Instantaneously\n1ï¿½: Linear blend\n2ï¿½: Ease in/ease out"
+					description = "The method through which this train changes its velocity as it moves along the path.\n0 : Instantaneously\n1 : Linear blend\n2 : Ease in/ease out"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_3":
@@ -22655,7 +22655,7 @@
 					shortinfo = "Change angles"
 					extra = ""
 					notes = ""
-					description = "The method through which this train changes its orientation as it moves along the path.\n0ï¿½: Never (always fixed orientation)\n1ï¿½: Near paths\n2ï¿½: Linear blend\n3ï¿½: Ease in/ease out"
+					description = "The method through which this train changes its orientation as it moves along the path.\n0 : Never (always fixed orientation)\n1 : Near paths\n2 : Linear blend\n3 : Ease in/ease out"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_4":
@@ -22664,7 +22664,7 @@
 					shortinfo = "Distance Between the Wheels"
 					extra = ""
 					notes = ""
-					description = "Used for turning and stopping.\nï¿½Tip:ï¿½Increase the value for smoother turns."
+					description = "Used for turning and stopping.\n Tip: Increase the value for smoother turns."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_5":
@@ -22808,7 +22808,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -22938,7 +22938,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -22992,7 +22992,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"rendermode":
@@ -23133,7 +23133,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"rendermode":
@@ -23387,7 +23387,7 @@
 	{
 		game_scavenge_progress_display = 
 		{
-			description = "[Left 4 Dead 2]ï¿½game_scavenge_progress_display is a  point entity available in Left 4 Dead 2. It displays the number of scavenge items successfully filled by survivors."
+			description = "[Left 4 Dead 2] game_scavenge_progress_display is a  point entity available in Left 4 Dead 2. It displays the number of scavenge items successfully filled by survivors."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -23426,7 +23426,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -23472,7 +23472,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -23536,7 +23536,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -23556,13 +23556,13 @@
 				"2":
 				{
 					category = ""
-					description = "Strip All Weapons Firstï¿½(in all games since [Counter-Strike\t Global Offensive])"
+					description = "Strip All Weapons First (in all games since [Counter-Strike\t Global Offensive])"
 					notes = ""
 				}
 				"4":
 				{
 					category = ""
-					description = "Only Strip Same Weapon Typeï¿½(in all games since [Counter-Strike\t Global Offensive])"
+					description = "Only Strip Same Weapon Type (in all games since [Counter-Strike\t Global Offensive])"
 					notes = ""
 				}
 			}
@@ -23602,7 +23602,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -23677,7 +23677,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -23741,7 +23741,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -23810,7 +23810,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -23837,7 +23837,7 @@
 					shortinfo = "Message Text"
 					extra = ""
 					notes = ""
-					description = "Message to display onscreen. /n signifies a new line in the text. ï¿½Tip:ï¿½AddOutput message can be used to change text at runtime in older games which do not support SetText. ï¿½Bug:ï¿½Hammer will automatically change /n to /n. This can be worked around by editing the VMF with a text editor, although it will need to be changed every time after each save."
+					description = "Message to display onscreen. /n signifies a new line in the text.  Tip: AddOutput message can be used to change text at runtime in older games which do not support SetText.  Bug: Hammer will automatically change /n to /n. This can be worked around by editing the VMF with a text editor, although it will need to be changed every time after each save."
 					choices = {}
 				}
 				"-1_centers":
@@ -23864,7 +23864,7 @@
 					shortinfo = "Text Effect"
 					extra = ""
 					notes = ""
-					description = "Literal value\nEffect\nDescription\n\n\n0\nFade In/Out\nThe whole text is faded in, and then faded out.\n\n\n1\nCredits\nTo do:ï¿½Unknown - seems to act like Fade In/Out. Provide description.\n\n\n2\nScan Out\nThe text is scanned in letter by letter, and the whole text is then faded out."
+					description = "Literal value\nEffect\nDescription\n\n\n0\nFade In/Out\nThe whole text is faded in, and then faded out.\n\n\n1\nCredits\nTo do: Unknown - seems to act like Fade In/Out. Provide description.\n\n\n2\nScan Out\nThe text is scanned in letter by letter, and the whole text is then faded out."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_3":
@@ -23873,7 +23873,7 @@
 					shortinfo = "Color1"
 					extra = ""
 					notes = ""
-					description = "The primary color used by all the text effects. ï¿½Note:ï¿½The color values seem to be added to the background, so either a bright white background or black text will cause the message to be invisible. ï¿½Note:ï¿½This keyvalue will default to black for entities not created in Hammer."
+					description = "The primary color used by all the text effects.  Note: The color values seem to be added to the background, so either a bright white background or black text will cause the message to be invisible.  Note: This keyvalue will default to black for entities not created in Hammer."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_4":
@@ -23909,7 +23909,7 @@
 					shortinfo = "Hold Time"
 					extra = ""
 					notes = ""
-					description = "The time the text should stay onscreen, after fading in, before it begins to fade out.ï¿½Note:ï¿½This value defaults to zero for entities not created in Hammer."
+					description = "The time the text should stay onscreen, after fading in, before it begins to fade out. Note: This value defaults to zero for entities not created in Hammer."
 					choices = {}
 				}
 				"scan_effect_only":
@@ -23927,7 +23927,7 @@
 					shortinfo = "Text Channel"
 					extra = ""
 					notes = ""
-					description = "You can have up to six individual game_text messages onscreen at once, stored in channels. Select which channel this text should be placed in, which will overwrite any active message already in that channel.\n0ï¿½: Channel 0 (unused) !FGD\n1ï¿½: Channel 1 (medium text size)\n2ï¿½: Channel 2 (small text size)\n3ï¿½: Channel 3 (large text size)\n4ï¿½: Channel 4 (medium text size)\n5ï¿½: Channel 5 (unused) !FGD"
+					description = "You can have up to six individual game_text messages onscreen at once, stored in channels. Select which channel this text should be placed in, which will overwrite any active message already in that channel.\n0 : Channel 0 (unused) !FGD\n1 : Channel 1 (medium text size)\n2 : Channel 2 (small text size)\n3 : Channel 3 (large text size)\n4 : Channel 4 (medium text size)\n5 : Channel 5 (unused) !FGD"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_8":
@@ -23963,7 +23963,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -24035,7 +24035,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -24099,7 +24099,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -24136,7 +24136,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -24224,7 +24224,7 @@
 				{
 					category = ""
 					description = "Do Alternate collision for this NPC (player avoidance)"
-					notes = "Details: Note:ï¿½This flag is disabled in episodic for player companions because the StartScripting input does this."
+					notes = "Details: Note: This flag is disabled in episodic for player companions because the StartScripting input does this."
 				}
 				"8192":
 				{
@@ -24235,7 +24235,7 @@
 				"16384":
 				{
 					category = ""
-					description = "Ignore player pushï¿½(in all games since [Source][Source])"
+					description = "Ignore player push (in all games since [Source][Source])"
 					notes = "Details: Don't give way to player"
 				}
 			}
@@ -24401,7 +24401,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -24572,7 +24572,7 @@
 	{
 		info_ambient_mob = 
 		{
-			description = "[Left 4 Dead 2]ï¿½Warning: Display title 'info_ambient_mob' overrides earlier display title 'Info ambient mob'.info_ambient_mob is a  point entity available in Left 4 Dead 2. It is an universal ambient mob start/end (use with care!).\nTo do:ï¿½Figure out how the entity works in-game."
+			description = "[Left 4 Dead 2] Warning: Display title 'info_ambient_mob' overrides earlier display title 'Info ambient mob'.info_ambient_mob is a  point entity available in Left 4 Dead 2. It is an universal ambient mob start/end (use with care!).\nTo do: Figure out how the entity works in-game."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -24602,7 +24602,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -24639,7 +24639,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -24676,14 +24676,14 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
 		}
 		info_changelevel = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½info_changelevel is a  brush entity available in the Left 4 Dead series. It is the entity that marks a level change.\nIt safely changes the level in Left 4 Dead series, and defines the end-of-level safe room. It is unusual as it is a brush entity, where info_* entities are typically point entities. Place an info_landmark in both maps that marks the 'same' location in each map. In Hammer, info_changelevel will be listed in entity class selection menu when tied to a brush as an entity."
+			description = "[Left 4 Dead][Left 4 Dead 2] info_changelevel is a  brush entity available in the Left 4 Dead series. It is the entity that marks a level change.\nIt safely changes the level in Left 4 Dead series, and defines the end-of-level safe room. It is unusual as it is a brush entity, where info_* entities are typically point entities. Place an info_landmark in both maps that marks the 'same' location in each map. In Hammer, info_changelevel will be listed in entity class selection menu when tied to a brush as an entity."
 			flagnotes = ""
 			flags = 
 			{
@@ -24734,7 +24734,7 @@
 		}
 		info_director = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½info_director is a  point entity available in the Left 4 Dead series.\nIt is the notorious AI Director, and must exist in every L4D and L4D2 map for normal gameplay.\nThe director is almost entirely automated and only exists at design-time for the few situations in which other designer-placed entities need to communicate with it, such as for forcing survivors to their respective info_survivor_position at the start of a campaign for camera intro sequences.\nlogic_director_queryï¿½(in all games since [Left 4 Dead 2]) can output the director's anger level, allowing level designers to adjust conditions according to how well the players are doing."
+			description = "[Left 4 Dead][Left 4 Dead 2] info_director is a  point entity available in the Left 4 Dead series.\nIt is the notorious AI Director, and must exist in every L4D and L4D2 map for normal gameplay.\nThe director is almost entirely automated and only exists at design-time for the few situations in which other designer-placed entities need to communicate with it, such as for forcing survivors to their respective info_survivor_position at the start of a campaign for camera intro sequences.\nlogic_director_query (in all games since [Left 4 Dead 2]) can output the director's anger level, allowing level designers to adjust conditions according to how well the players are doing."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -24764,7 +24764,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"origin":
@@ -24780,7 +24780,7 @@
 		}
 		info_elevator_floor = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½info_elevator_floor is a  point entity available in the Left 4 Dead series. It marks an elevator floor. It is only compatible with a func_elevator."
+			description = "[Left 4 Dead][Left 4 Dead 2] info_elevator_floor is a  point entity available in the Left 4 Dead series. It marks an elevator floor. It is only compatible with a func_elevator."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -24810,7 +24810,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -24891,7 +24891,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"StartDisabled":
@@ -24907,7 +24907,7 @@
 		}
 		info_gamemode = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½info_gamemode is a  point entity available in the Left 4 Dead series. When a map is loaded, this entity can fire outputs depending on the current game mode. This allows the all game modes to be available in a single map instead of having separate maps for each game mode."
+			description = "[Left 4 Dead][Left 4 Dead 2] info_gamemode is a  point entity available in the Left 4 Dead series. When a map is loaded, this entity can fire outputs depending on the current game mode. This allows the all game modes to be available in a single map instead of having separate maps for each game mode."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -24937,7 +24937,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -24953,7 +24953,7 @@
 		}
 		info_goal_infected_chase = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½info_goal_infected_chase is a  point entity available in the Left 4 Dead series. It attracts infected like the pipe bomb to give them something to do during outros. Put this in hierarchy with the escape vehicle or with a func_tracktrain to make all the infected in the map chase it!"
+			description = "[Left 4 Dead][Left 4 Dead 2] info_goal_infected_chase is a  point entity available in the Left 4 Dead series. It attracts infected like the pipe bomb to give them something to do during outros. Put this in hierarchy with the escape vehicle or with a func_tracktrain to make all the infected in the map chase it!"
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -24983,7 +24983,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -24999,7 +24999,7 @@
 		}
 		info_l4d1_survivor_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½info_l4d1_survivor_spawn is a  point entity available in Left 4 Dead 2. It is used to spawn one of the original survivors from L4D1 as seen in The Passing campaign.\n\nYou can use this entity in your maps to create the feeling of a bigger world, like in The Passing. They're able to use weapons and target infected, much like the Survivor bots on your team. However, they're more limited to the bots on your team in that they can't move around the map independently. \nLouis is the only survivor bot capable of using the mounted machine gun and will walk towards it himself, if the navmesh allows it."
+			description = "[Left 4 Dead 2] info_l4d1_survivor_spawn is a  point entity available in Left 4 Dead 2. It is used to spawn one of the original survivors from L4D1 as seen in The Passing campaign.\n\nYou can use this entity in your maps to create the feeling of a bigger world, like in The Passing. They're able to use weapons and target infected, much like the Survivor bots on your team. However, they're more limited to the bots on your team in that they can't move around the map independently. \nLouis is the only survivor bot capable of using the mounted machine gun and will walk towards it himself, if the navmesh allows it."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -25011,7 +25011,7 @@
 					shortinfo = "Character"
 					extra = ""
 					notes = ""
-					description = "Which survivor to spawn here. Bill was included in The Sacrifice update and was not available in the previous DLC, The Passing, due to a significant plot advancement within the series.\n4ï¿½: Bill\n5ï¿½: Zoey\n6ï¿½: Francis\n7ï¿½: Louis"
+					description = "Which survivor to spawn here. Bill was included in The Sacrifice update and was not available in the previous DLC, The Passing, due to a significant plot advancement within the series.\n4 : Bill\n5 : Zoey\n6 : Francis\n7 : Louis"
 					choices = {}
 				}
 				"targetname":
@@ -25038,7 +25038,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -25075,7 +25075,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -25091,7 +25091,7 @@
 		}
 		info_map_parameters_versus = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½info_map_parameters_versus is a  point entity available in the Left 4 Dead series. It defines L4D-specific map parameters for versus games."
+			description = "[Left 4 Dead][Left 4 Dead 2] info_map_parameters_versus is a  point entity available in the Left 4 Dead series. It defines L4D-specific map parameters for versus games."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -25301,7 +25301,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -25317,7 +25317,7 @@
 		}
 		info_remarkable = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½info_remarkable is a  point entity available in the Left 4 Dead series. An object in the world such that characters seeing it will speak a TLK_REMARK concept. Info_remarkable in L4D2 official maps can be found in the commentary text file located in the maps directory within pak01_dir.vpk. Left 4 Dead commentary files can be found in the maps folder of the Left 4 Dead installation for Left 4 Dead (No VPK extraction necessary). This entity can be placed with the Commentary Editor"
+			description = "[Left 4 Dead][Left 4 Dead 2] info_remarkable is a  point entity available in the Left 4 Dead series. An object in the world such that characters seeing it will speak a TLK_REMARK concept. Info_remarkable in L4D2 official maps can be found in the commentary text file located in the maps directory within pak01_dir.vpk. Left 4 Dead commentary files can be found in the maps folder of the Left 4 Dead installation for Left 4 Dead (No VPK extraction necessary). This entity can be placed with the Commentary Editor"
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -25365,14 +25365,14 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
 		}
 		info_survivor_position = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½info_survivor_position is a  point entity available in the Left 4 Dead series. It defines a point where specific survivors can be moved to and locked/unlocked in place by the info_director through the info_directors input/outputs. It is useful for creating introduction sequences that make use of cameras, as it allows you to guarantee where a survivor will not only be standing, but also allows you to use point_viewcontrol_survivor so that it can zoom in on a particular suvivors head, regardless of the difference in height for each survivor. This is important for creating professional looking introduction sequences for the first map of your campaign."
+			description = "[Left 4 Dead][Left 4 Dead 2] info_survivor_position is a  point entity available in the Left 4 Dead series. It defines a point where specific survivors can be moved to and locked/unlocked in place by the info_director through the info_directors input/outputs. It is useful for creating introduction sequences that make use of cameras, as it allows you to guarantee where a survivor will not only be standing, but also allows you to use point_viewcontrol_survivor so that it can zoom in on a particular suvivors head, regardless of the difference in height for each survivor. This is important for creating professional looking introduction sequences for the first map of your campaign."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -25456,7 +25456,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -25481,7 +25481,7 @@
 		}
 		info_survivor_rescue = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½info_survivor_rescue is a  point entity available in the Left 4 Dead series. It is the location of a survivor rescue point."
+			description = "[Left 4 Dead][Left 4 Dead 2] info_survivor_rescue is a  point entity available in the Left 4 Dead series. It is the location of a survivor rescue point."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -25529,7 +25529,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -25545,7 +25545,7 @@
 		}
 		info_zombie_border = 
 		{
-			description = "[Left 4 Dead 2]ï¿½info_zombie_border is a  point entity available in Left 4 Dead 2. No zombies will spawn behind this entity.\nTo do:ï¿½Figure out how the entity works in-game."
+			description = "[Left 4 Dead 2] info_zombie_border is a  point entity available in Left 4 Dead 2. No zombies will spawn behind this entity.\nTo do: Figure out how the entity works in-game."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -25575,7 +25575,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -25609,7 +25609,7 @@
 		}
 		info_zombie_spawn = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½info_zombie_spawn is a  point entity available in the Left 4 Dead series. It is used to spawn a zombie manually.\nGenerally, it is recommended to leave zombie spawning to the AI Director, however there may be uses for it, such as spawning a Tank in a train car like in The Sacrifice."
+			description = "[Left 4 Dead][Left 4 Dead 2] info_zombie_spawn is a  point entity available in the Left 4 Dead series. It is used to spawn a zombie manually.\nGenerally, it is recommended to leave zombie spawning to the AI Director, however there may be uses for it, such as spawning a Tank in a train car like in The Sacrifice."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -25666,7 +25666,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -25707,7 +25707,7 @@
 		}
 		info_item_position = 
 		{
-			description = "[Left 4 Dead 2]ï¿½info_item_position is a  point entity available in Left 4 Dead 2. An entity that represents a possible item location in a map. Scripts can search for these entities and use them to spawn objects for different game modes"
+			description = "[Left 4 Dead 2] info_item_position is a  point entity available in Left 4 Dead 2. An entity that represents a possible item location in a map. Scripts can search for these entities and use them to spawn objects for different game modes"
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -25737,7 +25737,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -25828,7 +25828,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -25892,7 +25892,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -25938,7 +25938,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -25992,7 +25992,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -26129,7 +26129,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -26285,7 +26285,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_1":
@@ -26447,7 +26447,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_2":
@@ -26536,7 +26536,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -26634,7 +26634,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -26786,7 +26786,7 @@
 					shortinfo = "Initial State"
 					extra = ""
 					notes = ""
-					description = "Makes this connection is available the moment the map loads. If there is something blocking the NPC's path while this is on, the NPC may appear to walk straight into that object/hole.\n0ï¿½: Off\n1ï¿½: On"
+					description = "Makes this connection is available the moment the map loads. If there is something blocking the NPC's path while this is on, the NPC may appear to walk straight into that object/hole.\n0 : Off\n1 : On"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_4":
@@ -26795,7 +26795,7 @@
 					shortinfo = "Type of Connection"
 					extra = ""
 					notes = ""
-					description = "How NPCs can use this node. Not all NPCs can do all types.\n1ï¿½: Ground\n2ï¿½: Jump\n4ï¿½: Fly\n8ï¿½: Climb"
+					description = "How NPCs can use this node. Not all NPCs can do all types.\n1 : Ground\n2 : Jump\n4 : Fly\n8 : Climb"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_5":
@@ -26840,7 +26840,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -26877,7 +26877,7 @@
 					shortinfo = "Initial State"
 					extra = ""
 					notes = ""
-					description = "State of the node links the moment the map loads. If there is something blocking the NPC's path while this is on, the NPC may appear to walk straight into that object/hole.\n0ï¿½: Off\n1ï¿½: On"
+					description = "State of the node links the moment the map loads. If there is something blocking the NPC's path while this is on, the NPC may appear to walk straight into that object/hole.\n0 : Off\n1 : On"
 					choices = {}
 				}
 				"for_air_links":
@@ -26931,7 +26931,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -26986,7 +26986,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -27041,7 +27041,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -27087,7 +27087,7 @@
 					shortinfo = "RenderOrder"
 					extra = ""
 					notes = ""
-					description = "Higher values render after lower values (on top). This value can be 0ï¿½3."
+					description = "Higher values render after lower values (on top). This value can be 0–3."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_5":
@@ -27341,7 +27341,7 @@
 					shortinfo = "Control Point 1  to Control Point 63"
 					extra = ""
 					notes = ""
-					description = "Parents a control point to the given entity's origin. If any value is left blank all those following it will be ignored. ï¿½Tip:ï¿½Control point 0(1) is the origin of the info_particle_system itself. ï¿½Note:ï¿½Because the control point is configured on the client, the entity you specify must exist there. This means that most invisible entities (info_target is an exception, as it has the 'Transmit to client' spawnflag) will not work. Your best bet is an info_particle_system, e.g. itself or another one with blank particle name."
+					description = "Parents a control point to the given entity's origin. If any value is left blank all those following it will be ignored.  Tip: Control point 0(1) is the origin of the info_particle_system itself.  Note: Because the control point is configured on the client, the entity you specify must exist there. This means that most invisible entities (info_target is an exception, as it has the 'Transmit to client' spawnflag) will not work. Your best bet is an info_particle_system, e.g. itself or another one with blank particle name."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_5":
@@ -27395,14 +27395,14 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
 		}
 		info_particle_target = 
 		{
-			description = "[Left 4 Dead 2]ï¿½info_particle_target is a  point entity available in Left 4 Dead 2. It is a target for particle system control points."
+			description = "[Left 4 Dead 2] info_particle_target is a  point entity available in Left 4 Dead 2. It is a target for particle system control points."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -27432,7 +27432,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -27541,7 +27541,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -27587,7 +27587,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -27647,7 +27647,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -27702,7 +27702,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -27731,7 +27731,7 @@
 	{
 		logic_choreographed_scene = 
 		{
-			description = "[Half-Life 2]ï¿½logic_choreographed_scene is a  point entity available in the Half-Life 2 series. It manages a choreographed scene of one or more actors.\nFor an example on how this entity can be used, see the npc_gman_overwatch prefab."
+			description = "[Half-Life 2] logic_choreographed_scene is a  point entity available in the Half-Life 2 series. It manages a choreographed scene of one or more actors.\nFor an example on how this entity can be used, see the npc_gman_overwatch prefab."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -27761,7 +27761,7 @@
 					shortinfo = "If an Actor is talking..."
 					extra = ""
 					notes = ""
-					description = "What to do if an actor this scene needs is already talking when this scene is told to start.\n0ï¿½: Start immediately\n1ï¿½: Wait for actor to finish\n2ï¿½: Interrupt at next interrupt event\n3ï¿½: Cancel at next interrupt event"
+					description = "What to do if an actor this scene needs is already talking when this scene is told to start.\n0 : Start immediately\n1 : Wait for actor to finish\n2 : Interrupt at next interrupt event\n3 : Cancel at next interrupt event"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_4":
@@ -27770,7 +27770,7 @@
 					shortinfo = "On player death"
 					extra = ""
 					notes = ""
-					description = "What should this entity do if the player dies\n0ï¿½: Do Nothing\n1ï¿½: Cancel Script and return to AI"
+					description = "What should this entity do if the player dies\n0 : Do Nothing\n1 : Cancel Script and return to AI"
 					choices = {}
 				}
 				"targetname":
@@ -27797,14 +27797,14 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
 		}
 		logic_director_query = 
 		{
-			description = "[Left 4 Dead 2]ï¿½logic_director_query is a  point entity available in Left 4 Dead 2. It is used to output the AI Director's 'anger' value, where the director is angered by players that are performing well. This provides an opportunity for map elements to be adjusted in an attempt to appease the AI Director. Some examples include adjusting the goal distance and increasing/decreasing obscuring weather effects.\nAny number of logic_director_query entities can exist in the same map, each with their own value range and noise settings."
+			description = "[Left 4 Dead 2] logic_director_query is a  point entity available in Left 4 Dead 2. It is used to output the AI Director's 'anger' value, where the director is angered by players that are performing well. This provides an opportunity for map elements to be adjusted in an attempt to appease the AI Director. Some examples include adjusting the goal distance and increasing/decreasing obscuring weather effects.\nAny number of logic_director_query entities can exist in the same map, each with their own value range and noise settings."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -27834,7 +27834,7 @@
 					shortinfo = "Noise"
 					extra = ""
 					notes = ""
-					description = "Randomises the entity's output slightly. ï¿½No noiseï¿½ will cause the output being the exact remapped value of the director's anger, while ï¿½complete noiseï¿½ will result in a random number within the anger range. There are various other levels in between."
+					description = "Randomises the entity's output slightly. “No noise” will cause the output being the exact remapped value of the director's anger, while “complete noise” will result in a random number within the anger range. There are various other levels in between."
 					choices = {}
 				}
 				"targetname":
@@ -27861,14 +27861,14 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
 		}
 		logic_game_event = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½logic_game_event is a  point entity available in the Left 4 Dead series. This entity allows firing of game events. As of this time, there are no parameters available. See the Entity Report available in Hammer for c6m2_bedlam and c6m3_port (part of The Passing campaign) for examples."
+			description = "[Left 4 Dead][Left 4 Dead 2] logic_game_event is a  point entity available in the Left 4 Dead series. This entity allows firing of game events. As of this time, there are no parameters available. See the Entity Report available in Hammer for c6m2_bedlam and c6m3_port (part of The Passing campaign) for examples."
 			flagnotes = ""
 			flags = 
 			{
@@ -27915,14 +27915,14 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
 		}
 		logic_scene_list_manager = 
 		{
-			description = "[Half-Life 2]ï¿½logic_scene_list_manager is a  point entity available in the Half-Life 2 series. It manages a list of logic_choreographed_scene entities. Store choreo scenes in them in order that they will be played by other inputs. Whenever a scene plays, the manager will remove all scenes before that one in the list. The name of another logic_scene_list_manager can be entered in a slot instead of an individual scene, which will cause all scenes in that manager to be removed when a later scene in this list is played."
+			description = "[Half-Life 2] logic_scene_list_manager is a  point entity available in the Half-Life 2 series. It manages a list of logic_choreographed_scene entities. Store choreo scenes in them in order that they will be played by other inputs. Whenever a scene plays, the manager will remove all scenes before that one in the list. The name of another logic_scene_list_manager can be entered in a slot instead of an individual scene, which will cause all scenes in that manager to be removed when a later scene in this list is played."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -27961,14 +27961,14 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
 		}
 		logic_versus_random = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½logic_versus_random is a  point entity available in the Left 4 Dead series. It fires random outputs in the first round of a versus map, and then repeats those outputs in the second round of a versus map. In other words, this entity will pick a random number or a series of random numbers in the first round of a versus game, and then repeat those numbers in the second round. This allows designers to add 'random' changes to a map (like prop_fuel_barrel placement) and repeat those for the second round."
+			description = "[Left 4 Dead][Left 4 Dead 2] logic_versus_random is a  point entity available in the Left 4 Dead series. It fires random outputs in the first round of a versus map, and then repeats those outputs in the second round of a versus map. In other words, this entity will pick a random number or a series of random numbers in the first round of a versus game, and then repeat those numbers in the second round. This allows designers to add 'random' changes to a map (like prop_fuel_barrel placement) and repeat those for the second round."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -27998,7 +27998,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -28071,7 +28071,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -28162,7 +28162,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -28208,7 +28208,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -28273,7 +28273,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -28300,7 +28300,7 @@
 					typename = "targetname"
 					shortinfo = "Attachment 2"
 					extra = ""
-					notes = "Note: These targetnames are evaluated at enable time.ï¿½!activator andï¿½!caller are not accepted."
+					notes = "Note: These targetnames are evaluated at enable time. !activator and !caller are not accepted."
 					description = "The second entity."
 					choices = {}
 				}
@@ -28337,7 +28337,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -28392,7 +28392,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -28447,7 +28447,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -28511,7 +28511,7 @@
 					shortinfo = "Measurement Type"
 					extra = ""
 					notes = ""
-					description = "What to measure.\n0ï¿½: Position\n1ï¿½: Eye position"
+					description = "What to measure.\n0 : Position\n1 : Eye position"
 					choices = {}
 				}
 				"targetname":
@@ -28538,7 +28538,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -28593,7 +28593,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -28629,7 +28629,7 @@
 					shortinfo = "Nav Property"
 					extra = ""
 					notes = ""
-					description = "Ignoreï¿½: NPCs Ignore this when navigating (they'll bump into it)"
+					description = "Ignore : NPCs Ignore this when navigating (they'll bump into it)"
 					choices = {}
 				}
 				"targetname":
@@ -28656,7 +28656,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -28693,7 +28693,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"damagefilter":
@@ -28753,7 +28753,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"StartDisabled":
@@ -28808,7 +28808,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = "Note: logic_script in L4D2 is missing KeyValues for Entity Scripts and Script think function. These additional keys can to be added to the entity with SmartEdit turned off as vscripts <string> and thinkfunction <string>, respectively."
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -28889,7 +28889,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"StartDisabled":
@@ -28939,7 +28939,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -29125,7 +29125,7 @@
 	{
 		point_deathfall_camera = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½point_deathfall_camera is a  point entity available in the Left 4 Dead series.. It is a camera entity that players falling to their deaths look through."
+			description = "[Left 4 Dead][Left 4 Dead 2] point_deathfall_camera is a  point entity available in the Left 4 Dead series.. It is a camera entity that players falling to their deaths look through."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -29173,7 +29173,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -29198,7 +29198,7 @@
 		}
 		point_nav_attribute_region = 
 		{
-			description = "[Left 4 Dead 2]ï¿½point_nav_attribute_region is a  point entity available in Left 4 Dead 2. It is a point entity that holds attributes to be applied to regions of nav areas during generation."
+			description = "[Left 4 Dead 2] point_nav_attribute_region is a  point entity available in Left 4 Dead 2. It is a point entity that holds attributes to be applied to regions of nav areas during generation."
 			flagnotes = ""
 			flags = 
 			{
@@ -29326,7 +29326,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_3":
@@ -29335,7 +29335,7 @@
 					shortinfo = "Precise"
 					extra = ""
 					notes = ""
-					description = "0ï¿½: Off\n1ï¿½: On"
+					description = "0 : Off\n1 : On"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_4":
@@ -29344,7 +29344,7 @@
 					shortinfo = "Crouch"
 					extra = ""
 					notes = ""
-					description = "0ï¿½: Off\n1ï¿½: On"
+					description = "0 : Off\n1 : On"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_5":
@@ -29353,7 +29353,7 @@
 					shortinfo = "Stairs"
 					extra = ""
 					notes = ""
-					description = "0ï¿½: Off\n1ï¿½: On"
+					description = "0 : Off\n1 : On"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_6":
@@ -29362,7 +29362,7 @@
 					shortinfo = "Tank Only"
 					extra = ""
 					notes = ""
-					description = "0ï¿½: Off\n1ï¿½: On"
+					description = "0 : Off\n1 : On"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_7":
@@ -29371,7 +29371,7 @@
 					shortinfo = "Mob Only"
 					extra = ""
 					notes = ""
-					description = "0ï¿½: Off\n1ï¿½: On"
+					description = "0 : Off\n1 : On"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_8":
@@ -29387,7 +29387,7 @@
 		}
 		point_prop_use_target = 
 		{
-			description = "[Left 4 Dead 2]ï¿½point_prop_use_target is a  point entity available in Left 4 Dead 2. It is an use target for carried props. Triggers the prop's use behavior. This is the point entity that players approach and 'fills the gas' or 'drops off the cola' with. Currently only available for gas can and cola props."
+			description = "[Left 4 Dead 2] point_prop_use_target is a  point entity available in Left 4 Dead 2. It is an use target for carried props. Triggers the prop's use behavior. This is the point entity that players approach and 'fills the gas' or 'drops off the cola' with. Currently only available for gas can and cola props."
 			flagnotes = ""
 			flags = 
 			{
@@ -29449,14 +29449,14 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
 		}
 		point_script_use_target = 
 		{
-			description = "[Left 4 Dead 2]ï¿½point_script_use_target is a  point entity available in Left 4 Dead 2. It makes an other entity behave like a button similar to func_button_timed. The entity is intended to be programmed from an attached VScript instead of using Hammer, and calls hook functions in its own scripting scope as well as normal entity outputs. It is mainly used for run-time created entity groups together with a use target script based on usetargets/base_buildable_target.nut. \nSee the scripts in left 4 dead 2/sdk_content/scripting/scripts/vscripts/ for more examples of use."
+			description = "[Left 4 Dead 2] point_script_use_target is a  point entity available in Left 4 Dead 2. It makes an other entity behave like a button similar to func_button_timed. The entity is intended to be programmed from an attached VScript instead of using Hammer, and calls hook functions in its own scripting scope as well as normal entity outputs. It is mainly used for run-time created entity groups together with a use target script based on usetargets/base_buildable_target.nut. \nSee the scripts in left 4 dead 2/sdk_content/scripting/scripts/vscripts/ for more examples of use."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -29555,7 +29555,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -29580,7 +29580,7 @@
 		}
 		point_viewcontrol_survivor = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½point_viewcontrol_survivor is a  point entity available in the Left 4 Dead series. It is a survivor specific camera, that can be used to zoom the camera in from a 3rd person view begining at the cameras location, automatically towards the survivors head ending with a 1st person view. Useful when used in conjuction with a point_viewcontrol_multiplayer for professional looking campaign intro scenes."
+			description = "[Left 4 Dead][Left 4 Dead 2] point_viewcontrol_survivor is a  point entity available in the Left 4 Dead series. It is a survivor specific camera, that can be used to zoom the camera in from a 3rd person view begining at the cameras location, automatically towards the survivors head ending with a 1st person view. Useful when used in conjuction with a point_viewcontrol_multiplayer for professional looking campaign intro scenes."
 			flagnotes = ""
 			flags = 
 			{
@@ -29642,7 +29642,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -29749,7 +29749,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -29849,7 +29849,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -29877,7 +29877,7 @@
 					shortinfo = "Map Name"
 					extra = ""
 					notes = ""
-					description = "Script entry inside above bns file of the map. ï¿½Note:ï¿½This is NOT .bsp file name."
+					description = "Script entry inside above bns file of the map.  Note: This is NOT .bsp file name."
 					choices = {}
 				}
 				"targetname":
@@ -29904,7 +29904,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -29941,7 +29941,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -29978,7 +29978,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -30135,7 +30135,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"StartDisabled":
@@ -30298,7 +30298,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -30359,7 +30359,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -30386,7 +30386,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -30395,7 +30395,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -30461,7 +30461,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -30615,7 +30615,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -30676,7 +30676,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -30703,7 +30703,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -30712,7 +30712,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -30768,7 +30768,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -30832,14 +30832,14 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
 		}
 		point_spotlight = 
 		{
-			description = "point_spotlight is a  point entity available in all Source games. It is a light_dynamic with two glow sprite effects: a beam effect for viewers outside the light cone and a halo effect for viewers inside the cone. \nBy default point_spotlight is told to use the material sprites/glow_test02.vmt. You can change this if you are shipping your own binaries by going into point_spotlight.cpp in the server project, navigating to line 351 and replacing:\nThere you can define your own material.\nTo do:ï¿½Define a way to set a custom materials through this ents keyvalues"
+			description = "point_spotlight is a  point entity available in all Source games. It is a light_dynamic with two glow sprite effects: a beam effect for viewers outside the light cone and a halo effect for viewers inside the cone.\nThe light_dynamic functionality can be disabled with the 'No Dynamic Light' spawnflag. In that state, the spotlight will not actually illuminate other objects on its own and can be used with an accompanying light_spot or env_projectedtexture instead.\nTo do: Define a way to set a custom materials through this ents keyvalues"
 			flagnotes = ""
 			flags = 
 			{
@@ -30928,7 +30928,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -31057,7 +31057,7 @@
 					shortinfo = "Entity To Teleport"
 					extra = ""
 					notes = ""
-					description = "Name of the entity that will be teleported.\nï¿½Tip:ï¿½This can be changed if necessary by using AddOutput."
+					description = "Name of the entity that will be teleported.\n Tip: This can be changed if necessary by using AddOutput."
 					choices = {}
 				}
 				"classname":
@@ -31111,7 +31111,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -31172,7 +31172,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -31199,7 +31199,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -31208,7 +31208,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -31270,7 +31270,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -31288,7 +31288,7 @@
 					typename = "string"
 					shortinfo = "Source Entity"
 					extra = ""
-					notes = "Note: Although the Source Entity is evaluated at activation time,ï¿½!activator is not supported."
+					notes = "Note: Although the Source Entity is evaluated at activation time, !activator is not supported."
 					description = "If specified, tesla lightning will originate from the specified entity. Otherwise, they originate from this entity."
 					choices = {}
 				}
@@ -31424,7 +31424,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -31497,7 +31497,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -31512,13 +31512,13 @@
 				{
 					category = ""
 					description = "Start At Player"
-					notes = "Details: Start the camera at the player's position. ï¿½Bug:ï¿½Breaks the camera movement if the player was still moving when the camera activated."
+					notes = "Details: Start the camera at the player's position.  Bug: Breaks the camera movement if the player was still moving when the camera activated."
 				}
 				"2":
 				{
 					category = ""
 					description = "Follow Player"
-					notes = "Details: This is the same as if you set the lookat target toï¿½!player. ï¿½Bug:ï¿½Causes camera issues in multiplayer."
+					notes = "Details: This is the same as if you set the lookat target to !player.  Bug: Causes camera issues in multiplayer."
 				}
 				"4":
 				{
@@ -31553,8 +31553,8 @@
 				"128":
 				{
 					category = ""
-					description = "Set FOVï¿½(in all games since [Alien Swarm])ï¿½(also in [Garry's Mod])ï¿½!FGD. ()ï¿½All Playersï¿½(only in [Synergy])"
-					notes = "Details: Note:ï¿½Not present in [Alien Swarm]'s FGD, but present in all FGDs onward./nDetails: Controls the view of all players. ï¿½Note:ï¿½point_viewcontrol_multiplayer can be used instead in [Left 4 Dead] Left 4 Dead and later."
+					description = "Set FOV (in all games since [Alien Swarm]) (also in [Garry's Mod]) !FGD. () All Players (only in [Synergy])"
+					notes = "Details: Note: Not present in [Alien Swarm]'s FGD, but present in all FGDs onward./nDetails: Controls the view of all players.  Note: point_viewcontrol_multiplayer can be used instead in [Left 4 Dead] Left 4 Dead and later."
 				}
 			}
 			keyvalnotes = ""
@@ -31636,25 +31636,25 @@
 				{
 					typename = "float"
 					shortinfo = "FOV"
-					extra = "(in all games since [Alien Swarm])ï¿½(also in [Garry's Mod])ï¿½!FGD"
+					extra = "(in all games since [Alien Swarm]) (also in [Garry's Mod]) !FGD"
 					notes = ""
-					description = "The FOV when using this camera.\nï¿½Note:ï¿½Not present in [Alien Swarm]'s FGD, but present in all FGDs onward."
+					description = "The FOV when using this camera.\n Note: Not present in [Alien Swarm]'s FGD, but present in all FGDs onward."
 					choices = {}
 				}
 				"fov_rate":
 				{
 					typename = "float"
 					shortinfo = "FOV rate"
-					extra = "(in all games since [Alien Swarm])ï¿½(also in [Garry's Mod])ï¿½!FGD"
+					extra = "(in all games since [Alien Swarm]) (also in [Garry's Mod]) !FGD"
 					notes = ""
-					description = "How fast we change to the new FOV.\nï¿½Note:ï¿½Not present in [Alien Swarm]'s FGD, but present in all FGDs onward."
+					description = "How fast we change to the new FOV.\n Note: Not present in [Alien Swarm]'s FGD, but present in all FGDs onward."
 					choices = {}
 				}
 				"trackspeed":
 				{
 					typename = "float"
 					shortinfo = "Tracking Speed of the camera"
-					extra = "(in all games since [Portal 2])ï¿½(also in [Garry's Mod])"
+					extra = "(in all games since [Portal 2]) (also in [Garry's Mod])"
 					notes = ""
 					description = "The speed that the camera tries to follow its look target."
 					choices = {}
@@ -31683,7 +31683,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -31703,7 +31703,7 @@
 	{
 		prop_car_alarm = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½prop_car_alarm is a  point entity available in the Left 4 Dead series. This class is the same as prop_physics, but with special outputs used specifically for a car alarm.\nThis entity can sense people firing their weapons next to it and has outputs for that event. It will call a panic event the moment it's assigned model is touched or damaged, but then it will stop functioning like a car alarm and will effectively just be a prop_physics"
+			description = "[Left 4 Dead][Left 4 Dead 2] prop_car_alarm is a  point entity available in the Left 4 Dead series. This class is the same as prop_physics, but with special outputs used specifically for a car alarm.\nThis entity can sense people firing their weapons next to it and has outputs for that event. It will call a panic event the moment it's assigned model is touched or damaged, but then it will stop functioning like a car alarm and will effectively just be a prop_physics"
 			flagnotes = ""
 			flags = 
 			{
@@ -31873,7 +31873,7 @@
 					shortinfo = "Minimum DX Level"
 					extra = ""
 					notes = ""
-					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\nï¿½Warning:ï¿½If these are used, the object may break when the user switches their DirectX settings."
+					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\n Warning: If these are used, the object may break when the user switches their DirectX settings."
 					choices = {}
 				}
 				"maxdxlevel":
@@ -32030,7 +32030,7 @@
 		}
 		prop_car_glass = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½prop_car_glass is a  point entity available in the Left 4 Dead series. This class is the same as prop_dynamic, with a car alarm."
+			description = "[Left 4 Dead][Left 4 Dead 2] prop_car_glass is a  point entity available in the Left 4 Dead series. This class is the same as prop_dynamic, with a car alarm."
 			flagnotes = ""
 			flags = 
 			{
@@ -32266,7 +32266,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Method of collision for this entity.\n0: None\n1: BSP (QPhysics) !FGD ï¿½Bug:ï¿½In [Portal 2] Portal 2, if an entity using QPhysics collisions is hit by Gel, the game will crash!\n2: Bounding Box\n3: Oriented Bounding Box !FGD\n4: Oriented Bounding Box, constrained to Yaw only !FGD\n5: Custom/Test !FGD\n6: VPhysics"
+					description = "Method of collision for this entity.\n0: None\n1: BSP (QPhysics) !FGD  Bug: In [Portal 2] Portal 2, if an entity using QPhysics collisions is hit by Gel, the game will crash!\n2: Bounding Box\n3: Oriented Bounding Box !FGD\n4: Oriented Bounding Box, constrained to Yaw only !FGD\n5: Custom/Test !FGD\n6: VPhysics"
 					choices = {}
 				}
 				"body_or_SetBodyGroup":
@@ -32447,7 +32447,7 @@
 		}
 		prop_door_rotating_checkpoint = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½prop_door_rotating_checkpoint is a  point entity available in the Left 4 Dead series. It is a special variant of prop_door_rotating for checkpoint doors in the world."
+			description = "[Left 4 Dead][Left 4 Dead 2] prop_door_rotating_checkpoint is a  point entity available in the Left 4 Dead series. It is a special variant of prop_door_rotating for checkpoint doors in the world."
 			flagnotes = ""
 			flags = 
 			{
@@ -32512,7 +32512,7 @@
 					shortinfo = "Hardware Type"
 					extra = ""
 					notes = ""
-					description = "The type of mechanism used to open the door (handle, push bar, keypad). The mechanism only appears in the game, not in Hammer.\nNone\nLever (i.e. door handle)\nPush bar\nKeypad ï¿½Note:ï¿½ Keypad hardware has no model ingame."
+					description = "The type of mechanism used to open the door (handle, push bar, keypad). The mechanism only appears in the game, not in Hammer.\nNone\nLever (i.e. door handle)\nPush bar\nKeypad  Note:  Keypad hardware has no model ingame."
 					choices = {}
 				}
 				"spawnpos":
@@ -32629,7 +32629,7 @@
 					shortinfo = "Can Damage Player"
 					extra = "(only in [INFRA])"
 					notes = ""
-					description = "If set, this door will kill the player blocking it. Used for the large blast doors in infra_c7_m2_bunker.\nï¿½Note:ï¿½This replaces the 'Damage Inflicted When Blocked' keyvalue in [INFRA] INFRA."
+					description = "If set, this door will kill the player blocking it. Used for the large blast doors in infra_c7_m2_bunker.\n Note: This replaces the 'Damage Inflicted When Blocked' keyvalue in [INFRA] INFRA."
 					choices = {}
 				}
 				"forceclosed":
@@ -32656,7 +32656,7 @@
 					shortinfo = "Health"
 					extra = "[Obsolete]"
 					notes = ""
-					description = "Deprecated.ï¿½Health for the door."
+					description = "Deprecated. Health for the door."
 					choices = {}
 				}
 				"glowdist":
@@ -32665,7 +32665,7 @@
 					shortinfo = "Glow Distance"
 					extra = "(in all games since [Counter-Strike: Global Offensive])"
 					notes = ""
-					description = "Default is 1024.\nTo do:ï¿½Same as L4D2's Glow Range?"
+					description = "Default is 1024.\nTo do: Same as L4D2's Glow Range?"
 					choices = {}
 				}
 				"glowenabled":
@@ -32737,7 +32737,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -32773,7 +32773,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -32872,7 +32872,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"gmod_allowphysgun":
@@ -32897,7 +32897,7 @@
 		}
 		prop_fuel_barrel = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½prop_fuel_barrel is a  point entity available in the Left 4 Dead series. This is a special destructible physics prop that blows up in several stages when shot."
+			description = "[Left 4 Dead][Left 4 Dead 2] prop_fuel_barrel is a  point entity available in the Left 4 Dead series. This is a special destructible physics prop that blows up in several stages when shot."
 			flagnotes = ""
 			flags = 
 			{
@@ -33034,7 +33034,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -33061,7 +33061,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -33097,7 +33097,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -33122,7 +33122,7 @@
 		}
 		prop_health_cabinet = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½prop_health_cabinet is a  point entity available in the Left 4 Dead series. It is a cabinet containing first aid kits and pain pills. The decision between first aid kits and pain pills cannot be set via entity properties, the AI Director will change the contents of the cabinet depending on how the players are doing. If the cabinet itself is placed over a navigation mesh marked as CHECKPOINT or FINALE it will spawn first aid kits instead of pills."
+			description = "[Left 4 Dead][Left 4 Dead 2] prop_health_cabinet is a  point entity available in the Left 4 Dead series. It is a cabinet containing first aid kits and pain pills. The decision between first aid kits and pain pills cannot be set via entity properties, the AI Director will change the contents of the cabinet depending on how the players are doing. If the cabinet itself is placed over a navigation mesh marked as CHECKPOINT or FINALE it will spawn first aid kits instead of pills."
 			flagnotes = ""
 			flags = 
 			{
@@ -33358,7 +33358,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Method of collision for this entity.\n0: None\n1: BSP (QPhysics) !FGD ï¿½Bug:ï¿½In [Portal 2] Portal 2, if an entity using QPhysics collisions is hit by Gel, the game will crash!\n2: Bounding Box\n3: Oriented Bounding Box !FGD\n4: Oriented Bounding Box, constrained to Yaw only !FGD\n5: Custom/Test !FGD\n6: VPhysics"
+					description = "Method of collision for this entity.\n0: None\n1: BSP (QPhysics) !FGD  Bug: In [Portal 2] Portal 2, if an entity using QPhysics collisions is hit by Gel, the game will crash!\n2: Bounding Box\n3: Oriented Bounding Box !FGD\n4: Oriented Bounding Box, constrained to Yaw only !FGD\n5: Custom/Test !FGD\n6: VPhysics"
 					choices = {}
 				}
 				"body_or_SetBodyGroup":
@@ -33539,7 +33539,7 @@
 		}
 		prop_minigun = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½prop_minigun is a  point entity available in the Left 4 Dead series. It is an usable mounted minigun that is normally used in the rescue point finale to support the survivors."
+			description = "[Left 4 Dead][Left 4 Dead 2] prop_minigun is a  point entity available in the Left 4 Dead series. It is an usable mounted minigun that is normally used in the rescue point finale to support the survivors."
 			flagnotes = ""
 			flags = 
 			{
@@ -33793,7 +33793,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Method of collision for this entity.\n0: None\n1: BSP (QPhysics) !FGD ï¿½Bug:ï¿½In [Portal 2] Portal 2, if an entity using QPhysics collisions is hit by Gel, the game will crash!\n2: Bounding Box\n3: Oriented Bounding Box !FGD\n4: Oriented Bounding Box, constrained to Yaw only !FGD\n5: Custom/Test !FGD\n6: VPhysics"
+					description = "Method of collision for this entity.\n0: None\n1: BSP (QPhysics) !FGD  Bug: In [Portal 2] Portal 2, if an entity using QPhysics collisions is hit by Gel, the game will crash!\n2: Bounding Box\n3: Oriented Bounding Box !FGD\n4: Oriented Bounding Box, constrained to Yaw only !FGD\n5: Custom/Test !FGD\n6: VPhysics"
 					choices = {}
 				}
 				"body_or_SetBodyGroup":
@@ -33974,7 +33974,7 @@
 		}
 		prop_minigun_l4d1 = 
 		{
-			description = "[Left 4 Dead 2]ï¿½prop_minigun_l4d1 is a  point entity available in Left 4 Dead 2. It is the L4D1 version of a mounted gun (that actually looks like a minigun) players can +USE."
+			description = "[Left 4 Dead 2] prop_minigun_l4d1 is a  point entity available in Left 4 Dead 2. It is the L4D1 version of a mounted gun (that actually looks like a minigun) players can +USE."
 			flagnotes = ""
 			flags = 
 			{
@@ -34228,7 +34228,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Method of collision for this entity.\n0: None\n1: BSP (QPhysics) !FGD ï¿½Bug:ï¿½In [Portal 2] Portal 2, if an entity using QPhysics collisions is hit by Gel, the game will crash!\n2: Bounding Box\n3: Oriented Bounding Box !FGD\n4: Oriented Bounding Box, constrained to Yaw only !FGD\n5: Custom/Test !FGD\n6: VPhysics"
+					description = "Method of collision for this entity.\n0: None\n1: BSP (QPhysics) !FGD  Bug: In [Portal 2] Portal 2, if an entity using QPhysics collisions is hit by Gel, the game will crash!\n2: Bounding Box\n3: Oriented Bounding Box !FGD\n4: Oriented Bounding Box, constrained to Yaw only !FGD\n5: Custom/Test !FGD\n6: VPhysics"
 					choices = {}
 				}
 				"body_or_SetBodyGroup":
@@ -34409,7 +34409,7 @@
 		}
 		prop_mounted_machine_gun = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½prop_mounted_machine_gun is a  point entity available in the Left 4 Dead series. It is a usable .50 caliber mounted gun."
+			description = "[Left 4 Dead][Left 4 Dead 2] prop_mounted_machine_gun is a  point entity available in the Left 4 Dead series. It is a usable .50 caliber mounted gun."
 			flagnotes = ""
 			flags = 
 			{
@@ -34663,7 +34663,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Method of collision for this entity.\n0: None\n1: BSP (QPhysics) !FGD ï¿½Bug:ï¿½In [Portal 2] Portal 2, if an entity using QPhysics collisions is hit by Gel, the game will crash!\n2: Bounding Box\n3: Oriented Bounding Box !FGD\n4: Oriented Bounding Box, constrained to Yaw only !FGD\n5: Custom/Test !FGD\n6: VPhysics"
+					description = "Method of collision for this entity.\n0: None\n1: BSP (QPhysics) !FGD  Bug: In [Portal 2] Portal 2, if an entity using QPhysics collisions is hit by Gel, the game will crash!\n2: Bounding Box\n3: Oriented Bounding Box !FGD\n4: Oriented Bounding Box, constrained to Yaw only !FGD\n5: Custom/Test !FGD\n6: VPhysics"
 					choices = {}
 				}
 				"body_or_SetBodyGroup":
@@ -34928,7 +34928,7 @@
 					shortinfo = "Hardware Type"
 					extra = ""
 					notes = ""
-					description = "The type of mechanism used to open the door (handle, push bar, keypad). The mechanism only appears in the game, not in Hammer.\nNone\nLever (i.e. door handle)\nPush bar\nKeypad ï¿½Note:ï¿½ Keypad hardware has no model ingame."
+					description = "The type of mechanism used to open the door (handle, push bar, keypad). The mechanism only appears in the game, not in Hammer.\nNone\nLever (i.e. door handle)\nPush bar\nKeypad  Note:  Keypad hardware has no model ingame."
 					choices = {}
 				}
 				"spawnpos":
@@ -35045,7 +35045,7 @@
 					shortinfo = "Can Damage Player"
 					extra = "(only in [INFRA])"
 					notes = ""
-					description = "If set, this door will kill the player blocking it. Used for the large blast doors in infra_c7_m2_bunker.\nï¿½Note:ï¿½This replaces the 'Damage Inflicted When Blocked' keyvalue in [INFRA] INFRA."
+					description = "If set, this door will kill the player blocking it. Used for the large blast doors in infra_c7_m2_bunker.\n Note: This replaces the 'Damage Inflicted When Blocked' keyvalue in [INFRA] INFRA."
 					choices = {}
 				}
 				"forceclosed":
@@ -35072,7 +35072,7 @@
 					shortinfo = "Health"
 					extra = "[Obsolete]"
 					notes = ""
-					description = "Deprecated.ï¿½Health for the door."
+					description = "Deprecated. Health for the door."
 					choices = {}
 				}
 				"glowdist":
@@ -35081,7 +35081,7 @@
 					shortinfo = "Glow Distance"
 					extra = "(in all games since [Counter-Strike: Global Offensive])"
 					notes = ""
-					description = "Default is 1024.\nTo do:ï¿½Same as L4D2's Glow Range?"
+					description = "Default is 1024.\nTo do: Same as L4D2's Glow Range?"
 					choices = {}
 				}
 				"glowenabled":
@@ -35153,7 +35153,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -35189,7 +35189,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -35288,7 +35288,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"gmod_allowphysgun":
@@ -35558,7 +35558,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Method of collision for this entity.\n0: None\n1: BSP (QPhysics) !FGD ï¿½Bug:ï¿½In [Portal 2] Portal 2, if an entity using QPhysics collisions is hit by Gel, the game will crash!\n2: Bounding Box\n3: Oriented Bounding Box !FGD\n4: Oriented Bounding Box, constrained to Yaw only !FGD\n5: Custom/Test !FGD\n6: VPhysics"
+					description = "Method of collision for this entity.\n0: None\n1: BSP (QPhysics) !FGD  Bug: In [Portal 2] Portal 2, if an entity using QPhysics collisions is hit by Gel, the game will crash!\n2: Bounding Box\n3: Oriented Bounding Box !FGD\n4: Oriented Bounding Box, constrained to Yaw only !FGD\n5: Custom/Test !FGD\n6: VPhysics"
 					choices = {}
 				}
 				"body_or_SetBodyGroup":
@@ -35993,7 +35993,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Method of collision for this entity.\n0: None\n1: BSP (QPhysics) !FGD ï¿½Bug:ï¿½In [Portal 2] Portal 2, if an entity using QPhysics collisions is hit by Gel, the game will crash!\n2: Bounding Box\n3: Oriented Bounding Box !FGD\n4: Oriented Bounding Box, constrained to Yaw only !FGD\n5: Custom/Test !FGD\n6: VPhysics"
+					description = "Method of collision for this entity.\n0: None\n1: BSP (QPhysics) !FGD  Bug: In [Portal 2] Portal 2, if an entity using QPhysics collisions is hit by Gel, the game will crash!\n2: Bounding Box\n3: Oriented Bounding Box !FGD\n4: Oriented Bounding Box, constrained to Yaw only !FGD\n5: Custom/Test !FGD\n6: VPhysics"
 					choices = {}
 				}
 				"body_or_SetBodyGroup":
@@ -36419,7 +36419,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Method of collision for this entity.\n0: None\n1: BSP (QPhysics) !FGD ï¿½Bug:ï¿½In [Portal 2] Portal 2, if an entity using QPhysics collisions is hit by Gel, the game will crash!\n2: Bounding Box\n3: Oriented Bounding Box !FGD\n4: Oriented Bounding Box, constrained to Yaw only !FGD\n5: Custom/Test !FGD\n6: VPhysics"
+					description = "Method of collision for this entity.\n0: None\n1: BSP (QPhysics) !FGD  Bug: In [Portal 2] Portal 2, if an entity using QPhysics collisions is hit by Gel, the game will crash!\n2: Bounding Box\n3: Oriented Bounding Box !FGD\n4: Oriented Bounding Box, constrained to Yaw only !FGD\n5: Custom/Test !FGD\n6: VPhysics"
 					choices = {}
 				}
 				"body_or_SetBodyGroup":
@@ -36770,7 +36770,7 @@
 					shortinfo = "Minimum DX Level"
 					extra = ""
 					notes = ""
-					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\nï¿½Warning:ï¿½If these are used, the object may break when the user switches their DirectX settings."
+					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\n Warning: If these are used, the object may break when the user switches their DirectX settings."
 					choices = {}
 				}
 				"maxdxlevel":
@@ -36927,7 +36927,7 @@
 		}
 		prop_physics_multiplayer = 
 		{
-			description = "prop_physics_multiplayer is a  point entity available in all Source games. It is identical to prop_physics except that it bounces away from collision (if sv_turbophysics is enabled), which helps to avoid the prediction errors that normal physics objects typically generate. \nTo do:ï¿½Test if this issue has been fixed in later versions of Source."
+			description = "prop_physics_multiplayer is a  point entity available in all Source games. It is identical to prop_physics except that it bounces away from collision (if sv_turbophysics is enabled), which helps to avoid the prediction errors that normal physics objects typically generate. \nTo do: Test if this issue has been fixed in later versions of Source."
 			flagnotes = ""
 			flags = 
 			{
@@ -37211,7 +37211,7 @@
 					shortinfo = "Minimum DX Level"
 					extra = ""
 					notes = ""
-					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\nï¿½Warning:ï¿½If these are used, the object may break when the user switches their DirectX settings."
+					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\n Warning: If these are used, the object may break when the user switches their DirectX settings."
 					choices = {}
 				}
 				"maxdxlevel":
@@ -37325,7 +37325,7 @@
 					shortinfo = "sequence"
 					extra = "!FGD"
 					notes = ""
-					description = "The ragdoll will be moved to the first frame of this animation before VPhysics takes over. ï¿½Bug:ï¿½Doesn't function."
+					description = "The ragdoll will be moved to the first frame of this animation before VPhysics takes over.  Bug: Doesn't function."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_2":
@@ -37352,7 +37352,7 @@
 					shortinfo = "Minimum DX Level"
 					extra = ""
 					notes = ""
-					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\nï¿½Warning:ï¿½If these are used, the object may break when the user switches their DirectX settings."
+					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\n Warning: If these are used, the object may break when the user switches their DirectX settings."
 					choices = {}
 				}
 				"maxdxlevel":
@@ -37415,7 +37415,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -37451,7 +37451,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -37532,7 +37532,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"gmod_allowphysgun":
@@ -37569,7 +37569,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "How the prop should interact with other objects.\nNot solid\nUse bounding box\nUse VPhysics (default) ï¿½Note:ï¿½Using this setting on models without a collision mesh will cause the engine to throw a warning upon loading the map. If you see such a warning, reset the collision of all props using the noted model to one of the other two choices."
+					description = "How the prop should interact with other objects.\nNot solid\nUse bounding box\nUse VPhysics (default)  Note: Using this setting on models without a collision mesh will cause the engine to throw a warning upon loading the map. If you see such a warning, reset the collision of all props using the noted model to one of the other two choices."
 					choices = {}
 				}
 				"screenspacefade":
@@ -37614,7 +37614,7 @@
 					shortinfo = "Ignore surface normal for computing vertex lighting"
 					extra = ""
 					notes = ""
-					description = "When vertex lighting is enabled, ignore the surface normal of faces when calculating the vertex lighting.\nï¿½Tip:ï¿½Useful for thin, translucent objects such as leaves on foliage props."
+					description = "When vertex lighting is enabled, ignore the surface normal of faces when calculating the vertex lighting.\n Tip: Useful for thin, translucent objects such as leaves on foliage props."
 					choices = {}
 				}
 				"renderamt":
@@ -37641,7 +37641,7 @@
 					shortinfo = "Generate (and use) lightmaps for this static prop"
 					extra = "(only in [Source][Source][Source])"
 					notes = ""
-					description = "Generate a lightmap for this prop. Requires -StaticPropLighting to be enabled in VRAD. For more information, visit tf2maps.net.\nï¿½Note:ï¿½Lightmapping can be also faked on static props using the Modulate shader in all games, although syncing the lighting can be difficult.\nï¿½Bug:ï¿½[Counter-Strike: Source] This setting doesn't work on models with multiple skins."
+					description = "Generate a lightmap for this prop. Requires -StaticPropLighting to be enabled in VRAD. For more information, visit tf2maps.net.\n Note: Lightmapping can be also faked on static props using the Modulate shader in all games, although syncing the lighting can be difficult.\n Bug: [Counter-Strike: Source] This setting doesn't work on models with multiple skins."
 					choices = {}
 				}
 				"lightmapresolutionx":
@@ -37686,7 +37686,7 @@
 					shortinfo = "Uniform Scaling"
 					extra = "(only in [Counter-Strike: Global Offensive])"
 					notes = ""
-					description = "Evenly scales a given model along the X Y Z axis.\nï¿½Bug:ï¿½In Hammer, undoing/redoing any changes (whether they are slight unit movements or scale changes) will result in the prop appearing 'normal' sized in the 3D Textured Viewport (the model only appears normal sized and the value given is still shown upon reload of the vmf)."
+					description = "Evenly scales a given model along the X Y Z axis.\n Bug: In Hammer, undoing/redoing any changes (whether they are slight unit movements or scale changes) will result in the prop appearing 'normal' sized in the 3D Textured Viewport (the model only appears normal sized and the value given is still shown upon reload of the vmf)."
 					choices = {}
 				}
 				"model":
@@ -37704,7 +37704,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -37740,7 +37740,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -37794,7 +37794,7 @@
 					shortinfo = "Minimum DX Level"
 					extra = ""
 					notes = ""
-					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\nï¿½Warning:ï¿½If these are used, the object may break when the user switches their DirectX settings."
+					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\n Warning: If these are used, the object may break when the user switches their DirectX settings."
 					choices = {}
 				}
 				"maxdxlevel":
@@ -37855,7 +37855,7 @@
 		}
 		prop_wall_breakable = 
 		{
-			description = "[Left 4 Dead 2]ï¿½prop_wall_breakable is a  point entity available in Left 4 Dead 2."
+			description = "[Left 4 Dead 2] prop_wall_breakable is a  point entity available in Left 4 Dead 2."
 			flagnotes = ""
 			flags = 
 			{
@@ -37893,7 +37893,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -37938,7 +37938,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -37974,7 +37974,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -38030,7 +38030,7 @@
 	{
 		scripted_item_drop = 
 		{
-			description = "[Left 4 Dead 2]ï¿½scripted_item_drop is a  point entity available in Left 4 Dead 2. It is a prop similar to prop_physics_override, but with much of its functionality removed. It does not collide with players and has outputs for being touched and picked up, making it useful for simple collectible items."
+			description = "[Left 4 Dead 2] scripted_item_drop is a  point entity available in Left 4 Dead 2. It is a prop similar to prop_physics_override, but with much of its functionality removed. It does not collide with players and has outputs for being touched and picked up, making it useful for simple collectible items."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -38060,7 +38060,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -38105,7 +38105,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -38141,7 +38141,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -38170,7 +38170,7 @@
 	{
 		trigger_active_weapon_detect = 
 		{
-			description = "[Left 4 Dead 2]ï¿½trigger_active_weapon_detect is a  brush entity available in Left 4 Dead 2. It fires an output when touched by a player that has a specific weapon active."
+			description = "[Left 4 Dead 2] trigger_active_weapon_detect is a  brush entity available in Left 4 Dead 2. It fires an output when touched by a player that has a specific weapon active."
 			flagnotes = ""
 			flags = 
 			{
@@ -38237,7 +38237,7 @@
 				"4096":
 				{
 					category = ""
-					description = "Disallow Bots. ()ï¿½Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...)ï¿½(in all games since [Alien Swarm])"
+					description = "Disallow Bots. () Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...) (in all games since [Alien Swarm])"
 					notes = "Note: In [Garry's Mod], flag 4096 is 'Correctly account for object mass' for trigger_push only.[confirm]"
 				}
 			}
@@ -38349,7 +38349,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -38486,7 +38486,7 @@
 				"4096":
 				{
 					category = ""
-					description = "Disallow Bots. ()ï¿½Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...)ï¿½(in all games since [Alien Swarm])"
+					description = "Disallow Bots. () Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...) (in all games since [Alien Swarm])"
 					notes = "Note: In [Garry's Mod], flag 4096 is 'Correctly account for object mass' for trigger_push only.[confirm]"
 				}
 			}
@@ -38589,7 +38589,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -38659,7 +38659,7 @@
 		}
 		trigger_escape = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½trigger_escape is a  brush entity available in the Left 4 Dead series. The trigger indicates if there are Survivors in the volume who can escape the finale."
+			description = "[Left 4 Dead][Left 4 Dead 2] trigger_escape is a  brush entity available in the Left 4 Dead series. The trigger indicates if there are Survivors in the volume who can escape the finale."
 			flagnotes = ""
 			flags = 
 			{
@@ -38726,7 +38726,7 @@
 				"4096":
 				{
 					category = ""
-					description = "Disallow Bots. ()ï¿½Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...)ï¿½(in all games since [Alien Swarm])"
+					description = "Disallow Bots. () Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...) (in all games since [Alien Swarm])"
 					notes = "Note: In [Garry's Mod], flag 4096 is 'Correctly account for object mass' for trigger_push only.[confirm]"
 				}
 			}
@@ -38829,7 +38829,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -38899,7 +38899,7 @@
 		}
 		trigger_finale = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½trigger_finale is a  point entity available in the Left 4 Dead series. The entity triggers the end of the current campaign session. Its location is crucial in determining the end of the escape route, also known as the flow of the single-map campaign or finale map in a multi-map campaign. If trigger_finale is not above the finale arena's nav mesh, the end of the escape route will be determined by the center of the all the nav areas marked with FINALE."
+			description = "[Left 4 Dead][Left 4 Dead 2] trigger_finale is a  point entity available in the Left 4 Dead series. The entity triggers the end of the current campaign session. Its location is crucial in determining the end of the escape route, also known as the flow of the single-map campaign or finale map in a multi-map campaign. If trigger_finale is not above the finale arena's nav mesh, the end of the escape route will be determined by the center of the all the nav areas marked with FINALE."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -38947,7 +38947,7 @@
 					shortinfo = "Finale Type"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Specifies which style of finale to trigger\n0ï¿½: Standard\n1ï¿½: Gauntlet\n2ï¿½: Custom\n4ï¿½: Scavenge"
+					description = "Specifies which style of finale to trigger\n0 : Standard\n1 : Gauntlet\n2 : Custom\n4 : Scavenge"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_6":
@@ -39001,7 +39001,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -39026,7 +39026,7 @@
 		}
 		trigger_hurt_ghost = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½trigger_hurt_ghost is a  point entity available in the Left 4 Dead series."
+			description = "[Left 4 Dead][Left 4 Dead 2] trigger_hurt_ghost is a  point entity available in the Left 4 Dead series."
 			flagnotes = ""
 			flags = 
 			{
@@ -39093,7 +39093,7 @@
 				"4096":
 				{
 					category = ""
-					description = "Disallow Bots. ()ï¿½Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...)ï¿½(in all games since [Alien Swarm])"
+					description = "Disallow Bots. () Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...) (in all games since [Alien Swarm])"
 					notes = "Note: In [Garry's Mod], flag 4096 is 'Correctly account for object mass' for trigger_push only.[confirm]"
 				}
 			}
@@ -39140,7 +39140,7 @@
 		}
 		trigger_standoff = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½trigger_standoff is a  point entity available in the Left 4 Dead series. Standoff Trigger. [Clarify]"
+			description = "[Left 4 Dead][Left 4 Dead 2] trigger_standoff is a  point entity available in the Left 4 Dead series. Standoff Trigger. [Clarify]"
 			flagnotes = ""
 			flags = 
 			{
@@ -39214,7 +39214,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -39230,7 +39230,7 @@
 		}
 		trigger_upgrade_laser_sight = 
 		{
-			description = "[Left 4 Dead 2]ï¿½trigger_upgrade_laser_sight is a  brush entity available in Left 4 Dead 2. The entity gives laser sight upgrade to players within the volume. For instance, when the volume is disabled, players lose the laser sights given. It is used in the final map of The Passing to automatically equip the L4D1 survivors with laser sights."
+			description = "[Left 4 Dead 2] trigger_upgrade_laser_sight is a  brush entity available in Left 4 Dead 2. The entity gives laser sight upgrade to players within the volume. For instance, when the volume is disabled, players lose the laser sights given. It is used in the final map of The Passing to automatically equip the L4D1 survivors with laser sights."
 			flagnotes = ""
 			flags = 
 			{
@@ -39297,7 +39297,7 @@
 				"4096":
 				{
 					category = ""
-					description = "Disallow Bots. ()ï¿½Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...)ï¿½(in all games since [Alien Swarm])"
+					description = "Disallow Bots. () Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...) (in all games since [Alien Swarm])"
 					notes = "Note: In [Garry's Mod], flag 4096 is 'Correctly account for object mass' for trigger_push only.[confirm]"
 				}
 			}
@@ -39400,7 +39400,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -39536,7 +39536,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -39661,7 +39661,7 @@
 				"4096":
 				{
 					category = ""
-					description = "Disallow Bots. ()ï¿½Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...)ï¿½(in all games since [Alien Swarm])"
+					description = "Disallow Bots. () Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...) (in all games since [Alien Swarm])"
 					notes = "Note: In [Garry's Mod], flag 4096 is 'Correctly account for object mass' for trigger_push only.[confirm]"
 				}
 			}
@@ -39773,7 +39773,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -39910,7 +39910,7 @@
 				"4096":
 				{
 					category = ""
-					description = "Disallow Bots. ()ï¿½Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...)ï¿½(in all games since [Alien Swarm])"
+					description = "Disallow Bots. () Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...) (in all games since [Alien Swarm])"
 					notes = "Note: In [Garry's Mod], flag 4096 is 'Correctly account for object mass' for trigger_push only.[confirm]"
 				}
 			}
@@ -40014,7 +40014,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"origin":
@@ -40191,7 +40191,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -40328,7 +40328,7 @@
 				"4096":
 				{
 					category = ""
-					description = "Disallow Bots. ()ï¿½Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...)ï¿½(in all games since [Alien Swarm])"
+					description = "Disallow Bots. () Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...) (in all games since [Alien Swarm])"
 					notes = "Note: In [Garry's Mod], flag 4096 is 'Correctly account for object mass' for trigger_push only.[confirm]"
 				}
 			}
@@ -40350,7 +40350,7 @@
 					shortinfo = "Entire Team Number"
 					extra = "(in all games since [Left 4 Dead])"
 					notes = ""
-					description = "If the entire team is touching, fire OnEntireTeamStartTouch\n0ï¿½: None\n2ï¿½: Survivor\n3ï¿½: Infected"
+					description = "If the entire team is touching, fire OnEntireTeamStartTouch\n0 : None\n2 : Survivor\n3 : Infected"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_3":
@@ -40467,7 +40467,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -40604,7 +40604,7 @@
 				"4096":
 				{
 					category = ""
-					description = "Disallow Bots. ()ï¿½Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...)ï¿½(in all games since [Alien Swarm])"
+					description = "Disallow Bots. () Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...) (in all games since [Alien Swarm])"
 					notes = "Note: In [Garry's Mod], flag 4096 is 'Correctly account for object mass' for trigger_push only.[confirm]"
 				}
 			}
@@ -40707,7 +40707,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -40911,7 +40911,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -41048,7 +41048,7 @@
 				"4096":
 				{
 					category = ""
-					description = "Disallow Bots. ()ï¿½Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...)ï¿½(in all games since [Alien Swarm])"
+					description = "Disallow Bots. () Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...) (in all games since [Alien Swarm])"
 					notes = "Note: In [Garry's Mod], flag 4096 is 'Correctly account for object mass' for trigger_push only.[confirm]"
 				}
 			}
@@ -41169,7 +41169,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -41299,7 +41299,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Only Falling Players"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½(also in [Garry's Mod])"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) (also in [Garry's Mod])"
 					notes = ""
 					description = "Only affect players if they are falling (and not pressing jump)."
 					choices = {}
@@ -41308,7 +41308,7 @@
 				{
 					typename = "float"
 					shortinfo = "Player fall speed"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½(also in [Garry's Mod])"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) (also in [Garry's Mod])"
 					notes = ""
 					description = "A player must be falling this fast for them to be pushed."
 					choices = {}
@@ -41384,7 +41384,7 @@
 				"4096":
 				{
 					category = ""
-					description = "Disallow Bots. ()ï¿½Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...)ï¿½(in all games since [Alien Swarm])"
+					description = "Disallow Bots. () Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...) (in all games since [Alien Swarm])"
 					notes = "Note: In [Garry's Mod], flag 4096 is 'Correctly account for object mass' for trigger_push only.[confirm]"
 				}
 			}
@@ -41487,7 +41487,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -41587,7 +41587,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -41661,7 +41661,7 @@
 				"4096":
 				{
 					category = ""
-					description = "Disallow Bots. ()ï¿½Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...)ï¿½(in all games since [Alien Swarm])"
+					description = "Disallow Bots. () Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...) (in all games since [Alien Swarm])"
 					notes = "Note: In [Garry's Mod], flag 4096 is 'Correctly account for object mass' for trigger_push only.[confirm]"
 				}
 			}
@@ -41773,7 +41773,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -41910,7 +41910,7 @@
 				"4096":
 				{
 					category = ""
-					description = "Disallow Bots. ()ï¿½Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...)ï¿½(in all games since [Alien Swarm])"
+					description = "Disallow Bots. () Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...) (in all games since [Alien Swarm])"
 					notes = "Note: In [Garry's Mod], flag 4096 is 'Correctly account for object mass' for trigger_push only.[confirm]"
 				}
 			}
@@ -42031,7 +42031,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -42140,7 +42140,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -42177,7 +42177,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -42251,7 +42251,7 @@
 				"4096":
 				{
 					category = ""
-					description = "Disallow Bots. ()ï¿½Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...)ï¿½(in all games since [Alien Swarm])"
+					description = "Disallow Bots. () Correctly account for object mass (trigger_push used to assume 100Kg) and multiple component physics objects (car, blob...) (in all games since [Alien Swarm])"
 					notes = "Note: In [Garry's Mod], flag 4096 is 'Correctly account for object mass' for trigger_push only.[confirm]"
 				}
 			}
@@ -42399,7 +42399,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -42482,7 +42482,7 @@
 	{
 		upgrade_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½upgrade_spawn is a  point entity available in Left 4 Dead 2. It is a configurable spawner for weapon upgrades."
+			description = "[Left 4 Dead 2] upgrade_spawn is a  point entity available in Left 4 Dead 2. It is a configurable spawner for weapon upgrades."
 			flagnotes = ""
 			flags = 
 			{
@@ -42553,7 +42553,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -42588,7 +42588,7 @@
 	{
 		weapon_adrenaline_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½weapon_adrenaline_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for adrenaline."
+			description = "[Left 4 Dead 2] weapon_adrenaline_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for adrenaline."
 			flagnotes = ""
 			flags = 
 			{
@@ -42638,7 +42638,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -42683,7 +42683,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -42710,7 +42710,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -42746,7 +42746,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -42771,7 +42771,7 @@
 		}
 		weapon_ammo_spawn = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½weapon_ammo_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawnpoint for ammo restock."
+			description = "[Left 4 Dead][Left 4 Dead 2] weapon_ammo_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawnpoint for ammo restock."
 			flagnotes = ""
 			flags = 
 			{
@@ -42818,7 +42818,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -42863,7 +42863,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -42890,7 +42890,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -42926,7 +42926,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -42951,7 +42951,7 @@
 		}
 		weapon_autoshotgun_spawn = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½weapon_autoshotgun_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawn point for automatic shotguns."
+			description = "[Left 4 Dead][Left 4 Dead 2] weapon_autoshotgun_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawn point for automatic shotguns."
 			flagnotes = ""
 			flags = 
 			{
@@ -42998,7 +42998,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -43043,7 +43043,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -43070,7 +43070,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -43106,7 +43106,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -43131,7 +43131,7 @@
 		}
 		weapon_chainsaw_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½weapon_chainsaw_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a chainsaw."
+			description = "[Left 4 Dead 2] weapon_chainsaw_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a chainsaw."
 			flagnotes = ""
 			flags = 
 			{
@@ -43178,7 +43178,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -43223,7 +43223,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -43250,7 +43250,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -43286,7 +43286,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -43311,7 +43311,7 @@
 		}
 		weapon_defibrillator_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½weapon_defibrillator_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a defibrillator."
+			description = "[Left 4 Dead 2] weapon_defibrillator_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a defibrillator."
 			flagnotes = ""
 			flags = 
 			{
@@ -43361,7 +43361,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -43406,7 +43406,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -43433,7 +43433,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -43469,7 +43469,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -43494,7 +43494,7 @@
 		}
 		weapon_first_aid_kit_spawn = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½weapon_first_aid_kit_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawn point for first aid kits."
+			description = "[Left 4 Dead][Left 4 Dead 2] weapon_first_aid_kit_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawn point for first aid kits."
 			flagnotes = ""
 			flags = 
 			{
@@ -43544,7 +43544,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -43589,7 +43589,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -43616,7 +43616,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -43652,7 +43652,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -43677,7 +43677,7 @@
 		}
 		weapon_gascan_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½weapon_gascan_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a gas can."
+			description = "[Left 4 Dead 2] weapon_gascan_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a gas can."
 			flagnotes = ""
 			flags = 
 			{
@@ -43727,7 +43727,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -43772,7 +43772,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -43799,7 +43799,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -43835,7 +43835,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -43860,7 +43860,7 @@
 		}
 		weapon_grenade_launcher_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½weapon_grenade_launcher_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a grenade launcher."
+			description = "[Left 4 Dead 2] weapon_grenade_launcher_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a grenade launcher."
 			flagnotes = ""
 			flags = 
 			{
@@ -43907,7 +43907,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -43952,7 +43952,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -43979,7 +43979,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -44015,7 +44015,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -44040,7 +44040,7 @@
 		}
 		weapon_hunting_rifle_spawn = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½weapon_hunting_rifle_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawn point for hunting rifles."
+			description = "[Left 4 Dead][Left 4 Dead 2] weapon_hunting_rifle_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawn point for hunting rifles."
 			flagnotes = ""
 			flags = 
 			{
@@ -44087,7 +44087,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -44132,7 +44132,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -44159,7 +44159,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -44195,7 +44195,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -44220,7 +44220,7 @@
 		}
 		weapon_item_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½weapon_item_spawn is a  point entity available in Left 4 Dead 2. It is a spawn point for any available item, except weapon upgrades."
+			description = "[Left 4 Dead 2] weapon_item_spawn is a  point entity available in Left 4 Dead 2. It is a spawn point for any available item, except weapon upgrades."
 			flagnotes = ""
 			flags = 
 			{
@@ -44385,7 +44385,7 @@
 		}
 		weapon_melee_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½weapon_melee_spawn is a  point entity available in Left 4 Dead 2. Is is a spawn point for any melee weapon."
+			description = "[Left 4 Dead 2] weapon_melee_spawn is a  point entity available in Left 4 Dead 2. Is is a spawn point for any melee weapon."
 			flagnotes = ""
 			flags = 
 			{
@@ -44412,7 +44412,7 @@
 		}
 		weapon_molotov_spawn = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½weapon_molotov_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawn point for Molotov cocktails."
+			description = "[Left 4 Dead][Left 4 Dead 2] weapon_molotov_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawn point for Molotov cocktails."
 			flagnotes = ""
 			flags = 
 			{
@@ -44459,7 +44459,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -44504,7 +44504,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -44531,7 +44531,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -44567,7 +44567,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -44592,7 +44592,7 @@
 		}
 		weapon_pain_pills_spawn = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½weapon_pain_pills_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawn point for pain pills."
+			description = "[Left 4 Dead][Left 4 Dead 2] weapon_pain_pills_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawn point for pain pills."
 			flagnotes = ""
 			flags = 
 			{
@@ -44642,7 +44642,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -44687,7 +44687,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -44714,7 +44714,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -44750,7 +44750,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -44775,7 +44775,7 @@
 		}
 		weapon_pipe_bomb_spawn = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½weapon_pipe_bomb_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawn point for pipe bombs."
+			description = "[Left 4 Dead][Left 4 Dead 2] weapon_pipe_bomb_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawn point for pipe bombs."
 			flagnotes = ""
 			flags = 
 			{
@@ -44822,7 +44822,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -44867,7 +44867,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -44894,7 +44894,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -44930,7 +44930,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -44955,7 +44955,7 @@
 		}
 		weapon_pistol_magnum_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½weapon_pistol_magnum_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a magnum pistol."
+			description = "[Left 4 Dead 2] weapon_pistol_magnum_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a magnum pistol."
 			flagnotes = ""
 			flags = 
 			{
@@ -45002,7 +45002,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -45047,7 +45047,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -45074,7 +45074,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -45110,7 +45110,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -45135,7 +45135,7 @@
 		}
 		weapon_pistol_spawn = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½weapon_pistol_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawn point for pistols."
+			description = "[Left 4 Dead][Left 4 Dead 2] weapon_pistol_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawn point for pistols."
 			flagnotes = ""
 			flags = 
 			{
@@ -45182,7 +45182,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -45227,7 +45227,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -45254,7 +45254,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -45290,7 +45290,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -45315,7 +45315,7 @@
 		}
 		weapon_pumpshotgun_spawn = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½weapon_pumpshotgun_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawn point for pump shotguns."
+			description = "[Left 4 Dead][Left 4 Dead 2] weapon_pumpshotgun_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawn point for pump shotguns."
 			flagnotes = ""
 			flags = 
 			{
@@ -45362,7 +45362,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -45407,7 +45407,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -45434,7 +45434,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -45470,7 +45470,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -45495,7 +45495,7 @@
 		}
 		weapon_rifle_ak47_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½weapon_rifle_ak47_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for the AK47 rifle."
+			description = "[Left 4 Dead 2] weapon_rifle_ak47_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for the AK47 rifle."
 			flagnotes = ""
 			flags = 
 			{
@@ -45542,7 +45542,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -45587,7 +45587,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -45614,7 +45614,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -45650,7 +45650,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -45675,7 +45675,7 @@
 		}
 		weapon_rifle_desert_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½weapon_rifle_desert_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for the desert rifle."
+			description = "[Left 4 Dead 2] weapon_rifle_desert_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for the desert rifle."
 			flagnotes = ""
 			flags = 
 			{
@@ -45722,7 +45722,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -45767,7 +45767,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -45794,7 +45794,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -45830,7 +45830,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -45855,7 +45855,7 @@
 		}
 		weapon_rifle_m60_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½weapon_rifle_m60_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a M60 machinegun."
+			description = "[Left 4 Dead 2] weapon_rifle_m60_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a M60 machinegun."
 			flagnotes = ""
 			flags = 
 			{
@@ -45902,7 +45902,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -45947,7 +45947,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -45974,7 +45974,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -46010,7 +46010,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -46043,7 +46043,7 @@
 		}
 		weapon_rifle_spawn = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½weapon_rifle_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawnpoint for an assault rifle."
+			description = "[Left 4 Dead][Left 4 Dead 2] weapon_rifle_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawnpoint for an assault rifle."
 			flagnotes = ""
 			flags = 
 			{
@@ -46090,7 +46090,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -46135,7 +46135,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -46162,7 +46162,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -46198,7 +46198,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -46223,7 +46223,7 @@
 		}
 		weapon_scavenge_item_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½weapon_scavenge_item_spawn is a  point entity available in Left 4 Dead 2. It is a spawn for a 'scavenge item'. It is a variant of the weapon_gascan_spawn that is specially designed for the scavenge game mode."
+			description = "[Left 4 Dead 2] weapon_scavenge_item_spawn is a  point entity available in Left 4 Dead 2. It is a spawn for a 'scavenge item'. It is a variant of the weapon_gascan_spawn that is specially designed for the scavenge game mode."
 			flagnotes = ""
 			flags = 
 			{
@@ -46255,7 +46255,7 @@
 					shortinfo = "Initial Glow State"
 					extra = ""
 					notes = ""
-					description = "0ï¿½: OFF\n3ï¿½: ON"
+					description = "0 : OFF\n3 : ON"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_2":
@@ -46282,7 +46282,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -46327,7 +46327,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -46354,7 +46354,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -46390,7 +46390,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -46415,7 +46415,7 @@
 		}
 		weapon_shotgun_chrome_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½weapon_shotgun_chrome_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a chrome shotgun."
+			description = "[Left 4 Dead 2] weapon_shotgun_chrome_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a chrome shotgun."
 			flagnotes = ""
 			flags = 
 			{
@@ -46462,7 +46462,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -46507,7 +46507,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -46534,7 +46534,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -46570,7 +46570,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -46595,7 +46595,7 @@
 		}
 		weapon_shotgun_spas_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½weapon_shotgun_spas_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a SPAS shotgun."
+			description = "[Left 4 Dead 2] weapon_shotgun_spas_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a SPAS shotgun."
 			flagnotes = ""
 			flags = 
 			{
@@ -46642,7 +46642,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -46687,7 +46687,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -46714,7 +46714,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -46750,7 +46750,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -46783,7 +46783,7 @@
 		}
 		weapon_smg_silenced_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½weapon_smg_silenced_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a silenced micro-UZI."
+			description = "[Left 4 Dead 2] weapon_smg_silenced_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a silenced micro-UZI."
 			flagnotes = ""
 			flags = 
 			{
@@ -46830,7 +46830,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -46875,7 +46875,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -46902,7 +46902,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -46938,7 +46938,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -46963,7 +46963,7 @@
 		}
 		weapon_smg_spawn = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½weapon_smg_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawn point for submachine guns."
+			description = "[Left 4 Dead][Left 4 Dead 2] weapon_smg_spawn is a  point entity available in the Left 4 Dead series. It is a possible spawn point for submachine guns."
 			flagnotes = ""
 			flags = 
 			{
@@ -47010,7 +47010,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -47055,7 +47055,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -47082,7 +47082,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -47118,7 +47118,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -47151,7 +47151,7 @@
 		}
 		weapon_sniper_military_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½weapon_sniper_military_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a military sniper rifle."
+			description = "[Left 4 Dead 2] weapon_sniper_military_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a military sniper rifle."
 			flagnotes = ""
 			flags = 
 			{
@@ -47198,7 +47198,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -47243,7 +47243,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -47270,7 +47270,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -47306,7 +47306,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -47339,7 +47339,7 @@
 		}
 		weapon_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½weapon_spawn is a  point entity available in Left 4 Dead 2. It is a configurable spawner for any non-melee weapon."
+			description = "[Left 4 Dead 2] weapon_spawn is a  point entity available in Left 4 Dead 2. It is a configurable spawner for any non-melee weapon."
 			flagnotes = ""
 			flags = 
 			{
@@ -47413,7 +47413,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -47458,7 +47458,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -47485,7 +47485,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -47521,7 +47521,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -47546,7 +47546,7 @@
 		}
 		weapon_upgradepack_explosive_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½weapon_upgradepack_explosive_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for an explosive ammo pack."
+			description = "[Left 4 Dead 2] weapon_upgradepack_explosive_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for an explosive ammo pack."
 			flagnotes = ""
 			flags = 
 			{
@@ -47596,7 +47596,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -47641,7 +47641,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -47668,7 +47668,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -47704,7 +47704,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -47729,7 +47729,7 @@
 		}
 		weapon_upgradepack_incendiary_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½weapon_upgradepack_incendiary_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for an incendiary ammo pack."
+			description = "[Left 4 Dead 2] weapon_upgradepack_incendiary_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for an incendiary ammo pack."
 			flagnotes = ""
 			flags = 
 			{
@@ -47779,7 +47779,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -47824,7 +47824,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -47851,7 +47851,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -47887,7 +47887,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -47912,7 +47912,7 @@
 		}
 		weapon_vomitjar_spawn = 
 		{
-			description = "[Left 4 Dead 2]ï¿½weapon_vomitjar_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a vomit jar."
+			description = "[Left 4 Dead 2] weapon_vomitjar_spawn is a  point entity available in Left 4 Dead 2. It is a possible spawn point for a vomit jar."
 			flagnotes = ""
 			flags = 
 			{
@@ -47959,7 +47959,7 @@
 					shortinfo = "Collisions"
 					extra = ""
 					notes = ""
-					description = "Collision box type.\n0ï¿½: Not Solid\n2ï¿½: Use Bounding Box\n6ï¿½: Use VPhysics"
+					description = "Collision box type.\n0 : Not Solid\n2 : Use Bounding Box\n6 : Use VPhysics"
 					choices = {}
 				}
 				"parentname":
@@ -48004,7 +48004,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -48031,7 +48031,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -48067,7 +48067,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -48220,7 +48220,7 @@
 		}
 		weapon_molotov = 
 		{
-			description = "[Counter-Strike: Global Offensive]ï¿½weapon_molotov is a  point entity available in Counter-Strike: Global Offensive."
+			description = "[Counter-Strike: Global Offensive] weapon_molotov is a  point entity available in Counter-Strike: Global Offensive."
 			flagnotes = ""
 			flags = 
 			{
@@ -48267,7 +48267,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -48315,7 +48315,7 @@
 		}
 		weapon_pistol = 
 		{
-			description = "[Half-Life 2]ï¿½weapon_pistol is a  point entity available in the Half-Life 2 series."
+			description = "[Half-Life 2] weapon_pistol is a  point entity available in the Half-Life 2 series."
 			flagnotes = ""
 			flags = 
 			{
@@ -48437,7 +48437,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -48498,7 +48498,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -48525,7 +48525,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -48534,7 +48534,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -48840,7 +48840,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -48901,7 +48901,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -48928,7 +48928,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -48937,7 +48937,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -49125,7 +49125,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -49186,7 +49186,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -49213,7 +49213,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -49222,7 +49222,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -49283,7 +49283,7 @@
 	{
 		infected = 
 		{
-			description = "[Left 4 Dead][Left 4 Dead 2]ï¿½infected is a  point entity available in the Left 4 Dead series."
+			description = "[Left 4 Dead][Left 4 Dead 2] infected is a  point entity available in the Left 4 Dead series."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -49369,7 +49369,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -49541,7 +49541,7 @@
 	{
 		ai_speechfilter = 
 		{
-			description = "ai_speechfilter is a  point entity available in all Source games. The entity allows to adjust how much an NPC will idle chatter to other NPCï¿½s the player. This is quite useful, especially if you have a script setup where idle chatter will seem out of place, or get in the way of a Face Poser scene. Speech patterns for NPCs are defined in Response System.\n In code, it is represented by class CAI_SpeechFilter, defined in ai_speechfilter.cpp."
+			description = "ai_speechfilter is a  point entity available in all Source games. The entity allows to adjust how much an NPC will idle chatter to other NPC’s the player. This is quite useful, especially if you have a script setup where idle chatter will seem out of place, or get in the way of a Face Poser scene. Speech patterns for NPCs are defined in Response System.\n In code, it is represented by class CAI_SpeechFilter, defined in ai_speechfilter.cpp."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -49634,7 +49634,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -49695,7 +49695,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -49722,7 +49722,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -49731,7 +49731,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -49751,20 +49751,20 @@
 				"1":
 				{
 					category = ""
-					description = "Play everywhere\nSound plays at a constant volume, no matter how far away the listener is from the sound source. To do\tï¿½How does this interact with env_microphone sound detection?"
-					notes = "Details: Bug:ï¿½This flag is broken at engine level for Soundscripts. It will only work when a sound is played with its raw filename."
+					description = "Play everywhere\nSound plays at a constant volume, no matter how far away the listener is from the sound source. To do\t How does this interact with env_microphone sound detection?"
+					notes = "Details: Bug: This flag is broken at engine level for Soundscripts. It will only work when a sound is played with its raw filename."
 				}
 				"16":
 				{
 					category = ""
 					description = "Start Silent"
-					notes = "Details: The map will start without this sound playing. Enabled by default. ï¿½Bug:ï¿½Looping sounds that do not start silent cannot be controlled!"
+					notes = "Details: The map will start without this sound playing. Enabled by default.  Bug: Looping sounds that do not start silent cannot be controlled!"
 				}
 				"32":
 				{
 					category = ""
 					description = "Is NOT Looped"
-					notes = "Details: Changes how the ambient_generic handles stopping and starting playback. It won't stop a sound that loops from looping, but it is still very important to set it to the right value. You might not be able to stop and/or start the sound if it isn't! ï¿½Bug:ï¿½Having this option ticked while using a looped sound WILL prevent you from controlling it!"
+					notes = "Details: Changes how the ambient_generic handles stopping and starting playback. It won't stop a sound that loops from looping, but it is still very important to set it to the right value. You might not be able to stop and/or start the sound if it isn't!  Bug: Having this option ticked while using a looped sound WILL prevent you from controlling it!"
 				}
 			}
 			keyvalnotes = ""
@@ -49776,7 +49776,7 @@
 					shortinfo = "Sound Name"
 					extra = ""
 					notes = ""
-					description = "The soundscript name of, or direct path to, the sound to play. For scripted sentences, type '!' followed by the sentence name. (Example: !COMBINE_THROW_GRENADE4) ï¿½Note:ï¿½Music should be flagged as music with the '#' character before the sound path (e.g. #music/song01.wav) and placed in 'sound/music/...' directory in order for it to be affected by the 'Music Volume' slider in the options menu."
+					description = "The soundscript name of, or direct path to, the sound to play. For scripted sentences, type '!' followed by the sentence name. (Example: !COMBINE_THROW_GRENADE4)  Note: Music should be flagged as music with the '#' character before the sound path (e.g. #music/song01.wav) and placed in 'sound/music/...' directory in order for it to be affected by the 'Music Volume' slider in the options menu."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_1":
@@ -49785,7 +49785,7 @@
 					shortinfo = "Max Audible Distance"
 					extra = ""
 					notes = ""
-					description = "Maximum distance in units at which the sound plays for a client. ï¿½Bug:ï¿½The sound still actually plays outside the distance. ï¿½Bug:ï¿½Sounds may still be audible far outside the distance due to DSP. ï¿½Note:ï¿½Volume fades to nothing as the player approaches this distance, which can make it seem as if the sound stops playing too early."
+					description = "Maximum distance in units at which the sound plays for a client.  Bug: The sound still actually plays outside the distance.  Bug: Sounds may still be audible far outside the distance due to DSP.  Note: Volume fades to nothing as the player approaches this distance, which can make it seem as if the sound stops playing too early."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_2":
@@ -49794,7 +49794,7 @@
 					shortinfo = "SourceEntityName"
 					extra = ""
 					notes = ""
-					description = "If specified, the sound will play from this entity instead of the ambient_generic. If the target is an NPC capable of lipsynching, and phoneme data is found within the sound, the target will lip-sync to it. ï¿½Bug:ï¿½If the ambient_generic is killed, the sound will play at the origin of the map (at 0,0,0). ï¿½Bug:ï¿½Entity must be spawned at map start, or else sound will play at the location of the ambient_generic. Using AddOutput to assign the SourceEntityName after the entity spawns does not work. ï¿½Bug:ï¿½Multiple ambient_generics won't stack on the same entity. ï¿½Note:ï¿½Ambient_generics will only play from a single entity. If there are multiple entities with the same target name, the sound will only play from the first one it finds. (Only tested in [Team Fortress 2])"
+					description = "If specified, the sound will play from this entity instead of the ambient_generic. If the target is an NPC capable of lipsynching, and phoneme data is found within the sound, the target will lip-sync to it.  Bug: If the ambient_generic is killed, the sound will play at the origin of the map (at 0,0,0).  Bug: Entity must be spawned at map start, or else sound will play at the location of the ambient_generic. Using AddOutput to assign the SourceEntityName after the entity spawns does not work.  Bug: Multiple ambient_generics won't stack on the same entity.  Note: Ambient_generics will only play from a single entity. If there are multiple entities with the same target name, the sound will only play from the first one it finds. (Only tested in [Team Fortress 2])"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_3":
@@ -49803,7 +49803,7 @@
 					shortinfo = "Volume"
 					extra = ""
 					notes = ""
-					description = "How loud to play the sound. 0 is silent and 10 is normal. Default is 10.\nï¿½Tip:ï¿½This keyvalue doesn't allow decimals, but the Volume input does.\nï¿½Bug:ï¿½The sound does not play at all if the volume is 0."
+					description = "How loud to play the sound. 0 is silent and 10 is normal. Default is 10.\n Tip: This keyvalue doesn't allow decimals, but the Volume input does.\n Bug: The sound does not play at all if the volume is 0."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_4":
@@ -49839,7 +49839,7 @@
 					shortinfo = "Pitch"
 					extra = ""
 					notes = ""
-					description = "Pitch, where 1 is low, 100 is normal, and 255 is high.\nï¿½Bug:ï¿½Very high or very low values can cause other sounds to be distorted."
+					description = "Pitch, where 1 is low, 100 is normal, and 255 is high.\n Bug: Very high or very low values can cause other sounds to be distorted."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_8":
@@ -49920,7 +49920,7 @@
 					shortinfo = "Incremental Spinup Count"
 					extra = ""
 					notes = ""
-					description = "Appears to be a intended to increase pitch in time with ToggleSound inputs, but: ï¿½Bug:ï¿½Non-functional."
+					description = "Appears to be a intended to increase pitch in time with ToggleSound inputs, but:  Bug: Non-functional."
 					choices = {}
 				}
 				"classname":
@@ -49974,7 +49974,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -50035,7 +50035,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -50062,7 +50062,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -50071,7 +50071,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -50080,7 +50080,7 @@
 		}
 		ambient_music = 
 		{
-			description = "[Left 4 Dead 2]ï¿½ambient_music is a  point entity available in Left 4 Dead 2."
+			description = "[Left 4 Dead 2] ambient_music is a  point entity available in Left 4 Dead 2."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -50119,7 +50119,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -50276,7 +50276,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -50337,7 +50337,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -50364,7 +50364,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -50373,7 +50373,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -50424,7 +50424,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -50602,7 +50602,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -50663,7 +50663,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -50690,7 +50690,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -50699,7 +50699,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -50751,7 +50751,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -50810,7 +50810,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -50841,14 +50841,14 @@
 					shortinfo = "Position Interpolator"
 					extra = "!FGD"
 					notes = "Note: This is only in the FGD for move_rope, but is functional on both entities."
-					description = "Curve Type. Currently only type 2 (Rope) is fully supported.\n0ï¿½: Linear\n1ï¿½: Catmull-Rom Spline\n2ï¿½: Rope"
+					description = "Curve Type. Currently only type 2 (Rope) is fully supported.\n0 : Linear\n1 : Catmull-Rom Spline\n2 : Rope"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_2":
 				{
 					typename = "boolean"
 					shortinfo = "UseWind"
-					extra = "(in all games since [Alien Swarm])ï¿½!FGD"
+					extra = "(in all games since [Alien Swarm]) !FGD"
 					notes = ""
 					description = "When set to yes, the rope sways with the settings specified in the env_wind entity. Replaces 'Disable Wind' in games post Alien Swarm."
 					choices = {}
@@ -50877,7 +50877,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -50886,7 +50886,7 @@
 					shortinfo = "Parent"
 					extra = ""
 					notes = ""
-					description = "Specifies a movement parent. An entity will maintain its initial offset from its parent. An attachment point can be added to the end of the name, separated by a comma.ï¿½Warning:ï¿½In [Counter-Strike: Source], parenting this entity to another can break your map."
+					description = "Specifies a movement parent. An entity will maintain its initial offset from its parent. An attachment point can be added to the end of the name, separated by a comma. Warning: In [Counter-Strike: Source], parenting this entity to another can break your map."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_3":
@@ -50922,7 +50922,7 @@
 					shortinfo = "Type"
 					extra = ""
 					notes = ""
-					description = "Rope type.\n0ï¿½: Rope\n1ï¿½: Semi-rigid\n2ï¿½: Rigid"
+					description = "Rope type.\n0 : Rope\n1 : Semi-rigid\n2 : Rigid"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_6":
@@ -50985,7 +50985,7 @@
 					shortinfo = "Breakable"
 					extra = ""
 					notes = ""
-					description = "If set, the rope can be detached from either endpoint when shot. ï¿½Note:ï¿½If collide with world is set, the rope will not appear to break if the endpoint touches world geometry. This includes touching vertices and edges of brushes as well as being placed inside them."
+					description = "If set, the rope can be detached from either endpoint when shot.  Note: If collide with world is set, the rope will not appear to break if the endpoint touches world geometry. This includes touching vertices and edges of brushes as well as being placed inside them."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_12":
@@ -50994,7 +50994,7 @@
 					shortinfo = "Rope Material"
 					extra = ""
 					notes = ""
-					description = "The material to use when rendering the rope. ï¿½Note:ï¿½Source will not render ropes using the cable/chain.vmt material."
+					description = "The material to use when rendering the rope.  Note: Source will not render ropes using the cable/chain.vmt material."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_13":
@@ -51012,7 +51012,7 @@
 					shortinfo = "Minimum DX Level"
 					extra = ""
 					notes = ""
-					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\nï¿½Warning:ï¿½If these are used, the object may break when the user switches their DirectX settings."
+					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\n Warning: If these are used, the object may break when the user switches their DirectX settings."
 					choices = {}
 				}
 				"maxdxlevel":
@@ -51058,7 +51058,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -51125,7 +51125,7 @@
 					shortinfo = "Entity To Point At"
 					extra = "[Obsolete]"
 					notes = ""
-					description = "Deprecated.ï¿½Entity to point this light at. Non-functional, as this entity casts light in all directions, all the time."
+					description = "Deprecated. Entity to point this light at. Non-functional, as this entity casts light in all directions, all the time."
 					choices = {}
 				}
 				"_distance":
@@ -51152,7 +51152,7 @@
 					shortinfo = "BrightnessHDR"
 					extra = ""
 					notes = ""
-					description = "Brightness override used in HDR mode. Default is -1 -1 -1 1, which means no change.\nï¿½Warning:ï¿½The fourth digit must be positive. Otherwise all light will be sucked out of your map!"
+					description = "Brightness override used in HDR mode. Default is -1 -1 -1 1, which means no change.\n Warning: The fourth digit must be positive. Otherwise all light will be sucked out of your map!"
 					choices = {}
 				}
 				"_lightHDRscale":
@@ -51224,7 +51224,7 @@
 					shortinfo = "0 percent falloff distance"
 					extra = ""
 					notes = ""
-					description = "Distances at which brightness should have fallen to 50% and (1/256)% respectively. Overrides Linear/Constant/Quadratic parameters if non-zero.\nï¿½Bug:ï¿½Using this setting will sometimes not work, which may or may not be related to using the light inside of an instance. Collapsing the instance and messing with the light's falloff values seems to help."
+					description = "Distances at which brightness should have fallen to 50% and (1/256)% respectively. Overrides Linear/Constant/Quadratic parameters if non-zero.\n Bug: Using this setting will sometimes not work, which may or may not be related to using the light inside of an instance. Collapsing the instance and messing with the light's falloff values seems to help."
 					choices = {}
 				}
 				"_hardfalloff":
@@ -51240,9 +51240,9 @@
 				{
 					typename = "boolean"
 					shortinfo = "Cast entity shadows"
-					extra = "(in all games since [Left 4 Dead])ï¿½(also in [Garry's Mod])"
+					extra = "(in all games since [Left 4 Dead]) (also in [Garry's Mod])"
 					notes = ""
-					description = "Allows the light to modify the direction of nearby render-to-texture shadows so that they always point away from its origin. See also shadow_control.\nï¿½Note:ï¿½This keyvalue may not be available in some FGDs."
+					description = "Allows the light to modify the direction of nearby render-to-texture shadows so that they always point away from its origin. See also shadow_control.\n Note: This keyvalue may not be available in some FGDs."
 					choices = {}
 				}
 				"_shadoworiginoffset":
@@ -51251,7 +51251,7 @@
 					shortinfo = "Shadow cast offset"
 					extra = "(in all games since [Left 4 Dead])"
 					notes = ""
-					description = "A world-space offset that gets applied to the light origin when casting entity shadows. Useful for dealing with funny-looking shadows from very low lights: Just offset up the z axis. Default 0 0 0.\nï¿½Note:ï¿½This keyvalue may not be available in some FGDs."
+					description = "A world-space offset that gets applied to the light origin when casting entity shadows. Useful for dealing with funny-looking shadows from very low lights: Just offset up the z axis. Default 0 0 0.\n Note: This keyvalue may not be available in some FGDs."
 					choices = {}
 				}
 				"classname":
@@ -51305,7 +51305,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -51366,7 +51366,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -51393,7 +51393,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -51402,7 +51402,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -51441,7 +51441,7 @@
 					shortinfo = "BrightnessHDR"
 					extra = ""
 					notes = ""
-					description = "Brightness override used in HDR mode. Default is -1 -1 -1 1, which means no change.\nï¿½Warning:ï¿½The fourth digit must be positive. Otherwise all light will be sucked out of your map!"
+					description = "Brightness override used in HDR mode. Default is -1 -1 -1 1, which means no change.\n Warning: The fourth digit must be positive. Otherwise all light will be sucked out of your map!"
 					choices = {}
 				}
 				"_lightHDRscale":
@@ -51639,7 +51639,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -51700,7 +51700,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -51727,7 +51727,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -51736,7 +51736,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -51752,7 +51752,7 @@
 				"1":
 				{
 					category = ""
-					description = "Initially Darkï¿½!FGD"
+					description = "Initially Dark !FGD"
 					notes = "Details: Only works when the light_environment is named, and it must be added with SmartEdit off by putting in a 'spawnflags' key with a value of 1 as it is missing from Valve's FGD."
 				}
 			}
@@ -51882,7 +51882,7 @@
 					shortinfo = "Inner (bright) angle"
 					extra = ""
 					notes = ""
-					description = "The angles of the inner spotlight beam.ï¿½Note:ï¿½Value larger than 90 is interpreted as 90."
+					description = "The angles of the inner spotlight beam. Note: Value larger than 90 is interpreted as 90."
 					choices = {}
 				}
 				"_cone":
@@ -51891,7 +51891,7 @@
 					shortinfo = "Outer (fading) angle"
 					extra = ""
 					notes = ""
-					description = "The angles of the outer spotlight beam.ï¿½Note:ï¿½Value larger than 90 is interpreted as 90."
+					description = "The angles of the outer spotlight beam. Note: Value larger than 90 is interpreted as 90."
 					choices = {}
 				}
 				"_exponent":
@@ -51900,7 +51900,7 @@
 					shortinfo = "Focus"
 					extra = ""
 					notes = ""
-					description = "Changes the distance between the umbra and penumbra cone. (higher values make the edge of the light more blurred.ï¿½Tip:ï¿½When increasing the Focus value to for example 5 you can use the spotlight as a directional fill light."
+					description = "Changes the distance between the umbra and penumbra cone. (higher values make the edge of the light more blurred. Tip: When increasing the Focus value to for example 5 you can use the spotlight as a directional fill light."
 					choices = {}
 				}
 				"_distance":
@@ -51909,7 +51909,7 @@
 					shortinfo = "Maximum distance"
 					extra = ""
 					notes = ""
-					description = "This is the distance that light is allowed to cast, in inches. To do:ï¿½Relationship with 50%/0% falloff distances?"
+					description = "This is the distance that light is allowed to cast, in inches. To do: Relationship with 50%/0% falloff distances?"
 					choices = {}
 				}
 				"pitch":
@@ -51936,7 +51936,7 @@
 					shortinfo = "BrightnessHDR"
 					extra = ""
 					notes = ""
-					description = "Brightness override used in HDR mode. Default is -1 -1 -1 1, which means no change.\nï¿½Warning:ï¿½The fourth digit must be positive. Otherwise all light will be sucked out of your map!"
+					description = "Brightness override used in HDR mode. Default is -1 -1 -1 1, which means no change.\n Warning: The fourth digit must be positive. Otherwise all light will be sucked out of your map!"
 					choices = {}
 				}
 				"_lightHDRscale":
@@ -52008,7 +52008,7 @@
 					shortinfo = "0 percent falloff distance"
 					extra = ""
 					notes = ""
-					description = "Distances at which brightness should have fallen to 50% and (1/256)% respectively. Overrides Linear/Constant/Quadratic parameters if non-zero.\nï¿½Bug:ï¿½Using this setting will sometimes not work, which may or may not be related to using the light inside of an instance. Collapsing the instance and messing with the light's falloff values seems to help."
+					description = "Distances at which brightness should have fallen to 50% and (1/256)% respectively. Overrides Linear/Constant/Quadratic parameters if non-zero.\n Bug: Using this setting will sometimes not work, which may or may not be related to using the light inside of an instance. Collapsing the instance and messing with the light's falloff values seems to help."
 					choices = {}
 				}
 				"_hardfalloff":
@@ -52024,9 +52024,9 @@
 				{
 					typename = "boolean"
 					shortinfo = "Cast entity shadows"
-					extra = "(in all games since [Left 4 Dead])ï¿½(also in [Garry's Mod])"
+					extra = "(in all games since [Left 4 Dead]) (also in [Garry's Mod])"
 					notes = ""
-					description = "Allows the light to modify the direction of nearby render-to-texture shadows so that they always point away from its origin. See also shadow_control.\nï¿½Note:ï¿½This keyvalue may not be available in some FGDs."
+					description = "Allows the light to modify the direction of nearby render-to-texture shadows so that they always point away from its origin. See also shadow_control.\n Note: This keyvalue may not be available in some FGDs."
 					choices = {}
 				}
 				"_shadoworiginoffset":
@@ -52035,7 +52035,7 @@
 					shortinfo = "Shadow cast offset"
 					extra = "(in all games since [Left 4 Dead])"
 					notes = ""
-					description = "A world-space offset that gets applied to the light origin when casting entity shadows. Useful for dealing with funny-looking shadows from very low lights: Just offset up the z axis. Default 0 0 0.\nï¿½Note:ï¿½This keyvalue may not be available in some FGDs."
+					description = "A world-space offset that gets applied to the light origin when casting entity shadows. Useful for dealing with funny-looking shadows from very low lights: Just offset up the z axis. Default 0 0 0.\n Note: This keyvalue may not be available in some FGDs."
 					choices = {}
 				}
 				"classname":
@@ -52089,7 +52089,7 @@
 					shortinfo = "Pitch Yaw Roll (X Y Z)"
 					extra = ""
 					notes = ""
-					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis.ï¿½Note:ï¿½This works on brush entities, although Hammer doesn't show the new angles."
+					description = "This entity's orientation in the world. Pitch is rotation around the Y axis, yaw is the rotation around the Z axis, roll is the rotation around the X axis. Note: This works on brush entities, although Hammer doesn't show the new angles."
 					choices = {}
 				}
 				"spawnflags":
@@ -52150,7 +52150,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Disable for Xbox 360"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "If Yes, disables this entity on the Xbox 360 version of Source."
 					choices = {}
@@ -52177,7 +52177,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Lag Compensation"
-					extra = "(in all games since [Left 4 Dead 2])ï¿½!FGD"
+					extra = "(in all games since [Left 4 Dead 2]) !FGD"
 					notes = ""
 					description = "Set to Yes to lag compensate this entity. Should be used very sparingly!"
 					choices = {}
@@ -52186,7 +52186,7 @@
 				{
 					typename = "boolean"
 					shortinfo = "Is Automatic-Aim Target"
-					extra = "(in all games since [Counter-Strike: Global Offensive])ï¿½!FGD"
+					extra = "(in all games since [Counter-Strike: Global Offensive]) !FGD"
 					notes = ""
 					description = "If set to 1, this entity will slow down aiming movement for consoles and joystick controllers when the entity is under the crosshairs."
 					choices = {}
@@ -52211,7 +52211,7 @@
 					shortinfo = "Material to modify"
 					extra = ""
 					notes = ""
-					description = "Path to the VMT file you want to modify, relative to materials/ folder. Without .vmt suffix.ï¿½Bug:ï¿½Does not work if the VMT is just in materials/. Should be in a subfolder, like materials/effects/ for example."
+					description = "Path to the VMT file you want to modify, relative to materials/ folder. Without .vmt suffix. Bug: Does not work if the VMT is just in materials/. Should be in a subfolder, like materials/effects/ for example."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_2":
@@ -52256,7 +52256,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -52341,7 +52341,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -52405,7 +52405,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"StartDisabled":
@@ -52501,7 +52501,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"StartDisabled":
@@ -52640,7 +52640,7 @@
 					shortinfo = "Start Direction"
 					extra = ""
 					notes = ""
-					description = "Which way the wheel turns.\n-1ï¿½: Forward\n1ï¿½: Backward"
+					description = "Which way the wheel turns.\n-1 : Forward\n1 : Backward"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_7":
@@ -52676,7 +52676,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -52831,7 +52831,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -52867,7 +52867,7 @@
 					shortinfo = "Position Interpolator"
 					extra = ""
 					notes = ""
-					description = "Interpolation method.\n0ï¿½: Linear\n1ï¿½: Catmull-Rom Spline"
+					description = "Interpolation method.\n0 : Linear\n1 : Catmull-Rom Spline"
 					choices = {}
 				}
 			}
@@ -52894,14 +52894,14 @@
 					shortinfo = "Position Interpolator"
 					extra = ""
 					notes = ""
-					description = "Curve Type. Currently only type 2 (Rope) is fully supported.\n0ï¿½: Linear\n1ï¿½: Catmull-Rom Spline\n2ï¿½: Rope"
+					description = "Curve Type. Currently only type 2 (Rope) is fully supported.\n0 : Linear\n1 : Catmull-Rom Spline\n2 : Rope"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_2":
 				{
 					typename = "boolean"
 					shortinfo = "UseWind"
-					extra = "(in all games since [Alien Swarm])ï¿½!FGD"
+					extra = "(in all games since [Alien Swarm]) !FGD"
 					notes = ""
 					description = "When set to yes, the rope sways with the settings specified in the env_wind entity. Replaces 'Disable Wind' in games post Alien Swarm."
 					choices = {}
@@ -52930,7 +52930,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -52939,7 +52939,7 @@
 					shortinfo = "Parent"
 					extra = ""
 					notes = ""
-					description = "Specifies a movement parent. An entity will maintain its initial offset from its parent. An attachment point can be added to the end of the name, separated by a comma.ï¿½Warning:ï¿½In [Counter-Strike: Source], parenting this entity to another can break your map."
+					description = "Specifies a movement parent. An entity will maintain its initial offset from its parent. An attachment point can be added to the end of the name, separated by a comma. Warning: In [Counter-Strike: Source], parenting this entity to another can break your map."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_3":
@@ -52975,7 +52975,7 @@
 					shortinfo = "Type"
 					extra = ""
 					notes = ""
-					description = "Rope type.\n0ï¿½: Rope\n1ï¿½: Semi-rigid\n2ï¿½: Rigid"
+					description = "Rope type.\n0 : Rope\n1 : Semi-rigid\n2 : Rigid"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_6":
@@ -53038,7 +53038,7 @@
 					shortinfo = "Breakable"
 					extra = ""
 					notes = ""
-					description = "If set, the rope can be detached from either endpoint when shot. ï¿½Note:ï¿½If collide with world is set, the rope will not appear to break if the endpoint touches world geometry. This includes touching vertices and edges of brushes as well as being placed inside them."
+					description = "If set, the rope can be detached from either endpoint when shot.  Note: If collide with world is set, the rope will not appear to break if the endpoint touches world geometry. This includes touching vertices and edges of brushes as well as being placed inside them."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_12":
@@ -53047,7 +53047,7 @@
 					shortinfo = "Rope Material"
 					extra = ""
 					notes = ""
-					description = "The material to use when rendering the rope. ï¿½Note:ï¿½Source will not render ropes using the cable/chain.vmt material."
+					description = "The material to use when rendering the rope.  Note: Source will not render ropes using the cable/chain.vmt material."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_13":
@@ -53065,7 +53065,7 @@
 					shortinfo = "Minimum DX Level"
 					extra = ""
 					notes = ""
-					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\nï¿½Warning:ï¿½If these are used, the object may break when the user switches their DirectX settings."
+					description = "The entity will not exist if the engine is running outside the given range of DirectX Versions. Replaced by SystemLevelChoice from [Left 4 Dead] Left 4 Dead onwards.\n Warning: If these are used, the object may break when the user switches their DirectX settings."
 					choices = {}
 				}
 				"maxdxlevel":
@@ -53111,7 +53111,7 @@
 					shortinfo = "Turn to face down path"
 					extra = ""
 					notes = ""
-					description = "Whether to turn to face down path.\n0ï¿½: Yes\n1ï¿½: No"
+					description = "Whether to turn to face down path.\n0 : Yes\n1 : No"
 					choices = {}
 				}
 				"targetname":
@@ -53138,7 +53138,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -53156,7 +53156,7 @@
 					shortinfo = "Position Interpolator"
 					extra = ""
 					notes = ""
-					description = "Interpolation method.\n0ï¿½: Linear\n1ï¿½: Catmull-Rom Spline"
+					description = "Interpolation method.\n0 : Linear\n1 : Catmull-Rom Spline"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_5":
@@ -53253,7 +53253,7 @@
 				{
 					category = ""
 					description = "Do Alternate collision for this NPC (player avoidance)"
-					notes = "Details: Note:ï¿½This flag is disabled in episodic for player companions because the StartScripting input does this."
+					notes = "Details: Note: This flag is disabled in episodic for player companions because the StartScripting input does this."
 				}
 				"8192":
 				{
@@ -53264,7 +53264,7 @@
 				"16384":
 				{
 					category = ""
-					description = "Ignore player pushï¿½(in all games since [Source][Source])"
+					description = "Ignore player push (in all games since [Source][Source])"
 					notes = "Details: Don't give way to player"
 				}
 			}
@@ -53430,7 +53430,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -53537,7 +53537,7 @@
 				{
 					category = ""
 					description = "Do Alternate collision for this NPC (player avoidance)"
-					notes = "Details: Note:ï¿½This flag is disabled in episodic for player companions because the StartScripting input does this."
+					notes = "Details: Note: This flag is disabled in episodic for player companions because the StartScripting input does this."
 				}
 				"8192":
 				{
@@ -53548,7 +53548,7 @@
 				"16384":
 				{
 					category = ""
-					description = "Ignore player pushï¿½(in all games since [Source][Source])"
+					description = "Ignore player push (in all games since [Source][Source])"
 					notes = "Details: Don't give way to player"
 				}
 			}
@@ -53714,7 +53714,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -53773,7 +53773,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -53800,7 +53800,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -53836,7 +53836,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -53881,7 +53881,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -53908,7 +53908,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -53944,7 +53944,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -54022,7 +54022,7 @@
 					shortinfo = "Dest. Criterion"
 					extra = "No extra short-information given"
 					notes = ""
-					description = "Visible to player?   <choices>\nShould the NPC try to spawn at a destination that the player can see? Only applicable if a Destination Group is being used.\n0ï¿½: Yes\n1ï¿½: No\n2ï¿½: Don't Care"
+					description = "Visible to player?   <choices>\nShould the NPC try to spawn at a destination that the player can see? Only applicable if a Destination Group is being used.\n0 : Yes\n1 : No\n2 : Don't Care"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_5":
@@ -54031,7 +54031,7 @@
 					shortinfo = "Dest. Criterion"
 					extra = "No extra short-information given"
 					notes = ""
-					description = "Distance to player?   <choices>\nShould the NPC try to spawn nearest to or farthest from the player's current location? Only applicable if a Destination Group is being used.\n0ï¿½: Nearest\n1ï¿½: Farthest\n2ï¿½: Don't Care"
+					description = "Distance to player?   <choices>\nShould the NPC try to spawn nearest to or farthest from the player's current location? Only applicable if a Destination Group is being used.\n0 : Nearest\n1 : Farthest\n2 : Don't Care"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_6":
@@ -54040,7 +54040,7 @@
 					shortinfo = "Minimum spawn distance from player"
 					extra = ""
 					notes = ""
-					description = "The spawn destination node distance to the player will have to be further or equal than this value.ï¿½Note:ï¿½This parameter is ignored if the above 'Distance to player' criteria is set to 'Don't Care.'"
+					description = "The spawn destination node distance to the player will have to be further or equal than this value. Note: This parameter is ignored if the above 'Distance to player' criteria is set to 'Don't Care.'"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_7":
@@ -54094,7 +54094,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -54188,7 +54188,7 @@
 					shortinfo = "Branch Path"
 					extra = ""
 					notes = ""
-					description = "An alternative path_track to be the next node in the path. Useful for making branching paths. Use the ToggleAlternatePath / EnableAlternatePath inputs to make the alternative path active. ï¿½Bug:ï¿½If this value is set to anything that isn't a path_track, the game will crash without notice upon loading the level."
+					description = "An alternative path_track to be the next node in the path. Useful for making branching paths. Use the ToggleAlternatePath / EnableAlternatePath inputs to make the alternative path active.  Bug: If this value is set to anything that isn't a path_track, the game will crash without notice upon loading the level."
 					choices = {}
 				}
 				"speed":
@@ -54215,7 +54215,7 @@
 					shortinfo = "Orientation Type"
 					extra = ""
 					notes = ""
-					description = "The way that the path follower faces as it moves through this path track.\n0ï¿½: No change\n1ï¿½: Face direction of motion\n2ï¿½: Face this path_track's angles"
+					description = "The way that the path follower faces as it moves through this path track.\n0 : No change\n1 : Face direction of motion\n2 : Face this path_track's angles"
 					choices = {}
 				}
 				"targetname":
@@ -54242,7 +54242,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -54271,7 +54271,7 @@
 	{
 		phys_ballsocket = 
 		{
-			description = "phys_ballsocket is a  point entity available in all Source games. It simulates a rigid connection between the centre of its constrained entities and its own location that prevents them from changing relative distance and makes their rotation point its own location.\nMost constraints, if given two entities, will constrain them directly to each other; phys_ballsocket will constrain them to itself. Despite this slightly different behaviour however, the entity still won't remain at a fixed location when two entities are attached. To do:ï¿½Can you constrain the constraint?\nExample map: sourcesdk_content/hl2/mapsrc/sdk_phys_ballsocket.vmf"
+			description = "phys_ballsocket is a  point entity available in all Source games. It simulates a rigid connection between the centre of its constrained entities and its own location that prevents them from changing relative distance and makes their rotation point its own location.\nMost constraints, if given two entities, will constrain them directly to each other; phys_ballsocket will constrain them to itself. Despite this slightly different behaviour however, the entity still won't remain at a fixed location when two entities are attached. To do: Can you constrain the constraint?\nExample map: sourcesdk_content/hl2/mapsrc/sdk_phys_ballsocket.vmf"
 			flagnotes = ""
 			flags = 
 			{
@@ -54318,7 +54318,7 @@
 					shortinfo = "Entity 2"
 					extra = ""
 					notes = ""
-					description = "The entities to constrain. Leave one or the other field blank to constrain to the world. ï¿½Note:ï¿½Only one entity will be constrained, even if several share the given targetname."
+					description = "The entities to constrain. Leave one or the other field blank to constrain to the world.  Note: Only one entity will be constrained, even if several share the given targetname."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_3":
@@ -54390,7 +54390,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -54444,7 +54444,7 @@
 					shortinfo = "Entity 2"
 					extra = ""
 					notes = ""
-					description = "The entities to constrain. Leave one or the other field blank to constrain to the world. ï¿½Note:ï¿½Only one entity will be constrained, even if several share the given targetname."
+					description = "The entities to constrain. Leave one or the other field blank to constrain to the world.  Note: Only one entity will be constrained, even if several share the given targetname."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_3":
@@ -54516,7 +54516,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -54562,7 +54562,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -54604,7 +54604,7 @@
 					shortinfo = "Model Swap Entity"
 					extra = ""
 					notes = ""
-					description = "If specified, the model of the entity specified here will replace the model of the target object when it is converted. ï¿½Tip:ï¿½Use this when the converted object has a separate model used for physics props. (e.g. converting 'coolthing001a' when 'coolthing001a_physics' exists)"
+					description = "If specified, the model of the entity specified here will replace the model of the target object when it is converted.  Tip: Use this when the converted object has a separate model used for physics props. (e.g. converting 'coolthing001a' when 'coolthing001a_physics' exists)"
 					choices = {}
 				}
 				"massoverride":
@@ -54640,7 +54640,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -54685,7 +54685,7 @@
 					shortinfo = "Friction"
 					extra = ""
 					notes = ""
-					description = "Resistance/friction in the hinge.ï¿½Note:ï¿½This is not a percentage, but rather 1000 HL Units. 100 is a good starting value."
+					description = "Resistance/friction in the hinge. Note: This is not a percentage, but rather 1000 HL Units. 100 is a good starting value."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_2":
@@ -54703,7 +54703,7 @@
 					shortinfo = "Load Scale"
 					extra = ""
 					notes = ""
-					description = "Scale of the load connected to this hinge (1=just the objects directly connected. To do:ï¿½What does this do? It doesn't seem to increase precision when heavy objects are attached.)"
+					description = "Scale of the load connected to this hinge (1=just the objects directly connected. To do: What does this do? It doesn't seem to increase precision when heavy objects are attached.)"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_4":
@@ -54811,7 +54811,7 @@
 					shortinfo = "Entity 2"
 					extra = ""
 					notes = ""
-					description = "The entities to constrain. Leave one or the other field blank to constrain to the world. ï¿½Note:ï¿½Only one entity will be constrained, even if several share the given targetname."
+					description = "The entities to constrain. Leave one or the other field blank to constrain to the world.  Note: Only one entity will be constrained, even if several share the given targetname."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_8":
@@ -54883,7 +54883,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -54946,7 +54946,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -54962,7 +54962,7 @@
 		}
 		phys_lengthconstraint = 
 		{
-			description = "phys_lengthconstraint is a  point entity available in all Source games. It is a constraint that restricts the maximum (and optionally minimum) distance two objects are allowed to be from each other. It is most often used to simulate rope, though it does not support the 'stiffening' of rope attachment points that can be observed in reality; an object can rotate a full 360ï¿½ in fact, clipping right through any rope that may be attached.\nThe constraint can be made rigid with its second spawnflag. It then behaves much like a phys_ballsocket, except that the objects can freely rotate around their own centres.\nExample map: sourcesdk_content/hl2/mapsrc/sdk_phys_lengthconstraint.vmf"
+			description = "phys_lengthconstraint is a  point entity available in all Source games. It is a constraint that restricts the maximum (and optionally minimum) distance two objects are allowed to be from each other. It is most often used to simulate rope, though it does not support the 'stiffening' of rope attachment points that can be observed in reality; an object can rotate a full 360° in fact, clipping right through any rope that may be attached.\nThe constraint can be made rigid with its second spawnflag. It then behaves much like a phys_ballsocket, except that the objects can freely rotate around their own centres.\nExample map: sourcesdk_content/hl2/mapsrc/sdk_phys_lengthconstraint.vmf"
 			flagnotes = ""
 			flags = 
 			{
@@ -55042,7 +55042,7 @@
 					shortinfo = "Entity 2"
 					extra = ""
 					notes = ""
-					description = "The entities to constrain. Leave one or the other field blank to constrain to the world. ï¿½Note:ï¿½Only one entity will be constrained, even if several share the given targetname."
+					description = "The entities to constrain. Leave one or the other field blank to constrain to the world.  Note: Only one entity will be constrained, even if several share the given targetname."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_6":
@@ -55114,7 +55114,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -55228,7 +55228,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -55264,7 +55264,7 @@
 					shortinfo = "Skin"
 					extra = ""
 					notes = ""
-					description = "Some models have multiple skins. This value selects from the index, starting with 0. ï¿½Tip:ï¿½Hammer's model browser automatically updates this value if you use it to view different skins."
+					description = "Some models have multiple skins. This value selects from the index, starting with 0.  Tip: Hammer's model browser automatically updates this value if you use it to view different skins."
 					choices = {}
 				}
 				"modelscale":
@@ -55300,7 +55300,7 @@
 					shortinfo = "Projected Texture Cache"
 					extra = "(in all games since [Portal 2])"
 					notes = ""
-					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0ï¿½: Default\n1ï¿½: No cache - render every frame\n2ï¿½: Cache it - render only once"
+					description = "Used to hint projected texture system whether it is sufficient to cache shadow volume of this entity or to force render it every frame instead.\n0 : Default\n1 : No cache - render every frame\n2 : Cache it - render only once"
 					choices = {}
 				}
 				"disableflashlight":
@@ -55426,7 +55426,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -55513,7 +55513,7 @@
 					shortinfo = "Entity 2"
 					extra = ""
 					notes = ""
-					description = "The entities to constrain. Leave one or the other field blank to constrain to the world. ï¿½Note:ï¿½Only one entity will be constrained, even if several share the given targetname."
+					description = "The entities to constrain. Leave one or the other field blank to constrain to the world.  Note: Only one entity will be constrained, even if several share the given targetname."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_6":
@@ -55585,7 +55585,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -55672,7 +55672,7 @@
 					shortinfo = "Entity 2"
 					extra = ""
 					notes = ""
-					description = "The entities to constrain. Leave one or the other field blank to constrain to the world. ï¿½Note:ï¿½Only one entity will be constrained, even if several share the given targetname."
+					description = "The entities to constrain. Leave one or the other field blank to constrain to the world.  Note: Only one entity will be constrained, even if several share the given targetname."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_6":
@@ -55744,7 +55744,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -55789,7 +55789,7 @@
 					shortinfo = "Force"
 					extra = ""
 					notes = ""
-					description = "Magnetic force to apply to ragdolls within the radius. Expressed as kilograms per inch per second. So a force of 1000 will add 10 inches/second to a 100kg man. It will add 100 inches per second to a 10kg headcrab. ï¿½Tip:ï¿½Using a negative value will propel ragdolls away from the magnet."
+					description = "Magnetic force to apply to ragdolls within the radius. Expressed as kilograms per inch per second. So a force of 1000 will add 10 inches/second to a 100kg man. It will add 100 inches per second to a 10kg headcrab.  Tip: Using a negative value will propel ragdolls away from the magnet."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_4":
@@ -55825,7 +55825,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"StartDisabled":
@@ -56011,7 +56011,7 @@
 					shortinfo = "Entity 2"
 					extra = ""
 					notes = ""
-					description = "The entities to constrain. Leave one or the other field blank to constrain to the world. ï¿½Note:ï¿½Only one entity will be constrained, even if several share the given targetname."
+					description = "The entities to constrain. Leave one or the other field blank to constrain to the world.  Note: Only one entity will be constrained, even if several share the given targetname."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_8":
@@ -56083,7 +56083,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -56200,7 +56200,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -56281,7 +56281,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -56386,7 +56386,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -56522,7 +56522,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -56693,7 +56693,7 @@
 					shortinfo = "Maximum Distance"
 					extra = ""
 					notes = ""
-					description = "This is the maximum distance the shadow is allowed to cast, in inches.\nï¿½Tip:ï¿½Shortening this distance can be used to approximate the effects of diffuse lighting."
+					description = "This is the maximum distance the shadow is allowed to cast, in inches.\n Tip: Shortening this distance can be used to approximate the effects of diffuse lighting."
 					choices = {}
 				}
 				"disableallshadows":
@@ -56709,9 +56709,9 @@
 				{
 					typename = "boolean"
 					shortinfo = "Enable Local Light Shadows"
-					extra = "(in all games since [Left 4 Dead])ï¿½(also in [Garry's Mod][Mapbase])"
+					extra = "(in all games since [Left 4 Dead]) (also in [Garry's Mod][Mapbase])"
 					notes = ""
-					description = "Enable shadow direction to be calculated on a per-entity basis and to be dictated by the light closest to the entity.\nï¿½Note:ï¿½This keyvalue may not be available in some FGDs.\n Code:There is a custom version of this feature which could run on previous versions of Source. Click here for more information."
+					description = "Enable shadow direction to be calculated on a per-entity basis and to be dictated by the light closest to the entity.\n Note: This keyvalue may not be available in some FGDs.\n Code:There is a custom version of this feature which could run on previous versions of Source. Click here for more information."
 					choices = {}
 				}
 				"angles":
@@ -56720,7 +56720,7 @@
 					shortinfo = "Pitch Yaw Roll (Y Z X)"
 					extra = ""
 					notes = ""
-					description = "Tip:ï¿½Pitch is the sun's angle of elevation from the ground, and yaw is its compass bearing."
+					description = "Tip: Pitch is the sun's angle of elevation from the ground, and yaw is its compass bearing."
 					choices = {}
 				}
 				"targetname":
@@ -56747,7 +56747,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -56880,7 +56880,7 @@
 	{
 		sound_mix_layer = 
 		{
-			description = "[Left 4 Dead 2]ï¿½sound_mix_layer is a  point entity available in Left 4 Dead 2. It is an entity used to set a mix layer to a specific value."
+			description = "[Left 4 Dead 2] sound_mix_layer is a  point entity available in Left 4 Dead 2. It is an entity used to set a mix layer to a specific value."
 			flagnotes = ""
 			flags = {}
 			keyvalnotes = ""
@@ -56928,7 +56928,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -57005,7 +57005,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -57060,7 +57060,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
@@ -57124,7 +57124,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"parentname":
@@ -57160,7 +57160,7 @@
 					shortinfo = "Overlay Material"
 					extra = ""
 					notes = ""
-					description = "Name of a material to overlay over the top of the VGUI screen. ï¿½Note:ï¿½This material must write Z for the VGUI screen to work."
+					description = "Name of a material to overlay over the top of the VGUI screen.  Note: This material must write Z for the VGUI screen to work."
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_3":
@@ -57242,7 +57242,7 @@
 					shortinfo = "Cycle Type"
 					extra = ""
 					notes = ""
-					description = "Order that images are displayed.\n0ï¿½: Random\n1ï¿½: Forward\n2ï¿½: Backward"
+					description = "Order that images are displayed.\n0 : Random\n1 : Forward\n2 : Backward"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_5":
@@ -57251,7 +57251,7 @@
 					shortinfo = "No List Repeat"
 					extra = ""
 					notes = ""
-					description = "0ï¿½: Allow List Repeats\n1ï¿½: No List Repeats"
+					description = "0 : Allow List Repeats\n1 : No List Repeats"
 					choices = {}
 				}
 				"UNKNOWN_KEY_NAME_6":
@@ -57296,7 +57296,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 				"angles":
@@ -57373,7 +57373,7 @@
 					shortinfo = "Script think function"
 					extra = "(in all games since [Left 4 Dead 2])"
 					notes = ""
-					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call. ï¿½Note:ï¿½Try to avoid expensive operations in this function, as it may cause performance problems."
+					description = "Name of a function in this entity's script which will be called automatically every 100 milliseconds (ten times a second) for the duration of the script. It can be used to create timers or to simulate autonomous behavior. The return value (if present) will set the time until the next call.  Note: Try to avoid expensive operations in this function, as it may cause performance problems."
 					choices = {}
 				}
 			}
