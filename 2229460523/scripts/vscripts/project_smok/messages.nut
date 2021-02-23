@@ -1344,8 +1344,8 @@
                     [
                         CMDParam("class_name","Class: physics|dynamic|ragdoll|all|ptr(last class menu visited)"),
                         CMDParam("setting","Setting name"),
-                        CMDParam("sub_setting","Actual setting name:\n\t  Possible values: val|flags|min|max\n\t Prefixes:\n\t\t Set: (no prefix)\n\t\t Add: +\n\t\t Remove: -"),
-                        CMDParam("value","Value to set/add/remove. Can be casted (flg|flag1|flag2|... etc.)")
+                        CMDParam("sub_setting","Actual setting name:\n\t  Possible values: val|flags|min|max\n\t  Prefixes:\n\t\t Set: (no prefix), example-> flags\n\t\t Add: + , example-> +flags\n\t\t Remove: - , example-> -flags"),
+                        CMDParam("value","Value to set/add/remove. Can be casted following the format: cast_type|val_1|val_2|...\n\t Single-value casts->int|float|flg\n\t Multi-value casts->str|ang|pos|flg\n\t Casting examples:\n\t\tAs vector -> pos|x|y|z\n\t\tAs angle -> ang|pitch|yaw|roll\n\t\tAs spaced text -> str|word_1|word_2|...\n\t\tAs flags -> flag_1|flag_2|...")
                     ],
                     "Update a prop spawn setting of given class. Check display_prop_spawn_settings command"
                     )
@@ -2147,6 +2147,131 @@
                     )
                 return cmd.Describe();
             }
+            say = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "say",
+                    [
+                        [
+                            CMDParam("target","Character name|all"),
+                            CMDParam("text","Text to make target say")
+                        ],
+                        [
+                            CMDParam("text","Text to make yourself say")
+                        ]
+                    ],
+                    "Print given text as if it was said by given player(s)/yourself\nUse hex characters for non-alphabetical characters while using from console"
+                    )
+                return cmd.Describe();
+            }
+            out = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "out",
+                    [
+                        CMDParam("expression","Expression to compile and print the result of")
+                    ],
+                    "Compile given expression and print it's output if there is any"
+                    )
+                return cmd.Describe();
+            }
+            enum_string = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "enum_string",
+                    [
+                        CMDParam("text","Text to get enumerated form of.")
+                    ],
+                    "Get an enumerated form of given text for runtime compilation use. This expression can be used with $[expression] format to create arguments that wouldn't be possible otherwise\nExample: \"a,b;c d\" will return \"__.a+__._c+__.b+__._sc+__.c+__._s+__._d\" which can be used as an argument within $[expression] format from the console"
+                    )
+                return cmd.Describe();
+            }
+            create_alias = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "create_alias",
+                    [
+                        CMDParam("alias_name","Name of the alias"),
+                        CMDParam("table_contents","Alias parameters,commands and other options following the table format.\nExample:\n Parameters={param_1=\"default_value\"},Commands={command_name={arg_1=\"$param_1\",arg_2=\"value to pass\",arg_3=\"$[expression]\"}}")
+                    ],
+                    "Create an alias for existing commands/aliases with custom parameters and other settings\nCheck out the configuration files for more info..."
+                    )
+                return cmd.Describe();
+            }
+            replace_alias = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "replace_alias",
+                    [
+                        CMDParam("alias_name","Name of the existing alias"),
+                        CMDParam("table_contents","New alias parameters,commands and other options following the table format")
+                    ],
+                    "Replace an existing alias. Check ?create_alias"
+                    )
+                return cmd.Describe();
+            }
+            reload_aliases = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "reload_aliases",
+                    [],
+                    "Reload alias files in the configuration folders"
+                    )
+                return cmd.Describe();
+            }
+            command_ban = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "command_ban",
+                    [
+                        [
+                            CMDParam("character","Character name"),
+                            CMDParam("cmd","Command name to ban until you unban",true,"Bans from all commands")
+                        ],
+                        [
+                            CMDParam("character","Character name"),
+                            CMDParam("cmd","Command name to ban"),
+                            CMDParam("duration","Ban duration")
+                        ]
+                    ],
+                    "Temporarly ban the use of a command for a player or everyone"
+                    )
+                return cmd.Describe();
+            }
+            command_unban = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "command_unban",
+                    [
+                        CMDParam("character","Character name"),
+                        CMDParam("cmd","Command name to unban",true,"Unbans from all commands")
+                    ],
+                    "Unban the use of a command for a player or everyone"
+                    )
+                return cmd.Describe();
+            }
+            disable_command = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "disable_command",
+                    [
+                        CMDParam("cmd","Command name to disable for everyone")
+                    ],
+                    "Disable a command for everyone"
+                    )
+                return cmd.Describe();
+            }
+            enable_command = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "enable_command",
+                    [
+                        CMDParam("cmd","Command name to re-enable for everyone")
+                    ],
+                    "Re-enable a command for everyone"
+                    )
+                return cmd.Describe();
+            }
         }
     }
 
@@ -2396,8 +2521,18 @@
  * Player's chat
  */
 ::Messages.DocCmdPlayer <- function(player,msg)
-{
-    if(!Messages.Docs({_player=player,_msg=msg}).SayToPlayerChat(true))
+{   
+    if(typeof msg == "array")
+    {
+        foreach(i,line in msg)
+        { 
+            if(!Messages.Docs({_player=player,_msg=line}).SayToPlayerChat(true))
+            {
+                printl("Couldn't send documentation message to " + player);
+            }
+        }
+    }
+    else if(!Messages.Docs({_player=player,_msg=msg}).SayToPlayerChat(true))
     {
         printl("Couldn't send documentation message to " + player);
     }
@@ -2754,8 +2889,57 @@ class ::CMDDocs
                 paramstr += " " + COLOR_OLIVE_GREEN + (i+1) + "." + COLOR_DEFAULT + p.Describe() + "\n"
             }
         }
-        return COLOR_BRIGHT_GREEN + _name + COLOR_DEFAULT + ":\n" 
-                + COLOR_ORANGE + ">>> " + COLOR_DEFAULT + _desc + "\n" 
-                + paramstr
+        paramstr = COLOR_BRIGHT_GREEN + _name + COLOR_DEFAULT + ":\n" 
+                    + COLOR_ORANGE + ">>> " + COLOR_DEFAULT + _desc + "\n" 
+                    + paramstr
+
+        local splt = split(paramstr,"\n")
+        return ::Messages.MessageSplit(splt)
     }
+}
+
+::Messages.MessageSplit <- function(splt)
+{
+    local result = []
+    local spltlen = splt.len();
+    if(spltlen > 1)	// New-lines
+    {
+        for(local i=0;i<spltlen;i++)
+        {
+            local mlen = splt[i].len();
+            local ms = (mlen.tofloat() / (PRINTER_CHAR_LIMIT+0.1)).tointeger() + 1;
+            if(mlen > PRINTER_CHAR_LIMIT)	// Too long line
+            {
+                for(local j=0;j<ms;j++)	// Slice into new lines
+                {
+                    local offset = PRINTER_CHAR_LIMIT*j;
+                    local len = (j == ms-1) ? mlen%PRINTER_CHAR_LIMIT : PRINTER_CHAR_LIMIT;
+                    result.append(splt[i].slice(offset,offset + len));
+                }
+            }
+            else	// Valid length line
+            {
+                result.append(splt[i]);
+            }
+        }
+    }
+    else	// Single line, may be too long
+    {   
+        local mlen = splt[0].len();
+        local ms = (mlen.tofloat() / (PRINTER_CHAR_LIMIT+0.1)).tointeger() + 1;
+        if(mlen > PRINTER_CHAR_LIMIT)	// Too long line
+        {
+            for(local j=0;j<ms;j++)	// Slice into new lines
+            {
+                local offset = PRINTER_CHAR_LIMIT*j;
+                local len = (j == ms-1) ? mlen%PRINTER_CHAR_LIMIT : PRINTER_CHAR_LIMIT;
+                result.append(splt[0].slice(offset,offset + len))
+            }
+        }
+        else	// Valid length line
+        {
+            result.append(splt[0]);
+        }
+    }
+    return result;
 }
