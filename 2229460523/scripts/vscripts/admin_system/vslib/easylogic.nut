@@ -4615,6 +4615,20 @@ function VSLib::EasyLogic::RemoveInterceptChat(func)
  */
 function VSLib::EasyLogic::CheckCommandAvailability(player,cleanBaseCmd,quiet=false)
 {
+	// Check if its an alias, do necessary checks
+	if(cleanBaseCmd in ::AliasCompiler.Tables)
+	{
+		local alias = ::AliasCompiler.Tables[cleanBaseCmd]
+		if(alias._hostOnly && !player.IsServerHost())
+		{
+			ClientPrint(srcEnt,3,COLOR_ORANGE+cleanBaseCmd+COLOR_DEFAULT+" command can only be used by the host!")
+			return false;
+		}
+		else if(alias._authOnly && !::AdminSystem.HasScriptAuth(player))
+			return false;
+	}
+
+	// Check if disabled for the session
 	if(cleanBaseCmd in ::VSLib.EasyLogic.DisabledCommands)
 	{
 		if(!quiet)
@@ -4622,6 +4636,7 @@ function VSLib::EasyLogic::CheckCommandAvailability(player,cleanBaseCmd,quiet=fa
 		return false;
 	}
 	local steamid = player.GetSteamID()
+	// Check player limits
 	if(cleanBaseCmd in ::VSLib.EasyLogic.CommandRestrictions)
 	{
 		local restrictions = ::VSLib.EasyLogic.CommandRestrictions[cleanBaseCmd]
@@ -4677,6 +4692,7 @@ function VSLib::EasyLogic::CheckCommandAvailability(player,cleanBaseCmd,quiet=fa
 		}
 		delete ::VSLib.EasyLogic.TemporaryCmdBanList[cleanBaseCmd][steamid]
 	}
+	
 	return true;
 }
 

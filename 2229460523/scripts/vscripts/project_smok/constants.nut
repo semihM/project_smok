@@ -124,7 +124,7 @@
 // Add file names of the hook files below as shown (without // characters at the begining) to include them!
 
 // Characters // indicate comments starting after them, which are ignored
-// To include the ""example_hook_file.txt"" remove the // characters at the beginning of the line!
+// To include the ""example_hook_file.nut"" remove the // characters at the beginning of the line!
 
 //example_hook_file // This will make project_smok look for ""example_hook_file.nut"" and read it if it exists! Write any additional files below this line..."
 
@@ -161,10 +161,10 @@
 //          o Managing player restrictions, storing session variables and reading/writing configuration files
 //          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system.nut
 //
-//		5. ::Messages
-//			o Message printing methods for printing to a player's or to everybody's chat(s) or console(s)
-//			o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/project_smok/messages.nut
-//			o File in the link above includes most of the messages displayed by the addon, you can update them in these script files if you want, but be careful with formatting 
+//      5. ::Messages
+//          o Message printing methods for printing to a player's or to everybody's chat(s) or console(s)
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/project_smok/messages.nut
+//          o File in the link above includes most of the messages displayed by the addon, you can update them in these script files if you want, but be careful with formatting 
 //
 // Commonly used entity classes:
 //      1. Ent
@@ -193,14 +193,14 @@
 +::Constants.CustomHookExampleFunction_1
 +::Constants.CustomHookExampleFunction_2
 
-::Constants.CustomScriptExampleFunction <- "::PS_Scripts.CommandName.Main <- function(player,args,text)\n{\n\t// Adding restrictions\n\t// -> Only allow admins (this is already checked in most cases, but better to check twice)\n\tif(!AdminSystem.IsPrivileged(player))\n\t\treturn;\n\t// -> Only allow admins with script authorizations\n\tif(!AdminSystem.HasScriptAuth(player))\n\t\treturn\n\t// Accessing arguments easily\n\tlocal argument_1 = GetArgument(1)	// This is same as args[0], but it is fail-safe, returns null if no argument is passed\n\tlocal argument_2 = GetArgument(2)	// But GetArgument method uses a copy of arguments stored in ::VSLib.EasyLogic.LastArgs, which only gets updated when the command is called from chat/console\n\tlocal argument_3 = GetArgument(3)	// If you expect the command to be called within a compilestring function, make sure to check args in here too!\n\t// ...\n\n\t// Do null checks if you need\n\tif(argument_3 == null)\n\t\treturn;\n\tif(argument_2 == null)\n\t\targument_2 = \"default value for argument 2\";\n\n\t// Write the rest of the instructions however you like!\n\n\t// Print out a message at the end for the player if needed, prints to wherever the caller has his output state set to\n\t::Printer(player,\"Put the message here!\")\n\n\t// Check out some example functions in the source code: https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system.nut \n}"
+::Constants.CustomScriptExampleFunction <- "::PS_Scripts.CommandName.Main <- function(player,args,text)\n{\n\t// Adding restrictions\n\t// -> Only allow admins (this is already checked in most cases, but better to check twice)\n\tif(!AdminSystem.IsPrivileged(player))\n\t\treturn;\n\t// -> Only allow admins with script authorizations\n\tif(!AdminSystem.HasScriptAuth(player))\n\t\treturn;\n\n\t// Accessing arguments easily\n\tlocal argument_1 = GetArgument(1)	// This is same as args[0], but it is fail-safe, returns null if no argument is passed\n\tlocal argument_2 = GetArgument(2)	// But GetArgument method uses a copy of arguments stored in ::VSLib.EasyLogic.LastArgs, which only gets updated when the command is called from chat/console\n\tlocal argument_3 = GetArgument(3)	// If you expect the command to be called within a compilestring function, make sure to check args in here too!\n\t// ...\n\n\t// Do null checks if you need\n\tif(argument_3 == null)\n\t\treturn;\n\tif(argument_2 == null)\n\t\targument_2 = \"default value for argument 2\";\n\n\t// Write the rest of the instructions however you like!\n\n\t// At the end, print out a message for the player(s) if needed, prints to wherever the given player has his output state set to\n\t::Printer(player,\"Put the message here!\")\n\n\t// Check out some example functions in the source code: https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system.nut \n}"
 
 ::Constants.CommandScriptListDefaults <-
 @"// This file contains the files names of the custom commands to make sure they get read
 // Add file names of the command files below as shown (without // characters at the begining) to include them!
 
 // Characters // indicate comments starting after them, which are ignored
-// To include the ""example_command_file.txt"" remove the // characters at the beginning of the line!
+// To include the ""example_command_file.nut"" remove the // characters at the beginning of the line!
 
 //example_command_file // This will make project_smok look for ""example_command_file.nut"" and read it if it exists! Write any additional files below this line..."
 
@@ -234,10 +234,10 @@
 //          o Managing player restrictions, storing session variables and reading/writing configuration files
 //          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system.nut
 //
-//		5. ::Messages
-//			o Message printing methods for printing to a player's or to everybody's chat(s) or console(s)
-//			o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/project_smok/messages.nut
-//			o File in the link above includes most of the messages displayed by the addon, you can update them in these script files if you want, but be careful with formatting 
+//      5. ::Messages
+//          o Message printing methods for printing to a player's or to everybody's chat(s) or console(s)
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/project_smok/messages.nut
+//          o File in the link above includes most of the messages displayed by the addon, you can update them in these script files if you want, but be careful with formatting 
 //
 // Commonly used entity classes:
 //      1. Ent
