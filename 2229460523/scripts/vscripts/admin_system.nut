@@ -30,8 +30,18 @@ IncludeScript("Project_smok/AdminVars");
 // Include Aliasing Compiler
 IncludeScript("Project_smok/AliasCompiler");
 
+// Messages
 ::CmdMessages <- ::Messages.BIM.CMD;
 ::CmdDocs <- ::Messages.BIM.Docs;
+
+// Custom hooks and commands tables
+::PS_Hooks <- {}
+::PS_Scripts <- {}
+
+foreach(eventname,tbl in ::VSLib.EasyLogic.Notifications)
+{
+	::PS_Hooks[eventname] <- {}
+}
 
 if ( SessionState.ModeName == "coop" || SessionState.ModeName == "realism" || SessionState.ModeName == "survival" || SessionState.ModeName == "versus" || SessionState.ModeName == "scavenge" )
 {
@@ -192,6 +202,168 @@ Convars.SetValue( "precache_all_survivors", "1" );
 /*
  * @authors rhino
  */
+::AdminSystem.LoadCustomHooks <- function()
+{
+	printl("---------------------------------------------------------")
+	local filelist = FileToString(Constants.Directories.CustomHooks);	// List of files
+	if(filelist == null)
+	{
+		printl("[Custom-Hooks] Creating "+Constants.Directories.CustomHooks+" for the first time...")
+		StringToFile(Constants.Directories.CustomHooks,Constants.CustomHookListDefaults);
+		filelist = FileToString(Constants.Directories.CustomHooks);
+	}
+
+	local example = FileToString(Constants.Directories.CustomHooksExample);	// Example
+	if(example == null)
+	{
+		printl("[Custom-Hooks] Creating "+Constants.Directories.CustomHooksExample+" for the first time...")
+		StringToFile(Constants.Directories.CustomHooksExample,Constants.CustomHookDefaults);
+		example = FileToString(Constants.Directories.CustomHooksExample);
+	}
+
+	local filelist = split(filelist, "\r\n");
+	local missingfound = false
+	foreach (i,filename in filelist)
+	{	
+		filename = strip(filename)
+
+		if(filename.find("//") == 0)
+			continue;
+		else if(filename.find("//") != null)
+		{
+			filename = strip(split(filename,"//")[0])
+		}
+
+		filename = "admin system/hooks/"+filename+".nut"
+		local fileContents = FileToString(filename)
+		if(fileContents == null)
+		{
+			continue;
+		}
+		
+		compilestring(fileContents)();
+	}
+	
+	local total = 0
+	foreach(eventname,funcs in ::PS_Hooks)
+	{
+		if(!(eventname in ::VSLib.EasyLogic.Notifications))
+		{
+			printl("[Event-Hook-Unknown] "+eventname+" is unknown! Consider checking given links in the example file!")
+		}
+		else
+		{
+			if(typeof funcs != "table")
+			{
+				printl("[Event-Hook-Error] Event hooks for "+eventname+ " were formatted incorrectly! Format is-> PS_Hooks.On{GameEvent}.{FunctionName}<-function(param_1,param_2,...){}")
+			}
+			else
+			{
+				foreach(funcname, func in funcs)
+				{
+					total += 1
+					local mainname = funcname
+					local namechanged = false
+					while(funcname in ::VSLib.EasyLogic.Notifications[eventname])
+					{
+						funcname += UniqueString()
+						namechanged = true
+					}
+					if(namechanged)
+						printl("[Event-Hook-Duplicate] "+eventname+" event's "+mainname+" function was a duplicate, named it to "+funcname)
+
+					::VSLib.EasyLogic.Notifications[eventname][funcname] <- func;
+				}
+			}
+		}
+	}
+	printl("[Custom-Hooks] Found "+::PS_Hooks.len()+" events and a total of "+total+" hooks")
+	printl("---------------------------------------------------------")
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.LoadCustomScripts <- function()
+{
+	printl("---------------------------------------------------------")
+	local filelist = FileToString(Constants.Directories.CommandScripts);	// List of files
+	if(filelist == null)
+	{
+		printl("[Custom-Scripts] Creating "+Constants.Directories.CommandScripts+" for the first time...")
+		StringToFile(Constants.Directories.CommandScripts,Constants.CommandScriptListDefaults);
+		filelist = FileToString(Constants.Directories.CommandScripts);
+	}
+
+	local example = FileToString(Constants.Directories.CommandScriptsExample);	// Example
+	if(example == null)
+	{
+		printl("[Custom-Scripts] Creating "+Constants.Directories.CommandScriptsExample+" for the first time...")
+		StringToFile(Constants.Directories.CommandScriptsExample,Constants.CommandScriptDefaults);
+		example = FileToString(Constants.Directories.CommandScriptsExample);
+	}
+
+	local filelist = split(filelist, "\r\n");
+	local missingfound = false
+	foreach (i,filename in filelist)
+	{	
+		filename = strip(filename)
+
+		if(filename.find("//") == 0)
+			continue;
+		else if(filename.find("//") != null)
+		{
+			filename = strip(split(filename,"//")[0])
+		}
+
+		filename = "admin system/scripts/"+filename+".nut"
+		local fileContents = FileToString(filename)
+		if(fileContents == null)
+		{
+			continue;
+		}
+		
+		compilestring(fileContents)();
+	}
+
+	printl("[Custom-Scripts] Reading custom command files...")
+	local loaded = {}
+	local i = 0
+	foreach(cmdname, cmdtable in ::PS_Scripts)
+	{
+		if(cmdname in ::ChatTriggers)
+		{
+			printl("[Command-Duplicate] "+cmdname+" already exists! Consider changing its name to enable it.")
+		}
+		else
+		{
+			if("Main" in cmdtable && typeof cmdtable.Main == "function")
+			{
+				i += 1
+				loaded[i] <- cmdname
+				::ChatTriggers[cmdname] <- cmdtable.Main
+			}
+
+			if("Help" in cmdtable && typeof cmdtable.Help == "table")
+			{
+				::ChatTriggerDocs[cmdname] <- @(player,args) AdminSystem.IsPrivileged(player)
+					? Messages.DocCmdPlayer(player,::AliasCompiler.CreateDocsFunction(cmdname,cmdtable.Help,null)[0](player,args))
+					: null
+			}
+		}
+	}
+	if(loaded.len() > 0)
+		printl("[Custom-Commands] Loaded "+loaded.len()+" custom commands:")
+	foreach(i,name in loaded)
+	{
+		printl("["+i+"] "+name)
+	}
+	printl("---------------------------------------------------------")
+}
+
+/*
+ * @authors rhino
+ */
 ::AdminSystem.CreateAliasCommandCmd <- function(player,args,text)
 {
 	if(!AdminSystem.HasScriptAuth(player))
@@ -258,27 +430,57 @@ Convars.SetValue( "precache_all_survivors", "1" );
  */
 ::AdminSystem.LoadAliasedCommands <- function(reload=false)
 {
-	local fileContents = FileToString(Constants.Directories.CommandAliases);
-	if(fileContents == null)
+	local filelist = FileToString(Constants.Directories.CommandAliases);	// List of files
+	if(filelist == null)
 	{
-		printl("[Commands] Creating aliases/command_aliases_1.txt for the first time...")
-		StringToFile(Constants.Directories.CommandAliases,Constants.CommandAliasesDefaults);
-		fileContents = FileToString(Constants.Directories.CommandAliases);
+		printl("[Custom-Aliases] Creating "+Constants.Directories.CommandAliases+" for the first time...")
+		StringToFile(Constants.Directories.CommandAliases,Constants.CommandAliasesListDefaults);
+		filelist = FileToString(Constants.Directories.CommandAliases);
 	}
-	local tbl = ::Constants.ValidateAliasTable(fileContents,Constants.Directories.CommandAliases,true,reload,"ChatTriggers");
-	::AliasCompiler.CreateAliasFromTable(tbl,"ChatTriggers")
 
-	local i = 2
-	local extras = FileToString("admin system/aliases/command_aliases_2.txt")
-	while(extras != null)
+	local example = FileToString(Constants.Directories.CommandAliasesExample);	// Example
+	if(example == null)
 	{
-	 	tbl = ::Constants.ValidateAliasTable(extras,"admin system/aliases/command_aliases_"+i+".txt",false,reload,"ChatTriggers");
+		printl("[Custom-Aliases] Creating "+Constants.Directories.CommandAliasesExample+" for the first time...")
+		StringToFile(Constants.Directories.CommandAliasesExample,Constants.CommandAliasesDefaults);
+		example = FileToString(Constants.Directories.CommandAliasesExample);
+	}
 
+	local filelist = split(filelist, "\r\n");
+	local missingfound = false
+	foreach (i,filename in filelist)
+	{	
+		filename = strip(filename)
+
+		if(filename.find("//") == 0)
+			continue;
+		else if(filename.find("//") != null)
+		{
+			filename = strip(split(filename,"//")[0])
+		}
+
+		filename = "admin system/aliases/"+filename+".txt"
+		local fileContents = FileToString(filename)
+		if(fileContents == null)
+		{
+			continue;
+		}
+		local tbl = ::Constants.ValidateAliasTable(fileContents,filename,true,reload,"ChatTriggers");
 		::AliasCompiler.CreateAliasFromTable(tbl,"ChatTriggers")
-		i += 1
-		extras = FileToString("admin system/aliases/command_aliases_"+i+".txt")
 	}
-
+	
+	if(::AliasCompiler.Tables.len() > 0)
+	{	
+		printl("---------------------------------------------------------")
+		printl("[Custom-Aliases] Aliased commands for this session ("+::AliasCompiler.Tables.len()+"):")
+		local i = 0;
+		foreach(name,al in ::AliasCompiler.Tables)
+		{
+			i += 1
+			printl("\t["+i+"] "+name)
+		}
+		printl("---------------------------------------------------------")
+	}
 }
 
 /*
@@ -327,7 +529,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 	local fileContents = FileToString(Constants.Directories.DisabledCommands);
 	if(fileContents == null)
 	{
-		printl("[Commands] Creating disabled_commands.txt for the first time...")
+		printl("[Command-Limits] Creating disabled_commands.txt for the first time...")
 		StringToFile(Constants.Directories.DisabledCommands,Constants.DisabledCommandsDefaults);
 		fileContents = FileToString(Constants.Directories.DisabledCommands);
 	}
@@ -353,11 +555,23 @@ Convars.SetValue( "precache_all_survivors", "1" );
 			if(!missingfound)
 			{
 				missingfound = true
-				printl("[Commands] Found unknown command names in the disabled_commands.txt, consider removing them to save space:")
+				printl("[Command-Limits] Found unknown command names in the disabled_commands.txt, consider removing them to save space:")
 			}
 			printl("\t[Row "+(i+1)+"] "+cmd)
 		}
-
+	}
+	
+	if(::VSLib.EasyLogic.DisabledCommands.len() > 0)
+	{	
+		printl("---------------------------------------------------------")
+		printl("[Command-Limits] Disabled commands for this session ("+::VSLib.EasyLogic.DisabledCommands.len()+"):")
+		local i = 0;
+		foreach(cmd,_v in ::VSLib.EasyLogic.DisabledCommands)
+		{
+			i += 1
+			printl("\t["+i+"] "+cmd)
+		}
+		printl("---------------------------------------------------------")
 	}
 }
 
@@ -478,7 +692,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 	local fileContents = FileToString(Constants.Directories.CommandRestrictions);
 	if(fileContents == null)
 	{
-		printl("[Commands] Creating command_limits.txt for the first time...")
+		printl("[Command-Limits] Creating command_limits.txt for the first time...")
 		StringToFile(Constants.Directories.CommandRestrictions,Constants.CommandRestrictionsDefault);
 		fileContents = FileToString(Constants.Directories.CommandRestrictions);
 	}
@@ -878,35 +1092,13 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 
 	local MessageTable = Messages.BIM.Events.OnRoundStart.AdminLoadFiles;
 
-	AdminSystem.LoadDisabledCommands()
-	AdminSystem.LoadCommandRestrictions()
+	AdminSystem.LoadCustomScripts()
+	AdminSystem.LoadCustomHooks()
 	AdminSystem.LoadAliasedCommands()
 	
-	if(::AliasCompiler.Tables.len() > 0)
-	{	
-		printl("---------------------------------------------------------")
-		printl("[Aliases] Aliased commands for this session ("+::AliasCompiler.Tables.len()+"):")
-		local i = 0;
-		foreach(name,al in ::AliasCompiler.Tables)
-		{
-			i += 1
-			printl("\t["+i+"] "+name)
-		}
-		printl("---------------------------------------------------------")
-	}
+	AdminSystem.LoadDisabledCommands()
+	AdminSystem.LoadCommandRestrictions()
 
-	if(::VSLib.EasyLogic.DisabledCommands.len() > 0)
-	{	
-		printl("---------------------------------------------------------")
-		printl("[Commands] Disabled commands for this session ("+::VSLib.EasyLogic.DisabledCommands.len()+"):")
-		local i = 0;
-		foreach(cmd,_v in ::VSLib.EasyLogic.DisabledCommands)
-		{
-			i += 1
-			printl("\t["+i+"] "+cmd)
-		}
-		printl("---------------------------------------------------------")
-	}
 	if ( adminList != null )
 	{
 		MessageTable.LoadAdmins();
@@ -3014,77 +3206,81 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
  */
 ::AdminSystem.out <- function(msg="",target=null,color="\x04")
 {
+	function printgivenlines(msg,target,color)
+	{
+		local splt = split(msg,"\n");
+		local lines = ::Messages.MessageSplit(splt)
+		if(target != null)
+		{
+			foreach(i,line in lines)
+			{
+				PrinterSplitDecider(target,color+line,"info");
+			}
+		}
+		else
+		{
+			foreach(i,line in lines)
+			{
+				ClientPrint(null,3,color+line);
+			}
+		}
+	}
+
+	if(msg == null)
+	{
+		if(target != null && (typeof target == "VSLIB_ENTITY" || typeof target == "VSLIB_PLAYER"))
+			target = target.GetBaseEntity()
+
+		ClientPrint(target,3,color+"null");
+		return;
+	}
+
 	local msgtype = typeof msg;
-	if(target != null)
+	switch(msgtype)
 	{
-		if(msg == null)
-			return;
-		else if(msgtype == "table")
-			Utils.PrintTable(msg);
-		else if(msgtype == "array")
-			ClientPrint(target.GetBaseEntity(),3,color+Utils.ArrayString(msg));
-		else if(msgtype == "QAngle" || msgtype == "Vector")
-			ClientPrint(target.GetBaseEntity(),3,color+msg.ToKVString());
-		else if(msgtype == "string" || msgtype == "float" || msgtype == "integer" || msgtype == "bool")
-			ClientPrint(target.GetBaseEntity(),3,color+msg.tostring());
-		else if(msgtype == "instance" || msgtype.find("VSLIB") != null)
+		case "array":
+		case "table":
+			msg = Utils.GetTableString(msg);
+			break;
+		case "QAngle":
+		case "Vector":
+			msg = msg.ToKVString();
+			break;
+		case "string":
+		case "float":
+		case "integer":
+		case "bool":
+			msg = msg.tostring();
+			break;
+		default:
 		{
-			try
+			if(msgtype == "instance" || msgtype.find("VSLIB") != null)
 			{
-				if(msg.GetClassname() == "player")
+				try
 				{
-					EntInfo(Player(msg.GetBaseIndex()),target,false,0.0);
+					if(msg.GetClassname() == "player")
+					{
+						EntInfo(Player(msg.GetBaseIndex()),target,false,0.0);
+					}
+					else
+					{
+						EntInfo(msg,target,false,0.0);
+					}
+					return;
 				}
-				else
+				catch(e)
 				{
-					EntInfo(msg,target,false,0.0);
+					msg = msg.tostring();
 				}
 			}
-			catch(e)
-			{
-				ClientPrint(target,3,color+msg.tostring());
-			}
+			else if(msgtype.tostring().find("project_smok_Message_") != null)
+				msg = msg.GetColored();
+			else
+				msg = msg.tostring();
+			break;
 		}
-		else if(msgtype.tostring().find("project_smok_Message_") != null)
-			ClientPrint(target.GetBaseEntity(),3,msg.GetColored());
-		else
-			ClientPrint(target.GetBaseEntity(),3,color+msg.tostring());
 	}
-	else
-	{
-		if(msg == null)
-			return;
-		else if(msgtype == "table")
-			Utils.PrintTable(msg);
-		else if(msgtype == "array")
-			ClientPrint(null,3,color+Utils.ArrayString(msg));
-		else if(msgtype == "QAngle" || msgtype == "Vector")
-			ClientPrint(null,3,color+msg.ToKVString());
-		else if(msgtype == "string" || msgtype == "float" || msgtype == "integer" || msgtype == "bool")
-			ClientPrint(null,3,color+msg.tostring());
-		else if(msgtype == "instance" || msgtype.find("VSLIB") != null)
-		{
-			try
-			{
-				if(msg.GetClassname() == "player")
-				{
-					EntInfo(Player(msg.GetBaseIndex()),null,false,0.0);
-				}
-				else
-				{
-					EntInfo(msg,null,false,0.0);
-				}
-			}
-			catch(e)
-			{
-				ClientPrint(null,3,color+msg.tostring());
-			}
-		}
-		else if(msgtype.tostring().find("project_smok_Message_") != null)
-			ClientPrint(null,3,msg.GetColored());
-		else
-			ClientPrint(null,3,color+msg.tostring());
-	}
+	printgivenlines(msg,target,color)
 }
 
 // Freezing objects
@@ -5970,7 +6166,7 @@ enum __
 			}
 			else if(typeof val == "array")
 			{
-				Printer(player,varname+" is "+"\x04"+Utils.ArrayString(val));
+				Printer(player,varname+" is an "+"\x04"+"array:\n"+Utils.ArrayString(val));
 				return;
 			}
 			else
@@ -5998,7 +6194,7 @@ enum __
 				}
 				else if(typeof AdminSystem.Vars[varname] == "array")
 				{
-					Printer(player,varname+" is "+"\x04"+Utils.ArrayString(AdminSystem.Vars[varname]));
+					Printer(player,varname+" is an"+"\x04"+"array:\n"+Utils.ArrayString(AdminSystem.Vars[varname]));
 					return;
 				}
 				else
@@ -7556,7 +7752,6 @@ enum __
 	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
 	{Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));return;}
 
-	local str = "\n";
 	local steamid = player.GetSteamID();
 
 	if(!(steamid in AdminSystem.Vars._CustomResponseOptions[character]))
@@ -7568,9 +7763,10 @@ enum __
 	{
 		Messages.ThrowPlayer(player,CmdMessages.CustomSequences.NoSeqFound(character,sequencename));return;
 	}
-	
+	local str = "";
+	str += "\nscenes:\n"
 	str += Utils.ArrayString(AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence[sequencename].scenes)
-	str += "\n"
+	str += "\ndelays:\n"
 	str += Utils.ArrayString(AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence[sequencename].delays)
 
 	Printer(player,CmdMessages.CustomSequences.InfoString(character,sequencename,str));
@@ -8384,7 +8580,6 @@ function Notifications::OnHealStart::_TradeMedPack(target,healer,args)
 			|| !player.IsAlive() 
 			|| player.IsDead() 
 			|| player.IsDying() 
-			|| player.IsGoingToDie() 
 			|| player.IsHangingFromLedge() 
 			|| player.IsHealing() 
 			//|| player.IsBeingHealed()
@@ -19488,7 +19683,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	else if(Utils.GetIDFromArray(attachment_names,val) == -1)
 	{
-		Messages.ThrowPlayer(player,CmdMessages.GrabYeet.SettingSuccess(val));
+		Messages.ThrowPlayer(player,CmdMessages.GrabYeet.UnknownAttachmentPoint(val));
 		ClientPrint(player.GetBaseEntity(),3,"\x04"+"Available attachment point names:"+Utils.ArrayString(attachment_names));
 		return;
 	}

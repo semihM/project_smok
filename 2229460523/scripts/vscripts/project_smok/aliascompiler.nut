@@ -36,7 +36,81 @@
 /*****************\
 * UTILITY METHODS *
 \*****************/
+::AliasCompiler.CreateDocsFunction <- function(cmdname,helptbl,params=null)
+{
+    local docstring = ""
+    if("docs" in helptbl)
+        docstring = helptbl.docs
 
+    local paramarr = [];
+    local paramreg = regexp(@"(param_\d+)");
+    if(params != null)
+    {
+        foreach(key,info in helptbl)
+        {
+            if(paramreg.match(key) && key in params)
+            {   
+                if(typeof info == "table")
+                {
+                    local name = key
+                    local docs = "Unknown..."
+
+                    if("docs" in info)
+                        docs = info.docs
+                    if("name" in info)
+                        name = info.name
+
+                    if("when_null" in info)
+                        paramarr.append(CMDParam(name,docs,true,info.when_null))
+                    else if(params[key] != null)
+                        paramarr.append(CMDParam(name,docs,true,params[key]))
+                    else
+                        paramarr.append(CMDParam(key,info))
+                }
+                else
+                {
+                    if(params[key] != null)
+                        paramarr.append(CMDParam(key,info,true,params[key]))
+                    else
+                        paramarr.append(CMDParam(key,info))
+                }
+            }
+        }
+    }
+    else
+    {
+        foreach(key,info in helptbl)
+        {
+            if(paramreg.match(key))
+            {  
+                local name = key
+                local docs = "Unknown..."
+
+                if("docs" in info)
+                    docs = info.docs
+                if("name" in info)
+                    name = info.name
+
+                if("when_null" in info)
+                    paramarr.append(CMDParam(name,docs,true,info.when_null))
+                else
+                    paramarr.append(CMDParam(key,info))
+            }
+        }
+    }
+    local t = {}
+    t[0] <- function(player,args)
+    {
+        local cmd = CMDDocs(
+            cmdname,
+            paramarr,
+            docstring
+            )
+        return cmd.Describe();
+    }
+    
+    return t;
+}
 /**************\
 * ALIAS TABLES *
 \**************/
@@ -64,53 +138,7 @@ class ::AliasCompiler.Alias
             
         if("Help" in tbl)
         {
-            local helptbl = tbl.Help
-
-            local docstring = ""
-            if("docs" in helptbl)
-                docstring = helptbl.docs
-
-            local paramarr = [];
-            local paramreg = regexp(@"(param_\d+)");
-            foreach(key,info in helptbl)
-            {
-                if(paramreg.match(key) && key in _params)
-                {   
-                    if(typeof info == "table")
-                    {
-                        local name = key
-                        local docs = "Unknown..."
-
-                        if("docs" in info)
-                            docs = info.docs
-                        if("name" in info)
-                            name = info.name
-
-                        if("when_null" in info)
-                            paramarr.append(CMDParam(name,docs,true,info.when_null))
-                        else if(_params[key] != null)
-                            paramarr.append(CMDParam(name,docs,true,_params[key]))
-                        else
-                            paramarr.append(CMDParam(key,info))
-                    }
-                    else
-                    {
-                        if(_params[key] != null)
-                            paramarr.append(CMDParam(key,info,true,_params[key]))
-                        else
-                            paramarr.append(CMDParam(key,info))
-                    }
-                }
-            }
-            _help = function(player,args)
-            {
-                local cmd = CMDDocs(
-                    _name,
-                    paramarr,
-                    docstring
-                    )
-                return cmd.Describe();
-            }
+            _help = ::AliasCompiler.CreateDocsFunction(_name,tbl.Help,_params)[0]
         }
         else
             _help = {}

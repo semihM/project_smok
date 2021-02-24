@@ -49,7 +49,16 @@
     DisabledCommands = "admin system/disabled_commands.txt"
 
 	/// Command aliasing
-	CommandAliases = "admin system/aliases/command_aliases_1.txt"
+	CommandAliases = "admin system/aliases/aliases_list.txt"
+	CommandAliasesExample = "admin system/aliases/example_alias_file.txt"
+	
+	/// Custom commands
+	CommandScripts = "admin system/scripts/commands_list.txt"
+	CommandScriptsExample = "admin system/scripts/example_command_file.nut"
+
+	/// Custom hooks
+	CustomHooks = "admin system/hooks/events_list.txt"
+	CustomHooksExample = "admin system/hooks/example_hook_file.nut"
 }
 
 /**************************\
@@ -106,6 +115,190 @@
 		BotShareLoot = 15
 	}
 }
+::Constants.CustomHookExampleFunction_1 <- "::PS_Hooks.OnPlayerConnected.VeryCoolHook <- function(player,args)\n{\n\t// Tell a welcome message to a connected non-admin player\n\t// Check admin status, in this case make sure it's quiet=true so no other message will be displayed \n\tif(!AdminSystem.IsPrivileged(player,true))	\n\t\t::Messages.InformPlayer(player,\"Welcome! This is a modded server and the admins are very reasonable people :) Enjoy the madness!\") \n}"
+
+::Constants.CustomHookExampleFunction_2 <- "\n::PS_Hooks.OnPlayerConnected.AnotherCoolHook <- function(player,args)\n{\n\t// Tell everyone a semi-colored message when an admin is connected\n\t// Check admin status, in this case make sure it's quiet=true so no other message will be displayed \n\tif(AdminSystem.IsPrivileged(player,true))\n\t\t::Messages.InformAll(COLOR_ORANGE + player.GetName() + COLOR_DEFAULT + \" is here to smok- some boomers!\");	\n}"
+
+::Constants.CustomHookListDefaults <-
+@"// This file contains the files names of the custom hooks to make sure they get read
+// Add file names of the hook files below as shown (without // characters at the begining) to include them!
+
+// Characters // indicate comments starting after them, which are ignored
+// To include the ""example_hook_file.txt"" remove the // characters at the beginning of the line!
+
+//example_hook_file // This will make project_smok look for ""example_hook_file.nut"" and read it if it exists! Write any additional files below this line..."
+
+::Constants.CustomHookDefaults <-
+@"// All files in this directory will be read as strings and then get compiled, so be careful with the formatting!
+// Follow this example's format for hooking new functions to game events
+// Check out the game event names that can be used: 
+//		1. In source code (these names should be used as a hook's base): https://github.com/semihM/project_smok/blob/c3f631100a80913c6ad5f49fe74a24a772a03f40/2229460523/scripts/vscripts/admin_system/vslib/easylogic.nut#L194
+//		2. More detailed (these names can't be referred directly, but their representative names can be found in the link above ): https://wiki.alliedmods.net/Left_4_dead_2_events
+//
+// If you are a beginner to Squirrel scripting language, check out: http://squirrel-lang.org/squirreldoc/
+// If you don't know how to use the VSLib library, check out: https://l4d2scripters.github.io/vslib/docs/index.html
+// !!!!!!!!!!!!!!
+// MAKE SURE FILE SIZE IS LESS THAN 16.5 KB 
+// !!!!!!!!!!!!!!
+//
+// All the global tables and methods can be accessed via these files, but it is NOT recommended to update them
+// It is recommended to create 1 game event with multiple hooks per file, you can also do 
+//
+// Some useful global tables:
+//      1. ::VSLib.Utils
+//          o Basic common manipulation methods for all data types
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/utils.nut
+//
+//      2. ::VSLib.Timers
+//          o Adding and managing timers for concurrent execution
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/timer.nut
+//
+//      3. ::VSLib.EasyLogic
+//          o Easier handling of game events
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/easylogic.nut
+//
+//      4. ::AdminSystem
+//          o Managing player restrictions, storing session variables and reading/writing configuration files
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system.nut
+//
+//		5. ::Messages
+//			o Message printing methods for printing to a player's or to everybody's chat(s) or console(s)
+//			o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/project_smok/messages.nut
+//			o File in the link above includes most of the messages displayed by the addon, you can update them in these script files if you want, but be careful with formatting 
+//
+// Commonly used entity classes:
+//      1. Ent
+//          o Allows you to access to a game entity with given index, name or a similar reference. Same class as the game's script scope allows for entities, only has some basic methods
+//          o Only used with script function of which the game presents
+//          o https://github.com/semihM/project_smok/blob/c3f631100a80913c6ad5f49fe74a24a772a03f40/2229460523/scripts/vscripts/scriptedmode.nut#L467
+//      2. Entity
+//          o Has most of the Ent class's methods and hundreds more for easier use. Can be used as the main entity reference class.
+//          o Used with all the VSLib methods and other custom classes, stores it's base class reference as an attribute named ""_ent""
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/entity.nut
+//      3. Player
+//          o Extends Entity class, has more methods which can used for a player entity
+//          o Used with all the VSLib methods and other custom classes
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/player.nut
+//
+// Steps to create a new hook for a game event:
+// 		1. Name the file however you like
+// 		2. Include it's name in the ""events_list.txt"" to make the project_smok is aware of it's existance
+//		3. Write the actual hook following the example format given in this file!
+//
+// Example for hooking a function called VeryCoolHook to OnPlayerConnected event, which is called when a player completes connecting process to the game and takes 2 arguments:
+//		1. Create a file named ""my_hooks.nut""
+//		2. Open up the ""events_list.txt"" and add ""my_hooks""
+//		3. Write hooks following the format below
+"
++::Constants.CustomHookExampleFunction_1
++::Constants.CustomHookExampleFunction_2
+
+::Constants.CustomScriptExampleFunction <- "::PS_Scripts.CommandName.Main <- function(player,args,text)\n{\n\t// Adding restrictions\n\t// -> Only allow admins (this is already checked in most cases, but better to check twice)\n\tif(!AdminSystem.IsPrivileged(player))\n\t\treturn;\n\t// -> Only allow admins with script authorizations\n\tif(!AdminSystem.HasScriptAuth(player))\n\t\treturn\n\t// Accessing arguments easily\n\tlocal argument_1 = GetArgument(1)	// This is same as args[0], but it is fail-safe, returns null if no argument is passed\n\tlocal argument_2 = GetArgument(2)	// But GetArgument method uses a copy of arguments stored in ::VSLib.EasyLogic.LastArgs, which only gets updated when the command is called from chat/console\n\tlocal argument_3 = GetArgument(3)	// If you expect the command to be called within a compilestring function, make sure to check args in here too!\n\t// ...\n\n\t// Do null checks if you need\n\tif(argument_3 == null)\n\t\treturn;\n\tif(argument_2 == null)\n\t\targument_2 = \"default value for argument 2\";\n\n\t// Write the rest of the instructions however you like!\n\n\t// Print out a message at the end for the player if needed, prints to wherever the caller has his output state set to\n\t::Printer(player,\"Put the message here!\")\n\n\t// Check out some example functions in the source code: https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system.nut \n}"
+
+::Constants.CommandScriptListDefaults <-
+@"// This file contains the files names of the custom commands to make sure they get read
+// Add file names of the command files below as shown (without // characters at the begining) to include them!
+
+// Characters // indicate comments starting after them, which are ignored
+// To include the ""example_command_file.txt"" remove the // characters at the beginning of the line!
+
+//example_command_file // This will make project_smok look for ""example_command_file.nut"" and read it if it exists! Write any additional files below this line..."
+
+::Constants.CommandScriptDefaults <-
+@"// All files in this directory will be read as strings and then get compiled, so be careful with the formatting!
+// Follow this example's format for creating new commands and documentation for them
+
+// If you are a beginner to Squirrel scripting language, check out: http://squirrel-lang.org/squirreldoc/
+// If you don't know how to use the VSLib library, check out: https://l4d2scripters.github.io/vslib/docs/index.html
+// !!!!!!!!!!!!!!
+// MAKE SURE FILE SIZE IS LESS THAN 16.5 KB 
+// !!!!!!!!!!!!!!
+//
+// All the global tables and methods can be accessed via these files, but it is NOT recommended to update them
+// It is recommended to create 1 new command per file
+//
+// Some useful global tables:
+//      1. ::VSLib.Utils
+//          o Basic common manipulation methods for all data types
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/utils.nut
+//
+//      2. ::VSLib.Timers
+//          o Adding and managing timers for concurrent execution
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/timer.nut
+//
+//      3. ::VSLib.EasyLogic
+//          o Easier handling of game events
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/easylogic.nut
+//
+//      4. ::AdminSystem
+//          o Managing player restrictions, storing session variables and reading/writing configuration files
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system.nut
+//
+//		5. ::Messages
+//			o Message printing methods for printing to a player's or to everybody's chat(s) or console(s)
+//			o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/project_smok/messages.nut
+//			o File in the link above includes most of the messages displayed by the addon, you can update them in these script files if you want, but be careful with formatting 
+//
+// Commonly used entity classes:
+//      1. Ent
+//          o Allows you to access to a game entity with given index, name or a similar reference. Same class as the game's script scope allows for entities, only has some basic methods
+//          o Only used with script function of which the game presents
+//          o https://github.com/semihM/project_smok/blob/c3f631100a80913c6ad5f49fe74a24a772a03f40/2229460523/scripts/vscripts/scriptedmode.nut#L467
+//      2. Entity
+//          o Has most of the Ent class's methods and hundreds more for easier use. Can be used as the main entity reference class.
+//          o Used with all the VSLib methods and other custom classes, stores it's base class reference as an attribute named ""_ent""
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/entity.nut
+//      3. Player
+//          o Extends Entity class, has more methods which can used for a player entity
+//          o Used with all the VSLib methods and other custom classes
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/player.nut
+//
+// Steps to create a new command:
+// 		1. Name the file however you like
+// 		2. Include it's name in the ""commands_list.txt"" to make the project_smok is aware of it's existance
+//		3. Write the actual hook following the example format given in this file!
+//			o Initialize the table: ::PS_Scripts.MyCommand <- {}
+//			o Write documentation: ::PS_Scripts.MyCommand.Help <- {}
+//			o Write the actual command: ::PS_Scripts.MyCommand.Main <- function(player,args,text){}
+//
+// ----BELOW HERE IS HOW THE SCRIPTS SHOULD BE CREATED----
+
+// Commands should be created under PS_Scripts table
+
+// -> Initialize a table using the name of your command
+// -> If ""CommandName"" already exists, this will overwrite it!
+::PS_Scripts.CommandName <- {}
+
+// Create some documentation for your command
+// -> This information can be accessed in-game using ?CommandName in chat 
+::PS_Scripts.CommandName.Help <- 
+{
+    docs = ""Write an explanation for this command""
+    param_1 = 
+    {
+        name = ""first parameter's name""
+        docs = ""what is expected as an argument""
+        when_null = ""what happens if no argument is passed""
+    }
+    // ... follow this format to create documents for xth parameter param_x and so on ... 
+}
+
+// Create the function you want called when the command is called named ""Main""
+// This function will get 3 arguments passed to it:
+//      1. Caller player as VSLib.Player object
+//      2. Arguments in a table with integer keys and string/null values
+//      3. Text used while calling this function as string if further manipulation needed
+"
++ ::Constants.CustomScriptExampleFunction
+
+::Constants.CommandAliasesListDefaults <-
+@"// This file contains the files names of the alias tables to make sure they get read
+// Add file names of the alias table files below as shown (without // characters at the begining) to include them!
+
+// Characters // indicate comments starting after them, which are ignored
+// To include the ""example_alias_file.txt"" remove the // characters at the beginning of the line!
+
+//example_alias_file // This will make project_smok look for ""example_alias_file.txt"" and read it if it exists! Write any additional files below this line..."
 
 ::Constants.CommandAliasesDefaults <-
 @"// This file contains aliases for the commands present in project_smok add-on
@@ -125,9 +318,9 @@
 // >>> FILE SIZE SHOULD NOT EXCEED 16.5 KB, OR FILE WILL NOT BE READ
 // !!!!!!!
 // If the file size is bigger than 16.5 KB:
-// 		1. Create a file named ""command_aliases_2.txt"" 
-// 		2. Follow the format present in this file, don't forget to write the { and } characters at the begining and the end
-//		3. Increment the file name index if you need more files created: ""command_aliases_3.txt"", ""command_aliases_4.txt"" ... 
+// 		1. Create a new file named however you like
+//		2. Add the file name to ""aliases_list.txt"" to make sure project_smok knows it exists
+// 		3. Follow the format present in this file, don't forget to write the { and } characters at the begining and the end
 {	
 	// BASIC
 	//  o Create a table with the alias name you want, and include which commands are called with which values in this table
