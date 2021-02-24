@@ -551,7 +551,7 @@
 
                 SpawnSaved = function(id,classname,modelname)
                 {
-                    return "Spawned "+ COLOR_BRIGHT_GREEN + "#" + id + COLOR_ORANGE + classname + COLOR_DEFAULT + ", model->" + COLOR_OLIVE_GREEN + modelname;
+                    return "Spawned "+ COLOR_BRIGHT_GREEN + "#" + id + COLOR_ORANGE + " " + classname + COLOR_DEFAULT + ", model->" + COLOR_OLIVE_GREEN + modelname;
                 }
                 FailureSpawn = function(classname,modelname)
                 {

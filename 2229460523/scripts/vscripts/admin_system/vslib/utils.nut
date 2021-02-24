@@ -246,10 +246,12 @@ function VSLib::Utils::GetTableString(tbl, prefix = "", prev = "")
 			prev += prefix + idx + "\t= " + val + "\n";
 	}
 
-	prev += (typ == "table") ? "}\n" 
-							 : ( typ == "array" ) ? "]\n"
-							    				  : "";
-
+	if (prefix == "   ")
+	{
+		prev += (typ == "table") ? "}\n" 
+								: ( typ == "array" ) ? "]\n"
+													: "";
+	}
 	return prev;
 }
 
@@ -2514,18 +2516,7 @@ function VSLib::Utils::ArrayString(arr,emptyIfZero=false)
 	{
 		return "";
 	}
-	
-	local str = "[";
-	for(local i=0; i < len; i++)
-	{
-		str += arr[i].tostring();
-		
-		if(i!=len-1){str+=",";}
-	}
-
-	str += "]";
-
-	return str;
+	return GetTableString(arr);
 }
 /*
  * @author rhino
