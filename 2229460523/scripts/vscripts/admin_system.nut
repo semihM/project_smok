@@ -4182,7 +4182,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	rag.SetEFlags(EFL_IN_SKYBOX|EFL_HAS_PLAYER_CHILD)
 
 	rag.Push(v);
-
+	player.SetVelocity(Vector(0,0,0))	
 	DoEntFire("!self","RunScriptCode","AddThinkToEnt(self,"+::AdminSystem._GetEnumString("RagWepDisable")+")",0,null,rag.GetBaseEntity())
 	
 	Printer(player,"Created ragdoll #"+rag.GetIndex());
