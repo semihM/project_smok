@@ -2593,7 +2593,8 @@ function VSLib::Player::Say( str, teamOnly = false )
 		printl("VSLib Warning: Player " + _idx + " is invalid.");
 		return;
 	}
-	
+	if(typeof teamOnly != "bool")
+		teamOnly = false
 	g_MapScript.Say(_ent, str.tostring(), teamOnly);
 }
 
@@ -2815,6 +2816,28 @@ function VSLib::Player::Drop(str = "")
 			{
 				Give(dummyWep);
 				Remove(dummyWep);
+				local eyeY = GetEyeAngles().y
+				local pushvec = QAngle(15+RandomInt(-3,3),eyeY,0).Forward().Scale(225+RandomInt(-25,15))
+				/* For some weird reason, new gun won'be pushed and always fall behind the player... TO-DO: fix
+				if(item.GetModel().find("v_dual_pistol") != null)
+				{
+					local copypistol = Utils.CreateEntityWithTable(
+						{
+							classname = "weapon_pistol"
+							origin = item.GetOrigin()
+							angles = item.GetAngles()+QAngle(RandomInt(-5,5),RandomInt(-5,5),RandomInt(-5,5))
+							spawnflags = item.GetSpawnFlags()
+						}
+					)
+					copypistol.SetNetProp("m_CollisionGroup",1)
+					copypistol.SetNetProp("m_clrRender",item.GetNetProp("m_clrRender"))
+					copypistol.SetModelScale(item.GetModelScale())
+
+					DoEntFire("!self","RunScriptCode","self.ApplyAbsVelocityImpulse(QAngle(0+RandomInt(-6,0),"+eyeY+",0).Forward().Scale(400))",0.7,null,copypistol.GetBaseEntity())
+					DoEntFire("!self","RunScriptCode","NetProps.SetPropIntArray(self,\"m_CollisionGroup\",11,0)",1.5,null,copypistol.GetBaseEntity())
+				}
+				*/
+				item.Push(pushvec)
 				Input( "CancelCurrentScene" );
 			}
 		}
