@@ -984,6 +984,21 @@
 
         Docs = 
         {
+            prop = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "prop",
+                    [
+                        CMDParam("classname","Class name of the prop"),
+                        CMDParam("model_path","Model path(s), use model1&model2&... format to spawn multiple props parented by model1"),
+                        CMDParam("extra_height","Extra spawn height",true,"spawn at aimed point"),
+                        CMDParam("yaw_rotation","Rotation around Z axis(yaw) in degrees",true,"spawn with default angles"),
+                        CMDParam("mass_scale","Scale factor of mass, used with physicsM classname",true,"default mass value")
+                    ],
+                    "Spawn a prop or multiple props parented by a prop of given class using given model(s) and settings if any"
+                    )
+                return cmd.Describe();
+            }
             help = function(player,args)
             {
                 local cmd = CMDDocs(
@@ -1345,7 +1360,7 @@
                         CMDParam("class_name","Class: physics|dynamic|ragdoll|all|ptr(last class menu visited)"),
                         CMDParam("setting","Setting name"),
                         CMDParam("sub_setting","Actual setting name:\n\t  Possible values: val|flags|min|max\n\t  Prefixes:\n\t\t Set: (no prefix), example-> flags\n\t\t Add: + , example-> +flags\n\t\t Remove: - , example-> -flags"),
-                        CMDParam("value","Value to set/add/remove. Can be casted following the format: cast_type|val_1|val_2|...\n\t Single-value casts->int|float|flg\n\t Multi-value casts->str|ang|pos|flg\n\t Casting examples:\n\t\tAs vector -> pos|x|y|z\n\t\tAs angle -> ang|pitch|yaw|roll\n\t\tAs spaced text -> str|word_1|word_2|...\n\t\tAs flags -> flag_1|flag_2|...")
+                        CMDParam("value","Value to set/add/remove. Can be casted following the format: cast_type|val_1|val_2|...\n\t Single-value casts->int|float|flg\n\t Multi-value casts->str|ang|pos|flg\n\t Casting examples:\n\t\tAs vector -> pos|x|y|z\n\t\tAs angle -> ang|pitch|yaw|roll\n\t\tAs spaced text -> str|word_1|word_2|...\n\t\tAs flags -> flg|flag_1|flag_2|...")
                     ],
                     "Update a prop spawn setting of given class. Check display_prop_spawn_settings command"
                     )
@@ -1963,6 +1978,17 @@
                     )
                 return cmd.Describe();
             }
+            hurt_triggers = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "hurt_triggers",
+                    [
+                        CMDParam("state","Enable or Disable")
+                    ],
+                    "Enable/disable all hurt triggers in the map"
+                    )
+                return cmd.Describe();
+            }
             debug_info = function(player,args)
             {
                 local cmd = CMDDocs(
@@ -2182,7 +2208,7 @@
                     [
                         CMDParam("text","Text to get enumerated form of.")
                     ],
-                    "Get an enumerated form of given text for runtime compilation use. This expression can be used with $[expression] format to create arguments that wouldn't be possible otherwise\nExample: \"a,b;c d\" will return \"__.a+__._c+__.b+__._sc+__.c+__._s+__._d\" which can be used as an argument within $[expression] format from the console"
+                    "Get an enumerated form of given text for runtime compilation use. This expression can be used with $[expression] format to create arguments that wouldn't be possible otherwise\nExample: \"a,b;c d\" will return \"__.a+__._c+__.b+__._sc+__.c+__._s+__._d\" which can be used as an argument within $[expression] format from the console or chat"
                     )
                 return cmd.Describe();
             }
@@ -2215,7 +2241,25 @@
                 local cmd = CMDDocs(
                     "reload_aliases",
                     [],
-                    "Reload alias files in the configuration folders"
+                    "Reload custom alias files in the configuration folders"
+                    )
+                return cmd.Describe();
+            }
+            reload_scripts = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "reload_scripts",
+                    [],
+                    "Reload custom script files in the configuration folders"
+                    )
+                return cmd.Describe();
+            }
+            reload_hooks = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "reload_hooks",
+                    [],
+                    "Reload custom hook files in the configuration folders"
                     )
                 return cmd.Describe();
             }
@@ -2902,6 +2946,10 @@ class ::CMDDocs
 {
     local result = []
     local spltlen = splt.len();
+    if(spltlen == 0)
+    {
+        return [""]
+    }
     if(spltlen > 1)	// New-lines
     {
         for(local i=0;i<spltlen;i++)
@@ -2942,4 +2990,86 @@ class ::CMDDocs
         }
     }
     return result;
+}
+
+::PrinterSplitDecider <- function(player,splt,messager)
+{
+	switch(messager)
+	{
+		case "warning":
+		case "warn":
+			Messages.WarnPlayer(player,splt);break;
+		case "error":
+		case "throw":
+			Messages.ThrowPlayer(player,splt);break;
+		default:
+			Messages.InformPlayer(player,splt);break;
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::Printer <- function(player,msg,messager=null)
+{
+	local splt = split(msg,"\n");
+	local charname = player.GetCharacterName();
+	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterNameLower()])
+	{
+		local lines = ::Messages.MessageSplit(splt)
+		foreach(i,line in lines)
+		{
+			PrinterSplitDecider(player,line,messager);
+		}
+	}
+	else	// Using echo allows much longer messages (TO-DO: limit unknown)
+	{
+		msg = Utils.CleanColoredString(msg);
+		messager = messager == null ? "info" : "error";
+
+		if(splt.len() > 1)
+		{
+			// Do first part seperately, same process as above
+			local mlen = splt[0].len();
+			local ms = (mlen.tofloat() / (PRINTER_CHAR_LIMIT+0.1)).tointeger() + 1;
+			if(mlen > PRINTER_CHAR_LIMIT)
+			{
+				printB(charname,charname+" -> ",true,messager,true,false);
+				for(local j=0;j<ms;j++)
+				{
+					local offset = PRINTER_CHAR_LIMIT*j;
+					local len = (j == ms-1) ? mlen%PRINTER_CHAR_LIMIT : PRINTER_CHAR_LIMIT;
+					printB(charname,splt[0].slice(offset,offset + len),true,messager,false,false);
+				}
+			}
+			else
+			{
+				printB(charname,charname+" -> "+splt[0],true,messager,true,false);
+			}
+			
+			for(local i=1;i<splt.len();i++)
+			{
+				mlen = splt[i].len();
+				ms = (mlen.tofloat() / (PRINTER_CHAR_LIMIT+0.1)).tointeger() + 1;
+				if(mlen > PRINTER_CHAR_LIMIT)
+				{
+					for(local j=0;j<ms;j++)
+					{
+						local offset = PRINTER_CHAR_LIMIT*j;
+						local len = (j == ms-1) ? mlen%PRINTER_CHAR_LIMIT : PRINTER_CHAR_LIMIT;
+						printB(charname,splt[i].slice(offset,offset + len),true,"",false,false);
+					}
+				}
+				else
+				{
+					printB(charname,splt[i],true,"",false,false);
+				}
+			}
+			printB(charname,"",false,"",false,true,0.5);
+		}
+		else
+		{
+			printB(charname,charname+" -> "+msg,true,messager,true,true);
+		}
+	}
 }
