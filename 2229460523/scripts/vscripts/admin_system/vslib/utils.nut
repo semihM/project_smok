@@ -24,6 +24,7 @@
 */
 ::VSLib.Utils <- {};
 
+::project_smok_cvars <- {}
 
 /**
  * Global constants
@@ -3750,6 +3751,231 @@ function VSLib::Utils::GetNumberOfSurvivorsInBattlefield()
 	}
 	
 	return inBattlefield;
+}
+
+
+/** Class ConVar
+ * Signature: class CConVar(string name, string defaultValue, string variableType, float minValue, float maxValue)
+*/
+class CConVar
+{
+	constructor(sName, sDefaultValue, sType = null, flMinValue = null, flMaxValue = null)
+	{
+		m_sName = sName;
+		m_sValue = sDefaultValue;
+		m_sDefaultValue = sDefaultValue;
+		m_sType = sType;
+		m_flMinValue = flMinValue;
+		m_flMaxValue = flMaxValue;
+	}
+	function GetName()
+	{
+		return m_sName;
+	}
+	function GetDefault()
+	{
+		return m_sDefaultValue;
+	}
+	function GetValue(bReturnFloat = false)
+	{
+		return bReturnFloat ? Convars.GetFloat(m_sName) : Convars.GetStr(m_sName);
+	}
+	function GetCurrentValue()
+	{
+		return m_sValue;
+	}
+	function RestoreDefault()
+	{
+		m_sValue = m_sDefaultValue;
+	}
+	function SetValue(Value)
+	{
+		SendToServerConsole(format("setinfo %s %s", m_sName, Value.tostring()));
+	}
+	function AddChangeHook(hFunction = @(){})
+	{
+		if (!m_bChangeHook)
+		{
+			m_bChangeHook = true;
+			m_ChangeHookFunction = hFunction;
+			printf("[Class ConVar] A function has been hooked for cvar '%s'", m_sName);
+		}
+	}
+	function RemoveChangeHook()
+	{
+		if (m_bChangeHook)
+		{
+			m_bChangeHook = false;
+			m_ChangeHookFunction = null;
+			printf("[Class ConVar] A function has been unhooked for cvar '%s'", m_sName);
+		}
+	}
+	function GetClassType()
+	{
+		return m_sClassType;
+	}
+	static m_sClassType = "CConVar";
+	m_sName = null;
+	m_sValue = null;
+	m_sDefaultValue = null;
+	m_bChangeHook = false;
+	m_ChangeHookFunction = null;
+	m_flMinValue = null;
+	m_flMaxValue = null;
+	m_sType = null;
+}
+
+/*===============================*\
+ *     ConVar Class Functions    *
+\*===============================*/
+
+/** Create a new console variable
+ * Signature: ConVar CreateConVar(string name, string defaultValue, string variableType, float minValue, float maxValue)
+*/
+
+function CreateConVar(sName, sDefaultValue, sType = null, flMinValue = null, flMaxValue = null)
+{
+	foreach (name,cvar in ::project_smok_cvars) 
+	{
+		if (name == sName) 
+			return printf("[CreateConVar] ConVar '%s' already created", sName);
+	}
+
+	sDefaultValue = sDefaultValue.tostring();
+	local cvar = CConVar(sName, sDefaultValue, sType, flMinValue, flMaxValue);
+	local cvar_value = Convars.GetStr(sName);
+
+	printf("[CreateConVar] ConVar '%s' with default value '%s' has been created", sName, sDefaultValue);
+	
+	::project_smok_cvars[sName] <- cvar;
+	
+	if (!cvar_value)
+		SendToServerConsole(format("setinfo %s \"%s\"", sName, sDefaultValue));
+	else if (sDefaultValue != cvar_value) 
+		cvar.m_sValue = cvar_value;
+		
+	return cvar;
+}
+
+/** Find a ConVar
+ * Signature: ConVar FindConVar(string name)
+*/
+
+function FindConVar(sName)
+{
+	foreach (name,cvar in ::project_smok_cvars)
+	{
+		if (name == sName)
+			return cvar;
+	}
+	return null;
+}
+
+/** Get a ConVar string
+ * Signature: string GetConVarBool(ConVar cvar)
+*/
+
+function GetConVarString(convar)
+{
+	foreach (name,cvar in ::project_smok_cvars)
+	{
+		if (name == convar.GetName())
+		{
+			return cvar.GetValue();
+		}
+	}
+}
+/** Get a ConVar bool
+ * Signature: bool GetConVarBool(ConVar cvar)
+*/
+
+function GetConVarBool(convar)
+{
+	foreach (name,cvar in ::project_smok_cvars)
+	{
+		if (name == convar.GetName())
+		{
+			return cvar.GetValue() != "0" && cvar.GetValue() != "false";
+		}
+	}
+}
+
+/** Get a ConVar integer
+ * Signature: int GetConVarBool(ConVar cvar)
+*/
+
+function GetConVarInt(convar)
+{
+	foreach (name,cvar in ::project_smok_cvars)
+	{
+		if (name == convar.GetName())
+		{
+			local value, min, max;
+			if (!(value = cvar.GetValue(true)))
+				return 0;
+			value = value.tointeger();
+			if (cvar.m_sType == "integer")
+			{
+				if (cvar.m_flMinValue != null && cvar.m_flMaxValue != null)
+				{
+					if (value < (min = cvar.m_flMinValue.tointeger()))
+						return min;
+					if (value > (max = cvar.m_flMaxValue.tointeger()))
+						return max;
+				}
+				else if (cvar.m_flMinValue != null && cvar.m_flMaxValue == null)
+				{
+					if (value < (min = cvar.m_flMinValue.tointeger()))
+						return min;
+				}
+				else if (cvar.m_flMinValue == null && cvar.m_flMaxValue != null)
+				{
+					if (value > (max = cvar.m_flMaxValue.tointeger()))
+						return max;
+				}
+			}
+			return value;
+		}
+	}
+}
+
+/** Get a ConVar float
+ * Signature: float GetConVarBool(ConVar cvar)
+*/
+
+function GetConVarFloat(convar)
+{
+	foreach (name,cvar in ::project_smok_cvars)
+	{
+		if (name == convar.GetName())
+		{
+			local value = cvar.GetValue(true);
+			if (!value)
+				return 0.0;
+			value = value.tofloat();
+			if (cvar.m_sType == "float")
+			{
+				if (cvar.m_flMinValue != null && cvar.m_flMaxValue != null)
+				{
+					if (value < cvar.m_flMinValue)
+						return cvar.m_flMinValue;
+					if (value > cvar.m_flMaxValue)
+						return cvar.m_flMaxValue;
+				}
+				else if (cvar.m_flMinValue != null && cvar.m_flMaxValue == null)
+				{
+					if (value < cvar.m_flMinValue)
+						return cvar.m_flMinValue;
+				}
+				else if (cvar.m_flMinValue == null && cvar.m_flMaxValue != null)
+				{
+					if (value > cvar.m_flMaxValue)
+						return cvar.m_flMaxValue;
+				}
+			}
+			return value;
+		}
+	}
 }
 
 
