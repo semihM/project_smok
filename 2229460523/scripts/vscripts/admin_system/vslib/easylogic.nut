@@ -4621,7 +4621,7 @@ function VSLib::EasyLogic::CheckCommandAvailability(player,cleanBaseCmd,quiet=fa
 		local alias = ::AliasCompiler.Tables[cleanBaseCmd]
 		if(alias._hostOnly && !player.IsServerHost())
 		{
-			ClientPrint(srcEnt,3,COLOR_ORANGE+cleanBaseCmd+COLOR_DEFAULT+" command can only be used by the host!")
+			ClientPrint(player.GetBaseEntity(),3,COLOR_ORANGE+cleanBaseCmd+COLOR_DEFAULT+" command can only be used by the host!")
 			return false;
 		}
 		else if(alias._authOnly && !::AdminSystem.HasScriptAuth(player))
@@ -4632,7 +4632,7 @@ function VSLib::EasyLogic::CheckCommandAvailability(player,cleanBaseCmd,quiet=fa
 	if(cleanBaseCmd in ::VSLib.EasyLogic.DisabledCommands)
 	{
 		if(!quiet)
-			ClientPrint(player.GetBaseEntity(),3,"Host has disabled the "+"\x04"+cleanBaseCmd+"\x01"+" command by default!")
+			ClientPrint(player.GetBaseEntity(),3,"Host has disabled the "+"\x04"+cleanBaseCmd+"\x01"+" command for this session!")
 		return false;
 	}
 	local steamid = player.GetSteamID()
@@ -4696,6 +4696,22 @@ function VSLib::EasyLogic::CheckCommandAvailability(player,cleanBaseCmd,quiet=fa
 	return true;
 }
 
+::VSLib.EasyLogic.Escapes <-
+{
+	space = {pattern=@"\\x20",replace="\x20",i=32,}
+	quotes = {pattern=@"\\x22",replace="\x22",i=34}
+	singlequote = {pattern=@"\\x27",replace="\x27",i=39}
+	semicolon = {pattern=@"\\x3B",replace="\x3B",i=59}
+	openbrackets = {pattern=@"\\x28",replace="\x28",i=40}
+	closebrackets = {pattern=@"\\x29",replace="\x29",i=41}
+	comma = {pattern=@"\\x2C",replace="\x2C",i=44}
+	period = {pattern=@"\\x2E",replace="\x2E",i=46}
+	questionmark = {pattern=@"\\x3F",replace="\x3F",i=63}
+	colordef = {pattern=@"\\x01",replace="\x01",i=1,explain="for coloring white following text"}
+	colorbg = {pattern=@"\\x03",replace="\x03",i=3,explain="for coloring bright green following text"}
+	coloror = {pattern=@"\\x04",replace="\x04",i=4,explain="for coloring orange following text"}
+	colorog = {pattern=@"\\x05",replace="\x05",i=5,explain="for coloring olive green following text"}
+}
 /*
  * @authors rhino
  * Tries to compile arguments and replace escaped characters
@@ -4710,12 +4726,10 @@ function VSLib::EasyLogic::TryToFixArguments(args)
 		//::AdminSystem.out("BEGINS: "+args[i])
 		try
 		{	
-			// TO-DO: Update how hex chars replaced
-			args[i] = ::VSLib.Utils.StringReplace(args[i],@"\\x20","\x20")	// space " " 32
-			args[i] = ::VSLib.Utils.StringReplace(args[i],@"\\x22","\x22")	// quotes "\"" 34
-			args[i] = ::VSLib.Utils.StringReplace(args[i],@"\\x2C","\x2C")	// comma "," 44
-			args[i] = ::VSLib.Utils.StringReplace(args[i],@"\\x2E","\x2E")	// period "." 46
-			args[i] = ::VSLib.Utils.StringReplace(args[i],@"\\x3F","\x3F")	// question mark "?" 63
+			foreach(name,tbl in ::VSLib.EasyLogic.Escapes)
+			{
+				args[i] = ::VSLib.Utils.StringReplace(args[i],tbl.pattern,tbl.replace)
+			}
 			args[i] = ::AliasCompiler.ExpressionCompiler(args[i]);
 			//::AdminSystem.out("SUCCESS: "+args[i])
 		}
@@ -4792,7 +4806,7 @@ if (!("InterceptChat" in getroottable()))
 												: null
 					if (cleanBaseCmd != null)
 					{	
-						if(::VSLib.EasyLogic.CheckCommandAvailability(player,cleanBaseCmd,false))
+						if(player.IsServerHost() || ::VSLib.EasyLogic.CheckCommandAvailability(player,cleanBaseCmd,false))
 						{
 							::VSLib.EasyLogic.LastCmd <- cleanBaseCmd
 							// Trigger the function
@@ -4839,7 +4853,7 @@ if (!("InterceptChat" in getroottable()))
 							{
 								if(i == 0)
 								{
-									Messages.DocCmdPlayer(::VSLib.Player(srcEnt),"List of commands:")
+									Messages.DocCmdPlayer(::VSLib.Player(srcEnt),"List of commands matching \""+"\x04"+keycmd+"\x01"+"\":")
 								}
 								i += 1
 								ClientPrint(srcEnt,3,"\x04"+i+"\x01"+". "+cmd)
