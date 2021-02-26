@@ -49,15 +49,15 @@
     DisabledCommands = "admin system/disabled_commands.txt"
 
 	/// Command aliasing
-	CommandAliases = "admin system/aliases/aliases_list.txt"
+	CommandAliases = "admin system/aliases/file_list.txt"
 	CommandAliasesExample = "admin system/aliases/example_alias_file.txt"
 	
 	/// Custom commands
-	CommandScripts = "admin system/scripts/commands_list.txt"
+	CommandScripts = "admin system/scripts/file_list.txt"
 	CommandScriptsExample = "admin system/scripts/example_command_file.nut"
 
 	/// Custom hooks
-	CustomHooks = "admin system/hooks/events_list.txt"
+	CustomHooks = "admin system/hooks/file_list.txt"
 	CustomHooksExample = "admin system/hooks/example_hook_file.nut"
 }
 
@@ -69,6 +69,8 @@
 	Ragdoll = "project_smok_ragdoll_"
 
 	TankRock = "project_smok_tank_rock_"
+
+	PhysConverter = "project_smok_phys_converter"
 }
 
 /*************************\
@@ -117,7 +119,7 @@
 }
 ::Constants.CustomHookExampleFunction_1 <- "::PS_Hooks.OnPlayerConnected.VeryCoolHook <- function(player,args)\n{\n\t// Tell a welcome message to a connected non-admin player\n\t// Check admin status, in this case make sure it's quiet=true so no other message will be displayed \n\tif(!AdminSystem.IsPrivileged(player,true))	\n\t\t::Messages.InformPlayer(player,\"Welcome! This is a modded server and the admins are very reasonable people :) Enjoy the madness!\") \n}"
 
-::Constants.CustomHookExampleFunction_2 <- "\n::PS_Hooks.OnPlayerConnected.AnotherCoolHook <- function(player,args)\n{\n\t// Tell everyone a semi-colored message when an admin is connected\n\t// Check admin status, in this case make sure it's quiet=true so no other message will be displayed \n\tif(AdminSystem.IsPrivileged(player,true))\n\t\t::Messages.InformAll(COLOR_ORANGE + player.GetName() + COLOR_DEFAULT + \" is here to smok- some boomers!\");	\n}"
+::Constants.CustomHookExampleFunction_2 <- "::PS_Hooks.OnPlayerConnected.AnotherCoolHook <- function(player,args)\n{\n\t// Tell everyone a semi-colored message when an admin is connected\n\t// Check admin status, in this case make sure it's quiet=true so no other message will be displayed \n\tif(AdminSystem.IsPrivileged(player,true))\n\t\t::Messages.InformAll(COLOR_ORANGE + player.GetName() + COLOR_DEFAULT + \" is here to smok- some boomers!\");	\n}"
 
 ::Constants.CustomHookListDefaults <-
 @"// This file contains the files names of the custom hooks to make sure they get read
@@ -182,18 +184,17 @@
 //
 // Steps to create a new hook for a game event:
 // 		1. Name the file however you like
-// 		2. Include it's name in the ""events_list.txt"" to make the project_smok is aware of it's existance
+// 		2. Include it's name in the ""file_list.txt"" to make the project_smok is aware of it's existance
 //		3. Write the actual hook following the example format given in this file!
 //
 // Example for hooking a function called VeryCoolHook to OnPlayerConnected event, which is called when a player completes connecting process to the game and takes 2 arguments:
 //		1. Create a file named ""my_hooks.nut""
-//		2. Open up the ""events_list.txt"" and add ""my_hooks""
-//		3. Write hooks following the format below
-"
-+::Constants.CustomHookExampleFunction_1
+//		2. Open up the ""file_list.txt"" and add ""my_hooks""
+//		3. Write hooks following the format below"+ "\n"
++::Constants.CustomHookExampleFunction_1 + "\n"
 +::Constants.CustomHookExampleFunction_2
 
-::Constants.CustomScriptExampleFunction <- "::PS_Scripts.CommandName.Main <- function(player,args,text)\n{\n\t// Adding restrictions\n\t// -> Only allow admins (this is already checked in most cases, but better to check twice)\n\tif(!AdminSystem.IsPrivileged(player))\n\t\treturn;\n\t// -> Only allow admins with script authorizations\n\tif(!AdminSystem.HasScriptAuth(player))\n\t\treturn;\n\n\t// Accessing arguments easily\n\tlocal argument_1 = GetArgument(1)	// This is same as args[0], but it is fail-safe, returns null if no argument is passed\n\tlocal argument_2 = GetArgument(2)	// But GetArgument method uses a copy of arguments stored in ::VSLib.EasyLogic.LastArgs, which only gets updated when the command is called from chat/console\n\tlocal argument_3 = GetArgument(3)	// If you expect the command to be called within a compilestring function, make sure to check args in here too!\n\t// ...\n\n\t// Do null checks if you need\n\tif(argument_3 == null)\n\t\treturn;\n\tif(argument_2 == null)\n\t\targument_2 = \"default value for argument 2\";\n\n\t// Write the rest of the instructions however you like!\n\n\t// At the end, print out a message for the player(s) if needed, prints to wherever the given player has his output state set to\n\t::Printer(player,\"Put the message here!\")\n\n\t// Check out some example functions in the source code: https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system.nut \n}"
+::Constants.CustomScriptExampleFunction <- "::PS_Scripts.CommandName.Main <- function(player,args,text)\n{\n\t// Adding restrictions\n\t// -> Only allow admins (this is already checked in most cases, but better to check twice)\n\tif(!AdminSystem.IsPrivileged(player))\n\t\treturn;\n\t// -> Only allow admins with script authorizations\n\tif(!AdminSystem.HasScriptAuth(player))\n\t\treturn;\n\n\t// Accessing arguments easily\n\tlocal argument_1 = GetArgument(1)	// This is same as args[0], but it is fail-safe, returns null if no argument is passed\n\tlocal argument_2 = GetArgument(2)	// But GetArgument method uses a copy of arguments stored in ::VSLib.EasyLogic.LastArgs, which only gets updated when the command is called from chat/console\n\tlocal argument_3 = GetArgument(3)	// If you expect the command to be called within a compilestring function, make sure to check args in here too!\n\t// ...\n\n\t// Do null checks if you need\n\tif(argument_1 == null)\n\t\treturn;\n\tif(argument_2 == null)\n\t\targument_2 = \"default value for argument 2\";\n\n\t// Write the rest of the instructions however you like!\n\n\t// At the end, print out a message for the player(s) if needed, prints to wherever the given player has his output state set to\n\t::Printer(player,\"Put the message here!\")\n\n\t// Check out some example functions in the source code: https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system.nut \n}"
 
 ::Constants.CommandScriptListDefaults <-
 @"// This file contains the files names of the custom commands to make sure they get read
@@ -255,11 +256,13 @@
 //
 // Steps to create a new command:
 // 		1. Name the file however you like
-// 		2. Include it's name in the ""commands_list.txt"" to make the project_smok is aware of it's existance
-//		3. Write the actual hook following the example format given in this file!
+// 		2. Include it's name in the ""file_list.txt"" to make the project_smok is aware of it's existance
+//		3. Decide for a command name(in these steps MyCommand is used)
+//		4. Prepare the command following the example format given in this file!
 //			o Initialize the table: ::PS_Scripts.MyCommand <- {}
 //			o Write documentation: ::PS_Scripts.MyCommand.Help <- {}
-//			o Write the actual command: ::PS_Scripts.MyCommand.Main <- function(player,args,text){}
+//			o Write the actual function: ::PS_Scripts.MyCommand.Main <- function(player,args,text){}
+//		5. Command is ready to use via !MyCommand,/MyCommand,?MyCommand or scripted_user_func MyCommand
 //
 // ----BELOW HERE IS HOW THE SCRIPTS SHOULD BE CREATED----
 
@@ -287,8 +290,7 @@
 // This function will get 3 arguments passed to it:
 //      1. Caller player as VSLib.Player object
 //      2. Arguments in a table with integer keys and string/null values
-//      3. Text used while calling this function as string if further manipulation needed
-"
+//      3. Text used while calling this function as string if further manipulation needed" + "\n"
 + ::Constants.CustomScriptExampleFunction
 
 ::Constants.CommandAliasesListDefaults <-
@@ -319,7 +321,7 @@
 // !!!!!!!
 // If the file size is bigger than 16.5 KB:
 // 		1. Create a new file named however you like
-//		2. Add the file name to ""aliases_list.txt"" to make sure project_smok knows it exists
+//		2. Add the file name to ""file_list.txt"" to make sure project_smok knows it exists
 // 		3. Follow the format present in this file, don't forget to write the { and } characters at the begining and the end
 {	
 	// BASIC
@@ -757,6 +759,21 @@ command_name_2 //Take notes by adding // after the command name if needed"
 /********************\
 *  DEFAULT SETTINGS  *
 \********************/
+::Constants.GetEscapeHelpString <- function()
+{
+	local s="\n\t\t";
+	foreach(sname,infotbl in ::VSLib.EasyLogic.Escapes)
+	{
+		if("explain" in infotbl)
+			s += format("//\t\t -> %s gets replaced with a constant which is %s \n\t\t",infotbl.pattern.slice(1,5),infotbl.explain);
+		else
+			s += format("//\t\t -> %s gets replaced with \"%s\"\n\t\t",infotbl.pattern.slice(1,5),infotbl.i.tochar());
+	}
+	s += @"//		Example: scripted_user_func say,console\x20hates\x20these\x20characters\x2C\x20so\x20use\x20\x22hex\x22\x20values!"+"\n\t\t"
+	s += @"//		Result: Prints ""console hates these characters,so use hex values!"" to chat"+"\n\t\t"
+	return s;
+}
+
 ::Constants.DefaultsDetailed <-
 {
     FormattingIntro =  
@@ -820,7 +837,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 		CompileHexAndSpecialsInArguments =
 		{
 			Value = true
-			Comment = "// true: Try to compile all arguments before using, false: Use arguments as is\n\t\t// When this setting is true:\n\t\t//\t o Offers a somewhat complex way of getting around chat and console limitations\n\t\t//\t o Allows $[expression] format for arguments\n\t\t//\t o Allows usage of \"__\" enum class for special characters\n\t\t//\t o Allows a few common hex characters:\n\t\t//\t\t -> \\x20 gets replaced with \x20 which is \" \"\n\t\t//\t\t -> \\x2C gets replaced with \x2C which is \",\"\n\t\t//\t\t -> \\x2E gets replaced with \x2E which is \".\"\n\t\t//\t\t -> \\x3F gets replaced with \x3F which is \"?\""
+			Comment = "// true: Try to compile all arguments before using, false: Use arguments as is\n\t\t// When this setting is true:\n\t\t//\t o Offers a somewhat complex way of getting around chat and console limitations\n\t\t//\t o Allows $[expression] format for arguments, example: $[2*3] will be replaced with 6\n\t\t//\t o Allows usage of \"__\" enum class for special characters, example: $[__._q+__.h+__.i+__._em+__._q] will be replaced with \"hi!\"\n\t\t//\t\t o Check !enum_string command for this!\n\t\t//\t o Allows a few common hex characters:" + ::Constants.GetEscapeHelpString()
 		}
     }
 
@@ -905,8 +922,9 @@ command_name_2 //Take notes by adding // after the command name if needed"
                     prop_car_alarm = true,
                     prop_door_rotating = true,
                     prop_door_rotating_checkpoint = true,
-					commentary_dummy = true
-					prop_fuel_barrel = true
+					commentary_dummy = true,
+					prop_fuel_barrel = true,
+					simple_physics_prop = true
                 }
                 Comment = @"
 			// Class names available for grab, format: ""class_name = is_enabled""
@@ -914,7 +932,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 			// >>> To add new classes, add a new key-value pair following the format described above: my_class_name = true
 			// Classes written here by defaults can't be removed, they will get re-written if they are removed 
 			// Class names SHOULD NOT be repeated, when repeated, latest pair will overwrite the previous one(s) and dupes will be removed after any fix gets applied
-			// Weapon spawners are enabled by default (props with 'weapon_' in their class name), you can disable any of them by adding them here:
+			// Weapons and their spawners are enabled by default (weapon_ suffix and _spawn prefix), you can disable any of them by adding them here:
 			// 		Example: Disable grabbing the ammo spawners
 			//			weapon_ammo_spawn = false" 
             }
