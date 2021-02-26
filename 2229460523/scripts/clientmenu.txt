@@ -25297,8 +25297,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_furniture2"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_misc/mirror-1.mdl,0,180;show_menu props_furniture2"
+					"label"      " Mirror"
 			}
 			"8"
 			{
@@ -25322,32 +25322,32 @@
 			"Title"     "Stairs and ramps"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/stair_metal_02.mdl;show_menu props_furniture_stairs1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/stair_metal_02.mdl,0,180;show_menu props_furniture_stairs1"
 					"label"      " Metal single"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/stair_metal_01.mdl;show_menu props_furniture_stairs1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/stair_metal_01.mdl,0,180;scripted_user_func prop,dynamic,models/props_interiors/stair_metal_01.mdl,175,180;show_menu props_furniture_stairs1"
 					"label"      " Metal double"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/stair_cascade.mdl;show_menu props_furniture_stairs1"
-					"label"      " Metal triple, /wo steps"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/stair_metal_01.mdl,0,180;scripted_user_func prop,dynamic,models/props_interiors/stair_metal_01.mdl,175,180;scripted_user_func prop,dynamic,models/props_interiors/stair_metal_01.mdl,350,180;scripted_user_func prop,dynamic,models/props_interiors/stair_metal_01.mdl,525,180;show_menu props_furniture_stairs1"
+					"label"      " Metal quad"
 			}
 			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/stair_cascade.mdl,0,90;show_menu props_furniture_stairs1"
+					"label"      " Metal triple, /wo steps"
+			}
+			"5"
 			{
 					"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_buildings/barn_steps.mdl;show_menu props_furniture_stairs1"
 					"label"		 " Wooden single /w railings" 
 			}
-			"5"
-			{
-					"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_unique/hospital05_rooftop_stair03.mdl;show_menu props_furniture_stairs1"
-					"label"		 " Metal ramp (no collision)" 
-			}
 			"6"
 			{
-					"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/hotel_stairs001.mdl;show_menu props_furniture_stairs1"
+					"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/hotel_stairs001.mdl,0,180;show_menu props_furniture_stairs1"
 					"label"		 " Concrete single" 
 			}
 			"7"
@@ -25389,6 +25389,21 @@
 			{
 					"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_unique/small_town/trainyard_tower.mdl;show_menu props_furniture_stairs2"
 					"label"		 " Trainyard triple" 
+			}
+			"4"
+			{
+					"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/fire_escape_upper.mdl,130;show_menu props_furniture_stairs2"
+					"label"		 " Fire escape single, w/ platform" 
+			}
+			"5"
+			{
+					"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/fire_escape_upper.mdl,130;scripted_user_func prop,dynamic,models/props_urban/fire_escape_upper.mdl,260;show_menu props_furniture_stairs2"
+					"label"		 " Fire escape double, w/ platforms" 
+			}
+			"6"
+			{
+					"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/fire_escape_upper.mdl,130;scripted_user_func prop,dynamic,models/props_urban/fire_escape_upper.mdl,260;scripted_user_func prop,dynamic,models/props_urban/fire_escape_upper.mdl,390;scripted_user_func prop,dynamic,models/props_urban/fire_escape_upper.mdl,520;show_menu props_furniture_stairs2"
+					"label"		 " Fire escape quad, w/ platforms" 
 			}
 			"7"
 			{
@@ -25493,8 +25508,8 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/luggagescale.mdl;show_menu props_furniture4"
-					"label"      " Luggage scale"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/mounteddeerhead01.mdl;show_menu props_furniture4"
+					"label"      " Mounted deer head"
 			}
 			"7"
 			{
@@ -27329,13 +27344,18 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_mall/mall_mannequin_female_larm1.mdl;show_menu props_mall_mannequin1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_mall/mall_mannequin_larm1.mdl;show_menu props_mall_mannequin1"
 					"label"      " Mannequin male left arm"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_mall/mall_mannequin_female_rarm1.mdl;show_menu props_mall_mannequin1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_mall/mall_mannequin_rarm1.mdl;show_menu props_mall_mannequin1"
 					"label"      " Mannequin male right arm"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_mall/mall_mannequin_lhand.mdl;show_menu props_mall_mannequin1"
+					"label"      " Mannequin left hand"
 			}
 			"7"
 			{
@@ -27491,8 +27511,8 @@
 
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_street1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_misc/triage_tent.mdl;show_menu props_street1"
+					"label"      " Triage tent"
 			}
 			"8"
 			{
@@ -27586,8 +27606,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_street2"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_wasteland/powertower01.mdl,750;show_menu props_street2"
+					"label"      " Power tower"
 			}
 			"8"
 			{
@@ -27769,6 +27789,31 @@
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lighthouse/props/estuary_bridge_beams.mdl&models/lighthouse/props/estuary_bridge_corrug.mdl,130;show_menu props_street5"
 					"label"      " Raise roof on beams"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_mill/stack_01.mdl;show_menu props_street5"
+					"label"      " Stack 1"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_wasteland/rock_cliff01.mdl,240;show_menu props_street5"
+					"label"      " Giant cliff"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/diving_board001.mdl;show_menu props_street5"
+					"label"      " Dive board"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/fountain001.mdl;show_menu props_street5"
+					"label"      " Fountain"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_unique/airport_greenhouse.mdl,205,-90;show_menu props_street5"
+					"label"      " Greenhouse frame"
 			}
 			
 			"7"
@@ -28415,10 +28460,15 @@
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_equipment/cargo_container04_phys.mdl;show_menu props_containers1"
 					"label"      " Both ends open, heavy"
 			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/dumpster001.mdl;show_menu props_containers1"
+					"label"      " Dumpster container"
+			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_containers1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/trashdumpster02.mdl,65;show_menu props_containers1"
+					"label"      " Dumpster container 2"
 			}
 			"8"
 			{
@@ -29013,28 +29063,23 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/fairgrounds_flagpole01.mdl;show_menu props_fairgrounds1"
-					"label"      " fairgrounds_flagpole01"
+					"command"    "play buttons/button14;show_menu props_fairgrounds_strongmangame1"
+					"label"      " Strongman game stuff"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/strongmangame_tower.mdl;show_menu props_fairgrounds1"
-					"label"      " strongmangame_tower"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_misc/fairground_tent_open.mdl;show_menu props_fairgrounds1"
+					"label"      " Tent 1"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/strongmangame_bell.mdl;show_menu props_fairgrounds1"
-					"label"      " strongmangame_bell"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_misc/gazebo.mdl;show_menu props_fairgrounds1"
+					"label"      " Tent 2"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/strongmangame_puck.mdl;show_menu props_fairgrounds1"
-					"label"      " strongmangame_puck"
-			}
-			"7"
-			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_fairgrounds1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/fairgrounds_flagpole01.mdl;show_menu props_fairgrounds1"
+					"label"      " fairgrounds_flagpole01"
 			}
 			"8"
 			{
@@ -29045,6 +29090,36 @@
 			{
 					"command"    "play buttons/button14;show_menu props_fairgrounds2"
 					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"props_fairgrounds_strongmangame1"
+	{
+			"Title"     "Strongman game stuff"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/strongmangame_tower.mdl;show_menu props_fairgrounds_strongmangame1"
+					"label"      " strongmangame_tower"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/strongmangame_bell.mdl;show_menu props_fairgrounds_strongmangame1"
+					"label"      " strongmangame_bell"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/strongmangame_puck.mdl;show_menu props_fairgrounds_strongmangame1"
+					"label"      " strongmangame_puck"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu props_fairgrounds1"
+					"label"      " << Back"
 			}
 			"0"
 			{
@@ -29075,6 +29150,11 @@
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/snake.mdl;show_menu props_fairgrounds2"
 					"label"      " Toy snake"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/teddy_bear.mdl;show_menu props_fairgrounds2"
+					"label"      " Teddy bear"
 			}
 			"7"
 			{
@@ -30223,6 +30303,11 @@
 					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/items/l4d_gift.mdl;show_menu props_unique3"
 					"label"      " l4d gift"
 			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/life_ring001.mdl;show_menu props_unique3"
+					"label"      " life_ring001"
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_unique3"
@@ -30594,8 +30679,8 @@
             
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_vehicles_trains1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/boxcar_tanktrap_exterior.mdl&models/props_vehicles/boxcar_tanktrap_interior.mdl&models/props_vehicles/boxcar_tanktrap_door.mdl;show_menu props_vehicles_trains1"
+					"label"      " Tank train"
 			}
 			"8"
 			{
@@ -31767,8 +31852,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_furniture2"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_misc/mirror-1.mdl,0,180,5;show_menu phys_props_furniture2"
+					"label"      " Mirror"
 			}
 			"8"
 			{
@@ -31790,19 +31875,20 @@
 	"phys_props_furniture_stairs1"
 	{
 			"Title"     "Stairs and ramps"
+			
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/stair_metal_02.mdl;show_menu phys_props_furniture_stairs1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/stair_metal_02.mdl,0,180;show_menu phys_props_furniture_stairs1"
 					"label"      " Metal single"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/stair_metal_01.mdl;show_menu phys_props_furniture_stairs1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/stair_metal_01.mdl,0,180;show_menu phys_props_furniture_stairs1"
 					"label"      " Metal double"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/stair_cascade.mdl;show_menu phys_props_furniture_stairs1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/stair_cascade.mdl,0,90;show_menu phys_props_furniture_stairs1"
 					"label"      " Metal triple, /wo steps"
 			}
 			"4"
@@ -31812,12 +31898,7 @@
 			}
 			"5"
 			{
-					"command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_unique/hospital05_rooftop_stair03.mdl;show_menu phys_props_furniture_stairs1"
-					"label"		 " Metal ramp(no collision)" 
-			}
-			"6"
-			{
-					"command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/hotel_stairs001.mdl;show_menu phys_props_furniture_stairs1"
+					"command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/hotel_stairs001.mdl,0,180;show_menu phys_props_furniture_stairs1"
 					"label"		 " Concrete single" 
 			}
 			"7"
@@ -31859,6 +31940,11 @@
 			{
 					"command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_unique/small_town/trainyard_tower.mdl;show_menu phys_props_furniture_stairs2"
 					"label"		 " Trainyard triple" 
+			}
+			"4"
+			{
+					"command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/fire_escape_upper.mdl,130,0,750;show_menu phys_props_furniture_stairs2"
+					"label"		 " Fire escape single, w/ platform" 
 			}
 			"7"
 			{
@@ -31963,8 +32049,8 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/luggagescale.mdl;show_menu phys_props_furniture4"
-					"label"      " Luggage scale"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/mounteddeerhead01.mdl;show_menu phys_props_furniture4"
+					"label"      " Mounted deer head"
 			}
 			"7"
 			{
@@ -33798,13 +33884,18 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_mall/mall_mannequin_female_larm1.mdl;show_menu phys_props_mall_mannequin1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_mall/mall_mannequin_larm1.mdl;show_menu phys_props_mall_mannequin1"
 					"label"      " Mannequin male left arm"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_mall/mall_mannequin_female_rarm1.mdl;show_menu phys_props_mall_mannequin1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_mall/mall_mannequin_rarm1.mdl;show_menu phys_props_mall_mannequin1"
 					"label"      " Mannequin male right arm"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_mall/mall_mannequin_lhand.mdl;show_menu phys_props_mall_mannequin1"
+					"label"      " Mannequin left hand"
 			}
 			"7"
 			{
@@ -33960,8 +34051,8 @@
 
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_street1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_misc/triage_tent.mdl,0,0,300;show_menu phys_props_street1"
+					"label"      " Triage tent"
 			}
 			"8"
 			{
@@ -34055,8 +34146,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_street2"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_wasteland/powertower01.mdl,750,0,150;show_menu phys_props_street2"
+					"label"      " Power tower"
 			}
 			"8"
 			{
@@ -34238,6 +34329,31 @@
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/props/estuary_bridge_beams.mdl&models/lighthouse/props/estuary_bridge_corrug.mdl,130;show_menu phys_props_street5"
 					"label"      " Raise roof on beams"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_mill/stack_01.mdl;show_menu phys_props_street5"
+					"label"      " Stack 1"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_wasteland/rock_cliff01.mdl,240,0,25;show_menu phys_props_street5"
+					"label"      " Giant cliff"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/diving_board001.mdl;show_menu phys_props_street5"
+					"label"      " Dive board"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/fountain001.mdl;show_menu phys_props_street5"
+					"label"      " Fountain"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_unique/airport_greenhouse.mdl,205,-90;show_menu phys_props_street5"
+					"label"      " Greenhouse frame"
 			}
 			"7"
 			{
@@ -34883,10 +34999,15 @@
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_equipment/cargo_container04_phys.mdl;show_menu phys_props_containers1"
 					"label"      " Both ends open, heavy"
 			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/dumpster001.mdl;show_menu phys_props_containers1"
+					"label"      " Dumpster container"
+			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_containers1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/trashdumpster02.mdl,65;show_menu phys_props_containers1"
+					"label"      " Dumpster container 2"
 			}
 			"8"
 			{
@@ -35466,6 +35587,7 @@
 			}
 	}
 
+	
 	"phys_props_fairgrounds1"
 	{
 			"Title"     "Fairgrounds stuff 1"
@@ -35481,28 +35603,23 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/fairgrounds_flagpole01.mdl;show_menu phys_props_fairgrounds1"
-					"label"      " fairgrounds_flagpole01"
+					"command"    "play buttons/button14;show_menu phys_props_fairgrounds_strongmangame1"
+					"label"      " Strongman game stuff"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/strongmangame_tower.mdl;show_menu phys_props_fairgrounds1"
-					"label"      " strongmangame_tower"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_misc/fairground_tent_open.mdl;show_menu phys_props_fairgrounds1"
+					"label"      " Tent 1"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/strongmangame_bell.mdl;show_menu phys_props_fairgrounds1"
-					"label"      " strongmangame_bell"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_misc/gazebo.mdl;show_menu phys_props_fairgrounds1"
+					"label"      " Tent 2"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/strongmangame_puck.mdl;show_menu phys_props_fairgrounds1"
-					"label"      " strongmangame_puck"
-			}
-			"7"
-			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_fairgrounds1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/fairgrounds_flagpole01.mdl;show_menu phys_props_fairgrounds1"
+					"label"      " fairgrounds_flagpole01"
 			}
 			"8"
 			{
@@ -35513,6 +35630,36 @@
 			{
 					"command"    "play buttons/button14;show_menu phys_props_fairgrounds2"
 					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"phys_props_fairgrounds_strongmangame1"
+	{
+			"Title"     "Strongman game stuff"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/strongmangame_tower.mdl;show_menu phys_props_fairgrounds_strongmangame1"
+					"label"      " strongmangame_tower"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/strongmangame_bell.mdl;show_menu phys_props_fairgrounds_strongmangame1"
+					"label"      " strongmangame_bell"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/strongmangame_puck.mdl;show_menu phys_props_fairgrounds_strongmangame1"
+					"label"      " strongmangame_puck"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_fairgrounds1"
+					"label"      " << Back"
 			}
 			"0"
 			{
@@ -35543,6 +35690,11 @@
 			{
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/snake.mdl;show_menu phys_props_fairgrounds2"
 					"label"      " Toy snake"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/teddy_bear.mdl;show_menu phys_props_fairgrounds2"
+					"label"      " Teddy bear"
 			}
 			"7"
 			{
@@ -36693,6 +36845,11 @@
 					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/items/l4d_gift.mdl;show_menu phys_props_unique3"
 					"label"      " l4d gift"
 			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/life_ring001.mdl;show_menu phys_props_unique3"
+					"label"      " life_ring001"
+			}
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_unique3"
@@ -37061,11 +37218,10 @@
                     "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/train_boxwreck.mdl;show_menu phys_props_vehicles_trains1"
                     "label"		 " Box, wrecked"
             }
-            
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_vehicles_trains1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/boxcar_tanktrap_exterior.mdl&models/props_vehicles/boxcar_tanktrap_interior.mdl&models/props_vehicles/boxcar_tanktrap_door.mdl;show_menu phys_props_vehicles_trains1"
+					"label"      " Tank train"
 			}
 			"8"
 			{
@@ -37744,7 +37900,7 @@
 	
 	"ent_hat_forcesmain"
 	{	
-			"Title"     "Rotate or move your hat (May not work properly)"
+			"Title"     "Rotate or move your hat"
 			"1"
 			{
 				"command"	 "play buttons/button14;show_menu ent_hat_rotatemain"
@@ -37956,7 +38112,7 @@
 
 	"ent_hat_movemain"
 	{	
-			"Title"     "Move direction"
+			"Title"     "Move direction (May be reversed)"
 			"1"
 			{
 				"command"	 "play buttons/button14;show_menu ent_hat_move_forward"
@@ -39437,8 +39593,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_furniture2"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_misc/mirror-1.mdl;show_menu models_self_furniture2"
+					"label"      " Mirror"
 			}
 			"8"
 			{
@@ -39528,7 +39684,12 @@
 			"3"
 			{
 					"command"	 "play buttons/button14;scripted_user_func model,!self,models/props_unique/small_town/trainyard_tower.mdl;show_menu models_self_furniture_stairs2"
-					"label"		 " Trainyard Triple" 
+					"label"		 " Trainyard triple" 
+			}
+			"4"
+			{
+					"command"	 "play buttons/button14;scripted_user_func model,!self,models/props_urban/fire_escape_upper.mdl;show_menu models_self_furniture_stairs2"
+					"label"		 " Fire escape single, w/ platform" 
 			}
 			"7"
 			{
@@ -39633,8 +39794,8 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/luggagescale.mdl;show_menu models_self_furniture4"
-					"label"      " Luggage scale"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/mounteddeerhead01.mdl;show_menu model_self_furniture4"
+					"label"      " Mounted deer head"
 			}
 			"7"
 			{
@@ -41322,13 +41483,18 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_mall/mall_mannequin_female_larm1.mdl;show_menu models_self_mall_mannequin1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_mall/mall_mannequin_larm1.mdl;show_menu models_self_mall_mannequin1"
 					"label"      " Mannequin male left arm"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_mall/mall_mannequin_female_rarm1.mdl;show_menu models_self_mall_mannequin1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_mall/mall_mannequin_rarm1.mdl;show_menu models_self_mall_mannequin1"
 					"label"      " Mannequin male right arm"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_mall/mall_mannequin_lhand.mdl;show_menu models_self_mall_mannequin1"
+					"label"      " Mannequin left hand"
 			}
 			"7"
 			{
@@ -41461,11 +41627,10 @@
 					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_street/bus_stop.mdl;show_menu models_self_street1"
 					"label"      " Bus stop"
 			}
-
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_street1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_misc/triage_tent.mdl;show_menu models_self_street1"
+					"label"      " Triage tent"
 			}
 			"8"
 			{
@@ -41559,8 +41724,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_street2"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_wasteland/powertower01.mdl;show_menu models_self_street2"
+					"label"      " Power tower"
 			}
 			"8"
 			{
@@ -41655,13 +41820,13 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_unique/rope_bridge.mdl,45;show_menu models_self_street3"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_unique/rope_bridge.mdl;show_menu models_self_street3"
 					"label"      " Rope bridge"
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_street3"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_wasteland/rock_cliff01.mdl;show_menu models_self_street3"
+					"label"      " Giant cliff"
 			}
 			"8"
 			{
@@ -41715,12 +41880,47 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_street4"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_mill/stack_01.mdl;show_menu models_self_street4"
+					"label"      " Stack 1"
 			}
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu models_self_street3"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu models_self_street5"
+					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"models_self_street5"
+	{
+			"Title"     "More exterior stuff 5"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_urban/diving_board001.mdl;show_menu models_self_street5"
+					"label"      " Dive board"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_urban/fountain001.mdl;show_menu models_self_street5"
+					"label"      " Fountain"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_unique/airport_greenhouse.mdl;show_menu models_self_street5"
+					"label"      " Greenhouse frame"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu models_self_street4"
 					"label"      " << Back"
 			}
 			"0"
@@ -42316,10 +42516,15 @@
 					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_equipment/cargo_container04_phys.mdl;show_menu models_self_containers1"
 					"label"      " Both ends open, heavy"
 			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_urban/dumpster001.mdl;show_menu models_self_containers1"
+					"label"      " Dumpster container"
+			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_containers1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_junk/trashdumpster02.mdl;show_menu models_self_containers1"
+					"label"      " Dumpster container 2"
 			}
 			"8"
 			{
@@ -42872,7 +43077,6 @@
 					"label"      " Exit"
 			}
 	}
-
 	"models_self_fairgrounds1"
 	{
 			"Title"     "Fairgrounds stuff 1"
@@ -42888,38 +43092,63 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/fairgrounds_flagpole01.mdl;show_menu models_self_fairgrounds1"
-					"label"      " fairgrounds_flagpole01"
+					"command"    "play buttons/button14;show_menu models_self_fairgrounds_strongmangame1"
+					"label"      " Strongman game stuff"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/strongmangame_tower.mdl;show_menu models_self_fairgrounds1"
-					"label"      " strongmangame_tower"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_misc/fairground_tent_open.mdl;show_menu models_self_fairgrounds1"
+					"label"      " Tent 1"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/strongmangame_bell.mdl;show_menu models_self_fairgrounds1"
-					"label"      " strongmangame_bell"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_misc/gazebo.mdl;show_menu models_self_fairgrounds1"
+					"label"      " Tent 2"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/strongmangame_puck.mdl;show_menu models_self_fairgrounds1"
-					"label"      " strongmangame_puck"
-			}
-			"7"
-			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_fairgrounds1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/fairgrounds_flagpole01.mdl;show_menu models_self_fairgrounds1"
+					"label"      " fairgrounds_flagpole01"
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu models_self_menu_start3"
+					"command"    "play buttons/button14;show_menu models_selfmenu_start3"
 					"label"      " << Back"
 			}
 			"9"
 			{
 					"command"    "play buttons/button14;show_menu models_self_fairgrounds2"
 					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"models_self_fairgrounds_strongmangame1"
+	{
+			"Title"     "Strongman game stuff"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/strongmangame_tower.mdl;show_menu models_self_fairgrounds_strongmangame1"
+					"label"      " strongmangame_tower"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/strongmangame_bell.mdl;show_menu models_self_fairgrounds_strongmangame1"
+					"label"      " strongmangame_bell"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/strongmangame_puck.mdl;show_menu models_self_fairgrounds_strongmangame1"
+					"label"      " strongmangame_puck"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu models_self_fairgrounds1"
+					"label"      " << Back"
 			}
 			"0"
 			{
@@ -42950,6 +43179,11 @@
 			{
 					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/snake.mdl;show_menu models_self_fairgrounds2"
 					"label"      " Toy snake"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/teddy_bear.mdl;show_menu models_self_fairgrounds2"
+					"label"      " Teddy bear"
 			}
 			"8"
 			{
@@ -43915,6 +44149,11 @@
 					"command"    "play buttons/button14;scripted_user_func model,!self,models/items/l4d_gift.mdl;show_menu models_self_unique3"
 					"label"      " l4d gift"
 			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_urban/life_ring001.mdl;show_menu models_self_unique3"
+					"label"      " life_ring001"
+			}
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu models_self_unique2"
@@ -44263,11 +44502,10 @@
                     "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/train_boxwreck.mdl;show_menu models_self_vehicles_trains1"
                     "label"		 " Box, wrecked"
             }
-            
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_vehicles_trains1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/boxcar_tanktrap_exterior.mdl;show_menu models_self_vehicles_trains1"
+					"label"      " Tank train"
 			}
 			"8"
 			{
@@ -45411,8 +45649,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_picker_furniture2"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_misc/mirror-1.mdl;show_menu models_picker_furniture2"
+					"label"      " Mirror"
 			}
 			"8"
 			{
@@ -45503,6 +45741,11 @@
 			{
 					"command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_unique/small_town/trainyard_tower.mdl;show_menu models_picker_furniture_stairs2"
 					"label"		 " Trainyard triple" 
+			}
+			"4"
+			{
+					"command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_urban/fire_escape_upper.mdl;show_menu models_picker_furniture_stairs2"
+					"label"		 " Fire escape single, w/ platform" 
 			}
 			"7"
 			{
@@ -45607,8 +45850,8 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/luggagescale.mdl;show_menu models_picker_furniture4"
-					"label"      " Luggage scale"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/mounteddeerhead01.mdl;show_menu model_picker_furniture4"
+					"label"      " Mounted deer head"
 			}
 			"7"
 			{
@@ -47297,13 +47540,18 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_mall/mall_mannequin_female_larm1.mdl;show_menu models_picker_mall_mannequin1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_mall/mall_mannequin_larm1.mdl;show_menu models_picker_mall_mannequin1"
 					"label"      " Mannequin male left arm"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_mall/mall_mannequin_female_rarm1.mdl;show_menu models_picker_mall_mannequin1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_mall/mall_mannequin_rarm1.mdl;show_menu models_picker_mall_mannequin1"
 					"label"      " Mannequin male right arm"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_mall/mall_mannequin_lhand.mdl;show_menu models_picker_mall_mannequin1"
+					"label"      " Mannequin left hand"
 			}
 			"7"
 			{
@@ -47436,11 +47684,10 @@
 					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_street/bus_stop.mdl;show_menu models_picker_street1"
 					"label"      " Bus stop"
 			}
-
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_picker_street1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_misc/triage_tent.mdl;show_menu models_picker_street1"
+					"label"      " Triage tent"
 			}
 			"8"
 			{
@@ -47534,8 +47781,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_picker_street2"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_wasteland/powertower01.mdl;show_menu models_picker_street2"
+					"label"      " Power tower"
 			}
 			"8"
 			{
@@ -47635,8 +47882,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_picker_street3"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_wasteland/rock_cliff01.mdl;show_menu models_picker_street3"
+					"label"      " Giant cliff"
 			}
 			"8"
 			{
@@ -47690,12 +47937,47 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_picker_street4"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_mill/stack_01.mdl;show_menu models_picker_street4"
+					"label"      " Stack 1"
 			}
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu models_picker_street3"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu models_picker_street5"
+					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"models_picker_street5"
+	{
+			"Title"     "More exterior stuff 5"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_urban/diving_board001.mdl;show_menu models_picker_street5"
+					"label"      " Dive board"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_urban/fountain001.mdl;show_menu models_picker_street5"
+					"label"      " Fountain"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_unique/airport_greenhouse.mdl;show_menu models_picker_street5"
+					"label"      " Greenhouse frame"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu models_picker_street4"
 					"label"      " << Back"
 			}
 			"0"
@@ -48291,10 +48573,15 @@
 					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_equipment/cargo_container04_phys.mdl;show_menu models_picker_containers1"
 					"label"      " Both ends open, heavy"
 			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_urban/dumpster001.mdl;show_menu models_picker_containers1"
+					"label"      " Dumpster container"
+			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_picker_containers1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_junk/trashdumpster02.mdl;show_menu models_picker_containers1"
+					"label"      " Dumpster container 2"
 			}
 			"8"
 			{
@@ -48864,38 +49151,63 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/fairgrounds_flagpole01.mdl;show_menu models_picker_fairgrounds1"
-					"label"      " fairgrounds_flagpole01"
+					"command"    "play buttons/button14;show_menu models_picker_fairgrounds_strongmangame1"
+					"label"      " Strongman game stuff"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/strongmangame_tower.mdl;show_menu models_picker_fairgrounds1"
-					"label"      " strongmangame_tower"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_misc/fairground_tent_open.mdl;show_menu models_picker_fairgrounds1"
+					"label"      " Tent 1"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/strongmangame_bell.mdl;show_menu models_picker_fairgrounds1"
-					"label"      " strongmangame_bell"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_misc/gazebo.mdl;show_menu models_picker_fairgrounds1"
+					"label"      " Tent 2"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/strongmangame_puck.mdl;show_menu models_picker_fairgrounds1"
-					"label"      " strongmangame_puck"
-			}
-			"7"
-			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_picker_fairgrounds1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/fairgrounds_flagpole01.mdl;show_menu models_picker_fairgrounds1"
+					"label"      " fairgrounds_flagpole01"
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu models_picker_menu_start3"
+					"command"    "play buttons/button14;show_menu models_pickermenu_start3"
 					"label"      " << Back"
 			}
 			"9"
 			{
 					"command"    "play buttons/button14;show_menu models_picker_fairgrounds2"
 					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"models_picker_fairgrounds_strongmangame1"
+	{
+			"Title"     "Strongman game stuff"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/strongmangame_tower.mdl;show_menu models_picker_fairgrounds_strongmangame1"
+					"label"      " strongmangame_tower"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/strongmangame_bell.mdl;show_menu models_picker_fairgrounds_strongmangame1"
+					"label"      " strongmangame_bell"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/strongmangame_puck.mdl;show_menu models_picker_fairgrounds_strongmangame1"
+					"label"      " strongmangame_puck"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu models_picker_fairgrounds1"
+					"label"      " << Back"
 			}
 			"0"
 			{
@@ -48926,6 +49238,11 @@
 			{
 					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/snake.mdl;show_menu models_picker_fairgrounds2"
 					"label"      " Toy snake"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/teddy_bear.mdl;show_menu models_picker_fairgrounds2"
+					"label"      " Teddy bear"
 			}
 			"8"
 			{
@@ -49891,6 +50208,11 @@
 					"command"    "play buttons/button14;scripted_user_func model,!picker,models/items/l4d_gift.mdl;show_menu models_picker_unique3"
 					"label"      " l4d gift"
 			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_urban/life_ring001.mdl;show_menu models_picker_unique3"
+					"label"      " life_ring001"
+			}
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu models_picker_unique2"
@@ -50239,11 +50561,10 @@
                     "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/train_boxwreck.mdl;show_menu models_picker_vehicles_trains1"
                     "label"		 " Box, wrecked"
             }
-            
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_picker_vehicles_trains1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/boxcar_tanktrap_exterior.mdl;show_menu models_picker_vehicles_trains1"
+					"label"      " Tank train"
 			}
 			"8"
 			{
