@@ -3388,6 +3388,14 @@ function VSLib::Entity::IsInFront(otherEnt)
 }
 
 /**
+ * Returns distance to aimed point.
+ */
+function VSLib::Entity::GetLookingDistance(fromorigin = true,mask = TRACE_MASK_SHOT)
+{
+	return ::VSLib.Utils.CalculateDistance(GetLookingLocation(mask),fromorigin ? GetOrigin() : GetEyePosition())
+}
+
+/**
  * Returns a vector position of where the entity is looking.
  * EDIT (rhino) : Add masking for making it better usable with GetLookingEntity
  */
