@@ -2201,6 +2201,17 @@
                     )
                 return cmd.Describe();
             }
+            hex_string = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "hex_string",
+                    [
+                        CMDParam("text","Text to use")
+                    ],
+                    "Replace problematic characters in given text with their hex values.\nExample: \"a,b;c d\" will return \"a\\x2C\\x3Bc\\x20d\" which can be used as an argument later"
+                    )
+                return cmd.Describe();
+            }
             enum_string = function(player,args)
             {
                 local cmd = CMDDocs(
@@ -2260,6 +2271,30 @@
                     "reload_hooks",
                     [],
                     "Reload custom hook files in the configuration folders"
+                    )
+                return cmd.Describe();
+            }
+            detach_hook = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "detach_hook",
+                    [
+                        CMDParam("event_name","Name of the event"),
+                        CMDParam("hook_name","Name of the hook to detach")
+                    ],
+                    "Detach a custom hook of an event"
+                    )
+                return cmd.Describe();
+            }
+            attach_hook = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "attach_hook",
+                    [
+                        CMDParam("event_name","Name of the event"),
+                        CMDParam("hook_name","Name of the hook to re-attach")
+                    ],
+                    "Re-attach a custom hook of an event back"
                     )
                 return cmd.Describe();
             }
