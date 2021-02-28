@@ -120,6 +120,82 @@ Convars.SetValue( "precache_all_survivors", "1" );
 /*
  * @authors rhino
  */
+::AdminSystem.AttachHook <- function(player,args)
+{
+	if(!AdminSystem.IsPrivileged(player) || !AdminSystem.HasScriptAuth(player))
+	{
+		return;
+	}
+	
+	local event = GetArgument(1)
+	local hookname = GetArgument(2)
+	if(hookname == null)
+		return;
+	
+	if(!(event in PS_Hooks))
+	{
+		Printer(player,"Unknown event name: "+event);
+		return;
+	}
+
+	if(!(hookname in PS_Hooks[event]))
+	{
+		Printer(player,"Unknown hook name: "+hookname);
+		return;
+	}
+
+	if(hookname in ::VSLib.EasyLogic.Notifications)
+	{
+		Printer(player,"Hook was already attached: "+hookname);
+		return;
+	}
+	else
+	{
+		::VSLib.EasyLogic.Notifications[hookname] <- PS_Hooks[hookname]
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.DetachHook <- function(player,args)
+{
+	if(!AdminSystem.IsPrivileged(player) || !AdminSystem.HasScriptAuth(player))
+	{
+		return;
+	}
+	
+	local event = GetArgument(1)
+	local hookname = GetArgument(2)
+	if(hookname == null)
+		return;
+	
+	if(!(event in PS_Hooks))
+	{
+		Printer(player,"Unknown event name: "+event);
+		return;
+	}
+
+	if(!(hookname in PS_Hooks[event]))
+	{
+		Printer(player,"Unknown hook name: "+hookname);
+		return;
+	}
+
+	if(!(hookname in ::VSLib.EasyLogic.Notifications))
+	{
+		Printer(player,"Hook was already detached: "+hookname);
+		return;
+	}
+	else
+	{
+		delete ::VSLib.EasyLogic.Notifications[hookname]
+	}
+}
+
+/*
+ * @authors rhino
+ */
 ::AdminSystem.LoadCustomHooks <- function()
 {
 	printl("---------------------------------------------------------")
@@ -326,14 +402,16 @@ Convars.SetValue( "precache_all_survivors", "1" );
 	if(alias == null)
 		return;
 	
-	if(!(alias in ::ChatTriggers))
+	if(!(alias in ::ChatTriggers && alias in ::AliasCompiler.Tables))
 	{
 		Printer(player,COLOR_ORANGE+alias+COLOR_DEFAULT+" is not a known alias. Use "+COLOR_OLIVE_GREEN+"!create_alias "+COLOR_DEFAULT+"to create new aliases!")
 		return;
 	}
 	else
 	{
+		delete ::AliasCompiler.Tables[alias]
 		delete ::ChatTriggers[alias]
+		delete ::ChatTriggerDocs[alias]
 	}
 
 	delete args[0]
@@ -397,18 +475,15 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		::AliasCompiler.CreateAliasFromTable(tbl,"ChatTriggers")
 	}
 	
-	if(::AliasCompiler.Tables.len() > 0)
-	{	
-		printl("---------------------------------------------------------")
-		printl("[Custom-Aliases] Aliased commands for this session ("+::AliasCompiler.Tables.len()+"):")
-		local i = 0;
-		foreach(name,al in ::AliasCompiler.Tables)
-		{
-			i += 1
-			printl("\t["+i+"] "+name)
-		}
-		printl("---------------------------------------------------------")
+	printl("---------------------------------------------------------")
+	printl("[Custom-Aliases] Aliased commands for this session ("+::AliasCompiler.Tables.len()+")")
+	local i = 0;
+	foreach(name,al in ::AliasCompiler.Tables)
+	{
+		i += 1
+		printl("\t["+i+"] "+name)
 	}
+	printl("---------------------------------------------------------")
 }
 
 /*
@@ -562,6 +637,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 				::VSLib.EasyLogic.TemporaryCmdBanList[cmd] <- {}
 			}
 			::VSLib.EasyLogic.TemporaryCmdBanList[cmd][steamid] <- Time() + duration
+			::VSLib.EasyLogic.TemporaryCmdBanList.command_unban[steamid] <- Time() + duration
 			Printer(player,"Banned "+target.GetCharacterNameLower()+" from using "+cmd+" for "+duration+" seconds")
 		}
 	}
@@ -611,6 +687,9 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		if(cmd in ::VSLib.EasyLogic.TemporaryCmdBanList && steamid in ::VSLib.EasyLogic.TemporaryCmdBanList[cmd])
 		{
 			delete ::VSLib.EasyLogic.TemporaryCmdBanList[cmd][steamid]
+			if(steamid in ::VSLib.EasyLogic.TemporaryCmdBanList.command_unban )
+				delete ::VSLib.EasyLogic.TemporaryCmdBanList.command_unban[steamid]
+				
 			Printer(player,"Unbanned "+target.GetCharacterNameLower()+" from using "+cmd)
 		}
 	}
@@ -2025,6 +2104,16 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.LoadCustomHooks();
 			break;
 		}
+		case "detach_hook":
+		{
+			AdminSystem.DetachHook();
+			break;
+		}
+		case "attach_hook":
+		{
+			AdminSystem.AttachHook();
+			break;
+		}
 		case "reload_aliases":
 		{
 			if(!AdminSystem.HasScriptAuth(player))
@@ -2047,13 +2136,22 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.CreateAliasCommandCmd(player,args,text);
 			break;
 		}
+		case "hex_string":
+		{
+			if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
+				return;
+			
+			local Code = strip(Utils.StringReplace(text, "hex_string,", ""));
+			Printer(player,::AdminSystem._GetHexString(Code));
+			break;
+		}
 		case "enum_string":
 		{
 			if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
 				return;
 			
 			local Code = strip(Utils.StringReplace(text, "enum_string,", ""));
-			ClientPrint(player.GetBaseEntity(),3,::AdminSystem._GetEnumString(Code));
+			Printer(player,::AdminSystem._GetEnumString(Code));
 			break;
 		}
 		case "out":
@@ -5904,6 +6002,28 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	args.ent.SetNetProp("m_flLaggedMovementValue",args.speedscale)
 }
 
+::AdminSystem._GetHexString <- function(str)
+{
+	local lookuptbl = {}
+	local s = ""
+	foreach(name,tbl in ::EasyLogic.Escapes)
+	{
+		lookuptbl[tbl.i] <- tbl.pattern.slice(1,5)
+	}
+	for(local c=0;c<str.len();c++)
+	{
+		if(str[c] in lookuptbl)
+		{
+			s += lookuptbl[str[c]]
+		}
+		else
+		{
+			s += str[c].tochar()
+		}
+	}
+	return s;
+}
+
 ::AdminSystem._GetEnumString <- function(str)
 {
 	if(str == null)
@@ -9134,10 +9254,21 @@ function ChatTriggers::enum_string( player, args, text )
 	if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
 		return;
 
-	ClientPrint(player.GetBaseEntity(),3,::AdminSystem._GetEnumString(strip(Utils.CombineArray(args))));
+	Printer(player,::AdminSystem._GetEnumString(strip(Utils.CombineArray(args))));
 }
 ::ChatTriggerDocs.enum_string <- @(player,args) AdminSystem.IsPrivileged(player) && "enum_string" in CmdDocs
 					? Messages.DocCmdPlayer(player,CmdDocs.enum_string(player,args))
+					: null
+
+function ChatTriggers::hex_string( player, args, text )
+{
+	if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
+		return;
+
+	Printer(player,::AdminSystem._GetHexString(strip(Utils.CombineArray(args))));
+}
+::ChatTriggerDocs.hex_string <- @(player,args) AdminSystem.IsPrivileged(player) && "hex_string" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.hex_string(player,args))
 					: null
 
 function ChatTriggers::create_alias( player, args, text )
@@ -9190,6 +9321,22 @@ function ChatTriggers::reload_hooks( player, args, text )
 }
 ::ChatTriggerDocs.reload_hooks <- @(player,args) AdminSystem.IsPrivileged(player) && "reload_hooks" in CmdDocs
 					? Messages.DocCmdPlayer(player,CmdDocs.reload_hooks(player,args))
+					: null
+
+function ChatTriggers::detach_hook( player, args, text )
+{
+	AdminSystem.DetachHook();
+}
+::ChatTriggerDocs.detach_hook <- @(player,args) AdminSystem.IsPrivileged(player) && "detach_hook" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.detach_hook(player,args))
+					: null
+
+function ChatTriggers::attach_hook( player, args, text )
+{
+	AdminSystem.AttachHook();
+}
+::ChatTriggerDocs.attach_hook <- @(player,args) AdminSystem.IsPrivileged(player) && "attach_hook" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.attach_hook(player,args))
 					: null
 
 function ChatTriggers::update_print_output_state(player,args,text)
