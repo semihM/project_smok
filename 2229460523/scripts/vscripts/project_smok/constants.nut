@@ -539,7 +539,7 @@
 		if(als in ::AliasCompiler.ForbiddenAliasNames)
 			return null
 
-		if((als in getroottable()[triggertbl]))
+		if((als in getroottable()[triggertbl] || als in ::AliasCompiler.Tables))
 		{
 			ClientPrint(player.GetBaseEntity(),3,COLOR_ORANGE+als+COLOR_DEFAULT+" is already a known alias. Use "+COLOR_OLIVE_GREEN+" !replace_alias"+COLOR_DEFAULT+" if you want to replace an existing alias!")
 			return null
@@ -769,8 +769,8 @@ command_name_2 //Take notes by adding // after the command name if needed"
 		else
 			s += format("//\t\t -> %s gets replaced with \"%s\"\n\t\t",infotbl.pattern.slice(1,5),infotbl.i.tochar());
 	}
-	s += @"//		Example: scripted_user_func say,console\x20hates\x20these\x20characters\x2C\x20so\x20use\x20\x22hex\x22\x20values!"+"\n\t\t"
-	s += @"//		Result: Prints ""console hates these characters,so use hex values!"" to chat"+"\n\t\t"
+	s += @"//		Example: scripted_user_func say,all,console\x20hates\x20these\x20characters\x2C\x20so\x20use\x20\x22hex\x22\x20values!"+"\n\t\t"
+	s += @"//		Result: Makes everyone say ""console hates these characters,so use ""hex"" values!"" to chat"+"\n\t\t"
 	return s;
 }
 
