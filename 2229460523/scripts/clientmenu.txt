@@ -17906,6 +17906,16 @@
 					"command"    "play buttons/button14;scripted_user_func remove_fall_cams;show_menu smok_menu_stop_anno1"
 					"label"		 " Remove death fall cameras (no-mercy roof fall cams etc.)"
 			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func hurt_triggers,disable;show_menu smok_menu_stop_anno1"
+					"label"		 " Disable hurt triggers"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func hurt_triggers,enable;show_menu smok_menu_stop_anno1"
+					"label"		 " Enable hurt triggers"
+			}
 			"8"
 			{
 					"command"	 "play buttons/button14;show_menu smok_menu2"
@@ -18133,7 +18143,7 @@
 			"7"
 			{		
 					"command"    "play buttons/button14;show_menu models_restore_model"
-					"label"      " Restore your model"
+					"label"      " Restore the model"
 			}
 			"8"
 			{
@@ -18180,7 +18190,7 @@
 
 		"1"
 		{
-			"command"	 "play buttons/button14;c_thirdpersonshoulder 0;show_menu models_views"
+			"command"	 "play buttons/button14;c_thirdpersonshoulder 0;firstperson;show_menu models_views"
 			"label"		 " First-person"
 		}
 		"2"
@@ -21712,36 +21722,36 @@
 
 	"ent_spin_menu1"
 	{
-			"Title"		 " Apply angular impulse to entity"
+			"Title"		 " Apply angular impulse"
 			"1"
 			{
 				"command"		 "play buttons/button14;show_menu ent_spin_menu_forward1"
-				"label"			" Forward"
+				"label"			" Forward(Clockwise)"
 			}
 			"2"
 			{
 				"command"		 "play buttons/button14;show_menu ent_spin_menu_backward1"
-				"label"			" Backward"
+				"label"			" Backward(Anti-clockwise)"
 			}
 			"3"
 			{
 				"command"		 "play buttons/button14;show_menu ent_spin_menu_left1"
-				"label"			" Left"
+				"label"			" Left(Roll forward)"
 			}
 			"4"
 			{
 				"command"		 "play buttons/button14;show_menu ent_spin_menu_right1"
-				"label"			" Right"
+				"label"			" Right(Roll backward)"
 			}
 			"5"
 			{
 				"command"		 "play buttons/button14;show_menu ent_spin_menu_up1"
-				"label"			" Up"
+				"label"			" Up(Anti-clockwise looking from above)"
 			}
 			"6"
 			{
 				"command"		 "play buttons/button14;show_menu ent_spin_menu_down1"
-				"label"			" Down"
+				"label"			" Down(Clockwise looking from above)"
 			}
 			"8"
 			{
@@ -21751,7 +21761,7 @@
 			"9"
 			{
 					"command"    "play buttons/button11;show_menu ent_spin_menu1"
-					"label"      " ...More directions will be added"
+					"label"      " !! XY plane of the object have to match world's for correct directions !!"
 			}
 			"0"
 			{
@@ -21762,7 +21772,7 @@
 
 	"ent_spin_menu_forward1"
 	{
-			"Title"		 "Spin forward"
+			"Title"		 "Spin clockwise"
 
 			"1"
 			{
@@ -21813,7 +21823,7 @@
 
 	"ent_spin_menu_backward1"
 	{
-			"Title"		 "Spin backward"
+			"Title"		 "Spin anti-clockwise"
 
 			"1"
 			{
@@ -21864,7 +21874,7 @@
 
 	"ent_spin_menu_left1"
 	{
-			"Title"		 "Spin left"
+			"Title"		 "Roll forward"
 
 			"1"
 			{
@@ -21915,7 +21925,7 @@
 	
 	"ent_spin_menu_right1"
 	{
-			"Title"		 "Spin right"
+			"Title"		 "Roll backward"
 
 			"1"
 			{
@@ -21966,7 +21976,7 @@
 	
 	"ent_spin_menu_up1"
 	{
-			"Title"		 "Spin up"
+			"Title"		 "Spin anti-clockwise(looking from above)"
 
 			"1"
 			{
@@ -22017,7 +22027,7 @@
 	
 	"ent_spin_menu_down1"
 	{
-			"Title"		 "Spin down"
+			"Title"		 "Spin clockwise(looking from above)"
 
 			"1"
 			{
