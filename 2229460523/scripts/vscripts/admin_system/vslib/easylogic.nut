@@ -4701,12 +4701,15 @@ function VSLib::EasyLogic::CheckCommandAvailability(player,cleanBaseCmd,quiet=fa
 	space = {pattern=@"\\x20",replace="\x20",i=32,}
 	quotes = {pattern=@"\\x22",replace="\x22",i=34}
 	singlequote = {pattern=@"\\x27",replace="\x27",i=39}
+	colon = {pattern=@"\\x3A",replace="\x3A",i=58}
 	semicolon = {pattern=@"\\x3B",replace="\x3B",i=59}
 	openbrackets = {pattern=@"\\x28",replace="\x28",i=40}
 	closebrackets = {pattern=@"\\x29",replace="\x29",i=41}
 	comma = {pattern=@"\\x2C",replace="\x2C",i=44}
-	period = {pattern=@"\\x2E",replace="\x2E",i=46}
-	questionmark = {pattern=@"\\x3F",replace="\x3F",i=63}
+	//period = {pattern=@"\\x2E",replace="\x2E",i=46}
+	//questionmark = {pattern=@"\\x3F",replace="\x3F",i=63}
+	bropen = {pattern=@"\\x7B",replace="\x7B",i=123}
+	brclose = {pattern=@"\\x7D",replace="\x7D",i=125}
 	colordef = {pattern=@"\\x01",replace="\x01",i=1,explain="for coloring white following text"}
 	colorbg = {pattern=@"\\x03",replace="\x03",i=3,explain="for coloring bright green following text"}
 	coloror = {pattern=@"\\x04",replace="\x04",i=4,explain="for coloring orange following text"}
