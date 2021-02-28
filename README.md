@@ -2,8 +2,86 @@
  - Repository for the workshop item [project_smok](https://steamcommunity.com/sharedfiles/filedetails/?id=2229460523) of L4D2
  
  - Following documentation is for the **new and updated commands**. Commands that aren't included in this documentation can be found in the [Admin System Guide](https://steamcommunity.com/sharedfiles/filedetails/?id=213591107). Be aware that **some of the commands that are not documented may behave differently** than the guide. 
+
+---
+# Documentation Contents
+- [**Downloading and Installing**](#downloading-and-installing)
+
+- [**Bot Abilites and Trading**](#bot-abilites-and-trading)
+
+- [**Commands**](#commands)
+
+    - [**Using commands**](#using-commands)
+    		
+        - [**Using via menu**](#via-the-menu)
  
-## Downloading and Installing 
+        - [**Using via console**](#via-the-console)
+		
+        - [**Using via chat triggers**](#via-chat-triggers)
+
+    - [**Creating new commands**](#creating-new-commands)
+    		
+        - [**Using aliases**](#using-aliases)
+ 
+        - [**Using scripts**](#using-scripts)
+
+    - [**Character limitations**](#character-limitations)
+    		
+        - [**Chat limitations**](#using-aliases)
+ 
+        - [**Console limitations**](#using-scripts)
+
+        - [**Runtime character compilation**](#runtime-character-compilation)
+    
+- [**Command Categories**](#command-categories)
+
+    - [**Entities/Objects**](#entities)
+
+    - [**Random voice lines**](#random-and-saved-voices)
+
+    - [**Particle effects**](#particle-effects)
+
+    - [**Custom sequences of voice lines**](#custom-sequences)
+
+    - [**Apocalypse event**](#apocalypse-event)
+
+    - [**Meteor shower event**](#meteor-shower-event)
+
+    - [**Freezing objects**](#freezing-objects)
+
+    - [**Piano keys**](#piano)
+
+    - [**Microphones and speakers**](#microphones-and-speakers)
+
+    - [**Explosions**](#explosions)
+
+    - [**Ragdolling**](#ragdoll)
+
+    - [**Other commands**](#other)
+
+    - [**Debugging, scripting and setting related**](#debugging-scripting-and-settings-related)
+
+    - [**Custom Script Related**](#custom-script-related)
+
+- [**Hooks**](#hooks)
+    		
+- [**Extra**](#extra)
+
+    - [**Configuration files**](#changing-settings-adding-custom-responses-without-launching-the-game)
+
+        - [**Basic configuration structure**](#basic-configuration-structure)
+        
+        - [**Configuration files extra notes**](#extra-notes)
+        
+    - [**Detailed Tables**](#detailed-tables)
+        
+    - [**Discussions**](#forums)
+    
+- [**Other Links**](#other-links)
+
+---
+
+# Downloading and Installing 
  - Download **Left 4 Dead 2 Authoring Tools** *(Steam>Library>Tools)*
  
  - Download the **.zip** archive and extract the **project_smok-master** folder **OR** clone the **master** branch into a folder
@@ -17,92 +95,270 @@
  - Put ( or replace the original if already exists ) the created _**2229460523.vpk**_ file into the relative path _**..\Steam\steamapps\common\Left 4 Dead 2\left4dead2\addons\workshop**_
  
  - Launch the game and make sure the add-on is checked
+---
  
+# Bot Abilites and Trading
+ - There are some new abilities given to bots and players. These abilities can be **tweaked** and/or **turned off**, [check out the configuration files](#basic-configuration-structure) 
+     1. Bots can now _look for_ **grenades** and **any kind of packs**, if they have a **grenade or a pack** while the closest player to them **doesn't**, they will **share** their items with that player. 
+     
+     2. Players can **take away** a bot's grenades and packs (whichever player doesn't have) by **holding the reload button (R) and shoving with a weapon** the bot
+     
+     3. Players can **exchange** their grenades and packs with a bot while holding the grenade or the pack
+  
+     4. Players can **give** each other grenades and packs by **holding the reload button (R) and shoving** with the grenade or the pack
+---
+
 # Commands
- - Commands can be used:
-   + ### Via the menu:
-     + To start using the menu:
-       + Bind the menu to an unused key, for example **"k"**:
-     
-         <code>bind k "show_menu Menu"</code>
-     
-       + Open up the menu in-game by pressing the key bound in the previous step and use number keys to go through the categorized sub-menus
-       
-       + **Example:** To make your character say a randomline originated by them, use the following key sequence: **k 6 4 1 1 1**
-         
- 
-   + ### Via chat:
-     + Add **"!"** before the command and  seperate arguments with **" " space character**
-     + Chat has a **character limit**, in some cases its better to use the console
-     
-       <code>!command argument_1 argument_2 ...</code>
-      
-     + **Example:** Make Ellis say **"Humans 4, zombies nothin'!"**
- 
-       <code>!speak ellis hurrah21</code>
- 
-   + ### Via console:
-     + **To enable the console**: [Main Menu -> Options -> Keyboard/Mouse -> Enable the "Allow Developer Console" option](https://left4dead.fandom.com/wiki/Console_commands#:~:text=it%20can%20be%20activated,pressing%20the%20tilde%20(~)%20key.)
-     + Add **"scripted_user_func "** before the command and seperate it and arguments with **"," commas**
-     + Allows pretty much unlimited amount of characters in a command
-     + This option **restricts usage of some special characters** such as : **quotation marks(""), commas(,), equals signs(=)**
+  ---
+  ## Using commands
+   ### Via the menu:
+   1. Bind the menu to an unused key, for example **"k"**:
+
+       <code>bind k "show_menu Menu"</code>
+    
+   2. Open up the menu in-game by pressing the key bound in the previous step and use number keys to go through the categorized sub-menus
+    
+   - **Example:** To make your character say a randomline originated by them, use the following key sequence: **k 6 4 1 1 1**
+   
+   ---      
+   ### Via the console:
+   - **To enable the console**: [Main Menu -> Options -> Keyboard/Mouse -> Enable the "Allow Developer Console" option](https://left4dead.fandom.com/wiki/Console_commands#:~:text=it%20can%20be%20activated,pressing%20the%20tilde%20(~)%20key.)
+   - Use **"scripted_user_func"** command, add the actual command name and seperate it and it's arguments with **"," commas**
      
        <code>scripted_user_func command,argument_1,argument_2,...</code>
  
-     + **Example:** Make Ellis say **"Humans 4, zombies nothin'!"**
+      + **Example:** Make Ellis say **"Humans 4, zombies nothin'!"**, using **speak** command with *ellis* and *hurrah21* arguments 
  
-       <code>scripted_user_func speak,ellis,hurrah21</code>
+      <code>scripted_user_func speak,ellis,hurrah21</code>
        
-     + **Example:** Bind the **"randomline"** command to key **"j"** for making your survivor say a random line from Francis
+   - **Example:** Bind the **"randomline"** command to key **"j"** for making your survivor say a random line from Francis
      
        <code>bind j "scripted_user_func randomline,self,francis"</code>
+       
+   ---
+   ### Via chat triggers:
+   #### *Visible* execution trigger = **"!"**:
+   + Used for calling commands and showing the call to other players
+            
+        <code>!command argument_1 argument_2 ...</code>
+       
+   + **Example:** Make Ellis say **"Humans 4, zombies nothin'!"
+         
+        <code>!speak ellis hurrah21</code>
+            
+   ---  
+   #### *Hidden* execution trigger = **"/"**:
+   + Used for calling commands and hiding the call from other players, but keeping it in your chatbox
+            
+        <code>/command argument_1 argument_2 ...</code>
+       
+   + **Example:** Spawn a snake toy prop
+         
+        <code>/prop physicsM models/props_fairgrounds/snake.mdl</code>
+            
+   ---  
+   #### *Documentation* trigger = **"?"**:
+   + Used for printing built-in documentations of commands, call and the documentation print is only visible to caller
+         
+        <code>?command</code> 
+            
+   + **_Warning_**: Some commands may not have any documentation
+       
+   + **Example(from chat):** Get information about how _randomline_ command can be used
+         
+        <code>?randomline</code>
 
- - By holding reload button "**R**" and then pressing shove button "**right-click**" :
-     + Grenade or pack held can be given to anyone if they have a free slot
-     + Grenade or pack held can be exchanged with a bot's grenade or pack
-     + Grenade and pack from a bot can be taken while holding a weapon if you have slots for them
+   + **Example(from console):** Get information about how *ent_push* command can be used
+         
+        <code>scripted_user_func help,ent_push</code>
+            
+   ---  
+   #### *Command search* trigger = **"?*"**:
+   + Used for listing existing commands which matches with given pattern
+   
+   + [Regular expressions](http://squirrel-lang.org/squirreldoc/stdlib/stdstringlib.html#the-regexp-class) can be used as the _pattern_
+         
+        <code>?*pattern</code>
+       
+   + **Example:** Get list of commands which have the word _random_ in them
+         
+        <code>?*random</code>
+       
+   + **Example:** Get list of commands which start with letter _g_
+         
+        <code>?*^g</code>
+       
+   + **Example:** Get list of commands which have _ent_ or _prop_ words in them
+         
+        <code>?*ent|prop</code>
+  ---
 
----
-# Documentation Contents
-- [**Entities/Objects**](#entities)
+  ## Creating new commands
+  
+  ### Using aliases
+   - Existing commands can be combined together in many ways to create new commands or aliases.
+   
+   #### Steps to create aliases in configuration files
+   
+   1. Head to **admin system/aliases/** folder
+   
+   2. Create a new **.txt** file, name it to your liking
+   
+   3. Add the file name, without extension, to **./file_list.txt** file
+   
+   4. Inspect the **./example_alias_file.txt** for example aliases and formatting rules
+   
+   5. Write your alias table following the format present in the examples
+   
+   6. Launch the game and check your console if the alias is loaded
+   
+   7. Start testing the new alias!
+   
+      - You can reload the alias files using the **[reload_aliases command](#reload_aliases)**. This allows an easier way to test the aliases and check for formatting mistakes
 
-- [**Random voice lines**](#random-and-saved-voices)
-
-- [**Particle effects**](#particle-effects)
-
-- [**Custom sequences of voice lines**](#custom-sequences)
-
-- [**Apocalypse event**](#apocalypse-event)
-
-- [**Meteor shower event**](#meteor-shower-event)
-
-- [**Freezing objects**](#freezing-objects)
-
-- [**Piano keys**](#piano)
-
-- [**Microphones and speakers**](#microphones-and-speakers)
-
-- [**Explosions**](#explosions)
-
-- [**Ragdolling**](#ragdoll)
-
-- [**Other commands**](#other)
-
-- [**Debugging, scripting and setting related**](#debugging-scripting-and-settings-related)
-
----
-## Entities
-
-- **prop** : Create a prop of the given type with given model
-
-    Chat Syntax | !prop *type model_path*
-    ------------- | -------------
-
-    Console Syntax | scripted_user_func *prop,type,model_path* 
-    ------------- | -------------
+   #### Commands to create or replace aliases for a single game session
+   1. Start a game
+   
+   2. Check your console to see the loaded alias names
+   
+   3. Create or replace an alias:
+   
+      - Create a new alias with **[create_alias command](#create_alias)**
+     
+      - Replace an existing alias with **[replace_alias command](#replace_alias)**
+   
+   4. Check out the output message if the execution was successful
+  ---
+  
+  ### Using scripts
+   - New commands can be created by following the steps below:
+   
+   1. Head to **admin system/scripts/** folder
+   
+   2. Create a new **.nut** Squirrel-lang script file, name it to your liking
+   
+   3. Add the file name, without extension, to **./file_list.txt** file
+   
+   4. Inspect the **./example_script_file.nut** for an example command and the formatting rules
+   
+   5. Write your own command following the format present in the example
+     
+		 1) Decide for a name
+  	 
+		 2) Initialize a table with the decided name
+     
+		 3) Add documentations under a table named **Help**
+     
+		 4) Add the actual command function, taking 3 parameters, as a function named **Main** 
     
-    Menu Sequence | _6->1->1_ AND _6->1->2_ 
-    ------------- | -------------
+   6. Launch the game and check if the new command was registered
+    
+   7. Start testing the new command!
+   
+      - You can reload the script files using the **[reload_scripts command](#reload_scripts)**. This allows an easier way to test the commands and check for formatting mistakes
+
+---
+## Character limitations
+- There are certain limitations of the game by default which can prevent certain commands or formats not work as intended. These limitations are generally about usage of special characters and length of the messages/commands sent.
+
+### Chat limitations
+   - Maximum message length: **127**
+
+   - Sometimes problematic with commands which needs to compile the sent message when there are semi-colons **;** in the message
+
+   - Not sanitized well: **";command_name** will try to execute the *command_name* in console, it will work if *command_name* has a *user* flag defined
+
+### Console limitations
+   - Maximum command length: **255**
+
+   - Very limited with command formats, makes a lot of assumptions: **" "** to seperate arguments, **";"** to end the current command etc.
+
+   - Characters which are not allowed to be use as commonly intended: **" "**, **"'"**, **"""**, **";"**, **":"**, **","**, **"("**, **")"**, **"{"**, **"}"**
+
+### Runtime character compilation
+   - To get around the character limitations, there are some runtime compilation tricks available. These tricks can be used from both console and chat, but they require caller to have [script authorization](#add_script_auth)
+
+      #### Using hex values
+      + Replace the special characters **in arguments** with their respective hex values. Currently available replacements
+
+         Character in quotes | Name | Char Value | Hex Value
+         ------------ | ------------- | ------------- | -------------
+         " " | space      | 32 | \x20
+         """ | double quotation mark     | 34 | \x22
+         "'" | single quotation mark      | 39 | \x27
+         "(" | round bracket open      | 40 | \x28
+         ")" | round bracket close      | 41 | \x29
+         "," | comma      | 44 | \x2C
+         ":" | colon      | 58 | \x3A
+         ";" | semi-colon      | 59 | \x3B
+         "{" | open brace      | 123 | \x7B
+         "}" | close brace      | 125 | \x7D
+
+      + Using these values will result in shorter maximum command lengths, because a single character gets replaced with 4.
+
+      + All hex values assumed to be in range [1-255].
+
+      + This process is made easier using [hex_string command](#hex_string) in chat.
+
+      + **Example**: Make console print "console hates these characters,so use hex values!"
+
+         - **Normal attempt:** scripted_user_func say,console hates these characters, so use "hex" values!
+            + **Result**: Prints "_console_"
+
+         - **Hex attempt:** console\x20hates\x20these\x20characters\x2C\x20so\x20use\x20\x22hex\x22\x20values!
+            + **Result**: Prints "_console hates these characters,so use "hex" values!_"
+
+      #### Using special evaluation format
+      + Use **$[expression]** format to evaluate an expression and use the returned value as the argument. This allows calling any function, doing arithmetic calculations and any other evaluation method that can be used.
+
+      + Argument should start with **"$["** and end with **"]"** for them to be taken as a compilable argument
+
+      + The expression gets evaluated **after** hex values get replaced
+ 
+      + Since everything in the _expression_ will be evaluated as it is, there are some restrictions:
+
+         - To use strings, you still have to use quotation marks. 
+            + **Wrong**: _$[hello it is a me]_ will throw an error since compiler will try to look for variables named as the words used.
+
+            + **Right**: _$["hello it is a me"]_ can be used from the chat, _$[\x22hello\x20it\x20is\x20a\x20me\x22] can be used from the console
+
+         - Strings can be turned into enumerated values to be used as arguments. Check out [enum_string command](#enum_string)
+            + This is **only** more effective than using hex values when there are shorter string manipulations.
+               - **Example**: Inserting a comma and a space (**'+", "+'**) between 2 other strings:
+
+                  + **Hex values**: **"+\x22\x2C\x20\x22+"**, with length of **18** characters
+                  
+                  + **Enumerated**: **"+\_\_.\_c+\_\_.\_s+"** with length of **13** characters
+
+            + **Example**: to use **"very cool, argument"** as an argument, *$[\_\_.v+\_\_.e+\_\_.r+\_\_.y+\_\_.\_s+\_\_.c+\_\_.o+\_\_.o+\_\_.l+\_\_.\_c+\_\_.\_s+\_\_.a+\_\_.r+\_\_.g+\_\_.u+\_\_.m+\_\_.e+\_\_.n+\_\_.t]* can be used, which is retrieved with the **enum_string** command
+
+      + **Example**: Spawn a microphone at aimed point which will have the exact hearing radius as the distance from Nick to the microphone ( using Player("!nick").GetLookingDistance() )
+         
+         - **From console**: scripted_user_func microphone,standard,$[Player\x28\x22!nick\x22\x29\x2EGetLookingDistance\x28\x29]
+
+         - **From chat**: !microphone standard $[Player("!nick").GetLookingDistance()]
+
+      + **Example**: Apply rainbow effect to aimed object, for 33 seconds if Bill's health is higher than 50, otherwise 99 seconds
+         
+         - **From console**: scripted_user_func rainbow,$[Player\x28\x22!bill\x22\x29.GetHealth\x28\x29>50?33\x3A99]
+
+         - **From chat**: !rainbow $[Player("!bill").GetHealth()>50?33:99]
+
+## Command Categories
+---
+### Entities
+
+#### **prop**
+-  Create a prop of the given type with given model
+
+   Chat Syntax | (!,/,?)prop *type model_path*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *prop,type,model_path* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->1->1_ AND _6->1->2_ 
+   ------------- | -------------
 
 ```cpp
        //Overloads:
@@ -111,7 +367,8 @@
        // {model_path} follows this format in general: models/props_{category}/{name}.mdl OR !random for a random model
        // Multiple models can be given, seperated with "&" character, to create parented props ( parented by first model )
        // To check out all possible models: Left 4 Dead 2 Authoring Tools>Hammer World Editor>CTRL+N>CTRL+SHIFT+M>Search all models
-       prop {type: (physicsM, dynamic, ragdoll)} {model_path | !random}
+       prop {type: (physicsM, dynamic, ragdoll)} {model_path | !random} {extra_height} {yaw:degrees} {massScale}
+       prop {type: (physicsM, dynamic, ragdoll)} {model_path | !random} // extra_height = 0, yaw = 0, massScale = 1
 
        // Example: Create a flower barrel with physics
        prop physicsM models/props_foliage/flower_barrel.mdl
@@ -122,49 +379,52 @@
        // Example: Create a random object with physics
        prop physicsM !random
        
-       // Example: Create a physics prop car with its windows attached(parented by the car)
+       // Example: Create a physics prop car with its windows attached(parented by the car), model origins will match
        prop physicsM models/props_vehicles/cara_69sedan.mdl&models/props_vehicles/cara_69sedan_glass.mdl
 
        // Example: Create a ragdoll of coach
        prop ragdoll models/survivors/survivor_coach.mdl
 ```
 ---
-- **ent** : Create an entity of the given class with given key-values
+#### **ent**
+-  Create an entity of the given class with given key-values
 
-    Chat Syntax | !ent *class key_1>val_1&key_2>val_2...*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)ent *classname key_1>val_1&key_2>val_2...*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *ent,class,key_1>val_1&key_2>val_2...* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *ent,classname,key_1>val_1&key_2>val_2...* 
+   ------------- | -------------
     
-    Menu Sequence | _Not in the menu_ 
-    ------------- | -------------
+   Menu Sequence | _Not in the menu_ 
+   ------------- | -------------
 
 ```cpp
        //Overloads:
        // Class names and their keys and possible values can be
        //      found through the Valve Developer Wikis and Hammer World Editor
        // value accepts following formats:
-       //     For single values (int,float,str,flg) :
-       //           value = single_value
-       //     For multi-values (angle,position(vector),array(spaced values)) :
-       //           value = {type:(ang,pos,str)}|val1|val2|val3
-       ent {class} {key1}>{value1}&{key2}>{value2}...
+       //     For single values (int, float, str, flg) :
+       //           value = {type:(int,float,flg)}|single_value
+       //
+       //     For multi-values (angle, position(vector), array(spaced values), flags) :
+       //           value = {type:(ang,pos,str,flg)}|val1|val2|val3
+       ent {classname} {key1}>{value1}&{key2}>{value2}...
        
        // Example (dynamic prop with Gift model with color rgb(90,30,60) and angles Pitch,Yaw,Roll->(-30,10,0) ): 
        ent prop_dynamic model>models\items\l4d_gift.mdl&rendercolor>str|90|30|60&angles>ang|-30|10|0
 ```
 ---
-- **save_model** : Save a model with a class to be spawn a prop easily
+#### **save_model**
+- Save a model with a class to be spawn a prop easily
 
-    Chat Syntax | !save_model *classname modelpath*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)save_model *classname modelpath*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *save_model,classname,modelpath*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *save_model,classname,modelpath*
+   ------------- | -------------
     
-    Menu Sequence | _Not in the menu_
-    ------------- | -------------
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
 
 ```cpp 
         // Overloads:
@@ -174,52 +434,56 @@
         save_model physics models/props_interiors/tv.mdl
 ```
 ---
-- **random_model_save_state** : Update the state of saving the last randomly spawned prop
+#### **random_model_save_state**
+- Update the state of saving the last randomly spawned prop
 
-    Chat Syntax | !random_model_save_state
-    ------------- | -------------
+   Chat Syntax | (!,/,?)random_model_save_state
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *random_model_save_state*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *random_model_save_state*
+   ------------- | -------------
     
-    Menu Sequence | _6->1->3->1_
-    ------------- | -------------
+   Menu Sequence | _6->1->3->1_
+   ------------- | -------------
 
 ---
-- **spawn_model_saved** : Spawn a prop with saved model and class 
+#### **spawn_model_saved**
+- Spawn a prop with saved model and class 
 
-    Chat Syntax | !spawn_model_saved
-    ------------- | -------------
+   Chat Syntax | (!,/,?)spawn_model_saved
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *spawn_model_saved*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *spawn_model_saved*
+   ------------- | -------------
     
-    Menu Sequence | _6->2_
-    ------------- | -------------
+   Menu Sequence | _6->2_
+   ------------- | -------------
 
 ---
-- **display_saved_model** : Display the saved model information if there is any
+#### **display_saved_model**
+- Display the saved model information if there is any
 
-    Chat Syntax | !display_saved_model
-    ------------- | -------------
+   Chat Syntax | (!,/,?)display_saved_model
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *display_saved_model*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *display_saved_model*
+   ------------- | -------------
     
-    Menu Sequence | _6->1->3->2_
-    ------------- | -------------
+   Menu Sequence | _6->1->3->2_
+   ------------- | -------------
 
 ---
-- **ent_rotate** : Rotate the targeted entity
+#### **ent_rotate**
+- Rotate the targeted entity
 
-    Chat Syntax | !ent_rotate *axis degrees*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)ent_rotate *axis degrees*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *ent_rotate,axis,degrees*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *ent_rotate,axis,degrees*
+   ------------- | -------------
     
-    Menu Sequence | _6->3->5->4_
-    ------------- | -------------
+   Menu Sequence | _6->3->5->4_
+   ------------- | -------------
 
 ```cpp 
         //Overloads:
@@ -227,32 +491,34 @@
         ent_rotate {val : degrees}   // axis = y
 ```
 ---
-- **ent_push** : Push the targeted entity in given direction
+#### **ent_push**
+- Push the targeted entity in given direction
 
-    Chat Syntax | !ent_push *speed direction pitch*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)ent_push *speed direction pitch*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *ent_push,speed,direction,pitch*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *ent_push,speed,direction,pitch*
+   ------------- | -------------
     
-    Menu Sequence | _6->3->5->1_ AND _6->3->5->2_
-    ------------- | -------------
+   Menu Sequence | _6->3->5->1_ AND _6->3->5->2_
+   ------------- | -------------
 ```cpp 
       //Overloads:
       ent_push {scale} {direction: (forward,backward,left,up,right,left,random)} {pitch: degrees}
       ent_push   // scale = 10 , direction = forward , pitch = 0
 ```
 ---
-- **ent_move** : Move(by teleporting) the targeted entity in given direction
+#### **ent_move**
+- Move(by teleporting) the targeted entity in given direction
 
-    Chat Syntax | !ent_move *scale direction*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)ent_move *scale direction*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *ent_move,scale,direction* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *ent_move,scale,direction* 
+   ------------- | -------------
     
-    Menu Sequence | _6->3->5->5_
-    ------------- | -------------
+   Menu Sequence | _6->3->5->5_
+   ------------- | -------------
 ```cpp 
       //Overloads:
       // Forward and Backward directions are relative to eye pitch
@@ -260,80 +526,86 @@
       ent_move {scale} {direction: (forward,backward,left,up,right,left)}
 ```
 ---
-- **ent_teleport** : Teleport the entity with the given name/ID to aimed location ("#" should be while using ID)
+#### **ent_teleport**
+- Teleport the entity with the given name/ID to aimed location ("#" should be while using ID)
 
-    Chat Syntax | !ent_teleport *ID_OR_NAME*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)ent_teleport *ID_OR_NAME*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *ent_teleport,ID_OR_NAME* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *ent_teleport,ID_OR_NAME* 
+   ------------- | -------------
     
-    Menu Sequence | _Not in the menu_
-    ------------- | -------------
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
 ```cpp 
       //Overloads:
       ent_teleport {entity_name}
       ent_teleport #{entity_ID}
 ```
 ---
-- **rainbow** : Apply rainbow effect to targeted entity 
-    Chat Syntax | !rainbow *total_duration each_color_duration*
-    ------------- | -------------
+#### **rainbow**
+- Apply rainbow effect to targeted entity 
+   Chat Syntax | (!,/,?)rainbow *total_duration each_color_duration*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *rainbow,_total_duration,each_color_duration* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *rainbow,_total_duration,each_color_duration* 
+   ------------- | -------------
     
-    Menu Sequence | _6->3->4->1_
-    ------------- | -------------
+   Menu Sequence | _6->3->4->1_
+   ------------- | -------------
 ```cpp 
        //Overloads: Assert (total_duration/color_duration) <= 2000
        rainbow {total_duration<=300.0} {color_duration>=0.05}  
        rainbow {total_duration<=300.0} 
 ```
 ---
-- **grab** : Grabs aimed entity, also lets go if player is grabbing an entity
+#### **grab**
+- Grabs aimed entity, also lets go if player is grabbing an entity
 
-    Chat Syntax | !grab
-    ------------- | -------------
+   Chat Syntax | (!,/,?)grab
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *grab* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *grab* 
+   ------------- | -------------
     
-    Menu Sequence | _6->3->7->1_
-    ------------- | -------------
+   Menu Sequence | _6->3->7->1_
+   ------------- | -------------
 ---    
-- **letgo** : Drops the held entity
+#### **letgo**
+- Drops the held entity
 
-    Chat Syntax | !letgo
-    ------------- | -------------
+   Chat Syntax | (!,/,?)letgo
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *letgo* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *letgo* 
+   ------------- | -------------
     
-    Menu Sequence | _USE 6->3->7->1_
-    ------------- | -------------
+   Menu Sequence | _USE 6->3->7->1_
+   ------------- | -------------
 ---    
-- **yeet** : YEEEEEET
+#### **yeet**
+- YEEEEEET
 
-    Chat Syntax | !yeet
-    ------------- | -------------
+   Chat Syntax | (!,/,?)yeet
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *yeet* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *yeet* 
+   ------------- | -------------
     
-    Menu Sequence | _6->3->7->2_
-    ------------- | -------------
+   Menu Sequence | _6->3->7->2_
+   ------------- | -------------
 ---    
-- **show_yeet_settings** : Shows grabbing settings in console
+#### **show_yeet_settings**
+- Shows grabbing settings in console
 
-    Chat Syntax | !show_yeet_settings
-    ------------- | -------------
+   Chat Syntax | (!,/,?)show_yeet_settings
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *show_yeet_settings* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *show_yeet_settings* 
+   ------------- | -------------
     
-    Menu Sequence | _6->3->7->4_
-    ------------- | -------------
+   Menu Sequence | _6->3->7->4_
+   ------------- | -------------
     
     Setting | Default Value | Description
     ------------ | ------------- | -------------
@@ -347,16 +619,17 @@
     entid | ""      | held entity's ID , can't be changed with **yeet_setting**
 
 ---
-- **yeet_setting** : Change a grabbing setting
+#### **yeet_setting**
+- Change a grabbing setting
 
-    Chat Syntax | !yeet_setting *setting_name value*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)yeet_setting *setting_name value*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *yeet_setting,setting_name,value* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *yeet_setting,setting_name,value* 
+   ------------- | -------------
     
-    Menu Sequence | _Command hinted at 6->3->7->5_
-    ------------- | -------------
+   Menu Sequence | _Command hinted at 6->3->7->5_
+   ------------- | -------------
     
 ```cpp 
        //Overloads:
@@ -376,28 +649,30 @@
        yeet_setting grabHeightBelowEyes -30
 ```
 ---
-- **change_grab_method** : Change grabbing method between "Grab by aimed point" and "Grab by center"(basically hug the entity, some entity cause player to get stuck)
+#### **change_grab_method**
+- Change grabbing method between "Grab by aimed point" and "Grab by center"(basically hug the entity, some entity cause player to get stuck)
 
-    Chat Syntax | !change_grab_method
-    ------------- | -------------
+   Chat Syntax | (!,/,?)change_grab_method
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *change_grab_method* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *change_grab_method* 
+   ------------- | -------------
     
-    Menu Sequence | _6->3->7->6_
-    ------------- | -------------
+   Menu Sequence | _6->3->7->6_
+   ------------- | -------------
  
 ---
-- **model** : Change the model of an entity
+#### **model**
+- Change the model of an entity
 
-    Chat Syntax | !model *target* *model_path*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)model *target* *model_path*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *model,target,model_path* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *model,target,model_path* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->6->1_ AND _6->9->6->2_
-    ------------- | -------------
+   Menu Sequence | _6->9->6->1_ AND _6->9->6->2_
+   ------------- | -------------
     
 ```cpp 
        //Overloads:
@@ -413,16 +688,17 @@
        model #54 models/props/cs_office/vending_machine.mdl
 ```
 ---
-- **model_scale** : Change the model scale of an entity, only works with a few of the models
+#### **model_scale**
+- Change the model scale of an entity, only works with a few of the models
 
-    Chat Syntax | !model_scale *target* *scale*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)model_scale *target* *scale*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *model,target,scale* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *model,target,scale* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->6->3_ AND _6->9->6->4_
-    ------------- | -------------
+   Menu Sequence | _6->9->6->3_ AND _6->9->6->4_
+   ------------- | -------------
     
 ```cpp 
        //Overloads:
@@ -433,28 +709,30 @@
        
 ```
 ---
-- **disguise** : Disguise as targeted object (change your model to it's model)
+#### **disguise**
+- Disguise as targeted object (change your model to it's model)
 
-    Chat Syntax | !disguise
-    ------------- | -------------
+   Chat Syntax | (!,/,?)disguise
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *disguise* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *disguise* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->6->5_
-    ------------- | -------------
+   Menu Sequence | _6->9->6->5_
+   ------------- | -------------
 
 ---
-- **restore_model** : Restore the original model of a player
+#### **restore_model**
+- Restore the original model of a player
 
-    Chat Syntax | !restore_model *target*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)restore_model *target*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *restore_model,target* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *restore_model,target* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->6->7_
-    ------------- | -------------
+   Menu Sequence | _6->9->6->7_
+   ------------- | -------------
 ```cpp
        //Overloads:
        restore_model {target:character | !picker}
@@ -468,16 +746,17 @@
        restore_model
 ```
 ---
-- **prop_spawn_setting** : Update default settings used for spawning props of a certain class. Check **prop_defaults.txt** for details
+#### **prop_spawn_setting**
+- Update default settings used for spawning props of a certain class. Check **prop_defaults.txt** for details
 
-    Chat Syntax | !prop_spawn_setting *classname,setting,subsetting,newvalue*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)prop_spawn_setting *classname,setting,subsetting,newvalue*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *prop_spawn_setting,classname,setting,subsetting,newvalue* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *prop_spawn_setting,classname,setting,subsetting,newvalue* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->3_
-    ------------- | -------------
+   Menu Sequence | _6->9->3_
+   ------------- | -------------
 ```cpp
        //Overloads:
        prop_spawn_setting {classname:(physics,dynamic,ragdoll,all)} {setting:(spawn_height,spawn_angles)} {AddRemoveSet:(+,-, )}{subsetting:(flags,val,min,max)} {cast:(flg,int,float,str, )}{newval}
@@ -507,18 +786,19 @@
        prop_spawn_setting dynamic spawn_angles flags flg|ANGLE_RANDOM_GIVEN
 ```
 ---
-## Random and saved voices
+### Random and saved voices
 
-- **randomline** : Speak a line. Last line gets saved by default, use **randomline_save_last** to change state
+#### **randomline**
+- Speak a line. Last line gets saved by default, use **randomline_save_last** to change state
 
-    Chat Syntax | !randomline *speaker line_source* 
-    ------------- | -------------
+   Chat Syntax | (!,/,?)randomline *speaker line_source* 
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *randomline,speaker,line_source*  
-    ------------- | -------------
+   Console Syntax | scripted_user_func *randomline,speaker,line_source*  
+   ------------- | -------------
     
-    Menu Sequence | _6->4->1_ , _6->4->2_ , _6->4->3_ , _6->4->4_ , _6->4->5_ AND _6->4->6_ 
-    ------------- | -------------
+   Menu Sequence | _6->4->1_ , _6->4->2_ , _6->4->3_ , _6->4->4_ , _6->4->5_ AND _6->4->6_ 
+   ------------- | -------------
 ```cpp
        //Overloads:
        randomline {speaker: survivor | random} {line_source: line_owner | random}
@@ -532,28 +812,30 @@
        randomline coach
 ```
 ---
-- **randomline_save_last** : Change state of saving the last random line spoken
+#### **randomline_save_last**
+- Change state of saving the last random line spoken
 
-    Chat Syntax | !randomline_save_last 
-    ------------- | -------------
+   Chat Syntax | (!,/,?)randomline_save_last 
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *randomline_save_last*  
-    ------------- | -------------
+   Console Syntax | scripted_user_func *randomline_save_last*  
+   ------------- | -------------
     
-    Menu Sequence | _6->4->7->1_
-    ------------- | -------------
+   Menu Sequence | _6->4->7->1_
+   ------------- | -------------
    
 ---
-- **save_line** : Save the given speaker and line path
+#### **save_line**
+- Save the given speaker and line path
 
-    Chat Syntax | !save_line *speaker path_to_line* 
-    ------------- | -------------
+   Chat Syntax | (!,/,?)save_line *speaker path_to_line* 
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *save_line,speaker,path_to_line* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *save_line,speaker,path_to_line* 
+   ------------- | -------------
     
-    Menu Sequence | _Not in the menu_
-    ------------- | -------------
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
 ```cpp
        //Overloads:
        save_line {speaker: survivor} {line_source: path_to_line}
@@ -562,68 +844,73 @@
        save_line zoey scenes/namvet/c6dlc3openingdoor01.vcd
 ```
 ---
-- **display_saved_line** : Display saved line information 
+#### **display_saved_line**
+- Display saved line information 
 
-    Chat Syntax | !display_saved_line 
-    ------------- | -------------
+   Chat Syntax | (!,/,?)display_saved_line 
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *display_saved_line*  
-    ------------- | -------------
+   Console Syntax | scripted_user_func *display_saved_line*  
+   ------------- | -------------
     
-    Menu Sequence | _6->4->7->2_
-    ------------- | -------------
+   Menu Sequence | _6->4->7->2_
+   ------------- | -------------
    
 ---
-- **speak_saved** : Speak the saved line
-    Chat Syntax | !speak_saved 
-    ------------- | -------------
+#### **speak_saved**
+- Speak the saved line
+   Chat Syntax | (!,/,?)speak_saved 
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *speak_saved*  
-    ------------- | -------------
+   Console Syntax | scripted_user_func *speak_saved*  
+   ------------- | -------------
     
-    Menu Sequence | _6->5_
-    ------------- | -------------
+   Menu Sequence | _6->5_
+   ------------- | -------------
     
 ---
-## Particle effects
+### Particle effects
 
-- **particle** : Spawn a particle. Last random particle is saved by default, use **randomparticle_save_state** to change it.
+#### **particle**
+- Spawn a particle. Last random particle is saved by default, use **randomparticle_save_state** to change it.
 
-    Chat Syntax | !particle *particle_name* 
-    ------------- | -------------
+   Chat Syntax | (!,/,?)particle *particle_name* 
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *particle,particle_name*  
-    ------------- | -------------
+   Console Syntax | scripted_user_func *particle,particle_name*  
+   ------------- | -------------
     
-    Menu Sequence | _6->3->6->1_ AND _6->3->6->2_
-    ------------- | -------------
+   Menu Sequence | _6->3->6->1_ AND _6->3->6->2_
+   ------------- | -------------
 ```cpp 
        //Overloads:
        particle {name: particle_name | random}
 ```
 ---
-- **spawn_particle_saved** : Spawn the saved particle
+#### **spawn_particle_saved**
+- Spawn the saved particle
 
-    Chat Syntax | !attach_particle *particle_name duration*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)attach_particle *particle_name duration*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *attach_particle,particle_name,duration*  
-    ------------- | -------------
+   Console Syntax | scripted_user_func *attach_particle,particle_name,duration*  
+   ------------- | -------------
     
-    Menu Sequence | _6->3->6->3_
-    ------------- | -------------
+   Menu Sequence | _6->3->6->3_
+   ------------- | -------------
     
 ---
-- **attach_particle** : Attach a particle to targeted entity. Last random particles are saved by default, use **randomparticle_save_state** to change it.
+#### **attach_particle**
+- Attach a particle to targeted entity. Last random particles are saved by default, use **randomparticle_save_state** to change it.
 
-    Chat Syntax | !attach_particle *particle_name duration*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)attach_particle *particle_name duration*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *attach_particle,particle_name,duration*  
-    ------------- | -------------
+   Console Syntax | scripted_user_func *attach_particle,particle_name,duration*  
+   ------------- | -------------
     
-    Menu Sequence | _6->3->6->4_ AND _6->3->6->5_
-    ------------- | -------------
+   Menu Sequence | _6->3->6->4_ AND _6->3->6->5_
+   ------------- | -------------
 ```cpp
        //Overloads:
        // duration: -1 for infinite duration
@@ -631,111 +918,119 @@
        attach_particle {name: particle_name | random}    // duration = preferred_duration
 ```
 ---
-- **attach_particle_saved** : Attach the saved particle to targeted entity
+#### **attach_particle_saved**
+- Attach the saved particle to targeted entity
 
-    Chat Syntax | !attach_particle_saved
-    ------------- | -------------
+   Chat Syntax | (!,/,?)attach_particle_saved
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *attach_particle_saved*  
-    ------------- | -------------
+   Console Syntax | scripted_user_func *attach_particle_saved*  
+   ------------- | -------------
     
-    Menu Sequence | _6->3->6->6_
-    ------------- | -------------
+   Menu Sequence | _6->3->6->6_
+   ------------- | -------------
 ---
-- **update_attachment_preference** : Change preferred attachment duration
+#### **update_attachment_preference**
+- Change preferred attachment duration
 
-    Chat Syntax | !update_attachment_preference *duration*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)update_attachment_preference *duration*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *update_attachment_preference,duration*  
-    ------------- | -------------
+   Console Syntax | scripted_user_func *update_attachment_preference,duration*  
+   ------------- | -------------
     
-    Menu Sequence | _6->3->6->7->1_
-    ------------- | -------------
+   Menu Sequence | _6->3->6->7->1_
+   ------------- | -------------
 ```cpp 
        //Overloads:
        update_attachment_preference {duration: seconds}
 ```
 ---
-- **attach_to_targeted_position** : Change attachment position of particles between **aimed point** and **base** of the entity
+#### **attach_to_targeted_position**
+- Change attachment position of particles between **aimed point** and **base** of the entity
 
-    Chat Syntax | !attach_to_targeted_position 
-    ------------- | -------------
+   Chat Syntax | (!,/,?)attach_to_targeted_position 
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *attach_to_targeted_position*  
-    ------------- | -------------
+   Console Syntax | scripted_user_func *attach_to_targeted_position*  
+   ------------- | -------------
     
-    Menu Sequence | _6->3->6->7->2_
-    ------------- | -------------
+   Menu Sequence | _6->3->6->7->2_
+   ------------- | -------------
 
 ---
-- **randomparticle_save_state** : Change state of saving the last randomly spawned particle
+#### **randomparticle_save_state**
+- Change state of saving the last randomly spawned particle
 
-    Chat Syntax | !randomparticle_save_state 
-    ------------- | -------------
+   Chat Syntax | (!,/,?)randomparticle_save_state 
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *randomparticle_save_state*  
-    ------------- | -------------
+   Console Syntax | scripted_user_func *randomparticle_save_state*  
+   ------------- | -------------
     
-    Menu Sequence | _6->3->6->7->3_
-    ------------- | -------------
+   Menu Sequence | _6->3->6->7->3_
+   ------------- | -------------
 
 ---
-- **display_saved_particle**: Display information about saved particle
+#### **display_saved_particle**
+- Display information about saved particle
 
-    Chat Syntax | !display_saved_particle
-    ------------- | -------------
+   Chat Syntax | (!,/,?)display_saved_particle
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *display_saved_particle*  
-    ------------- | -------------
+   Console Syntax | scripted_user_func *display_saved_particle*  
+   ------------- | -------------
     
-    Menu Sequence | _6->3->6->7->4_
-    ------------- | -------------
+   Menu Sequence | _6->3->6->7->4_
+   ------------- | -------------
 ---
-- **save_particle** : Save the given particle
+#### **save_particle**
+- Save the given particle
 
-    Chat Syntax | !save_particle *particle_name duration*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)save_particle *particle_name duration*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *save_particle,particle_name,duration* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *save_particle,particle_name,duration* 
+   ------------- | -------------
     
-    Menu Sequence | _Not in the menu_
-    ------------- | -------------
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
 ```cpp 
        //Overloads:
        save_particle {name: particle_name} {duration: seconds}
        save_particle {name: particle_name} // duration = preferred_duration
 ``` 
 ---
-## Custom sequences
+### Custom sequences
 
-- **speak_test** : Speak given line for given time
+#### **speak_test**
+- Speak given line for given time
 
-    Chat Syntax | !speak_test *speaker line duration*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)speak_test *speaker line duration*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *speak_test,speaker,line,duration* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *speak_test,speaker,line,duration* 
+   ------------- | -------------
     
-    Menu Sequence | _Not in the menu_
-    ------------- | -------------
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
 ```cpp
        //Overloads:
        speak_test {speaker: character} {line: name_or_path} {duration: seconds}
        speak_test {speaker: character} {line: name_or_path} // duration = line_length
 ```
 ---
-- **create_seq** : Create and save a sequence of lines with given delays
+#### **create_seq**
+- Create and save a sequence of lines with given delays
 
-    Chat Syntax | !create_seq *speaker sequence_name line_1 delay_1 line_2 delay_2...*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)create_seq *speaker sequence_name line_1 delay_1 line_2 delay_2...*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *create_seq,speaker,sequence_name,line_1,delay_1,line_2,delay_2...* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *create_seq,speaker,sequence_name,line_1,delay_1,line_2,delay_2...* 
+   ------------- | -------------
     
-    Menu Sequence | _Not in the menu_
-    ------------- | -------------
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
 ```cpp
        //Overloads:
        // speaker is the character name to speak the sequence when called
@@ -769,16 +1064,17 @@
        
 ```
 ---
-- **speak_custom** : Execute a saved custom sequence
+#### **speak_custom**
+- Execute a saved custom sequence
 
-    Chat Syntax | !speak_custom *speaker sequence*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)speak_custom *speaker sequence*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *speak_custom,speaker,sequence* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *speak_custom,speaker,sequence* 
+   ------------- | -------------
     
-    Menu Sequence | _Not in the menu_
-    ------------- | -------------
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
 ```cpp
        //Overloads:
        speak_custom {speaker: character} {sequence}
@@ -787,16 +1083,17 @@
        speak_custom coach shootboy2
 ```
 ---
-- **delete_seq** : Delete a saved custom sequence
+#### **delete_seq**
+- Delete a saved custom sequence
 
-    Chat Syntax | !delete_seq *speaker sequence*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)delete_seq *speaker sequence*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *delete_seq,speaker,sequence* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *delete_seq,speaker,sequence* 
+   ------------- | -------------
     
-    Menu Sequence | _Not in the menu_
-    ------------- | -------------
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
 ```cpp
        //Overloads:
        delete_seq {speaker: character} {sequence}
@@ -805,31 +1102,33 @@
        delete_seq coach shootboy1
 ```
 ---
-- **show_custom_sequences** : Print out the saved custom sequences to console
+#### **show_custom_sequences**
+- Print out the saved custom sequences to console
 
-    Chat Syntax | !show_custom_sequences *speaker*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)show_custom_sequences *speaker*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *show_custom_sequences,speaker* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *show_custom_sequences,speaker* 
+   ------------- | -------------
     
-    Menu Sequence | _Not in the menu_
-    ------------- | -------------
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
 ```cpp
        //Overloads:
        show_custom_sequences {speaker: character}
        show_custom_sequences  // speaker = all_characters
 ```
 ---
-- **loop** : Start a loop of sequences and lines (">" is needed before sequence names)
-    Chat Syntax | !loop *character sequence_or_line loop_length*
-    ------------- | -------------
+#### **loop**
+- Start a loop of sequences and lines (">" is needed before sequence names)
+   Chat Syntax | (!,/,?)loop *character sequence_or_line loop_length*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *loop,character,sequence_or_line,loop_length* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *loop,character,sequence_or_line,loop_length* 
+   ------------- | -------------
     
-    Menu Sequence | _Not in the menu_
-    ------------- | -------------
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
 ```cpp
         //Overloads:
         loop {character} {line:name/path} {loop_length:seconds}
@@ -842,16 +1141,17 @@
         loop francis >yo 0.7
 ```
 ---
-- **loop_stop** : Stop looping for given character
+#### **loop_stop**
+- Stop looping for given character
 
-    Chat Syntax | !loop_stop *character*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)loop_stop *character*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *loop_stop,character* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *loop_stop,character* 
+   ------------- | -------------
     
-    Menu Sequence | _Not in the menu_
-    ------------- | -------------
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
 ```cpp
        //Overloads:
        loop_stop {character}
@@ -861,29 +1161,31 @@
        loop_stop nick
 ```
 ---
-- **seq_info** : Get scene and delay info about a custom sequence
-    Chat Syntax | !seq_info *character sequence*
-    ------------- | -------------
+#### **seq_info**
+- Get scene and delay info about a custom sequence
+   Chat Syntax | (!,/,?)seq_info *character sequence*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *seq_info,character,sequence* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *seq_info,character,sequence* 
+   ------------- | -------------
     
-    Menu Sequence | _Not in the menu_
-    ------------- | -------------
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
 ```cpp
        //Overloads:
        seq_info {character} {sequence}
 ```
 ---
-- **seq_edit** : Edit custom sequences ( ">" is needed if indices are used !)
-    Chat Syntax | !seq_edit *character sequence scene_or_index setting new_value*
-    ------------- | -------------
+#### **seq_edit**
+- Edit custom sequences ( ">" is needed if indices are used !)
+   Chat Syntax | (!,/,?)seq_edit *character sequence scene_or_index setting new_value*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *seq_edit,character,sequence,scene_or_index,setting,new_value* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *seq_edit,character,sequence,scene_or_index,setting,new_value* 
+   ------------- | -------------
     
-    Menu Sequence | _Not in the menu_
-    ------------- | -------------
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
 ```cpp
        //Overloads:
        seq_edit {character} {sequence} {scene} {setting: (scene> , delay>)}{new_value}
@@ -896,42 +1198,45 @@
        seq_edit Louis mySeq warnboomer02 delay>3
 ```
 ---
-## Apocalypse event
+### Apocalypse event
 
-- **start_the_apocalypse** : Uh oh
+#### **start_the_apocalypse**
+- Uh oh
 
-    Chat Syntax | !start_the_apocalypse
-    ------------- | -------------
+   Chat Syntax | (!,/,?)start_the_apocalypse
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *start_the_apocalypse* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *start_the_apocalypse* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->1->1_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->1->1_
+   ------------- | -------------
 
 ---
-- **pause_the_apocalypse** : Let the world have a break from the madness
+#### **pause_the_apocalypse**
+- Let the world have a break from the madness
 
-    Chat Syntax | !pause_the_apocalypse
-    ------------- | -------------
+   Chat Syntax | (!,/,?)pause_the_apocalypse
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *pause_the_apocalypse* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *pause_the_apocalypse* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->1->1_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->1->1_
+   ------------- | -------------
 
 ---
-- **show_apocalypse_settings** : Show apocalypse event's settings and values. Probabilities normalized: (0 = 0% , 1 = 100%)
+#### **show_apocalypse_settings**
+-  Show apocalypse event's settings and values. Probabilities normalized: (0 = 0% , 1 = 100%)
 
-    Chat Syntax | !show_apocalypse_settings
-    ------------- | -------------
+   Chat Syntax | (!,/,?)show_apocalypse_settings
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *show_apocalypse_settings* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *show_apocalypse_settings* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->1->2_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->1->2_
+   ------------- | -------------
 
     Setting | Default Value | Description
     ------------ | ------------- | -------------
@@ -955,16 +1260,17 @@
     debug | 0            | Print which entities are effected (0 = off , 1 = on) 
 
 --- 
-- **apocalypse_setting** : Change apocalypse event settings, updates **apocalypse_settings.txt** file
+#### **apocalypse_setting**
+- Change apocalypse event settings, updates **apocalypse_settings.txt** file
 
-    Chat Syntax | !apocalypse_setting *setting new_value*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)apocalypse_setting *setting new_value*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *apocalypse_setting,setting,new_value* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *apocalypse_setting,setting,new_value* 
+   ------------- | -------------
     
-    Menu Sequence | _Command hinted at 6->9->9->1->3_
-    ------------- | -------------
+   Menu Sequence | _Command hinted at 6->9->9->1->3_
+   ------------- | -------------
 
 ```cpp
        //Overloads:
@@ -977,42 +1283,45 @@
        apocalypse_setting updatedelay 3
 ```
 ---
-## Meteor Shower event
+### Meteor Shower event
 
-- **start_the_shower** : Not the greatest shower you'll have
+#### **start_the_shower**
+- Not the greatest shower you'll have
 
-    Chat Syntax | !start_the_shower
-    ------------- | -------------
+   Chat Syntax | (!,/,?)start_the_shower
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *start_the_shower* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *start_the_shower* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->2->1_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->2->1_
+   ------------- | -------------
 
 ---
-- **pause_the_shower** : Take a break
+#### **pause_the_shower**
+- Take a break
 
-    Chat Syntax | !pause_the_shower
-    ------------- | -------------
+   Chat Syntax | (!,/,?)pause_the_shower
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *pause_the_shower* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *pause_the_shower* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->2->1_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->2->1_
+   ------------- | -------------
 
 ---
-- **show_meteor_shower_settings** : Show meteor shower event's settings and values. Probabilities normalized: (0 = 0% , 1 = 100%)
+#### **show_meteor_shower_settings**
+- Show meteor shower event's settings and values. Probabilities normalized: (0 = 0% , 1 = 100%)
 
-    Chat Syntax | !show_meteor_shower_settings
-    ------------- | -------------
+   Chat Syntax | (!,/,?)show_meteor_shower_settings
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *show_meteor_shower_settings* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *show_meteor_shower_settings* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->2->2_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->2->2_
+   ------------- | -------------
 
     Setting | Default Value | Description
     ------------ | ------------- | -------------
@@ -1036,16 +1345,17 @@
     debug | 0					| Print meteor spawn and hit points, explosions, scatters and breaks
 
 --- 
-- **meteor_shower_setting** : Change apocalypse event settings, updates **meteor_shower_settings.txt** file
+#### **meteor_shower_setting**
+- Change apocalypse event settings, updates **meteor_shower_settings.txt** file
 
-    Chat Syntax | !meteor_shower_setting *setting new_value*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)meteor_shower_setting *setting new_value*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *meteor_shower_setting,setting,new_value* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *meteor_shower_setting,setting,new_value* 
+   ------------- | -------------
     
-    Menu Sequence | _Command hinted at 6->9->9->2->3_
-    ------------- | -------------
+   Menu Sequence | _Command hinted at 6->9->9->2->3_
+   ------------- | -------------
 
 ```cpp
        //Overloads:
@@ -1058,18 +1368,19 @@
        meteor_shower_setting meteormodelpick 4
 ```
 ---
-## Freezing Objects
+### Freezing Objects
 
-- **stop_time** : Freezes all currently spawned zombies and objects in time
+#### **stop_time**
+- Freezes all currently spawned zombies and objects in time
 
-    Chat Syntax | !stop_time *target_type*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)stop_time *target_type*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *stop_time,target_type* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *stop_time,target_type* 
+   ------------- | -------------
     
-    Menu Sequence | _6->3->9->2 AND 6->3->9->2->9_
-    ------------- | -------------
+   Menu Sequence | _6->3->9->2 AND 6->3->9->2->9_
+   ------------- | -------------
 
 ```cpp
        //Overloads: 
@@ -1083,16 +1394,17 @@
        stop_time
 ```
 ---
-- **resume_time** : Resumes time for objects
+#### **resume_time**
+- Resumes time for objects
 
-    Chat Syntax | !resume_time *target_type*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)resume_time *target_type*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *resume_time,target_type* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *resume_time,target_type* 
+   ------------- | -------------
     
-    Menu Sequence | _6->3->9->2 AND 6->3->9->2->9_
-    ------------- | -------------
+   Menu Sequence | _6->3->9->2 AND 6->3->9->2->9_
+   ------------- | -------------
 
 ```cpp
        //Overloads: 
@@ -1106,43 +1418,46 @@
        resume_time
 ```
 ---
-## Piano
+### Piano
 
-- **piano_keys** : Place 25 piano keys starting at looked location placing them to the right
+#### **piano_keys**
+- Place 25 piano keys starting at looked location placing them to the right
 
-    Chat Syntax | !piano_keys
-    ------------- | -------------
+   Chat Syntax | (!,/,?)piano_keys
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *piano_keys* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *piano_keys* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->3->1_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->3->1_
+   ------------- | -------------
 
 ---
-- **remove_piano_keys** : Removes all piano key spawns
+#### **remove_piano_keys**
+- Removes all piano key spawns
 
-    Chat Syntax | !remove_piano_keys
-    ------------- | -------------
+   Chat Syntax | (!,/,?)remove_piano_keys
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *remove_piano_keys* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *remove_piano_keys* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->3->2_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->3->2_
+   ------------- | -------------
 ---
-## Microphones and speakers
+### Microphones and speakers
 
-- **microphone** : Create an entity to be used as microphone, check console for its index and name 
+#### **microphone**
+- Create an entity to be used as microphone, check console for its index and name 
 
-    Chat Syntax | !microphone *effect hearing_range speaker_to_connect*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)microphone *effect hearing_range speaker_to_connect*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *microphone,effect,hearing_range,speaker_to_connect* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *microphone,effect,hearing_range,speaker_to_connect* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->4->1_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->4->1_
+   ------------- | -------------
 ```cpp
        //Overloads:
        microphone {effect:(standard,no_effect,very_small,small,tiny,loud,loud_echo} {hearing_range} {connected_speaker}
@@ -1152,39 +1467,42 @@
     
 ```
 ---
-- **speaker** : Creates an entity to be used as a speaker, check console for its index and name
+#### **speaker**
+- Creates an entity to be used as a speaker, check console for its index and name
 
-    Chat Syntax | !speaker
-    ------------- | -------------
+   Chat Syntax | (!,/,?)speaker
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *speaker* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *speaker* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->4->2_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->4->2_
+   ------------- | -------------
 ---
-- **display_mics_speakers** : Get index,name and distance information about spawned mics and speakers
+#### **display_mics_speakers**
+- Get index,name and distance information about spawned mics and speakers
 
-    Chat Syntax | !display_mics_speakers
-    ------------- | -------------
+   Chat Syntax | (!,/,?)display_mics_speakers
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *display_mics_speakers* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *display_mics_speakers* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->4->3_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->4->3_
+   ------------- | -------------
 
 ---
-- **speaker2mic** : Connect a speaker to a microphone ( "#" is needed before indices !)
+#### **speaker2mic**
+- Connect a speaker to a microphone ( "#" is needed before indices !)
 
-    Chat Syntax | !speaker2mic *speaker_ID_OR_NAME microphone_ID_OR_NAME*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)speaker2mic *speaker_ID_OR_NAME microphone_ID_OR_NAME*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *speaker2mic,speaker_ID_OR_NAME,microphone_ID_OR_NAME* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *speaker2mic,speaker_ID_OR_NAME,microphone_ID_OR_NAME* 
+   ------------- | -------------
     
-    Menu Sequence | _Command hinted at 6->9->9->4->4_
-    ------------- | -------------
+   Menu Sequence | _Command hinted at 6->9->9->4->4_
+   ------------- | -------------
 ```cpp
        //Overloads:
        // These ID's and names can be found from the console summary or with display_mics_speakers command
@@ -1196,18 +1514,19 @@
        speaker2mic #33 myMic
 ```
 ---
-## Explosions
+### Explosions
 
-- **explosion** : Create a delayed explosion or a meteor strike at aimed location, with a particle effect until explosion
+#### **explosion**
+- Create a delayed explosion or a meteor strike at aimed location, with a particle effect until explosion
 
-    Chat Syntax | !explosion _option_
-    ------------- | -------------
+   Chat Syntax | (!,/,?)explosion _option_
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *explosion,option* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *explosion,option* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->5->1 AND 6->9->9->5->2_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->5->1 AND 6->9->9->5->2_
+   ------------- | -------------
 
 ```cpp
        //Overloads:
@@ -1219,16 +1538,17 @@
        explosion meteor
 ```
 ---
-- **show_explosion_settings** : Show current *explosion* command settings in console
+#### **show_explosion_settings**
+- Show current *explosion* command settings in console
 
-    Chat Syntax | !show_explosion_settings
-    ------------- | -------------
+   Chat Syntax | (!,/,?)show_explosion_settings
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *show_explosion_settings* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *show_explosion_settings* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->5->3_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->5->3_
+   ------------- | -------------
 
     Setting | Default Value | Description
     ------------ | ------------- | -------------
@@ -1242,16 +1562,17 @@
     maxpushspeed | 10000 | maximum speed an explosion can push an entity away 
 
 ---
-- **explosion_setting** : Update *explosion* command settings
+#### **explosion_setting**
+- Update *explosion* command settings
 
-    Chat Syntax | !explosion_setting *setting new_value*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)explosion_setting *setting new_value*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *explosion_setting,setting,new_value* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *explosion_setting,setting,new_value* 
+   ------------- | -------------
     
-    Menu Sequence | _Command hinted at 6->9->9->5->5_
-    ------------- | -------------
+   Menu Sequence | _Command hinted at 6->9->9->5->5_
+   ------------- | -------------
 
 ```cpp
        //Overloads:
@@ -1262,44 +1583,47 @@
        explosion_setting delay 5
 ```
 ---
-## Ragdoll
+### Ragdoll
 
-- **go_ragdoll** : Start ragdolling with controls, hold **mouse1** to ascend, **mouse2** to descend. 
+#### **go_ragdoll**
+- Start ragdolling with controls, hold **mouse1** to ascend, **mouse2** to descend. 
 
-    Chat Syntax | !go_ragdoll
-    ------------- | -------------
+   Chat Syntax | (!,/,?)go_ragdoll
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *go_ragdoll* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *go_ragdoll* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->9->2->1_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->9->2->1_
+   ------------- | -------------
 
 ---
-- **recover_ragdoll** : Recover your ragdoll 
+#### **recover_ragdoll**
+- Recover your ragdoll 
 
-    Chat Syntax | !recover_ragdoll
-    ------------- | -------------
+   Chat Syntax | (!,/,?)recover_ragdoll
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *recover_ragdoll* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *recover_ragdoll* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->9->2->2_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->9->2->2_
+   ------------- | -------------
 
 ---
-## Other
+### Other
 
-- **invisible_walls** : Enable/Disable **most if not all** of the invisible walls around. Some of them can not be disabled.
+#### **invisible_walls**
+- Enable/Disable **most if not all** of the invisible walls around. Some of them can not be disabled.
 
-    Chat Syntax | !invisible_walls *state apply_to_all*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)invisible_walls *state apply_to_all*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *invisible_walls,state,apply_to_all* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *invisible_walls,state,apply_to_all* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->6_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->6_
+   ------------- | -------------
 ```cpp
        //Overloads:
        invisible_walls {state: (disable, enable)} {apply_to_all_possible_walls}
@@ -1308,16 +1632,17 @@
        invisible_walls disable all
 ```
 ---
-- **ladder_team** : Change teams of ladders
+#### **ladder_team**
+- Change teams of ladders
 
-    Chat Syntax | !ladder_team *team*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)ladder_team *team*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *ladder_team,team* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *ladder_team,team* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->7_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->7_
+   ------------- | -------------
 ```cpp
        //Overloads:
        // "reset" to reset ladders back to their default teams
@@ -1325,52 +1650,77 @@
     
 ```
 ---
-- **drive** : (**EXPERIMENTAL**)"Drive" targeted car/object or stop driving. **Hold left-click** to keep aiming forward, **DO NOT** jump while moving
+#### **drive**
+- (**EXPERIMENTAL**)"Drive" targeted car/object or stop driving. **Hold left-click** to keep aiming forward, **DO NOT** jump while moving
 
-    Chat Syntax | !drive
-    ------------- | -------------
+   Chat Syntax | (!,/,?)drive
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *drive* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *drive* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->9->3->1_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->9->3->1_
+   ------------- | -------------
 
 ---
-- **stop_car_alarms** : Stops all car alarms playing
+#### **stop_car_alarms**
+- Stops all car alarms playing
 
-    Chat Syntax | !stop_car_alarms
-    ------------- | -------------
+   Chat Syntax | (!,/,?)stop_car_alarms
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *stop_car_alarms* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *stop_car_alarms* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->5->1_
-    ------------- | -------------
+   Menu Sequence | _6->9->5->1_
+   ------------- | -------------
  
 ---
-- **remove_fall_cams** : Remove falling follower cameras which lock movement and view. Example: Views on the No Mercy rooftop while falling
+#### **remove_fall_cams**
+- Remove falling follower cameras which lock movement and view. Example: Views on the No Mercy rooftop while falling
 
-    Chat Syntax | !remove_fall_cams
-    ------------- | -------------
+   Chat Syntax | (!,/,?)remove_fall_cams
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *remove_fall_cams* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *remove_fall_cams* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->5->2_
-    ------------- | -------------
+   Menu Sequence | _6->9->5->2_
+   ------------- | -------------
  
 ---
-- **wear_hat** : _Wear_ aimed object like a hat
+#### **hurt_triggers**
+- Remove falling follower cameras which lock movement and view. Example: Views on the No Mercy rooftop while falling
 
-    Chat Syntax | !wear_hat extra_height
-    ------------- | -------------
+   Chat Syntax | (!,/,?)hurt_triggers *state*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *wear_hat,extra_height* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *hurt_triggers,state* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->9->1->1_
-    ------------- | -------------
+   Menu Sequence | _6->9->5->3 and 6->9->5->4_
+   ------------- | -------------
+
+```cpp
+       //Overloads:
+       hurt_triggers {state:(enable,disable)}
+       hurt_triggers     // state = disable
+       
+       //Example: Re-enable hurt triggers in the map
+       hurt_triggers enable
+``` 
+---
+#### **wear_hat**
+- _Wear_ aimed object like a hat
+
+   Chat Syntax | (!,/,?)wear_hat extra_height
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *wear_hat,extra_height* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->1->1_
+   ------------- | -------------
 
 ```cpp
        //Overloads:
@@ -1381,68 +1731,73 @@
        wear_hat 10
 ```
 ---
-- **take_off_hat** : Take off currently worn hat and drop it at aimed point
+#### **take_off_hat**
+- Take off currently worn hat and drop it at aimed point
 
-    Chat Syntax | !take_off_hat
-    ------------- | -------------
+   Chat Syntax | (!,/,?)take_off_hat
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *take_off_hat* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *take_off_hat* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->9->1->2_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->9->1->2_
+   ------------- | -------------
 
 ---
-- **hat_position** : Change hat position to given attachment point name
+#### **hat_position**
+- Change hat position to given attachment point name
 
-    Chat Syntax | !hat_position *attachment_point*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)hat_position *attachment_point*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *hat_position,attachment_point*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *hat_position,attachment_point*
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->9->1->3 , 6->9->9->9->1->4 AND 6->9->9->9->1->5_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->9->1->3 , 6->9->9->9->1->4 AND 6->9->9->9->1->5_
+   ------------- | -------------
 
 ```cpp
        //Overloads
        hat_position {attachment_point:(eyes, mouth, survivor_neck, ...)}
 ```
 ---
-- **update_aimed_ent_direction** : Make aimed object face the same way as you
+#### **update_aimed_ent_direction**
+- Make aimed object face the same way as you
 
-    Chat Syntax | !update_aimed_ent_direction
-    ------------- | -------------
+   Chat Syntax | (!,/,?)update_aimed_ent_direction
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *update_aimed_ent_direction* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *update_aimed_ent_direction* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->9->1->6->3_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->9->1->6->3_
+   ------------- | -------------
 
 ---
-- **random_model** : Prints a random model name to chat, only visible to caller
+#### **random_model**
+- Prints a random model name to chat, only visible to caller
 
-    Chat Syntax | !random_model
-    ------------- | -------------
+   Chat Syntax | (!,/,?)random_model
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *random_model* 
-    ------------- | -------------
+   Console Syntax | scripted_user_func *random_model* 
+   ------------- | -------------
     
-    Menu Sequence | _6->9->3->9->1_
-    ------------- | -------------
+   Menu Sequence | _6->9->3->9->1_
+   ------------- | -------------
                              
 ---
-- **give_physics** : Enable physics on object(s) around a radius or of which aimed at
+#### **give_physics**
+- Enable physics on object(s) around a radius or of which aimed at
 
-    Chat Syntax | !give_physics *radius*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)give_physics *radius*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *give_physics,radius*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *give_physics,radius*
+   ------------- | -------------
     
-    Menu Sequence | _6->9->9->9->4_
-    ------------- | -------------
+   Menu Sequence | _6->9->9->9->4_
+   ------------- | -------------
 
 ```cpp
        //Overloads
@@ -1456,30 +1811,99 @@
        give_physics 500
 ```
 ---
-## Debugging, scripting and settings related
+### Debugging, scripting and settings related
 
-- **update_print_output_state** : Display output messages in chat or in console. Almost all of the messages in chat are only visible to the player.
+#### **help**
+- Print out the built-in documentation for given command if it there is any.
 
-    Chat Syntax | !update_print_output_state
-    ------------- | -------------
+   Chat Syntax | (!,/,?)help *command_name*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *update_print_output_state*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *help,command_name*
+   ------------- | -------------
     
-    Menu Sequence | _6->9->4->6_
-    ------------- | -------------
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+```cpp
+       //Overloads:
+       // Result will only be visible to caller
+       help {command_name}
+
+       // Example: Get documentation of command "ent"
+       help ent
+    
+```
+---
+#### **script**
+- Compiles given string. Requires script authorization and is a very dangerous command since gives access to everything in the global scope
+
+   Chat Syntax | (!,/,?)script *code*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *script,code*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+```cpp
+       //Overloads:
+       script {code}
+
+       // Example: Fire "kill" input on entity #123
+       script Entity(123).Input("Kill") 
+    
+```
+---
+#### **out**
+- Compiles given string and prints the output. Output only visible to caller. Works same as **script** command
+
+   Chat Syntax | (!,/,?)out *code*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *out,code*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+```cpp
+       //Overloads:
+       // Printing style depends on the result returned by the compiled code
+       // If code returns an object, basic information of it gets printed
+       // If code returns a table, everything in the table gets printed with correct indentation
+       out {code}
+
+       // Example: Get the tables of aliases available
+       out ::AliasCompiler.Tables
+
+       // Example: Get basic information about player at index 1
+       out Player(1)
+    
+```
+---
+#### **update_print_output_state**
+- Display output messages in chat or in console. Almost all of the messages in chat are only visible to the player.
+
+   Chat Syntax | (!,/,?)update_print_output_state
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *update_print_output_state*
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->4->6_
+   ------------- | -------------
     
 ---
-- **add_script_auth** : Give authorization to an admin to use "script" command
+#### **add_script_auth**
+- Give authorization to an admin to use commands which can compile texts, and to use runtime compilable arguments
 
-    Chat Syntax | !add_script_auth *character*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)add_script_auth *character*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *add_script_auth,character*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *add_script_auth,character*
+   ------------- | -------------
     
-    Menu Sequence | _6->9->2->1_
-    ------------- | -------------
+   Menu Sequence | _6->9->2->1_
+   ------------- | -------------
 ```cpp
        //Overloads:
        // ONLY THE HOST can give script authority to others
@@ -1487,16 +1911,17 @@
     
 ```
 ---
-- **remove_script_auth** : Take away the authorization from admin to use "script" command
+#### **remove_script_auth**
+- Take away the authorization from admin to use "script" command
 
-    Chat Syntax | !remove_script_auth *character*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)remove_script_auth *character*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *remove_script_auth,character*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *remove_script_auth,character*
+   ------------- | -------------
     
-    Menu Sequence | _6->9->2->2_
-    ------------- | -------------
+   Menu Sequence | _6->9->2->2_
+   ------------- | -------------
 ```cpp
        //Overloads:
        // Host's script authority can not be taken away
@@ -1504,16 +1929,149 @@
     
 ```
 ---
-- **ents_around** : Get entity indices and classes around the aimed point
+#### **disable_command**
+- Disable a command for the current game session (doesn't stop the host from using the command)
 
-    Chat Syntax | !ents_around *radius*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)disable_command *command_name*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *ents_around,radius*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *disable_command,command_name*
+   ------------- | -------------
     
-    Menu Sequence | _6->9->4->7_
-    ------------- | -------------
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+```cpp
+       //Overloads:
+       disable_command {command_name}
+
+       //Example: Disable "explosion" command for everyone except the host
+       disable_command explosion
+```
+---
+#### **enable_command**
+- Re-enable a command for the current game session
+
+   Chat Syntax | (!,/,?)enable_command *command_name*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *enable_command,command_name*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+```cpp
+       //Overloads:
+       enable_command {command_name}
+
+       //Example: Enable the "explosion" command back for everyone
+       enable_command explosion
+```
+---
+#### **command_ban**
+- Ban a command's usage for an admin, can be used to ban all commands too. Ban's are bound to steamid of the target player and any remaining ban gets reset after closing the server.
+
+   Chat Syntax | (!,/,?)command_ban *character command_name duration*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *command_ban,command_name,duration*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+```cpp
+       //Overloads:
+       // Host can not be banned from commands
+       command_ban {character} {command_name} {duration:seconds}
+       command_ban {character} {command_name} // duration = 999999 seconds
+       command_ban {character}  // command_name = all commands, duration = 999999 seconds
+
+       //Example: Ban grab command for admin playing as bill for 30 seconds
+       command_ban !bill grab 30
+
+       //Example: Ban all commands for admin playing as player at index 3 until you unban them
+       command_ban #3
+```
+---
+#### **command_unban**
+- Unban a command's usage for an admin
+
+   Chat Syntax | (!,/,?)command_unban *character command_name*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *command_unban,command_name*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+```cpp
+       //Overloads:
+       command_unban {character} {command_name}
+       command_unban {character}  // command_name = all commands
+
+       //Example: Unban grab command for admin playing as bill
+       command_unban !bill grab
+
+       //Example: Unban #2 player from all their command bans
+       command_unban #2
+```
+---
+#### **hex_string**
+- Get a "argument-ready" version of given text, which can be used as an argument later
+
+   Chat Syntax | (!,/,?)hex_string *text*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *hex_string,text*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+```cpp
+       //Overloads:
+       // text should be given as how you would want it to be used as, no pre-change needed
+       hex_string {text}
+
+       // Example: Get hex-fixed version of the text Entity("#123").GetName()+"_add_this" to be used later within $[expression] format
+       //   It will return: Entity\x28\x22#123\x22\x29.GetName\x28\x29+\x22_add_this\x22
+       hex_string Entity("#123").GetName()+"_add_this"
+
+       // Example: Get hex-fixed version of the text 'my,very;illegal:string isn't;so'bad' to be used later as an argument
+       //   It will return: my\x2Cvery\x3Billegal\x3Astring\x20isn\x27t\x3Bso\x27bad
+       hex_string my,very;illegal:string isn't;so'bad
+```
+---
+#### **enum_string**
+- Get a "evaluation-ready" version of given text, which can be used in _$[expression]_ later. **hex_string** is generally more preferable in most cases over this command.
+
+   Chat Syntax | (!,/,?)enum_string *text*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *enum_string,text*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+```cpp
+       //Overloads:
+       // text should be given as how you would want it to be used as, no pre-change needed
+       enum_string {text}
+
+       // Example: Get enumerated version of the text "dis one; dat one, r:g:b"
+       //   It will return: __.d+__.i+__.s+__._s+__.o+__.n+__.e+__._sc+__._s+__.d+__.a+__.t+__._s+__.o+__.n+__.e+__._c+__._s+__.r+__._col+__.g+__._col+__.b
+       enum_string dis one; dat one, r:g:b
+```
+---
+#### **ents_around**
+- Get entity indices and classes around the aimed point
+
+   Chat Syntax | (!,/,?)ents_around *radius*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *ents_around,radius*
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->4->7_
+   ------------- | -------------
 ```cpp
        //Overloads:
        ents_around {radius}
@@ -1521,16 +2079,17 @@
     
 ```
 ---
-- **wnet** : Add a watch to a netprop of an entity or all netprops defined under given class, checks netprop of the given entity and only show a message when it changes
+#### **wnet**
+- Add a watch to a netprop of an entity or all netprops defined under given class, checks netprop of the given entity and only show a message when it changes
 
-    Chat Syntax | !wnet *netprop_or_baseclass,check_rate,NAME_OR_ID*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)wnet *netprop_or_baseclass,check_rate,NAME_OR_ID*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *wnet,netprop_or_baseclass,check_rate,NAME_OR_ID*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *wnet,netprop_or_baseclass,check_rate,NAME_OR_ID*
+   ------------- | -------------
     
-    Menu Sequence | _Not in the menu_
-    ------------- | -------------
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
 ```cpp
        //Overloads:
        // netprop_name is the netprop member name
@@ -1558,16 +2117,17 @@
        wnet &CBaseAnimating 0.5
 ```
 ---
-- **stop_wnet** : Stop watching a netprop or class members of an entity
+#### **stop_wnet**
+- Stop watching a netprop or class members of an entity
 
-    Chat Syntax | !stop_wnet *netprop_name,NAME_OR_ID*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)stop_wnet *netprop_name,NAME_OR_ID*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *stop_wnet,netprop_name,NAME_OR_ID*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *stop_wnet,netprop_name,NAME_OR_ID*
+   ------------- | -------------
     
-    Menu Sequence | _Not in the menu_
-    ------------- | -------------
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
 ```cpp
        //Overloads:
        // netprop_name is the netprop member name
@@ -1590,136 +2150,147 @@
 
 ```
 ---
-- **update_custom_response_preference** : Enable/Disable custom responses
+#### **update_custom_response_preference**
+- Enable/Disable custom responses
 
-    Chat Syntax | !update_custom_response_preference
-    ------------- | -------------
+   Chat Syntax | (!,/,?)update_custom_response_preference
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *update_custom_response_preference*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *update_custom_response_preference*
+   ------------- | -------------
     
-    Menu Sequence | _6->9->1->1_
-    ------------- | -------------
+   Menu Sequence | _6->9->1->1_
+   ------------- | -------------
 
 ---
-- **update_tank_rock_launch_preference** : Enable/Disable push effect when hit by a tank's rock(only works if only 1 rock was present)
+#### **update_tank_rock_launch_preference**
+- Enable/Disable push effect when hit by a tank's rock(only works if only 1 rock was present)
 
-    Chat Syntax | !update_tank_rock_launch_preference
-    ------------- | -------------
+   Chat Syntax | (!,/,?)update_tank_rock_launch_preference
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *update_tank_rock_launch_preference*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *update_tank_rock_launch_preference*
+   ------------- | -------------
     
-    Menu Sequence | _6->9->1->2->1_
-    ------------- | -------------
+   Menu Sequence | _6->9->1->2->1_
+   ------------- | -------------
 
 ---
-- **update_tank_rock_random_preference** : Enable/Disable random models for tank's rocks
+#### **update_tank_rock_random_preference**
+- Enable/Disable random models for tank's rocks
 
-    Chat Syntax | !update_tank_rock_random_preference
-    ------------- | -------------
+   Chat Syntax | (!,/,?)update_tank_rock_random_preference
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *update_tank_rock_random_preference*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *update_tank_rock_random_preference*
+   ------------- | -------------
     
-    Menu Sequence | _6->9->1->2->2_
-    ------------- | -------------
+   Menu Sequence | _6->9->1->2->2_
+   ------------- | -------------
 
 ---
-- **update_tank_rock_spawn_preference** : Enable/Disable spawning tank's rocks as physics objects (which wont be destroyed on hit)
+#### **update_tank_rock_spawn_preference**
+- Enable/Disable spawning tank's rocks as physics objects (which wont be destroyed on hit)
 
-    Chat Syntax | !update_tank_rock_spawn_preference
-    ------------- | -------------
+   Chat Syntax | (!,/,?)update_tank_rock_spawn_preference
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *update_tank_rock_spawn_preference*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *update_tank_rock_spawn_preference*
+   ------------- | -------------
     
-    Menu Sequence | _6->9->1->2->3_
-    ------------- | -------------
+   Menu Sequence | _6->9->1->2->3_
+   ------------- | -------------
 
 ---
-- **update_jockey_preference** : Get rid of or bring back the little jockey bastards
+#### **update_jockey_preference**
+- Get rid of or bring back the little jockey bastards
 
-    Chat Syntax | !update_jockey_preference
-    ------------- | -------------
+   Chat Syntax | (!,/,?)update_jockey_preference
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *update_jockey_preference*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *update_jockey_preference*
+   ------------- | -------------
     
-    Menu Sequence | _6->9->1->3_
-    ------------- | -------------
+   Menu Sequence | _6->9->1->3_
+   ------------- | -------------
 
 ---
-- **update_model_preference** : Enable/Disable wheter to keep last model used for survivors between chapters
+#### **update_model_preference**
+- Enable/Disable wheter to keep last model used for survivors between chapters
 
-    Chat Syntax | !update_model_preference
-    ------------- | -------------
+   Chat Syntax | (!,/,?)update_model_preference
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *update_model_preference*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *update_model_preference*
+   ------------- | -------------
     
-    Menu Sequence | _6->9->1->4_
-    ------------- | -------------
-    
----
-- **update_custom_sharing_preference** : Enable/Disable sharing grenades and packs by holding reload "R" button
-
-    Chat Syntax | !update_custom_sharing_preference
-    ------------- | -------------
-
-    Console Syntax | scripted_user_func *update_custom_sharing_preference*
-    ------------- | -------------
-    
-    Menu Sequence | _6->9->1->5_
-    ------------- | -------------
+   Menu Sequence | _6->9->1->4_
+   ------------- | -------------
     
 ---
-- **update_bots_sharing_preference** : Enable/Disable automatic sharing grenades and packs for bots
+#### **update_custom_sharing_preference**
+- Enable/Disable sharing grenades and packs by holding reload "R" button
 
-    Chat Syntax | !update_bots_sharing_preference
-    ------------- | -------------
+   Chat Syntax | (!,/,?)update_custom_sharing_preference
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *update_bots_sharing_preference*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *update_custom_sharing_preference*
+   ------------- | -------------
     
-    Menu Sequence | _6->9->1->6->1_
-    ------------- | -------------
-    
----
-- **kind_bots** : Enable ability for bots to look for and share grenades and packs
-
-    Chat Syntax | !kind_bots
-    ------------- | -------------
-
-    Console Syntax | scripted_user_func *kind_bots*
-    ------------- | -------------
-    
-    Menu Sequence | _6->9->1->6->2_
-    ------------- | -------------
+   Menu Sequence | _6->9->1->5_
+   ------------- | -------------
     
 ---
-- **selfish_bots** : Disable ability for bots to look for and share grenades and packs
+#### **update_bots_sharing_preference**
+- Enable/Disable automatic sharing grenades and packs for bots
 
-    Chat Syntax | !selfish_bots
-    ------------- | -------------
+   Chat Syntax | (!,/,?)update_bots_sharing_preference
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *selfish_bots*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *update_bots_sharing_preference*
+   ------------- | -------------
     
-    Menu Sequence | _6->9->1->6->3_
-    ------------- | -------------
+   Menu Sequence | _6->9->1->6->1_
+   ------------- | -------------
+    
+---
+#### **kind_bots**
+- Enable ability for bots to look for and share grenades and packs
+
+   Chat Syntax | (!,/,?)kind_bots
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *kind_bots*
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->1->6->2_
+   ------------- | -------------
+    
+---
+#### **selfish_bots**
+- Disable ability for bots to look for and share grenades and packs
+
+   Chat Syntax | (!,/,?)selfish_bots
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *selfish_bots*
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->1->6->3_
+   ------------- | -------------
 
 ---
-- **debug_info** : Dump information about objects
+#### **debug_info**
+- Dump information about objects
 
-    Chat Syntax | !debug_info *get_player_info*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)debug_info *get_player_info*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *debug_info,get_player_info*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *debug_info,get_player_info*
+   ------------- | -------------
     
-    Menu Sequence | _6->9->4->4_ AND _6->9->4->5_
-    ------------- | -------------
+   Menu Sequence | _6->9->4->4_ AND _6->9->4->5_
+   ------------- | -------------
 ```cpp
        //Overloads:
        debug_info player      // Show information about whoever calls this function
@@ -1729,16 +2300,17 @@
        debug_info player
 ```
 ---
-- **flag_lookup** : Check what flags/constants are defined with a given prefix or check what flags/constants correspond to a given integer value
+#### **flag_lookup**
+- Check what flags/constants are defined with a given prefix or check what flags/constants correspond to a given integer value
 
-    Chat Syntax | !flag_lookup *prefix,value*
-    ------------- | -------------
+   Chat Syntax | (!,/,?)flag_lookup *prefix,value*
+   ------------- | -------------
 
-    Console Syntax | scripted_user_func *flag_lookup,prefix,value*
-    ------------- | -------------
+   Console Syntax | scripted_user_func *flag_lookup,prefix,value*
+   ------------- | -------------
     
-    Menu Sequence | _Not in the menu_
-    ------------- | -------------
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
 ```cpp
        //Overloads:
        flag_lookup {prefix} {value:integer}      // Get flags with bitwise OR "|" equal to given value, starting with given prefix in their name 
@@ -1750,8 +2322,143 @@
        // Example: Get all flags starting with prefix ANGLE_ADD
        flag_lookup ANGLE_ADD
 ```
+---
+### Custom Script Related
 
-- **and more...**
+#### **create_alias**
+- Create an alias for existing commands. Only usable by players with script authorization
+
+   Chat Syntax | (!,/,?)create_alias *table_contents*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *create_alias,table_contents*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+```cpp
+       //Overloads:
+       // table_contents: Single line table without { at start and } at end
+       create_alias {table_contents}
+
+       // Example: Create a new alias named golden_grab, which renders aimed object yellow and grab it after
+       create_alias golden_grab Commands={color={arg_1="255",arg_2="255",arg_3="0"},grab={}}
+       
+       // Example: Create a new alias named talk_thrice, which will make your character speak 3 random lines, 8 seconds of each
+       create_alias talk_thrice Commands={randomline={repeat=3,delay_between=8}}
+
+       // Example: Create a new alias named check_velocity, which will print current speed of Player(1), using the first parameter as repeat count, second as interval length to check
+       // -> Make first parameter as repeat amount, if nothing given: repeats 5 times
+       // -> Make second parameter as delay between repeats, if nothing given: waits 1 second
+       // Unfortunately this would be too long to send from chat so it HAS to be sent from the console, but there is another problem. Console doesn't allow many of the characters present in this line
+       // So you will have to use hex_string command from chat twice and combine resulting string to get a valid argument
+       // When the characters are replaced, we are left with the following command to be used in console:
+       // scripted_user_func create_alias,check_speed,Parameters=\x7Bparam_1=\x223\x22\x2Cparam_2=\x225\x22\x7D\x2CCommands=\x7Bout=\x7Barg_1=\x22Player\x281\x29\x2EGetPhysicsVelocity\x28\x29\x22\x2Crepeat=\x22$param_1\x22\x2Cdelay_between=\x22$param_2\x22\x7D\x7D
+       create_alias check_velocity Parameters={param_1="5",param_2="1"},Commands={out={arg_1="Player(1).GetPhysicsVelocity()",repeat="$param_1",delay_between="$param_2"}}
+    
+```
+---
+#### **replace_alias**
+- Replace an existing alias, check create_alias command's format.
+
+   Chat Syntax | (!,/,?)replace_alias *table_contents*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *replace_alias,table_contents*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+   
+---
+#### **reload_aliases**
+- Reload custom alias files from **admin system/aliases/**
+
+   Chat Syntax | (!,/,?)reload_aliases
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *reload_aliases*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+     
+---
+#### **reload_scripts**
+- Reload custom script files from **admin system/scripts/**
+
+   Chat Syntax | (!,/,?)reload_scripts
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *reload_scripts*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+   
+---
+#### **detach_hook**
+- Detach a custom hook function from an event
+
+   Chat Syntax | (!,/,?)detach_hook *event,hook*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *detach_hook,event,hook*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+```cpp
+       //Overloads:
+       detach_hook {event} {hook}
+
+       // Example: Detach the MyHookName function of OnPlayerShoved event
+       detach_hook OnPlayerShoved MyHookName
+```
+---
+#### **attach_hook**
+- Attach a custom hook function from an event back
+
+   Chat Syntax | (!,/,?)attach_hook *event,hook*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *attach_hook,event,hook*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+```cpp
+       //Overloads:
+       attach_hook {event} {hook}
+
+       // Example: Re-attach the MyHookName function to OnPlayerShoved event
+       // -> You can't change a hook's event while re-attaching
+       attach_hook OnPlayerShoved MyHookName
+```
+---
+#### **reload_hooks**
+- Reload custom hook files from **admin system/hooks/**
+
+   Chat Syntax | (!,/,?)reload_hooks
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *reload_hooks*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+   
+---
+
+## Hooks
+- project_smok allows you to hook your own functions to game events.
+   + Available game event names can be found [here](https://github.com/semihM/project_smok/blob/c3f631100a80913c6ad5f49fe74a24a772a03f40/2229460523/scripts/vscripts/admin_system/vslib/easylogic.nut#L194)
+   
+   + Details of the game events can be found [here](https://wiki.alliedmods.net/Left_4_dead_2_events)
+   
+   + Make sure to use the event names present in the **Notifications** table present in the [first link](https://github.com/semihM/project_smok/blob/c3f631100a80913c6ad5f49fe74a24a772a03f40/2229460523/scripts/vscripts/admin_system/vslib/easylogic.nut#L194)
+
+   + Follow the example file in **admin system/hooks/** directory to start writing your own functions for game events!
 
 ## Extra
 
@@ -1761,19 +2468,54 @@
 - AdminSystem configuration files are stored in the **"..\Left 4 Dead 2\left4dead2\ems\admin system"** directory.
 
 - This directory contains:
-  + **_settings.txt_ : Admin system settings**
-  + **_admins.txt_ : Admins**
-  + **_banned.txt_ : Banned players (only if theres any)**
-  + **_scriptauths.txt_ : Script authorizations**
-  + **_custom_responses.json_ : Custom responses**
-  + **_defaults.txt_ : Default settings and parameters**
-  + **_prop_defaults.txt_ : Default prop spawning settings**
-  + **_botparams.txt_ : Bots' sharing/looting parameters**
-  + **_apocalypse_settings.txt_ : Apocalypse event custom settings**
-  + **_meteor_shower_settings.txt_ : Meteor shower event custom settings**
+   + **_aliases_** : Custom alias files folder
+      - **_file\_list.txt_**: List of file names to read as custom alias tables
 
+      - **_example\_alias\_file.txt_**: An example file containing information about how to create aliases
 
-- These files can all be edited manually with any text editor, but be sure to follow the format present in the file. If an issue occurs while reading the file, it will be printed in **red** in the console. Removing the file can help solve reading issues by letting the addon re-creating the file again in the next reset.
+   + **_hooks_** : Custom hook files folder
+      - **_file\_list.txt_**: List of file names to read as custom hook functions
+
+      - **_example\_hook\_file.nut_**: An example file containing information about how to create hooks
+
+   + **_scripts_** : Custom script/command files folder
+      - **_file\_list.txt_**: List of file names to read as custom commands
+
+      - **_example\_script\_file.nut_**: An example file containing information about how to create commands
+
+   + **_admins.txt_** : Admins
+
+   + **_apocalypse\_settings.txt_** : Apocalypse event custom settings
+
+   + **_banned.txt_** : Banned players (only if theres any)
+
+   + **_botparams.txt_** : Bots' sharing/looting parameters
+
+   + **_command\_limits_.txt_** : Restrictions to apply to admins for certain commands
+
+   + **_custom\_responses.json_** : Custom responses, doesn't include built-in ones
+
+   + **_defaults.txt_** : Default settings and parameters
+
+   + **_disabled\_commands_.txt_** : List of command names to disable 
+
+   + **_meteor\_shower\_settings.txt_** : Meteor shower event custom settings
+
+   + **_prop\_defaults.txt_** : Default prop spawning settings
+
+   + **_settings.txt_** : Admin system settings
+
+   + **_scriptauths.txt_** : Script authorizations
+
+- These files can all be edited manually with any text editor.
+   + [VS Code](https://code.visualstudio.com/) is recommended for editing, especially for the **.nut** Squirrel scripting language files. Helpful add-ons:
+      - [Squirrel Language Highlighting](https://marketplace.visualstudio.com/items?itemName=monkeygroover.vscode-squirrel-lang)
+      - [Visual Studio IntelliCode](https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode)
+
+- File sizes are restricted to **16.5 KB maximum**
+
+- If an issue occurs while reading the file, it will be printed in **red** in the console. Removing the file can help solve reading issues by letting the addon re-creating the file again in the next reset.
+
 
 #### Extra Notes
 - **"custom_responses.json"** file can be opened with a text editor and new custom sequences can be defined  for each admin's steam ID with the example format given in the file.
@@ -1799,7 +2541,7 @@
      - **Example:** access to flags of prop_ragdoll class: _EntityDetailTables.prop.prop_ragdoll.flags_
   
 ---
-### Forms
+### Forums
 ---
 - If you have encountered a bug, please [report it here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089552207/)
 
@@ -1812,3 +2554,5 @@
 - [Admin System](https://steamcommunity.com/sharedfiles/filedetails/?id=214630948)
 - [Admin Menu 2.0](https://steamcommunity.com/sharedfiles/filedetails/?id=1229957234)
 - [VSLib](https://l4d2scripters.github.io/vslib/docs/index.html)
+- [Squirrel Scripting Language](http://squirrel-lang.org/squirreldoc/)
+- [Valve Wiki](https://developer.valvesoftware.com/wiki/Main_Page)
