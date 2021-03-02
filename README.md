@@ -294,9 +294,9 @@
          "{" | open brace      | 123 | \x7B
          "}" | close brace      | 125 | \x7D
 
-      + Using these values will result in shorter maximum command lengths, because a single character gets replaced with 4.
+      + Using these values will result in shorter maximum command lengths, since a single character gets replaced with 4.
 
-      + All hex values assumed to be in range [1-255].
+      + All hex values assumed to be in range **[\x01-\xFF]**. But only the ones mentioned above get replaced!
 
       + This process is made easier using [hex_string command](#hex_string) in chat.
 
@@ -1553,7 +1553,7 @@
     Setting | Default Value | Description
     ------------ | ------------- | -------------
     delay | 1 | delay for explosion in seconds
-    effect_name | "flame_blue" | [particle effect name](https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/particle_names/particlenames.nut) to spawn until explosion. "no_effect" to disable particle effects 
+    effect_name | "flame_blue" | [particle effect name](https://developer.valvesoftware.com/wiki/Talk:List_of_L4D2_Particles) to spawn until explosion. **"no_effect"** to disable particle effects 
     radiusmin | 300 | explosion's minimum radius to damage and push entities in
     radiusmax | 450 | explosion's maximum radius to damage and push entities in
     dmgmin | 10 | minimum damage to give entities in the radius
