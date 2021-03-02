@@ -49,12 +49,24 @@ class flag:
         return str(self.val) + catstr +": " + self.description + ". " + notestr
 
 class keyvalpair:
-    def __init__(self,lis,desc=""):
+    def __init__(self,lis,desc="",kvtype="keyvals"):
         self.keylis = lis
-        self.key = lis[1].replace(" ","_").strip()
         self.shortinfo = lis[0].strip()
-        self.typ = lis[2].replace(" ","_").replace("<","").replace(">","").strip()
         self.extra = lis[3].strip()
+        if kvtype == "keyvals":
+            self.key = lis[1].strip().replace(" ","_")
+            self.typ = lis[2].strip().replace(" ","_").replace("<","").replace(">","")
+        elif kvtype == "inputs" or kvtype == "outputs":
+            lis[1] = lis[1].strip()
+            if " to" in lis[1]:
+                self.key = lis[1].split(" ")[0].strip()
+            elif " " in lis[1]:
+                splt = lis[1].split(" ")
+                self.key = splt[0].strip() 
+                self.extra = (" ".join(splt[1:])+self.extra).strip()
+            else:
+                self.key = lis[1].strip().replace(" ","")
+            self.typ = lis[2].strip().replace(" ","_").replace("<","").replace(">","")
         self.description = desc
         self.descriptiondict = dict()
         self.notetypes = list()
@@ -112,8 +124,12 @@ class entity:
         self.kvpairs = list()
         self.kvpairnotestypes = list()
         self.kvpairnotesvals = list()
-        self.inputs = dict()
-        self.outputs = dict()
+        self.inputs = list()
+        self.inputnotestypes = list()
+        self.inputnotesvals = list()
+        self.outputs = list()
+        self.outputnotestypes = list()
+        self.outputnotesvals = list()
 
     def printstr(self):
         l = ""
@@ -168,6 +184,40 @@ class entity:
                         notestr += "\\n"
         return notestr
 
+    def getinputnotes(self):
+        notestr = ""
+        if len(self.inputnotestypes) != 0:
+            if len(self.inputnotestypes) != len(self.inputnotesvals):
+                length = len(self.inputnotesvals)
+                for i in range(length):
+                    notestr += escapes(self.inputnotesvals[i])
+                    if i != length -1:
+                        notestr += "\\n"
+            else:
+                length = len(self.inputnotestypes)
+                for i in range(length):
+                    notestr += escapes(self.inputnotestypes[i]) + escapes(self.inputnotesvals[i])
+                    if i != length - 1:
+                        notestr += "\\n"
+        return notestr
+
+    def getoutputnotes(self):
+        notestr = ""
+        if len(self.outputnotestypes) != 0:
+            if len(self.outputnotestypes) != len(self.outputnotesvals):
+                length = len(self.outputnotesvals)
+                for i in range(length):
+                    notestr += escapes(self.outputnotesvals[i])
+                    if i != length -1:
+                        notestr += "\\n"
+            else:
+                length = len(self.outputnotestypes)
+                for i in range(length):
+                    notestr += escapes(self.outputnotestypes[i]) + escapes(self.outputnotesvals[i])
+                    if i != length - 1:
+                        notestr += "\\n"
+        return notestr
+
     def sqflagtable(self,prefix):
         if len(self.flags) == 0:
             return "{}"
@@ -209,13 +259,64 @@ class entity:
         s += prefix + "}"
         return s
 
+    def sqinputtable(self,prefix):
+        if len(self.inputs) == 0:
+            return "{}"
+
+        s = "\n" +prefix + "{\n"
+        unknowncount = 0
+        for kv in self.inputs:
+            if kv.key == NO_KEYNAME:
+                unknowncount += 1
+                s += prefix + "\t\"" + kv.key + "_" + str(unknowncount).strip() + "\":\n"
+            else:
+                s += prefix + "\t\"" + kv.key + "\":\n"
+            s += prefix + "\t{\n"
+            s += prefix + "\t\ttypename = \"" + escapes(kv.typ) + "\"\n"
+            s += prefix + "\t\tshortinfo = \"" + escapes(kv.shortinfo) + "\"\n"
+            s += prefix + "\t\textra = \"" + escapes(kv.extra) + "\"\n" 
+            s += prefix + "\t\tnotes = \"" + escapes(kv.getnotes()) + "\"\n" 
+            s += prefix + "\t\tdescription = \"" + escapes(kv.description) + "\"\n" 
+            s += prefix + "\t\tchoices = "+ kv.sqgetchoicestable(prefix+"\t\t") + "\n" 
+            s += prefix + "\t}\n"
+        s += prefix + "}"
+        return s
+
+    def sqoutputtable(self,prefix):
+        if len(self.outputs) == 0:
+            return "{}"
+
+        s = "\n" +prefix + "{\n"
+        unknowncount = 0
+        for kv in self.outputs:
+            if kv.key == NO_KEYNAME:
+                unknowncount += 1
+                s += prefix + "\t\"" + kv.key + "_" + str(unknowncount).strip() + "\":\n"
+            else:
+                s += prefix + "\t\"" + kv.key + "\":\n"
+            s += prefix + "\t{\n"
+            s += prefix + "\t\ttypename = \"" + escapes(kv.typ) + "\"\n"
+            s += prefix + "\t\tshortinfo = \"" + escapes(kv.shortinfo) + "\"\n"
+            s += prefix + "\t\textra = \"" + escapes(kv.extra) + "\"\n" 
+            s += prefix + "\t\tnotes = \"" + escapes(kv.getnotes()) + "\"\n" 
+            s += prefix + "\t\tdescription = \"" + escapes(kv.description) + "\"\n" 
+            s += prefix + "\t\tchoices = "+ kv.sqgetchoicestable(prefix+"\t\t") + "\n" 
+            s += prefix + "\t}\n"
+        s += prefix + "}"
+        return s
+
     def getsqtable(self,prefix):
         s = prefix + "{\n"
         s += prefix + "\tdescription = \""+escapes(self.description)+"\"\n"
+        s += prefix + "\tlink = \""+escapes(self.link)+"\"\n"
         s += prefix + "\tflagnotes = \""+self.getflagnotes()+"\"\n"
         s += prefix + "\tflags = " + self.sqflagtable(prefix+"\t") + "\n" 
         s += prefix + "\tkeyvalnotes = \""+self.getkvpairnotes()+"\"\n" 
         s += prefix + "\tkeyvalues = " + self.sqkvpairtable(prefix+"\t") + "\n"
+        s += prefix + "\tinputnotes = \""+self.getinputnotes()+"\"\n" 
+        s += prefix + "\tinputs = " + self.sqinputtable(prefix+"\t") + "\n"
+        s += prefix + "\toutputnotes = \""+self.getoutputnotes()+"\"\n" 
+        s += prefix + "\toutputs = " + self.sqoutputtable(prefix+"\t") + "\n"
         s += prefix +"}"
         return s
 
