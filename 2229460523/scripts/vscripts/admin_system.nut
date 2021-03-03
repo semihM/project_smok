@@ -4941,6 +4941,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			ClientPrint(null,3,"\x04"+"#" + botindex + " is not a bot")
 		RemoveCustomThinkTimers(botindex);
 		AdminSystem.BotOnSearchOrSharePath[botname] = false;
+		AdminSystem.BotBringingItem[botname] = false;
 		return;
 	}
 	else if(!bot.IsAlive())
@@ -4950,11 +4951,15 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 		RemoveCustomThinkTimers(botindex);
 		AdminSystem.BotOnSearchOrSharePath[botname] = false;
+		AdminSystem.BotBringingItem[botname] = false;
 	}
 	else if(bot.IsIncapacitated())
 	{
 		if(debug == 1)
 			ClientPrint(null,3,"\x04"+"#" + botindex + " bot is incapped")
+			
+		AdminSystem.BotOnSearchOrSharePath[botname] = false;
+		AdminSystem.BotBringingItem[botname] = false;
 	}
 	else if(bot.IsInCombat())
 	{
