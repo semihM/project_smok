@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{13BD5E3E-B5C9-45EA-BA43-8DCFADCF381D}") = "project_smok", "project_smok.sqproj", "{2B94A992-22E6-436E-B5D4-64486D466BA1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Client|x86 = Client|x86
+		Server|x86 = Server|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B94A992-22E6-436E-B5D4-64486D466BA1}.Client|x86.ActiveCfg = Client|x86
+		{2B94A992-22E6-436E-B5D4-64486D466BA1}.Client|x86.Build.0 = Client|x86
+		{2B94A992-22E6-436E-B5D4-64486D466BA1}.Server|x86.ActiveCfg = Server|x86
+		{2B94A992-22E6-436E-B5D4-64486D466BA1}.Server|x86.Build.0 = Server|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
