@@ -4862,7 +4862,7 @@ if (!("InterceptChat" in getroottable()))
 							{
 								if(i == 0)
 								{
-									Messages.DocCmdPlayer(::VSLib.Player(srcEnt),"List of commands matching \""+"\x04"+keycmd+"\x01"+"\":")
+									Messages.DocCmdPlayer(::VSLib.Player(srcEnt),"List of commands matching "+"\x05"+"\""+"\x04"+keycmd+"\x05"+"\""+"\x01"+":")
 								}
 								i += 1
 								ClientPrint(srcEnt,3,"\x04"+i+"\x01"+". "+cmd)

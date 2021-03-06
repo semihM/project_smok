@@ -3189,6 +3189,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.ResumeTimeCmd(player,args);
 			break;
 		}
+		case "wiki":
+		{
+			AdminSystem.AdminSystem.WikiCmd(player,args);
+			break;
+		}
 		case "ents_around":
 		{
 			AdminSystem.EntitiesAroundCmd(player,args);
@@ -9971,7 +9976,14 @@ function ChatTriggers::resume_time( player, args, text )
 ::ChatTriggerDocs.resume_time <- @(player,args) AdminSystem.IsPrivileged(player) && "resume_time" in CmdDocs
 					? Messages.DocCmdPlayer(player,CmdDocs.resume_time(player,args))
 					: null
-
+					
+function ChatTriggers::wiki( player, args, text )
+{
+	AdminSystem.WikiCmd( player, args );
+}
+::ChatTriggerDocs.wiki <- @(player,args) AdminSystem.IsPrivileged(player) && "wiki" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.wiki(player,args))
+					: null
 function ChatTriggers::ents_around( player, args, text )
 {
 	AdminSystem.EntitiesAroundCmd( player, args );
@@ -18383,6 +18395,152 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 }
 
+/*
+ * @authors rhino
+ */
+::AdminSystem.WikiCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local classname = GetArgument(1)
+	if(classname == null)
+		return
+	if(classname == "!picker")
+	{
+		local looked = player.GetLookingEntity()
+		if(looked==null)
+			return;
+		else
+			classname = looked.GetClassname()
+	}
+	
+	local category = classname.find("_") != null ? split(classname,"_")[0] : classname
+	if(!(category in ::EntityDetailTables) || !(classname in ::EntityDetailTables[category]))
+	{
+		Printer(player,"Unknown classname "+COLOR_ORANGE+classname)
+		return;
+	}
+
+	local entitytbl = ::EntityDetailTables[category][classname];
+
+	local header = GetArgument(2)	// link, description, flags, keyvals, inputs, outputs
+	local printall = header == null
+	switch(header)
+	{
+		case null:
+		case "Link":
+		case "link":
+		case "Site":
+		case "site":
+		{
+			Printer(player,COLOR_ORANGE+"Link: "+COLOR_DEFAULT+entitytbl.link)
+			if(!printall)
+				break;
+		}
+		case "Description":
+		case "description":
+		case "Desc":
+		case "desc":
+		case "Info":
+		case "info":
+		{
+			Printer(player,entitytbl.description)
+			if(!printall)
+				break;
+		}
+		case "Flags":
+		case "flags":
+		{
+			Printer(player,COLOR_ORANGE+"Flags"+COLOR_DEFAULT+" ("+COLOR_BRIGHT_GREEN+entitytbl.flags.len()+COLOR_DEFAULT+"):")
+			if(entitytbl.flagnotes != "")
+				Printer(player,COLOR_BRIGHT_GREEN+"Notes"+COLOR_DEFAULT+": "+COLOR_DEFAULT+entitytbl.flagnotes)
+			local flaglist = []
+			for(local i=0;i<31;i++)
+			{
+				if((1<<i).tostring() in entitytbl.flags)
+					flaglist.append((1<<i).tostring())
+			}
+			foreach(i,flag in flaglist)
+			{
+				local ftbl = entitytbl.flags[flag]
+				Printer(player,"\t"+COLOR_ORANGE+flag+COLOR_DEFAULT+": "+COLOR_OLIVE_GREEN+ftbl.description)
+				if(ftbl.notes != "")
+					Printer(player,COLOR_BRIGHT_GREEN+"\t\tFlag-Notes"+COLOR_DEFAULT+": "+ftbl.notes)
+			}
+			if(!printall)
+				break;
+		}
+		case "Keyvals":
+		case "keyvals":
+		case "Keyvalues":
+		case "keyvalues":
+		{
+			Printer(player,COLOR_ORANGE+"Keyvalues"+COLOR_DEFAULT+" ("+COLOR_BRIGHT_GREEN+entitytbl.keyvalues.len()+COLOR_DEFAULT+"):")
+			if(entitytbl.keyvalnotes != "")
+				Printer(player,COLOR_BRIGHT_GREEN+"Notes"+COLOR_DEFAULT+": "+COLOR_DEFAULT+entitytbl.keyvalnotes)
+			foreach(key,val in entitytbl.keyvalues)
+			{
+				Printer(player,"\t"+COLOR_ORANGE+key+COLOR_DEFAULT+" <"+COLOR_OLIVE_GREEN+val.typename+COLOR_DEFAULT+"> ("+COLOR_OLIVE_GREEN+val.shortinfo+COLOR_DEFAULT+")")
+				Printer(player,COLOR_BRIGHT_GREEN+"\tDetails"+COLOR_DEFAULT+": "+val.description+val.notes+". "+val.extra)
+				if(val.typename == "choices" && val.choices.len() > 0)
+				{	
+					Printer(player,COLOR_BRIGHT_GREEN+"\tChoices"+COLOR_DEFAULT+":")
+					foreach(k,v in val.choices)
+					{
+						Printer(player,COLOR_OLIVE_GREEN+"\t\t"+k+COLOR_DEFAULT+":"+COLOR_BRIGHT_GREEN+v)
+					}
+				}
+			}
+			if(!printall)
+				break;
+		}
+		case "Inputs":
+		case "inputs":
+		{
+			Printer(player,COLOR_ORANGE+"Inputs"+COLOR_DEFAULT+" ("+COLOR_BRIGHT_GREEN+entitytbl.inputs.len()+COLOR_DEFAULT+"):")
+			if(entitytbl.inputnotes != "")
+				Printer(player,COLOR_BRIGHT_GREEN+"Notes"+COLOR_DEFAULT+": "+COLOR_DEFAULT+entitytbl.inputnotes)
+			foreach(key,val in entitytbl.inputs)
+			{
+				if(val.typename == "UNKNOWN_VAL_TYPE" || val.typename == "!FGD")
+					Printer(player,"\t"+COLOR_ORANGE+key+COLOR_DEFAULT+": "+val.description+val.extra+val.notes)
+				else
+					Printer(player,"\t"+COLOR_ORANGE+key+COLOR_DEFAULT+" <"+COLOR_OLIVE_GREEN+val.typename+COLOR_DEFAULT+">: "+val.description+val.notes)
+				
+				if(val.extra != "No extra short-information given" && val.extra != "")
+					Printer(player,COLOR_BRIGHT_GREEN+"\t\t Extra"+COLOR_DEFAULT+": "+val.extra)
+
+				if(val.typename == "choices" && val.choices.len() > 0)
+				{	
+					Printer(player,COLOR_ORANGE+"\tChoices"+COLOR_DEFAULT+":")
+					foreach(k,v in val.choices)
+					{
+						Printer(player,COLOR_OLIVE_GREEN+"\t\t"+k+COLOR_DEFAULT+":"+COLOR_BRIGHT_GREEN+v)
+					}
+				}
+			}
+			if(!printall)
+				break;
+		}
+		case "Outputs":
+		case "outputs":
+		{
+			Printer(player,COLOR_ORANGE+"Outputs"+COLOR_DEFAULT+" ("+COLOR_BRIGHT_GREEN+entitytbl.outputs.len()+COLOR_DEFAULT+"):")
+			if(entitytbl.outputnotes != "")
+				Printer(player,COLOR_BRIGHT_GREEN+"Notes"+COLOR_DEFAULT+":"+COLOR_DEFAULT+entitytbl.outputnotes)
+			foreach(key,val in entitytbl.inputs)
+			{
+				Printer(player,"\t"+COLOR_ORANGE+key+COLOR_DEFAULT+": "+val.description+val.notes)
+				if(val.extra != "No extra short-information given" && val.extra != "")
+					Printer(player,COLOR_BRIGHT_GREEN+"\t\tExtra"+COLOR_DEFAULT+": "+val.extra)
+
+			}
+			if(!printall)
+				break;
+		}
+	}
+}
 /*
  * @authors rhino
  * wnet {netprop} {rate} {target}
