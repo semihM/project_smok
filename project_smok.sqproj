@@ -378,6 +378,9 @@
       <SubType>Content</SubType>
       <Link>2229460523\scripts\vscripts\project_smok\messages.nut</Link>
     </Content>
+    <Content Include="2229460523\scripts\vscripts\project_smok\spellchecker.nut">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="2229460523\scripts\vscripts\realism.nut">
       <SubType>Content</SubType>
       <Link>2229460523\scripts\vscripts\realism.nut</Link>

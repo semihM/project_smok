@@ -648,6 +648,12 @@ getconsttable()["COLOR_ORANGE"] <- "\x04";
 getconsttable()["COLOR_OLIVE_GREEN"] <- "\x05";
 getconsttable()["PRINTER_CHAR_LIMIT"] <- 230;		// Normally 255, lowering it to be safe with extra wraps around messages
 
+::TxtClr <- 
+{
+	BG = function(txt,trail="\x01"){return "\x03"+txt+trail;}
+	OR = function(txt,trail="\x01"){return "\x04"+txt+trail;}
+	OG = function(txt,trail="\x01"){return "\x05"+txt+trail;}
+}
 ////////////////////////////////////////////////////////////////
 // Difficulty to be used with OnDifficulty()
 getconsttable()["EASY"] <- "easy";
@@ -4818,7 +4824,7 @@ if (!("InterceptChat" in getroottable()))
 					}
 					else
 					{
-						ClientPrint(srcEnt,3,"Unknown command: "+baseCmd[0])
+						::SpellChecker.PrintBestMatches(srcEnt,baseCmd[0],::VSLib.EasyLogic.Triggers)
 					}
 
 					break;
@@ -4914,7 +4920,8 @@ if (!("InterceptChat" in getroottable()))
 							}
 							else
 							{
-								ClientPrint(srcEnt,3,"Unknown command: "+baseCmd[0])
+								if(baseCmd[0] != null)
+									::SpellChecker.PrintBestMatches(srcEnt,baseCmd[0],::VSLib.EasyLogic.TriggerDocs)
 							}
 						}
 					}

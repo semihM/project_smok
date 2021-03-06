@@ -29,6 +29,8 @@ IncludeScript("Project_smok/Constants");
 IncludeScript("Project_smok/AdminVars");
 // Include Aliasing Compiler
 IncludeScript("Project_smok/AliasCompiler");
+// Include Spell Checker
+IncludeScript("Project_smok/SpellChecker");
 
 // Messages
 ::CmdMessages <- ::Messages.BIM.CMD;
@@ -2085,7 +2087,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	}
 	else
 	{
-		Printer(player,"Unknown command: "+Command)
+		if(Command == null)
+			return false;
+			
+		::SpellChecker.PrintBestMatches(player.GetBaseEntity(),Command,::ChatTriggers)
+		return false;
 	}
 
 	switch ( cleanBaseCmd )
@@ -3247,19 +3253,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			}
 			else
 			{
-				Printer(player,"Unknown command: "+Command)
+				::SpellChecker.PrintBestMatches(player.GetBaseEntity(),Command,::ChatTriggers)
 				break;
 			}
 		}
 	}
-}
-
-/*
- *
- */
-::draw <- function(start,end,color=Vector(255,0,0))
-{
-	DebugDrawLine_vCol(start,end,color,false,3);
 }
 
 /*
