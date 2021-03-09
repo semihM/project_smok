@@ -1880,6 +1880,45 @@
     
 ```
 ---
+#### **wiki**
+- Print sections from entity class wikis, using headers: link, description, flags, keyvalues, inputs, outputs. Gets updated with every minor update. 
+
+   Chat Syntax | (!,/,?)wiki *classname_OR_reference header*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *wiki,classname_OR_reference,header*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+```cpp
+       //Overloads:
+       // classname_OR_reference = Class name|!picker (aimed object's class)|#idx (object at index idx's class)
+       // header = 
+       //   Wiki page link : link|Link|site|Site
+       //   Description sections: info|Info|desc|Desc|description|Description
+       //   Flags : flags|Flags
+       //   Key-Value pairs : keyvals|Keyvals|keyvalues|Keyvalues
+       //   Inputs : inputs|Inputs
+       //   Outputs : outputs|Outputs
+       // Not giving a header prints all the sections, which floods the console/chat with the entire wiki data
+       wiki {classname_OR_reference} {header:(one of the headers mentioned above)} 
+       wiki {classname_OR_reference}  // header = Prints all sections
+      
+       // Example: Print the flags of prop_physics_multiplayer class
+       wiki prop_physics_multiplayer flags
+
+       // Example: Print the inputs of aimed object's class
+       wiki !picker inputs
+
+       // Example: Print all the description available about entity at index 33's class
+       wiki #33 desc
+
+       // Example: Print all the data available about env_microphone class
+       wiki env_microphone
+    
+```
+---
 #### **update_print_output_state**
 - Display output messages in chat or in console. Almost all of the messages in chat are only visible to the player.
 
@@ -2539,6 +2578,7 @@
   
   + **_EntityDetailTables_ : Contains most if not all the information on every entity class wiki page there is categorized under basic headers:(Description,Flags,KeyValues,Inputs,Outputs).**
      - **Example:** access to flags of prop_ragdoll class: _EntityDetailTables.prop.prop_ragdoll.flags_
+     - **Example(Using _wiki_ command):** print key-value pairs of prop_dynamic class: *!wiki prop_dynamic keyvals* 
   
 ---
 ### Forums
