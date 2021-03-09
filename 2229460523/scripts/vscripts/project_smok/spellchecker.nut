@@ -3,10 +3,7 @@
 \***************/
 ::SpellChecker <- {}
 
-::SpellChecker.DistanceMax <- 3
-::SpellChecker.DisplayMax <- 5
-
-::SpellChecker.LevenshteinDist <- function(s1,s2)
+::SpellChecker.LevenshteinDist <- function(source, target)
 {
 	function min(x,y,z)
 	{
@@ -15,8 +12,8 @@
 	}
 
 	local dist = {}
-	local m = s1.len()
-	local n = s2.len()
+	local m = source.len()
+	local n = target.len()
 
 	for(local i=0;i<=m;i++)
 	{
@@ -41,7 +38,7 @@
 		for(local i=1;i<=m;i++)
 		{
 			local cost = 0
-			if(s1[i-1] != s2[j-1])
+			if(source[i-1] != target[j-1])
 				cost = 1
 			dist[i][j] = min(dist[i-1][j] + 1, dist[i][j-1] + 1, dist[i-1][j-1] + cost)
 		}
@@ -50,9 +47,34 @@
 	return dist[m][n]
 }
 
-// TO-DO: Make this a class
+/******************\
+* Levenshtein Class *
+\******************/
+/// [maxdist=3] : Maximum levenshtein distance
+/// [maxdisp=5] : Maximum amount of closest word to print
+/// [typ="command"] : Type of words
+class ::SpellChecker.Levenshtein
+{
+    constructor(maxdist=SCL_DEF_MAXDIST,maxdisp=SCL_DEF_MAXDISP,typ="command")
+    {   
+        _maxdist = maxdist
+        _maxdisp = maxdisp
+		_typ = typ
+    }
+
+    function _type()
+    {
+        return "project_smok_SpellCheck_Levenshtein"
+    }
+
+    _maxdist = null
+    _maxdisp = null
+	_typ = null
+}
+
+
 // TO-DO: Cache checked words
-::SpellChecker.GetBestMatches <- function(word,lookuptbl)
+function SpellChecker::Levenshtein::GetDistTable(word, lookuptbl)
 {
 	local result = {}
 	local backup = {}
@@ -60,7 +82,7 @@
 	{	
 		local dist = ::SpellChecker.LevenshteinDist(word,w)
 		
-		if(dist <= ::SpellChecker.DistanceMax)
+		if(dist <= _maxdist)
 		{
 			if(dist in result)
 				result[dist].append(w)
@@ -97,26 +119,20 @@
 	return result;
 }
 
-::SpellChecker.PrintBestMatches <- function(player,word,lookuptbl,typ="command")
+function SpellChecker::Levenshtein::GetBestMatches(word, lookuptbl)
 {	
-	local matches = ::SpellChecker.GetBestMatches(word,lookuptbl)
-	if(matches.len() == 0)
+	local matches = GetDistTable(word,lookuptbl)
+	if(matches.len() == 0 || (-1 in matches))
 	{
-		ClientPrint(player,3,"Unknown "+typ+": "+word);
-		return;
-	}
-	else if(-1 in matches)
-	{
-		ClientPrint(player,3,"Unknown "+typ+": "+word+". Did you mean"+COLOR_ORANGE+" "+matches[matches[-1]]);
+		return matches;
 	}
 	else
 	{	
-		ClientPrint(player,3,"Unknown "+typ+", did you mean one of the words below?")
-	
-		local matchesleft = ::SpellChecker.DisplayMax
+		local tbl = {}
+		local matchesleft = _maxdisp
 		local m = 1;
 
-		for(local dist=1;dist<=::SpellChecker.DistanceMax;dist++)
+		for(local dist=1;dist<=_maxdist;dist++)
 		{
 			if(matchesleft == 0)
 				break;
@@ -129,7 +145,7 @@
 			{
 				foreach(i,word in matches[dist].slice(0,mlen))
 				{
-					ClientPrint(player,3,COLOR_ORANGE + m + ". " + COLOR_DEFAULT + word);
+					tbl[m] <- word;
 					m += 1;
 				}
 				matchesleft -= mlen;
@@ -138,11 +154,49 @@
 			{
 				foreach(i,word in matches[dist].slice(0,matchesleft))
 				{
-					ClientPrint(player,3,COLOR_ORANGE + m + ". " + COLOR_DEFAULT + word);
+					tbl[m] <- word;
 					m += 1;
 				}
 				matchesleft = 0
 			}
 		}
+		return tbl
 	}
+}
+
+function SpellChecker::Levenshtein::GetBestMatch(word, lookuptbl)
+{
+	local matches = ::SpellChecker.Levenshtein(_maxdist,1,_typ).GetBestMatches(word,lookuptbl);
+	return 1 in matches ? matches[1] : null;
+}
+
+function SpellChecker::Levenshtein::PrintBestMatches(player, word, lookuptbl)
+{	
+	local matches = GetBestMatches(word,lookuptbl)
+	local mlen = matches.len();
+	if(mlen == 0)
+	{
+		ClientPrint(player,3,COLOR_DEFAULT+"Unknown "+TXTCLR.OG(_typ)+": "+TXTCLR.OR(word));
+		return;
+	}
+	else if(-1 in matches)
+	{
+		ClientPrint(player,3,COLOR_DEFAULT+"Unknown "+TXTCLR.OG(_typ)+": "+TXTCLR.OR(word)+". Did you mean"+" "+TXTCLR.BG(matches[matches[-1]])+" ?");
+	}
+	else if(mlen == 1)
+	{
+		foreach(dist,w in matches)
+		{
+			ClientPrint(player,3,COLOR_DEFAULT+"Unknown "+TXTCLR.OG(_typ)+": "+TXTCLR.OR(word)+". Did you mean"+" "+TXTCLR.BG(w)+" ?");
+		}
+	}
+	else
+	{	
+		ClientPrint(player,3,COLOR_DEFAULT+"Unknown "+TXTCLR.OG(_typ)+": "+TXTCLR.OR(word)+", did you mean one of the below ?")
+	
+		for(local i=1;i<=mlen;i++)
+		{
+			ClientPrint(player,3,TXTCLR.OR(i + ". ") + matches[i]);
+		}
+	} 
 }
