@@ -434,6 +434,11 @@
 				/// 		Format		   |			Description
 				// -----------------------------------------------------------------
 				//		$param_x		xth parameter's value
+				//		$caller_ent		command's caller as a VSLib.Player object
+				//		$caller_id		command caller's entity index
+				//		$caller_char		command caller's character name
+				//		$caller_name		command caller's in-game name
+				//		$caller_target		entity the command caller is aiming at as an VSLib.Entity object, uses an invalid entity if nothing is looked at 
 				//	   	$repeat_id		current call number, increments by 1 after every call, don't use it with ""repeat""
 				//		$repeats_left		amount of repeats left, don't use it with ""repeat""
 				//		$last_call_time		Time() value stored from last call, can be used to check the accuracy of delay_between, don't use it with ""repeat""
