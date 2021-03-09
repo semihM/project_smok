@@ -45,6 +45,14 @@ foreach(eventname,tbl in ::VSLib.EasyLogic.Notifications)
 	::PS_Hooks[eventname] <- {}
 }
 
+// Table of all existing classnames
+::EntityClassesTable <- {}
+foreach(cat,tbls in ::EntityDetailTables)
+{
+	foreach(cls,detailtbl in tbls)
+		::EntityClassesTable[cls] <- true
+}
+
 if ( SessionState.ModeName == "coop" || SessionState.ModeName == "realism" || SessionState.ModeName == "survival" || SessionState.ModeName == "versus" || SessionState.ModeName == "scavenge" )
 {
 	if ( "cm_AggressiveSpecials" in SessionOptions )
@@ -2090,7 +2098,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		if(Command == null)
 			return false;
 			
-		::SpellChecker.PrintBestMatches(player.GetBaseEntity(),Command,::ChatTriggers)
+		::SpellChecker.Levenshtein().PrintBestMatches(player.GetBaseEntity(),Command,::ChatTriggers)
 		return false;
 	}
 
@@ -3191,7 +3199,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		}
 		case "wiki":
 		{
-			AdminSystem.AdminSystem.WikiCmd(player,args);
+			AdminSystem.WikiCmd(player,args);
 			break;
 		}
 		case "ents_around":
@@ -9249,7 +9257,7 @@ function ChatTriggers::out( player, args, text )
 		return;
 	if(args.len() == 0)
 		return;
-		
+
 	local res = compilestring("local __tempvar__="+Utils.CombineArray(args)+";return __tempvar__;")();
 	::AdminSystem.out(res,player);
 }
@@ -12171,7 +12179,7 @@ if ( Director.GetGameMode() == "holdout" )
 			parented[tbl2.entid.tointeger()] <- tbl2.entid.tointeger()
 		}
 	}
-	local exp = regexp(@"_\d+(?:_our_particles|_singlesimple|_meteorspawn|_spawnedspeaker|_spawnedmic)")
+	local exp = regexp(@"_\d+(?:_our_particles|_singlesimple|_meteorspawn|_spawnedspeaker|_spawnedmic|_vslib_tmp_)")
 
 	foreach(ent in Objects.All())
 	{
@@ -14022,6 +14030,8 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	function GetRandAngle(min,max)
 	{
+		min = min.tofloat()
+		max = max.tofloat()
 		if(max == 0)
 		{
 			return QAngle(-(rand() % (min - 1)),-(rand() % (min - 1)),-(rand() % (min - 1)))
@@ -14166,7 +14176,7 @@ if ( Director.GetGameMode() == "holdout" )
 	
 	/// Additions
 	if(HasFlag(flags,HEIGHT_ADD_VAL))
-		vec.z += tbl.val;
+		vec.z += tbl.val.tofloat();
 	//Random
 	if(HasFlag(flags,HEIGHT_ADD_RANDOM_0_10))
 		vec.z += GetRandHeight(0,10);
@@ -18414,18 +18424,48 @@ if ( Director.GetGameMode() == "holdout" )
 		else
 			classname = looked.GetClassname()
 	}
-	
-	local category = classname.find("_") != null ? split(classname,"_")[0] : classname
-	if(!(category in ::EntityDetailTables) || !(classname in ::EntityDetailTables[category]))
+	else if(classname.find("#") == 0)
 	{
-		Printer(player,"Unknown classname "+COLOR_ORANGE+classname)
-		return;
+		local ent = Entity(classname)
+		if(!ent.IsEntityValid())
+			return;
+		else
+			classname = ent.GetClassname()
+	}
+
+	local category = classname.find("_") != null ? split(classname,"_")[0] : classname
+
+	if(!(classname in ::EntityClassesTable))	// Wrong classname
+	{
+		local categoryfound = (category in ::EntityDetailTables);
+
+		if(categoryfound)	// Category did exist, ask closest match
+		{
+			::SpellChecker.Levenshtein(5,3,"class name").PrintBestMatches(player.GetBaseEntity(),classname,::EntityDetailTables[category])
+			return;
+		}
+		else	// All wrong
+		{
+			local closest_category = ::SpellChecker.Levenshtein(5,1,"class name").GetBestMatch(category,::EntityDetailTables)
+			if(closest_category == null)	// No close matches
+			{
+				Printer(player,"Unknown classname "+COLOR_ORANGE+classname)
+				return;
+			}
+			else // Ask closest category's closest match
+			{
+				::SpellChecker.Levenshtein(5,3,"class name").PrintBestMatches(player.GetBaseEntity(),classname,::EntityDetailTables[closest_category])
+				return;
+			}
+		}
 	}
 
 	local entitytbl = ::EntityDetailTables[category][classname];
 
 	local header = GetArgument(2)	// link, description, flags, keyvals, inputs, outputs
 	local printall = header == null
+	local s = ""
+	local exp = regexp(@"^[0-9]+\]\)$");
 	switch(header)
 	{
 		case null:
@@ -18461,13 +18501,17 @@ if ( Director.GetGameMode() == "holdout" )
 				if((1<<i).tostring() in entitytbl.flags)
 					flaglist.append((1<<i).tostring())
 			}
+
+			s = ""
 			foreach(i,flag in flaglist)
 			{
 				local ftbl = entitytbl.flags[flag]
-				Printer(player,"\t"+COLOR_ORANGE+flag+COLOR_DEFAULT+": "+COLOR_OLIVE_GREEN+ftbl.description)
+				s += "\t"+COLOR_ORANGE+flag+COLOR_DEFAULT+": "+COLOR_OLIVE_GREEN+ftbl.description
 				if(ftbl.notes != "")
-					Printer(player,COLOR_BRIGHT_GREEN+"\t\tFlag-Notes"+COLOR_DEFAULT+": "+ftbl.notes)
+					s += "." + TXTCLR.BG("[" + TXTCLR.OR("Note",COLOR_BRIGHT_GREEN) + "]") + ": " + ftbl.notes
+				s += "\n"
 			}
+			Printer(player,s)
 			if(!printall)
 				break;
 		}
@@ -18476,75 +18520,93 @@ if ( Director.GetGameMode() == "holdout" )
 		case "Keyvalues":
 		case "keyvalues":
 		{
-			Printer(player,COLOR_ORANGE+"Keyvalues"+COLOR_DEFAULT+" ("+COLOR_BRIGHT_GREEN+entitytbl.keyvalues.len()+COLOR_DEFAULT+"):")
+			Printer(player,TXTCLR.OR("Keyvalues")+" ("+TXTCLR.BG(entitytbl.keyvalues.len())+"):")
 			if(entitytbl.keyvalnotes != "")
-				Printer(player,COLOR_BRIGHT_GREEN+"Notes"+COLOR_DEFAULT+": "+COLOR_DEFAULT+entitytbl.keyvalnotes)
+				Printer(player,TXTCLR.OR("Notes")+": "+entitytbl.keyvalnotes)
+
+			s = ""
 			foreach(key,val in entitytbl.keyvalues)
 			{
-				Printer(player,"\t"+COLOR_ORANGE+key+COLOR_DEFAULT+" <"+COLOR_OLIVE_GREEN+val.typename+COLOR_DEFAULT+"> ("+COLOR_OLIVE_GREEN+val.shortinfo+COLOR_DEFAULT+")")
-				Printer(player,COLOR_BRIGHT_GREEN+"\tDetails"+COLOR_DEFAULT+": "+val.description+val.notes+". "+val.extra)
+				s += "\t" + TXTCLR.OR(key) + " <" + TXTCLR.OG(val.typename) + "> (" + TXTCLR.OG(val.shortinfo) + ")"
+				s += "\r\t" + TXTCLR.OR("Details") + ": " + val.description + val.notes + ". " + val.extra
+
 				if(val.typename == "choices" && val.choices.len() > 0)
 				{	
-					Printer(player,COLOR_BRIGHT_GREEN+"\tChoices"+COLOR_DEFAULT+":")
+					s += TXTCLR.BG("\r\tChoice") + ":"
 					foreach(k,v in val.choices)
 					{
-						Printer(player,COLOR_OLIVE_GREEN+"\t\t"+k+COLOR_DEFAULT+":"+COLOR_BRIGHT_GREEN+v)
+						s += TXTCLR.OG("\r\t\t"+k) + ":" + TXTCLR.BG(v)
 					}
 				}
+				s += "\n"
 			}
+			Printer(player,s)
 			if(!printall)
 				break;
 		}
 		case "Inputs":
 		case "inputs":
 		{
-			Printer(player,COLOR_ORANGE+"Inputs"+COLOR_DEFAULT+" ("+COLOR_BRIGHT_GREEN+entitytbl.inputs.len()+COLOR_DEFAULT+"):")
+			Printer(player,TXTCLR.OR("Inputs")+" ("+TXTCLR.BG(entitytbl.inputs.len())+"):")
 			if(entitytbl.inputnotes != "")
-				Printer(player,COLOR_BRIGHT_GREEN+"Notes"+COLOR_DEFAULT+": "+COLOR_DEFAULT+entitytbl.inputnotes)
+				Printer(player,TXTCLR.OR("Notes")+": "+entitytbl.inputnotes)
+			
+			s = ""
 			foreach(key,val in entitytbl.inputs)
 			{
-				if(val.typename == "UNKNOWN_VAL_TYPE" || val.typename == "!FGD")
-					Printer(player,"\t"+COLOR_ORANGE+key+COLOR_DEFAULT+": "+val.description+val.extra+val.notes)
+				if(val.typename == "UNKNOWN_VAL_TYPE" || val.typename == "!FGD" || exp.capture(val.typename) != null)
+					s += "\t"+TXTCLR.OR(key)+": "+Utils.StringReplace(val.description,";",".")+Utils.StringReplace(val.notes,";",".")
 				else
-					Printer(player,"\t"+COLOR_ORANGE+key+COLOR_DEFAULT+" <"+COLOR_OLIVE_GREEN+val.typename+COLOR_DEFAULT+">: "+val.description+val.notes)
+					s += "\t"+TXTCLR.OR(key)+" <"+TXTCLR.OG(val.typename)+">: "+Utils.StringReplace(val.description,";",".")+Utils.StringReplace(val.notes,";",".")
 				
 				if(val.extra != "No extra short-information given" && val.extra != "")
-					Printer(player,COLOR_BRIGHT_GREEN+"\t\t Extra"+COLOR_DEFAULT+": "+val.extra)
+					s += TXTCLR.BG("\r\t\t Extra")+": "+Utils.StringReplace(val.extra,";",".")
 
 				if(val.typename == "choices" && val.choices.len() > 0)
 				{	
-					Printer(player,COLOR_ORANGE+"\tChoices"+COLOR_DEFAULT+":")
+					s += TXTCLR.BG("\r\tChoice") + ":"
 					foreach(k,v in val.choices)
 					{
-						Printer(player,COLOR_OLIVE_GREEN+"\t\t"+k+COLOR_DEFAULT+":"+COLOR_BRIGHT_GREEN+v)
+						s += TXTCLR.OG("\r\t\t"+k) + ":" + TXTCLR.BG(v)
 					}
 				}
+				s += "\n"
 			}
+			Printer(player,s)
 			if(!printall)
 				break;
 		}
 		case "Outputs":
 		case "outputs":
 		{
-			Printer(player,COLOR_ORANGE+"Outputs"+COLOR_DEFAULT+" ("+COLOR_BRIGHT_GREEN+entitytbl.outputs.len()+COLOR_DEFAULT+"):")
+			Printer(player,TXTCLR.OR("Outputs")+" ("+TXTCLR.BG(entitytbl.outputs.len())+"):")
 			if(entitytbl.outputnotes != "")
-				Printer(player,COLOR_BRIGHT_GREEN+"Notes"+COLOR_DEFAULT+":"+COLOR_DEFAULT+entitytbl.outputnotes)
-			foreach(key,val in entitytbl.inputs)
+				Printer(player,TXTCLR.OR("Notes")+": "+entitytbl.outputnotes)
+				
+			s = ""
+			foreach(key,val in entitytbl.outputs)
 			{
-				Printer(player,"\t"+COLOR_ORANGE+key+COLOR_DEFAULT+": "+val.description+val.notes)
+				s += "\t"+TXTCLR.OR(key)+": "+Utils.StringReplace(val.description,";",".")+Utils.StringReplace(val.notes,";",".")
 				if(val.extra != "No extra short-information given" && val.extra != "")
-					Printer(player,COLOR_BRIGHT_GREEN+"\t\tExtra"+COLOR_DEFAULT+": "+val.extra)
-
+					s += TXTCLR.BG("\r\t\t Extra")+": "+Utils.StringReplace(val.extra,";",".")
+				s += "\n"
 			}
+			Printer(player,s)
 			if(!printall)
 				break;
+		}
+		default:
+		{
+			if(printall)
+				break;
+			::SpellChecker.Levenshtein(3,2,"header name").PrintBestMatches(player.GetBaseEntity(),header,{outputs=1,inputs=1,keyvalues=1,keyvals=1,flags=1,info=1,desc=1,description=1,link=1,site=1})
 		}
 	}
 }
 /*
  * @authors rhino
- * wnet {netprop} {rate} {target}
- * wnet &{handlename}&{max_depth} {rate} {target}
+ * wnet {netprop} {interval} {target}
+ * wnet &{handlename}&{max_depth} {interval} {target}
  */
 ::AdminSystem.WatchNetPropCmd <- function(player,args)
 {
