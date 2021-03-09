@@ -2027,7 +2027,7 @@
                 local cmd = CMDDocs(
                     "wiki",
 					[
-						CMDParam("classname","Classname to get wiki information of, !picker for aimed object's class"),
+						CMDParam("class_name","Class name of the object| !picker (aimed object's)| #idx (object at index idx)"),
 						CMDParam("header","Header name to use: description|link|flags|keyvals|inputs|outputs",true,"prints all the data from all headers, may be quite long")
 					],
                     "Get wiki data of given class. Use this to get the description, link, flags, key-values, inputs and outputs"
