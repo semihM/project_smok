@@ -75,13 +75,28 @@ getconsttable()["FINALE_SCAVENGE"] <- 4;
  * 
  * @return The modified string
  */
-function VSLib::Utils::StringReplace(string, original, replacement)
+function VSLib::Utils::StringReplace(string, original, replacement, replace_instances = false)
 {
 	local expression = regexp(original);
 	local result = "";
 	local position = 0;
 
 	local captures = expression.capture(string);
+	if(replace_instances)
+	{
+		if(replacement == null)
+		{
+			replacement = "null"
+		}
+		else if(typeof replacement == "VSLIB_ENTITY")
+		{
+			replacement = "::VSLib.Entity("+replacement.GetIndex()+")"
+		}
+		else if(typeof replacement == "VSLIB_PLAYER")
+		{
+			replacement = "::VSLib.Player("+replacement.GetIndex()+")"
+		}
+	}
 
 	while (captures != null)
 	{
