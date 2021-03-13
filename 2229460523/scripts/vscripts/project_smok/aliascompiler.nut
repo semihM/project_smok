@@ -237,6 +237,7 @@ class ::AliasCompiler.Alias
     basic_alias_1 = true
     basic_alias_2 = true
     advanced_alias_1 = true
+    advanced_alias_2 = true
 }
 
 ::AliasCompiler.CommandOptionConstrain <- function(opts,apply_to_repeat=true)
