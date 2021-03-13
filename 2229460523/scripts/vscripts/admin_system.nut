@@ -39,6 +39,7 @@ IncludeScript("Project_smok/SpellChecker");
 // Custom hooks and commands tables
 ::PS_Hooks <- {}
 ::PS_Scripts <- {}
+::PS_PreviousScriptsNames <- {}
 
 foreach(eventname,tbl in ::VSLib.EasyLogic.Notifications)
 {
@@ -337,17 +338,23 @@ Convars.SetValue( "precache_all_survivors", "1" );
 	local i = 0
 	foreach(cmdname, cmdtable in ::PS_Scripts)
 	{	
-		if(cmdname in ::AliasCompiler.ForbiddenAliasNames)
+		if(cmdname in ::AliasCompiler.ForbiddenAliasNames)	// Forbidden named
 		{
 			printl("[Forbidden-Name] Command name can not be "+cmdname+". Consider changing it!")
 			continue;
 		}
-		if(cmdname in ::ChatTriggers)
+		if(cmdname in ::ChatTriggers && !(cmdname in ::AliasCompiler.Tables || cmdname in ::PS_PreviousScriptsNames)) // Already a built-in trigger and wasn't custom alias or command
 		{
-			printl("[Command-Duplicate] "+cmdname+" already exists! Consider changing its name to enable it.")
+			printl("[Command-Duplicate] Command name can not be "+cmdname+". Consider changing it!")
+			continue;
 		}
 		else
 		{
+			if(cmdname in ::AliasCompiler.Tables) // Was custom command or alias
+			{
+				printl("[Command-Reload] "+cmdname+" already exists! Overwriting it...")
+			}
+
 			if("Main" in cmdtable && typeof cmdtable.Main == "function")
 			{
 				i += 1
@@ -361,13 +368,16 @@ Convars.SetValue( "precache_all_survivors", "1" );
 					? Messages.DocCmdPlayer(player,::AliasCompiler.CreateDocsFunction(cmdname,cmdtable.Help,null)[0](player,args))
 					: null
 			}
+
+			::PS_PreviousScriptsNames[cmdname] <- cmdtable
 		}
 	}
+
 	if(loaded.len() > 0)
 		printl("[Custom-Commands] Loaded "+loaded.len()+" custom commands:")
 	foreach(i,name in loaded)
 	{
-		printl("["+i+"] "+name)
+		printl("\t["+i+"] "+name)
 	}
 	printl("---------------------------------------------------------")
 }
@@ -453,12 +463,26 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		filelist = FileToString(Constants.Directories.CommandAliases);
 	}
 
-	local example = FileToString(Constants.Directories.CommandAliasesExample);	// Example
+	local example = FileToString(Constants.Directories.CommandAliasesExample);	// Example v100
 	if(example == null)
 	{
-		printl("[Custom-Aliases] Creating "+Constants.Directories.CommandAliasesExample+" for the first time...")
-		StringToFile(Constants.Directories.CommandAliasesExample,Constants.CommandAliasesDefaults);
+		printl("[Alias-Examples] Creating v1.0.0 examples in "+Constants.Directories.CommandAliasesExample+" for the first time...")
+		StringToFile(Constants.Directories.CommandAliasesExample,Constants.CommandAliasesDefaults.v1_0_0);
 		example = FileToString(Constants.Directories.CommandAliasesExample);
+	}
+
+	// Version based examples
+	foreach(vers,count in ::Constants.AliasExampleVersions)
+	{	
+		local cleanvers = Utils.StringReplace(vers,@"\.","_");
+		local pth = Constants.Directories.CommandAliasesExampleVersionBased(cleanvers)
+		local ex = FileToString(pth);
+		if(ex == null)
+		{
+			printl("[Alias-Examples] Creating "+count+" new examples from version "+vers+" in "+pth+" for the first time...")
+			StringToFile(pth,Constants.CommandAliasesDefaults[cleanvers]);
+			ex = FileToString(pth);
+		}
 	}
 
 	local filelist = split(filelist, "\r\n");
@@ -865,6 +889,27 @@ Convars.SetValue( "precache_all_survivors", "1" );
  * @authors rhino
  * TO-DO: Replace compilestring
  */
+::AdminSystem.LoadGhostZombiesSettings <- function ()
+{
+	local fileContents = FileToString(Constants.Directories.GhostZombiesSettings);
+	local settings = split(fileContents, "\r\n");
+	
+	if(!("_ghost_zombies" in AdminSystem))
+		AdminSystem._ghost_zombies <- {};
+
+	foreach (setting in settings)
+	{
+		if ( strip(setting) != "" )
+		{	
+			compilestring("AdminSystem._ghost_zombies." + Utils.StringReplace(setting, "=", "<-"))();
+		}
+	}
+}
+
+/*
+ * @authors rhino
+ * TO-DO: Replace compilestring
+ */
 ::AdminSystem.LoadApocalypseSettings <- function ()
 {
 	local fileContents = FileToString(Constants.Directories.ApocalypseSettings);
@@ -927,6 +972,25 @@ Convars.SetValue( "precache_all_survivors", "1" );
 			}
 		}
 	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.SaveGhostZombiesSettings <- function ()
+{
+	local comments = Constants.GetGhostZombiesSettingsComments();
+	local newstring = "";
+	local length = AdminSystem._ghost_zombies.len()-1;
+	local i = 0;
+	foreach (setting,val in AdminSystem._ghost_zombies)
+	{	
+		newstring += setting + " = " + val.tostring() + " // " + comments[setting];
+
+		if(i < length)
+			newstring += " \r\n"
+	}
+	StringToFile(Constants.Directories.GhostZombiesSettings, newstring);
 }
 
 /*
@@ -1108,7 +1172,9 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	local scriptauthList = FileToString(Constants.Directories.ScriptAuths);
 	local banList = FileToString(Constants.Directories.Banned);
 	local settingList = FileToString(Constants.Directories.Settings);
+
 	local apocsettings = FileToString(Constants.Directories.ApocalypseSettings);
+	local gssettings = FileToString(Constants.Directories.GhostZombiesSettings);
 	local metosettings = FileToString(Constants.Directories.MeteorShowerSettings);
 
 	local MessageTable = Messages.BIM.Events.OnRoundStart.AdminLoadFiles;
@@ -1155,6 +1221,17 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	{	
 		MessageTable.CreateApocalypseSettings();
 		StringToFile(Constants.Directories.ApocalypseSettings, Constants.Defaults.ApocalypseSettings);
+	}
+	
+	if ( gssettings != null )
+	{
+		MessageTable.LoadGhostZombiesSettings();
+		AdminSystem.LoadGhostZombiesSettings();
+	}
+	else
+	{	
+		MessageTable.CreateGhostZombiesSettings();
+		StringToFile(Constants.Directories.GhostZombiesSettings, Constants.Defaults.GhostZombiesSettings);
 	}
 
 	if ( metosettings != null )
@@ -1372,6 +1449,11 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 			lookup = "boolean"
 			blackliststr = "rockorigin,rockpushspeed,raise,friction,mass_scale,rockspawnheight,modelspecific,custommodels,modelpick,modelchangedelay"
 		}
+		_modelPreference =
+		{
+			lookup = "boolean"
+			blackliststr = "lastmodel,original"
+		}
 	}
 	
 	local basicbools = 
@@ -1382,7 +1464,8 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 		"AllowCustomSharing",
 		"AllowAutomatedSharing",
 		"LastLootThinkState",
-		"IgnoreSpeakerClass"
+		"IgnoreSpeakerClass",
+		"CompileHexAndSpecialsInArguments"
 	]
 
 	foreach(key,datatbl in fixdata)
@@ -1391,6 +1474,12 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	}
 
 	::AdminSystem.Vars.FixBooleanValues(AdminSystem.Vars,basicbools,"boolean");
+
+	// Model keeping between chapters bool
+	foreach(ch,ctbl in ::AdminSystem.Vars._modelPreference)
+	{
+		::AdminSystem.Vars._modelPreference[ch].keeplast = ctbl.keeplast == 1
+	}
 
 	// Fix prop spawn settings tables, restores "flags" as "FLAGS"... smart
 	foreach(name,cstbl in AdminSystem.Vars._prop_spawn_settings)
@@ -1599,6 +1688,12 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	
 	printl("[Custom] Loaded custom responses created by admins");
 	
+	if(AdminSystem.Vars._ghost_zombies_state == 1)
+	{
+		::VSLib.Timers.AddTimer(Constants.TimerDelays.RoundStart.GhostZombies,false,Utils.PrintToAllDel,"Ghosts are back!");
+		::VSLib.Timers.AddTimerByName(Constants.TimerNames.GhostZombies,AdminSystem._ghost_zombies.timer_delay, true, _GhostZombiesTimer,{});	
+	}
+
 	if(AdminSystem.Vars._propageddon_state == 1)
 	{
 		::VSLib.Timers.AddTimer(Constants.TimerDelays.RoundStart.Apocalypse,false,Utils.PrintToAllDel,"Madness continues...");
@@ -3167,6 +3262,26 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.Show_apocalypse_settingsCmd(player,args);
 			break;
 		}
+		case "start_ghost_zombies":
+		{
+			AdminSystem.StartGhostZombiesCmd(player,args);
+			break;
+		}
+		case "pause_ghost_zombies":
+		{
+			AdminSystem.PauseGhostZombiesCmd(player,args);
+			break;
+		}
+		case "ghost_zombies_setting":
+		{
+			AdminSystem.GhostZombiesSettingCmd(player,args);
+			break;
+		}
+		case "show_ghost_zombies_settings":
+		{
+			AdminSystem.ShowGhostZombiesSettingsCmd(player,args);
+			break;
+		}
 		case "drive":
 		{
 			AdminSystem.DriveCmd(player,args);
@@ -3374,7 +3489,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 	if(Utils.GetIDFromArray(targetclasses,target) == -1)
 	{
-		printl("Invalid argument->"+target);
+		::SpellChecker.Levenshtein(2,3,"argument value").PrintBestMatches(player.GetBaseEntity(),target,Utils.ArrayToTable(["all","special","common","physics"]))
 		return;
 	}
 
@@ -3671,7 +3786,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 	if(Utils.GetIDFromArray(targetclasses,target) == -1)
 	{
-		printl("Invalid argument->"+target);
+		::SpellChecker.Levenshtein(2,3,"argument value").PrintBestMatches(player.GetBaseEntity(),target,Utils.ArrayToTable(["all","special","common","physics"]))
 		return;
 	}
 
@@ -6549,7 +6664,10 @@ enum __
 	local setting = GetArgument(1);
 	local val = GetArgument(2);
 	if(!(setting in AdminSystem._meteor_shower_args))
+	{
+		::SpellChecker.Levenshtein(5,3,"setting").PrintBestMatches(player.GetBaseEntity(),setting,AdminSystem._meteor_shower_args)
 		return;
+	}
 	
 	if(setting != "meteormodelspecific")
 	{
@@ -6969,51 +7087,57 @@ enum __
 	AdminSystem.SaveShowerSettings();
 }
 
-/*
- * @authors rhino
- * Default apocalypse event settings
- */
-
-::AdminSystem._propageddon_args <- Constants.GetApocalypseSettingsDefaults()
-
 /* @authors rhino
- * Change how hellish you want the experience to be
+ * Start the ghost zombies event
  */
-::AdminSystem.Apocalypse_settingCmd <- function (player,args)
+::AdminSystem.StartGhostZombiesCmd <- function (player,args)
 {
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	local setting = GetArgument(1);
-	local val = GetArgument(2);
-	if(!(setting in AdminSystem._propageddon_args))
-		return;
-	
-	try{val = val.tofloat();}catch(e){return;}
-
-	local name = player.GetCharacterName();
-
-	Messages.InformAll(CmdMessages.ApocalypseSettings.Success(name,setting,AdminSystem._propageddon_args[setting],val));
-	
-	AdminSystem._propageddon_args[setting] = val;
-	AdminSystem.SaveApocalypseSettings();
+	if(AdminSystem.Vars._ghost_zombies_state == 0)
+	{	
+		AdminSystem.LoadGhostZombiesSettings();
+		ClientPrint(null,3,"\x04"+Utils.GetRandValueFromArray(CmdMessages.GhostZombiesSettings.StartingMessages));
+		AdminSystem.Vars._ghost_zombies_state = 1;
+		::VSLib.Timers.AddTimerByName(Constants.TimerNames.GhostZombies,AdminSystem._ghost_zombies.timer_delay, true, _GhostZombiesTimer,{});	
+	}
+	else
+	{	
+		AdminSystem.SaveGhostZombiesSettings();
+		AdminSystem.PauseGhostZombiesCmd(player,args);
+	}
 }
 
 /* @authors rhino
- * Show apocalypse params
+ * Pauses the ghost zombies event
  */
-::AdminSystem.Show_apocalypse_settingsCmd <- function (player,args)
+::AdminSystem.PauseGhostZombiesCmd <- function (player,args)
 {
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	AdminSystem.LoadApocalypseSettings();
-	local comments = Constants.GetApocalypseSettingsComments();
+	if(AdminSystem.Vars._ghost_zombies_state == 1)
+	{
+		AdminSystem.Vars._ghost_zombies_state = 0;
+	}
+}
+
+/* @authors rhino
+ * Show ghost zombies params
+ */
+::AdminSystem.ShowGhostZombiesSettingsCmd <- function (player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	AdminSystem.LoadGhostZombiesSettings();
+	local comments = Constants.GetGhostZombiesSettingsComments();
 
 	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterNameLower()])
 	{
-		Messages.InformPlayer(player,"Apocalypse Settings:");
-		foreach(setting,val in AdminSystem._propageddon_args)
+		Messages.InformPlayer(player,"Ghost zombies settings:");
+		foreach(setting,val in AdminSystem._ghost_zombies)
 		{
 			Messages.InformPlayer(player,"\x05"+setting+"\x03"+" -> "+"\x04"+val.tostring()+"\x01"+" ("+comments[setting]+")\n")
 		}
@@ -7021,11 +7145,122 @@ enum __
 	else
 	{
 		printB(player.GetCharacterName(),"",false,"",true,false);
-		foreach(setting,val in AdminSystem._propageddon_args)
+		foreach(setting,val in AdminSystem._ghost_zombies)
 		{
-			printB(player.GetCharacterName(),"[Apocalypse-Setting] "+setting+" ----> "+val.tostring()+" ----> "+comments[setting],false,"",false,false)
+			printB(player.GetCharacterName(),"[Ghost_Zombies-Setting] "+setting+" ----> "+val.tostring()+" ----> "+comments[setting],false,"",false,false)
 		}
 		printB(player.GetCharacterName(),"",false,"",false,true,0.1);
+	}
+}
+/*
+ * @authors rhino
+ */
+::AdminSystem.GhostZombiesSettingCmd <- function (player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local setting = GetArgument(1);
+	local val = GetArgument(2);
+	if(!(setting in AdminSystem._ghost_zombies))
+	{
+		::SpellChecker.Levenshtein(5,3,"setting").PrintBestMatches(player.GetBaseEntity(),setting,AdminSystem._ghost_zombies)
+		return;
+	}
+	
+	try{val = val.tofloat();}catch(e){return;}
+
+	local name = player.GetCharacterName();
+
+	Messages.InformAll(CmdMessages.GhostZombiesSettings.Success(name,setting,AdminSystem._ghost_zombies[setting],val));
+	
+	AdminSystem._ghost_zombies[setting] = val;
+	AdminSystem.SaveGhostZombiesSettings();
+}
+
+/*
+ * @authors rhino
+ * Default ghost zombies event settings
+ */
+
+::AdminSystem._ghost_zombies <- Constants.GetGhostZombiesSettingsDefaults()
+
+/*
+ * @authors rhino
+ * Execute each ghost zombies tick
+ */
+::_GhostZombiesTimer <- function (...)
+{	
+	if(AdminSystem.Vars._ghost_zombies_state == 1)
+	{	
+		_GhostZombiesTick()
+	}
+	else
+	{
+		if(::Constants.TimerNames.GhostZombies in Timers.TimersID)
+		{
+			Timers.RemoveTimer(Timers.TimersID[::Constants.TimerNames.GhostZombies])
+			delete Timers.TimersID[::Constants.TimerNames.GhostZombies]
+		}
+		local keeping = ::AdminSystem._ghost_zombies.stay_ghost_after == 1
+		local typ = ::AdminSystem._ghost_zombies.zombie_pick_type.tointeger()
+		if(!keeping)
+		{
+			if(typ%2 == 1)
+			{
+				foreach(ent in Objects.OfClassname("infected"))
+				{
+					ent.Input("alpha","255")
+					ent.SetRenderEffects(0)
+				}
+			}
+			if((typ>>1)%2 == 1)
+			{
+				foreach(ent in Objects.OfClassname("player"))
+				{
+					if(ent.GetTeam() != INFECTED)
+						continue;
+
+					ent.Input("alpha","255")
+					ent.SetRenderEffects(0)
+				}
+			}
+		}
+
+		ClientPrint(null,3,"\x03"+ (keeping ? CmdMessages.GhostZombiesSettings.EndingKept : CmdMessages.GhostZombiesSettings.EndingNoKept) );
+	}
+
+}
+
+/*
+ * @authors rhino
+ * Ghostifier
+ */
+::_GhostZombiesTick <-function(...)
+{
+	local typ = ::AdminSystem._ghost_zombies.zombie_pick_type.tointeger()
+	if(typ%2 == 1)
+	{
+		foreach(ent in Objects.OfClassname("infected"))
+		{	
+			if(rand().tofloat()/RAND_MAX > ::AdminSystem._ghost_zombies.ghost_prob)
+				continue
+			ent.Input("alpha",RandomInt(::AdminSystem._ghost_zombies.min_alpha,::AdminSystem._ghost_zombies.max_alpha))
+			ent.SetRenderEffects(::AdminSystem._ghost_zombies.render_effect)
+		}
+	}
+	if((typ>>1)%2 == 1)
+	{
+		foreach(ent in Objects.OfClassname("player"))
+		{
+			if(ent.GetTeam() != INFECTED)
+				continue;
+					
+			if(rand().tofloat()/RAND_MAX > ::AdminSystem._ghost_zombies.ghost_prob)
+				continue
+			ent.Input("alpha",RandomInt(::AdminSystem._ghost_zombies.min_alpha,::AdminSystem._ghost_zombies.max_alpha))
+			ent.SetRenderEffects(::AdminSystem._ghost_zombies.render_effect)
+		}
 	}
 }
 
@@ -7533,6 +7768,64 @@ enum __
 }
 
 /* @authors rhino
+ * Change how hellish you want the experience to be
+ */
+::AdminSystem.Apocalypse_settingCmd <- function (player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local setting = GetArgument(1);
+	local val = GetArgument(2);
+	if(!(setting in AdminSystem._propageddon_args))
+	{
+		::SpellChecker.Levenshtein(5,3,"setting").PrintBestMatches(player.GetBaseEntity(),setting,AdminSystem._propageddon_args)
+		return;
+	}
+	
+	try{val = val.tofloat();}catch(e){return;}
+
+	local name = player.GetCharacterName();
+
+	Messages.InformAll(CmdMessages.ApocalypseSettings.Success(name,setting,AdminSystem._propageddon_args[setting],val));
+	
+	AdminSystem._propageddon_args[setting] = val;
+	AdminSystem.SaveApocalypseSettings();
+}
+
+/* @authors rhino
+ * Show apocalypse params
+ */
+::AdminSystem.Show_apocalypse_settingsCmd <- function (player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	AdminSystem.LoadApocalypseSettings();
+	local comments = Constants.GetApocalypseSettingsComments();
+
+	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterNameLower()])
+	{
+		Messages.InformPlayer(player,"Apocalypse Settings:");
+		foreach(setting,val in AdminSystem._propageddon_args)
+		{
+			Messages.InformPlayer(player,"\x05"+setting+"\x03"+" -> "+"\x04"+val.tostring()+"\x01"+" ("+comments[setting]+")\n")
+		}
+	}
+	else
+	{
+		printB(player.GetCharacterName(),"",false,"",true,false);
+		foreach(setting,val in AdminSystem._propageddon_args)
+		{
+			printB(player.GetCharacterName(),"[Apocalypse-Setting] "+setting+" ----> "+val.tostring()+" ----> "+comments[setting],false,"",false,false)
+		}
+		printB(player.GetCharacterName(),"",false,"",false,true,0.1);
+	}
+}
+
+::AdminSystem._propageddon_args <- Constants.GetApocalypseSettingsDefaults()
+
+/* @authors rhino
  * Change debug message reporting state of the apocalypse
  */
 ::AdminSystem.Apocalypse_debugCmd <- function (player,args)
@@ -7567,7 +7860,11 @@ enum __
 	character = character.tolower();
 
 	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
-	{Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));return;}
+	{
+		Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));
+		::SpellChecker.Levenshtein(3,3,"character name").PrintBestMatches(player.GetBaseEntity(),character,Utils.ArrayToTable(AdminSystem.Vars.CharacterNamesLower.slice(0,8)))
+		return;
+	}
 
 	local scene_name = GetArgument(2);
 	if(scene_name==null)
@@ -7618,7 +7915,11 @@ enum __
 	}
 
 	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
-	{Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));return;}
+	{
+		Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));
+		::SpellChecker.Levenshtein(3,3,"character name").PrintBestMatches(player.GetBaseEntity(),character,Utils.ArrayToTable(AdminSystem.Vars.CharacterNamesLower.slice(0,8)))
+		return;
+	}
 
 	try
 	{
@@ -7670,7 +7971,11 @@ enum __
 	character = character.tolower();
 
 	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
-	{Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));return;}
+	{
+		Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));
+		::SpellChecker.Levenshtein(3,3,"character name").PrintBestMatches(player.GetBaseEntity(),character,Utils.ArrayToTable(AdminSystem.Vars.CharacterNamesLower.slice(0,8)))
+		return;
+	}
 
 	if(AdminSystem.Vars._looping[character])
 	{
@@ -7714,7 +8019,11 @@ enum __
 	character = character.tolower();
 
 	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
-	{Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));return;}
+	{
+		Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));
+		::SpellChecker.Levenshtein(3,3,"character name").PrintBestMatches(player.GetBaseEntity(),character,Utils.ArrayToTable(AdminSystem.Vars.CharacterNamesLower.slice(0,8)))
+		return;
+	}
 	
 	//Return if already in a loop
 	if(AdminSystem.Vars._looping[character])
@@ -7836,10 +8145,17 @@ enum __
 
 			character = character.tolower();
 			if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
-			{Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));return;}
+			{
+				Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));
+				::SpellChecker.Levenshtein(3,3,"character name").PrintBestMatches(player.GetBaseEntity(),character,Utils.ArrayToTable(AdminSystem.Vars.CharacterNamesLower.slice(0,8)))
+				return;
+			}
 
 			if(!(steamid in AdminSystem.Vars._CustomResponseOptions[character]))
-			{Messages.ThrowPlayer(player,CmdMessages.CustomSequences.NoneFound(character));return;}
+			{
+				Messages.ThrowPlayer(player,CmdMessages.CustomSequences.NoneFound(character))
+				return;
+			}
 
 			ClientPrint(player.GetBaseEntity(),3,"\x04"+character+":");
 
@@ -7885,11 +8201,17 @@ enum __
 
 			character = character.tolower();
 			if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
-			{Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));return;}
+			{
+				Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));
+				::SpellChecker.Levenshtein(3,3,"character name").PrintBestMatches(player.GetBaseEntity(),character,Utils.ArrayToTable(AdminSystem.Vars.CharacterNamesLower.slice(0,8)))
+				return;
+			}
 
 			if(!(steamid in AdminSystem.Vars._CustomResponseOptions[character]))
-			{Messages.ThrowPlayer(player,CmdMessages.CustomSequences.NoneFound(character));return;}
-
+			{
+				Messages.ThrowPlayer(player,CmdMessages.CustomSequences.NoneFound(character))
+				return;
+			}
 			printB(player.GetCharacterName(),character+"->",false,"info",true,false);
 
 			foreach(seq_name,seqtable in AdminSystem.Vars._CustomResponseOptions[character][steamid].sequence)
@@ -7931,7 +8253,11 @@ enum __
 	}
 
 	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
-	{Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));return;}
+	{
+		Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));
+		::SpellChecker.Levenshtein(3,3,"character name").PrintBestMatches(player.GetBaseEntity(),character,Utils.ArrayToTable(AdminSystem.Vars.CharacterNamesLower.slice(0,8)))
+		return;
+	}
 
 	local steamid = player.GetSteamID();
 
@@ -7983,7 +8309,11 @@ enum __
 	
 	character = character.tolower();
 	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
-	{Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));return;}
+	{
+		Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));
+		::SpellChecker.Levenshtein(3,3,"character name").PrintBestMatches(player.GetBaseEntity(),character,Utils.ArrayToTable(AdminSystem.Vars.CharacterNamesLower.slice(0,8)))
+		return;
+	}
 
 	local steamid = player.GetSteamID();
 	
@@ -8257,7 +8587,11 @@ enum __
 	character = character.tolower();
 	
 	if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,character)==-1)
-	{Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));return;}
+	{
+		Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(character));
+		::SpellChecker.Levenshtein(3,3,"character name").PrintBestMatches(player.GetBaseEntity(),character,Utils.ArrayToTable(AdminSystem.Vars.CharacterNamesLower.slice(0,8)))
+		return;
+	}
 
 	local sequencename = GetArgument(2);
 	local contents = FileToString(Constants.Directories.CustomResponses);
@@ -8879,7 +9213,7 @@ function Notifications::OnChargerChargeEnd::_RecoverRagdolls(charger,args)
  */
 function Notifications::OnMapEnd::_RestoreModels()
 {
-	Utils.ResetModels();
+	Utils.ResetModels(null,false);
 }
 
 function Notifications::OnPlayerConnected::RestoreModels(player,args)
@@ -9246,6 +9580,42 @@ function ChatTriggers::apocalypse_setting( player, args, text )
 					? Messages.DocCmdPlayer(player,CmdDocs.apocalypse_setting(player,args))
 					: null
 
+/*
+ * @authors rhino
+ */
+//////////////////////ghost_zombies_event////////////////////////////
+
+function ChatTriggers::ghost_zombies_setting( player, args, text )
+{
+	AdminSystem.GhostZombiesSettingCmd( player, args );
+}
+::ChatTriggerDocs.ghost_zombies_setting <- @(player,args) AdminSystem.IsPrivileged(player) && "ghost_zombies_setting" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.ghost_zombies_setting(player,args))
+					: null
+					
+function ChatTriggers::show_ghost_zombies_settings( player, args, text )
+{
+	AdminSystem.ShowGhostZombiesSettingsCmd( player, args );
+}
+::ChatTriggerDocs.show_ghost_zombies_settings <- @(player,args) AdminSystem.IsPrivileged(player) && "show_ghost_zombies_settings" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.show_ghost_zombies_settings(player,args))
+					: null
+
+function ChatTriggers::start_ghost_zombies( player, args, text )
+{
+	AdminSystem.StartGhostZombiesCmd( player, args );
+}
+::ChatTriggerDocs.start_ghost_zombies <- @(player,args) AdminSystem.IsPrivileged(player) && "start_ghost_zombies" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.start_ghost_zombies(player,args))
+					: null
+
+function ChatTriggers::pause_ghost_zombies( player, args, text )
+{
+	AdminSystem.PauseGhostZombiesCmd( player, args );
+}
+::ChatTriggerDocs.pause_ghost_zombies <- @(player,args) AdminSystem.IsPrivileged(player) && "pause_ghost_zombies" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.pause_ghost_zombies(player,args))
+					: null
 /*
  * @authors rhino
  */
@@ -12711,6 +13081,8 @@ if ( Director.GetGameMode() == "holdout" )
 	local model = ent.GetModel();
 	if(model == null)
 		return;
+		
+	local name = player.GetCharacterNameLower();
 
 	if(model.find("models/") == null)
 	{
@@ -12726,9 +13098,10 @@ if ( Director.GetGameMode() == "holdout" )
 		player.SetModelIndex(model);
 	}
 	else
+	{
 		player.SetModel(model);
-
-	local name = player.GetCharacterNameLower();
+		AdminSystem.Vars._modelPreference[name].lastmodel = model;
+	}
 
 	Printer(player,CmdMessages.Models.ChangeSuccess(ent.GetIndex(),model));
 }
@@ -12798,12 +13171,19 @@ if ( Director.GetGameMode() == "holdout" )
 	local setting = GetArgument(1);
 	local val = GetArgument(2);
 	if(!(setting in AdminSystem.Vars._explosion_settings[name.tolower()]))
+	{
+		::SpellChecker.Levenshtein(3,3,"setting").PrintBestMatches(player.GetBaseEntity(),setting,AdminSystem.Vars._explosion_settings[name.tolower()])
 		return;
+	}
 	
 	if(setting != "effect_name")
 		{try{val = val.tofloat();}catch(e){return;}}
 	else if(val != "no_effect" && Utils.GetIDFromArray(::Particlenames.names,val) == -1)
-		{Messages.ThrowPlayer(player,CmdMessages.Particles.UnknownParticle(val));return;}
+	{
+		Messages.ThrowPlayer(player,CmdMessages.Particles.UnknownParticle(val))
+		::SpellChecker.Levenshtein(5,3,"particle name").PrintBestMatches(player.GetBaseEntity(),val,Utils.ArrayToTable(::Particlenames.names))
+		return;
+	}
 
 	Printer(player,CmdMessages.Explosions.SettingSuccess(setting,AdminSystem.Vars._explosion_settings[name.tolower()][setting],val));
 
@@ -19076,7 +19456,9 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,targetname) == -1)
 	{
-		Printer(player,Messages.BIM.NotACharacter(GetArgument(1)),"error");
+		Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(GetArgument(1)));
+		::SpellChecker.Levenshtein(3,3,"character name").PrintBestMatches(player.GetBaseEntity(),GetArgument(1),Utils.ArrayToTable(AdminSystem.Vars.CharacterNamesLower.slice(0,8)))
+		return;
 	}
 	else
 	{
@@ -20451,8 +20833,14 @@ if ( Director.GetGameMode() == "holdout" )
 
 	local oldval = null;
 	
-	if(!(setting in AdminSystem.Vars._heldEntity[name.tolower()]) || setting == "entid")
+	if(setting == "entid")
 		return;
+
+	if(!(setting in AdminSystem.Vars._heldEntity[name.tolower()]))
+	{
+		::SpellChecker.Levenshtein(3,3,"setting").PrintBestMatches(player.GetBaseEntity(),setting,AdminSystem.Vars._heldEntity[name.tolower()])
+		return;
+	}
 
 	oldval = AdminSystem.Vars._heldEntity[name.tolower()][setting].tostring();
 	
@@ -20478,7 +20866,7 @@ if ( Director.GetGameMode() == "holdout" )
 	else if(Utils.GetIDFromArray(attachment_names,val) == -1)
 	{
 		Messages.ThrowPlayer(player,CmdMessages.GrabYeet.UnknownAttachmentPoint(val));
-		ClientPrint(player.GetBaseEntity(),3,"\x04"+"Available attachment point names:"+Utils.ArrayString(attachment_names));
+		::SpellChecker.Levenshtein(5,4,"character name").PrintBestMatches(player.GetBaseEntity(),val,Utils.ArrayToTable(attachment_names))
 		return;
 	}
 	else
