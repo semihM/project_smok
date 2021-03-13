@@ -78,10 +78,27 @@ function SpellChecker::Levenshtein::GetDistTable(word, lookuptbl)
 {
 	local result = {}
 	local backup = {}
+	local limit = getconsttable()["SCL_LOOKUP_LIMIT"]
+
+	// To prevent query to be cancelled
+	local maxstartindex = lookuptbl.len() > limit ? lookuptbl.len() - limit : 0
+	local startidx = RandomInt(0,maxstartindex)
+	local checks = 0
+
 	foreach(w,val in lookuptbl)
 	{	
-		local dist = ::SpellChecker.LevenshteinDist(word,w)
+		if(checks < startidx)	// Offset starting index for longer tables
+		{
+			startidx -= 1
+			continue;
+		}
+
+		if(checks >= limit)
+			break;
 		
+		local dist = ::SpellChecker.LevenshteinDist(word,w)
+		checks += 1;
+
 		if(dist <= _maxdist)
 		{
 			if(dist in result)
