@@ -45,6 +45,8 @@
 
     - [**Apocalypse event**](#apocalypse-event)
 
+    - [**Ghost zombies event**](#ghost-zombies-event)
+
     - [**Meteor shower event**](#meteor-shower-event)
 
     - [**Freezing objects**](#freezing-objects)
@@ -1283,6 +1285,82 @@
        apocalypse_setting updatedelay 3
 ```
 ---
+### Ghost zombies event
+
+#### **start_ghost_zombies**
+- Zombies AS ghosts ?!
+
+   Chat Syntax | (!,/,?)start_ghost_zombies
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *start_ghost_zombies* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->3->1_
+   ------------- | -------------
+
+---
+#### **pause_ghost_zombies**
+- Get rid of the ghosts
+
+   Chat Syntax | (!,/,?)pause_ghost_zombies
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *pause_ghost_zombies* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->3->1_
+   ------------- | -------------
+
+---
+#### **show_ghost_zombies_settings**
+-  Show ghost zombies event's settings and values. Probabilities normalized: (0 = 0% , 1 = 100%)
+
+   Chat Syntax | (!,/,?)show_ghost_zombies_settings
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *show_ghost_zombies_settings* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->3->2_
+   ------------- | -------------
+
+    Setting | Default Value | Description
+    ------------ | ------------- | ------------- 
+    min_alpha | 40    | Minimum alpha value
+    max_alpha | 80      | Maximum alpha value
+    timer_delay | 1       | Interval length in seconds to try ghostifying zombies
+    ghost_prob | 0.75         | Probability of zombie turning into ghost, tested every timer_delay seconds
+    stay_ghost_after | 0       | 1: Keep the ghost effect after the event is turned off, 0: Remove the ghost effect when even turns off
+    render_effect | 1     | Ghost effect, integer in the interval [0,24], check flags with !flag_lookup RENDERFX_
+    zombie_pick_type | 3       | 3: Ghostify common and special infected zombies, 2: Special infected only, 1: Common zombies only 
+
+--- 
+#### **ghost_zombies_setting**
+- Change ghost zombies event settings, updates **ghost_zombies_settings.txt** file
+
+   Chat Syntax | (!,/,?)ghost_zombies_setting *setting new_value*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *ghost_zombies_setting,setting,new_value* 
+   ------------- | -------------
+    
+   Menu Sequence | _Command hinted at 6->9->9->3->3_
+   ------------- | -------------
+
+```cpp
+       //Overloads:
+       // Check out the settings and their values with show_ghost_zombies_settings
+       ghost_zombies_setting {setting} {new_value: float/integer}
+       
+       // Example: Change the zombie pick type to special infected only
+       ghost_zombies_setting zombie_pick_type 2
+       
+       // Example(Script auth only): Change ghost effect to RENDERFX_PULSE_FAST
+       // Using $[RENDERFX_PULSE_FAST] is same as using 2
+       ghost_zombies_setting zombie_pick_type $[RENDERFX_PULSE_FAST]
+```
+---
 ### Meteor Shower event
 
 #### **start_the_shower**
@@ -1429,7 +1507,7 @@
    Console Syntax | scripted_user_func *piano_keys* 
    ------------- | -------------
     
-   Menu Sequence | _6->9->9->3->1_
+   Menu Sequence | _6->9->9->9->5->1_
    ------------- | -------------
 
 ---
@@ -1442,7 +1520,7 @@
    Console Syntax | scripted_user_func *remove_piano_keys* 
    ------------- | -------------
     
-   Menu Sequence | _6->9->9->3->2_
+   Menu Sequence | _6->9->9->9->5->2_
    ------------- | -------------
 ---
 ### Microphones and speakers
