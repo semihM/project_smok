@@ -231,7 +231,7 @@ function VSLib::Utils::DeserializeIdxTable(t)
 /*
  * @authors rhino
  */
-function VSLib::Utils::GetTableString(tbl, prefix = "", prev = "")
+function VSLib::Utils::GetTableString(tbl, prefix = "", prev = "", replace_instances = false, escape_strings = false)
 {
 	local typ = typeof(tbl);
 	if(prefix == "")
@@ -257,9 +257,29 @@ function VSLib::Utils::GetTableString(tbl, prefix = "", prev = "")
 			prev += prefix + "]\n";
 		}
 		else if ( typeof(val) == "string" )
+		{
 			prev += prefix + idx + "\t= \"" + val + "\"\n";
+		}
 		else
+		{
+			if(replace_instances)
+			{
+				printl(val)
+				if(val == null)
+				{
+					val = "null"
+				}
+				else if(typeof val == "VSLIB_ENTITY")
+				{
+					val = "::VSLib.Entity("+val.GetIndex()+")"
+				}
+				else if(typeof val == "VSLIB_PLAYER")
+				{
+					val = "::VSLib.Player("+val.GetIndex()+")"
+				}
+			}
 			prev += prefix + idx + "\t= " + val + "\n";
+		}
 	}
 
 	if (prefix == "   ")
@@ -800,7 +820,7 @@ function VSLib::Utils::CreateEntityWithTable(kvs = {},baseent = null)
  * @authors rhino
  * Reset survivor models back to their characters'
  */
-function VSLib::Utils::ResetModels(name = null)
+function VSLib::Utils::ResetModels(name = null, resetlast = true)
 {
 	if ( name != null)
 	{
@@ -809,49 +829,57 @@ function VSLib::Utils::ResetModels(name = null)
 			case "bill":
 			{
 				GetPlayerFromName("Bill").SetModel("models/survivors/survivor_namvet.mdl");
-				::AdminSystem.Vars._modelPreference.bill.lastmodel = "models/survivors/survivor_namvet.mdl";
+				if(resetlast)
+					::AdminSystem.Vars._modelPreference.bill.lastmodel = "models/survivors/survivor_namvet.mdl";
 				break;
 			}
 			case "francis":
 			{
 				GetPlayerFromName("Francis").SetModel("models/survivors/survivor_biker.mdl");
-				::AdminSystem.Vars._modelPreference.francis.lastmodel = "models/survivors/survivor_biker.mdl";
+				if(resetlast)
+					::AdminSystem.Vars._modelPreference.francis.lastmodel = "models/survivors/survivor_biker.mdl";
 				break;
 			}
 			case "louis":
 			{
 				GetPlayerFromName("Louis").SetModel("models/survivors/survivor_manager.mdl");
-				::AdminSystem.Vars._modelPreference.louis.lastmodel = "models/survivors/survivor_manager.mdl";
+				if(resetlast)
+					::AdminSystem.Vars._modelPreference.louis.lastmodel = "models/survivors/survivor_manager.mdl";
 				break;
 			}
 			case "zoey":
 			{
 				GetPlayerFromName("Zoey").SetModel("models/survivors/survivor_teenangst.mdl");
-				::AdminSystem.Vars._modelPreference.zoey.lastmodel = "models/survivors/survivor_teenangst.mdl";
+				if(resetlast)
+					::AdminSystem.Vars._modelPreference.zoey.lastmodel = "models/survivors/survivor_teenangst.mdl";
 				break;
 			}
 			case "nick":
 			{
 				GetPlayerFromName("Nick").SetModel("models/survivors/survivor_gambler.mdl");
-				::AdminSystem.Vars._modelPreference.nick.lastmodel = "models/survivors/survivor_gambler.mdl";
+				if(resetlast)
+					::AdminSystem.Vars._modelPreference.nick.lastmodel = "models/survivors/survivor_gambler.mdl";
 				break;
 			}
 			case "ellis":
 			{
 				GetPlayerFromName("Ellis").SetModel("models/survivors/survivor_mechanic.mdl");
-				::AdminSystem.Vars._modelPreference.ellis.lastmodel = "models/survivors/survivor_mechanic.mdl";
+				if(resetlast)
+					::AdminSystem.Vars._modelPreference.ellis.lastmodel = "models/survivors/survivor_mechanic.mdl";
 				break;
 			}
 			case "coach":
 			{
 				GetPlayerFromName("Coach").SetModel("models/survivors/survivor_coach.mdl");
-				::AdminSystem.Vars._modelPreference.coach.lastmodel = "models/survivors/survivor_coach.mdl";
+				if(resetlast)
+					::AdminSystem.Vars._modelPreference.coach.lastmodel = "models/survivors/survivor_coach.mdl";
 				break;
 			}
 			case "rochelle":
 			{
 				GetPlayerFromName("Rochelle").SetModel("models/survivors/survivor_producer.mdl");
-				::AdminSystem.Vars._modelPreference.rochelle.lastmodel = "models/survivors/survivor_producer.mdl";
+				if(resetlast)
+					::AdminSystem.Vars._modelPreference.rochelle.lastmodel = "models/survivors/survivor_producer.mdl";
 				break;
 			}
 			default:
@@ -867,49 +895,57 @@ function VSLib::Utils::ResetModels(name = null)
 			case "bill":
 			{
 				p.SetModel("models/survivors/survivor_namvet.mdl");
-				::AdminSystem.Vars._modelPreference.bill.lastmodel = "models/survivors/survivor_namvet.mdl";
+				if(resetlast)
+					::AdminSystem.Vars._modelPreference.bill.lastmodel = "models/survivors/survivor_namvet.mdl";
 				break;
 			}
 			case "francis":
 			{
 				p.SetModel("models/survivors/survivor_biker.mdl");
-				::AdminSystem.Vars._modelPreference.francis.lastmodel = "models/survivors/survivor_biker.mdl";
+				if(resetlast)
+					::AdminSystem.Vars._modelPreference.francis.lastmodel = "models/survivors/survivor_biker.mdl";
 				break;
 			}
 			case "louis":
 			{
 				p.SetModel("models/survivors/survivor_manager.mdl");
-				::AdminSystem.Vars._modelPreference.louis.lastmodel = "models/survivors/survivor_manager.mdl";
+				if(resetlast)
+					::AdminSystem.Vars._modelPreference.louis.lastmodel = "models/survivors/survivor_manager.mdl";
 				break;
 			}
 			case "zoey":
 			{
 				p.SetModel("models/survivors/survivor_teenangst.mdl");
-				::AdminSystem.Vars._modelPreference.zoey.lastmodel = "models/survivors/survivor_teenangst.mdl";
+				if(resetlast)
+					::AdminSystem.Vars._modelPreference.zoey.lastmodel = "models/survivors/survivor_teenangst.mdl";
 				break;
 			}
 			case "nick":
 			{
 				p.SetModel("models/survivors/survivor_gambler.mdl");
-				::AdminSystem.Vars._modelPreference.nick.lastmodel = "models/survivors/survivor_gambler.mdl";
+				if(resetlast)
+					::AdminSystem.Vars._modelPreference.nick.lastmodel = "models/survivors/survivor_gambler.mdl";
 				break;
 			}
 			case "ellis":
 			{
 				p.SetModel("models/survivors/survivor_mechanic.mdl");
-				::AdminSystem.Vars._modelPreference.ellis.lastmodel = "models/survivors/survivor_mechanic.mdl";
+				if(resetlast)
+					::AdminSystem.Vars._modelPreference.ellis.lastmodel = "models/survivors/survivor_mechanic.mdl";
 				break;
 			}
 			case "coach":
 			{
 				p.SetModel("models/survivors/survivor_coach.mdl");
-				::AdminSystem.Vars._modelPreference.coach.lastmodel = "models/survivors/survivor_coach.mdl";
+				if(resetlast)
+					::AdminSystem.Vars._modelPreference.coach.lastmodel = "models/survivors/survivor_coach.mdl";
 				break;
 			}
 			case "rochelle":
 			{
 				p.SetModel("models/survivors/survivor_producer.mdl");
-				::AdminSystem.Vars._modelPreference.rochelle.lastmodel = "models/survivors/survivor_producer.mdl";
+				if(resetlast)
+					::AdminSystem.Vars._modelPreference.rochelle.lastmodel = "models/survivors/survivor_producer.mdl";
 				break;
 			}
 			default:
