@@ -658,8 +658,9 @@ getconsttable()["PRINTER_CHAR_LIMIT"] <- 230;		// Normally 255, lowering it to b
 /***************\
 * SPELL CHECKER *
 \***************/
-getconsttable()["SCL_DEF_MAXDIST"] <- 3;
-getconsttable()["SCL_DEF_MAXDISP"] <- 5;
+getconsttable()["SCL_DEF_MAXDIST"] <- 3;	// Maximum distance
+getconsttable()["SCL_DEF_MAXDISP"] <- 5;	// Maximum word display amount
+getconsttable()["SCL_LOOKUP_LIMIT"] <- 425;	// Maximum check amount with lookup table
 
 ////////////////////////////////////////////////////////////////
 // Difficulty to be used with OnDifficulty()
