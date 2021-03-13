@@ -259,7 +259,9 @@
    
    #### Alias File Format
    - Following is an example alias file content including an alias called **my_alias_1** documented, referring to **2** commands and is only available for script authorized admins. Syntax follows the Squirrel Language table data type, but the file should be saved as a text **(.txt)** file at the end.
-   
+   + **WARNING**: While copy-pasting the examples, it will most likely fail while compiling. Some solutions:
+      - Remove the comments around and inside the table, anything after **"//"** inclusively, may cause "expected identifier" error messages
+      - Re-write the example with better indentation OR no indentation OR single line without comments 
    ```nut 
 {
 	// Alias name
@@ -413,6 +415,9 @@
    
    #### Script File Format
    - Following is an example script file content for creating a command called **my_command_1**. Commands are read from the **::PS_Scripts** table, so they should initialized under this table.
+   + **WARNING**: While copy-pasting the examples, it will most likely fail while compiling. Some solutions:
+      - Remove the comments around and inside the table, anything after **"//"** inclusively, may cause "expected identifier" error messages
+      - Re-write the example with better indentation OR no indentation OR single line without comments  
    ```nut
 // If you are a beginner to Squirrel scripting language, check out: http://squirrel-lang.org/squirreldoc/
 // If you don't know how to use the VSLib library, check out: https://l4d2scripters.github.io/vslib/docs/index.html
@@ -2815,6 +2820,10 @@
    
  #### Hook File Format
    - Following is an example file content for hooking **2** functions named **VeryCoolHook** and **AnotherCoolHook** to game event **OnPlayerConnected**, which are called after a player finishes their connection process. **PS_Hooks** table have to be used as the main table for hooking functions.
+   + **WARNING**: While copy-pasting the examples, it will most likely fail while compiling. Some solutions:
+      - Remove the comments around and inside the table, anything after **"//"** inclusively, may cause "expected identifier" error messages
+      - Re-write the example with better indentation OR no indentation OR single line without comments 
+	
    ```nut
 // If you are a beginner to Squirrel scripting language, check out: http://squirrel-lang.org/squirreldoc/
 // If you don't know how to use the VSLib library, check out: https://l4d2scripters.github.io/vslib/docs/index.html
