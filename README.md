@@ -21,10 +21,20 @@
 
     - [**Creating new commands**](#creating-new-commands)
     		
-        - [**Using aliases**](#using-aliases)
- 
-        - [**Using scripts**](#using-scripts)
-
+        **o** [**Using aliases**](#using-aliases)
+        
+ 	    - [**Alias Variables and Expressions**](#alias-variables-and-expressions)
+ 	    
+ 	    - [**Alias Options**](#alias-options)
+ 	    
+ 	    - [**Alias File Format**](#alias-file-format)
+ 	    
+        **o** [**Using scripts**](#using-scripts)
+ 	    
+ 	    - [**Script Options**](#script-options)
+ 	    
+ 	    - [**Script File Format**](#script-file-format)
+ 	    
     - [**Character limitations**](#character-limitations)
     		
         - [**Chat limitations**](#using-aliases)
@@ -66,7 +76,9 @@
     - [**Custom Script Related**](#custom-script-related)
 
 - [**Hooks**](#hooks)
-    		
+
+    - [**Hook File Format**](#hook-file-format)    	
+    	
 - [**Extra**](#extra)
 
     - [**Configuration files**](#changing-settings-adding-custom-responses-without-launching-the-game)
@@ -217,7 +229,139 @@
    7. Start testing the new alias!
    
       - You can reload the alias files using the **[reload_aliases command](#reload_aliases)**. This allows an easier way to test the aliases and check for formatting mistakes
+   
+   #### Alias Variables and Expressions
+   - There are a lot of variables available for use as command options and arguments. 
+   
+   Variable | Data Type | Description
+   ------------ | ------------- | -------------
+   $[_expression_] | _*variable*_ | Evaluate the _expression_ and use the value returned, replace _expression_ with legal expressions.
+   $param_{x} | _*string, null or variable*_ | Value of {x}th parameter, replace {x} with parameter number. Data type may _vary_ since arguments are compilable via **$[expression]** format
+   $repeat_id | _*integer*_ | Total number of repeats current command has, starts from 1
+   $repeats_left | _*integer*_ | Number of calls left after the current call
+   $last_call_time | _*float*_ | Time() value stored from the previous call	                                                                                                
+   $caller_ent | _*VSLib.Player*_ | command's caller as a VSLib.Player object
+   $caller_id | _*integer*_ | command caller's entity index as an integer
+   $caller_char | _*string*_ | command caller's character name, first letter capitalized
+   $caller_name | _*string*_ | command caller's in-game name
+   $caller_target | _*VSLib.Entity*_ | entity the command caller is aiming at as an VSLib.Entity object, uses an invalid entity if nothing is looked at 
+   
+   #### Alias Options
+   - There are 5 options available for aliases, none of them are required to initialize an alias.
+   
+   Option | Data Type | Description
+   ------------ | ------------- | -------------
+   HostOnly | _*bool*_ | _*true*_: Only allow host to use the alias; _*false*_: Allow everyone to use the alias 
+   ScriptAuthOnly | _*bool*_ | _*true*_: Only allow admins with script authorization to use the alias; _*false*_: Allow everyone to use the alias
+   Help | _*table*_ | Documentation table of the alias, [check the example](#alias-file-format) 
+   Parameters | _*table*_ | Parameters table of the alias, uses **param_{x}** format for **{x}th** parameter
+   Commands | _*table*_ | Commands table of the alias, uses **arg_{x}** format for **{x}th** argument in command tables. Has options for repetation, [check the example](#alias-file-format)
+   
+   #### Alias File Format
+   - Following is an example alias file content including an alias called **my_alias_1** documented, referring to **2** commands and is only available for script authorized admins. Syntax follows the Squirrel Language table data type, but the file should be saved as a text **(.txt)** file at the end.
+   
+   ```nut 
+{
+	// Alias name
+	my_alias_1 =
+	{	
+		// Restrict to server host
+		HostOnly = false 
+		
+		// Restrict to admins with script authorization
+		ScriptAuthOnly = true 
+		
+		// Documentation for this alias
+		Help =
+		{
+			// Alias information
+			docs = "Calls target_entity's (or caller's if null) method_name named method with cs_args string"
+			
+			// Parameter 1 detailed information
+			param_1 = 
+			{
+				// Parameter name
+				name = "name_for_parameter"
+				
+				// Parameter explanation
+				docs = "Short explanation"
+				
+				// Default value explanation
+				when_null = "What happens when nothing passed"
+			}
 
+			// Parameter 2 short information
+			param_2 = "Basic short information about parameter 2"
+
+		}
+		
+		// Parameters to use with my_alias_1
+		Parameters =
+		{
+			// Parameter 1 with "default_value_1" as default value
+			param_1 = "default_value_1"	
+			
+			// Parameter 2 Empty string as default value
+			param_2 = ""			
+			
+			// Parameter 3 null as default value
+			param_3 = null			
+			
+			// ... param_x = "default_value_x" // Parameter x
+		}
+		
+		// Commands to call
+		Commands =
+		{
+			// Call command_1 with the following arguments
+			command_1 =	
+			{
+				// Use param_1 as first argument
+				arg_1 = "$param_1"
+				
+				// Evaluate an expression as an argument
+				arg_2 = "$[22.0/7]"	
+				
+				// Use conditional expressions combined with parameters
+				arg_3 = "$[$param_2.len() > 2 ? \"Longer than 2 characters!\" : \"Shorter than or equal to 2 characters\"]" 
+				
+				// Use null if param_3 was null
+				arg_4 = "$param_3"	
+				
+				// Use "null" if param_3 was null
+				arg_5 = "$[\"$param_3\"]" 
+			}
+			
+			// Call command_2 with the following options and arguments
+			command_2 =	
+			{
+				// Wait 3 seconds to call this command
+				start_delay = 3
+				
+				// Repeat this command 5 times
+				repeat = 5
+				
+				// Evaluate an expression to decide the delay between repeats
+				//  -> Example: 4 second waiting after odd numbered repeats, 8 for even numbered ones
+				delay_between = "$[$repeat_id % 2 == 1 ? 4 : 8]"
+				
+				// Use command's caller's character name
+				arg_1 = "$caller_char"	
+				
+				// Use how long has it been since the last call
+				arg_2 = "$[Time() - $last_call_time]" 
+				
+				// Use a method named as a parameter from caller's class and add another parameter to it
+				arg_3 = "$[$caller_ent.$param_1() + $param_2]"	
+				
+				// Use aimed entity, if it's valid: use it's origin vector; else: use null
+				arg_4 = "$[$caller_target.IsEntityValid() ? $caller_target.GetOrigin() : null]"	
+			}
+		}
+	}
+}
+   ```
+   
    #### Commands to create or replace aliases for a single game session
    1. Start a game
    
@@ -258,7 +402,99 @@
    7. Start testing the new command!
    
       - You can reload the script files using the **[reload_scripts command](#reload_scripts)**. This allows an easier way to test the commands and check for formatting mistakes
+  
+  #### Script Options
+   - There are 2 options available for scripts, neither of them are required to initialize a command.
+   
+   Option | Data Type | Description
+   ------------ | ------------- | -------------
+   Help | _*table*_ | Documentation table of the command, [check the example](#script-file-format) 
+   Main | _*function*_ | A function which takes **3** arguments, [check the example](#script-file-format)  
+   
+   #### Script File Format
+   - Following is an example script file content for creating a command called **my_command_1**. Commands are read from the **::PS_Scripts** table, so they should initialized under this table.
+   ```nut
+// If you are a beginner to Squirrel scripting language, check out: http://squirrel-lang.org/squirreldoc/
+// If you don't know how to use the VSLib library, check out: https://l4d2scripters.github.io/vslib/docs/index.html
+// Some methods of VSLib may behave differently, make sure to check out the source code for those: https://github.com/semihM/project_smok/tree/master/2229460523/scripts/vscripts/admin_system/vslib
+// Some useful global tables:
+//      1. ::VSLib.Utils
+//          o Basic common manipulation methods for all data types
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/utils.nut
+//
+//      2. ::VSLib.Timers
+//          o Adding and managing timers for concurrent execution
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/timer.nut
+//
+//      3. ::VSLib.EasyLogic
+//          o Easier handling of game events
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/easylogic.nut
+//
+//      4. ::AdminSystem
+//          o Managing player restrictions, storing session variables and reading/writing configuration files
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system.nut
+//
+//      5. ::Messages
+//          o Message printing methods for printing to a player's or to everybody's chat(s) or console(s)
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/project_smok/messages.nut
+//          o File in the link above includes most of the messages displayed by the addon, you can update them in these script files if you want, but be careful with formatting 
 
+// Initialize a table using the name of your command
+// -> If "my_command_1" already exists, this will overwrite it!
+::PS_Scripts.my_command_1 <- {}
+
+// Documentation for the command under the Help table
+// -> This information can be accessed in-game using:
+//	?my_command_1
+//	!help my_command_1
+::PS_Scripts.my_command_1.Help <- 
+{
+    // Information about the command
+    docs = "Write an explanation for this command"
+    
+    // Information about the parameters
+    // -> The right-hand-side HAVE TO be a table containing name and docs entries
+    // -> when_null is not a required entry, but in absence documentation will think this parameter requires an argument passed!
+    param_1 = 
+    {
+        name = "first parameter's name"
+        docs = "what is expected as an argument"
+        when_null = "what happens if no argument is passed"
+    }
+    // ... follow this format to create documents for xth parameter param_x ... 
+}   
+
+// Main function which is called when the command is triggered
+// -> The function HAVE TO have 3 parameters:
+// 	1. Caller as VSLib.Player
+// 	2. Arguments in a table with integer keys and string, null or variable values
+// 	3. The chat or console message caused this call, as a string
+::PS_Scripts.my_command_1.Main <- function(player,args,text)
+{
+	// Adding restrictions
+	// -> Only allow admins
+	if(!AdminSystem.IsPrivileged(player))
+		return;
+		
+	// -> Only allow admins with script authorizations
+	if(!AdminSystem.HasScriptAuth(player))
+		return;
+
+	// Accessing arguments easily
+	// This is same as args[0], but it is fail-safe, returns null if no argument is passed
+	// But GetArgument method uses a copy of arguments stored in ::VSLib.EasyLogic.LastArgs, which only gets updated when the command is called from chat/console
+	// If you expect the command to be called within a compilestring function, make sure to check args in here too!
+	local argument_1 = GetArgument(1)	
+	local argument_2 = GetArgument(2)	
+	local argument_3 = GetArgument(3)	
+	// ...
+
+	// Write the rest of the instructions here...
+	
+	// At the end, print out a message for the player(s) if needed, prints to wherever the given player has his output state set to
+	::Printer(player,"Put the message here!")
+}
+   ```
 ---
 ## Character limitations
 - There are certain limitations of the game by default which can prevent certain commands or formats not work as intended. These limitations are generally about usage of special characters and length of the messages/commands sent.
@@ -2576,7 +2812,57 @@
    + Make sure to use the event names present in the **Notifications** table present in the [first link](https://github.com/semihM/project_smok/blob/c3f631100a80913c6ad5f49fe74a24a772a03f40/2229460523/scripts/vscripts/admin_system/vslib/easylogic.nut#L194)
 
    + Follow the example file in **admin system/hooks/** directory to start writing your own functions for game events!
+   
+ #### Hook File Format
+   - Following is an example file content for hooking **2** functions named **VeryCoolHook** and **AnotherCoolHook** to game event **OnPlayerConnected**, which are called after a player finishes their connection process. **PS_Hooks** table have to be used as the main table for hooking functions.
+   ```nut
+// If you are a beginner to Squirrel scripting language, check out: http://squirrel-lang.org/squirreldoc/
+// If you don't know how to use the VSLib library, check out: https://l4d2scripters.github.io/vslib/docs/index.html
+// Some methods of VSLib may behave differently, make sure to check out the source code for those: https://github.com/semihM/project_smok/tree/master/2229460523/scripts/vscripts/admin_system/vslib
+// Some useful global tables:
+//      1. ::VSLib.Utils
+//          o Basic common manipulation methods for all data types
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/utils.nut
+//
+//      2. ::VSLib.Timers
+//          o Adding and managing timers for concurrent execution
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/timer.nut
+//
+//      3. ::VSLib.EasyLogic
+//          o Easier handling of game events
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/easylogic.nut
+//
+//      4. ::AdminSystem
+//          o Managing player restrictions, storing session variables and reading/writing configuration files
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system.nut
+//
+//      5. ::Messages
+//          o Message printing methods for printing to a player's or to everybody's chat(s) or console(s)
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/project_smok/messages.nut
+//          o File in the link above includes most of the messages displayed by the addon, you can update them in these script files if you want, but be careful with formatting 
 
+// Before writing the function, do a simple CTRL+F search, find the game event and how many parameters are passed to hooks in https://github.com/semihM/project_smok/blob/c3f631100a80913c6ad5f49fe74a24a772a03f40/2229460523/scripts/vscripts/admin_system/vslib/easylogic.nut
+// General format: 
+//	::PS_Hooks.GameEvent.UniqueHookFunctionName <- function(GameEventParameters){}
+
+// OnPlayerConnected event passes 2 arguments, so the hook must have 2 parameters
+// -> This function will display new non-admin players a welcome message
+::PS_Hooks.OnPlayerConnected.VeryCoolHook <- function(player,args)
+{
+	// Check admin status, in this case make sure second parameter(quiet) is true, so no other message will be displayed 
+	if(!AdminSystem.IsPrivileged(player,true))	
+		::Messages.InformPlayer(player,"Welcome! This is a modded server and the admins are very reasonable people :) Enjoy the madness!") 
+}
+
+// -> This function will display everyone a message telling an admin has connected 
+::PS_Hooks.OnPlayerConnected.AnotherCoolHook <- function(player,args)
+{
+	// Tell everyone a semi-colored message when an admin is connected
+	// Check admin status, in this case make sure second parameter(quiet) is true, so no other message will be displayed 
+	if(AdminSystem.IsPrivileged(player,true))
+		::Messages.InformAll(COLOR_ORANGE + player.GetName() + COLOR_DEFAULT + " is here to smok- some boomers!");	
+} 
+   ```
 ## Extra
 
 ### Changing settings, adding custom responses without launching the game
@@ -2588,7 +2874,9 @@
    + **_aliases_** : Custom alias files folder
       - **_file\_list.txt_**: List of file names to read as custom alias tables
 
-      - **_example\_alias\_file.txt_**: An example file containing information about how to create aliases
+      - **_example\_alias\_file.txt_**: An example file containing information about how to create aliases, version v1.0.0 
+      - 
+      - **_example\_alias\_file\_v{Major}\_{Minor}\_{Patch}.txt_**: An example file containing examples with new features from version v{Major}.{Minor}.{Patch}
 
    + **_hooks_** : Custom hook files folder
       - **_file\_list.txt_**: List of file names to read as custom hook functions
@@ -2616,6 +2904,8 @@
 
    + **_disabled\_commands_.txt_** : List of command names to disable 
 
+   + **_ghost\_zombies\_settings.txt_** : Ghost zombies event custom settings
+   
    + **_meteor\_shower\_settings.txt_** : Meteor shower event custom settings
 
    + **_prop\_defaults.txt_** : Default prop spawning settings
@@ -2645,6 +2935,8 @@
 
 - **"apocalypse_settings.txt"** file contains the settings to use for the _apocalypse_ event. Probabilistic values are normalized between 0 and 1.
 
+- **"ghost_zombies_settings.txt"** file contains the settings to use for the _ghost zombies_ event. Probabilistic values are normalized between 0 and 1.
+- 
 - **"meteor_shower_settings.txt"** file contains the settings to use for the _meteor shower_ event. Probabilistic values are normalized between 0 and 1.
 
 ---
