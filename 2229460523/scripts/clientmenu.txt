@@ -37700,8 +37700,8 @@
 			}
 			"3"
 			{
-				"command"		 "play buttons/button14;show_menu pianokeys1"
-				"label"			" Piano keys"
+				"command"		 "play buttons/button14;show_menu ghost_zombies1"
+				"label"			" Ghost zombies event"
 			}
 			"4"
 			{
@@ -37742,7 +37742,7 @@
 
 	"smok_menu4"
 	{
-			"Title"		"Smok Menu 4 (some experimental)"
+			"Title"		"Smok Menu 4"
 			"1"
 			{
 				"command"		 "play buttons/button14;show_menu wear_hat_menu1"
@@ -37751,7 +37751,7 @@
 			"2"
 			{
 				"command"		 "play buttons/button14;show_menu ragdolling_menu1"
-				"label"			 " Ragdolling (Experimental)"
+				"label"			 " Ragdolling"
 			}
 			"3"
 			{
@@ -37762,6 +37762,11 @@
 			{
 				"command"		 "play buttons/button14;show_menu givephys_menu1"
 				"label"			 " Give objects physics"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;show_menu pianokeys1"
+				"label"			" Piano keys"
 			}
 			"8"
 			{
@@ -38583,9 +38588,39 @@
 			}
 	}
 	
+	"ghost_zombies1"
+	{
+			"Title"		"Ghost zombies menu"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func start_ghost_zombies;show_menu ghost_zombies1"
+				"label"			 " Start/Pause the event"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func show_ghost_zombies_settings;show_menu ghost_zombies1"
+				"label"			 " Show settings (use show_ghost_zombies_settings)"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button10;show_menu ghost_zombies1"
+				"label"			 " Change settings (In works...)(use ghost_zombies_setting setting value)"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu smok_menu3"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
 	"ladderteams1"
 	{
-			"Title"		"Ladder team"
+			"Title"		"Which team can use the ladders?"
 			"1"
 			{
 				"command"		 "play buttons/button14;scripted_user_func ladder_team,all;show_menu ladderteams1"
@@ -38614,7 +38649,7 @@
 			"6"
 			{
 				"command"		 "play buttons/button14;scripted_user_func ladder_team,reset;show_menu ladderteams1"
-				"label"			 " Reset"
+				"label"			 " Reset to original teams"
 			}
 			"8"
 			{
@@ -38634,7 +38669,7 @@
 			"1"
 			{
 				"command"		 "play buttons/button14;scripted_user_func piano_keys,all;show_menu pianokeys1"
-				"label"			 " Spawn 25 keys, starts at aimed place"
+				"label"			 " Spawn 25 keys, starts at aimed point, placing keys to right"
 			}
 			"2"
 			{
@@ -38644,11 +38679,11 @@
 			"3"
 			{
 				"command"		 "play buttons/button14;scripted_user_func prop,dynamic,models/props_furniture/piano.mdl,0,180;show_menu pianokeys1"
-				"label"			 " Spawn dynamic piano prop"
+				"label"			 " Spawn dynamic piano prop, aim at left-most key while spawning keys"
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu smok_menu3"
+					"command"    "play buttons/button14;show_menu smok_menu4"
 					"label"      " << Back"
 			}
 			"0"

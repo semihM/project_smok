@@ -81,14 +81,13 @@
             if(blacklistkeys.find(key) != null)
                 continue;
 
-            switch(val)
-            {
-                case 0:
-                    tbl[index][key] = false;break;
-                case 1:
-                    tbl[index][key] = true;break;
-            }
-            
+			switch(val)
+			{
+				case 0:
+					tbl[index][key] = false;break;
+				case 1:
+					tbl[index][key] = true;break;
+			}
         }
     }
 }
@@ -214,6 +213,12 @@
 
 }
 
+// Ghost zombies
+::AdminVars.SetDefaultGhostZombiesSettings <- function(tbl)
+{
+    tbl._ghost_zombies_state <- ::Constants.Defaults.Tables.GhostZombies.State;
+}
+
 // Apocalypse-propageddon
 ::AdminVars.SetDefaultApocalypseSettings <- function(tbl)
 {
@@ -324,8 +329,8 @@
 		tbl._modelPreference[spec] <- 
         {
             keeplast = ::Constants.Defaults.Tables.ModelPreferences.State,
-            lastmodel = ::Constants.Defaults.Tables.ModelPreferences.SurvivorSettings.bill
-            original = ::Constants.Defaults.Tables.ModelPreferences.SurvivorSettings.bill
+            lastmodel = ::Constants.Defaults.Tables.ModelPreferences.SurvivorSettings.bill.lastmodel
+            original = ::Constants.Defaults.Tables.ModelPreferences.SurvivorSettings.bill.original
         }
 		
         //Custom responses
@@ -368,6 +373,7 @@
 ::AdminVars.FixRestoredTableFunctions <- function(tbl,ref)
 {
     tbl.SetDefaultApocalypseSettings <- ref.SetDefaultApocalypseSettings;
+    tbl.SetDefaultGhostZombiesSettings <- ref.SetDefaultGhostZombiesSettings;
     tbl.SetDefaultMeteorShowerSettings <- ref.SetDefaultMeteorShowerSettings;
 
     tbl.SetBasicSettings <- ref.SetBasicSettings;
@@ -404,6 +410,7 @@
  */
 
 ::AdminVars.SetDefaultApocalypseSettings(::AdminVars);
+::AdminVars.SetDefaultGhostZombiesSettings(::AdminVars);
 ::AdminVars.SetDefaultMeteorShowerSettings(::AdminVars);
 
 ::AdminVars.SetBasicSettings(::AdminVars);

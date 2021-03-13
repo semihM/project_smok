@@ -211,6 +211,21 @@ class ::AliasCompiler.Alias
 
     last_call_time = @"(\$last_call_time)"
     last_call_time_replace = @"\$last_call_time"
+	
+    caller_ent = @"(\$caller_ent)"
+    caller_ent_replace = @"\$caller_ent"
+
+    caller_id = @"(\$caller_id)"
+    caller_id_replace = @"\$caller_id"
+
+    caller_char = @"(\$caller_char)"
+    caller_char_replace = @"\$caller_char"
+
+    caller_name = @"(\$caller_name)"
+    caller_name_replace = @"\$caller_name"
+
+    caller_target = @"(\$caller_target)"
+    caller_target_replace = @"\$caller_target"
 }
 
 ::AliasCompiler.CompileExpressionPattern <- @"(?:^\$\[(.*)\]$)"
@@ -222,6 +237,7 @@ class ::AliasCompiler.Alias
     basic_alias_1 = true
     basic_alias_2 = true
     advanced_alias_1 = true
+    advanced_alias_2 = true
 }
 
 ::AliasCompiler.CommandOptionConstrain <- function(opts,apply_to_repeat=true)
@@ -302,7 +318,7 @@ class ::AliasCompiler.Alias
                     }
                     else if(opt in ::AliasCompiler.CommandOptions)  // Option
                     {
-                        ::AliasCompiler.EvaluateCommandOption(cmdval,opt,opts,req_cmp_opt,parameters)
+                        ::AliasCompiler.EvaluateCommandOption(cmdval,opt,opts,req_cmp_opt,parameters,player)
                     }
                 }
 
@@ -351,83 +367,92 @@ class ::AliasCompiler.Alias
         cmdval = strip(cmdval.tostring())
 
         cmdval = ::AliasCompiler.ParamReferenceReplacer(cmdval,parameters)
-        
-        local matched = false;
-        foreach(refname,pattern in ::AliasCompiler.SpecialReferencePatterns)
+        if(cmdval != null)
         {
-            local special_capture = regexp(pattern).capture(cmdval)
-
-            if(special_capture != null && special_capture.len() == 2) // Has a special reference
+            local matched = false;
+            foreach(refname,pattern in ::AliasCompiler.SpecialReferencePatterns)
             {
-                req_cmp_arg[argno] <- cmdval
-                matched = true
-                break;
-            }
-        }
+                local special_capture = regexp(pattern).capture(cmdval)
 
-        if(!matched) // Ready to compile
-            cmdval = ::AliasCompiler.ExpressionCompiler(cmdval) 
+                if(special_capture != null && special_capture.len() == 2) // Has a special reference
+                {
+                    req_cmp_arg[argno] <- cmdval
+                    matched = true
+                    break;
+                }
+            }
+
+            if(!matched) // Ready to compile
+                cmdval = ::AliasCompiler.ExpressionCompiler(cmdval) 
+        }
     }
 
     cmdargs[argno] <- cmdval
 }
 
-::AliasCompiler.EvaluateCommandOption <- function(cmdval,opt,opts,req_cmp_opt,parameters)
+::AliasCompiler.EvaluateCommandOption <- function(cmdval,opt,opts,req_cmp_opt,parameters,player)
 {
     if(cmdval != null && typeof cmdval == "string")  // Has reference or default value
     {
         cmdval = strip(cmdval)
 
         cmdval = ::AliasCompiler.ParamReferenceReplacer(cmdval,parameters)
-        
-        local matched = false;
-        foreach(refname,pattern in ::AliasCompiler.SpecialReferencePatterns)
+        if(cmdval != null)
         {
-            local special_capture = regexp(pattern).capture(cmdval)
-
-            if(special_capture != null && special_capture.len() == 2) // Has a special reference
+            local matched = false;
+            foreach(refname,pattern in ::AliasCompiler.SpecialReferencePatterns)
             {
-                switch(::AliasCompiler.CommandOptions[opt].evaluate)
-                {
-                    case ::AliasCompiler.Evaluate.EVERY_CALL:
-                        req_cmp_opt[opt] <- cmdval
-                    case ::AliasCompiler.Evaluate.AT_START:
-                    {
-                        local lookuptbl = 
-                        {
-                            repeat_id = 1,
-                            last_call_time = Time()
-                        }
-                        if(opt != "repeat")
-                        {
-                            lookuptbl.repeats_left <- opts.repeat-1
-                        }
-                        cmdval = 
-                        ::AliasCompiler.OptionValueFinalize(
-                            ::AliasCompiler.ExpressionCompiler(
-                                ::AliasCompiler.SpecialReferenceReplacer(
-                                    cmdval,lookuptbl
-                                )
-                            ),
-                            opt
-                        )
-                        break;
-                    }
-                    default:
-                    {
-                        cmdval = ::AliasCompiler.CommandOptions[opt].default_value
-                        break;
-                    }
-                }
-                matched = true
-                break;
-            }
-        }
+                local special_capture = regexp(pattern).capture(cmdval)
 
-        if(!matched) // Ready to compile
-        {
-            cmdval = ::AliasCompiler.ExpressionCompiler(cmdval)
-            cmdval = ::AliasCompiler.OptionValueFinalize(cmdval,opt);
+                if(special_capture != null && special_capture.len() == 2) // Has a special reference
+                {
+                    switch(::AliasCompiler.CommandOptions[opt].evaluate)
+                    {
+                        case ::AliasCompiler.Evaluate.EVERY_CALL:
+                            req_cmp_opt[opt] <- cmdval
+                        case ::AliasCompiler.Evaluate.AT_START:
+                        {
+                            local lookuptbl = 
+                            {
+                                repeat_id = 1,
+                                last_call_time = Time()
+                                caller_ent = player
+                                caller_id = player.GetIndex()
+                                caller_char = player.GetCharacterName()
+                                caller_name = player.GetName()
+                                caller_target = player.GetLookingEntity()
+                            }
+                            if(opt != "repeat")
+                            {
+                                lookuptbl.repeats_left <- opts.repeat-1
+                            }
+                            cmdval = 
+                            ::AliasCompiler.OptionValueFinalize(
+                                ::AliasCompiler.ExpressionCompiler(
+                                    ::AliasCompiler.SpecialReferenceReplacer(
+                                        cmdval,lookuptbl
+                                    )
+                                ),
+                                opt
+                            )
+                            break;
+                        }
+                        default:
+                        {
+                            cmdval = ::AliasCompiler.CommandOptions[opt].default_value
+                            break;
+                        }
+                    }
+                    matched = true
+                    break;
+                }
+            }
+
+            if(!matched) // Ready to compile
+            {
+                cmdval = ::AliasCompiler.ExpressionCompiler(cmdval)
+                cmdval = ::AliasCompiler.OptionValueFinalize(cmdval,opt);
+            }
         }
     }
     
@@ -476,7 +501,12 @@ class ::AliasCompiler.Alias
         {
             last_call_time = args.last_call_time,
             repeat_id = args.repeat_id,
-            repeats_left = args.repeats_left
+            repeats_left = args.repeats_left,
+            caller_id = args.caller_id,
+            caller_char = args.caller_char,
+            caller_name = args.caller_name,
+            caller_ent = args.caller_ent,
+            caller_target = args.caller_target
         }
 
         args.last_call_time = Time()    // Get before possibly time consuming stuff begins
@@ -530,7 +560,12 @@ class ::AliasCompiler.Alias
                 req_cmp_opt = args.req_cmp_opt,
                 repeats_left = args.lookuptbl.repeats_left-1,
                 repeat_id = args.lookuptbl.repeat_id+1,
-                last_call_time = args.lookuptbl.last_call_time
+                last_call_time = args.lookuptbl.last_call_time,
+                caller_id = args.lookuptbl.caller_id,
+                caller_char = args.lookuptbl.caller_char,
+                caller_name = args.lookuptbl.caller_name,
+                caller_ent = args.lookuptbl.caller_ent,
+                caller_target = args.lookuptbl.caller_target
             }
         )
     }
@@ -543,6 +578,11 @@ class ::AliasCompiler.Alias
         last_call_time = Time(),
         repeat_id = 1,
         repeats_left = opts.repeat
+        caller_id = player.GetIndex()
+        caller_char = player.GetCharacterName()
+        caller_name = player.GetName()
+        caller_ent = player
+        caller_target = player.GetLookingEntity()
     }
 
     if(req_cmp_opt.len() > 0)
@@ -607,7 +647,7 @@ class ::AliasCompiler.Alias
         {
             if(special_capture.len() == 2)   
             {
-                cmdval = ::VSLib.Utils.StringReplace(cmdval,AliasCompiler.SpecialReferencePatterns[refname+"_replace"],current)
+                cmdval = ::VSLib.Utils.StringReplace(cmdval,AliasCompiler.SpecialReferencePatterns[refname+"_replace"],current,true)
                 special_capture = special_reg.capture(cmdval)
             }
             else
@@ -621,6 +661,7 @@ class ::AliasCompiler.Alias
 {
     local prefreg = regexp(@"(\$param_\d+)")
     local prefcapture = prefreg.capture(cmdval)
+    local first_cap = true;
     while(prefcapture != null)  // Replace references
     {
         if(prefcapture.len() == 2)   
@@ -629,8 +670,15 @@ class ::AliasCompiler.Alias
             local paramID = split(paramref,"_")[1].tointeger() - 1
             if(paramID in parameters)
             {
-                cmdval = ::VSLib.Utils.StringReplace(cmdval,@"\$param_"+(paramID+1),parameters[paramID])
+                if(parameters[paramID] == null && strip(cmdval) == "$param_"+(paramID+1) && first_cap)
+                    return null
+                else
+                {
+                    cmdval = ::VSLib.Utils.StringReplace(cmdval,@"\$param_"+(paramID+1),parameters[paramID],true)
+                    first_cap = false
+                }
             }
+
             prefcapture = prefreg.capture(cmdval)
         }
         else
@@ -650,7 +698,7 @@ class ::AliasCompiler.Alias
             local compile_part = cmdval.slice(compcapture[1].begin,compcapture[1].end)
             //::AdminSystem.out("compile: "+compile_part)
             cmdval = compilestring("local __tempvar__ ="+compile_part+";return __tempvar__;")()
-            cmdval = cmdval == null ? cmdval : cmdval.tostring()
+            cmdval = cmdval == null ? cmdval : (""+cmdval)
         }
     }
     return cmdval;

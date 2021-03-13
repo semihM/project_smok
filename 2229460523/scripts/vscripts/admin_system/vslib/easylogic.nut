@@ -648,6 +648,20 @@ getconsttable()["COLOR_ORANGE"] <- "\x04";
 getconsttable()["COLOR_OLIVE_GREEN"] <- "\x05";
 getconsttable()["PRINTER_CHAR_LIMIT"] <- 230;		// Normally 255, lowering it to be safe with extra wraps around messages
 
+::TXTCLR <- 
+{
+	BG = function(txt,trail="\x01"){return "\x03"+txt+trail;}
+	OR = function(txt,trail="\x01"){return "\x04"+txt+trail;}
+	OG = function(txt,trail="\x01"){return "\x05"+txt+trail;}
+}
+
+/***************\
+* SPELL CHECKER *
+\***************/
+getconsttable()["SCL_DEF_MAXDIST"] <- 3;	// Maximum distance
+getconsttable()["SCL_DEF_MAXDISP"] <- 5;	// Maximum word display amount
+getconsttable()["SCL_LOOKUP_LIMIT"] <- 425;	// Maximum check amount with lookup table
+
 ////////////////////////////////////////////////////////////////
 // Difficulty to be used with OnDifficulty()
 getconsttable()["EASY"] <- "easy";
@@ -4611,7 +4625,6 @@ function VSLib::EasyLogic::RemoveInterceptChat(func)
 /*
  * @authors rhino
  * Check if given command is available for given player or at all
- * TO-DO: Colors dont work with disabled/banned command messages
  */
 function VSLib::EasyLogic::CheckCommandAvailability(player,cleanBaseCmd,quiet=false)
 {
@@ -4632,7 +4645,7 @@ function VSLib::EasyLogic::CheckCommandAvailability(player,cleanBaseCmd,quiet=fa
 	if(cleanBaseCmd in ::VSLib.EasyLogic.DisabledCommands)
 	{
 		if(!quiet)
-			ClientPrint(player.GetBaseEntity(),3,"Host has disabled the "+"\x04"+cleanBaseCmd+"\x01"+" command for this session!")
+			ClientPrint(player.GetBaseEntity(),3,"\x01"+"Host has disabled the "+"\x04"+cleanBaseCmd+"\x01"+" command for this session!")
 		return false;
 	}
 	local steamid = player.GetSteamID()
@@ -4645,7 +4658,7 @@ function VSLib::EasyLogic::CheckCommandAvailability(player,cleanBaseCmd,quiet=fa
 		if(("BanList" in restrictions) && (steamid in restrictions.BanList))
 		{
 			if(!quiet)
-				ClientPrint(player.GetBaseEntity(),3,"Host has banned you from using "+"\x04"+cleanBaseCmd+"\x01"+" command!")
+				ClientPrint(player.GetBaseEntity(),3,"\x01"+"Host has banned you from using "+"\x04"+cleanBaseCmd+"\x01"+" command!")
 			return false;
 		}
 		
@@ -4662,7 +4675,7 @@ function VSLib::EasyLogic::CheckCommandAvailability(player,cleanBaseCmd,quiet=fa
 				if(timeleft < restrictions.CoolDown[steamid])
 				{
 					if(!quiet)
-						ClientPrint(player.GetBaseEntity(),3,"You can't use this command for "+"\x04"+timeleft+"\x01"+" more seconds!")
+						ClientPrint(player.GetBaseEntity(),3,"\x01"+"You can't use this command for "+"\x04"+timeleft+"\x01"+" more seconds!")
 					return false;
 				}
 			}
@@ -4673,7 +4686,7 @@ function VSLib::EasyLogic::CheckCommandAvailability(player,cleanBaseCmd,quiet=fa
 			if(timeleft < restrictions.CoolDownAll)
 			{
 				if(!quiet)
-					ClientPrint(player.GetBaseEntity(),3,"You can't use this command for "+"\x04"+timeleft+"\x01"+" more seconds!")
+					ClientPrint(player.GetBaseEntity(),3,"\x01"+"You can't use this command for "+"\x04"+timeleft+"\x01"+" more seconds!")
 				return false;
 			}
 		}
@@ -4687,7 +4700,7 @@ function VSLib::EasyLogic::CheckCommandAvailability(player,cleanBaseCmd,quiet=fa
 		if(banleft < 0)
 		{
 			if(!quiet)
-				ClientPrint(player.GetBaseEntity(),3,"Host has temporarly banned you from using "+"\x04"+cleanBaseCmd+"\x01"+" command for "+"\x04"+(-banleft)+"\x01"+" more seconds!")
+				ClientPrint(player.GetBaseEntity(),3,"\x01"+"Host has temporarly banned you from using "+"\x04"+cleanBaseCmd+"\x01"+" command for "+"\x04"+(-banleft)+"\x01"+" more seconds!")
 			return false;
 		}
 		delete ::VSLib.EasyLogic.TemporaryCmdBanList[cleanBaseCmd][steamid]
@@ -4818,7 +4831,7 @@ if (!("InterceptChat" in getroottable()))
 					}
 					else
 					{
-						ClientPrint(srcEnt,3,"Unknown command: "+baseCmd[0])
+						::SpellChecker.Levenshtein().PrintBestMatches(srcEnt,baseCmd[0],::VSLib.EasyLogic.Triggers)
 					}
 
 					break;
@@ -4856,7 +4869,7 @@ if (!("InterceptChat" in getroottable()))
 							{
 								if(i == 0)
 								{
-									Messages.DocCmdPlayer(::VSLib.Player(srcEnt),"List of commands matching \""+"\x04"+keycmd+"\x01"+"\":")
+									Messages.DocCmdPlayer(::VSLib.Player(srcEnt),"List of commands matching "+"\x05"+"\""+"\x04"+keycmd+"\x05"+"\""+"\x01"+":")
 								}
 								i += 1
 								ClientPrint(srcEnt,3,"\x04"+i+"\x01"+". "+cmd)
@@ -4914,7 +4927,8 @@ if (!("InterceptChat" in getroottable()))
 							}
 							else
 							{
-								ClientPrint(srcEnt,3,"Unknown command: "+baseCmd[0])
+								if(baseCmd[0] != null)
+									::SpellChecker.Levenshtein().PrintBestMatches(srcEnt,baseCmd[0],::VSLib.EasyLogic.TriggerDocs)
 							}
 						}
 					}

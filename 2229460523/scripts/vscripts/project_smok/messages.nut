@@ -57,6 +57,14 @@
                     {
                         printl("[Apocalypse-Settings] Creating the setting file for the first time...");
                     }
+					LoadGhostZombiesSettings = function()
+                    {
+                        printl("[Ghost_Zombies-Settings] Loading ghost zombies settings...");
+                    }
+                    CreateGhostZombiesSettings = function()
+                    {
+                        printl("[Ghost_Zombies-Settings] Creating the setting file for the first time...");
+                    }
                     LoadMeteorShowerSettings = function()
                     {
                         printl("[Meteor_Shower-Settings] Loading meteor shower settings...");
@@ -427,7 +435,20 @@
                     return name + " " + COLOR_BRIGHT_GREEN + "->" + COLOR_DEFAULT + " Changed apocalypse setting " + COLOR_ORANGE + setting + COLOR_DEFAULT + " from " + COLOR_OLIVE_GREEN + old + COLOR_DEFAULT + " to " + COLOR_BRIGHT_GREEN + new;
                 }
             }
+			
+            GhostZombiesSettings = 
+            {
+                StartingMessages = ["Who is hitting me ?!","You can't shoot a ghost Nick...","Who you gonna call?","I ain't afraid of no ghost"]
 
+                EndingNoKept = "Ghosts have been busted..."
+				
+                EndingKept = "Ghosts have stopped spawning, but there may be still some left!"
+
+                Success = function(name,setting,old,new)
+                {
+                    return name + " " + COLOR_BRIGHT_GREEN + "->" + COLOR_DEFAULT + " Changed ghost zombies setting " + COLOR_ORANGE + setting + COLOR_DEFAULT + " from " + COLOR_OLIVE_GREEN + old + COLOR_DEFAULT + " to " + COLOR_BRIGHT_GREEN + new;
+                }
+            }
             CustomSequences =
             {
                 //Generic
@@ -1173,6 +1194,45 @@
                     "meteor_shower_debug",
                     [],
                     "Change debug messages of meteor shower event"
+                    )
+                return cmd.Describe();
+            }
+            start_ghost_zombies = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "start_ghost_zombies",
+                    [],
+                    "Start(or stop if already started) the ghost zombies!"
+                    )
+                return cmd.Describe();
+            }
+            pause_ghost_zombies = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "pause_ghost_zombies",
+                    [],
+                    "Stop the ghost zombies!"
+                    )
+                return cmd.Describe();
+            }
+            show_ghost_zombies_settings = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "show_ghost_zombies_settings",
+                    [],
+                    "Show current ghost zombies event settings"
+                    )
+                return cmd.Describe();
+            }
+            ghost_zombies_setting = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "ghost_zombies_setting",
+                    [
+                        CMDParam("setting","Setting name"),
+                        CMDParam("value","New value")
+                    ],
+                    "Change a ghost zombies event setting. Check show_ghost_zombies_settings command"
                     )
                 return cmd.Describe();
             }
@@ -2019,6 +2079,18 @@
                         CMDParam("targets","Targets: all|special|common|physics",true,"unfreezes aimed object")
                     ],
                     "Unfreeze objects in time which were frozen with stop_time command"
+                    )
+                return cmd.Describe();
+            }
+            wiki = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "wiki",
+					[
+						CMDParam("class_name","Class name of the object| !picker (aimed object's)| #idx (object at index idx)"),
+						CMDParam("header","Header name to use: description|link|flags|keyvals|inputs|outputs",true,"prints all the data from all headers, may be quite long")
+					],
+                    "Get wiki data of given class. Use this to get the description, link, flags, key-values, inputs and outputs"
                     )
                 return cmd.Describe();
             }

@@ -1,7 +1,20 @@
 /*********************\
 *  BUILT-IN SETTINGS  *
 \*********************/
-::Constants <- {}
+::Constants <- 
+{
+	Version = 
+	{
+		Number = "v1.1.0"
+		Date = "13.03.2021"
+		Source = "https://github.com/semihM/project_smok"
+	}
+
+	AliasExampleVersions =
+	{
+		"v1.1.0" : 1
+	}
+}
 
 /************************\
 * PATHS USED FOR SETTINGS *
@@ -28,6 +41,9 @@
 
     /// Meteor shower custom settings
     MeteorShowerSettings = "admin system/meteor_shower_settings.txt"
+	
+    /// Ghost zombies custom settings
+    GhostZombiesSettings = "admin system/ghost_zombies_settings.txt"
 
     /// Custom sequences json object
     CustomResponses = "admin system/custom_responses.json"
@@ -36,21 +52,22 @@
     CustomizedDefaults = "admin system/defaults.txt"
 	CustomizedPropSpawnDefaults = "admin system/prop_defaults.txt"
 
-    CustomizedDefaultsBadFormat= "admin system/defaults_BAD_FORMAT.txt"
-    CustomizedPropSpawnDefaultsBadFormat= "admin system/prop_defaults_BAD_FORMAT.txt"
+    CustomizedDefaultsBadFormat= "admin system/defaults_bad_format.txt"
+    CustomizedPropSpawnDefaultsBadFormat= "admin system/prop_defaults_bad_format.txt"
 
     /// Bot sharing/looting settings
     BotSettings = "admin system/botparams.txt"
 
     /// Command restrictions
     CommandRestrictions = "admin system/command_limits.txt"
-    CommandRestrictionsBadFormat = "admin system/command_limits_BAD_FORMAT.txt"
+    CommandRestrictionsBadFormat = "admin system/command_limits_bad_format.txt"
 	
     DisabledCommands = "admin system/disabled_commands.txt"
 
 	/// Command aliasing
 	CommandAliases = "admin system/aliases/file_list.txt"
 	CommandAliasesExample = "admin system/aliases/example_alias_file.txt"
+	CommandAliasesExampleVersionBased = @(v) "admin system/aliases/example_alias_file_"+v+".txt"
 	
 	/// Custom commands
 	CommandScripts = "admin system/scripts/file_list.txt"
@@ -86,6 +103,8 @@
 
     Apocalypse = "Propageddon_"
 
+	GhostZombies = "GhostZombies_"
+
     MeteorShower = "MeteorShower_"
 
     BotThinkAdder = "BotThinkAdder_"
@@ -111,7 +130,9 @@
     RoundStart =
 	{
 		Apocalypse = 7
-	
+
+		GhostZombies = 8
+
 		MeteorShower = 9 
 
 		BotShareLoot = 15
@@ -127,6 +148,9 @@
 
 // Characters // indicate comments starting after them, which are ignored
 // To include the ""example_hook_file.nut"" remove the // characters at the beginning of the line!
+// !!!!!!!!!!!!!!
+// IT IS NOT RECOMMENDED TO USE THE EXAMPLE FILE FOR NEW HOOKS 
+// !!!!!!!!!!!!!!
 
 //example_hook_file // This will make project_smok look for ""example_hook_file.nut"" and read it if it exists! Write any additional files below this line..."
 
@@ -144,7 +168,7 @@
 // !!!!!!!!!!!!!!
 //
 // All the global tables and methods can be accessed via these files, but it is NOT recommended to update them
-// It is recommended to create 1 game event with multiple hooks per file, you can also do 
+// It is recommended to create 1 game event with multiple hooks per file
 //
 // Some useful global tables:
 //      1. ::VSLib.Utils
@@ -202,6 +226,9 @@
 
 // Characters // indicate comments starting after them, which are ignored
 // To include the ""example_command_file.nut"" remove the // characters at the beginning of the line!
+// !!!!!!!!!!!!!!
+// IT IS NOT RECOMMENDED TO USE THE EXAMPLE FILES FOR NEW COMMANDS 
+// !!!!!!!!!!!!!!
 
 //example_command_file // This will make project_smok look for ""example_command_file.nut"" and read it if it exists! Write any additional files below this line..."
 
@@ -299,11 +326,18 @@
 
 // Characters // indicate comments starting after them, which are ignored
 // To include the ""example_alias_file.txt"" remove the // characters at the beginning of the line!
+// !!!!!!!!!!!!!!
+// IT IS NOT RECOMMENDED TO USE THE EXAMPLE FILES FOR NEW ALIASES
+// !!!!!!!!!!!!!!
 
 //example_alias_file // This will make project_smok look for ""example_alias_file.txt"" and read it if it exists! Write any additional files below this line..."
 
 ::Constants.CommandAliasesDefaults <-
+{
+	v1_0_0 =
 @"// This file contains aliases for the commands present in project_smok add-on
+// For detailed documentation check out: https://github.com/semihM/project_smok#user-content-using-aliases
+//
 // Characters // indicate the start of a comment, which are ignored while reading the file
 // Creating aliases lets players use commands in a way that isn't possible or ideal otherwise
 // Aliases allow:
@@ -315,7 +349,7 @@
 //	1. Have special characters(except underscore _) or spaces in it
 //	2. Start with a number 
 // 	3. Be same as an existing command or alias
-//	4. Be same as the example alias names (basic_alias_1, basic_alias_2, advanced_alias_1)
+//	4. Be same as the example alias names (basic_alias_1, basic_alias_2, advanced_alias_1, advanced_alias_2)
 // !!!!!!!
 // >>> FILE SIZE SHOULD NOT EXCEED 16.5 KB, OR FILE WILL NOT BE READ
 // !!!!!!!
@@ -335,7 +369,6 @@
 		{	
 			// Call command_name_1 without arguments
 			command_name_1 = {}
-			
 			// Call command_name_2 with given arguments, values should be given in quotes """"
 			command_name_2 = 
 			{
@@ -453,6 +486,82 @@
 	}
 }"
 
+	v1_1_0 = @"// Examples present in this file includes new features introduced in v1.1.0
+// For detailed documentation check out: https://github.com/semihM/project_smok#user-content-using-aliases
+//
+// Characters // indicate the start of a comment, which are ignored while reading the file
+// --------------------------------------------------
+// New variables		|		Variable definition
+// --------------------------------------------------
+//		$caller_ent		command's caller as a VSLib.Player object
+//		$caller_id		command caller's entity index as an integer
+//		$caller_char		command caller's character name, first letter capitalized
+//		$caller_name		command caller's in-game name
+//		$caller_target		entity the command caller is aiming at as an VSLib.Entity object, uses an invalid entity if nothing is looked at 
+// --------------------------------------------------
+// Example: Print the result of param_1's method name given in param_2 called with param_3 arguments
+// !advanced_alias_2  -> Print your angles 10 times checked every 0.5 seconds
+// !advanced_alias_2 Player(2) IsPressingButton BUTTON_ATTACK  -> Print wheter player 2 is shooting 10 times checked every 0.5 seconds
+{
+	advanced_alias_2 =
+	{
+		Parameters =
+		{
+			param_1 = null		// Used as null argument
+			param_2 = ""GetAngles""
+			param_3 = """"		// Used as empty string argument
+		}
+		
+		// More detailed docs for ?advanced_alias_2
+		Help =
+		{
+			docs = ""Calls target_entity's (or caller's if null) method_name named method with cs_args string""
+			// Parameter documentations can be detailed as follows:
+			//	name = parameter name
+			//	docs = parameter description
+			//	when_null = what happens if no argument passed
+			param_1 = 
+			{
+				name = ""target_entity""
+				docs = ""Target entity in a compilable format, example(entity at index 69) -> Entity(69)""
+				when_null = ""uses caller's entity""
+			}
+			param_2 = 
+			{
+				name = ""method_name""
+				docs = ""Name of the method to call of target_entity""
+				when_null = ""uses GetAngles method""
+			}
+			param_3 = 
+			{
+				name = ""cs_args""
+				docs = ""Comma seperated arguments to use with method_name""
+				when_null = ""uses empty string""
+			}
+		}
+		
+		Commands =
+		{
+			out =	// Use ""out"" command to print results
+			{	
+				// Check every half a second for 10 times 
+				repeat = 10	
+				delay_between = 0.5	
+
+				// Check if target_entity got an argument passed to it, if not: use caller player via $caller_ent
+				// Since ""out"" command evaluates the expression, it's given in quotes, therefore it won't be evaluated while the $variable values get replaced
+				// A pseudo look to arg_1's expression
+				// if $param_1 is not null then:
+				//     do $param_1.$param_2($param_3)
+				// else 
+				//     do $caller_ent.$param_2($param_3)
+				arg_1 = ""$[\""$param_1 ? $param_1.$param_2($param_3) : $caller_ent.$param_2($param_3)\""]""
+			}	
+		}
+	}
+}"
+}
+
 // Initial proposal
 // TO-DO: Move default values to parameters instead
 // TO-DO: Fix regexps
@@ -521,7 +630,7 @@
 	local tbl = null
 	try
 	{
-		tbl = compilestring("local __tempvar__ ={"+code+"};return __tempvar__;")()
+		tbl = compilestring("local __tempvar__ ={"+strip(code)+"};return __tempvar__;")()
 	}
 	catch(e)
 	{
@@ -589,21 +698,22 @@
 	local tbl = null
 	try
 	{
-		tbl = compilestring("local __tempvar__="+fileContents+";return __tempvar__;")()
+		tbl = compilestring("local __tempvar__="+strip(fileContents)+";return __tempvar__;")()
 	}
 	catch(e){printl("[Alias-Compile-Error] Failed to compile "+filename+". Error: "+e)}
 
 	if(tbl == null || typeof tbl != "table")
 	{
-		printl("[Alias-Error] "+filename+" was formatted entirely wrong, check {} and \"\" characters!")
-		printl("[Alias-Error] Keeping incorrectly formatted file named differently and replacing it with the default one...")
+		local badformat = filename.slice(0,filename.find(".txt"))+"_bad_format.txt";
+		printl("[Alias-Error] "+filename+" was formatted incorrectly, check {} and \"\" characters!")
+		printl("[Alias-Error] Keeping incorrectly formatted file named as "+badformat+" and replacing it with the v1.0.0 examples...")
 
-		StringToFile(filename.slice(0,filename.find(".txt"))+"_BAD_FORMAT.txt",fileContents);
+		StringToFile(badformat,fileContents);
 
-		StringToFile(filename,Constants.CommandAliasesDefaults);
+		StringToFile(filename,Constants.CommandAliasesDefaults.v1_0_0);
 
 		fileContents = FileToString(filename);
-		return compilestring("local __tempvar__="+fileContents+";return __tempvar__;")()
+		return compilestring("local __tempvar__="+strip(fileContents)+";return __tempvar__;")()
 	}
 	else
 	{	
@@ -1327,6 +1437,16 @@ command_name_2 //Take notes by adding // after the command name if needed"
         }
 
         
+        GhostZombies =
+        {
+			Title = "\t\t/// Ghost zombies event starting state"
+            State =
+			{
+				Value = 0
+				Comment = "// State of ghost zombies when starting the game; 0: start off, 1: start on"
+			}   
+        }
+
         Apocalypse =
         {
 			Title = "\t\t/// Apocalypse-propageddon starting state"
@@ -1724,6 +1844,14 @@ command_name_2 //Take notes by adding // after the command name if needed"
     }
 	return __SingleValWithComment(::Constants.DefaultsDetailed.Tables.ModelPreferences,"State",tblref.Tables.ModelPreferences);
 }
+::__StringifyGhostZombiesSettings <- function(tblref=null)
+{
+    if(tblref == null)
+	{
+	    return __SingleValWithComment(::Constants.DefaultsDetailed.Tables.GhostZombies,"State");
+    }
+	return __SingleValWithComment(::Constants.DefaultsDetailed.Tables.GhostZombies,"State",tblref.Tables.GhostZombies);
+}
 ::__StringifyApocalypseSettings <- function(tblref=null)
 {
     if(tblref == null)
@@ -2028,6 +2156,11 @@ command_name_2 //Take notes by adding // after the command name if needed"
 		+ Constants.DefaultsDetailed.Tables.MeteorShower.Title + "\n\r\t\t"
 		+ "MeteorShower =\n\r\t\t{\n\r"
 		+ __StringifyMeteorShowerSettings(tbl)
+		+ "\n\r\t\t}\n\r"
+		
+		+ Constants.DefaultsDetailed.Tables.GhostZombies.Title + "\n\r\t\t"
+		+ "GhostZombies =\n\r\t\t{\n\r"
+		+ __StringifyGhostZombiesSettings(tbl)
 		+ "\n\r\t\t}\n\r"
 
 		+ Constants.DefaultsDetailed.Tables.TankRock.Title + "\n\r\t\t"
@@ -2441,6 +2574,21 @@ command_name_2 //Take notes by adding // after the command name if needed"
 			{
 				fixapplied.append("Re-create default Tables.Apocalypse.State")
 				tbl.Tables.Apocalypse.State <- correcttbl.Tables.Apocalypse.State
+			}
+		}
+		
+		// Ghost zombies
+		if(!ValidateTbl(tbl.Tables,"GhostZombies"))
+		{
+			fixapplied.append("Re-create default Tables.GhostZombies")
+			tbl.Tables.GhostZombies <- correcttbl.Tables.GhostZombies
+		}
+		else
+		{
+			if(!ValidateTbl(tbl.Tables.GhostZombies,"State","integer|float"))
+			{
+				fixapplied.append("Re-create default Tables.GhostZombies.State")
+				tbl.Tables.GhostZombies.State <- correcttbl.Tables.GhostZombies.State
 			}
 		}
 
@@ -2986,6 +3134,72 @@ if(!("Defaults" in ::Constants))
 }
 
 ::Constants.Defaults.ApocalypseSettings <- ::Constants.GetApocalypseSettings();
+
+/// Ghost zombies event
+/*
+ * Returns default ghost zombies event settings
+ */
+::Constants.GetGhostZombiesSettingsDefaults <- function()
+{
+    local tbl = 
+    {
+		min_alpha = 40
+		max_alpha = 80
+		ghost_prob = 0.75
+		timer_delay = 1
+		render_effect = RENDERFX_PULSE_SLOW
+		stay_ghost_after = 0
+		zombie_pick_type = 3
+	};
+    return tbl;
+}
+/*
+ * Returns default ghost zombies event setting explanations
+ */
+::Constants.GetGhostZombiesSettingsComments <- function()
+{
+    local tbl = 
+    {
+		min_alpha = "Minimum alpha value"
+		max_alpha = "Maximum alpha value"
+		ghost_prob = "Probability of zombie turning into ghost, tested every timer_delay seconds"
+		timer_delay = "Interval length in seconds to try ghostifying zombies"
+		render_effect = "Ghost effect, integer in the interval [0,24], check flags with !flag_lookup RENDERFX_"
+		stay_ghost_after = "1: Keep the ghost effect after the event is turned off, 0: Remove the ghost effect when even turns off"
+		zombie_pick_type = "3: Ghostify common and special zombies, 2: Special zombies only, 1: Common zombies only"
+	}
+    return tbl;
+}
+
+/*
+ * Returns properly aligned ghost zombies settings string formatted as:
+ *
+ *      setting = default_value // explanation
+ *
+ */
+::Constants.GetGhostZombiesSettings <- function()
+{
+    local comments = ::Constants.GetGhostZombiesSettingsComments();
+    local settings = 
+    [
+        "min_alpha","max_alpha","ghost_prob",
+        "timer_delay","render_effect","stay_ghost_after",
+		"zombie_pick_type"
+    ]
+    local defaults = ::Constants.GetGhostZombiesSettingsDefaults();
+    
+    local gssettings  = "";
+    local length = settings.len();
+    local setting = "";
+    for(local i = 0; i < length; i++)
+    {
+        setting = settings[i];
+        gssettings += setting + " = " + defaults[setting] + " // " + comments[setting] + (i != length-1 ? "\r\n" : "");
+    }
+    return gssettings;
+}
+
+::Constants.Defaults.GhostZombiesSettings <- ::Constants.GetGhostZombiesSettings();
 
 /// Meteor shower event
 /*

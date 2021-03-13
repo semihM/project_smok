@@ -1,0 +1,583 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="Build" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Client</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2b94a992-22e6-436e-b5d4-64486d466ba1}</ProjectGuid>
+    <AssemblyName>SquirrelProject1</AssemblyName>
+    <Name>project_smok</Name>
+    <RootNamespace>SquirrelProject1</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Client' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <AutorunInterpreter>False</AutorunInterpreter>
+    <CommandLineOptions>
+    </CommandLineOptions>
+    <Interpreter>
+    </Interpreter>
+    <Localhost>True</Localhost>
+    <Port>1234</Port>
+    <SuspendOnStartup>False</SuspendOnStartup>
+    <TargetAddress>127.0.0.1</TargetAddress>
+    <WorkingDirectory>
+    </WorkingDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Server' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <AutorunInterpreter>False</AutorunInterpreter>
+    <CommandLineOptions>
+    </CommandLineOptions>
+    <Interpreter>
+    </Interpreter>
+    <Localhost>True</Localhost>
+    <Port>1234</Port>
+    <SuspendOnStartup>False</SuspendOnStartup>
+    <TargetAddress>127.0.0.1</TargetAddress>
+    <WorkingDirectory>
+    </WorkingDirectory>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\Program Files %28x86%29\Steam\steamapps\common\Left 4 Dead 2\bin\vpk.exe">
+      <SubType>Content</SubType>
+      <Link>vpk.exe</Link>
+    </Content>
+    <Content Include=".gitignore">
+      <SubType>Content</SubType>
+      <Link>.gitignore</Link>
+    </Content>
+    <Content Include=".project">
+      <SubType>Content</SubType>
+      <Link>.project</Link>
+    </Content>
+    <Content Include="2229460523\addonimage.jpg">
+      <SubType>Content</SubType>
+      <Link>2229460523\addonimage.jpg</Link>
+    </Content>
+    <Content Include="2229460523\addoninfo.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\addoninfo.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c10m1_caves_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c10m1_caves_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c10m2_drainage_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c10m2_drainage_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c10m3_ranchhouse_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c10m3_ranchhouse_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c10m4_mainstreet_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c10m4_mainstreet_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c10m5_houseboat_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c10m5_houseboat_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c11m1_greenhouse_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c11m1_greenhouse_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c11m2_offices_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c11m2_offices_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c11m3_garage_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c11m3_garage_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c11m4_terminal_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c11m4_terminal_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c11m5_runway_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c11m5_runway_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c12m1_hilltop_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c12m1_hilltop_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c12m2_traintunnel_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c12m2_traintunnel_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c12m3_bridge_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c12m3_bridge_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c12m4_barn_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c12m4_barn_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c12m5_cornfield_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c12m5_cornfield_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c13m1_alpinecreek_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c13m1_alpinecreek_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c13m2_southpinestream_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c13m2_southpinestream_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c13m3_memorialbridge_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c13m3_memorialbridge_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c13m4_cutthroatcreek_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c13m4_cutthroatcreek_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c14m1_junkyard_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c14m1_junkyard_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c14m2_lighthouse_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c14m2_lighthouse_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c1m1_hotel_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c1m1_hotel_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c1m2_streets_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c1m2_streets_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c1m3_mall_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c1m3_mall_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c1m4_atrium_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c1m4_atrium_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c2m1_highway_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c2m1_highway_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c2m2_fairgrounds_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c2m2_fairgrounds_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c2m3_coaster_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c2m3_coaster_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c2m4_barns_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c2m4_barns_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c3m1_plankcountry_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c3m1_plankcountry_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c3m2_swamp_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c3m2_swamp_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c3m3_shantytown_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c3m3_shantytown_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c3m4_plantation_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c3m4_plantation_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c4m1_milltown_a_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c4m1_milltown_a_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c4m2_sugarmill_a_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c4m2_sugarmill_a_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c4m2_sugarmill_b_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c4m2_sugarmill_b_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c4m4_milltown_b_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c4m4_milltown_b_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c4m5_milltown_escape_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c4m5_milltown_escape_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c5m1_waterfront_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c5m1_waterfront_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c5m1_waterfront_sndscape_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c5m1_waterfront_sndscape_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c5m2_park_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c5m2_park_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c5m3_cemetery_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c5m3_cemetery_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c5m4_quarter_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c5m4_quarter_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c5m5_bridge_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c5m5_bridge_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c6m1_riverbank_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c6m1_riverbank_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c6m2_bedlam_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c6m2_bedlam_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c6m3_port_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c6m3_port_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c7m1_docks_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c7m1_docks_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c7m2_barge_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c7m2_barge_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c7m3_port_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c7m3_port_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c8m1_apartment_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c8m1_apartment_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c8m2_subway_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c8m2_subway_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c8m3_sewers_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c8m3_sewers_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c8m4_interior_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c8m4_interior_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c8m5_rooftop_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c8m5_rooftop_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c9m1_alleys_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c9m1_alleys_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\maps\c9m2_lots_level_sounds.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\maps\c9m2_lots_level_sounds.txt</Link>
+    </Content>
+    <Content Include="2229460523\scripts\clientmenu.txt">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\clientmenu.txt</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\admin_system.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\admin_system.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\admin_system\entitygroups\admin_alarmcar_group.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\admin_system\entitygroups\admin_alarmcar_group.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\admin_system\entitygroups\auto_autoshotgun_group.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\admin_system\entitygroups\auto_autoshotgun_group.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\admin_system\entitygroups\auto_hunting_rifle_group.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\admin_system\entitygroups\auto_hunting_rifle_group.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\admin_system\entitygroups\auto_rifle_group.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\admin_system\entitygroups\auto_rifle_group.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\admin_system\vslib.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\admin_system\vslib.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\admin_system\vslib\easylogic.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\admin_system\vslib\easylogic.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\admin_system\vslib\entity.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\admin_system\vslib\entity.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\admin_system\vslib\fileio.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\admin_system\vslib\fileio.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\admin_system\vslib\hud.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\admin_system\vslib\hud.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\admin_system\vslib\player.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\admin_system\vslib\player.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\admin_system\vslib\randomitemspawner.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\admin_system\vslib\randomitemspawner.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\admin_system\vslib\responserules.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\admin_system\vslib\responserules.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\admin_system\vslib\timer.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\admin_system\vslib\timer.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\admin_system\vslib\utils.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\admin_system\vslib\utils.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\coop.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\coop.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\director_base.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\director_base.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\project_smok\adminvars.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\project_smok\adminvars.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\project_smok\aliascompiler.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\project_smok\aliascompiler.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\project_smok\constants.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\project_smok\constants.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\project_smok\messages.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\project_smok\messages.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\project_smok\spellchecker.nut">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\realism.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\realism.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\resource_tables\entitydetailtables.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\resource_tables\entitydetailtables.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\resource_tables\modelpaths.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\resource_tables\modelpaths.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\resource_tables\netproptables.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\resource_tables\netproptables.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\resource_tables\particlenames.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\resource_tables\particlenames.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\resource_tables\survivorlines.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\resource_tables\survivorlines.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\resource_tables\survivorlines_paths\biker.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\resource_tables\survivorlines_paths\biker.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\resource_tables\survivorlines_paths\coach.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\resource_tables\survivorlines_paths\coach.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\resource_tables\survivorlines_paths\gambler.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\resource_tables\survivorlines_paths\gambler.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\resource_tables\survivorlines_paths\manager.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\resource_tables\survivorlines_paths\manager.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\resource_tables\survivorlines_paths\mechanic.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\resource_tables\survivorlines_paths\mechanic.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\resource_tables\survivorlines_paths\namvet.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\resource_tables\survivorlines_paths\namvet.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\resource_tables\survivorlines_paths\producer.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\resource_tables\survivorlines_paths\producer.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\resource_tables\survivorlines_paths\teengirl.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\resource_tables\survivorlines_paths\teengirl.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\scavenge.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\scavenge.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\scriptedmode.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\scriptedmode.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\survival.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\survival.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\versus.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\versus.nut</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\a2.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\a2.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\a3.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\a3.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\a4.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\a4.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\a5.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\a5.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\b2.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\b2.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\b3.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\b3.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\b4.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\b4.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\b5.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\b5.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\c3.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\c3.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\c4.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\c4.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\c5.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\c5.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\c6.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\c6.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\d3.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\d3.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\d4.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\d4.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\d5.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\d5.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\d6.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\d6.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\e3.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\e3.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\e4.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\e4.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\e5.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\e5.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\f3.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\f3.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\f4.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\f4.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\f5.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\f5.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\g3.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\g3.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\g4.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\g4.wav</Link>
+    </Content>
+    <Content Include="2229460523\sound\piano\g5.wav">
+      <SubType>Content</SubType>
+      <Link>2229460523\sound\piano\g5.wav</Link>
+    </Content>
+    <Content Include="keymapping.txt">
+      <SubType>Content</SubType>
+      <Link>keymapping.txt</Link>
+    </Content>
+    <Content Include="README.md">
+      <SubType>Content</SubType>
+      <Link>README.md</Link>
+    </Content>
+    <Content Include="vendor.yml">
+      <SubType>Content</SubType>
+      <Link>vendor.yml</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="2229460523" />
+    <Folder Include="2229460523\maps" />
+    <Folder Include="2229460523\scripts\vscripts" />
+    <Folder Include="2229460523\scripts\vscripts\admin_system" />
+    <Folder Include="2229460523\scripts\vscripts\admin_system\entitygroups" />
+    <Folder Include="2229460523\scripts\vscripts\admin_system\vslib" />
+    <Folder Include="2229460523\scripts\vscripts\resource_tables" />
+    <Folder Include="2229460523\scripts\vscripts\project_smok" />
+    <Folder Include="2229460523\scripts\vscripts\resource_tables\survivorlines_paths" />
+    <Folder Include="2229460523\sound" />
+    <Folder Include="2229460523\scripts" />
+    <Folder Include="2229460523\sound\piano" />
+  </ItemGroup>
+</Project>
