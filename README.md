@@ -2819,6 +2819,7 @@
 // If you are a beginner to Squirrel scripting language, check out: http://squirrel-lang.org/squirreldoc/
 // If you don't know how to use the VSLib library, check out: https://l4d2scripters.github.io/vslib/docs/index.html
 // Some methods of VSLib may behave differently, make sure to check out the source code for those: https://github.com/semihM/project_smok/tree/master/2229460523/scripts/vscripts/admin_system/vslib
+
 // Some useful global tables:
 //      1. ::VSLib.Utils
 //          o Basic common manipulation methods for all data types
@@ -2857,8 +2858,8 @@
 // -> This function will display everyone a message telling an admin has connected 
 ::PS_Hooks.OnPlayerConnected.AnotherCoolHook <- function(player,args)
 {
-	// Tell everyone a semi-colored message when an admin is connected
-	// Check admin status, in this case make sure second parameter(quiet) is true, so no other message will be displayed 
+	// Check admin status, in this case make sure second parameter(quiet) is true, so no other message will be displayed
+	// -> Player's name will be colored orange, rest will be white
 	if(AdminSystem.IsPrivileged(player,true))
 		::Messages.InformAll(COLOR_ORANGE + player.GetName() + COLOR_DEFAULT + " is here to smok- some boomers!");	
 } 
@@ -2875,8 +2876,8 @@
       - **_file\_list.txt_**: List of file names to read as custom alias tables
 
       - **_example\_alias\_file.txt_**: An example file containing information about how to create aliases, version v1.0.0 
-      - 
-      - **_example\_alias\_file\_v{Major}\_{Minor}\_{Patch}.txt_**: An example file containing examples with new features from version v{Major}.{Minor}.{Patch}
+      
+      - **_example\_alias\_file\_v{Major}\_{Minor}\_{Patch}.txt_**: File containing examples using new features from version v{Major}.{Minor}.{Patch}
 
    + **_hooks_** : Custom hook files folder
       - **_file\_list.txt_**: List of file names to read as custom hook functions
@@ -2936,7 +2937,7 @@
 - **"apocalypse_settings.txt"** file contains the settings to use for the _apocalypse_ event. Probabilistic values are normalized between 0 and 1.
 
 - **"ghost_zombies_settings.txt"** file contains the settings to use for the _ghost zombies_ event. Probabilistic values are normalized between 0 and 1.
-- 
+
 - **"meteor_shower_settings.txt"** file contains the settings to use for the _meteor shower_ event. Probabilistic values are normalized between 0 and 1.
 
 ---
