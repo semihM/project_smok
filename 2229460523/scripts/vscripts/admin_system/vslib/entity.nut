@@ -143,8 +143,6 @@ if (!("EntData" in ::VSLib))
 	}
 }
 
-
-
 /**
  * Global definitions and constants.
  */
@@ -458,7 +456,6 @@ getconsttable()["TRACE_MASK_PLAYER_SOLID"] <- 33636363;
 getconsttable()["TRACE_MASK_NPC_SOLID"] <- 33701899;
 getconsttable()["TRACE_MASK_SHOT"] <- 1174421507;
 
-
 // Content flags
 getconsttable()["CONTENTS_EMPTY"] <-			0;		/**< No contents. */
 getconsttable()["CONTENTS_SOLID"] <-			0x1;		/**< an eye is never valid in a solid . */
@@ -503,6 +500,10 @@ getconsttable()["MASK_PLAYERSOLID_BRUSHONLY"] <-(getconsttable()["CONTENTS_SOLID
 getconsttable()["MASK_NPCSOLID_BRUSHONLY"] <-(getconsttable()["CONTENTS_SOLID"]|getconsttable()["CONTENTS_MOVEABLE"]|getconsttable()["CONTENTS_WINDOW"]|getconsttable()["CONTENTS_MONSTERCLIP"]|getconsttable()["CONTENTS_GRATE"]) /**< everything normally solid for npc movement, except monsters (world+brush only) */
 getconsttable()["MASK_NPCWORLDSTATIC"] <-(getconsttable()["CONTENTS_SOLID"]|getconsttable()["CONTENTS_WINDOW"]|getconsttable()["CONTENTS_MONSTERCLIP"]|getconsttable()["CONTENTS_GRATE"]) /**< just the world, used for route rebuilding */
 getconsttable()["MASK_SPLITAREAPORTAL"] <-(getconsttable()["CONTENTS_WATER"]|getconsttable()["CONTENTS_SLIME"]) /**< These are things that can split areaportals */
+
+
+// project_smok consts
+getconsttable()["GRAB_YEET_TRACE_MASK"] <- (getconsttable()["TRACE_MASK_SHOT"]|getconsttable()["TRACE_MASK_VISIBLE_AND_NPCS"])
 
 
 /**

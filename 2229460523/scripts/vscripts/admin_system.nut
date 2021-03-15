@@ -15805,49 +15805,34 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else if(entlooked)
 	{	
-		//entlooked.Input("sleep","",0)
-		newAngle = entlooked.GetLocalAngles();
-		if(entlooked.GetParent() == null)
+		local vel = entlooked.GetPhysicsVelocity()
+		entlooked.Input("sleep","",0)
+		newAngle = entlooked.GetAngles();
+		
+		if( axis == "x" )
+		{	
+			newAngle.x += val;
+		}
+		else if ( axis == "z")
 		{
-			if( axis == "x" )
-			{	
-				newAngle.x += val;
-				entlooked.SetLocalAngles(newAngle);
-				entlooked.SetForwardVector(newAngle.Forward());
-			}
-			else if ( axis == "z")
-			{
-				newAngle.z += val;
-				entlooked.SetLocalAngles(newAngle);
-				if(entlooked.GetClassname().find("physics") == null)
-					entlooked.SetForwardVector(newAngle.Forward());
-			}
-			else
-			{
-				newAngle.y += val;
-				entlooked.SetLocalAngles(newAngle);
-				entlooked.SetForwardVector(newAngle.Forward());	
-			}
+			newAngle.z += val;
 		}
 		else
 		{
-			if( axis == "x" )
-			{	
-				newAngle.x += val;
-				entlooked.SetLocalAngles(newAngle);
-			}
-			else if ( axis == "z")
-			{
-				newAngle.z += val;
-				entlooked.SetLocalAngles(newAngle);
-			}
-			else
-			{
-				newAngle.y += val;
-				entlooked.SetLocalAngles(newAngle);
-			}
+			newAngle.y += val;
 		}
 		
+		local org = entlooked.GetOrigin()
+		entlooked.Input("RunScriptCode",format("self.SetAngles(QAngle(%s,%s,%s))",newAngle.x.tostring(),newAngle.y.tostring(),newAngle.z.tostring()),0)
+		
+		entlooked.Input("RunScriptCode",format("self.SetOrigin(Vector(%s,%s,%s))",org.x.tostring(),org.y.tostring(),org.z.tostring()),0.05)
+		
+		if(entlooked.GetClassname().find("physics") != null)
+		{
+			//entlooked.Input("RunScriptCode",format("self.SetForwardVector(QAngle(%s,%s,%s).Forward())",newAngle.x.tostring(),newAngle.y.tostring(),newAngle.z.tostring()),0)
+			entlooked.Input("RunScriptCode",format("self.ApplyAbsVelocityImpulse(Vector(%s,%s,%s))",vel.x.tostring(),vel.y.tostring(),vel.z.tostring()),0.05)
+		}
+
 		Printer(player,CmdMessages.Force.RotateSuccess(entlooked.GetIndex(),newAngle));
 	}
 }
@@ -20134,8 +20119,8 @@ if ( Director.GetGameMode() == "holdout" )
 		// 
 	}
 
-	ent = player.GetLookingEntity();
-	local lookedpoint = player.GetLookingLocation(33579137);
+	ent = player.GetLookingEntity(GRAB_YEET_TRACE_MASK);
+	local lookedpoint = player.GetLookingLocation(GRAB_YEET_TRACE_MASK);
 	local entind = null;
 	local objtable = null;
 	local entclass = null;
