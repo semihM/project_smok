@@ -555,7 +555,10 @@
         "models/props_junk/trashdumpster02.mdl",
         "models/props_interiors/teddy_bear.mdl",
         "models/props_interiors/mounteddeerhead01.mdl",
-        "models/props_fairgrounds/Lil'Peanut_cutout001.mdl"
+        "models/props_fairgrounds/Lil'Peanut_cutout001.mdl",
+		"models/props_downtown/horse_statue.mdl",
+		"models/props_unique/subwaycar_all_onetexture.mdl",
+		"models/props_vehicles/pickup_regcab.mdl"
     ]
     parented =
     [
@@ -590,6 +593,29 @@
         "models/props_vehicles/deliveryvan_armored.mdl&models/props_vehicles/deliveryvan_armored_glass.mdl",
         "models/props_vehicles/airliner_finale_left.mdl&models/props_vehicles/airliner_finale_right.mdl",
         "models/props_vehicles/racecar_damaged.mdl&models/props_vehicles/racecar_glass.mdl",
-        "models/props_vehicles/boxcar_tanktrap_exterior.mdl&models/props_vehicles/boxcar_tanktrap_interior.mdl&models/props_vehicles/boxcar_tanktrap_door.mdl"
-    ]
+        "models/props_vehicles/boxcar_tanktrap_exterior.mdl&models/props_vehicles/boxcar_tanktrap_interior.mdl&models/props_vehicles/boxcar_tanktrap_door.mdl",
+		"models/props_unique/generator.mdl&models/props_unique/generator01.mdl",
+		"models/props_vehicles/front_loader01_rear.mdl&models/props_vehicles/front_loader01_glass.mdl&models/props_vehicles/front_loader01_front_down.mdl",
+		"models/props_vehicles/pickup_regcab.mdl&models/props_vehicles/pickup_regcab_glass.mdl&models/props_vehicles/pickup_load01.mdl",
+		"models/props_vehicles/pickup_regcab.mdl&models/props_vehicles/pickup_regcab_glass.mdl&models/props_vehicles/pickup_load02.mdl",
+		"models/props_vehicles/pickup_regcab.mdl&models/props_vehicles/pickup_regcab_glass.mdl&models/props_vehicles/pickup_load03.mdl"
+	]
+	special = 
+	{
+		"cargo_ship" : 
+		{
+			mdl = "models/props_vehicles/freighter_hull.mdl&models/props_vehicles/freighter_deck.mdl&models/props_vehicles/freighter_deckdetail.mdl&models/props_vehicles/freighter_hatches.mdl&models/props_vehicles/freighter_hold.mdl&models/props_vehicles/freighter_lifeboats.mdl&models/props_vehicles/freighter_loader.mdl&models/props_vehicles/freighter_foremast.mdl&models/props_vehicles/freighter_middeckdetail.mdl&models/props_vehicles/freighter_superstructure.mdl&models/props_vehicles/freighter_upperdeckdetail.mdl"
+			origin_offset = Vector(0,0,375)
+		}
+		"pickup_loaded" : 
+		{
+			mdl = 
+			[	
+				"models/props_vehicles/pickup_regcab.mdl&models/props_vehicles/pickup_regcab_glass.mdl&models/props_vehicles/pickup_load01.mdl",
+				"models/props_vehicles/pickup_regcab.mdl&models/props_vehicles/pickup_regcab_glass.mdl&models/props_vehicles/pickup_load02.mdl",
+				"models/props_vehicles/pickup_regcab.mdl&models/props_vehicles/pickup_regcab_glass.mdl&models/props_vehicles/pickup_load03.mdl"
+			]
+			origin_offset = Vector(0,0,0)
+		}
+	}
 }
