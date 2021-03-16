@@ -30205,13 +30205,13 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_unique/generator.mdl;show_menu props_unique1"
-					"label"      " Generator part 1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_unique/generator.mdl&models/props_unique/generator01.mdl;show_menu props_unique1"
+					"label"      " Generator"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_unique/generator01.mdl;show_menu props_unique1"
-					"label"      " Generator part 2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_downtown/horse_statue.mdl;show_menu props_unique1"
+					"label"      " Horse statue"
 			}
 			"5"
 			{
@@ -30582,8 +30582,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_boats1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,>cargo_ship;show_menu props_boats1"
+					"label"      " Huge cargo ship"
 			}
 			"8"
 			{
@@ -30613,7 +30613,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/boat_smash.mdl,18;show_menu props_boats2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/boat_smash.mdl&models/props_vehicles/boat_ski_glass.mdl,18;show_menu props_boats2"
 					"label"      " Speed boat(breakable)"
 			}
 			"3"
@@ -30742,12 +30742,11 @@
                     "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_trainstation/train_transporter.mdl;show_menu props_vehicles_trains2"
                     "label"		 " Transporter"
             }
-
-			"7"
-			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_vehicles_trains1"
-					"label"      " Delete object"
-			}
+            "7"
+            {
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_unique/subwaycar_all_onetexture.mdl;show_menu props_vehicles_trains2"
+                    "label"		 " Subway car"
+            }
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu props_vehicles_trains1"
@@ -30849,12 +30848,11 @@
                     "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/police_car_city.mdl&models/props_vehicles/police_car_city_glass.mdl;show_menu props_vehicles3"
                     "label"		 " City police car"
             }
-			
-			"7"
-			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_vehicles3"
-					"label"      " Delete object"
-			}
+            "7"
+            {
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/front_loader01_rear.mdl&models/props_vehicles/front_loader01_glass.mdl&models/props_vehicles/front_loader01_front_down.mdl;show_menu props_vehicles3"
+                    "label"		 " Front Loader"
+            }
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu props_vehicles2"
@@ -30907,8 +30905,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_vehicles4"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,>pickup_loaded;show_menu props_vehicles4"
+					"label"      " Pickup truck loaded"
 			}
 			"8"
 			{
@@ -36747,13 +36745,13 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_unique/generator.mdl;show_menu phys_props_unique1"
-					"label"      " Generator part 1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_unique/generator.mdl&models/props_unique/generator01.mdl;show_menu phys_props_unique1"
+					"label"      " Generator"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_unique/generator01.mdl;show_menu phys_props_unique1"
-					"label"      " Generator part 2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_downtown/horse_statue.mdl;show_menu phys_props_unique1"
+					"label"      " Horse statue"
 			}
 			"5"
 			{
@@ -37124,8 +37122,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_boats1"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,>cargo_ship;show_menu phys_props_boats1"
+					"label"      " Huge cargo ship"
 			}
 			"8"
 			{
@@ -37155,7 +37153,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/boat_smash.mdl,18;show_menu phys_props_boats2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/boat_smash.mdl&models/props_vehicles/boat_ski_glass.mdl,18;show_menu phys_props_boats2"
 					"label"      " Speed boat(breakable)"
 			}
 			"3"
@@ -37283,11 +37281,11 @@
                     "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_trainstation/train_transporter.mdl;show_menu phys_props_vehicles_trains2"
                     "label"		 " Transporter"
             }
-			"7"
-			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_vehicles_trains1"
-					"label"      " Delete object"
-			}
+            "7"
+            {
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_unique/subwaycar_all_onetexture.mdl;show_menu phys_props_vehicles_trains2"
+                    "label"		 " Subway car"
+            }
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu phys_props_vehicles_trains1"
@@ -37389,12 +37387,11 @@
                     "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/police_car_city.mdl&models/props_vehicles/police_car_city_glass.mdl;show_menu phys_props_vehicles3"
                     "label"		 " City police car"
             }
-			
-			"7"
-			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_vehicles3"
-					"label"      " Delete object"
-			}
+            "7"
+            {
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/front_loader01_rear.mdl&models/props_vehicles/front_loader01_glass.mdl&models/props_vehicles/front_loader01_front_down.mdl;show_menu phys_props_vehicles3"
+                    "label"		 " Front Loader"
+            }
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu phys_props_vehicles2"
@@ -37447,8 +37444,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_vehicles4"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,>pickup_loaded;show_menu phys_props_vehicles4"
+					"label"      " Pickup truck loaded"
 			}
 			"8"
 			{
@@ -44161,8 +44158,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_unique2"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_downtown/horse_statue.mdl;show_menu models_self_unique2"
+					"label"      " Horse statue"
 			}
 			"8"
 			{
@@ -44602,12 +44599,11 @@
                     "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_trainstation/train_transporter.mdl;show_menu models_self_vehicles_trains2"
                     "label"		 " Transporter"
             }
-
-			"7"
-			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_vehicles_trains1"
-					"label"      " Delete object"
-			}
+            "7"
+            {
+                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_unique/subwaycar_all_onetexture.mdl;show_menu models_self_vehicles_trains2"
+                    "label"		 " Subway car"
+            }
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu models_self_vehicles_trains1"
@@ -50220,8 +50216,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_picker_unique2"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_downtown/horse_statue.mdl;show_menu models_picker_unique2"
+					"label"      " Horse statue"
 			}
 			"8"
 			{
@@ -50661,12 +50657,11 @@
                     "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_trainstation/train_transporter.mdl;show_menu models_picker_vehicles_trains2"
                     "label"		 " Transporter"
             }
-
-			"7"
-			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_picker_vehicles_trains1"
-					"label"      " Delete object"
-			}
+            "7"
+            {
+                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_unique/subwaycar_all_onetexture.mdl;show_menu models_picker_vehicles_trains2"
+                    "label"		 " Subway car"
+            }
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu models_picker_vehicles_trains1"
