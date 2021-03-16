@@ -14686,6 +14686,19 @@ if ( Director.GetGameMode() == "holdout" )
 		angles = settings.angles
 		// +++++++++++++++ SETTINGS END 
 
+		if(MDL.find(">") == 0)
+		{
+			local special = MDL.slice(1,MDL.len())
+			if(special in ::ModelPaths.special)
+			{
+				local mdlspec = ::ModelPaths.special[special].mdl
+				MDL = typeof mdlspec == "array" 
+							? Utils.GetRandValueFromArray(mdlspec)
+							: mdlspec
+				origin += ::ModelPaths.special[special].origin_offset
+			}
+		}
+
 		if(MDL.find("&") != null)
 		{
 			createdent = []
@@ -14747,7 +14760,19 @@ if ( Director.GetGameMode() == "holdout" )
 		origin = settings.origin
 		angles = settings.angles
 		// +++++++++++++++ SETTINGS END
-
+		
+		if(MDL.find(">") == 0)
+		{
+			local special = MDL.slice(1,MDL.len())
+			if(special in ::ModelPaths.special)
+			{
+				local mdlspec = ::ModelPaths.special[special].mdl
+				MDL = typeof mdlspec == "array" 
+							? Utils.GetRandValueFromArray(mdlspec)
+							: mdlspec
+				origin += ::ModelPaths.special[special].origin_offset
+			}
+		}
 
 		if(MDL.find("&") != null)
 		{
@@ -14797,6 +14822,19 @@ if ( Director.GetGameMode() == "holdout" )
 		origin = settings.origin
 		angles = settings.angles
 		// +++++++++++++++ SETTINGS END 
+		
+		if(MDL.find(">") == 0)
+		{
+			local special = MDL.slice(1,MDL.len())
+			if(special in ::ModelPaths.special)
+			{
+				local mdlspec = ::ModelPaths.special[special].mdl
+				MDL = typeof mdlspec == "array" 
+							? Utils.GetRandValueFromArray(mdlspec)
+							: mdlspec
+				origin += ::ModelPaths.special[special].origin_offset
+			}
+		}
 
 		if ( MDL == "nick" )
 			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_gambler.mdl", origin, angles );
@@ -14854,6 +14892,19 @@ if ( Director.GetGameMode() == "holdout" )
 		angles = settings.angles
 		// +++++++++++++++ SETTINGS END 
 		
+		if(MDL.find(">") == 0)
+		{
+			local special = MDL.slice(1,MDL.len())
+			if(special in ::ModelPaths.special)
+			{
+				local mdlspec = ::ModelPaths.special[special].mdl
+				MDL = typeof mdlspec == "array" 
+							? Utils.GetRandValueFromArray(mdlspec)
+							: mdlspec
+				origin += ::ModelPaths.special[special].origin_offset
+			}
+		}
+
 		if(MDL.find("&") != null)
 		{
 			createdent = []
@@ -18978,9 +19029,8 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	local entlooked = player.GetLookingEntity() == null 
-						? GetArgument(3) 
-						: player.GetLookingEntity();
+	local entlooked = GetArgument(3) ? GetArgument(3) 
+									 : player.GetLookingEntity();
 	if(entlooked == null)
 	{	
 		Printer(player,CmdMessages.Debug.WatchNoEntity())
@@ -19207,9 +19257,8 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	local entlooked = player.GetLookingEntity() == null 
-						? GetArgument(2) 
-						: player.GetLookingEntity();
+	local entlooked = GetArgument(2) ? GetArgument(2) 
+									 : player.GetLookingEntity();
 	if(entlooked == null)
 	{	
 		Printer(player,CmdMessages.Debug.WatchNoEntity())
