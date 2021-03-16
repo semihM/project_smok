@@ -810,13 +810,13 @@
                     local childrenents = "";
                     foreach(i,ent in ents.slice(1,ents.len()))
                     {
-                        childrenents = COLOR_BRIGHT_GREEN + "#" + ent.GetIndex() + COLOR_DEFAULT;
+                        childrenents += COLOR_BRIGHT_GREEN + "#" + ent.GetIndex() + COLOR_DEFAULT;
                         if(i != ents.len() - 2)
                         {
                             childrenents += ", ";
                         }
                     }
-                    return "Created " + classname + " parent entity " + COLOR_BRIGHT_GREEN + "#" + ents[0].GetIndex() + COLOR_DEFAULT + " with children:\n" + childrenents;
+                    return "Created " + classname + " parent entity " + COLOR_BRIGHT_GREEN + "#" + ents[0].GetIndex() + COLOR_DEFAULT + " with children: " + childrenents;
                 }
 
                 SuccessDoor = function(ent)
