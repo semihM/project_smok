@@ -42,17 +42,9 @@
     </WorkingDirectory>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="..\..\..\Program Files %28x86%29\Steam\steamapps\common\Left 4 Dead 2\bin\vpk.exe">
-      <SubType>Content</SubType>
-      <Link>vpk.exe</Link>
-    </Content>
     <Content Include=".gitignore">
       <SubType>Content</SubType>
       <Link>.gitignore</Link>
-    </Content>
-    <Content Include=".project">
-      <SubType>Content</SubType>
-      <Link>.project</Link>
     </Content>
     <Content Include="2229460523\addonimage.jpg">
       <SubType>Content</SubType>
