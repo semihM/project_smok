@@ -29,13 +29,13 @@ cattbl = mtbl.categories
 
 # Debug
 enable_cat = False
-enable_limit = False
+enable_entity = False
 enable_index = False
-
-LIMITCALL = 1
-testindex = 0
+enable_limit = False
 
 cattest = "func"
+enttest = "func_physbox"
+
 if enable_cat:
     cattbl = dict()
     cattbl[cattest] = mtbl.categories[cattest]
@@ -49,6 +49,15 @@ print_outs = False
 print_sqt = False
 
 print_err = True
+
+LIMITCALL = 1
+testindex = 0
+if enable_entity:
+    chosencat = cattbl[cattest].entities
+    for idx in range(len(chosencat)):
+        if chosencat[idx].name == enttest:
+            testindex = idx
+            break
 #######
 
 def getTextFromTag(tag):
@@ -184,7 +193,11 @@ def __handlekvpairtag(descch,foundkvs,desc_continues,ent,errorlist=errlis(),kvty
                     if matchs is None:
                         errorlist.lis.append(ent.name+", "+kvtype+": Bad kv choice("+kvtype+") split: "+ r)
                     else:
-                        foundkvs[-1].descriptiondict[matchs.groups()[0].strip()] = matchs.groups()[1].strip()
+                        knm = matchs.groups()[0].strip()
+                        if knm in foundkvs[-1].descriptiondict:
+                            foundkvs[-1].descriptiondict[knm] += ".\r" + matchs.groups()[1].strip()
+                        else:
+                            foundkvs[-1].descriptiondict[knm] = matchs.groups()[1].strip()
 
                 descch.ref = descch.ref.parent.find_next_sibling()
             else:
@@ -224,17 +237,26 @@ def __handlekvpairtag(descch,foundkvs,desc_continues,ent,errorlist=errlis(),kvty
                         ent.outputnotesvals.append(fulltxt)
                 else: 
                     foundkvs[-1].notevals.append(fulltxt)
-            elif descch.ref.name == "ul":
+            elif descch.ref.name == "ul" or descch.ref.name == "ol":
                 d = dict()
+                ccount = 1
                 for r in fulltxt.split("\n"):
                     if(r.strip() == ""):
                         continue
                     matchs = keyval_descdictpattern.search(r)
                     if matchs is None:
-                        errorlist.lis.append(ent.name+", "+kvtype+": Bad kv choice split: "+ r)
+                        if descch.ref.name == "ol":
+                            d[str(ccount)] = r
+                            ccount += 1
+                        else: 
+                            errorlist.lis.append(ent.name+", "+kvtype+": Bad kv choice split: "+ r)
                     else:
-                        d[matchs.groups()[0].strip()] = matchs.groups()[1].strip()
-
+                        knm = matchs.groups()[0].strip()
+                        if knm in d:
+                            d[knm] += ".\r" + matchs.groups()[1].strip()
+                        else:
+                            d[knm] = matchs.groups()[1].strip()
+                
                 foundkvs[-1].descriptiondict = d
             elif descch.ref.name == "h2":
                 return foundkvs
