@@ -3,6 +3,16 @@
  
  - Following documentation is for the **new and updated commands**. Commands that aren't included in this documentation can be found in the [Admin System Guide](https://steamcommunity.com/sharedfiles/filedetails/?id=213591107). Be aware that **some of the commands that are not documented may behave differently** than the guide. 
 
+## Forums
+
+- If you have encountered a bug or had add-on confliction issues, please [report it here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089552207/)
+
+- If you have any suggestions, please [write them here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089554499/)
+
+- If you are having trouble with the add-on or have any questions, please [ask here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089567424/)
+
+## Development
+ - If you'd like to contribute to the development of **project_smok** contact [rhino](http://steamcommunity.com/profiles/76561198095804696)
 ---
 # Documentation Contents
 - [**Downloading and Installing**](#downloading-and-installing)
@@ -356,8 +366,8 @@
 				// Use a method named as a parameter from caller's class and add another parameter to it
 				arg_3 = "$[$caller_ent.$param_1() + $param_2]"	
 				
-				// Use aimed entity, if it's valid: use it's origin vector; else: use null
-				arg_4 = "$[$caller_target.IsEntityValid() ? $caller_target.GetOrigin() : null]"	
+				// Use aimed entity, if there is a valid aimed object: use it's origin vector; else: use null
+				arg_4 = "$[$caller_target ? $caller_target.GetOrigin() : null]"	
 			}
 		}
 	}
@@ -2960,14 +2970,6 @@
      - **Example:** access to flags of prop_ragdoll class: _EntityDetailTables.prop.prop_ragdoll.flags_
      - **Example(Using _wiki_ command):** print key-value pairs of prop_dynamic class: *!wiki prop_dynamic keyvals* 
   
----
-### Forums
----
-- If you have encountered a bug, please [report it here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089552207/)
-
-- If you have any suggestions, please [write them here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089554499/)
-
-- If you are having trouble with the add-on or have any questions, please [ask here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089567424/)
 ---
 ## Other Links
 
