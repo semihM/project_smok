@@ -13824,7 +13824,7 @@ if ( Director.GetGameMode() == "holdout" )
 		keyvaltable.sounds = key
 		ent = Utils.CreateEntityWithTable(keyvaltable);
 		entindex = ent.GetIndex();
-		//printl(key.tostring()+"(#"+entindex+") pos:"+keyvaltable.origin);
+		
 		AdminSystem.Vars._spawnedPianoKeys[entindex] <- ent.GetName();
 	}
 	
@@ -14645,6 +14645,35 @@ if ( Director.GetGameMode() == "holdout" )
 			tbl.angles = tbl.angles + QAngle(0,yaw,0);
 		}
 	}
+
+	function GetSpecialModelOptions(MDL,tbl,typ)
+	{
+		if(MDL.find(">") == 0)
+		{
+			local special = MDL.slice(1,MDL.len())
+			if(special in ::ModelPaths.special)
+			{
+				local tblref = ::ModelPaths.special[special]
+				local mdlspec = tblref.mdl
+				MDL = typeof mdlspec == "array" 
+							? Utils.GetRandValueFromArray(mdlspec)
+							: mdlspec
+
+				if("origin_offset" in tblref)
+					tbl.origin += tblref.origin_offset
+				if("angles_offset" in tblref)
+					tbl.angles += tblref.angles_offset
+
+				if("mass_scale" in tblref)
+					tbl.massScale = tblref.mass_scale
+
+				if("post_spawn" in tblref)
+					tbl.post = tblref.post_spawn
+			}
+		}
+		return MDL;
+	}
+
 	local typename = GetArgument(1);
 	local MDL = GetArgument(2);
 	local israndom = false
@@ -14662,6 +14691,10 @@ if ( Director.GetGameMode() == "holdout" )
 	local raise = GetArgument(3);
 	local yaw = GetArgument(4);
 	local massScale = GetArgument(5);
+	if(massScale == null || ((typeof massScale == "integer" || typeof massScale == "float") && massScale <= 0))
+		massScale = 1
+	else
+		massScale = massScale.tofloat() <= 0 ? 1 : massScale.tofloat()
 
 	local origin = player.GetLookingLocation();
 	local angles = QAngle(0,0,0);
@@ -14671,34 +14704,33 @@ if ( Director.GetGameMode() == "holdout" )
 	local createdent = null;
 	local parentfailed = false
 	local singlefailed = false
+		
+	// +++++++++++++++ SETTINGS START 
+	local settings = 
+	{
+		origin = origin,
+		angles = angles,
+		massScale = massScale
+		post = {}
+	}
+	local propsettingname = (typename == "physics" || typename == "physicsM") ? "physics"
+							: (typename == "ragdoll") ? "ragdoll"
+								: "dynamic"
+	// Prop spawn settings
+	ApplyPropSettingsToTable(player,propsettingname,settings);
+	// Settings from arguments
+	PostSettingsManualChanges(raise,yaw,settings);
+	// Settings from special model
+	MDL = GetSpecialModelOptions(MDL,settings,propsettingname)
+		
+	origin = settings.origin
+	angles = settings.angles
+	massScale = settings.massScale
+	// +++++++++++++++ SETTINGS END 
+
+	// Spawning
 	if ( typename == "physics" )
-	{	
-		// +++++++++++++++ SETTINGS START 
-		local settings = 
-		{
-			origin = origin,
-			angles = angles,
-		}
-		ApplyPropSettingsToTable(player,"physics",settings);
-		PostSettingsManualChanges(raise,yaw,settings);
-
-		origin = settings.origin
-		angles = settings.angles
-		// +++++++++++++++ SETTINGS END 
-
-		if(MDL.find(">") == 0)
-		{
-			local special = MDL.slice(1,MDL.len())
-			if(special in ::ModelPaths.special)
-			{
-				local mdlspec = ::ModelPaths.special[special].mdl
-				MDL = typeof mdlspec == "array" 
-							? Utils.GetRandValueFromArray(mdlspec)
-							: mdlspec
-				origin += ::ModelPaths.special[special].origin_offset
-			}
-		}
-
+	{
 		if(MDL.find("&") != null)
 		{
 			createdent = []
@@ -14735,45 +14767,6 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else if ( typename == "physicsM" )
 	{
-		// +++++++++++++++ SETTINGS START 
-		local settings = 
-		{
-			origin = origin,
-			angles = angles,
-		}
-		ApplyPropSettingsToTable(player,"physics",settings);
-		PostSettingsManualChanges(raise,yaw,settings);
-
-		if(massScale)
-		{
-			try
-			{
-				massScale = massScale.tofloat();
-			}
-			catch(e)
-			{
-				printl("<"+(typeof massScale)+"> type "+massScale+" couldnt be parsed as float.");
-				massScale = 1;
-			}
-		}
-
-		origin = settings.origin
-		angles = settings.angles
-		// +++++++++++++++ SETTINGS END
-		
-		if(MDL.find(">") == 0)
-		{
-			local special = MDL.slice(1,MDL.len())
-			if(special in ::ModelPaths.special)
-			{
-				local mdlspec = ::ModelPaths.special[special].mdl
-				MDL = typeof mdlspec == "array" 
-							? Utils.GetRandValueFromArray(mdlspec)
-							: mdlspec
-				origin += ::ModelPaths.special[special].origin_offset
-			}
-		}
-
 		if(MDL.find("&") != null)
 		{
 			createdent = []
@@ -14810,32 +14803,6 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else if ( typename == "ragdoll" )
 	{
-		// +++++++++++++++ SETTINGS START 
-		local settings = 
-		{
-			origin = origin,
-			angles = angles,
-		}
-		ApplyPropSettingsToTable(player,"ragdoll",settings);
-		PostSettingsManualChanges(raise,yaw,settings);
-
-		origin = settings.origin
-		angles = settings.angles
-		// +++++++++++++++ SETTINGS END 
-		
-		if(MDL.find(">") == 0)
-		{
-			local special = MDL.slice(1,MDL.len())
-			if(special in ::ModelPaths.special)
-			{
-				local mdlspec = ::ModelPaths.special[special].mdl
-				MDL = typeof mdlspec == "array" 
-							? Utils.GetRandValueFromArray(mdlspec)
-							: mdlspec
-				origin += ::ModelPaths.special[special].origin_offset
-			}
-		}
-
 		if ( MDL == "nick" )
 			createdent = Utils.SpawnRagdoll( "models/survivors/survivor_gambler.mdl", origin, angles );
 		else if ( MDL == "rochelle" )
@@ -14879,32 +14846,6 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{	
-		// +++++++++++++++ SETTINGS START 
-		local settings = 
-		{
-			origin = origin,
-			angles = angles,
-		}
-		ApplyPropSettingsToTable(player,"dynamic",settings);
-		PostSettingsManualChanges(raise,yaw,settings);
-
-		origin = settings.origin
-		angles = settings.angles
-		// +++++++++++++++ SETTINGS END 
-		
-		if(MDL.find(">") == 0)
-		{
-			local special = MDL.slice(1,MDL.len())
-			if(special in ::ModelPaths.special)
-			{
-				local mdlspec = ::ModelPaths.special[special].mdl
-				MDL = typeof mdlspec == "array" 
-							? Utils.GetRandValueFromArray(mdlspec)
-							: mdlspec
-				origin += ::ModelPaths.special[special].origin_offset
-			}
-		}
-
 		if(MDL.find("&") != null)
 		{
 			createdent = []
@@ -14920,7 +14861,8 @@ if ( Director.GetGameMode() == "holdout" )
 			createdent = Utils.SpawnDynamicProp( Utils.CleanColoredString(MDL), origin, angles );
 		}
 	}
-	//::AdminSystem.out(createdent)
+
+	// Attempts to create simple physics
 	if(createdent == null || createdent == [] || singlefailed || parentfailed)
 	{
 		if(singlefailed)
@@ -14979,6 +14921,7 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 	}
 
+	// Random spawn messages
 	if(israndom)
 	{
 		if(AdminSystem.Vars._saveLastModel[name])
@@ -14989,6 +14932,8 @@ if ( Director.GetGameMode() == "holdout" )
 			Printer(player,CmdMessages.ModelSaving.Success(typename,MDL));
 		}
 	}
+
+	// Success messages
 	if(typeof createdent == "array")
 	{
 		local parentent = createdent[0];
@@ -15002,12 +14947,88 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 
 		Printer(player,CmdMessages.Prop.SuccessParented(typename,createdent));
+		createdent = parentent
 	}
 	else
 	{
 		Printer(player,CmdMessages.Prop.Success(typename,createdent));
 	}
+	
+	// Post spawn inputs and scripts
+	foreach(typs,post_table in settings.post)
+	{	
+		if(typs != "all" 
+			&& typs != propsettingname
+			&& (typs.find("&") != null 
+				&& Utils.GetIDFromArray(split(typs,"&"),propsettingname) == -1))
+			continue
+
+		// Inputs
+		if("ent_fire" in post_table)
+		{
+			foreach(inp,opts in post_table.ent_fire)
+			{
+				DoEntFire(opts.target,inp,opts.params,opts.delay,opts.activator,createdent.GetBaseEntity())
+			}
+		}
+
+		// Buttons
+		// TO-DO: Model bbox errors, movedir not really working; parenting issues
+		/* 
+		if("buttons" in post_table)
+		{
+			// Multiple buttons using local origin generator function
+			if("multiple" in post_table.buttons)
+			{
+				local buttonstbl = post_table.buttons.multiple
+				
+				foreach(idx,sound_id in buttonstbl.sounds)
+				{
+					local keyvaltable = 
+					{	
+						classname = "func_button"
+						origin = Vector(0,0,0)
+						movedir = createdent.GetAngles().Forward()
+						spawnflags = buttonstbl.spawnflags
+						wait = buttonstbl.wait
+						sounds = sound_id
+					}
+					local spawned_button = Utils.CreateEntityWithTable(keyvaltable);
+
+					if(spawned_button != null)
+					{
+						spawned_button.Input("SetParent","#"+createdent.GetIndex(),0)
+						local loc_org = buttonstbl.next_local_origin(createdent,idx)
+						spawned_button.Input("RunScriptCode","self.SetLocalOrigin(Vector("+loc_org.x+","+loc_org.y+","+loc_org.z+"))",0.05)
+					}
+				}
+			}
+			// Single button using given local origin
+			else if("single" in post_table.buttons)
+			{
+				local buttonstbl = post_table.buttons.single
+				
+				local keyvaltable = 
+				{	
+					classname = "func_button"
+					origin = Vector(0,0,0)
+					movedir = createdent.GetAngles().Forward()
+					spawnflags = buttonstbl.spawnflags
+					wait = buttonstbl.wait
+					sounds = buttonstbl.sounds
+				}
+				local spawned_button = Utils.CreateEntityWithTable(keyvaltable);
+				if(spawned_button != null)
+				{
+					spawned_button.Input("SetParent","#"+createdent.GetIndex())
+					spawned_button.Input("RunScriptCode","self.SetLocalOrigin(Vector("+buttonstbl.local_origin.x+","+buttonstbl.local_origin.y+","+buttonstbl.local_origin.z+"))",0.05)
+				}
+			}
+		}
+		*/
+	}
 }
+
 ::PropFailureFixCheck <- {}
 ::PropTryFindSimplePhysParented <- function(...)
 {
