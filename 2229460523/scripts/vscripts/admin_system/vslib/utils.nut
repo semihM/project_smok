@@ -2621,6 +2621,36 @@ function VSLib::Utils::TableKeyMatch(tbl,exp)
 	}
 	return false
 }
+/*
+ * @author rhino
+ */
+function VSLib::Utils::TableKeySearch(tbl,exp)
+{
+	local re = regexp(exp)
+	foreach(key,val in tbl)
+	{
+		if(re.search(key))
+		{
+			return true
+		}
+	}
+	return false
+}
+/*
+ * @author rhino
+ */
+function VSLib::Utils::TableKeySearchReturn(tbl,exp)
+{
+	local re = regexp(exp)
+	foreach(key,val in tbl)
+	{
+		if(re.search(key))
+		{
+			return val
+		}
+	}
+	return null
+}
 
 /*
  * @author rhino
