@@ -31006,7 +31006,7 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/c130.mdl;show_menu props_vehicles6"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,>c130;show_menu props_vehicles6"
 					"label"      " c130"
 			}
 			"6"
@@ -37545,7 +37545,7 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/c130.mdl,0,0,2500;show_menu phys_props_vehicles6"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,>c130;show_menu phys_props_vehicles6"
 					"label"      " c130"
 			}
 			"6"
