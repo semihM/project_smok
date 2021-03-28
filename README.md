@@ -250,11 +250,11 @@
    $repeat_id | _*integer*_ | Total number of repeats current command has, starts from 1
    $repeats_left | _*integer*_ | Number of calls left after the current call
    $last_call_time | _*float*_ | Time() value stored from the previous call	                                                                                                
-   $caller_ent | _*VSLib.Player*_ | command's caller as a VSLib.Player object
+   $caller_ent | _*VSLib.Player*_ | command's caller as a **VSLib.Player** object
    $caller_id | _*integer*_ | command caller's entity index as an integer
    $caller_char | _*string*_ | command caller's character name, first letter capitalized
    $caller_name | _*string*_ | command caller's in-game name
-   $caller_target | _*VSLib.Entity*_ | entity the command caller is aiming at as an VSLib.Entity object, uses an invalid entity if nothing is looked at 
+   $caller_target | _*VSLib.Entity or null*_ | entity the command caller is aiming at as a **VSLib.Entity** object or **null**
    
    #### Alias Options
    - There are 5 options available for aliases, none of them are required to initialize an alias.
@@ -287,7 +287,7 @@
 		Help =
 		{
 			// Alias information
-			docs = "Calls target_entity's (or caller's if null) method_name named method with cs_args string"
+			docs = "Details of what this alias does"
 			
 			// Parameter 1 detailed information
 			param_1 = 
@@ -604,10 +604,10 @@
 #### **prop**
 -  Create a prop of the given type with given model
 
-   Chat Syntax | (!,/,?)prop *type model_path*
+   Chat Syntax | (!,/,?)prop *type model_path extra_height yaw mass_scale*
    ------------- | -------------
 
-   Console Syntax | scripted_user_func *prop,type,model_path* 
+   Console Syntax | scripted_user_func *prop,type,model_path,extra_height,yaw,mass_scale* 
    ------------- | -------------
     
    Menu Sequence | _6->1->1_ AND _6->1->2_ 
@@ -617,11 +617,16 @@
        //Overloads:
        // {type} should be one of (physicsM: physics object, dynamic: non-physics object, ragdoll: ragdolling models)
        // {type} also accepts classname "physics", but this class is less flexable than "physicsM" and doesn't work with most models
-       // {model_path} follows this format in general: models/props_{category}/{name}.mdl OR !random for a random model
+       // {model_path} follows the formats:
+	   //   - "models/props_{category}/{name}.mdl" for a specific model
+	   //	- "!random" for a random model
+	   //	- ">{custom_name}" for a customized prop
+	   //
        // Multiple models can be given, seperated with "&" character, to create parented props ( parented by first model )
+	   //
        // To check out all possible models: Left 4 Dead 2 Authoring Tools>Hammer World Editor>CTRL+N>CTRL+SHIFT+M>Search all models
-       prop {type: (physicsM, dynamic, ragdoll)} {model_path | !random} {extra_height} {yaw:degrees} {massScale}
-       prop {type: (physicsM, dynamic, ragdoll)} {model_path | !random} // extra_height = 0, yaw = 0, massScale = 1
+       prop {type: (physicsM, dynamic, ragdoll)} {model_path | !random | >custom_name} {extra_height} {yaw:degrees} {massScale}
+       prop {type: (physicsM, dynamic, ragdoll)} {model_path | !random | >custom_name} // extra_height = 0, yaw = 0, massScale = 1
 
        // Example: Create a flower barrel with physics
        prop physicsM models/props_foliage/flower_barrel.mdl
@@ -637,6 +642,9 @@
 
        // Example: Create a ragdoll of coach
        prop ragdoll models/survivors/survivor_coach.mdl
+
+       // Example: Create a helicopter, using it's custom settings 
+       prop dynamic >heli
 ```
 ---
 #### **ent**
