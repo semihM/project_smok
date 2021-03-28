@@ -14,6 +14,7 @@ descriptiontag = "p"
 
 navstrtyp = "<class 'bs4.element.NavigableString'>"
 tagtyp = "<class 'bs4.element.NavigableString'>"
+commenttyp = "<class 'bs4.element.Comment'>"
 
 keyvalreg = re.compile("(.*)\((.+)\)\s+<(.+)>\s*(.*)")
 backupkvreg = re.compile("(.*)\s+<(.+)>\s*(.*)")
@@ -33,8 +34,8 @@ enable_entity = False
 enable_index = False
 enable_limit = False
 
-cattest = "func"
-enttest = "func_physbox"
+cattest = "info"
+enttest = "info_infected_zoo_puppet"
 
 if enable_cat:
     cattbl = dict()
@@ -431,7 +432,8 @@ for _catname,cat in cattbl.items():
             chtyp = str(type(childtag))
             if childtag.name == "h2": # Description ends
                 break
-
+            if chtyp == commenttyp: # Stats comment
+                continue
             if chtyp != navstrtyp \
                 and childtag.get_attribute_list("id")[0] is not None \
                     and childtag['id'] == "toc": # table of content skip
