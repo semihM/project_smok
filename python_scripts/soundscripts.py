@@ -62,7 +62,7 @@ class ss:
             s += "\n\t"+prefix+"\"wave\": " + "\"" + escapes(self.wave) + "\""
             
         if len(self.extras) != 0:
-            s += "\n\t"+prefix + ("\n\t"+prefix).join(["\""+tname+"\":\n\t"+prefix+"[\n\t\t"+prefix+(",\n\t\t"+prefix).join(["kvpair(\""+p.key+"\",\""+escapes(p.val)+"\")" for p in tvals.pairs])+"\n\t"+prefix+"]" for tname,tvals in self.extras.items()])
+            s += "\n\t"+prefix + ("\n\t"+prefix).join(["\""+tname+"\":\n\t"+prefix+"[\n\t\t"+prefix+(",\n\t\t"+prefix).join(["[\""+p.key+"\", \""+escapes(p.val)+"\"]" for p in tvals.pairs])+"\n\t"+prefix+"]" for tname,tvals in self.extras.items()])
         s += "\n"+prefix+"}"
         return s
 
@@ -178,14 +178,13 @@ for sdir,fnames in FILES.items():
 for k,v in ss_dict.items():
     print("\n"+str(v))
 """
-tbl_str = "::SoundScripts <- {}"
-cls_str = "class ::SoundScripts.KV\n{\n\tconstructor(key,val)\n\t{\n\t\t_key=key;\n\t\t_val=val;\n\t}\n\n\tfunction _type()\n\t{\n\t\treturn \"project_smok_Sound_Script\";\n\t}\n\n\t_key=null;\n\t_val=null;\n}"
+
 res = "{\n\t"+"\n\n\t".join([scr.sqtable() for scr in ss_dict.values()])+"\n}"
 filedir = "./2229460523/scripts/vscripts/resource_tables/soundscripts.nut"
 
 writetofile = input("Write to file (Y/N)? ")
 if str(writetofile).lower() == "y":
     with open(filedir, "w") as entfile:
-        print((tbl_str+"\n\n"+cls_str+"\n\n"+"::SoundScripts.Tables <- \n" + res).encode("ascii","ignore").decode("ascii"),file=entfile)
+        print(("::SoundScripts <- \n" + res).encode("ascii","ignore").decode("ascii"),file=entfile)
 
 input("\nPress any key to quit...")
