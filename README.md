@@ -2970,14 +2970,16 @@
 ---
 ### Detailed Tables
 ---
-- There are currently **2** big tables containing detailed information about the objects in the game.
+- There are currently **3** big tables containing detailed information about the objects in the game.
   + **_NetPropTables_ : Contains network property members and their basic information for every base class defined.** 
-     - **Example:** access to render color member information of props: _NetPropTables.CBaseEntity.m_clrRender_
+     - **Example:** Access to render color member information of props: _::NetPropTables.CBaseEntity.m_clrRender_
   
   + **_EntityDetailTables_ : Contains most if not all the information on every entity class wiki page there is categorized under basic headers:(Description,Flags,KeyValues,Inputs,Outputs).**
-     - **Example:** access to flags of prop_ragdoll class: _EntityDetailTables.prop.prop_ragdoll.flags_
-     - **Example(Using _wiki_ command):** print key-value pairs of prop_dynamic class: *!wiki prop_dynamic keyvals* 
+     - **Example:** Access to flags of prop_ragdoll class: _::EntityDetailTables.prop.prop_ragdoll.flags_
+     - **Example(Using _wiki_ command):** Print key-value pairs of prop_dynamic class: *!wiki prop_dynamic keyvals* 
   
+  + **_SoundScripts_ : Contains all built-in sound script tables, only includes used ones.** 
+     - **Example:** Get **Zombat3_Intro_Fairgrounds** event details: _::SoundScipts["Event.Zombat3_Intro_Fairgrounds"]_
 ---
 ## Other Links
 
