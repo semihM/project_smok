@@ -20,6 +20,8 @@ IncludeScript("Resource_tables/Modelpaths");
 IncludeScript("Resource_tables/Netproptables");
 // Entity detail tables
 IncludeScript("Resource_tables/EntityDetailTables");
+// Sound script tables
+IncludeScript("Resource_tables/SoundScripts");
 
 // Include the Message Class
 IncludeScript("Project_smok/Messages");
