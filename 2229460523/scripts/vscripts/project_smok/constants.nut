@@ -88,6 +88,8 @@
 	TankRock = "project_smok_tank_rock_"
 
 	PhysConverter = "project_smok_phys_converter"
+
+	SodaCan = "project_smok_soda_can_"
 }
 
 /*************************\
