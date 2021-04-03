@@ -179,6 +179,23 @@ function VSLib::Utils::ArrayToTable(arr)
 	return t;
 }
 
+/*
+ * @authors rhino
+ *
+ * @description Converts a table to an array
+ *
+ * @param tbl <table>: Unordered table to convert
+ *
+ * @return array of @tbl values
+ */
+function VSLib::Utils::TableToArray(tbl)
+{
+	local t = [];
+	foreach ( key,val in tbl )
+		t.append(val);
+	return t;
+}
+
 /**
  * Returns the ID of a value from an array
  */
@@ -788,22 +805,29 @@ function VSLib::Utils::ItemHeldByOther(id,slot)
 	return false;
 }
 
-/**
- * Spawns a new entity with the key-value pairs.
- *
- * @param kvs Other keyvalues you may want it to have
- * @return A VSLib entity object
- * 
+/*
  * @author rhino
+ * 
+ * @description Spawns a new entity with the key-value pairs.
+ *
+ * @param kvs <table> : Key-value pairs
+ * @param [baseent <EHANDLE|null> = null] : Entity to set as a parent, null to skip
+ * @param [precache <bool> = true] : Precache model, recommended to stay "true"
+ *
+ * @return VSLib.Entity on success;
+ *			otherwise: null
  */
-function VSLib::Utils::CreateEntityWithTable(kvs = {},baseent = null)
+function VSLib::Utils::CreateEntityWithTable(kvs = {},baseent = null,precache=true)
 {	
-	foreach(key,val in kvs)
+	if(precache)
 	{
-		if(key == "model")
+		foreach(key,val in kvs)
 		{
-			::VSLib.Utils.PrecacheModel(val);
-			break;
+			if(key == "model")
+			{
+				::VSLib.Utils.PrecacheModel(val);
+				break;
+			}
 		}
 	}
 
@@ -2470,9 +2494,17 @@ function VSLib::Utils::GetRandValueFromArray(arr, removeValue = false)
 	//return arr[ ::VSLib.Utils.GetRandNumber(0, arrlen - 1) ];
 }
 
-/**
- * Returns the closest hittable point above the given point, ignores given entity. Lowers(z-axis) found point given amount
- * @authors rhino
+/*
+ * @author rhino
+ * 
+ * @description Get the closest hittable point above the given point. 
+ *
+ * @param start <vector> : Starting position
+ * @param [ignore <EHANDLE|null> = null] : Ignore this entity while tracing for a ceiling
+ * @param [lower <integer|float> = 0] : Lowers(z-axis) of found point this amount
+ *
+ * @return If a ceiling is found: Vector;
+ *		   otherwise: null
  */
 function VSLib::Utils::GetLocationAbove(start,ignore=null,lower=0)
 {
@@ -2500,6 +2532,12 @@ function VSLib::Utils::GetLocationAbove(start,ignore=null,lower=0)
 
 /*
  * @author rhino
+ * 
+ * @description Get the sum of the values in an array
+ *
+ * @param arr <array> : Array to iterate over
+ *
+ * @return Sum of all values in the @arr
  */
 function VSLib::Utils::ArraySum(arr)
 {
@@ -2512,6 +2550,12 @@ function VSLib::Utils::ArraySum(arr)
 
 /*
  * @author rhino
+ * 
+ * @description Get the lowest value in an array
+ *
+ * @param arr <array> : Array to iterate over
+ *
+ * @return Lowest value in the @arr
  */
 function VSLib::Utils::ArrayMin(arr)
 {
@@ -2528,6 +2572,12 @@ function VSLib::Utils::ArrayMin(arr)
 
 /*
  * @author rhino
+ * 
+ * @description Get the highest value in an array
+ *
+ * @param arr <array> : Array to iterate over
+ *
+ * @return Highest value in the @arr
  */
 function VSLib::Utils::ArrayMax(arr)
 {
@@ -2545,6 +2595,13 @@ function VSLib::Utils::ArrayMax(arr)
 
 /*
  * @author rhino
+ * 
+ * @description Create a new array with given value added to each element of an array
+ *
+ * @param arr <array> : Array to copy items of
+ * @param val <variable> : Value to add
+ *
+ * @return New array with @val added to elements of @arr 
  */
 function VSLib::Utils::ArrayAdd(arr,val)
 {
@@ -2560,18 +2617,34 @@ function VSLib::Utils::ArrayAdd(arr,val)
 
 /*
  * @author rhino
+ * 
+ * @description Get string form of an array
+ *
+ * @param arr <array|table> : Array or table to stringfy
+ * @param [empty_if_zero <bool> = false] : Wheter to return empty string if @arr is empty
+ * @param [replace_instances <bool> = false] : Wheter to replace instances with better names (null:(null:0x00000000) => "null", VSLib.Entity:(instance:0xMEM_ADDRESS) => "Entity(its_index)")
+ * @param [escape_chars <bool> = false] : Wheter to escape characters like \n, \t etc.
+ *
+ * @return string form of @arr
  */
-function VSLib::Utils::ArrayString(arr,emptyIfZero=false)
+function VSLib::Utils::ArrayString(arr,empty_if_zero=false,replace_instances=false,escape_chars=false)
 {
 	local len = arr.len();
-	if(emptyIfZero && len == 0)
+	if(empty_if_zero && len == 0)
 	{
 		return "";
 	}
-	return GetTableString(arr);
+	return GetTableString(arr,"","",replace_instances,escape_chars);
 }
+
 /*
  * @author rhino
+ *
+ * @description Copy the given table
+ *
+ * @param tbl <table> : Table to copy
+ *
+ * @return New table containing same values as @tbl
  */
 function VSLib::Utils::TableCopy(tbl)
 {
@@ -2594,20 +2667,37 @@ function VSLib::Utils::TableCopy(tbl)
 
 /*
  * @author rhino
+ *
+ * @description Add key-value pairs in @other to @tbl, skip duplicates if @overwrite is true
+ *
+ * @param tbl <table> : Table to extend
+ * @param other <table> : Table to iterate over
+ * @param [overwrite <bool> = false] : Wheter to overwrite duplicates
+ *
+ * @return @tbl itself
  */
-function VSLib::Utils::ExtendTable(tbl,other)
+function VSLib::Utils::ExtendTable(tbl,other,overwrite=false)
 {
 	foreach(key,val in other)
 	{	
-		if(key in tbl)
+		if(key in tbl && !overwrite)
 			continue;
 
 		tbl[key] <- val
 	}
 	return tbl;
 }
+
 /*
  * @author rhino
+ *
+ * @description Match table keys using the given expression
+ *
+ * @param tbl <table> : Table to iterate over
+ * @param exp <string> : Expression to attempt to match table keys with
+ *
+ * @return  if there ever is a match: true;
+ *			otherwise: false
  */
 function VSLib::Utils::TableKeyMatch(tbl,exp)
 {
@@ -2621,8 +2711,17 @@ function VSLib::Utils::TableKeyMatch(tbl,exp)
 	}
 	return false
 }
+
 /*
  * @author rhino
+ *
+ * @description Search over table keys using the given expression
+ *
+ * @param tbl <table> : Table to iterate over
+ * @param exp <string> : Expression to search table keys with
+ *
+ * @return  if there ever is a non-null search result: true;
+ *			otherwise: false
  */
 function VSLib::Utils::TableKeySearch(tbl,exp)
 {
@@ -2636,8 +2735,72 @@ function VSLib::Utils::TableKeySearch(tbl,exp)
 	}
 	return false
 }
+
 /*
  * @author rhino
+ * 
+ * @description Pass each table key through a filter then search over it using the given expression
+ *
+ * @param tbl <table> : Table to iterate over
+ * @param exp <string> : Expression to search table keys with
+ * @param [func <function> = @(key) key] : Filter function to pass key through before attempting to search
+ * @param [new_key <function> = @(key,count=0) key] : Renaming function for the new table keys; "key" is the old key, "count" is a value incremented by 1 every valid search result
+ * @param [new_val <function> = @(val,count=0) val] : Recalculating function for the new table values; "val" is the old value, "count" is a value incremented by 1 every valid search result
+ *
+ * @return  if there ever is a non-null search result: new table with keys passed through @new_key and values passed through @new_val functions;
+ *			otherwise: empty table
+ */
+function VSLib::Utils::TableKeySearchFilterReturnAll(tbl,exp,func=@(key) key,new_key=@(key,count=0) key,new_val=@(val,count=0) val)
+{
+	local re = regexp(exp)
+	local t = {}
+	local count = 0
+	foreach(key,val in tbl)
+	{
+		if(re.search(func(key)))
+		{
+			count += 1
+			t[new_key(key,count)] <- new_val(val,count)
+		}
+	}
+	return t
+}
+
+/*
+ * @author rhino
+ * 
+ * @description Pass each table key through a filter then search over it using the given expression
+ *
+ * @param tbl <table> : Table to iterate over
+ * @param exp <string> : Expression to search table keys with
+ * @param [func <function> = @(key) key] : Filter function to pass key through before attempting to search
+ *
+ * @return  if there ever is a non-null search result: corresponding value to matched key;
+ *			otherwise: null
+ */
+function VSLib::Utils::TableKeySearchFilterReturn(tbl,exp,func=@(key) key)
+{
+	local re = regexp(exp)
+	foreach(key,val in tbl)
+	{
+		if(re.search(func(key)))
+		{
+			return val
+		}
+	}
+	return null
+}
+
+/*
+ * @author rhino
+ * 
+ * @description Search over table keys using the given expression
+ *
+ * @param tbl <table> : Table to iterate over
+ * @param exp <string> : Expression to search table keys with
+ *
+ * @return  if there ever is a non-null search result: corresponding value to matched key;
+ *			otherwise: null
  */
 function VSLib::Utils::TableKeySearchReturn(tbl,exp)
 {
@@ -2654,6 +2817,12 @@ function VSLib::Utils::TableKeySearchReturn(tbl,exp)
 
 /*
  * @author rhino
+ * 
+ * @description Copy an array
+ *
+ * @param arr <array> : Array to copy items of
+ *
+ * @return New array with same elements as @arr
  */
 function VSLib::Utils::ArrayCopy(arr)
 {
@@ -2677,6 +2846,15 @@ function VSLib::Utils::ArrayCopy(arr)
 	return copy;
 }
 
+/*
+ * @author rhino
+ * 
+ * @description Turn given scene table into json-like format. Used to create custom_responses.json file
+ *
+ * @param arr <array> : Table in the key-value format "steam_id = { character = { sequence_name = { scenes = [ scene_x ], delays = [ delay_x ] } } }"
+ *
+ * @return string in json-like format
+ */
 function VSLib::Utils::SceneTableToString(tbl)
 {	
 	//"\n\t\""+steamid+"\":\n\t{\n\t\t\"character\":\n\t\t{\n\t\t\t\"seq_name\":\n\t\t\t{\n\t\t\t\t\"scenes\":[\"blank\"],\n\t\t\t\t\"delays\":[0]\n\t\t\t}\n\t\t}\n\t}";
