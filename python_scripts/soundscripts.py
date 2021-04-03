@@ -75,6 +75,82 @@ class ss:
             + "\n\t wave: " + self.wave \
             + "\n\t " + "\n\t ".join([tname+": "+"\n\t\t ".join([p.key+":"+p.val for p in tvals.pairs]) for tname,tvals in self.extras.items()])
 
+def readfile(file,ss_dict):
+    current = ss()
+    current_extra = ""
+    last_match = ""
+
+    for line in file.split("\n"):
+        line = line.rstrip()
+        if line.lstrip() == "":
+            continue
+
+        if SCRIPT_END.match(line):
+            if current.name in ss_dict.keys():
+                print("DUPLICATE("+str(len(current.name))+"): "+current.name)
+            ss_dict[current.name] = current
+            #print(current)
+            current = ss()
+            last_match = ""
+            continue
+
+        if last_match == "":
+            match = SCRIPT_CAPTION.search(line)
+            if match is not None:
+                current.caption = match.groups()[0]
+                last_match = "caption"
+            else:
+                match = SCRIPT_NAME.search(line)
+                if match is not None and match.groups()[0].strip() != "":
+                    current.name = match.groups()[0]
+                    last_match = "name"
+        
+        elif last_match == "caption":
+            match = SCRIPT_CAPTION.search(line)
+            if match is not None:
+                current.caption = ""
+                last_match = "caption"
+            else:
+                match = SCRIPT_NAME.search(line)
+                if match is not None and match.groups()[0].strip() != "":
+                    current.name = match.groups()[0]
+                    last_match = "name"
+
+        elif last_match == "name":
+            match = SCRIPT_START.search(line)
+            if match is not None:
+                last_match = "start"
+
+        elif last_match == "start" or last_match == "regular" or last_match == "s_table_end":
+            match = SCRIPT_REGULAR.search(line)
+            if match is not None:
+                last_match = "regular"
+                match = match.groups()
+                current.setval(match[0],match[1])
+            else:
+                match = SCRIPT_TABLE_NAME.search(line)
+                if match is not None:
+                    last_match = "s_table_start"
+                    current_extra = match.groups()[0]
+                    current.extras[current_extra] = kvpairs()
+            
+        elif last_match == "s_table_start":
+            match = SCRIPT_TABLE_START.search(line)
+            if match is not None:
+                last_match = "s_table"
+
+        elif last_match == "s_table" or last_match == "s_table_regular":
+            match = SCRIPT_REGULAR.search(line)
+            if match is not None:
+                last_match = "s_table_regular"
+                match = match.groups()
+                current.extras[current_extra].pairs.append(kvpair(match[0],match[1]))
+            else:
+                match = SCRIPT_TABLE_END.search(line)
+                if match is not None:
+                    last_match = "s_table_end"
+                    current_extra = ""
+
 FILES = dict(
     {
         "dlc0":["000","007","013"],
@@ -84,6 +160,7 @@ FILES = dict(
     })
 
 DIRBASE = "./2229460523/scripts/vscripts/resource_tables/soundscripts/"
+CUSTOMDIRBASE = "./2229460523/maps/c1m1_hotel_level_sounds.txt"
 SCRIPT_CAPTION = re.compile("^//\s*\"?(.*)\"?")
 SCRIPT_NAME = re.compile("^\"(\w+(?:\.\w+)*)\"")
 SCRIPT_START = re.compile("^{")
@@ -98,82 +175,13 @@ ss_dict = dict()
 for sdir,fnames in FILES.items():
     for fname in fnames:
         with open(DIRBASE+sdir+"/pak01_"+fname+".txt", "r", errors="ignore") as _file:
-            file = _file.read()
+            readfile(_file.read(),ss_dict)
+
+# Custom scripts
+with open(CUSTOMDIRBASE, "r", errors="ignore") as _file:
+    readfile(_file.read(),ss_dict)
             
-            current = ss()
-            current_extra = ""
-            last_match = ""
-
-            for line in file.split("\n"):
-                line = line.rstrip()
-                if line.lstrip() == "":
-                    continue
-
-                if SCRIPT_END.match(line):
-                    if current.name in ss_dict.keys():
-                        print("DUPLICATE("+str(len(current.name))+"): "+current.name)
-                    ss_dict[current.name] = current
-                    #print(current)
-                    current = ss()
-                    last_match = ""
-                    continue
-
-                if last_match == "":
-                    match = SCRIPT_CAPTION.search(line)
-                    if match is not None:
-                        current.caption = match.groups()[0]
-                        last_match = "caption"
-                    else:
-                        match = SCRIPT_NAME.search(line)
-                        if match is not None and match.groups()[0].strip() != "":
-                            current.name = match.groups()[0]
-                            last_match = "name"
-                
-                elif last_match == "caption":
-                    match = SCRIPT_CAPTION.search(line)
-                    if match is not None:
-                        current.caption = ""
-                        last_match = "caption"
-                    else:
-                        match = SCRIPT_NAME.search(line)
-                        if match is not None and match.groups()[0].strip() != "":
-                            current.name = match.groups()[0]
-                            last_match = "name"
-
-                elif last_match == "name":
-                    match = SCRIPT_START.search(line)
-                    if match is not None:
-                        last_match = "start"
-
-                elif last_match == "start" or last_match == "regular" or last_match == "s_table_end":
-                    match = SCRIPT_REGULAR.search(line)
-                    if match is not None:
-                        last_match = "regular"
-                        match = match.groups()
-                        current.setval(match[0],match[1])
-                    else:
-                        match = SCRIPT_TABLE_NAME.search(line)
-                        if match is not None:
-                            last_match = "s_table_start"
-                            current_extra = match.groups()[0]
-                            current.extras[current_extra] = kvpairs()
-                    
-                elif last_match == "s_table_start":
-                    match = SCRIPT_TABLE_START.search(line)
-                    if match is not None:
-                        last_match = "s_table"
-
-                elif last_match == "s_table" or last_match == "s_table_regular":
-                    match = SCRIPT_REGULAR.search(line)
-                    if match is not None:
-                        last_match = "s_table_regular"
-                        match = match.groups()
-                        current.extras[current_extra].pairs.append(kvpair(match[0],match[1]))
-                    else:
-                        match = SCRIPT_TABLE_END.search(line)
-                        if match is not None:
-                            last_match = "s_table_end"
-                            current_extra = ""
+            
 """
 for k,v in ss_dict.items():
     print("\n"+str(v))
