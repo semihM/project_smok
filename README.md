@@ -1126,9 +1126,25 @@
    Console Syntax | scripted_user_func *speak_saved*  
    ------------- | -------------
     
-   Menu Sequence | _6->5_
+   Menu Sequence | _6->5->5_
+   ------------- | -------------
+
+---
+#### **pitch**
+- Change the pitch(talking speed) of voice line currently being spoken
+   Chat Syntax | (!,/,?)pitch *speed*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *pitch,speed*  
    ------------- | -------------
     
+   Menu Sequence | _6->5->5->1, 6->5->5->2, 6->5->5->3, 6->5->5->4 AND 6->5->5->6_
+   ------------- | -------------
+```cpp 
+       //Overloads:
+       // speed: Talking speed, default is 1.0
+       pitch {speed: float}
+``` 
 ---
 ### Particle effects
 
@@ -1766,7 +1782,7 @@
    Console Syntax | scripted_user_func *piano_keys* 
    ------------- | -------------
     
-   Menu Sequence | _6->9->9->9->5->1_
+   Menu Sequence | _6->9->9->9->6->1_
    ------------- | -------------
 
 ---
@@ -1779,7 +1795,7 @@
    Console Syntax | scripted_user_func *remove_piano_keys* 
    ------------- | -------------
     
-   Menu Sequence | _6->9->9->9->5->2_
+   Menu Sequence | _6->9->9->9->6->2_
    ------------- | -------------
 ---
 ### Microphones and speakers
@@ -2146,6 +2162,28 @@
        
        // Example (give physics to objects within 500 units around aimed point)
        give_physics 500
+```
+---
+#### **zero_g**
+- Disable gravitational forces on objects
+
+   Chat Syntax | (!,/,?)zero_g *targets*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *zero_g,targets*
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->5_
+   ------------- | -------------
+
+```cpp
+       //Overloads
+       zero_g {targets:all|!picker}
+       zero_g     // targets = picker (aimed object)
+       
+       // Example: Make aimed object zero-g
+       zero_g !picker
+       
 ```
 ---
 ### Debugging, scripting and settings related
