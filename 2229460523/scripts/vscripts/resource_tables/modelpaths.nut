@@ -649,6 +649,19 @@
 		}
 		*/
 
+        "soda_can":
+        {
+			mdl = 
+			[	
+				// "models/can.mdl",
+				"models/props_junk/garbage_beercan01a.mdl",
+				"models/props_junk/garbage_sodacan01a.mdl",
+                "models/props_junk/garbage_glassbottle003a.mdl",
+                "models/props_junk/garbage_plasticbottle003a.mdl"
+			]
+            origin_offset = Vector(0,0,5)
+        }
+
 		"c130":
 		{
 			mdl = "models/props_vehicles/c130.mdl"
