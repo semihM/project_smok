@@ -159,7 +159,7 @@ FILES = dict(
         "dlc3":["003"]
     })
 
-DIRBASE = "./2229460523/scripts/vscripts/resource_tables/soundscripts/"
+DIRBASE = "./built_in/soundscripts/"
 CUSTOMDIRBASE = "./2229460523/maps/c1m1_hotel_level_sounds.txt"
 SCRIPT_CAPTION = re.compile("^//\s*\"?(.*)\"?")
 SCRIPT_NAME = re.compile("^\"(\w+(?:\.\w+)*)\"")
