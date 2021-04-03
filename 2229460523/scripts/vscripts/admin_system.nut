@@ -2326,6 +2326,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.SpeakCmd( player, args );
 			break;
 		}
+		case "pitch":
+		{
+			AdminSystem.PitchShiftCmd( player, args );
+			break;
+		}
 		case "upgrade_add":
 		{
 			AdminSystem.UpgradeAddCmd( player, args );
@@ -2622,6 +2627,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.Update_custom_sharing_preferenceCmd(player, args);
 			break;
 		}
+		case "zero_g":
+		{
+			AdminSystem.ZeroGCmd(player, args);
+			break;
+		}
 		case "velocity":
 		{
 			AdminSystem.VelocityCmd( player, args );
@@ -2730,6 +2740,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		case "minigun":
 		{
 			AdminSystem.MinigunCmd( player, args );
+			break;
+		}
+		case "soda_can":
+		{
+			AdminSystem.SodaCanCmd( player, args );
 			break;
 		}
 		case "fire_extinguisher":
@@ -3430,7 +3445,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	{
 		case "array":
 		case "table":
-			msg = Utils.GetTableString(msg);
+			msg = Utils.GetTableString(msg,"","",true);
 			break;
 		case "QAngle":
 		case "Vector":
@@ -4098,6 +4113,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	
 }
 
+// TO-DO: Add "all" option 
 /*
  * @authors rhino
  */
@@ -10051,6 +10067,14 @@ function ChatTriggers::microphone( player, args, text )
  */
 ////////////////////////vocal_stuff//////////////////////////////
 
+function ChatTriggers::pitch( player, args, text )
+{
+	AdminSystem.PitchShiftCmd( player, args );
+}
+::ChatTriggerDocs.pitch <- @(player,args) AdminSystem.IsPrivileged(player) && "pitch" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.pitch(player,args))
+					: null
+
 function ChatTriggers::randomline(player,args,text)
 {
 	AdminSystem.RandomlineCmd(player, args);
@@ -10342,6 +10366,14 @@ function ChatTriggers::debug_info(player,args,text)
 					? Messages.DocCmdPlayer(player,CmdDocs.debug_info(player,args))
 					: null
 
+function ChatTriggers::zero_g(player,args,text)
+{
+	AdminSystem.ZeroGCmd(player, args);
+}
+::ChatTriggerDocs.zero_g <- @(player,args) AdminSystem.IsPrivileged(player) && "zero_g" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.zero_g(player,args))
+					: null
+
 function ChatTriggers::stop_time( player, args, text )
 {
 	AdminSystem.StopTimeCmd( player, args );
@@ -10415,6 +10447,14 @@ function ChatTriggers::give_physics( player, args, text )
 }
 ::ChatTriggerDocs.give_physics <- @(player,args) AdminSystem.IsPrivileged(player) && "give_physics" in CmdDocs
 					? Messages.DocCmdPlayer(player,CmdDocs.give_physics(player,args))
+					: null
+
+function ChatTriggers::soda_can( player, args, text )
+{
+	AdminSystem.SodaCanCmd( player, args );
+}
+::ChatTriggerDocs.soda_can <- @(player,args) AdminSystem.IsPrivileged(player) && "soda_can" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.soda_can(player,args))
 					: null
 
 function ChatTriggers::fire_ex( player, args, text )
@@ -14610,6 +14650,110 @@ if ( Director.GetGameMode() == "holdout" )
 
 }
 
+::GetSpecialModelOptions <- function(MDL,tbl)
+{
+	if(MDL.find(">") == 0)
+	{
+		local special = MDL.slice(1,MDL.len())
+		if(special in ::ModelPaths.special)
+		{
+			local tblref = ::ModelPaths.special[special]
+			local mdlspec = tblref.mdl
+			MDL = typeof mdlspec == "array" 
+						? Utils.GetRandValueFromArray(mdlspec)
+						: mdlspec
+
+			if("origin_offset" in tblref)
+				tbl.origin += tblref.origin_offset
+			if("angles_offset" in tblref)
+				tbl.angles += tblref.angles_offset
+
+			if("mass_scale" in tblref)
+				tbl.massScale = tblref.mass_scale
+
+			if("post_spawn" in tblref)
+				tbl.post = tblref.post_spawn
+		}
+	}
+	return MDL;
+}
+
+::DoPostSpawnSettings <- function(createdent,propsettingname,settings)
+{
+	foreach(typs,post_table in settings.post)
+	{	
+		if(typs != "all" 
+			&& typs != propsettingname
+			&& (typs.find("&") != null 
+				&& Utils.GetIDFromArray(split(typs,"&"),propsettingname) == -1))
+			continue
+
+		// Inputs
+		if("ent_fire" in post_table)
+		{
+			foreach(inp,opts in post_table.ent_fire)
+			{
+				DoEntFire(opts.target,inp,opts.params,opts.delay,opts.activator,createdent.GetBaseEntity())
+			}
+		}
+
+		// Buttons
+		// TO-DO: Model bbox errors, movedir not really working; parenting issues
+		/* 
+		if("buttons" in post_table)
+		{
+			// Multiple buttons using local origin generator function
+			if("multiple" in post_table.buttons)
+			{
+				local buttonstbl = post_table.buttons.multiple
+				
+				foreach(idx,sound_id in buttonstbl.sounds)
+				{
+					local keyvaltable = 
+					{	
+						classname = "func_button"
+						origin = Vector(0,0,0)
+						movedir = createdent.GetAngles().Forward()
+						spawnflags = buttonstbl.spawnflags
+						wait = buttonstbl.wait
+						sounds = sound_id
+					}
+					local spawned_button = Utils.CreateEntityWithTable(keyvaltable);
+
+					if(spawned_button != null)
+					{
+						spawned_button.Input("SetParent","#"+createdent.GetIndex(),0)
+						local loc_org = buttonstbl.next_local_origin(createdent,idx)
+						spawned_button.Input("RunScriptCode","self.SetLocalOrigin(Vector("+loc_org.x+","+loc_org.y+","+loc_org.z+"))",0.05)
+					}
+				}
+			}
+			// Single button using given local origin
+			else if("single" in post_table.buttons)
+			{
+				local buttonstbl = post_table.buttons.single
+				
+				local keyvaltable = 
+				{	
+					classname = "func_button"
+					origin = Vector(0,0,0)
+					movedir = createdent.GetAngles().Forward()
+					spawnflags = buttonstbl.spawnflags
+					wait = buttonstbl.wait
+					sounds = buttonstbl.sounds
+				}
+				local spawned_button = Utils.CreateEntityWithTable(keyvaltable);
+				if(spawned_button != null)
+				{
+					spawned_button.Input("SetParent","#"+createdent.GetIndex())
+					spawned_button.Input("RunScriptCode","self.SetLocalOrigin(Vector("+buttonstbl.local_origin.x+","+buttonstbl.local_origin.y+","+buttonstbl.local_origin.z+"))",0.05)
+				}
+			}
+		}
+		*/
+	}
+}
+
 /*
  * @authors rhino
  */
@@ -14646,34 +14790,6 @@ if ( Director.GetGameMode() == "holdout" )
 			}
 			tbl.angles = tbl.angles + QAngle(0,yaw,0);
 		}
-	}
-
-	function GetSpecialModelOptions(MDL,tbl,typ)
-	{
-		if(MDL.find(">") == 0)
-		{
-			local special = MDL.slice(1,MDL.len())
-			if(special in ::ModelPaths.special)
-			{
-				local tblref = ::ModelPaths.special[special]
-				local mdlspec = tblref.mdl
-				MDL = typeof mdlspec == "array" 
-							? Utils.GetRandValueFromArray(mdlspec)
-							: mdlspec
-
-				if("origin_offset" in tblref)
-					tbl.origin += tblref.origin_offset
-				if("angles_offset" in tblref)
-					tbl.angles += tblref.angles_offset
-
-				if("mass_scale" in tblref)
-					tbl.massScale = tblref.mass_scale
-
-				if("post_spawn" in tblref)
-					tbl.post = tblref.post_spawn
-			}
-		}
-		return MDL;
 	}
 
 	local typename = GetArgument(1);
@@ -14723,7 +14839,7 @@ if ( Director.GetGameMode() == "holdout" )
 	// Settings from arguments
 	PostSettingsManualChanges(raise,yaw,settings);
 	// Settings from special model
-	MDL = GetSpecialModelOptions(MDL,settings,propsettingname)
+	MDL = GetSpecialModelOptions(MDL,settings)
 		
 	origin = settings.origin
 	angles = settings.angles
@@ -14957,78 +15073,7 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	
 	// Post spawn inputs and scripts
-	foreach(typs,post_table in settings.post)
-	{	
-		if(typs != "all" 
-			&& typs != propsettingname
-			&& (typs.find("&") != null 
-				&& Utils.GetIDFromArray(split(typs,"&"),propsettingname) == -1))
-			continue
-
-		// Inputs
-		if("ent_fire" in post_table)
-		{
-			foreach(inp,opts in post_table.ent_fire)
-			{
-				DoEntFire(opts.target,inp,opts.params,opts.delay,opts.activator,createdent.GetBaseEntity())
-			}
-		}
-
-		// Buttons
-		// TO-DO: Model bbox errors, movedir not really working; parenting issues
-		/* 
-		if("buttons" in post_table)
-		{
-			// Multiple buttons using local origin generator function
-			if("multiple" in post_table.buttons)
-			{
-				local buttonstbl = post_table.buttons.multiple
-				
-				foreach(idx,sound_id in buttonstbl.sounds)
-				{
-					local keyvaltable = 
-					{	
-						classname = "func_button"
-						origin = Vector(0,0,0)
-						movedir = createdent.GetAngles().Forward()
-						spawnflags = buttonstbl.spawnflags
-						wait = buttonstbl.wait
-						sounds = sound_id
-					}
-					local spawned_button = Utils.CreateEntityWithTable(keyvaltable);
-
-					if(spawned_button != null)
-					{
-						spawned_button.Input("SetParent","#"+createdent.GetIndex(),0)
-						local loc_org = buttonstbl.next_local_origin(createdent,idx)
-						spawned_button.Input("RunScriptCode","self.SetLocalOrigin(Vector("+loc_org.x+","+loc_org.y+","+loc_org.z+"))",0.05)
-					}
-				}
-			}
-			// Single button using given local origin
-			else if("single" in post_table.buttons)
-			{
-				local buttonstbl = post_table.buttons.single
-				
-				local keyvaltable = 
-				{	
-					classname = "func_button"
-					origin = Vector(0,0,0)
-					movedir = createdent.GetAngles().Forward()
-					spawnflags = buttonstbl.spawnflags
-					wait = buttonstbl.wait
-					sounds = buttonstbl.sounds
-				}
-				local spawned_button = Utils.CreateEntityWithTable(keyvaltable);
-				if(spawned_button != null)
-				{
-					spawned_button.Input("SetParent","#"+createdent.GetIndex())
-					spawned_button.Input("RunScriptCode","self.SetLocalOrigin(Vector("+buttonstbl.local_origin.x+","+buttonstbl.local_origin.y+","+buttonstbl.local_origin.z+"))",0.05)
-				}
-			}
-		}
-		*/
-	}
+	DoPostSpawnSettings(createdent,propsettingname,settings)
 }
 
 ::PropFailureFixCheck <- {}
@@ -16505,6 +16550,15 @@ if ( Director.GetGameMode() == "holdout" )
 			}
 		}
 	}
+}
+
+::AdminSystem.PitchShiftCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local b = player.GetBaseEntity()
+	DoEntFire("!self","PitchShift",GetArgument(1) ? GetArgument(1) : "1",0,null,b.GetCurrentScene())
 }
 
 ::AdminSystem.SpeakCmd <- function ( player, args )
@@ -20665,6 +20719,123 @@ if ( Director.GetGameMode() == "holdout" )
 /*
  * @authors rhino
  */
+::AdminSystem.SodaCanCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local pscr = null;
+	local looked = player.GetLookingLocation()
+	local keyvals = 
+	{
+		targetname = ::Constants.Targetnames.SodaCan + UniqueString()
+		classname = "prop_dynamic_override",
+		origin=looked,
+		angles=QAngle(0,0,0),
+		massScale=1,
+		Solid="6",
+		spawnflags=8,
+		post={}
+	}
+
+	local MDL = GetSpecialModelOptions(">soda_can",keyvals)
+	keyvals.model <- MDL
+
+	local can = Utils.CreateEntityWithTable(keyvals);
+
+	local cuniq = UniqueString()
+	local oldind = can.GetIndex()
+	local thinker = Utils.CreateEntityWithTable({targetname=cuniq,classname="info_target",origin=keyvals.origin,angles=keyvals.angles,spawnflags=0})
+	PropFailureFixCheck[thinker.GetName()] <- {id=can.GetIndex(),thinkstart=Time(),israndom=false,pid=player.GetIndex(),character=player.GetCharacterNameLower(),searchname=can.GetName()}
+
+	local convertername = ::Constants.Targetnames.PhysConverter+cuniq
+	local converter = Utils.CreateEntityWithTable({classname="phys_convert",targetname=convertername,target="#"+oldind,spawnflags=3})
+	converter.Input("converttarget")
+	converter.Input("Kill")
+	AddThinkToEnt(thinker.GetBaseEntity(),"PropTryFindSimplePhysSingle")
+
+
+	keyvals = 
+	{
+		classname = "point_script_use_target",
+		model = can.GetName(), 
+		origin = Vector(0,0,0)
+	};
+
+	local restorehp = GetArgument(1) ? GetArgument(1).tofloat() : 5
+
+	local duration = GetArgument(2) ? GetArgument(2).tofloat() : 1
+	if(duration < 0)
+		duration = 1
+
+	::VSLib.Timers.AddTimer(0.5,false,CreateUseTargetDelayed,{keyvals=keyvals,restorehp=restorehp,duration=duration})
+}
+
+::CreateUseTargetDelayed <- function(args)
+{
+	local keyvals = args.keyvals
+	local restorehp = args.restorehp
+	local duration = args.duration
+	
+	local pscr = Utils.CreateEntityWithTable(keyvals,null,false);
+
+	if(!pscr)
+		return
+
+	local names = ["Coca-cola","Red Bull","Sprite","Fanta","Pepsi","Dr. Pepper","Gatorade","7-Up"]
+	local b = pscr.GetBaseEntity()
+	local bsrc = pscr.GetScriptScope()
+
+	bsrc["RestoreHealth"] <- restorehp
+	bsrc["Duration"] <- duration
+	bsrc["FinishDrink"] <- function()
+	{
+		self.CanShowBuildPanel( false );
+
+		local p = self.GetScriptScope().LastPlayer
+		local c = ::VSLib.Entity(self.GetUseModelName())
+
+		c.Kill()
+		DoEntFire("!self","kill","",0,null,self)
+
+		local newhp = p.GetHealth() + self.GetScriptScope().RestoreHealth
+		if (newhp > p.GetMaxHealth())
+			newhp = p.GetMaxHealth()
+
+		p.SetHealth(newhp);
+	}
+	bsrc["Started"] <- function()
+	{
+		local user = self.GetScriptScope().PlayerUsingMe
+		local player = null
+		if(user == 0)
+			self.StopUse()
+		else
+		{
+			while( player = Entities.FindByClassname( player, "player" ))
+			{
+				if( player.GetEntityHandle() == user )
+				{
+					self.GetScriptScope()["LastPlayer"] <- ::VSLib.Player(player)
+					return
+				}
+			}
+		}
+	}
+
+	b.CanShowBuildPanel(true)
+	b.SetProgressBarText(Utils.GetRandValueFromArray(names))
+	b.SetProgressBarSubText("Drink to restore health!")
+	
+	b.SetProgressBarFinishTime(duration)
+
+	b.ConnectOutput("OnUseStarted","Started")
+	pscr.Input("AddOutput","OnUseFinished !self,CallScriptFunction,FinishDrink,0,1")
+}
+
+/*
+ * @authors rhino
+ */
 ::AdminSystem.FireExtinguisherCmd <- function(player,args)
 {
 	if (!AdminSystem.IsPrivileged( player ))
@@ -20972,6 +21143,204 @@ if ( Director.GetGameMode() == "holdout" )
 	::AdminSystem.Vars.AllowCustomSharing = newstate;
 
 	Messages.InformAll(player.GetCharacterName()+( newstate ? "\x03"+" enabled"+"\x01":"\x04"+" disabled"+"\x01")+" custom sharing");
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.ZeroGCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local targets = GetArgument(1);
+	
+	if(targets == null || targets == "!picker")
+	{
+		local ent = player.GetLookingEntity()
+		if(!ent)
+			return
+
+		GetRidOfGravity(ent)
+	}
+	else if(targets == "all")
+	{
+		local i = 0
+		local maxproc = getconsttable()["ZG_MAX_PROCESS"]
+		local maxiter = getconsttable()["ZG_MAX_ITER"]
+		local classes =
+		{
+			prop_physics = true
+			prop_physics_multiplayer = true
+			prop_physics_override = true
+			func_physbox = true
+			simple_physics_prop = true
+			prop_fuel_barrel = true
+		}
+
+		local objs = Utils.TableToArray(Objects.All())
+		
+		local all_len = objs.len()
+		local last_index = 0
+		local keepiter = false
+		
+		foreach(idx, ent in objs)
+		{
+			last_index = idx
+			if(idx >= maxiter)
+			{
+				keepiter = true
+				break;
+			}
+			local entcls = ent.GetClassname()
+
+			if( !ent.IsEntityValid()
+				|| ent.GetParent() != null
+				|| !(entcls in ::ZeroGClassTable && ::ZeroGClassTable[entcls] && entcls.find("weapon") != 0))
+				continue
+
+			if(entcls.find("_spawn") != null)
+				continue
+				
+			if(ent.GetModel().find("*") != null)
+				continue
+
+			i += 1
+			if(i > maxproc)
+			{
+				keepiter = true
+				break;
+			}
+
+			GetRidOfGravity(ent)
+		}
+
+		if(last_index != all_len-1)
+		{
+			objs = objs.slice(last_index)
+		}
+		if(keepiter)
+		{
+			Timers.AddTimer(0.4,false,DoZeroGIter,{total=all_len,left=objs.len(),objs=objs})
+		}
+	}
+	else
+	{
+		local ent = Entity(targets)
+		if(ent == null || !ent.IsEntityValid())
+			return;
+		
+		GetRidOfGravity(ent)
+	}
+}
+
+::ZeroGClassTable <- 
+{
+	prop_dynamic = true
+	prop_dynamic_override = true
+	prop_physics = true
+	prop_physics_multiplayer = true
+	prop_physics_override = true
+	func_physbox = true
+	simple_physics_prop = true
+	prop_fuel_barrel = true
+}
+
+::GetRidOfGravity <- function(e)
+{
+	local kvs = 
+	{
+		classname="item_sodacan"
+		origin=Vector(0,0,0)
+	}
+	
+	local tt = Utils.CreateEntityWithTable(kvs);
+	local t = Utils.CreateEntityWithTable(kvs);
+	t.SetRenderMode(RENDER_NONE)
+	tt.SetRenderMode(RENDER_NONE)
+	
+	local ev = e.GetPhysicsVelocity()
+	local ei = e.GetIndex()
+	local tb = t.GetBaseEntity()
+
+	e.SetMoveType(0)
+	e.SetVelocity(Vector(0,0,0))
+
+	DoEntFire("!self","setparent","#"+ei,0,null,tb)
+	DoEntFire("#"+ei,"setparent","#"+tt.GetIndex(),0,null,tb)
+	DoEntFire("#"+ei,"runscriptcode","self.ApplyAbsVelocityImpulse(Vector(0,0,-1))",0.05,null,tb)
+	DoEntFire("#"+ei,"clearparent","",0.1,null,tb)
+	DoEntFire("!self","runscriptcode","_dropit(Entity("+ei+"))",0.15,null,tb)
+	DoEntFire("!self","clearparent","",0.2,null,tb)
+	DoEntFire("#"+ei,"runscriptcode","self.ApplyAbsVelocityImpulse(Entity("+ei+").GetPhysicsVelocity().Scale(-1))",0.25,null,tb)
+	DoEntFire("#"+ei,"runscriptcode","self.ApplyAbsVelocityImpulse(Vector("+ev.x+","+ev.y+","+ev.z+").Scale(0.6))",0.3,null,tb)
+	DoEntFire("#"+ei,"runscriptcode","self.SetVelocity(Vector(0,0,0))",0.3,null,tb)
+
+	DoEntFire("!self","kill","",0.35,null,tb)
+}
+
+::DoZeroGIter <- function(args={})
+{
+	::AdminSystem.out("Zero-G Progress: "+Utils.BuildProgressBar(20.0,((args.total-args.left).tofloat()/args.total.tofloat())*20.0,20.0,"|", ". "))
+	local i = 0
+	local maxproc = getconsttable()["ZG_MAX_PROCESS"]
+	local maxiter = getconsttable()["ZG_MAX_ITER"]
+
+	local kvs = 
+	{
+		classname="item_sodacan"
+		origin=Vector(0,0,0)
+	}
+
+	local objs = args.objs
+	
+	local all_len = objs.len()
+	local last_index = 0
+	local keepiter = false
+
+	if(all_len == 0)
+		return;
+
+	foreach(idx, ent in objs)
+	{
+		last_index = idx
+		if(idx >= maxiter)
+		{
+			keepiter = true
+			break;
+		}
+
+		local entcls = ent.GetClassname()
+
+		if( !ent.IsEntityValid()
+			|| ent.GetParent() != null
+			|| !(entcls in ::ZeroGClassTable && ::ZeroGClassTable[entcls] && entcls.find("weapon") != 0))
+			continue
+
+		if(entcls.find("_spawn") != null)
+			continue
+			
+		if(ent.GetModel().find("*") != null)
+			continue
+
+		i += 1
+		if(i > maxproc)
+		{
+			keepiter = true
+			break;
+		}
+		::GetRidOfGravity(ent)
+	}
+	
+	if(last_index != all_len-1)
+	{
+		objs = objs.slice(last_index)
+	}
+
+	if(keepiter)
+	{
+		Timers.AddTimer(0.4,false,::DoZeroGIter,{total=args.total,left=objs.len(),objs=objs})
+	}
 }
 
 ::AdminSystem.GravityCmd <- function ( player, args )
