@@ -43,6 +43,9 @@ class ss:
 
     def sqtable(self,prefix="\t"):
         s = "\""+self.name+"\":\n"+prefix+"{"
+        
+        s += "\n\t"+prefix+"\"script\": " + "\"" + self.name + "\""
+
         if self.caption != "":
             s += "\n\t"+prefix+"\"caption\": " + "\"" + escapes(self.caption) + "\"" 
 
