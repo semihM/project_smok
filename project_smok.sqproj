@@ -394,6 +394,10 @@
       <SubType>Content</SubType>
       <Link>2229460523\scripts\vscripts\project_smok\messages.nut</Link>
     </Content>
+    <Content Include="2229460523\scripts\vscripts\project_smok\physicslimits.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\project_smok\physicslimits.nut</Link>
+    </Content>
     <Content Include="2229460523\scripts\vscripts\project_smok\spellchecker.nut">
       <SubType>Content</SubType>
     </Content>
@@ -417,65 +421,9 @@
       <SubType>Content</SubType>
       <Link>2229460523\scripts\vscripts\resource_tables\particlenames.nut</Link>
     </Content>
-    <Content Include="2229460523\scripts\vscripts\resource_tables\responses\dlc0\pak01_000.txt">
-      <SubType>Content</SubType>
-      <Link>2229460523\scripts\vscripts\resource_tables\responses\dlc0\pak01_000.txt</Link>
-    </Content>
-    <Content Include="2229460523\scripts\vscripts\resource_tables\responses\dlc0\pak01_002.txt">
-      <SubType>Content</SubType>
-      <Link>2229460523\scripts\vscripts\resource_tables\responses\dlc0\pak01_002.txt</Link>
-    </Content>
-    <Content Include="2229460523\scripts\vscripts\resource_tables\responses\dlc1\pak01_000.txt">
-      <SubType>Content</SubType>
-      <Link>2229460523\scripts\vscripts\resource_tables\responses\dlc1\pak01_000.txt</Link>
-    </Content>
-    <Content Include="2229460523\scripts\vscripts\resource_tables\responses\dlc2\pak01_000.txt">
-      <SubType>Content</SubType>
-      <Link>2229460523\scripts\vscripts\resource_tables\responses\dlc2\pak01_000.txt</Link>
-    </Content>
-    <Content Include="2229460523\scripts\vscripts\resource_tables\responses\dlc2\pak01_001.txt">
-      <SubType>Content</SubType>
-      <Link>2229460523\scripts\vscripts\resource_tables\responses\dlc2\pak01_001.txt</Link>
-    </Content>
-    <Content Include="2229460523\scripts\vscripts\resource_tables\responses\dlc3\pak01_000.txt">
-      <SubType>Content</SubType>
-      <Link>2229460523\scripts\vscripts\resource_tables\responses\dlc3\pak01_000.txt</Link>
-    </Content>
-    <Content Include="2229460523\scripts\vscripts\resource_tables\responses\dlc3\pak01_003.txt">
-      <SubType>Content</SubType>
-      <Link>2229460523\scripts\vscripts\resource_tables\responses\dlc3\pak01_003.txt</Link>
-    </Content>
     <Content Include="2229460523\scripts\vscripts\resource_tables\soundscripts.nut">
       <SubType>Content</SubType>
       <Link>2229460523\scripts\vscripts\resource_tables\soundscripts.nut</Link>
-    </Content>
-    <Content Include="2229460523\scripts\vscripts\resource_tables\soundscripts\dlc0\pak01_000.txt">
-      <SubType>Content</SubType>
-      <Link>2229460523\scripts\vscripts\resource_tables\soundscripts\dlc0\pak01_000.txt</Link>
-    </Content>
-    <Content Include="2229460523\scripts\vscripts\resource_tables\soundscripts\dlc0\pak01_007.txt">
-      <SubType>Content</SubType>
-      <Link>2229460523\scripts\vscripts\resource_tables\soundscripts\dlc0\pak01_007.txt</Link>
-    </Content>
-    <Content Include="2229460523\scripts\vscripts\resource_tables\soundscripts\dlc0\pak01_013.txt">
-      <SubType>Content</SubType>
-      <Link>2229460523\scripts\vscripts\resource_tables\soundscripts\dlc0\pak01_013.txt</Link>
-    </Content>
-    <Content Include="2229460523\scripts\vscripts\resource_tables\soundscripts\dlc1\pak01_000.txt">
-      <SubType>Content</SubType>
-      <Link>2229460523\scripts\vscripts\resource_tables\soundscripts\dlc1\pak01_000.txt</Link>
-    </Content>
-    <Content Include="2229460523\scripts\vscripts\resource_tables\soundscripts\dlc2\pak01_000.txt">
-      <SubType>Content</SubType>
-      <Link>2229460523\scripts\vscripts\resource_tables\soundscripts\dlc2\pak01_000.txt</Link>
-    </Content>
-    <Content Include="2229460523\scripts\vscripts\resource_tables\soundscripts\dlc2\pak01_001.txt">
-      <SubType>Content</SubType>
-      <Link>2229460523\scripts\vscripts\resource_tables\soundscripts\dlc2\pak01_001.txt</Link>
-    </Content>
-    <Content Include="2229460523\scripts\vscripts\resource_tables\soundscripts\dlc3\pak01_003.txt">
-      <SubType>Content</SubType>
-      <Link>2229460523\scripts\vscripts\resource_tables\soundscripts\dlc3\pak01_003.txt</Link>
     </Content>
     <Content Include="2229460523\scripts\vscripts\resource_tables\survivorlines.nut">
       <SubType>Content</SubType>
@@ -655,16 +603,6 @@
     <Folder Include="2229460523\scripts\vscripts\admin_system\vslib" />
     <Folder Include="2229460523\scripts\vscripts\resource_tables" />
     <Folder Include="2229460523\scripts\vscripts\project_smok" />
-    <Folder Include="2229460523\scripts\vscripts\resource_tables\responses\dlc0" />
-    <Folder Include="2229460523\scripts\vscripts\resource_tables\responses\dlc1" />
-    <Folder Include="2229460523\scripts\vscripts\resource_tables\responses\dlc2" />
-    <Folder Include="2229460523\scripts\vscripts\resource_tables\responses\dlc3" />
-    <Folder Include="2229460523\scripts\vscripts\resource_tables\soundscripts" />
-    <Folder Include="2229460523\scripts\vscripts\resource_tables\responses" />
-    <Folder Include="2229460523\scripts\vscripts\resource_tables\soundscripts\dlc0" />
-    <Folder Include="2229460523\scripts\vscripts\resource_tables\soundscripts\dlc1" />
-    <Folder Include="2229460523\scripts\vscripts\resource_tables\soundscripts\dlc2" />
-    <Folder Include="2229460523\scripts\vscripts\resource_tables\soundscripts\dlc3" />
     <Folder Include="2229460523\scripts\vscripts\resource_tables\survivorlines_paths" />
     <Folder Include="2229460523\sound" />
     <Folder Include="2229460523\scripts" />
