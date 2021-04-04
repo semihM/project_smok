@@ -1386,7 +1386,7 @@
    ------------- | -------------
 ```cpp 
        //Overloads:
-       // file: Regular expression or keyword to include in sound file names
+       // file: Keyword to include in sound file names or the full file name
        // limit: Maximum amount of names to return if pattern was used or "all"
        // pattern: Regular expression or keyword to include in script name
        find_sound_in_scripts {file: file_name | keyword_in_file} {limit: (all) | number} {pattern} 
@@ -1397,7 +1397,7 @@
        find_sound_in_scripts _punch all
        
        // Example: Get all script names of Ellis which has a sound file with "Hurrah" or "hurrah" word in it
-       find_sound_in_scripts [Hh]urrah all ^[Mm]echanic
+       find_sound_in_scripts Hurrah all ^[Mm]echanic
 ``` 
 ---
 ### Custom sequences
