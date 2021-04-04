@@ -5,7 +5,7 @@
 {
 	Version = 
 	{
-		Number = "v1.3.0"
+		Number = "v1.2.0"
 		Date = "04.04.2021"
 		Source = "https://github.com/semihM/project_smok"
 	}
