@@ -21601,7 +21601,7 @@ if ( Director.GetGameMode() == "holdout" )
 		local all_len = objs.len()
 		local last_index = 0
 		local keepiter = false
-		local st = ""
+		
 		foreach(idx, ent in objs)
 		{
 			last_index = idx
@@ -21620,8 +21620,6 @@ if ( Director.GetGameMode() == "holdout" )
 				keepiter = true
 				break;
 			}
-			st = format("\ncls: %s \nmdl: %s \nid: %s \n",ent.GetClassname(),ent.GetModel(),ent.GetIndex().tostring())
-			StringToFile("admin system/zero_g_debug.txt",st)
 			GetRidOfGravity(ent)
 		}
 
@@ -21895,7 +21893,6 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 	}
 
-	local st = FileToString("admin system/zero_g_debug.txt")
 	foreach(idx, ent in objs)
 	{
 		last_index = idx
@@ -21915,8 +21912,6 @@ if ( Director.GetGameMode() == "holdout" )
 			break;
 		}
 		
-		st = format("\ncls: %s \nmdl: %s \nid: %s \n",ent.GetClassname(),ent.GetModel(),ent.GetIndex().tostring())
-		StringToFile("admin system/zero_g_debug.txt",st)
 		printl(ent.GetClassname()+": "+ent.GetModel())
 		::GetRidOfGravity(ent)
 	}
