@@ -59,6 +59,8 @@
 
     - [**Random voice lines**](#random-and-saved-voices)
 
+    - [**Sound scripts**](#sound-scripts)
+    
     - [**Particle effects**](#particle-effects)
 
     - [**Custom sequences of voice lines**](#custom-sequences)
@@ -1130,22 +1132,6 @@
    ------------- | -------------
 
 ---
-#### **pitch**
-- Change the pitch(talking speed) of voice line currently being spoken
-   Chat Syntax | (!,/,?)pitch *speed*
-   ------------- | -------------
-
-   Console Syntax | scripted_user_func *pitch,speed*  
-   ------------- | -------------
-    
-   Menu Sequence | _6->5->5->1, 6->5->5->2, 6->5->5->3, 6->5->5->4 AND 6->5->5->6_
-   ------------- | -------------
-```cpp 
-       //Overloads:
-       // speed: Talking speed, default is 1.0
-       pitch {speed: float}
-``` 
----
 ### Particle effects
 
 #### **particle**
@@ -1276,6 +1262,142 @@
        //Overloads:
        save_particle {name: particle_name} {duration: seconds}
        save_particle {name: particle_name} // duration = preferred_duration
+```
+---
+### Sound scripts
+
+#### **sound**
+- Play a sound script or a file on players or objects
+
+   Chat Syntax | (!,/,?)sound *sound target,soundname* 
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *sound,target,soundname*  
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_ 
+   ------------- | -------------
+```cpp
+       //Overloads:
+       sound {target: (object_reference) | all} {soundname: (stop,off) | sound_script_name | sound_file_name}
+       
+       // Example: Play HulkZombie.Breathe sound for everyone ( tank breathe )
+       sound all HulkZombie.Breathe
+       
+       // Example: Stop last sound played for everyone
+       sound all stop
+```
+---
+#### **pitch**
+- Change the pitch(talking speed) of voice line currently being spoken
+
+   Chat Syntax | (!,/,?)pitch *speed*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *pitch,speed*  
+   ------------- | -------------
+    
+   Menu Sequence | _6->5->5->1, 6->5->5->2, 6->5->5->3, 6->5->5->4 AND 6->5->5->6_
+   ------------- | -------------
+```cpp 
+       //Overloads:
+       // speed: Talking speed, default is 1.0
+       pitch {speed: float}
+``` 
+---
+#### **sound_script_info**
+- Get information about a sound script
+
+   Chat Syntax | (!,/,?)sound_script_info *script_name* 
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *sound_script_info,script_name*  
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+```cpp 
+       //Overloads:
+       sound_script_info {script_name}
+``` 
+---
+#### **random_sound_script_name**
+- Get one or more random sound script name(s) using patterns/keywords
+
+   Chat Syntax | (!,/,?)random_sound_script_name *pattern limit* 
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *random_sound_script_name,pattern,limit*  
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+```cpp 
+       //Overloads:
+       // pattern: Regular expression or keyword to include in script name
+       // limit: Maximum amount of names to return if pattern was used or "all"
+       random_sound_script_name {pattern} {limit: (all) | number}
+       random_sound_script_name {pattern} // limit = 10
+       random_sound_script_name // pattern = completely random, limit = 1
+       
+       // Example: Get a random script name
+       random_sound_script_name
+       
+       // Example: Get a random script name starting with Gambler or gambler, maximum 3
+       random_sound_script_name ^[Gg]ambler 3
+``` 
+---
+#### **search_sound_script_name**
+- Get one or more sound script name(s) using patterns/keywords, works similar to **random_sound_script_name** but requires a pattern
+
+   Chat Syntax | (!,/,?)search_sound_script_name *pattern limit* 
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *search_sound_script_name,pattern,limit*  
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+```cpp 
+       //Overloads:
+       // pattern: Regular expression or keyword to include in script name
+       // limit: Maximum amount of names to return if pattern was used or "all"
+       search_sound_script_name {pattern} {limit: (all) | number}
+       search_sound_script_name {pattern} // limit = 25
+       search_sound_script_name // pattern = completely random, limit = 1
+       
+       // Example: Get all script names including the word MissionStart
+       search_sound_script_name MissionStart all
+       
+       // Example: Get 2 script names of starting with Wood_Box
+       search_sound_script_name ^Wood_Box 2
+``` 
+---
+#### **find_sound_in_scripts**
+- Get one or more sound script name(s) searching over **sound file names** inside scripts
+
+   Chat Syntax | (!,/,?)find_sound_in_scripts *file limit pattern* 
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *find_sound_in_scripts,file,limit,pattern*  
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+```cpp 
+       //Overloads:
+       // file: Regular expression or keyword to include in sound file names
+       // limit: Maximum amount of names to return if pattern was used or "all"
+       // pattern: Regular expression or keyword to include in script name
+       find_sound_in_scripts {file: file_name | keyword_in_file} {limit: (all) | number} {pattern} 
+       find_sound_in_scripts {file: file_name | keyword_in_file} {limit: (all) | number} // pattern = any word
+       find_sound_in_scripts {file: file_name | keyword_in_file} // pattern = any word, limit = 10
+       
+       // Example: Get all script names which has a sound file with "_punch" word in it
+       find_sound_in_scripts _punch all
+       
+       // Example: Get all script names of Ellis which has a sound file with "Hurrah" or "hurrah" word in it
+       find_sound_in_scripts [Hh]urrah all ^[Mm]echanic
 ``` 
 ---
 ### Custom sequences
@@ -2154,7 +2276,7 @@
 
 ```cpp
        //Overloads
-       give_physics {radius:positive_number|!picker}
+       give_physics {radius:positive_number|!picker|all}
        give_physics     // radius = 150 units
        
        // Example (give physics to aimed object (if possible))
@@ -2162,6 +2284,9 @@
        
        // Example (give physics to objects within 500 units around aimed point)
        give_physics 500
+       
+       // Example (give physics to all the objects in the map)
+       give_physics all
 ```
 ---
 #### **zero_g**
@@ -2179,11 +2304,32 @@
 ```cpp
        //Overloads
        zero_g {targets:all|!picker}
-       zero_g     // targets = picker (aimed object)
+       zero_g     // targets = !picker (aimed object)
        
-       // Example: Make aimed object zero-g
-       zero_g !picker
+       // Example: Make all physics objects have zero gravity
+       zero_g all
        
+```
+---
+#### **soda_can**
+- Spawn a drinkable soda which recovers health for players
+
+   Chat Syntax | (!,/,?)soda_can *recover*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *soda_can,recover*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+
+```cpp
+       //Overloads
+       soda_can {recover:health_amount}
+       soda_can     // recover = 5
+       
+       // Example: Spawn a drink which restores 15HP when a player uses it
+       soda_can 15
 ```
 ---
 ### Debugging, scripting and settings related
