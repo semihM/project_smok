@@ -281,7 +281,6 @@ function VSLib::Utils::GetTableString(tbl, prefix = "", prev = "", replace_insta
 		{
 			if(replace_instances)
 			{
-				printl(val)
 				if(val == null)
 				{
 					val = "null"
@@ -2496,6 +2495,56 @@ function VSLib::Utils::GetRandValueFromArray(arr, removeValue = false)
 
 /*
  * @author rhino
+ *
+ * @description Get n random values from given array
+ *
+ * @param arr <array> : Table to iterate over
+ *
+ * @return array
+ */
+function VSLib::Utils::ShuffleArray(arr)
+{
+	local arrlen = arr.len();
+
+	local copy = Utils.ArrayCopy(arr)
+	local new = []
+	
+	for(local i=0;i<arrlen;i++)
+	{
+		new.append(Utils.GetRandValueFromArray(copy,true))
+	}
+	
+	return new;
+}
+
+/*
+ * @author rhino
+ *
+ * @description Get n random values from given array
+ *
+ * @param arr <array> : Table to iterate over
+ *
+ * @return  array
+ */
+function VSLib::Utils::GetNRandValueFromArray(arr,n)
+{
+	local arrlen = arr.len();
+	if(n >= arrlen)
+		return arr
+
+	local copy = Utils.ArrayCopy(arr)
+	local new = []
+	
+	for(local i=0;i<n;i++)
+	{
+		new.append(Utils.GetRandValueFromArray(copy,true))
+	}
+	
+	return new;
+}
+
+/*
+ * @author rhino
  * 
  * @description Get the closest hittable point above the given point. 
  *
@@ -2691,6 +2740,30 @@ function VSLib::Utils::ExtendTable(tbl,other,overwrite=false)
 /*
  * @author rhino
  *
+ * @description Filter values out from a table with a function
+ *
+ * @param tbl <table> : Table to iterate over
+ * @param filter <function> : Filter to pass each value through, only the values which result in @validation_value will be kept
+ * @param validation_value <variable> : Valid result of filter, results equal to this will be considered valid
+ *
+ * @return  filtered table
+ */
+function VSLib::Utils::TableFilterByValue(tbl,filter=@(v) true,validation_value = true)
+{
+	local t = {}
+	foreach(key,val in tbl)
+	{
+		if(filter(val) == validation_value)
+		{
+			t[key] <- val
+		}
+	}
+	return t
+}
+
+/*
+ * @author rhino
+ *
  * @description Match table keys using the given expression
  *
  * @param tbl <table> : Table to iterate over
@@ -2710,6 +2783,25 @@ function VSLib::Utils::TableKeyMatch(tbl,exp)
 		}
 	}
 	return false
+}
+
+/*
+ * @author rhino
+ *
+ * @description Get an array of given tables keys
+ *
+ * @param tbl <table> : Table to iterate over
+ *
+ * @return  array
+ */
+function VSLib::Utils::TableKeys(tbl)
+{
+	local arr = []
+	foreach(key,val in tbl)
+	{
+		arr.append(key)
+	}
+	return arr
 }
 
 /*
