@@ -1365,6 +1365,77 @@
                     )
                 return cmd.Describe();
             }
+            pitch = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "pitch",
+                    [
+                        CMDParam("speedfactor","Speed factor-> 1.0 normal, 0.5 half the speed, 2.0 twice as fast etc.",true,"uses 1.0(resets)")
+                    ],
+                    "Change the talking speed of the currently being spoken voice line"
+                    )
+                return cmd.Describe();
+            }
+            sound = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "sound",
+                    [
+                        CMDParam("targetname","Player name/character to play sounds to, 'all' to play for everyone"),
+                        CMDParam("sound","Sound script/file to play for player. 'off' or 'stop' to stop playing, '!random' for random script")
+                    ],
+                    "Play sounds on players"
+                    )
+                return cmd.Describe();
+            }
+            sound_script_info = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "sound_script_info",
+                    [
+                        CMDParam("sound","Sound script name")
+                    ],
+                    "Get information about sound scripts"
+                    )
+                return cmd.Describe();
+            }
+            random_sound_script_name = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "random_sound_script_name",
+                    [
+                        CMDParam("pattern","Pattern to use while getting random names",true,"completely randomly picked"),
+                        CMDParam("limit","Maximum amount of random names to return",true,"limits at 10")
+                    ],
+                    "Get random sound script names following the given pattern"
+                    )
+                return cmd.Describe();
+            }
+            search_sound_script_name = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "search_sound_script_name",
+                    [
+                        CMDParam("pattern","Pattern to use while getting random names"),
+                        CMDParam("limit","Maximum amount of names to return, 'all' to return all found.",true,"limits at 25")
+                    ],
+                    "Search and return all or some of the sound script names matching given pattern"
+                    )
+                return cmd.Describe();
+            }
+            find_sound_in_scripts = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "find_sound_in_scripts",
+                    [
+                        CMDParam("file","File name or keyword in a sound file"),
+                        CMDParam("limit","Maximum amount of names to return, 'all' to return all found.",true,"limits at 10"),
+                        CMDParam("pattern","Pattern to use while getting random names",true,"checks all sound scripts")
+                    ],
+                    "Search and return all or some of the sound script names including given file name or keyword"
+                    )
+                return cmd.Describe();
+            }
             server_exec = function(player,args)
             {
                 local cmd = CMDDocs(
@@ -2181,6 +2252,28 @@
                         CMDParam("radius","Radius to select objects within or !picker (aimed object)",true,"uses 150 units radius")
                     ],
                     "Give physics abilities to objects"
+                    )
+                return cmd.Describe();
+            }
+            zero_g = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "zero_g",
+                    [
+                        CMDParam("targetname","Target name/reference, 'all' for all objects in map",true,"uses aimed object")
+                    ],
+                    "Remove gravitational forces from objects"
+                    )
+                return cmd.Describe();
+            }
+            soda_can = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "soda_can",
+                    [
+                        CMDParam("health","Amount of health to recover from using",true,"5 HP recovery")
+                    ],
+                    "Create a randomly named and modeled drink to be used for recovering health"
                     )
                 return cmd.Describe();
             }

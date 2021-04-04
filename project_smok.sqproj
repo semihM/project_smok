@@ -42,17 +42,9 @@
     </WorkingDirectory>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="..\..\..\Program Files %28x86%29\Steam\steamapps\common\Left 4 Dead 2\bin\vpk.exe">
-      <SubType>Content</SubType>
-      <Link>vpk.exe</Link>
-    </Content>
     <Content Include=".gitignore">
       <SubType>Content</SubType>
       <Link>.gitignore</Link>
-    </Content>
-    <Content Include=".project">
-      <SubType>Content</SubType>
-      <Link>.project</Link>
     </Content>
     <Content Include="2229460523\addonimage.jpg">
       <SubType>Content</SubType>
@@ -290,6 +282,30 @@
       <SubType>Content</SubType>
       <Link>2229460523\maps\c9m2_lots_level_sounds.txt</Link>
     </Content>
+    <Content Include="2229460523\materials\models\can\cup.vmt">
+      <SubType>Content</SubType>
+      <Link>2229460523\materials\models\can\cup.vmt</Link>
+    </Content>
+    <Content Include="2229460523\materials\models\can\cup.vtf">
+      <SubType>Content</SubType>
+      <Link>2229460523\materials\models\can\cup.vtf</Link>
+    </Content>
+    <Content Include="2229460523\models\can.dx90.vtx">
+      <SubType>Content</SubType>
+      <Link>2229460523\models\can.dx90.vtx</Link>
+    </Content>
+    <Content Include="2229460523\models\can.mdl">
+      <SubType>Content</SubType>
+      <Link>2229460523\models\can.mdl</Link>
+    </Content>
+    <Content Include="2229460523\models\can.phy">
+      <SubType>Content</SubType>
+      <Link>2229460523\models\can.phy</Link>
+    </Content>
+    <Content Include="2229460523\models\can.vvd">
+      <SubType>Content</SubType>
+      <Link>2229460523\models\can.vvd</Link>
+    </Content>
     <Content Include="2229460523\scripts\clientmenu.txt">
       <SubType>Content</SubType>
       <Link>2229460523\scripts\clientmenu.txt</Link>
@@ -378,6 +394,10 @@
       <SubType>Content</SubType>
       <Link>2229460523\scripts\vscripts\project_smok\messages.nut</Link>
     </Content>
+    <Content Include="2229460523\scripts\vscripts\project_smok\physicslimits.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\project_smok\physicslimits.nut</Link>
+    </Content>
     <Content Include="2229460523\scripts\vscripts\project_smok\spellchecker.nut">
       <SubType>Content</SubType>
     </Content>
@@ -400,6 +420,10 @@
     <Content Include="2229460523\scripts\vscripts\resource_tables\particlenames.nut">
       <SubType>Content</SubType>
       <Link>2229460523\scripts\vscripts\resource_tables\particlenames.nut</Link>
+    </Content>
+    <Content Include="2229460523\scripts\vscripts\resource_tables\soundscripts.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\resource_tables\soundscripts.nut</Link>
     </Content>
     <Content Include="2229460523\scripts\vscripts\resource_tables\survivorlines.nut">
       <SubType>Content</SubType>
@@ -569,6 +593,10 @@
   <ItemGroup>
     <Folder Include="2229460523" />
     <Folder Include="2229460523\maps" />
+    <Folder Include="2229460523\materials\models" />
+    <Folder Include="2229460523\materials\models\can" />
+    <Folder Include="2229460523\models" />
+    <Folder Include="2229460523\materials" />
     <Folder Include="2229460523\scripts\vscripts" />
     <Folder Include="2229460523\scripts\vscripts\admin_system" />
     <Folder Include="2229460523\scripts\vscripts\admin_system\entitygroups" />

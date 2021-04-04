@@ -558,8 +558,19 @@
         "models/props_fairgrounds/Lil'Peanut_cutout001.mdl",
 		"models/props_downtown/horse_statue.mdl",
 		"models/props_unique/subwaycar_all_onetexture.mdl",
-		"models/props_vehicles/pickup_regcab.mdl"
+		"models/props_vehicles/pickup_regcab.mdl",
+		// Not in the menu
+		"models/props_vehicles/chopper_generic.mdl",
+		"models/props_vehicles/cement_truck01.mdl",
+		"models/props_vehicles/hmmwv.mdl",
+		"models/props_vehicles/hmmwv_supply.mdl",
+		"models/props_vehicles/humvee.mdl",
+		"models/props_vehicles/bus01.mdl",
+		"models/props_vehicles/bus01_2.mdl",
+		"models/props_vehicles/army_truck.mdl"
     ]
+
+	// Parent&child1&child2&...
     parented =
     [
         "models/lighthouse/junkyard_crane_base.mdl&models/lighthouse/junkyard_crane_arm.mdl&models/lighthouse/junkyard_crane_windows.mdl",
@@ -598,15 +609,131 @@
 		"models/props_vehicles/front_loader01_rear.mdl&models/props_vehicles/front_loader01_glass.mdl&models/props_vehicles/front_loader01_front_down.mdl",
 		"models/props_vehicles/pickup_regcab.mdl&models/props_vehicles/pickup_regcab_glass.mdl&models/props_vehicles/pickup_load01.mdl",
 		"models/props_vehicles/pickup_regcab.mdl&models/props_vehicles/pickup_regcab_glass.mdl&models/props_vehicles/pickup_load02.mdl",
-		"models/props_vehicles/pickup_regcab.mdl&models/props_vehicles/pickup_regcab_glass.mdl&models/props_vehicles/pickup_load03.mdl"
+		"models/props_vehicles/pickup_regcab.mdl&models/props_vehicles/pickup_regcab_glass.mdl&models/props_vehicles/pickup_load03.mdl",
+		"models/props_vehicles/cement_truck01.mdl&models/props_vehicles/cement_truck01_glass.mdl",
+		// Not in the menu
+		"models/props_vehicles/humvee.mdl&models/props_vehicles/humvee_glass.mdl",
+		"models/props_vehicles/hmmwv_supply.mdl&models/props_vehicles/hmmwv_supply_glass.mdl",
+		"models/props_vehicles/hmmwv.mdl&models/props_vehicles/hmmwv_glass.mdl"
 	]
+
+	// Similar to entity groups
 	special = 
 	{
+		/*
+		"piano":
+		{
+			mdl = "models/props_furniture/piano.mdl"
+			angles_offset = QAngle(0,180,0)
+			post_spawn =
+			{
+				"dynamic&physics":
+				{
+					buttons =
+					{
+						multiple =
+						{
+							sounds = [43,44,1,2,3,5,6,7,8,9,15,16,17,18,19,20,31,33,34,35,36,41,42,45,46]
+							spawnflags = 1025
+							wait = 0.01
+							lip = 1
+
+							next_local_origin = function(parent,idx)
+							{
+								return Vector(6.481934,-35.050781,38.480469) + parent.GetAngles().Forward().Scale(2.8*idx)
+							}
+						}
+					}
+				}
+			}
+		}
+		*/
+
+        "soda_can":
+        {
+			mdl = 
+			[	
+				// "models/can.mdl",
+				"models/props_junk/garbage_beercan01a.mdl",
+				"models/props_junk/garbage_sodacan01a.mdl",
+                "models/props_junk/garbage_glassbottle003a.mdl",
+                "models/props_junk/garbage_plasticbottle003a.mdl"
+			]
+            origin_offset = Vector(0,0,5)
+        }
+
+		"c130":
+		{
+			mdl = "models/props_vehicles/c130.mdl"
+			mass_scale = 25000
+			post_spawn =
+			{
+				dynamic =
+				{
+					ent_fire = 
+					{
+						SetAnimation =
+						{
+							target = "!self"
+							activator = null
+							params = "idle"
+							delay = 0.1
+						}
+					}
+				}
+			}
+		}
+
+		"rescue_heli":
+		{
+			mdl = "models/props_vehicles/helicopter_rescue.mdl"
+			mass_scale = 500
+			post_spawn =
+			{
+				dynamic =
+				{
+					ent_fire = 
+					{
+						SetAnimation =
+						{
+							target = "!self"
+							activator = null
+							params = "3ready"
+							delay = 0.1
+						}
+					}
+				}
+			}
+		}
+
+		"heli" : 
+		{
+			mdl = "models/props_vehicles/chopper_generic.mdl"
+			mass_scale = 2000
+			post_spawn =
+			{
+				dynamic =
+				{
+					ent_fire = 
+					{
+						SetAnimation =
+						{
+							target = "!self"
+							activator = null
+							params = "hover"
+							delay = 0.1
+						}
+					}
+				}
+			}
+		}
+
 		"cargo_ship" : 
 		{
 			mdl = "models/props_vehicles/freighter_hull.mdl&models/props_vehicles/freighter_deck.mdl&models/props_vehicles/freighter_deckdetail.mdl&models/props_vehicles/freighter_hatches.mdl&models/props_vehicles/freighter_hold.mdl&models/props_vehicles/freighter_lifeboats.mdl&models/props_vehicles/freighter_loader.mdl&models/props_vehicles/freighter_foremast.mdl&models/props_vehicles/freighter_middeckdetail.mdl&models/props_vehicles/freighter_superstructure.mdl&models/props_vehicles/freighter_upperdeckdetail.mdl"
 			origin_offset = Vector(0,0,375)
 		}
+
 		"pickup_loaded" : 
 		{
 			mdl = 
@@ -615,7 +742,6 @@
 				"models/props_vehicles/pickup_regcab.mdl&models/props_vehicles/pickup_regcab_glass.mdl&models/props_vehicles/pickup_load02.mdl",
 				"models/props_vehicles/pickup_regcab.mdl&models/props_vehicles/pickup_regcab_glass.mdl&models/props_vehicles/pickup_load03.mdl"
 			]
-			origin_offset = Vector(0,0,0)
 		}
 	}
 }

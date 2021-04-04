@@ -5,8 +5,8 @@
 {
 	Version = 
 	{
-		Number = "v1.1.0"
-		Date = "13.03.2021"
+		Number = "v1.2.0"
+		Date = "04.04.2021"
 		Source = "https://github.com/semihM/project_smok"
 	}
 
@@ -88,6 +88,8 @@
 	TankRock = "project_smok_tank_rock_"
 
 	PhysConverter = "project_smok_phys_converter"
+
+	SodaCan = "project_smok_soda_can_"
 }
 
 /*************************\

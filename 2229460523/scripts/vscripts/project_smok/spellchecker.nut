@@ -3,6 +3,15 @@
 \***************/
 ::SpellChecker <- {}
 
+/* @authors rhino
+ *
+ * @description Calculate the cost of changing from a word to another
+ *
+ * @param source <string>: Source(misspelled) word
+ * @param target <string>: Target(possible match) word
+ * 
+ * @return Levenshtein distance of target word to source
+ */
 ::SpellChecker.LevenshteinDist <- function(source, target)
 {
 	function min(x,y,z)
@@ -50,9 +59,16 @@
 /******************\
 * Levenshtein Class *
 \******************/
-/// [maxdist=3] : Maximum levenshtein distance
-/// [maxdisp=5] : Maximum amount of closest word to print
-/// [typ="command"] : Type of words
+/* @authors rhino
+ *
+ * @description Create a new Levenshtein instance with a set of maximum search distance, display amount and word category 
+ *
+ * @param [maxdist <integer> = SCL_DEF_MAXDIST]: Maximum valid distance of target word to source word
+ * @param [maxdisp <integer> = SCL_DEF_MAXDISP]: Maximum amount of words to display while printing
+ * @param [typ <string> = "command"]: Type of words used. This is used while printing "Unknown @typ: unknown_word."
+ * 
+ * @return A new instance of ::SpellChecker.Levenshtein
+ */
 class ::SpellChecker.Levenshtein
 {
     constructor(maxdist=SCL_DEF_MAXDIST,maxdisp=SCL_DEF_MAXDISP,typ="command")
@@ -74,7 +90,19 @@ class ::SpellChecker.Levenshtein
 
 
 // TO-DO: Cache checked words
-function SpellChecker::Levenshtein::GetDistTable(word, lookuptbl)
+// TO-DO: Find a way around squirrel cancelling the query for longer tables
+/* @authors rhino
+ *
+ * @description Get the distances of given word to keys of given table using a filter on keys
+ *
+ * @param word <string>: Word to use as source
+ * @param lookuptbl <table>: Lookup table with target words as keys, uses maximum of SCL_LOOKUP_LIMIT amount of keys
+ * @param [lookup_filter <function> = @(key) key]: Filter function to pass lookup table keys before calculations
+ * 
+ * @return if there were any matches with <= self._maxdist distance: table (distance <integer>: words <list>) with maximum SCL_LOOKUP_LIMIT total words;
+ 						otherwise: table = { "-1" : best_match_distance, best_match_distance : closest_match }   
+ */
+function SpellChecker::Levenshtein::GetDistTable(word, lookuptbl, lookup_filter = @(key) key)
 {
 	local result = {}
 	local backup = {}
@@ -96,7 +124,7 @@ function SpellChecker::Levenshtein::GetDistTable(word, lookuptbl)
 		if(checks >= limit)
 			break;
 		
-		local dist = ::SpellChecker.LevenshteinDist(word,w)
+		local dist = ::SpellChecker.LevenshteinDist(word,lookup_filter(w))
 		checks += 1;
 
 		if(dist <= _maxdist)
@@ -136,9 +164,20 @@ function SpellChecker::Levenshtein::GetDistTable(word, lookuptbl)
 	return result;
 }
 
-function SpellChecker::Levenshtein::GetBestMatches(word, lookuptbl)
+/* @authors rhino
+ *
+ * @description Get the best self._maxdisp amount matches or the best match of a word using a lookup table keys filtered
+ *
+ * @param word <string>: Word to use as source
+ * @param lookuptbl <table>: Lookup table with target words as keys, uses maximum of SCL_LOOKUP_LIMIT amount of keys
+ * @param [lookup_filter <function> = @(key) key]: Filter function to pass lookup table keys before calculations
+ * 
+ * @return if no valid matches was found(backup was used) : table { "-1" : best_match_distance, best_match_distance : closest_match };
+ *							; otherwise: table with self._maxdisp entries {"1" : best_match, "2": second_best, "3": third_best, ...}
+ */
+function SpellChecker::Levenshtein::GetBestMatches(word, lookuptbl, lookup_filter = @(key) key)
 {	
-	local matches = GetDistTable(word,lookuptbl)
+	local matches = GetDistTable(word,lookuptbl,lookup_filter)
 	if(matches.len() == 0 || (-1 in matches))
 	{
 		return matches;
@@ -181,15 +220,37 @@ function SpellChecker::Levenshtein::GetBestMatches(word, lookuptbl)
 	}
 }
 
-function SpellChecker::Levenshtein::GetBestMatch(word, lookuptbl)
+/* @authors rhino
+ *
+ * @description Get the best match of a word using a lookup table with a filter, if it exist 
+ *
+ * @param word <string>: Word to use as source
+ * @param lookuptbl <table>: Lookup table with target words as keys, uses maximum of SCL_LOOKUP_LIMIT amount of keys
+ * @param [lookup_filter <function> = @(key) key]: Filter function to pass lookup table keys before calculations
+ * 
+ * @return if no valid matches were found: null;
+ * 				otherwise: best matched word 
+ */
+function SpellChecker::Levenshtein::GetBestMatch(word, lookuptbl, lookup_filter = @(key) key)
 {
-	local matches = ::SpellChecker.Levenshtein(_maxdist,1,_typ).GetBestMatches(word,lookuptbl);
+	local matches = ::SpellChecker.Levenshtein(_maxdist,1,_typ).GetBestMatches(word,lookuptbl,lookup_filter);
 	return 1 in matches ? matches[1] : null;
 }
 
-function SpellChecker::Levenshtein::PrintBestMatches(player, word, lookuptbl)
+/* @authors rhino
+ *
+ * @description Get the best match of a word using a lookup table with a filter, if it exist 
+ *
+ * @param player <VSLib.Entity>: Player for printing results to
+ * @param word <string>: Word to use as source
+ * @param lookuptbl <table>: Lookup table with target words as keys, uses maximum of SCL_LOOKUP_LIMIT amount of keys
+ * @param [lookup_filter <function> = @(key) key]: Filter function to pass lookup table keys before calculations
+ * 
+ * @return null
+ */
+function SpellChecker::Levenshtein::PrintBestMatches(player, word, lookuptbl, lookup_filter = @(key) key)
 {	
-	local matches = GetBestMatches(word,lookuptbl)
+	local matches = GetBestMatches(word,lookuptbl,lookup_filter)
 	local mlen = matches.len();
 	if(mlen == 0)
 	{

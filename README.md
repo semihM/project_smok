@@ -3,6 +3,16 @@
  
  - Following documentation is for the **new and updated commands**. Commands that aren't included in this documentation can be found in the [Admin System Guide](https://steamcommunity.com/sharedfiles/filedetails/?id=213591107). Be aware that **some of the commands that are not documented may behave differently** than the guide. 
 
+## Forums
+
+- If you have encountered a bug or had add-on confliction issues, please [report it here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089552207/)
+
+- If you have any suggestions, please [write them here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089554499/)
+
+- If you are having trouble with the add-on or have any questions, please [ask here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089567424/)
+
+## Development
+ - If you'd like to contribute to the development of **project_smok** contact [rhino](http://steamcommunity.com/profiles/76561198095804696)
 ---
 # Documentation Contents
 - [**Downloading and Installing**](#downloading-and-installing)
@@ -49,6 +59,8 @@
 
     - [**Random voice lines**](#random-and-saved-voices)
 
+    - [**Sound scripts**](#sound-scripts)
+    
     - [**Particle effects**](#particle-effects)
 
     - [**Custom sequences of voice lines**](#custom-sequences)
@@ -240,11 +252,11 @@
    $repeat_id | _*integer*_ | Total number of repeats current command has, starts from 1
    $repeats_left | _*integer*_ | Number of calls left after the current call
    $last_call_time | _*float*_ | Time() value stored from the previous call	                                                                                                
-   $caller_ent | _*VSLib.Player*_ | command's caller as a VSLib.Player object
+   $caller_ent | _*VSLib.Player*_ | command's caller as a **VSLib.Player** object
    $caller_id | _*integer*_ | command caller's entity index as an integer
    $caller_char | _*string*_ | command caller's character name, first letter capitalized
    $caller_name | _*string*_ | command caller's in-game name
-   $caller_target | _*VSLib.Entity*_ | entity the command caller is aiming at as an VSLib.Entity object, uses an invalid entity if nothing is looked at 
+   $caller_target | _*VSLib.Entity or null*_ | entity the command caller is aiming at as a **VSLib.Entity** object or **null**
    
    #### Alias Options
    - There are 5 options available for aliases, none of them are required to initialize an alias.
@@ -277,7 +289,7 @@
 		Help =
 		{
 			// Alias information
-			docs = "Calls target_entity's (or caller's if null) method_name named method with cs_args string"
+			docs = "Details of what this alias does"
 			
 			// Parameter 1 detailed information
 			param_1 = 
@@ -356,8 +368,8 @@
 				// Use a method named as a parameter from caller's class and add another parameter to it
 				arg_3 = "$[$caller_ent.$param_1() + $param_2]"	
 				
-				// Use aimed entity, if it's valid: use it's origin vector; else: use null
-				arg_4 = "$[$caller_target.IsEntityValid() ? $caller_target.GetOrigin() : null]"	
+				// Use aimed entity, if there is a valid aimed object: use it's origin vector; else: use null
+				arg_4 = "$[$caller_target ? $caller_target.GetOrigin() : null]"	
 			}
 		}
 	}
@@ -594,10 +606,10 @@
 #### **prop**
 -  Create a prop of the given type with given model
 
-   Chat Syntax | (!,/,?)prop *type model_path*
+   Chat Syntax | (!,/,?)prop *type model_path extra_height yaw mass_scale*
    ------------- | -------------
 
-   Console Syntax | scripted_user_func *prop,type,model_path* 
+   Console Syntax | scripted_user_func *prop,type,model_path,extra_height,yaw,mass_scale* 
    ------------- | -------------
     
    Menu Sequence | _6->1->1_ AND _6->1->2_ 
@@ -607,11 +619,16 @@
        //Overloads:
        // {type} should be one of (physicsM: physics object, dynamic: non-physics object, ragdoll: ragdolling models)
        // {type} also accepts classname "physics", but this class is less flexable than "physicsM" and doesn't work with most models
-       // {model_path} follows this format in general: models/props_{category}/{name}.mdl OR !random for a random model
+       // {model_path} follows the formats:
+	   //   - "models/props_{category}/{name}.mdl" for a specific model
+	   //	- "!random" for a random model
+	   //	- ">{custom_name}" for a customized prop
+	   //
        // Multiple models can be given, seperated with "&" character, to create parented props ( parented by first model )
+	   //
        // To check out all possible models: Left 4 Dead 2 Authoring Tools>Hammer World Editor>CTRL+N>CTRL+SHIFT+M>Search all models
-       prop {type: (physicsM, dynamic, ragdoll)} {model_path | !random} {extra_height} {yaw:degrees} {massScale}
-       prop {type: (physicsM, dynamic, ragdoll)} {model_path | !random} // extra_height = 0, yaw = 0, massScale = 1
+       prop {type: (physicsM, dynamic, ragdoll)} {model_path | !random | >custom_name} {extra_height} {yaw:degrees} {massScale}
+       prop {type: (physicsM, dynamic, ragdoll)} {model_path | !random | >custom_name} // extra_height = 0, yaw = 0, massScale = 1
 
        // Example: Create a flower barrel with physics
        prop physicsM models/props_foliage/flower_barrel.mdl
@@ -627,6 +644,9 @@
 
        // Example: Create a ragdoll of coach
        prop ragdoll models/survivors/survivor_coach.mdl
+
+       // Example: Create a helicopter, using it's custom settings 
+       prop dynamic >heli
 ```
 ---
 #### **ent**
@@ -1108,9 +1128,9 @@
    Console Syntax | scripted_user_func *speak_saved*  
    ------------- | -------------
     
-   Menu Sequence | _6->5_
+   Menu Sequence | _6->5->5_
    ------------- | -------------
-    
+
 ---
 ### Particle effects
 
@@ -1242,6 +1262,142 @@
        //Overloads:
        save_particle {name: particle_name} {duration: seconds}
        save_particle {name: particle_name} // duration = preferred_duration
+```
+---
+### Sound scripts
+
+#### **sound**
+- Play a sound script or a file on players or objects
+
+   Chat Syntax | (!,/,?)sound *sound target,soundname* 
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *sound,target,soundname*  
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_ 
+   ------------- | -------------
+```cpp
+       //Overloads:
+       sound {target: (object_reference) | all} {soundname: (stop,off) | sound_script_name | sound_file_name}
+       
+       // Example: Play HulkZombie.Breathe sound for everyone ( tank breathe )
+       sound all HulkZombie.Breathe
+       
+       // Example: Stop last sound played for everyone
+       sound all stop
+```
+---
+#### **pitch**
+- Change the pitch(talking speed) of voice line currently being spoken
+
+   Chat Syntax | (!,/,?)pitch *speed*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *pitch,speed*  
+   ------------- | -------------
+    
+   Menu Sequence | _6->5->5->1, 6->5->5->2, 6->5->5->3, 6->5->5->4 AND 6->5->5->6_
+   ------------- | -------------
+```cpp 
+       //Overloads:
+       // speed: Talking speed, default is 1.0
+       pitch {speed: float}
+``` 
+---
+#### **sound_script_info**
+- Get information about a sound script
+
+   Chat Syntax | (!,/,?)sound_script_info *script_name* 
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *sound_script_info,script_name*  
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+```cpp 
+       //Overloads:
+       sound_script_info {script_name}
+``` 
+---
+#### **random_sound_script_name**
+- Get one or more random sound script name(s) using patterns/keywords
+
+   Chat Syntax | (!,/,?)random_sound_script_name *pattern limit* 
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *random_sound_script_name,pattern,limit*  
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+```cpp 
+       //Overloads:
+       // pattern: Regular expression or keyword to include in script name
+       // limit: Maximum amount of names to return if pattern was used or "all"
+       random_sound_script_name {pattern} {limit: (all) | number}
+       random_sound_script_name {pattern} // limit = 10
+       random_sound_script_name // pattern = completely random, limit = 1
+       
+       // Example: Get a random script name
+       random_sound_script_name
+       
+       // Example: Get a random script name starting with Gambler or gambler, maximum 3
+       random_sound_script_name ^[Gg]ambler 3
+``` 
+---
+#### **search_sound_script_name**
+- Get one or more sound script name(s) using patterns/keywords, works similar to **random_sound_script_name** but requires a pattern
+
+   Chat Syntax | (!,/,?)search_sound_script_name *pattern limit* 
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *search_sound_script_name,pattern,limit*  
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+```cpp 
+       //Overloads:
+       // pattern: Regular expression or keyword to include in script name
+       // limit: Maximum amount of names to return if pattern was used or "all"
+       search_sound_script_name {pattern} {limit: (all) | number}
+       search_sound_script_name {pattern} // limit = 25
+       search_sound_script_name // pattern = completely random, limit = 1
+       
+       // Example: Get all script names including the word MissionStart
+       search_sound_script_name MissionStart all
+       
+       // Example: Get 2 script names of starting with Wood_Box
+       search_sound_script_name ^Wood_Box 2
+``` 
+---
+#### **find_sound_in_scripts**
+- Get one or more sound script name(s) searching over **sound file names** inside scripts
+
+   Chat Syntax | (!,/,?)find_sound_in_scripts *file limit pattern* 
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *find_sound_in_scripts,file,limit,pattern*  
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+```cpp 
+       //Overloads:
+       // file: Keyword to include in sound file names or the full file name
+       // limit: Maximum amount of names to return if pattern was used or "all"
+       // pattern: Regular expression or keyword to include in script name
+       find_sound_in_scripts {file: file_name | keyword_in_file} {limit: (all) | number} {pattern} 
+       find_sound_in_scripts {file: file_name | keyword_in_file} {limit: (all) | number} // pattern = any word
+       find_sound_in_scripts {file: file_name | keyword_in_file} // pattern = any word, limit = 10
+       
+       // Example: Get all script names which has a sound file with "_punch" word in it
+       find_sound_in_scripts _punch all
+       
+       // Example: Get all script names of Ellis which has a sound file with "Hurrah" or "hurrah" word in it
+       find_sound_in_scripts Hurrah all ^[Mm]echanic
 ``` 
 ---
 ### Custom sequences
@@ -1748,7 +1904,7 @@
    Console Syntax | scripted_user_func *piano_keys* 
    ------------- | -------------
     
-   Menu Sequence | _6->9->9->9->5->1_
+   Menu Sequence | _6->9->9->9->6->1_
    ------------- | -------------
 
 ---
@@ -1761,7 +1917,7 @@
    Console Syntax | scripted_user_func *remove_piano_keys* 
    ------------- | -------------
     
-   Menu Sequence | _6->9->9->9->5->2_
+   Menu Sequence | _6->9->9->9->6->2_
    ------------- | -------------
 ---
 ### Microphones and speakers
@@ -2120,7 +2276,7 @@
 
 ```cpp
        //Overloads
-       give_physics {radius:positive_number|!picker}
+       give_physics {radius:positive_number|!picker|all}
        give_physics     // radius = 150 units
        
        // Example (give physics to aimed object (if possible))
@@ -2128,6 +2284,52 @@
        
        // Example (give physics to objects within 500 units around aimed point)
        give_physics 500
+       
+       // Example (give physics to all the objects in the map)
+       give_physics all
+```
+---
+#### **zero_g**
+- Disable gravitational forces on objects
+
+   Chat Syntax | (!,/,?)zero_g *targets*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *zero_g,targets*
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->5_
+   ------------- | -------------
+
+```cpp
+       //Overloads
+       zero_g {targets:all|!picker}
+       zero_g     // targets = !picker (aimed object)
+       
+       // Example: Make all physics objects have zero gravity
+       zero_g all
+       
+```
+---
+#### **soda_can**
+- Spawn a drinkable soda which recovers health for players
+
+   Chat Syntax | (!,/,?)soda_can *recover*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *soda_can,recover*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+
+```cpp
+       //Overloads
+       soda_can {recover:health_amount}
+       soda_can     // recover = 5
+       
+       // Example: Spawn a drink which restores 15HP when a player uses it
+       soda_can 15
 ```
 ---
 ### Debugging, scripting and settings related
@@ -2952,22 +3154,31 @@
 ---
 ### Detailed Tables
 ---
-- There are currently **2** big tables containing detailed information about the objects in the game.
+- There are currently **3** big tables containing detailed information about the objects in the game.
   + **_NetPropTables_ : Contains network property members and their basic information for every base class defined.** 
-     - **Example:** access to render color member information of props: _NetPropTables.CBaseEntity.m_clrRender_
-  
+     - **Example:** Access to render color member information of props:
+       ```cpp
+       ::NetPropTables.CBaseEntity.m_clrRender
+       ```
+     
   + **_EntityDetailTables_ : Contains most if not all the information on every entity class wiki page there is categorized under basic headers:(Description,Flags,KeyValues,Inputs,Outputs).**
-     - **Example:** access to flags of prop_ragdoll class: _EntityDetailTables.prop.prop_ragdoll.flags_
-     - **Example(Using _wiki_ command):** print key-value pairs of prop_dynamic class: *!wiki prop_dynamic keyvals* 
+     - **Example:** Access to flags of prop_ragdoll class:
+       ```cpp
+       ::EntityDetailTables.prop.prop_ragdoll.flags
+       ```
+     - **Example(Using _wiki_ command):** Print key-value pairs of prop_dynamic class:
+     
+       Chat Syntax | (!,/,?)wiki *prop_dynamic keyvals*
+       ------------- | -------------
+
+       Console Syntax | scripted_user_func *wiki,prop_dynamic,keyvals*
+       ------------- | -------------
   
----
-### Forums
----
-- If you have encountered a bug, please [report it here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089552207/)
-
-- If you have any suggestions, please [write them here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089554499/)
-
-- If you are having trouble with the add-on or have any questions, please [ask here](https://steamcommunity.com/workshop/filedetails/discussion/2229460523/2965021152089567424/)
+  + **_SoundScripts_ : Contains all built-in sound script tables, only includes used ones.** 
+     - **Example:** Get **Zombat3_Intro_Fairgrounds** event details: 
+       ```cpp
+       ::SoundScipts["Event.Zombat3_Intro_Fairgrounds"]
+       ```
 ---
 ## Other Links
 

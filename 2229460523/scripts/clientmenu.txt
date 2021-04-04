@@ -17733,8 +17733,8 @@
 		}
 		"5"
 		{
-			"command"	 "scripted_user_func speak_saved;show_menu smok_menu"
-			"label"		 " Speak saved line"
+			"command"	 "play buttons/button14;show_menu saved_line_menu1"
+			"label"		 " Saved line and Talking speed"
 		}
         "6"
 		{
@@ -17779,6 +17779,52 @@
 			}
 	}
 	
+	"saved_line_menu1"
+	{	
+        "Title"     "Saved line and talking speed(used after starting to talk)"
+    
+		"1"
+		{
+			"command"	 "play buttons/button14;scripted_user_func pitch,0.4;show_menu saved_line_menu1"
+			"label"		 " x0.4 talking speed"
+		}
+		"2"
+		{
+			"command"	 "play buttons/button14;scripted_user_func pitch,0.7;show_menu saved_line_menu1"
+			"label"		 " x0.7 talking speed"
+		}
+		"3"
+		{
+			"command"	 "play buttons/button14;scripted_user_func pitch,1.3;show_menu saved_line_menu1"
+			"label"		 " x1.3 talking speed"
+		}
+		"4"
+		{
+			"command"	 "play buttons/button14;scripted_user_func pitch,1.7;show_menu saved_line_menu1"
+			"label"		 " x1.7 talking speed"
+		}
+		"5"
+		{
+			"command"	 "scripted_user_func speak_saved;show_menu saved_line_menu1"
+			"label"		 " Speak saved line"
+		}
+		"6"
+		{
+			"command"	 "scripted_user_func speak_saved;scripted_user_func pitch,1.0;show_menu saved_line_menu1"
+			"label"		 " x1.0 talking speed"
+		}
+		"8"
+		{
+				"command"	 "play buttons/button14;show_menu smok_menu"
+				"label"		 " << Back"
+		}
+		"0"
+		{
+				"command"    "play buttons/button14"
+				"label"      " Exit"
+		}
+	}
+
 	"smok_menu_prop_main1"
 	{
 			"Title"     "Dynamic or physics"
@@ -24736,8 +24782,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu prop_menu_start3"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;show_menu props_food1"
+					"label"      " Food related"
 			}
 			"8"
 			{
@@ -27836,6 +27882,166 @@
 					"command"    "play buttons/button14;show_menu props_street4"
 					"label"      " << Back"
 			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"props_food1"
+	{
+			"Title"     "Food related (Fast food)"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_fastfoodcontainer01a.mdl,5;show_menu props_food1"
+					"label"      " Fast food container"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/garbage_hamburger_container.mdl,5;show_menu props_food1"
+					"label"      " Hamburger box"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_frenchfrycup01a.mdl,5;show_menu props_food1"
+					"label"      " French fries box"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/garbage_pizza_box.mdl,5;show_menu props_food1"
+					"label"      " Pizza box"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/garbage_popcorn_tub.mdl,5;show_menu props_food1"
+					"label"      " Popcorn bucket"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/garbage_popcorn_box.mdl,5;show_menu props_food1"
+					"label"      " Popcorn box"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_food1"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu prop_menu_start3"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu props_food2"
+					"label"      " >> Next"
+			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"props_food2"
+	{
+			"Title"     "Food related (Drinks)"
+			
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/garbage_drinks_container.mdl;show_menu props_food2"
+					"label"      " Soda cup"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_beancan01a.mdl,3;show_menu props_food2"
+					"label"      " Bean can"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_beercan01a.mdl,3;show_menu props_food2"
+					"label"      " Beer can"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_glassbottle003a.mdl,7;show_menu props_food2"
+					"label"      " Beer bottle"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_coffeemug001a.mdl,5;show_menu props_food2"
+					"label"      " Coffee mug"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_coffeecup01a.mdl,5;show_menu props_food2"
+					"label"      " Coffee cup"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_food2"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu props_food1"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu props_food3"
+					"label"      " >> Next"
+			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"props_food3"
+	{
+			"Title"     "Food related (Other)"
+			
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/petfoodbag01.mdl,5;show_menu props_food3"
+					"label"      " Dog food"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_tunacan01a.mdl,2;show_menu props_food3"
+					"label"      " Tuna can"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_milkcarton002a.mdl,6;show_menu props_food3"
+					"label"      " Milk cartoon"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_cerealbox02a.mdl,7;show_menu props_food3"
+					"label"      " Cereal box 1"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_cerealbox01a.mdl,7;show_menu props_food3"
+					"label"      " Cereal box 2"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu props_food3"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu props_food2"
+					"label"      " << Back"
+			}
+
 			"0"
 			{
 					"command"    "play buttons/button14"
@@ -31006,7 +31212,7 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/c130.mdl;show_menu props_vehicles6"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,>c130;show_menu props_vehicles6"
 					"label"      " c130"
 			}
 			"6"
@@ -31290,8 +31496,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_prop_menu_start3"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;show_menu phys_props_food1"
+					"label"      " Food related"
 			}
 			"8"
 			{
@@ -34481,6 +34687,166 @@
 			}
 	}
 
+	"phys_props_food1"
+	{
+			"Title"     "Food related (Fast food)"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_fastfoodcontainer01a.mdl,5;show_menu phys_props_food1"
+					"label"      " Fast food container"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/garbage_hamburger_container.mdl,5;show_menu phys_props_food1"
+					"label"      " Hamburger box"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_frenchfrycup01a.mdl,5;show_menu phys_props_food1"
+					"label"      " French fries box"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/garbage_pizza_box.mdl,5;show_menu phys_props_food1"
+					"label"      " Pizza box"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/garbage_popcorn_tub.mdl,5;show_menu phys_props_food1"
+					"label"      " Popcorn bucket"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/garbage_popcorn_box.mdl,5;show_menu phys_props_food1"
+					"label"      " Popcorn box"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_food1"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu phys_prop_menu_start3"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_food2"
+					"label"      " >> Next"
+			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"phys_props_food2"
+	{
+			"Title"     "Food related (Drinks)"
+			
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/garbage_drinks_container.mdl;show_menu phys_props_food2"
+					"label"      " Soda cup"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_beancan01a.mdl,3;show_menu phys_props_food2"
+					"label"      " Bean can"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_beercan01a.mdl,3;show_menu phys_props_food2"
+					"label"      " Beer can"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_glassbottle003a.mdl,7;show_menu phys_props_food2"
+					"label"      " Beer bottle"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_coffeemug001a.mdl,5;show_menu phys_props_food2"
+					"label"      " Coffee mug"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_coffeecup01a.mdl,5;show_menu phys_props_food2"
+					"label"      " Coffee cup"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_food2"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_food1"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_food3"
+					"label"      " >> Next"
+			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"phys_props_food3"
+	{
+			"Title"     "Food related (Other)"
+			
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/petfoodbag01.mdl;show_menu phys_props_food3"
+					"label"      " Dog food"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_tunacan01a.mdl,2;show_menu phys_props_food3"
+					"label"      " Tuna can"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_milkcarton002a.mdl,7;show_menu phys_props_food3"
+					"label"      " Milk cartoon"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_cerealbox02a.mdl,7;show_menu phys_props_food3"
+					"label"      " Cereal box 1"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_cerealbox01a.mdl,7;show_menu phys_props_food3"
+					"label"      " Cereal box 2"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu phys_props_food3"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu phys_props_food2"
+					"label"      " << Back"
+			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
 	"phys_props_equipment1"
 	{
 			"Title"     "Hazardous stuff"
@@ -37545,7 +37911,7 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/c130.mdl,0,0,2500;show_menu phys_props_vehicles6"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,>c130;show_menu phys_props_vehicles6"
 					"label"      " c130"
 			}
 			"6"
@@ -37762,6 +38128,11 @@
 			}
 			"5"
 			{
+				"command"		 "play buttons/button14;show_menu zero_G_menu1"
+				"label"			 " Zero gravity objects"
+			}
+			"6"
+			{
 				"command"		 "play buttons/button14;show_menu pianokeys1"
 				"label"			" Piano keys"
 			}
@@ -37794,6 +38165,30 @@
 			{
 				"command"		 "play buttons/button10;show_menu ragdolling_menu1"
 				"label"			 " Mouse1/Mouse2 to ascend/descend faster"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu smok_menu4"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	"zero_G_menu1"
+	{
+			"Title"		"Get rid of gravitational forces for"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func zero_g,!picker;show_menu zero_G_menu1"
+				"label"			 " Aimed object"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func zero_g,all;show_menu zero_G_menu1"
+				"label"			 " All physics & dynamic objects"
 			}
 			"8"
 			{
@@ -39242,8 +39637,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_menu_start3"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;show_menu models_self_food1"
+					"label"      " Food related stuff"
 			}
 			"8"
 			{
@@ -39836,7 +40231,7 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/mounteddeerhead01.mdl;show_menu model_self_furniture4"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/mounteddeerhead01.mdl;show_menu models_self_furniture4"
 					"label"      " Mounted deer head"
 			}
 			"7"
@@ -42066,6 +42461,166 @@
 					"command"    "play buttons/button14;show_menu models_self_rooftop1"
 					"label"      " << Back"
 			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"models_self_food1"
+	{
+			"Title"     "Food related (Fast food)"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_junk/garbage_fastfoodcontainer01a.mdl;show_menu models_self_food1"
+					"label"      " Fast food container"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/garbage_hamburger_container.mdl;show_menu models_self_food1"
+					"label"      " Hamburger box"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_junk/garbage_frenchfrycup01a.mdl;show_menu models_self_food1"
+					"label"      " French fries box"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/garbage_pizza_box.mdl;show_menu models_self_food1"
+					"label"      " Pizza box"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/garbage_popcorn_tub.mdl;show_menu models_self_food1"
+					"label"      " Popcorn bucket"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/garbage_popcorn_box.mdl;show_menu models_self_food1"
+					"label"      " Popcorn box"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_food1"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu models_self_menu_start3"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu models_self_food2"
+					"label"      " >> Next"
+			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"models_self_food2"
+	{
+			"Title"     "Food related (Drinks)"
+			
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/garbage_drinks_container.mdl;show_menu models_self_food2"
+					"label"      " Soda cup"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_junk/garbage_beancan01a.mdl;show_menu models_self_food2"
+					"label"      " Bean can"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_junk/garbage_beercan01a.mdl;show_menu models_self_food2"
+					"label"      " Beer can"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_junk/garbage_glassbottle003a.mdl;show_menu models_self_food2"
+					"label"      " Beer bottle"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_junk/garbage_coffeemug001a.mdl;show_menu models_self_food2"
+					"label"      " Coffee mug"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_junk/garbage_coffeecup01a.mdl;show_menu models_self_food2"
+					"label"      " Coffee cup"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_food2"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu models_self_food1"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu models_self_food3"
+					"label"      " >> Next"
+			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"models_self_food3"
+	{
+			"Title"     "Food related (Other)"
+			
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_junk/petfoodbag01.mdl;show_menu models_self_food3"
+					"label"      " Dog food"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_junk/garbage_tunacan01a.mdl;show_menu models_self_food3"
+					"label"      " Tuna can"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_junk/garbage_milkcarton002a.mdl;show_menu models_self_food3"
+					"label"      " Milk cartoon"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_junk/garbage_cerealbox02a.mdl;show_menu models_self_food3"
+					"label"      " Cereal box 1"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_junk/garbage_cerealbox01a.mdl;show_menu models_self_food3"
+					"label"      " Cereal box 2"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_self_food3"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu models_self_food2"
+					"label"      " << Back"
+			}
+
 			"0"
 			{
 					"command"    "play buttons/button14"
@@ -45297,8 +45852,8 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_picker_menu_start3"
-					"label"      " Delete object"
+					"command"    "play buttons/button14;show_menu models_picker_food1"
+					"label"      " Food related stuff"
 			}
 			"8"
 			{
@@ -45891,7 +46446,7 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/mounteddeerhead01.mdl;show_menu model_picker_furniture4"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/mounteddeerhead01.mdl;show_menu models_picker_furniture4"
 					"label"      " Mounted deer head"
 			}
 			"7"
@@ -48122,6 +48677,165 @@
 					"command"    "play buttons/button14;show_menu models_picker_rooftop1"
 					"label"      " << Back"
 			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	"models_picker_food1"
+	{
+			"Title"     "Food related (Fast food)"
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_junk/garbage_fastfoodcontainer01a.mdl;show_menu models_picker_food1"
+					"label"      " Fast food container"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/garbage_hamburger_container.mdl;show_menu models_picker_food1"
+					"label"      " Hamburger box"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_junk/garbage_frenchfrycup01a.mdl;show_menu models_picker_food1"
+					"label"      " French fries box"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/garbage_pizza_box.mdl;show_menu models_picker_food1"
+					"label"      " Pizza box"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/garbage_popcorn_tub.mdl;show_menu models_picker_food1"
+					"label"      " Popcorn bucket"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/garbage_popcorn_box.mdl;show_menu models_picker_food1"
+					"label"      " Popcorn box"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_picker_food1"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu models_picker_menu_start3"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu models_picker_food2"
+					"label"      " >> Next"
+			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"models_picker_food2"
+	{
+			"Title"     "Food related (Drinks)"
+			
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/garbage_drinks_container.mdl;show_menu models_picker_food2"
+					"label"      " Soda cup"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_junk/garbage_beancan01a.mdl;show_menu models_picker_food2"
+					"label"      " Bean can"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_junk/garbage_beercan01a.mdl;show_menu models_picker_food2"
+					"label"      " Beer can"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_junk/garbage_glassbottle003a.mdl;show_menu models_picker_food2"
+					"label"      " Beer bottle"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_junk/garbage_coffeemug001a.mdl;show_menu models_picker_food2"
+					"label"      " Coffee mug"
+			}
+			"6"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_junk/garbage_coffeecup01a.mdl;show_menu models_picker_food2"
+					"label"      " Coffee cup"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_picker_food2"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu models_picker_food1"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu models_picker_food3"
+					"label"      " >> Next"
+			}
+
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"models_picker_food3"
+	{
+			"Title"     "Food related (Other)"
+			
+			"1"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_junk/petfoodbag01.mdl;show_menu models_picker_food3"
+					"label"      " Dog food"
+			}
+			"2"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_junk/garbage_tunacan01a.mdl;show_menu models_picker_food3"
+					"label"      " Tuna can"
+			}
+			"3"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_junk/garbage_milkcarton002a.mdl;show_menu models_picker_food3"
+					"label"      " Milk cartoon"
+			}
+			"4"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_junk/garbage_cerealbox02a.mdl;show_menu models_picker_food3"
+					"label"      " Cereal box 1"
+			}
+			"5"
+			{
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_junk/garbage_cerealbox01a.mdl;show_menu models_picker_food3"
+					"label"      " Cereal box 2"
+			}
+			"7"
+			{
+					"command"    "play buttons/button14;scripted_user_func ent_fire,!picker,kill;show_menu models_picker_food3"
+					"label"      " Delete object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu models_picker_food2"
+					"label"      " << Back"
+			}
+
 			"0"
 			{
 					"command"    "play buttons/button14"

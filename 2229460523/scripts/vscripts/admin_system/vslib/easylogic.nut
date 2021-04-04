@@ -662,6 +662,18 @@ getconsttable()["SCL_DEF_MAXDIST"] <- 3;	// Maximum distance
 getconsttable()["SCL_DEF_MAXDISP"] <- 5;	// Maximum word display amount
 getconsttable()["SCL_LOOKUP_LIMIT"] <- 425;	// Maximum check amount with lookup table
 
+/**************\
+* ZERO GRAVITY *
+\**************/
+getconsttable()["ZG_MAX_ITER"] <- 175;	// Maximum iteration at a time
+getconsttable()["ZG_MAX_PROCESS"] <- 30;	// Maximum zero-gravity process at a time
+
+/*******************\
+* PHYSICS CONVERSION *
+\*******************/
+getconsttable()["PHYS_MAX_ITER"] <- 150;	// Maximum iteration at a time
+getconsttable()["PHYS_MAX_PROCESS"] <- 25;	// Maximum zero-gravity process at a time
+
 ////////////////////////////////////////////////////////////////
 // Difficulty to be used with OnDifficulty()
 getconsttable()["EASY"] <- "easy";
