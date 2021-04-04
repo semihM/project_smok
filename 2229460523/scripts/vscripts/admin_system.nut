@@ -22,6 +22,7 @@ IncludeScript("Resource_tables/Netproptables");
 IncludeScript("Resource_tables/EntityDetailTables");
 // Sound script tables
 IncludeScript("Resource_tables/SoundScripts");
+::SoundScriptsArray <- Utils.TableToArray(::SoundScripts)
 
 // Include the Message Class
 IncludeScript("Project_smok/Messages");
@@ -33,6 +34,8 @@ IncludeScript("Project_smok/AdminVars");
 IncludeScript("Project_smok/AliasCompiler");
 // Include Spell Checker
 IncludeScript("Project_smok/SpellChecker");
+// Include Zero-G and GivePhysics Limits
+IncludeScript("Project_smok/PhysicsLimits");
 
 // Messages
 ::CmdMessages <- ::Messages.BIM.CMD;
@@ -2990,6 +2993,26 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.HurtTriggersCmd( player, args );
 			break;
 		}
+		case "find_sound_in_scripts":
+		{
+			AdminSystem.FindSoundInScriptsCmd( player, args );
+			break;
+		}
+		case "search_sound_script_name":
+		{
+			AdminSystem.SearchSoundCmd( player, args );
+			break;
+		}
+		case "random_sound_script_name":
+		{
+			AdminSystem.RandomSoundCmd( player, args );
+			break;
+		}
+		case "sound_script_info":
+		{
+			AdminSystem.SoundInfoCmd( player, args );
+			break;
+		}
 		case "sound":
 		{
 			AdminSystem.SoundCmd( player, args );
@@ -4113,7 +4136,213 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	
 }
 
-// TO-DO: Add "all" option 
+/*
+ * @authors rhino
+ */
+::GivePhysicsToEntity <- function(ent,entclass)
+{
+	if(entclass.find("physics") != null || entclass == "prop_car_alarm") // physics entity
+	{
+		if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics" || entclass == "prop_car_alarm")
+		{	
+			local flags = ent.GetFlags();
+			local effects = ent.GetNetProp("m_fEffects")
+
+			if((flags% 2) == 1)	// Disable start asleep flag
+				ent.SetFlags(flags-1)
+
+			flags = ent.GetFlags();
+			
+			if((flags>>3) % 2 == 1)	// Disable motion disabled flag
+				ent.SetFlags(flags-8)
+			
+			ent.Input("EnableMotion","",0);
+			ent.SetEffects(effects);
+		}
+		ent.Input("RunScriptCode","_dropit(Entity("+ent.GetIndex()+"))",0);
+	}
+	else // non physics, try creating entity with its model
+	{
+		local new_ent = null;
+		local keyvals = 
+		{
+			classname = "prop_physics_multiplayer",
+			model = ent.GetModel(),
+			origin = ent.GetOrigin(),
+			angles = ent.GetAngles(),
+		};
+		local skin = ent.GetNetProp("m_nSkin");
+		local color = ent.GetNetProp("m_clrRender");
+		local scale = ent.GetModelScale();
+
+		new_ent = Utils.CreateEntityWithTable(keyvals);
+
+		if(new_ent != null)
+		{
+			RecreateHierarchy(ent,new_ent,{color=color,skin=skin,scale=scale,name=ent.GetName()});
+		}
+		else
+		{
+			local cuniq = UniqueString();
+
+			local oldind = ent.GetIndex()
+
+			ent.SetName(ent.GetName()+UniqueString())
+			local oldname = ent.GetName()
+
+			local org = ent.GetOrigin()
+
+			local dummyent = Utils.CreateEntityWithTable({classname="prop_dynamic_override",model="models/props_misc/pot-1.mdl",origin=org,angles=QAngle(0,0,0),Solid=6,spawnflags=8,targetname=cuniq})
+			dummyent.SetRenderMode(RENDER_NONE);
+			dummyent.SetNetProp("m_CollisionGroup",1)
+			dummyent.SetNetProp("m_clrRender",color);
+			dummyent.SetNetProp("m_nSkin",skin);
+			dummyent.SetModelScale(scale);
+
+			AddThinkToEnt(dummyent.GetBaseEntity(),"PostConvertChecker")
+
+			ConvertCheckTable[dummyent.GetName()] <- {searchname=oldname,dummytime=Time(),func="_dropit",extra_arg="",angles=ent.GetAngles()}
+
+			local convertername = ::Constants.Targetnames.PhysConverter+cuniq
+			local converter = Utils.CreateEntityWithTable({classname="phys_convert",targetname=convertername,target="#"+oldind,spawnflags=3})
+			converter.Input("converttarget")
+			converter.Input("Kill")
+		}
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::DoGivePhysicsIter <- function(args={})
+{
+	::AdminSystem.out("Physics Progress: "+Utils.BuildProgressBar(20.0,((args.total-args.left).tofloat()/args.total.tofloat())*20.0,20.0,"|", ". "))
+	local i = 0
+	local maxproc = getconsttable()["PHYS_MAX_PROCESS"]
+	local maxiter = getconsttable()["PHYS_MAX_ITER"]
+
+	local objs = args.objs
+	
+	local all_len = objs.len()
+	local last_index = 0
+	local keepiter = false
+
+	if(all_len == 0)
+	{	
+		::AdminSystem.out("Physics Progress: "+Utils.BuildProgressBar(20.0,20.0,20.0,"|", ". "))
+		return;
+	}
+
+	foreach(idx, ent in objs)
+	{
+		last_index = idx
+		if(idx >= maxiter)
+		{
+			keepiter = true
+			break;
+		}
+		if(!ent.IsEntityValid())
+			continue;
+		if(ent.GetParent() != null)
+			continue; 
+
+		local entclass = ent.GetClassname();
+		local entmdl = ent.GetModel().tolower();
+		if(entclass == "player")
+			continue;
+
+		if(!(entmdl in ::FreePassModelNames))
+		{
+			if(entmdl in ::ForbiddenNoCollisionModels)
+				continue;
+
+			local invalid = false
+			foreach(cat,_v in ::ForbiddenModelCategories)
+			{
+				if(entmdl.find(cat) != null)
+				{
+					invalid = true
+					break;
+				}
+			}
+			if(invalid)
+				continue
+		}
+
+		if(SessionState.MapName in ::GivePhysicsMapSpecificBans)
+		{ 
+		  if((ent.GetName() in ::GivePhysicsMapSpecificBans[SessionState.MapName].entities
+					&& entclass == ::GivePhysicsMapSpecificBans[SessionState.MapName].entities[ent.GetName()].classname
+					&& ent.GetEntityHandle() == Entity(::GivePhysicsMapSpecificBans[SessionState.MapName].entities[ent.GetName()].id).GetEntityHandle()
+			)
+			||
+			(
+				entmdl in ::GivePhysicsMapSpecificBans[SessionState.MapName].models 
+			)
+		  )
+		  	continue;
+		}
+
+		// Not in table, in the table but disabled
+		if(!(entclass in AdminSystem.Vars._grabAvailable))
+		{	
+			// It's not even a weapon spawn
+			if(entclass.find("weapon_") == null)
+				continue
+				
+			if(entclass.find("spawn") == null)
+			{
+				i += 1
+				if(i > maxproc)
+				{
+					keepiter = true
+					break;
+				}
+				if(ent.GetSpawnFlags() % 2 == 1 && (entclass in {weapon_molotov=1,weapon_pistol=1}))
+				{
+					ent.SetSpawnFlags(ent.GetSpawnFlags()-1);
+				}
+				ent.Input("RunScriptCode","_dropit(Entity("+ent.GetIndex()+"))",0);
+			}
+			continue;
+		}
+		else if(!AdminSystem.Vars._grabAvailable[entclass])
+			continue
+		
+		if(entmdl.find("*") != null)
+			continue;
+		
+		if((entmdl.find("hybridphysx") != null)) // Animation props etc ignored
+			continue;
+
+		if((entmdl.find("skybox") != null)) // Skybox stuff
+			continue;
+			
+		i += 1
+		if(i > maxproc)
+		{
+			keepiter = true
+			break;
+		}
+
+		::GivePhysicsToEntity(ent,entclass)
+	}
+
+	if(last_index != all_len-1)
+	{
+		objs = objs.slice(last_index)
+	}
+
+	if(keepiter)
+	{
+		Timers.AddTimer(0.4,false,::DoGivePhysicsIter,{total=args.total,left=objs.len(),objs=objs})
+	}
+	else
+	{	
+		::AdminSystem.out("Physics Progress: "+Utils.BuildProgressBar(20.0,20.0,20.0,"|", ". "))
+	}
+}
+
 /*
  * @authors rhino
  */
@@ -4162,75 +4391,128 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		if((looked.GetModel().find("hybridphysx") != null)) // Animation props etc ignored
 			return;
 
-		if(entclass.find("physics") != null || entclass == "prop_car_alarm") // physics entity
-		{
-			if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics" || entclass == "prop_car_alarm")
-			{	
-				local flags = looked.GetFlags();
-				local effects = looked.GetNetProp("m_fEffects")
-
-				if((flags% 2) == 1)	// Disable start asleep flag
-					looked.SetFlags(flags-1)
-
-				flags = looked.GetFlags();
-				
-				if((flags>>3) % 2 == 1)	// Disable motion disabled flag
-					looked.SetFlags(flags-8)
-				
-				looked.Input("EnableMotion","",0);
-				looked.SetEffects(effects);
-			}
-			looked.Input("RunScriptCode","_dropit(Entity("+looked.GetIndex()+"))",0);
-		}
-		else // non physics, try creating entity with its model
-		{
-			local new_ent = null;
-			local keyvals = 
-			{
-				classname = "prop_physics_multiplayer",
-				model = looked.GetModel(),
-				origin = looked.GetOrigin(),
-				angles = looked.GetAngles(),
-			};
-			local skin = looked.GetNetProp("m_nSkin");
-			local color = looked.GetNetProp("m_clrRender");
-			local scale = looked.GetModelScale();
-
-			new_ent = Utils.CreateEntityWithTable(keyvals);
-
-			if(new_ent != null)
-			{
-				RecreateHierarchy(looked,new_ent,{color=color,skin=skin,scale=scale,name=looked.GetName()});
-			}
-			else
-			{
-				local cuniq = UniqueString();
-
-				local oldind = looked.GetIndex()
-
-				looked.SetName(looked.GetName()+UniqueString())
-				local oldname = looked.GetName()
-
-				local org = looked.GetOrigin()
-
-				local dummyent = Utils.CreateEntityWithTable({classname="prop_dynamic_override",model="models/props_misc/pot-1.mdl",origin=org,angles=QAngle(0,0,0),Solid=6,spawnflags=8,targetname=cuniq})
-				dummyent.SetRenderMode(RENDER_NONE);
-				dummyent.SetNetProp("m_CollisionGroup",1)
-				dummyent.SetNetProp("m_clrRender",color);
-				dummyent.SetNetProp("m_nSkin",skin);
-				dummyent.SetModelScale(scale);
-
-				AddThinkToEnt(dummyent.GetBaseEntity(),"PostConvertChecker")
-
-				ConvertCheckTable[dummyent.GetName()] <- {searchname=oldname,dummytime=Time(),func="_dropit",extra_arg="",angles=looked.GetAngles()}
-
-				local convertername = ::Constants.Targetnames.PhysConverter+cuniq
-				local converter = Utils.CreateEntityWithTable({classname="phys_convert",targetname=convertername,target="#"+oldind,spawnflags=3})
-				converter.Input("converttarget")
-				converter.Input("Kill")
-			}
-
+		if((looked.GetModel().find("skybox") != null)) // Skybox stuff
 			return;
+			
+		::GivePhysicsToEntity(looked,entclass)
+	}
+	else if(rad == "all")
+	{
+		local i = 0
+		local maxproc = getconsttable()["PHYS_MAX_PROCESS"]
+		local maxiter = getconsttable()["PHYS_MAX_ITER"]
+
+		local objs = Utils.TableToArray(Objects.All())
+		
+		local all_len = objs.len()
+		local last_index = 0
+		local keepiter = false
+		
+		foreach(idx, ent in objs)
+		{
+			last_index = idx
+			if(idx >= maxiter)
+			{
+				keepiter = true
+				break;
+			}
+
+			if(ent.GetParent() != null)
+				continue; 
+
+			local entclass = ent.GetClassname();
+			local entmdl = ent.GetModel().tolower();
+
+			if(entclass == "player")
+				continue;
+			
+			if(!(entmdl in ::FreePassModelNames))
+			{
+				if(entmdl in ::ForbiddenNoCollisionModels)
+					continue;
+
+				local invalid = false
+				foreach(cat,_v in ::ForbiddenModelCategories)
+				{
+					if(entmdl.find(cat) != null)
+					{
+						invalid = true
+						break;
+					}
+				}
+				if(invalid)
+					continue
+			}
+				
+			if(SessionState.MapName in ::GivePhysicsMapSpecificBans)
+			{ 
+				if((ent.GetName() in ::GivePhysicsMapSpecificBans[SessionState.MapName].entities
+							&& entclass == ::GivePhysicsMapSpecificBans[SessionState.MapName].entities[ent.GetName()].classname
+							&& ent.GetEntityHandle() == Entity(::GivePhysicsMapSpecificBans[SessionState.MapName].entities[ent.GetName()].id).GetEntityHandle()
+					)
+					||
+					(
+						entmdl in ::GivePhysicsMapSpecificBans[SessionState.MapName].models 
+					)
+				)
+					continue;
+			}
+			// Not in table, in the table but disabled
+			if(!(entclass in AdminSystem.Vars._grabAvailable))
+			{	
+				// It's not even a weapon spawn
+				if(entclass.find("weapon_") == null)
+					continue
+					
+				if(entclass.find("spawn") == null)
+				{
+					i += 1
+					if(i > maxproc)
+					{
+						keepiter = true
+						break;
+					}
+					if(ent.GetSpawnFlags() % 2 == 1 && (entclass in {weapon_molotov=1,weapon_pistol=1}))
+					{
+						ent.SetSpawnFlags(ent.GetSpawnFlags()-1);
+					}
+					ent.Input("RunScriptCode","_dropit(Entity("+ent.GetIndex()+"))",0);
+				}
+				continue;
+			}
+			else if(!AdminSystem.Vars._grabAvailable[entclass])
+				continue
+			
+			if(entmdl.find("*") != null)
+				continue;
+			
+			if((entmdl.find("hybridphysx") != null)) // Animation props etc ignored
+				continue;
+
+			if((entmdl.find("skybox") != null)) // Skybox stuff
+				continue;
+				
+			i += 1
+			if(i > maxproc)
+			{
+				keepiter = true
+				break;
+			}
+
+			::GivePhysicsToEntity(ent,entclass)
+		}
+
+		if(last_index != all_len-1)
+		{
+			objs = objs.slice(last_index)
+		}
+		if(keepiter)
+		{
+			Timers.AddTimer(0.4,false,DoGivePhysicsIter,{total=all_len,left=objs.len(),objs=objs})
+		}
+		else
+		{	
+			::AdminSystem.out("Physics Progress: "+Utils.BuildProgressBar(20.0,20.0,20.0,"|", ". "))
 		}
 	}
 	else
@@ -4275,75 +4557,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			
 			if((ent.GetModel().find("hybridphysx") != null)) // Animation props etc ignored
 				continue;
-				
-			if(entclass.find("physics") != null || entclass == "prop_car_alarm") // physics entity
-			{
-				if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics" || entclass == "prop_car_alarm")
-				{	
-					local flags = ent.GetFlags();
-					local effects = ent.GetNetProp("m_fEffects")
+			
+			if((ent.GetModel().find("skybox") != null)) // Skybox stuff
+				continue;
 
-					if((flags% 2) == 1)	// Disable start asleep flag
-						ent.SetFlags(flags-1)
-
-					flags = ent.GetFlags();
-					
-					if((flags>>3) % 2 == 1)	// Disable motion disabled flag
-						ent.SetFlags(flags-8)
-					
-					ent.Input("EnableMotion","",0);
-					ent.SetEffects(effects);
-				}
-				ent.Input("RunScriptCode","_dropit(Entity("+ent.GetIndex()+"))",0);
-			}
-			else // non physics, try creating entity with its model
-			{
-				local new_ent = null;
-				local keyvals = 
-				{
-					classname = "prop_physics_multiplayer",
-					model = ent.GetModel(),
-					origin = ent.GetOrigin(),
-					angles = ent.GetAngles(),
-				};
-				local skin = ent.GetNetProp("m_nSkin");
-				local color = ent.GetNetProp("m_clrRender");
-				local scale = ent.GetModelScale();
-
-				new_ent = Utils.CreateEntityWithTable(keyvals);
-
-				if(new_ent != null)
-				{
-					RecreateHierarchy(ent,new_ent,{color=color,skin=skin,scale=scale,name=ent.GetName()});
-				}
-				else
-				{
-					local cuniq = UniqueString();
-
-					local oldind = ent.GetIndex()
-
-					ent.SetName(ent.GetName()+UniqueString())
-					local oldname = ent.GetName()
-
-					local org = ent.GetOrigin()
-
-					local dummyent = Utils.CreateEntityWithTable({classname="prop_dynamic_override",model="models/props_misc/pot-1.mdl",origin=org,angles=QAngle(0,0,0),Solid=6,spawnflags=8,targetname=cuniq})
-					dummyent.SetRenderMode(RENDER_NONE);
-					dummyent.SetNetProp("m_CollisionGroup",1)
-					dummyent.SetNetProp("m_clrRender",color);
-					dummyent.SetNetProp("m_nSkin",skin);
-					dummyent.SetModelScale(scale);
-
-					AddThinkToEnt(dummyent.GetBaseEntity(),"PostConvertChecker")
-
-					ConvertCheckTable[dummyent.GetName()] <- {searchname=oldname,dummytime=Time(),func="_dropit",extra_arg="",angles=ent.GetAngles()}
-
-					local convertername = ::Constants.Targetnames.PhysConverter+cuniq
-					local converter = Utils.CreateEntityWithTable({classname="phys_convert",targetname=convertername,target="#"+oldind,spawnflags=3})
-					converter.Input("converttarget")
-					converter.Input("Kill")
-				}
-			}
+			::GivePhysicsToEntity(ent,entclass)	
 		}
 	}
 }
@@ -10830,6 +11048,38 @@ function ChatTriggers::timescale( player, args, text )
 					? Messages.DocCmdPlayer(player,CmdDocs.timescale(player,args))
 					: null
 
+function ChatTriggers::find_sound_in_scripts( player, args, text )
+{
+	AdminSystem.FindSoundInScriptsCmd( player, args );
+}
+::ChatTriggerDocs.find_sound_in_scripts <- @(player,args) AdminSystem.IsPrivileged(player) && "find_sound_in_scripts" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.find_sound_in_scripts(player,args))
+					: null
+
+function ChatTriggers::search_sound_script_name( player, args, text )
+{
+	AdminSystem.SearchSoundCmd( player, args );
+}
+::ChatTriggerDocs.search_sound_script_name <- @(player,args) AdminSystem.IsPrivileged(player) && "search_sound_script_name" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.search_sound_script_name(player,args))
+					: null
+
+function ChatTriggers::random_sound_script_name( player, args, text )
+{
+	AdminSystem.RandomSoundCmd( player, args );
+}
+::ChatTriggerDocs.random_sound_script_name <- @(player,args) AdminSystem.IsPrivileged(player) && "random_sound_script_name" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.random_sound_script_name(player,args))
+					: null
+					
+function ChatTriggers::sound_script_info( player, args, text )
+{
+	AdminSystem.SoundInfoCmd( player, args );
+}
+::ChatTriggerDocs.sound_script_info <- @(player,args) AdminSystem.IsPrivileged(player) && "sound_script_info" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.sound_script_info(player,args))
+					: null
+
 function ChatTriggers::sound( player, args, text )
 {
 	AdminSystem.SoundCmd( player, args );
@@ -14699,6 +14949,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 		// Buttons
 		// TO-DO: Model bbox errors, movedir not really working; parenting issues
+		// 	* Setting and clearing parent to an info_target which is parented by the actual model seem to work with few error messages
 		/* 
 		if("buttons" in post_table)
 		{
@@ -16362,6 +16613,11 @@ if ( Director.GetGameMode() == "holdout" )
 	
 	if ( Sound )
 	{
+		if(Sound == "!random")
+		{
+			Sound = Utils.GetRandValueFromArray(::SoundScriptsArray).script
+			Printer(player,"Playing random sound: "+Sound)
+		}
 		if ( Ent == "all" )
 		{
 			foreach(survivor in Players.Survivors())
@@ -16422,11 +16678,147 @@ if ( Director.GetGameMode() == "holdout" )
 			}
 			else
 			{
+				if(Ent == "!random")
+				{
+					Ent = Utils.GetRandValueFromArray(::SoundScriptsArray).script
+					Printer(player,"Playing random sound: "+Ent)
+				}
 				player.PlaySound(Ent);
 				AdminSystem.SoundName[ID] <- Ent;
 			}
 		}
 	}
+}
+
+/*
+ * @authors rhino
+ * TO-DO: Maybe add spell checker
+ */
+::AdminSystem.SoundInfoCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local sname = GetArgument(1)
+	if(!sname)
+		return
+	else if(!(sname in ::SoundScripts))
+	{
+		Printer(player,TXTCLR.OR(sname)+" is not a known sound script name!")
+		return;
+	}
+
+	local tbl = ::SoundScripts[sname]
+	local s = TXTCLR.BG(sname)+" details:\n"
+
+	if("caption" in tbl)
+		s += TXTCLR.OR("Caption/Comment: ")+TXTCLR.OG(tbl.caption)+"\n"
+	if("volume" in tbl)
+		s += TXTCLR.OR("Volume: ")+TXTCLR.OG(tbl.volume)+"\n"	
+	if("soundlevel" in tbl)
+		s += TXTCLR.OR("Sound Level: ")+TXTCLR.OG(tbl.soundlevel)+"\n"		
+	if("wave" in tbl)
+		s += TXTCLR.OR("Sound File: ")+TXTCLR.OG(tbl.wave)+"\n"	
+	if("rndwave" in tbl)
+	{
+		s += TXTCLR.OR("Sound Files Random Pick:\n")	
+		foreach(i,warr in tbl.rndwave)
+		{
+			s += "    "+TXTCLR.OG(warr[1])+"\n"	
+		}
+	}
+
+	Printer(player,s)
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.SearchSoundCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local pattern = GetArgument(1)
+	local limit = GetArgument(2)
+	if(!limit)
+		limit = 25
+	else if(limit != "all")
+		limit = limit.tointeger()
+		
+	if(!pattern)
+		return
+	else if(limit == "all")
+		Printer(player,Utils.ArrayString(Utils.TableKeys(Utils.TableKeySearchFilterReturnAll(::SoundScripts,pattern))))
+	else
+		Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArray(Utils.TableKeys(Utils.TableKeySearchFilterReturnAll(::SoundScripts,pattern)),limit)))
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.RandomSoundCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local pattern = GetArgument(1)
+	local limit = GetArgument(2)
+	if(!limit)
+		limit = 10
+	else
+		limit = limit.tointeger()
+
+	if(!pattern)
+		ClientPrint(player.GetBaseEntity(),3,Utils.GetRandValueFromArray(::SoundScriptsArray).script)
+	else
+		Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArray(Utils.TableKeys(Utils.TableKeySearchFilterReturnAll(::SoundScripts,pattern)),limit)))
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.FindSoundInScriptsCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local file = GetArgument(1)
+	if(!file)
+		return
+
+	local limit = GetArgument(2)
+	local pattern = GetArgument(3)
+
+	if(!limit)
+		limit = 10
+	else if(limit != "all")
+		limit = limit.tointeger()
+
+	function filter(val)
+	{
+		if("rndwave" in val)
+		{
+			foreach(i,ar in val.rndwave)
+			{
+				if(ar[1].find(file) != null)
+					return true
+			}
+			return false
+		}
+		else if("wave" in val)
+		{
+			return val.wave.find(file) != null
+		}
+		return false
+	}
+
+	if(!pattern)
+		Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArray(Utils.TableKeys(Utils.TableFilterByValue(::SoundScripts,filter)),limit)))
+	else if(limit == "all")
+		Printer(player,Utils.ArrayString(Utils.TableKeys(Utils.TableFilterByValue(Utils.TableKeySearchFilterReturnAll(::SoundScripts,pattern),filter))))
+	else
+		Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArray(Utils.TableKeys(Utils.TableFilterByValue(Utils.TableKeySearchFilterReturnAll(::SoundScripts,pattern),filter)),limit)))
 }
 
 ::AdminSystem.UseCmd <- function ( player, args )
@@ -20116,6 +20508,12 @@ if ( Director.GetGameMode() == "holdout" )
 	if(ent.GetModel().find("*") != null)
 		return;
 
+	if((ent.GetModel().find("hybridphysx") != null))
+		return;
+
+	if((ent.GetModel().find("skybox") != null)) // Skybox stuff
+		return;
+
 	local ind = ent.GetIndex();
 
 	local name = player.GetCharacterNameLower();
@@ -20282,15 +20680,18 @@ if ( Director.GetGameMode() == "holdout" )
 				else if(!AdminSystem.Vars._grabAvailable[entclass])
 					continue
 					
-				if(obj.GetModel().find("*") != null)
+				if(entmodel.find("*") != null)
 					continue;
 
 				if((entmodel.find("hybridphysx") != null)) // Animation props etc ignored
 					continue;
+				
+				if((entmodel.find("skybox") != null)) // Skybox stuff
+					continue;
 
 				entind = obj.GetIndex().tostring();
 
-				if(obj.GetClassname() == "player")
+				if(entclass == "player")
 				{
 					local notvalid = false;
 					foreach(survivor in Players.AliveSurvivors())
@@ -20370,6 +20771,12 @@ if ( Director.GetGameMode() == "holdout" )
 			return
 			
 		if(ent.GetModel().find("*") != null)
+			return;
+		
+		if((ent.GetModel().find("hybridphysx") != null))
+			return;
+
+		if((ent.GetModel().find("skybox") != null)) // Skybox stuff
 			return;
 
 		entind = ent.GetIndex().tostring();
@@ -20609,11 +21016,22 @@ if ( Director.GetGameMode() == "holdout" )
 	if(!(name in ConvertCheckTable))
 		return;
 
+	if("Done" in self.GetScriptScope())
+	{
+		local res = self.GetScriptScope()["Done"]
+
+		local ent = Entity(self.GetEntityIndex())
+		ent.Input("Kill")
+		
+		return;
+	}
+
 	local thinktime = Time()
 	//ClientPrint(null,3,(thinktime-ConvertCheckTable[name].dummytime).tostring())
 	local searchname = ConvertCheckTable[name].searchname
 	if(thinktime-ConvertCheckTable[name].dummytime > 0.3)
 	{
+		self.GetScriptScope()["Done"] <- false
 		AddThinkToEnt(self,null);
 		local ent = Entity(self.GetEntityIndex())
 		ent.Input("Kill")
@@ -20630,13 +21048,16 @@ if ( Director.GetGameMode() == "holdout" )
 			local new_ent = Utils.CreateEntityWithTable(keyvals);
 			new_ent.Input("RunScriptCode",ConvertCheckTable[name].func+"(Entity("+new_ent.GetIndex()+")"+ConvertCheckTable[name].extra_arg+")",0);
 		}
-		delete ConvertCheckTable[name]
+
+		if(name in ConvertCheckTable)
+			delete ConvertCheckTable[name]
 		return;
 	}
 	foreach(obj in Objects.OfName(searchname))
 	{
 		if(obj.GetClassname() == "simple_physics_prop")
 		{
+			self.GetScriptScope()["Done"] <- true
 			AddThinkToEnt(self,null);
 			local ent = Entity(self.GetEntityIndex())
 			local skin = ent.GetNetProp("m_nSkin");
@@ -21158,7 +21579,8 @@ if ( Director.GetGameMode() == "holdout" )
 	if(targets == null || targets == "!picker")
 	{
 		local ent = player.GetLookingEntity()
-		if(!ent)
+
+		if(!::ZeroGValidate(ent))
 			return
 
 		GetRidOfGravity(ent)
@@ -21168,22 +21590,13 @@ if ( Director.GetGameMode() == "holdout" )
 		local i = 0
 		local maxproc = getconsttable()["ZG_MAX_PROCESS"]
 		local maxiter = getconsttable()["ZG_MAX_ITER"]
-		local classes =
-		{
-			prop_physics = true
-			prop_physics_multiplayer = true
-			prop_physics_override = true
-			func_physbox = true
-			simple_physics_prop = true
-			prop_fuel_barrel = true
-		}
 
 		local objs = Utils.TableToArray(Objects.All())
 		
 		local all_len = objs.len()
 		local last_index = 0
 		local keepiter = false
-		
+		local st = ""
 		foreach(idx, ent in objs)
 		{
 			last_index = idx
@@ -21192,17 +21605,8 @@ if ( Director.GetGameMode() == "holdout" )
 				keepiter = true
 				break;
 			}
-			local entcls = ent.GetClassname()
 
-			if( !ent.IsEntityValid()
-				|| ent.GetParent() != null
-				|| !(entcls in ::ZeroGClassTable && ::ZeroGClassTable[entcls] && entcls.find("weapon") != 0))
-				continue
-
-			if(entcls.find("_spawn") != null)
-				continue
-				
-			if(ent.GetModel().find("*") != null)
+			if(!::ZeroGValidate(ent))
 				continue
 
 			i += 1
@@ -21211,7 +21615,8 @@ if ( Director.GetGameMode() == "holdout" )
 				keepiter = true
 				break;
 			}
-
+			st = format("\ncls: %s \nmdl: %s \nid: %s \n",ent.GetClassname(),ent.GetModel(),ent.GetIndex().tostring())
+			StringToFile("admin system/zero_g_debug.txt",st)
 			GetRidOfGravity(ent)
 		}
 
@@ -21223,26 +21628,207 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			Timers.AddTimer(0.4,false,DoZeroGIter,{total=all_len,left=objs.len(),objs=objs})
 		}
+		else
+		{	
+			::AdminSystem.out("Zero-G Progress: "+Utils.BuildProgressBar(20.0,20.0,20.0,"|", ". "))
+		}
 	}
 	else
 	{
 		local ent = Entity(targets)
-		if(ent == null || !ent.IsEntityValid())
-			return;
+
+		if(!::ZeroGValidate(ent))
+			return
 		
 		GetRidOfGravity(ent)
 	}
 }
 
+::ZeroGValidate <- function(ent)
+{
+	if(ent == null || !ent.IsEntityValid())
+		return false
+
+	local entcls = ent.GetClassname()
+
+	if( !ent.IsEntityValid()
+		|| ent.GetParent() != null
+		|| !(entcls in ::ZeroGClassTable && ::ZeroGClassTable[entcls] && entcls.find("weapon") != 0))
+		return false
+
+	if(entcls.find("_spawn") != null)
+		return false
+		
+	local entmdl = ent.GetModel().tolower();
+
+	if(entmdl.find("*") != null)
+		return false
+
+	if(entmdl.find("hybridphysx") != null)
+		return false
+
+	if((entmdl.find("skybox") != null)) // Skybox stuff
+		return false
+
+	if(!(entmdl in ::FreePassModelNames))
+	{
+		foreach(cat,_v in ::ForbiddenModelCategories)
+		{
+			if(entmdl.find(cat) != null)
+				return false
+		}
+
+		if(entmdl in ::ForbiddenNoCollisionModels)
+			return false
+	}
+
+	if(SessionState.MapName in ::ZeroGMapSpecificBans
+		&& 
+		  ((
+				ent.GetName() in ::ZeroGMapSpecificBans[SessionState.MapName].entities
+					&& entcls == ::ZeroGMapSpecificBans[SessionState.MapName].entities[ent.GetName()].classname
+					&& ent.GetEntityHandle() == Entity(::ZeroGMapSpecificBans[SessionState.MapName].entities[ent.GetName()].id).GetEntityHandle()
+			)
+			||
+			(
+				entmdl in ::ZeroGMapSpecificBans[SessionState.MapName].models 
+			)
+		  )
+		)
+		return false
+
+	if(ent.HasChildOfAnyClassname(::ZeroGForbiddenChildClasses))
+		return false
+	
+	return true
+}
+
+// Classnames which are not allowed as a child entity's class
+::ZeroGForbiddenChildClasses <- {}
+
+::ZeroGMapSpecificBans <- 
+{
+	"c5m1_waterfront":
+	{
+		models = 
+		{
+		}
+
+		entities =
+		{
+			"tug_boat_intro":
+			{
+				id = 532
+				classname = "prop_dynamic"
+			}
+		}
+	}
+
+	"c5m3_cemetery" :
+	{
+		models =
+		{
+		}
+
+		entities =
+		{
+			"destruction_car_phys" :
+			{
+				id = 1433
+				classname = "prop_physics"
+
+			} 
+		}
+	}
+
+	"c5m5_bridge" :
+	{
+		models =
+		{
+			"models/props/cs_office/light_shopb.mdl" : true
+		}
+
+		entities =
+		{
+		}
+	}
+
+	"c14m2_lighthouse":
+	{
+		models = 
+		{
+		}
+
+		entities =
+		{
+			"model_boat":
+			{
+				id = 68
+				classname = "prop_dynamic"
+			}
+		}
+	}
+}
+
+::GivePhysicsMapSpecificBans <- 
+{
+	"c5m1_waterfront":
+	{
+		models = 
+		{
+			"models/props_vehicles/boat_rescue_tug_sunshine.mdl" : true
+		}
+
+		entities =
+		{
+			"tug_boat_intro":
+			{
+				id = 532
+				classname = "prop_dynamic"
+			}
+		}
+	}
+	
+	"c5m5_bridge" :
+	{
+		models =
+		{
+			"models/props/cs_office/light_shopb.mdl" : true
+		}
+
+		entities =
+		{
+		}
+	}
+
+	"c14m2_lighthouse":
+	{
+		models = 
+		{
+		}
+
+		entities =
+		{
+			"model_boat":
+			{
+				id = 68
+				classname = "prop_dynamic"
+			}
+		}
+	}
+}
+
+// Models which are allowed to skip ForbiddenNoCollisionModels and ForbiddenModelCategories
+::FreePassModelNames <- {}	
+
 ::ZeroGClassTable <- 
 {
-	prop_dynamic = true
-	prop_dynamic_override = true
+	prop_car_alarm = true
 	prop_physics = true
 	prop_physics_multiplayer = true
 	prop_physics_override = true
 	func_physbox = true
-	simple_physics_prop = true
+	simple_physics_prop = true	// TO-DO: Causing lots of problems because of collision models missing
 	prop_fuel_barrel = true
 }
 
@@ -21267,8 +21853,8 @@ if ( Director.GetGameMode() == "holdout" )
 	e.SetVelocity(Vector(0,0,0))
 
 	DoEntFire("!self","setparent","#"+ei,0,null,tb)
-	DoEntFire("#"+ei,"setparent","#"+tt.GetIndex(),0,null,tb)
-	DoEntFire("#"+ei,"runscriptcode","self.ApplyAbsVelocityImpulse(Vector(0,0,-1))",0.05,null,tb)
+	DoEntFire("#"+ei,"setparent","#"+tt.GetIndex(),0.05,null,tb)
+	DoEntFire("#"+ei,"runscriptcode","self.ApplyAbsVelocityImpulse(Vector(0,0,-0.05))",0.1,null,tb)
 	DoEntFire("#"+ei,"clearparent","",0.1,null,tb)
 	DoEntFire("!self","runscriptcode","_dropit(Entity("+ei+"))",0.15,null,tb)
 	DoEntFire("!self","clearparent","",0.2,null,tb)
@@ -21276,7 +21862,7 @@ if ( Director.GetGameMode() == "holdout" )
 	DoEntFire("#"+ei,"runscriptcode","self.ApplyAbsVelocityImpulse(Vector("+ev.x+","+ev.y+","+ev.z+").Scale(0.6))",0.3,null,tb)
 	DoEntFire("#"+ei,"runscriptcode","self.SetVelocity(Vector(0,0,0))",0.3,null,tb)
 
-	DoEntFire("!self","kill","",0.35,null,tb)
+	DoEntFire("!self","kill","",0.5,null,tb)
 }
 
 ::DoZeroGIter <- function(args={})
@@ -21299,8 +21885,12 @@ if ( Director.GetGameMode() == "holdout" )
 	local keepiter = false
 
 	if(all_len == 0)
+	{	
+		::AdminSystem.out("Zero-G Progress: "+Utils.BuildProgressBar(20.0,20.0,20.0,"|", ". "))
 		return;
+	}
 
+	local st = FileToString("admin system/zero_g_debug.txt")
 	foreach(idx, ent in objs)
 	{
 		last_index = idx
@@ -21310,17 +21900,7 @@ if ( Director.GetGameMode() == "holdout" )
 			break;
 		}
 
-		local entcls = ent.GetClassname()
-
-		if( !ent.IsEntityValid()
-			|| ent.GetParent() != null
-			|| !(entcls in ::ZeroGClassTable && ::ZeroGClassTable[entcls] && entcls.find("weapon") != 0))
-			continue
-
-		if(entcls.find("_spawn") != null)
-			continue
-			
-		if(ent.GetModel().find("*") != null)
+		if(!::ZeroGValidate(ent))
 			continue
 
 		i += 1
@@ -21329,6 +21909,10 @@ if ( Director.GetGameMode() == "holdout" )
 			keepiter = true
 			break;
 		}
+		
+		st = format("\ncls: %s \nmdl: %s \nid: %s \n",ent.GetClassname(),ent.GetModel(),ent.GetIndex().tostring())
+		StringToFile("admin system/zero_g_debug.txt",st)
+		printl(ent.GetClassname()+": "+ent.GetModel())
 		::GetRidOfGravity(ent)
 	}
 	
@@ -21340,6 +21924,10 @@ if ( Director.GetGameMode() == "holdout" )
 	if(keepiter)
 	{
 		Timers.AddTimer(0.4,false,::DoZeroGIter,{total=args.total,left=objs.len(),objs=objs})
+	}
+	else
+	{	
+		::AdminSystem.out("Zero-G Progress: "+Utils.BuildProgressBar(20.0,20.0,20.0,"|", ". "))
 	}
 }
 
