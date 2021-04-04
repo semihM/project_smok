@@ -16814,7 +16814,12 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 
 	if(!pattern)
-		Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArray(Utils.TableKeys(Utils.TableFilterByValue(::SoundScripts,filter)),limit)))
+	{
+		if(limit != "all")
+			Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArray(Utils.TableKeys(Utils.TableFilterByValue(::SoundScripts,filter)),limit)))
+		else
+			Printer(player,Utils.ArrayString(Utils.TableKeys(Utils.TableFilterByValue(::SoundScripts,filter))))
+	}
 	else if(limit == "all")
 		Printer(player,Utils.ArrayString(Utils.TableKeys(Utils.TableFilterByValue(Utils.TableKeySearchFilterReturnAll(::SoundScripts,pattern),filter))))
 	else
