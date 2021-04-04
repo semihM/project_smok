@@ -1895,6 +1895,49 @@ function VSLib::Entity::SetWaterLevel(lvl)
 	SetKeyValue("waterlevel", lvl.tostring());
 }
 
+/*
+ * @authors rhino
+ *
+ * @description Check if entity has a child with of given classname
+ *
+ * @param clsname <string>: Class name
+ *
+ * @return if a child of @clsname class exists: true;
+ *			otherwise: false
+ */
+function VSLib::Entity::HasChildOfClassname(clsname)
+{
+	local ch = FirstMoveChild()
+	while(ch != null)
+	{
+		if(ch.GetClassname() == clsname)
+			return true
+		ch = ch.NextMovePeer()
+	}
+	return false
+}
+
+/*
+ * @authors rhino
+ *
+ * @description Check if entity has a child with any of given classnames
+ *
+ * @param clsnames <table>: Table with class names as keys, values doesn't matter
+ *
+ * @return if a child of any classname in @clsname keys exists: true;
+ *			otherwise: false
+ */
+function VSLib::Entity::HasChildOfAnyClassname(clsnames)
+{
+	local ch = FirstMoveChild()
+	while(ch != null)
+	{
+		if(ch.GetClassname() in clsnames)
+			return true
+		ch = ch.NextMovePeer()
+	}
+	return false
+}
 /**
  * Sets the entity's spawn flags.
  */
