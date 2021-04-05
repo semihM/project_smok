@@ -273,16 +273,6 @@ Convars.SetValue( "precache_all_survivors", "1" );
 				foreach(funcname, func in funcs)
 				{
 					total += 1
-					local mainname = funcname
-					local namechanged = false
-					while(funcname in ::VSLib.EasyLogic.Notifications[eventname])
-					{
-						funcname += UniqueString()
-						namechanged = true
-					}
-					if(namechanged)
-						printl("[Event-Hook-Duplicate] "+eventname+" event's "+mainname+" function was a duplicate, named it to "+funcname)
-
 					::VSLib.EasyLogic.Notifications[eventname][funcname] <- func;
 				}
 			}
@@ -2092,7 +2082,7 @@ if ( ( SessionState.MapName == "c2m5_concert" ) && ( SessionState.ModeName == "c
 					world.StopSound("Event.Tank");
 			}
 			
-			Timers.AddTimer(0.1, false, StopTankMusic);
+			Timers.AddTimer(0.4, false, StopTankMusic);
 		}
 	}
 }
@@ -9947,7 +9937,7 @@ function ChatTriggers::reload_hooks( player, args, text )
 
 function ChatTriggers::detach_hook( player, args, text )
 {
-	AdminSystem.DetachHook();
+	AdminSystem.DetachHook(player,args);
 }
 ::ChatTriggerDocs.detach_hook <- @(player,args) AdminSystem.IsPrivileged(player) && "detach_hook" in CmdDocs
 					? Messages.DocCmdPlayer(player,CmdDocs.detach_hook(player,args))
@@ -9955,7 +9945,7 @@ function ChatTriggers::detach_hook( player, args, text )
 
 function ChatTriggers::attach_hook( player, args, text )
 {
-	AdminSystem.AttachHook();
+	AdminSystem.AttachHook(player,args);
 }
 ::ChatTriggerDocs.attach_hook <- @(player,args) AdminSystem.IsPrivileged(player) && "attach_hook" in CmdDocs
 					? Messages.DocCmdPlayer(player,CmdDocs.attach_hook(player,args))
