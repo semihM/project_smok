@@ -2210,12 +2210,12 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		}
 		case "detach_hook":
 		{
-			AdminSystem.DetachHook();
+			AdminSystem.DetachHook(player,args);
 			break;
 		}
 		case "attach_hook":
 		{
-			AdminSystem.AttachHook();
+			AdminSystem.AttachHook(player,args);
 			break;
 		}
 		case "reload_aliases":
