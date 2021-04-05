@@ -159,7 +159,8 @@ FILES = dict(
         "dlc0":["000","007","013"],
         "dlc1":["000"],
         "dlc2":["000","001"],
-        "dlc3":["003"]
+        "dlc3":["003"],
+        "update":["000","002"]
     })
 
 DIRBASE = "./built_in/soundscripts/"
