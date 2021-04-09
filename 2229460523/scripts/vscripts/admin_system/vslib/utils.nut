@@ -2520,6 +2520,33 @@ function VSLib::Utils::ShuffleArray(arr)
 /*
  * @author rhino
  *
+ * @description Get n random values from given array with post filter
+ *
+ * @param arr <array> : Table to iterate over
+ * @param func <function> : Function to pass randomly picked pass through, returned value is used
+ *
+ * @return  array
+ */
+function VSLib::Utils::GetNRandValueFromArrayFilter(arr,n,func=@(v,c) v)
+{
+	local arrlen = arr.len();
+	if(n >= arrlen)
+		return arr
+
+	local copy = Utils.ArrayCopy(arr)
+	local new = []
+	
+	for(local i=0;i<n;i++)
+	{
+		new.append(func(Utils.GetRandValueFromArray(copy,true),i))
+	}
+	
+	return new;
+}
+
+/*
+ * @author rhino
+ *
  * @description Get n random values from given array
  *
  * @param arr <array> : Table to iterate over
@@ -2684,6 +2711,33 @@ function VSLib::Utils::ArrayString(arr,empty_if_zero=false,replace_instances=fal
 		return "";
 	}
 	return GetTableString(arr,"","",replace_instances,escape_chars);
+}
+
+/*
+ * @author rhino
+ * 
+ * @description Pass each table key through a filter then search over it using the given expression
+ *
+ * @param arr <table> : Array to iterate over
+ * @param exp <string> : Expression to search the array with
+ * @param [func <function> = @(val) val] : Filter function to pass value through before attempting to search
+ * @param [new_val <function> = @(val,count=0) val] : Renaming function for the new array of values; "val" is the old value, "count" is a value incremented by 1 every valid search result
+ *
+ * @return  if there ever is a non-null search result: new array with values passed through @new_val function;
+ *			otherwise: empty array
+ */
+function VSLib::Utils::ArraySearchFilterReturnAll(arr,exp,func=@(val) val,new_val=@(val,count=0) val)
+{
+	local re = regexp(exp)
+	local a = []
+	foreach(i,element in arr)
+	{
+		if(re.search(func(element)))
+		{
+			a.append(new_val(element,i))
+		}
+	}
+	return a
 }
 
 /*
