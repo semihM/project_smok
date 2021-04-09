@@ -83,7 +83,7 @@
 
     - [**Texture commands**](#texture-commands)
     
-    - [**Animation commands**](#animating-commands)
+    - [**Animation commands**](#animation-commands)
   
     - [**Experimental commands**](#experimental-commands)
     
