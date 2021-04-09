@@ -2315,6 +2315,17 @@
                     )
                 return cmd.Describe();
             }
+            remove_lights = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "remove_lights",
+                    [
+                        CMDParam("target","Remove lights which targets this: (#{ID} | {targetname} | !self | !picker | all)",true,"removes all lights")
+                    ],
+                    "Remove point light sources. If a target given, only the lights targeting them will be removed"
+                    )
+                return cmd.Describe();
+            }
             spawn_point_light = function(player,args)
             {
                 local cmd = CMDDocs(
@@ -2322,7 +2333,7 @@
                     [
                         CMDParam("target","Object to point at: (#{ID}|{targetname}|!self|!picker)",true,"no targets, points towards player")
                     ],
-                    "Spawn a point light source facing the player or given target. If target is given, light tries pointing at it all times."
+                    "Spawn a point light source facing the player or given target using console variables.\n If target is given, light tries pointing at it all times."
                     )
                 return cmd.Describe();
             }
