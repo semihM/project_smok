@@ -1,17 +1,18 @@
+import math
 
-SOUND_DEFAULT = "buttons/button14"
+SOUND_DEFAULT = "buttons/button14" 
 
-DIRECTION_BACK = " << Back"
+DIRECTION_BACK = " << Back" 
 DIRECTION_BACK_INDEX = 8
-DIRECTION_NEXT = " >> Next"
-DIRECTION_EXIT = " Exit"
+DIRECTION_NEXT = " >> Next" 
+DIRECTION_EXIT = " Exit" 
 
 class Templates:
     def cmddefault(menuname):
         return "play "+SOUND_DEFAULT+";"+"scripted_user_func ;show_menu "+menuname
 
     def exitdefault():
-        return "play "+SOUND_DEFAULT+";"
+        return "play "+SOUND_DEFAULT+";" 
 
     def labeldefault(index):
         return " Label_"+str(index)
@@ -75,10 +76,10 @@ class menu:
         return newarr
 
     def printallprevstr(self):
-        s = ""
+        s = "" 
         current = self.prev
         while current is not None:
-            s += current.printstr() + "\n"
+            s += current.printstr() + "\n" 
             current = current.prev
         return s
 
@@ -90,20 +91,20 @@ class menu:
             element = self.elements[i]
             s += element.printstr("\t")
             if i != length - 1:
-                s += "\n"
-        s += "\n}"
+                s += "\n" 
+        s += "\n}" 
         return s
 
     def printallnextstr(self):
-        s = ""
+        s = "" 
         current = self.next
         while current is not None:
-            s += current.printstr() + "\n"
+            s += current.printstr() + "\n" 
             current = current.next
         return s
 
     def printallstr(self):
-        return self.printallprevstr() + self.printstr() + self.printallnextstr()
+        return self.printallprevstr() + "\n" + self.printstr() + "\n" + self.printallnextstr()
 
 def connectMenusForward(submenus,index):
     for i in range(len(submenus)-1):
@@ -123,7 +124,7 @@ def addFirstPageExtras(lis,_prev):
     lis.extend(createDirElement(_prev,None))
     lis.append(createExitElement())
 
-def createEmptyMenu(name,title,pageCount=1,elementEachPage=6,_prev=None,functemplate=None,labeltemplate=None):
+def createEmptyMenu(name,title,pageCount=1,elementEachPage=6,_prev=None,functemplate=None,labeltemplate=None,arguments=[]):
     submenus = []
     elements = []
     elementEachPage = min(max(1,elementEachPage),7)
@@ -135,35 +136,86 @@ def createEmptyMenu(name,title,pageCount=1,elementEachPage=6,_prev=None,functemp
     if labeltemplate is None:
         labeltemplate = Templates.labeldefault
 
-    i = 1
-    for index in range(1,elementEachPage+1):
-        elements.append(element(index,functemplate(name),labeltemplate(index)))
-    addFirstPageExtras(elements,_prev)
-    submenu = menu(name=name,suffix=i,title=title+" "+str(i),elements=elements)
-    submenus.append(submenu)
-    i += 1
+    if "$argument" in functemplate(""):
+        i = 1
+        argsleft = len(arguments)
 
-    while i <= pageCount:
-        elements = []  
+        for index in range(1,min(elementEachPage,len(arguments))+1):
+            c_arg = arguments[(index-1)]
+            elements.append(element(index,functemplate(name+str(i)).replace("$argument",c_arg),labeltemplate(index).replace("$argument",c_arg)))
+
+        argsleft -= elementEachPage
+
+        addFirstPageExtras(elements,_prev)
+        submenu = menu(name=name,suffix=i,title=title+" "+str(i),elements=elements)
+        submenus.append(submenu)
+
+        i += 1
+        while argsleft > 0:
+            elements = []  
+            for index in range(1,min(elementEachPage,argsleft)+1):
+                c_arg = arguments[((i-1)*elementEachPage)+(index-1)]
+                elements.append(element(index,functemplate(name+str(i)).replace("$argument",c_arg),labeltemplate(index).replace("$argument",c_arg)))
+            
+            argsleft -= elementEachPage
+            if i == pageCount:
+                elements.append(direlement(DIRECTION_BACK_INDEX,submenus[i-2]))
+            else:
+                elements.extend(createDirElement(submenus[i-2],None))
+            elements.append(createExitElement())
+            submenu = menu(name=name,suffix=i,title=title+" "+str(i),elements=elements)
+            submenus.append(submenu)
+            i += 1
+    else:
+        i = 1
         for index in range(1,elementEachPage+1):
             elements.append(element(index,functemplate(name+str(i)),labeltemplate(index)))
-        if i == pageCount:
-            elements.append(direlement(DIRECTION_BACK_INDEX,submenus[i-2]))
-        else:
-            elements.extend(createDirElement(submenus[i-2],None))
-        elements.append(createExitElement())
+        addFirstPageExtras(elements,_prev)
         submenu = menu(name=name,suffix=i,title=title+" "+str(i),elements=elements)
         submenus.append(submenu)
         i += 1
+        while i <= pageCount:
+            elements = []  
+            for index in range(1,elementEachPage+1):
+                elements.append(element(index,functemplate(name+str(i)),labeltemplate(index)))
+            if i == pageCount:
+                elements.append(direlement(DIRECTION_BACK_INDEX,submenus[i-2]))
+            else:
+                elements.extend(createDirElement(submenus[i-2],None))
+            elements.append(createExitElement())
+            submenu = menu(name=name,suffix=i,title=title+" "+str(i),elements=elements)
+            submenus.append(submenu)
+            i += 1
 
     connectMenusForward(submenus,elementEachPage+1)
     return submenus
 
-basename = "prop_dynamic"
-basetitle = "Dynamic props"
-propPerPage = 6
-pageCount = 3
+decalsmain = "decals_main_menu1" 
+basename = "decals_" 
+basetitle = " decals" 
+label = " $argument" 
+name = "wallpapers" 
+title = name
+ 
+arguments = []
 
-propdynamicmenuempty = createEmptyMenu(basename,basetitle,propPerPage,pageCount,None,Templates.cmdpropdynamicdefault,Templates.labelpropdynamicdefault)
+propPerPage = 7
+pageCount = math.ceil(len(arguments) / float(propPerPage))
 
-print(propdynamicmenuempty[0].printallstr())
+def decallabeler(index):
+    return label+str(index)
+
+def decalcmd(menuname):
+    return "play "+SOUND_DEFAULT+";"+"scripted_user_func decal,$argument;show_menu "+menuname
+
+Templates.decallabeler = decallabeler
+Templates.decalcmd = decalcmd
+basename += name
+basetitle = title + basetitle
+
+propdynamicmenuempty = createEmptyMenu(basename,basetitle,pageCount,propPerPage,None,Templates.decalcmd,Templates.decallabeler,arguments)
+
+filedir = "./menus/" 
+
+with open(filedir+basename, "w") as f:
+    print((propdynamicmenuempty[0].printallstr()).encode("ascii","ignore").decode("ascii"),file=f)
