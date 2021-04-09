@@ -1,0 +1,2265 @@
+4ªU   ¨£ vmt materials/brick brick_floor_03_wet ‰{¹×ı  ¼à     ÿÿLightmappedGeneric
+{
+$baseTexture "brick/brick_floor_03"
+$surfaceprop brick
+$ssbump 1
+$bumpmap "brick/brick_floor_03_height-ssbump"
+$SSBumpMathFix 1
+$envmap env_cubemap
+$normalmapalphaenvmapmask 1
+$envmaptint "[.2 .2 .2]"
+"%keywords" l4d2
+}
+drainage_brickwall_01 Ş‚·ı  ¼à     ÿÿLightmappedGeneric
+{
+$basetexture "brick/drainage_brickwall_01"
+$ssbump 1
+$bumpmap "brick/drainage_brickwall_01_height-ssbump"
+
+
+
+
+$surfaceprop concrete
+$detail "detail\dt_brick"
+$detailscale 10
+$detailblendfactor .6
+$detailblendmode 0
+}
+urban_brickwall_02a Še}.Q ¼à     ÿÿLightmappedGeneric
+{
+$baseTexture "brick/urban_brickwall_02a"
+$surfaceprop brick
+$bumpmap "brick/urban_brickwall_01_ssbump"
+$ssbump 1
+
+$envmap "cubemaps/urban_cube01"
+$normalmapalphaenvmapmask 1
+$envmaptint "[ .07 .07 .07 ]"
+$detail "detail\detail_brick_01"
+$detailscale 7
+$detailblendfactor .6
+$detailblendmode 7
+
+
+
+}
+urban_brickwall_03a ì=‡Q ¼à     ÿÿLightmappedGeneric
+{
+$baseTexture "brick/urban_brickwall_03a"
+$surfaceprop brick
+$bumpmap "brick/urban_brickwall_01_ssbump"
+$ssbump 1
+
+$envmap "cubemaps/urban_cube01"
+$normalmapalphaenvmapmask 1
+$envmaptint "[ .07 .07 .07 ]"
+$detail "detail\detail_brick_01"
+$detailscale 7
+$detailblendfactor .6
+$detailblendmode 7
+
+
+
+}
+ materials/concrete blend_blacktop_01_wet ˆ%¥áK ¼à     ÿÿWorldVertexTransition
+{
+$basetexture "concrete/blacktop_ext_01"
+$basetexture2 "concrete/blacktop_ext_02"
+$ssbump 1
+$bumpmap "concrete/blacktop_ext_01_height-ssbump"
+$SSBumpMathFix 1
+$surfaceprop concrete
+$surfaceprop2 concrete
+$envmap env_cubemap
+$normalmapalphaenvmapmask 1
+$envmaptint "[.2 .2 .2]"
+"%keywords" l4d2
+}blend_blacktop_cobb_01 ˜‡Lw¥ ¼à     ÿÿLightmappedGeneric
+{
+$basetexture "Stone/waterfront_cobblestone_01a"
+$basetexture2 "concrete/blacktop_ext_04"
+$bumpmap "stone/cobblestone_01-ssbump"
+$bumpmap2 "concrete/pavement_height-ssbump"
+$ssbump 1
+$SSBumpMathFix 1
+$blendmodulatetexture "nature/blend_texture_01"
+$envmap env_cubemap
+$normalmapalphaenvmapmask 1
+$envmaptint "[.2 .2 .2]"
+$surfaceprop concrete
+$surfaceprop2 concrete
+"%keywords" l4d2
+}
+blend_blacktop_cobb_02 Z†m© ¼à     ÿÿLightmappedGeneric
+{
+$basetexture "Stone/waterfront_cobblestone_03a"
+$basetexture2 "concrete/blacktop_ext_04"
+
+
+
+$bumpmap "stone/cobblestone_02-ssbump"
+$bumpmap2 "concrete/pavement_height-ssbump"
+$ssbump 1
+$SSBumpMathFix 1
+$blendmodulatetexture "nature/blend_texture_01"
+$envmap env_cubemap
+$normalmapalphaenvmapmask 1
+$envmaptint "[.2 .2 .2]"
+$surfaceprop concrete
+$surfaceprop2 concrete
+"%keywords" l4d2
+}blend_sidewalk_01_wet {»¦ ¼à     ÿÿWorldVertexTransition
+{
+$basetexture "concrete/concrete_floor_02"
+$basetexture2 "concrete/concrete_floor_03"
+$blendmodulatetexture "nature/blend_texture_01"
+$bumpmap "concrete/sidewalk_01_ssb-ssbump"
+$bumpmap2 "concrete/sidewalk_01_ssb-ssbump"
+$ssbump 1
+$SSBumpMathFix 1
+$envmap env_cubemap
+$normalmapalphaenvmapmask 1
+$envmaptint "[.2 .2 .2]"
+$surfaceprop concrete
+$surfaceprop2 concrete
+"%keywords" l4d2
+}cinderwall02_dirty 4êyŞß  ¼à     ÿÿlightmappedgeneric
+{
+$baseTexture "concrete/cinderwall02_dirty"
+$surfaceprop concrete
+$bumpmap "concrete/cindmap02-ssbump"
+$ssbump 1
+$envmap env_cubemap
+$normalmapalphaenvmapmask 1
+$envmaptint "[ .05 .05 .05 ]"
+}
+concreteceiling001a Sù¥2µ  ¼à     ÿÿLightmappedGeneric
+{
+
+$basetexture "Concrete/concreteceiling001a"
+$surfaceprop concrete
+$detail "detail\dt_conc"
+$detailscale 8
+$detailblendfactor .7
+$detailblendmode 0
+}
+sewer_concretewall01a ã¼ÛYÜ  ¼à     ÿÿlightmappedgeneric
+{
+$baseTexture "concrete/sewer_concretewall01a"
+$surfaceprop concrete
+$bumpmap "concrete/cinder-ssbump"
+$ssbump 1
+$envmap env_cubemap
+$normalmapalphaenvmapmask 1
+$envmaptint "[ .5 .5 .5 ]"
+}
+sewer_concretewall02a -•àõŞ  ¼à     ÿÿlightmappedgeneric
+{
+$baseTexture "concrete/sewer_concretewall02a"
+$surfaceprop concrete
+$bumpmap "concrete/conc_map-ssbump"
+$ssbump 1
+$envmap env_cubemap
+$normalmapalphaenvmapmask 1
+$envmaptint "[ .1 .1 .1 ]"
+}
+urban_concretefloor_03b  †K;ò  ¼à     ÿÿLightmappedGeneric
+{
+$baseTexture "concrete\urban_concretefloor_03b"
+$envmap env_cubemap
+$bumpmap "concrete\floor002_normal"
+$bumpmapscale "1.000000"
+$normalmapalphaenvmapmask 1
+$surfaceprop concrete
+$envmaptint "[1 1 1]"
+
+
+
+
+}
+ materials/de_tides tiddecclosed > o  ¼à     ÿÿLightmappedGeneric
+{
+$basetexture "de_tides\tiddecclosed"
+$translucent 1
+$decal 1
+$decalscale "0.200"
+}
+ materials/de_train train_largemetal_door_01 œÄu…²  ¼à     ÿÿLightmappedGeneric
+{
+$basetexture "de_train\train_largemetal_door_01"
+$bumpmap "de_train\train_largemetal_door_01_normal"
+$normalmapalphaenvmapmask 1
+$surfaceprop metal
+}
+ materials/decals decal_paintsplattergreen001 0,’Ñ  ¼à     ÿÿLightmappedGeneric
+{
+$vertexcolor 1
+$vertexalpha 1
+$decal 1
+$basetexture "Decals/decal_paintsplattergreen001"
+$decalscale 0.25
+$translucent 1
+$modelmaterial "Decals/decal_paintsplattergreen_model"
+}
+decalstain013a U‘¤½  ¼à     ÿÿLightmappedGeneric
+{
+$vertexcolor 1
+$vertexalpha 1
+
+$translucent 1
+$basetexture "Decals/decalstain013a"
+$decal 1
+$decalscale 0.50
+"%keywords" "c17downtown,c17sewers,wasteland"
+}
+drainage_stain_02 Œ{Ào  ¼à     ÿÿlightmappedGeneric
+{
+$baseTexture "decals/drainage_stain_02"
+$translucent 1
+$decal 1
+$decalscale 0.25
+}
+manholecover01 HWò’  ¼à     ÿÿLightmappedGeneric
+{
+$baseTexture "decals/manholecover01"
+$translucent 1
+$decal 1
+$decalscale "0.250000"
+$vertexcolor 1
+$vertexalpha 1
+}
+offexitlightns ÛûoŒ  ¼à     ÿÿUnlitGeneric
+{
+$basetexture "decals\offexitlightns"
+$additive 1
+$decal 1
+$decalscale "0.250"
+$vertexcolor 1
+$vertexalpha 1
+
+
+
+
+}offpapers03 k‡¼Œ  ¼à     ÿÿLightmappedGeneric
+{
+$basetexture "decals\offpapers03"
+$translucent 1
+$decal 1
+$decalscale "0.250"
+$vertexcolor 1
+$vertexalpha 1
+}
+offwhtbrda S³Ç¡  ¼à     ÿÿLightmappedGeneric
+{
+$basetexture "decals\offwhtbrda"
+$translucent 1
+$decal 1
+$decalscale "0.250"
+$surfaceprop plastic
+$vertexcolor 1
+$vertexalpha 1
+}
+offwhtbrdb Úôi…¡  ¼à     ÿÿLightmappedGeneric
+{
+$basetexture "decals\offwhtbrdb"
+$translucent 1
+$decal 1
+$decalscale "0.250"
+$surfaceprop plastic
+$vertexcolor 1
+$vertexalpha 1
+}
+paper01 ¼ÄeŞ†  ¼à     ÿÿLightmappedGeneric
+{
+$baseTexture "decals/paper01"
+$translucent 1
+$decal 1
+$decalscale "0.1"
+$vertexcolor 1
+$vertexalpha 1
+}
+subwaytracks_overlay Ãá$q˜  ¼à     ÿÿLightmappedGeneric
+{
+$baseTexture "decals/subwaytracks_overlay"
+$translucent 1
+$decal 1
+$decalscale "0.250000"
+$vertexcolor 1
+$vertexalpha 1
+}
+trashdecal04a "²ÍŒ  ¼à     ÿÿLightmappedGeneric
+{
+$vertexcolor 1
+$vertexalpha 1
+
+$translucent 1
+$basetexture "Decals/TrashDecal04a"
+$decal 1
+$decalscale .25
+}
+ materials/glass glasswindow041b Ç+šğ}  ¼à     ÿÿLightmappedGeneric
+{
+$basetexture "glass/glasswindow041b"
+$surfaceprop glass
+"%keywords" c17downtown
+$translucent 1
+}
+glasswindow048a ¶L€á  ¼à     ÿÿLightmappedGeneric
+{
+$basetexture "glass/glasswindow048a"
+$basealphaenvmapmask 1
+$envmap env_cubemap
+$surfaceprop glass
+"%keywords" c17industrial
+$envmaptint "[.75 .75 .75]"
+$envmapcontrast 1
+$envmapsaturation 1
+}
+ materials/graffiti graffiti_alive_256 #åNk  ¼à     ÿÿDecalModulate
+{
+$basetexture "graffiti/graffiti_alive_256"
+
+$decal 1
+$vertexcolor 1
+$vertexalpha 1
+}graffiti_composite_01a +nq  ¼à     ÿÿDecalModulate
+{
+$baseTexture "graffiti/graffiti_composite_01a"
+
+$Decal 1
+$vertexcolor 1
+$vertexalpha 1
+}
+graffiti_rage_256 À
+Õ$j  ¼à     ÿÿDecalModulate
+{
+$basetexture "graffiti/graffiti_rage_256"
+
+$decal 1
+$vertexcolor 1
+$vertexalpha 1
+}graffiti_romero_256 áÓ+l  ¼à     ÿÿDecalModulate
+{
+$basetexture "graffiti/graffiti_romero_256"
+
+$decal 1
+$vertexcolor 1
+$vertexalpha 1
+}graffiti_saferoom_port_m2-3_01 Ô~Ö  ¼à     ÿÿDecalModulate
+{
+$basetexture "graffiti/graffiti_saferoom_port_m2-3_01"
+$decal 1
+$decalscale "0.50000"
+$vertexcolor 1
+$vertexalpha 1
+}
+graffiti_saferoom_port_m2-3_02 )îÿ  ¼à     ÿÿDecalModulate
+{
+$basetexture "graffiti/graffiti_saferoom_port_m2-3_02"
+$decal 1
+$decalscale "0.50000"
+$vertexcolor 1
+$vertexalpha 1
+}
+graffiti_saferoom_port_m2-3_03 ½½Q  ¼à     ÿÿDecalModulate
+{
+$basetexture "graffiti/graffiti_saferoom_port_m2-3_03"
+$decal 1
+$decalscale "0.50000"
+$vertexcolor 1
+$vertexalpha 1
+}
+graffiti_saferoom_port_m2-3_04 ÓË­  ¼à     ÿÿDecalModulate
+{
+$basetexture "graffiti/graffiti_saferoom_port_m2-3_04"
+$decal 1
+$decalscale "0.50000"
+$vertexcolor 1
+$vertexalpha 1
+}
+graffiti_saferoom_port_m2-3_05 GXÀ  ¼à     ÿÿDecalModulate
+{
+$basetexture "graffiti/graffiti_saferoom_port_m2-3_05"
+$decal 1
+$decalscale "0.50000"
+$vertexcolor 1
+$vertexalpha 1
+}
+graffiti_saferoom_port_m2-3_06 ºª¬*  ¼à     ÿÿDecalModulate
+{
+$basetexture "graffiti/graffiti_saferoom_port_m2-3_06"
+$decal 1
+$decalscale "0.50000"
+$vertexcolor 1
+$vertexalpha 1
+}
+graffiti_saferoom_port_m2-3_07 .ù§„  ¼à     ÿÿDecalModulate
+{
+$basetexture "graffiti/graffiti_saferoom_port_m2-3_07"
+$decal 1
+$decalscale "0.50000"
+$vertexcolor 1
+$vertexalpha 1
+}
+graffiti_saferoom_port_m2-3_08 'Àx  ¼à     ÿÿDecalModulate
+{
+$basetexture "graffiti/graffiti_saferoom_port_m2-3_08"
+$decal 1
+$decalscale "0.50000"
+$vertexcolor 1
+$vertexalpha 1
+}
+graffiti_saferoom_smalltown03_01 ]é-7  ¼à     ÿÿDecalModulate
+{
+$basetexture "graffiti/graffiti_saferoom_smalltown03_01"
+$surfaceprop default
+$decal 1
+$vertexcolor 1
+$vertexalpha 1
+}graffiti_saferoom_smalltown03_03 äVF  ¼à     ÿÿDecalModulate
+{
+$basetexture "graffiti/graffiti_saferoom_smalltown03_03"
+$surfaceprop default
+$decal 1
+$vertexcolor 1
+$vertexalpha 1
+}graffiti_saferoom_smalltown04_03 Š¡„º  ¼à     ÿÿDecalModulate
+{
+$basetexture "graffiti/graffiti_saferoom_smalltown04_03"
+$surfaceprop default
+$decal 1
+$vertexcolor 1
+$vertexalpha 1
+}graffiti_squid_256 9Ë“k  ¼à     ÿÿDecalModulate
+{
+$basetexture "graffiti/graffiti_squid_256"
+
+$decal 1
+$vertexcolor 1
+$vertexalpha 1
+}graffiti_throwup_05a ñ•£No  ¼à     ÿÿDecalModulate
+{
+$baseTexture "graffiti/graffiti_throwup_05a"
+
+$Decal 1
+$vertexcolor 1
+$vertexalpha 1
+}
+ materials/liquids water_cheap_c6 'ı¥ ¼à     ÿÿWater
+{
+$normalmap "liquids/water_river_normal_sharp"
+$reflecttexture _rt_WaterReflection
+$reflectamount "0.4"
+$reflecttint "{ 190 190 190 }"
+$reflectskyboxonly 1
+$reflectentities 0
+$abovewater 0
+$bottommaterial "liquids/water_swamp_cheap_beneath"
+$fogenable 1
+$fogstart 0
+$fogend 100
+$lightmapwaterfog 0
+">=DX90_20b"
+{
+
+$fogcolor "{ 9 7 1 }"
+$flashlighttint 50
+}
+"<DX90_20b"
+{
+
+$fogcolor "{ 9 7 1 }"
+$flashlighttint 200
+}
+"%compilewater" 1
+"%tooltexture" "nature/water_frame01_normal"
+$surfaceprop water
+}
+ materials/metal metalgate004a ÆÈÆ  ¼à     ÿÿLightmappedGeneric
+{
+$basetexture "Metal/metalgate004a"
+$alphatest 1
+$alphatestreference ".4"
+"%compilepassbullets" 1
+$surfaceprop metal
+"%keywords" "c17downtown,c17industrial,wasteland"
+}
+metalpipe003a ?dâä ¼à     ÿÿ
+LightmappedGeneric
+{
+$basetexture "Metal/metalpipe003a"
+"%keywords" c17industrial
+$bumpmap "Metal/metalpipe003a_normal"
+$surfaceprop metal
+$detail "detail\metal_detail_01"
+$detailscale "4.283"
+$detailblendfactor .65
+$detailblendmode 0
+$envmaptint "[ .5 .5 .5 ]"
+$envmap env_cubemap
+$normalmapalphaenvmapmask 1
+$envmapcontrast 1
+$envmapsaturation 1
+LightmappedGeneric_HDR_dx9
+{
+$envmaptint "[.1 .1 .1]"
+}
+LightmappedGeneric_DX9
+{
+$envmaptint "[.1 .1 .1]"
+}
+}
+metalpipe003a_cheap Y,H7o  ¼à     ÿÿ
+LightmappedGeneric
+{
+$basetexture "Metal/metalpipe003a"
+"%keywords" c17industrial
+$surfaceprop metal
+}
+metalroof005a ÁŠŸâ  ¼à     ÿÿLightmappedGeneric
+{
+$basetexture "Metal/metalroof005a"
+$surfaceprop metalvent
+$bumpmap "Metal/metalroof004a_normal"
+$normalmapalphaenvmapmask 1
+$envmap env_cubemap
+
+$envmapsaturation 1
+$envmaptint "[ .4 .4 .4 ]"
+}
+metalwall056b ¾‹dæ  ¼à     ÿÿLightmappedGeneric
+{
+
+$basetexture "Metal/metalwall056b"
+$surfaceprop metal
+$detail "detail\metal_detail_01"
+$detailscale "4.283"
+$detailblendfactor .8
+$detailblendmode 0
+"%keywords" "c17industrial,combine,wasteland"
+}
+prodstairsafrnt PbVúT  ¼à     ÿÿLightmappedGeneric
+{
+$basetexture "metal\prodstairsafrnt"
+$surfaceprop metal
+}
+ materials/models/deadbodies thesittingdead_01 LL^FL  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\DeadBodies/TheSittingDead_01"
+}
+ materials/models/infected/common cif_formal oÍˆp ¼à     ÿÿpatch
+{
+include "materials/models/infected/common/l4d2/ci_body_include.vmt"
+insert
+{
+$basetexture "models/infected/common/cif_formal"
+$GRADIENTTEXTURE "models/infected/common/ci_gradient_palette_bridesmaids"
+$DEFAULTPHONGEXPONENT 45
+$phongboost "0.6"
+}
+}cif_formal_burning ĞJ ¼à     ÿÿpatch
+{
+include "materials/models/infected/common/l4d2/ci_body_include.vmt"
+insert
+{
+$basetexture "models/infected/common/cif_formal"
+$GRADIENTTEXTURE "models/infected/common/ci_gradient_palette_bridesmaids"
+$DEFAULTPHONGEXPONENT 45
+$phongboost "0.6"
+$burning 1
+}
+}cif_formal_wounded æ; ¼à     ÿÿpatch
+{
+include "materials/models/infected/common/l4d2/ci_body_include.vmt"
+insert
+{
+$basetexture "models/infected/common/cif_formal"
+$GRADIENTTEXTURE "models/infected/common/ci_gradient_palette_bridesmaids"
+$DEFAULTPHONGEXPONENT 45
+$phongboost "0.6"
+$wounded 1
+}
+}cif_formal_wounded_burning ùfd  ¼à     ÿÿpatch
+{
+include "materials/models/infected/common/l4d2/ci_body_include.vmt"
+insert
+{
+$basetexture "models/infected/common/cif_formal"
+$GRADIENTTEXTURE "models/infected/common/ci_gradient_palette_bridesmaids"
+$DEFAULTPHONGEXPONENT 45
+$phongboost "0.6"
+$wounded 1
+$burning 1
+}
+}cim_biker ¾„É¢ ¼à     ÿÿpatch
+{
+include "materials/models/infected/common/l4d2/ci_body_include.vmt"
+insert
+{
+$basetexture "models/infected/common/cim_biker"
+$GRADIENTTEXTURE "models/infected/common/ci_gradient_palette_bikers"
+$DETAIL "models/infected/common/cim_tats"
+$DETAILSCALE 1
+}
+}cim_biker_burning ÷ÉG ¼à     ÿÿpatch
+{
+include "materials/models/infected/common/l4d2/ci_body_include.vmt"
+insert
+{
+$basetexture "models/infected/common/cim_biker"
+$GRADIENTTEXTURE "models/infected/common/ci_gradient_palette_bikers"
+$DETAIL "models/infected/common/cim_tats"
+$DETAILSCALE 1
+$BURNING 1
+}
+}cim_biker_wounded ©‚­¿ ¼à     ÿÿpatch
+{
+include "materials/models/infected/common/l4d2/ci_body_include.vmt"
+insert
+{
+$basetexture "models/infected/common/cim_biker"
+$GRADIENTTEXTURE "models/infected/common/ci_gradient_palette_bikers"
+$DETAIL "models/infected/common/cim_tats"
+$DETAILSCALE 1
+$WOUNDED 1
+}
+}cim_biker_wounded_burning ëñ( ¼à     ÿÿpatch
+{
+include "materials/models/infected/common/l4d2/ci_body_include.vmt"
+insert
+{
+$basetexture "models/infected/common/cim_biker"
+$GRADIENTTEXTURE "models/infected/common/ci_gradient_palette_bikers"
+$DETAIL "models/infected/common/cim_tats"
+$DETAILSCALE 1
+$WOUNDED 1
+$BURNING 1
+}
+}cim_formal 7l ¼à     ÿÿpatch
+{
+include "materials/models/infected/common/l4d2/ci_body_include.vmt"
+insert
+{
+$basetexture "models/infected/common/cim_formal"
+$GRADIENTTEXTURE "models/infected/common/ci_gradient_palette_formal"
+$DEFAULTPHONGEXPONENT 45
+$phongboost "0.6"
+}
+}cim_formal_burning H*ô!â  ¼à     ÿÿpatch
+{
+include "materials/models/infected/common/l4d2/ci_body_include.vmt"
+insert
+{
+$basetexture "models/infected/common/cim_formal"
+$GRADIENTTEXTURE "models/infected/common/ci_gradient_palette_formal"
+$BURNING 1
+}
+}cim_formal_wounded a•â  ¼à     ÿÿpatch
+{
+include "materials/models/infected/common/l4d2/ci_body_include.vmt"
+insert
+{
+$basetexture "models/infected/common/cim_formal"
+$GRADIENTTEXTURE "models/infected/common/ci_gradient_palette_formal"
+$WOUNDED 1
+}
+}cim_formal_wounded_burning mÃuî  ¼à     ÿÿpatch
+{
+include "materials/models/infected/common/l4d2/ci_body_include.vmt"
+insert
+{
+$basetexture "models/infected/common/cim_formal"
+$GRADIENTTEXTURE "models/infected/common/ci_gradient_palette_formal"
+$BURNING 1
+$WOUNDED 1
+}
+}cim_head_biker ‚ôÙ ¼à     ÿÿpatch
+{
+include "materials/models/infected/common/l4d2/ci_head_include.vmt"
+insert
+{
+$basetexture "models/infected/common/cim_head_biker"
+$GRADIENTTEXTURE "models/infected/common/ci_gradient_palette_bikers"
+$DETAIL "models/infected/common/cim_head_tats"
+$DETAILSCALE 1
+}
+}cim_head_biker_burning ¶a¾Ö& ¼à     ÿÿpatch
+{
+include "materials/models/infected/common/l4d2/ci_head_include.vmt"
+insert
+{
+$basetexture "models/infected/common/cim_head_biker"
+$GRADIENTTEXTURE "models/infected/common/ci_gradient_palette_bikers"
+$DETAIL "models/infected/common/cim_head_tats"
+$DETAILSCALE 1
+$BURNING 1
+}
+}cim_head_biker_longhair Èİ{Ï# ¼à     ÿÿpatch
+{
+include "materials/models/infected/common/l4d2/ci_head_include.vmt"
+insert
+{
+$basetexture "models/infected/common/cim_head_biker_longhair"
+$GRADIENTTEXTURE "models/infected/common/ci_gradient_palette_bikers"
+$DETAIL "models/infected/common/cim_head_tats"
+$DETAILSCALE 1
+}
+}cim_head_biker_longhair_burning µ3ìä/ ¼à     ÿÿpatch
+{
+include "materials/models/infected/common/l4d2/ci_head_include.vmt"
+insert
+{
+$basetexture "models/infected/common/cim_head_biker_longhair"
+$GRADIENTTEXTURE "models/infected/common/ci_gradient_palette_bikers"
+$DETAIL "models/infected/common/cim_head_tats"
+$DETAILSCALE 1
+$BURNING 1
+}
+}cim_head_biker_longhair_wounded ëxP/ ¼à     ÿÿpatch
+{
+include "materials/models/infected/common/l4d2/ci_head_include.vmt"
+insert
+{
+$basetexture "models/infected/common/cim_head_biker_longhair"
+$GRADIENTTEXTURE "models/infected/common/ci_gradient_palette_bikers"
+$DETAIL "models/infected/common/cim_head_tats"
+$DETAILSCALE 1
+$WOUNDED 1
+}
+}cim_head_biker_longhair_wounded_burning p¯ò; ¼à     ÿÿpatch
+{
+include "materials/models/infected/common/l4d2/ci_head_include.vmt"
+insert
+{
+$basetexture "models/infected/common/cim_head_biker_longhair"
+$GRADIENTTEXTURE "models/infected/common/ci_gradient_palette_bikers"
+$DETAIL "models/infected/common/cim_head_tats"
+$DETAILSCALE 1
+$WOUNDED 1
+$BURNING 1
+}
+}cim_head_biker_wounded è*Tb& ¼à     ÿÿpatch
+{
+include "materials/models/infected/common/l4d2/ci_head_include.vmt"
+insert
+{
+$basetexture "models/infected/common/cim_head_biker"
+$GRADIENTTEXTURE "models/infected/common/ci_gradient_palette_bikers"
+$DETAIL "models/infected/common/cim_head_tats"
+$DETAILSCALE 1
+$WOUNDED 1
+}
+}cim_head_biker_wounded_burning D§˜÷2 ¼à     ÿÿpatch
+{
+include "materials/models/infected/common/l4d2/ci_head_include.vmt"
+insert
+{
+$basetexture "models/infected/common/cim_head_biker"
+$GRADIENTTEXTURE "models/infected/common/ci_gradient_palette_bikers"
+$DETAIL "models/infected/common/cim_head_tats"
+$DETAILSCALE 1
+$WOUNDED 1
+$BURNING 1
+}
+} materials/models/infected/witch witch_bride_dress ×'öÌ~  ¼à     ÿÿVertexlitGeneric
+{
+$basetexture "models\infected\witch\witch_bride_dress"
+$allowdiffusemodulation 0
+$nocull 1
+
+
+
+
+
+}witch_bride_veil 6•î.   ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\infected\witch\witch_bride_veil"
+$allowdiffusemodulation 0
+$translucent 1
+$mostlyopaque 1
+
+$nocull 1
+
+
+
+
+
+} materials/models/props/cs_assault wirepipe ıIa  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props\cs_assault\wirepipe"
+$surfaceprop metal
+
+
+}
+ materials/models/props/cs_militia sheetrock_leaning §NúœR  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props\cs_militia/sheetrock_leaning"
+}
+vine_wall1 )à}Sd  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props\de_inferno\vine_wall1"
+$alphatest 1
+$nocull 1
+}
+vines01 û¬©(a  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props\cs_militia/vines01"
+$alphatest 1
+$nocull 1
+}
+ materials/models/props/cs_office offpaintinga ;K	¬  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props\cs_office\offpaintinga"
+$envmap env_cubemap
+
+$envmaptint "[ .5 .5 .5 ]"
+}
+poster_backing À×şN  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props\cs_office\poster_backing"
+}
+ materials/models/props/de_nuke light_red1 åØÍH  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props\de_nuke\light_red1"
+}
+light_red1_on 3Só2V  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props\de_nuke\light_red1"
+$selfillum 1
+}
+light_yellow1_glass õÂË  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props\de_nuke\light_yellow1_glass"
+$translucent 1
+$envmap env_cubemap
+$envmapmask "models\props\de_nuke\light_red1_glass_ref"
+$envmaptint "[.5 .05 .05]"
+}
+light_yellow1_glass_on xÈç4Ñ  ¼à     ÿÿUnlitGeneric
+{
+$basetexture "models\props\de_nuke\light_yellow1_glass"
+$translucent 1
+$model 1
+$envmap env_cubemap
+$envmapmask "models\props\de_nuke\light_red1_glass_ref"
+$envmaptint "[.5 .05 .05]"
+}
+ materials/models/props/de_train de_train_floodlights_01 QÊ¶d  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props\de_train\de_train_floodlights_01"
+$selfillum 1
+}
+ materials/models/props_c17 chair_stool01a –Ô–»¤  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "Models/props_c17/chair_stool01a"
+$surfaceprop metal
+$envmap env_cubemap
+$basealphaenvmapmask 1
+$envmaptint "[ .5 .5 .5]"
+}
+oil_drum001a »lÇ®  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "Models/props_c17/Oil_Drum001a"
+$surfaceprop metal
+$detail "detail\dt_metal2"
+$detailscale 8
+$detailblendfactor 1
+$detailblendmode 0
+} materials/models/props_canal canal_bars004 ™ãÑ]  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "Models/props_canal/canal_bars004"
+$surfaceprop metal
+}
+ materials/models/props_doors door_double {ÑïÙG  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\Props_Doors/Door_Double"
+}
+doormetal_double_boarded01 ñ/Æ  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\Props_Doors/DoorMetal_Double_Boarded01"
+$Envmap env_cubemap
+$EnvmapMask "models\Props_Doors\DoorMetal_Double_Boarded01_ref"
+$envmaptint "[.5 .5 .5]"
+}
+ materials/models/props_furniture furniture_lamp_stool01a 1Ğ·å  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_interiors/lamp1_lit"
+$envmap env_cubemap
+$envmapmask "models\props_interiors\furniture_lamp_stool01a_ref"
+$envmaptint "[1 .9 .5]"
+$envmapcontrast ".7"
+$envmapsaturation ".7"
+} materials/models/props_industrial brick_breakstack ¦B~Q  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_industrial/Brick_BreakStack"
+}
+oil_pipes ¦1o&P  ¼à     ÿÿVertexLitGeneric
+{
+
+
+$basetexture "Models/props_industrial/oil_pipes"
+
+}
+pallet_barrel_water01 {Òun  ¼à     ÿÿVertexlitGeneric
+{
+$basetexture "Models/props_industrial/Pallet_Barrel_Water01"
+
+
+
+
+
+
+
+
+
+
+
+
+}
+plywood_leaning §ÊÉµ°  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_industrial\Plywood_leaning"
+$detail "detail\dt_wood2"
+$detailscale "[26 20]"
+$detailblendfactor ".3"
+$detailblendmode 0
+}
+wood_pallet_01 Õ„vM  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props\de_train\wood_pallet_01"
+}
+ materials/models/props_interiors desk_executive }Ïfzí  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_interiors/desk_executive"
+$envmap env_cubemap
+$envmapmask "models\props_interiors\desk_executive_ref"
+$envmaptint "[1 1 1]"
+vertexlitgeneric_HDR_dx9
+{
+$envmaptint "[.1 .1 .1]"
+}
+}
+lightbulb01a ±4!'û  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "Models/props_interiors/LightBulb01a"
+$envmap env_cubemap
+$envmapmask "Models/props_interiors/LightBulb01a_mask"
+$envmaptint "[ .5 .5 .5]"
+$envmapcontrast 1
+$envmapsaturation "[.5 .5 .5]"
+$surfaceprop glass
+}
+lightbulb01a_on â¯Ru	 ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "Models/props_interiors/LightBulb01a"
+$envmap env_cubemap
+$envmapmask "Models/props_interiors/LightBulb01a_mask"
+$envmaptint "[ .4 .4 .4]"
+$envmapcontrast 1
+$envmapsaturation "[.5 .5 .5]"
+$surfaceprop glass
+$selfillum 1
+}
+power_outlet_campground -(â—Å  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_interiors/power_outlet_campground"
+$envmap env_cubemap
+$envmapmask "models\props_interiors\power_outlet_campground_ref"
+$envmaptint "[1 1 1]"
+}
+screen Ç‚6²—  ¼à     ÿÿUnLitGeneric
+{
+$baseTexture "models\props_interiors/screen"
+$color2 "[.6 .6 .6]"
+$model 1
+
+
+$envmap env_cubemap
+$envmaptint "[.5 .5 .5]"
+
+}
+screenb M_ˆ  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_interiors/screen"
+$color2 "[0 0 0]"
+$envmap env_cubemap
+$envmaptint "[.5 .5 .5]"
+
+}tablescafe01 Ã1sïÈ  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_interiors/TablesCafe01"
+$envmap env_cubemap
+$envmapmask "models\props_interiors/TablesCafe01_ref"
+$envmapcontrast ".8"
+$envmaptint "[.5 .5 .5]"
+}
+ materials/models/props_lab lab_objects03 |«‹èa  ¼à     ÿÿVertexLitGeneric
+{
+
+$basetexture "Models/props_lab/lab_objects03"
+$surfaceprop cardboard
+}
+ materials/models/props_lighting lightfixture02aoff êQÉQ  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\Props_Lighting/LightFixture02aOff"
+}
+lightfixture02aon !Uª^  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\Props_Lighting/LightFixture02aOn"
+$selfillum 1
+}
+lightfixture02off &äEÖP  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\Props_Lighting/LightFixture02off"
+}
+lightfixture02on ÎJ£]  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\Props_Lighting/LightFixture02On"
+$selfillum 1
+}
+lightfixture03_off ·2‰¼  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\Props_Lighting/LightFixture03_Off"
+$envmap env_cubemap
+$envmapmask "models\Props_Lighting\LightFixture03_Off_ref"
+$envmaptint "[.4 .4 .4]"
+}
+lightfixture03_on ÿx¯`¯  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\Props_Lighting/LightFixture03_On"
+$selfillum 1
+$envmap env_cubemap
+$envmapmask "models\Props_Lighting\LightFixture03_Off_ref"
+}
+ materials/models/props_pipes interiorpipe002a /ªéd  ¼à     ÿÿ
+VertexLitGeneric
+{
+
+$basetexture "Models/props_pipes/InteriorPipe002a"
+$surfaceprop metal
+}
+pipeset_metal BÍy]  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "Models/props_pipes/pipeset_metal"
+$surfaceprop metal
+}
+pipeset_metal02 {}{1c  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "Models/props_pipes/pipeset_metal02"
+$surfaceprop metal
+
+
+}
+ materials/models/props_plants bushb èq  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props_plants\bushB"
+$alphatest 1
+$alphatestreference ".3"
+$FlashlightNoLambert 1
+$nocull 1
+}
+plantairport01_dead "rg ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_plants/PlantAirport01_dead"
+$alphatest 1
+$nocull 1
+$FlashlightNoLambert 1
+$envmap env_cubemap
+$envmapmask "models\props_plants\PlantAirport01_dead_ref"
+$envmaptint "[.4 .4 .4]"
+$envmapcontrast .75
+$envmapsaturation .1
+}
+ materials/models/props_rooftop billboard03_main S…–N  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_rooftop/Billboard03_Main"
+}
+ materials/models/props_signs sign_apartment WÊ^  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "Models/props_signs/sign_apartment"
+$surfaceprop default
+} materials/models/props_street awning_modular01 eæşĞU  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_street/Awning_Modular01"
+
+
+
+
+}
+awning_round üeyÊI  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_street/Awning_round"
+}
+bus_stop ú˜ŞÕ¹  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_street/bus_stop"
+$selfillum 1
+$envmap env_cubemap
+$envmapmask "models\props_street\bus_stop_ref"
+$envmaptint "[1 1 1]"
+
+
+
+
+
+}
+watertower01 …2I  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_street/watertower01"
+}
+window_washer_quad <Æ:c  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "Models/props_street/window_washer_quad"
+$surfaceprop default
+} materials/models/props_trainstation benchoutdoor01a ˜é\kR  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_trainstation/BenchOutdoor01a"
+}
+lobby_fixtures002a ÛF²°% ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_trainstation\lobby_fixtures002a"
+$envmap env_cubemap
+$envmapmask "models\props_trainstation\lobby_fixtures002a_ref"
+$envmapcontrast 1
+$envmapsaturation .3
+$envmaptint "[.9 1 1]"
+vertexlitgeneric_HDR_dx9
+{
+$envmaptint "[.7 .9 .9]"
+}
+}
+ materials/models/props_unique/airport line_post ¿öÒœ  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_unique\airport/line_post"
+$envmap env_cubemap
+$envmapmask "models\props_unique\airport\line_post_ref"
+}
+ materials/models/props_unique doll01 `PC  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "Models/props_unique/doll01"
+}
+generator dU€
+  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_unique/generator"
+$envmap env_cubemap
+$basealphaenvmapmask 1
+$envmaptint "[.2 .2 .2]" 
+}
+generator01 k»  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_unique/generator01"
+$envmap env_cubemap
+$basealphaenvmapmask 1
+$envmaptint "[.2 .2 .2]" 
+}
+ibeama ğ5rYN  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "metal\ibeama"
+$surfaceprop solidmetal
+}
+metalstair002a a…nfU  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "Metal/metalstair002a"
+$surfaceprop metal
+
+
+}
+nuke_metalfloor_01 (ˆËRW  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "de_nuke/nuke_metalfloor_01"
+$surfaceprop default
+} materials/models/props_urban light_fixture01 ƒ£ˆñK  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_urban/light_fixture01"
+}
+light_fixture01_on ä‡‡\  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_urban/light_fixture01_on"
+$selfillum 1
+}
+ materials/models/props_vehicles cement_truck01 . ®ì  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_vehicles/Cement_Truck01"
+$Envmap env_cubemap
+$EnvmapMask "models\props_vehicles\Cement_Truck01_ref"
+$envmapfresnel 1
+$envmapFresnelMinMaxExp "[.5 1.5 4]"
+$EnvmapTint "[.5 .5 .5]"
+}
+cement_truck01_windows »òÄ  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_vehicles/Cement_Truck01_Windows"
+$Envmap env_cubemap
+$EnvmapMask "models\props_vehicles\Cement_Truck01_Windows_ref"
+$EnvmapTint "[.5 .5 .5]"
+}
+front_loader01 ¥ò[†ì  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_vehicles/Front_Loader01"
+$Envmap env_cubemap
+$EnvmapMask "models\props_vehicles\Front_Loader01_ref"
+$envmapfresnel 1
+$envmapFresnelMinMaxExp "[.5 1.5 4]"
+$EnvmapTint "[.5 .5 .5]"
+}
+front_loader01_glass ÖND¦  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_vehicles/Front_Loader01_Glass"
+$Envmap env_cubemap
+$EnvmapMask "models\props_vehicles\Front_Loader01_Glass_ref"
+}
+pickup_glass ßâ2Å–  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_vehicles/Pickup_Glass"
+$Envmap env_cubemap
+$EnvmapMask "models\props_vehicles\Pickup_Glass_ref"
+}
+pickuptruck sÆ)‚ ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_vehicles/PickupTruck"
+$Envmap env_cubemap
+$EnvmapMask "models\props_vehicles\PickupTruck_ref"
+$EnvmapTint "[1 1 1]"
+$EnvmapSaturation ".75"
+$BlendTintByBaseAlpha 1
+$envmapfresnel 1
+$envmapFresnelMinMaxExp "[.05 .35 1]"
+}sailboat àZÂ  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_vehicles/SailBoat"
+$envmap env_cubemap
+$envmapmask "models\props_vehicles\SailBoat_ref"
+}
+ materials/models/props_wasteland prison_objects004 	I ¼à     ÿÿVertexLitGeneric
+{
+
+$basetexture "Models/props_wasteland/prison_objects004"
+$envmap env_cubemap
+$envmapmask "Models/props_wasteland/prison_objects004_mask"
+$envmaptint "[1 1 1]"
+$envmapcontrast .25
+$envmapsaturation .5
+$surfaceprop metal
+vertexlitgeneric_HDR_dx9
+{
+$envmaptint "[.2 .2 .2]"
+$envmapcontrast .5
+}
+}
+ materials/models/props_waterfront atm_sign •^¹  ¼à     ÿÿVertexlitGeneric
+{
+$basetexture "models\props_waterfront\atm_sign"
+
+
+
+
+
+$selfillummask "models\props_waterfront\atm_sign_selfillum"
+$selfillum 1
+$selfillumtint "[.3 .3 .3]"
+}awning w„5O  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props_waterfront\awning"
+
+
+
+
+
+}awning_system ×*äV  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props_waterfront\awning_system"
+
+
+
+
+
+}balcony_72x48 ùårV  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props_waterfront\balcony_72x48"
+
+
+
+
+
+}barcafe_sign bÌè¿Á  ¼à     ÿÿVertexlitGeneric
+{
+$basetexture "models\props_waterfront\barcafe_sign"
+
+
+
+
+
+$selfillummask "models\props_waterfront\barcafe_sign_selfillum"
+$selfillum 1
+$selfillumtint "[.3 .3 .3]"
+}beer_sign B5·»  ¼à     ÿÿVertexlitGeneric
+{
+$basetexture "models\props_waterfront\beer_sign"
+
+
+
+
+
+$selfillummask "models\props_waterfront\beer_sign_selfillum"
+$selfillum 1
+$selfillumtint "[.3 .3 .3]"
+}bridge_metal_01 µ…t¨¼  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "metal\metal_plate01"
+$envmap env_cubemap
+$envmapmask "metal\metal_plate01_ref"
+$envmaptint "[.4 .4 .4]"
+$surfaceprop metalvent
+"%keywords" l4d2
+}
+dance_sign v«¬½  ¼à     ÿÿVertexlitGeneric
+{
+$basetexture "models\props_waterfront\dance_sign"
+
+
+
+
+
+$selfillummask "models\props_waterfront\dance_sign_selfillum"
+$selfillum 1
+$selfillumtint "[.3 .3 .3]"
+}door_exterior01_redlight 9=×  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_waterfront/door_exterior01_redlight"
+
+
+
+$selfillummask "models\props_waterfront/door_exterior01_redlight_selfillum"
+$selfillum 1
+$selfillumtint "[.3 .3 .3]"
+}
+footlocker01 @7š±U  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props_waterfront\footlocker01"
+
+
+
+
+
+}gate_industrial ¶/è—X  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props_waterfront\gate_industrial"
+
+
+
+
+
+}historic_tour_sign f`q[  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props_waterfront\historic_tour_sign"
+
+
+
+
+
+}light02 kkÁX  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props_waterfront\light02"
+
+$selfillum 1
+
+}liquor_sign œ®-5¿  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props_waterfront\liquor_sign"
+
+
+
+
+
+$selfillummask "models\props_waterfront/liquor_sign_selfillum"
+$selfillum 1
+$selfillumtint "[.6 .6 .6]"
+}live_jazz_sign ÖLºÁ  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props_waterfront\live_jazz_sign"
+
+
+
+$selfillummask "models\props_waterfront/live_jazz_sign_selfillum"
+$selfillum 1
+$selfillumtint "[.6 .6 .6]"
+}money_pile 2B.S  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props_waterfront\money_pile"
+
+
+
+
+
+}pawnshop_sign ¸“›.Ã  ¼à     ÿÿVertexlitGeneric
+{
+$basetexture "models\props_waterfront\pawnshop_sign"
+
+
+
+
+
+$selfillummask "models\props_waterfront\pawnshop_sign_selfillum"
+$selfillum 1
+$selfillumtint "[.3 .3 .3]"
+}photos_framed_01 Mïx ¢  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_waterfront/photos_framed_01"
+$envmap env_cubemap
+$envmapmask "models\props_waterfront\photos_framed_01_ref"
+}
+poolhall_sign ‹ì\â»  ¼à     ÿÿVertexlitGeneric
+{
+$basetexture "models\props_waterfront\poolhall_sign"
+$selfillummask "models\props_waterfront\poolhall_sign_selfillum"
+$selfillum 1
+$selfillumtint "[.3 .3 .3]"
+}
+railmetal_01 µ…t¨¼  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "metal\metal_plate01"
+$envmap env_cubemap
+$envmapmask "metal\metal_plate01_ref"
+$envmaptint "[.4 .4 .4]"
+$surfaceprop metalvent
+"%keywords" l4d2
+}
+railmetal_02 Ç­ßÜ  ¼à     ÿÿVertexLitGeneric
+{
+
+$basetexture "Metal/metalwall074a"
+$surfaceprop metal
+$detail "detail\metal_detail_01"
+$detailscale "4.283"
+$detailblendfactor .8
+$detailblendmode 0
+"%keywords" "c17industrial,wasteland"
+}
+railwood_01 /Ó˜^  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "wood/wood_ext_04"
+$surfaceprop wood
+"%keywords" l4d2
+}
+rayford_shipping_sign 4™!^  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props_waterfront\rayford_shipping_sign"
+
+
+
+
+
+}sign_underriver_easel01 p	X  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_waterfront/Sign_UnderRiver_Easel01"
+}
+sign_underriver_folding01 Lòáh  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_waterfront/Sign_UnderRiver_Folding01"
+$alphatest 1
+}
+sign_underriver_tour 9tŸXU  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_waterfront/Sign_UnderRiver_Tour"
+}
+souvenirs_sign éÍ“I»  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props_waterfront\souvenirs_sign"
+$selfillummask "models\props_waterfront\souvenirs_sign_selfillum"
+$selfillum 1
+$selfillumtint "[.3 .3 .3]"
+}street_lamp_on ¿QX¾  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props_waterfront\street_lamp_on"
+$selfillummask "models\props_waterfront/street_lamp_on_selfillum"
+$selfillum 1
+$selfillumtint "[.09 .09 .09]"
+}suitcase_open ÷ù¯¥Ä  ¼à     ÿÿVertexlitGeneric
+{
+$basetexture "models\props_waterfront\suitcase_open"
+$envmap env_cubemap
+$envmapmask "models\props_waterfront\suitcase_open_spec"
+$envmaptint "[ 0.5 0.5 0.5 ]"
+
+
+
+
+
+}tattoo_autoclave ½‰é¢  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_waterfront/Tattoo_Autoclave"
+$envmap env_cubemap
+$envmapmask "models\props_waterfront\Tattoo_Autoclave_ref"
+}
+tattoo_chair_client_01 ‚Méº  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_waterfront\tattoo_chair_client_01"
+$envmap env_cubemap
+$envmapmask "models\props_waterfront\tattoo_chair_client_01_ref"
+
+
+
+
+
+
+}
+tattoo_flashboard A­·¤X  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_waterfront/Tattoo_FlashBoard"
+
+
+
+}
+tattoo_floorlamp \PÆß¢  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_waterfront/Tattoo_FloorLamp"
+$envmap env_cubemap
+$envmapmask "models\props_waterfront\Tattoo_FloorLamp_ref"
+}
+tattoo_frames óÜäBV  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props_waterfront\tattoo_frames"
+
+
+
+
+
+}tattoo_frontdesk cú~&Q  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_waterfront/Tattoo_FrontDesk"
+}
+tattoo_frontdesk_glass ®)Ÿ¾  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_waterfront/Tattoo_FrontDesk_Glass"
+$translucent 1
+$envmap env_cubemap
+$envmapmask "models\props_waterfront\Tattoo_FrontDesk_Glass_ref"
+}
+tattooist_sign ŠU›çÁ  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props_waterfront\tattooist_sign"
+
+
+
+$selfillummask "models\props_waterfront\tattooist_sign_selfillum"
+$selfillum 1
+$selfillumtint "[.3 .3 .3]"
+}tattootable 0½¹¦  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\props_waterfront/TattooTable"
+$alphatest 1
+$envmap env_cubemap
+$envmapmask "models\props_waterfront\TattooTable_ref"
+}
+tour_bus :õŠöQ  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props_waterfront\tour_bus"
+
+
+
+
+
+}tour_bus_trim ÓÆ\UV  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props_waterfront\tour_bus_trim"
+
+
+
+
+
+}windows_exterior_01_dark •KĞ  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props_waterfront\windows_exterior_01_dark"
+
+$Envmap env_cubemap
+$EnvmapMask "models\props_waterfront\windows_exterior_01_dark_spec"
+$EnvmapTint "[0.5 0.5 0.5]"
+}windows_exterior_01_light YÇ¾£Ï  ¼à     ÿÿVertexLitGeneric
+{
+$basetexture "models\props_waterfront\windows_exterior_01_light"
+$selfillummask "models\props_waterfront\windows_exterior_01_light_spec"
+$selfillum 1
+$selfillumtint "[.15 .13 .06]"
+} materials/models/survivors/biker francis_color_it ™E{,U ¼à     ÿÿpatch
+{
+
+include "materials/models/survivors/survivors_it_shared.vmt"
+insert
+{
+
+$baseTexture "models\survivors\biker\francis_color"
+$bumpmap "models\survivors\biker\francis_normal"
+$halflambert 1
+$phong 1
+$phongboost "1.5"
+$phongexponent 5
+$phongtint "[.85 .85 1]"
+$phongfresnelranges "[.3 .65 30]"
+$ambientocclusion 1
+}
+}
+francis_hair ñMÍ}  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\survivors\biker/francis_hair"
+$halflambert 1
+$translucent 1
+
+
+
+$nocull 1
+}
+francis_head ØY¨” ¼à     ÿÿvertexlitgeneric
+{
+
+$baseTexture "models\survivors\biker\francis_head"
+$compress "models\survivors\biker\francis_head_compress"
+$stretch "models\survivors\biker\francis_head_compress"
+$bumpmap "models\survivors\biker\francis_head_normal"
+$halflambert 1
+$phong 1
+$phongboost "1.4"
+$phongexponent 12
+$phongtint "[.85 .85 1]"
+$phongfresnelranges "[.2 .5 5]"
+$nodecal 1
+$ambientocclusion 1
+}
+francis_head_it ¶[£× ¼à     ÿÿpatch
+{
+
+include "materials/models/survivors/survivors_it_shared.vmt"
+insert
+{
+
+$baseTexture "models\survivors\biker\francis_head"
+$bumpmap "models\survivors\biker\francis_head_normal"
+$compress "models\survivors\biker\francis_head_compress"
+$stretch "models\survivors\biker\francis_head_compress"
+$halflambert 1
+$phong 1
+$phongboost "1.4"
+$phongexponent 12
+$phongtint "[.85 .85 1]"
+$phongfresnelranges "[.2 .5 5]"
+$nodecal 1
+$ambientocclusion 1
+}
+}
+ materials/models/survivors biker_manager_eyeball_l 	‰RlŸ ¼à     ÿÿEyeRefract
+{
+$Iris "models/survivors/brown_iris" 
+$AmbientOcclTexture "models/survivors/survivor_eye_ao" 
+$Envmap "Engine/eye-reflection-cubemap-" 
+$CorneaTexture "Engine/eye-cornea" 
+$EyeballRadius "0.5" 
+$AmbientOcclColor "[.4 .4 .4]" 
+$Dilation ".5" 
+$ParallaxStrength "0.25" 
+$CorneaBumpStrength ".5" 
+$halflambert 1
+$nodecal 1
+$ambientocclusion 1
+
+$RaytraceSphere 1 
+$SphereTexkillCombo 0 
+}
+biker_manager_eyeball_r 	‰RlŸ ¼à     ÿÿEyeRefract
+{
+$Iris "models/survivors/brown_iris" 
+$AmbientOcclTexture "models/survivors/survivor_eye_ao" 
+$Envmap "Engine/eye-reflection-cubemap-" 
+$CorneaTexture "Engine/eye-cornea" 
+$EyeballRadius "0.5" 
+$AmbientOcclColor "[.4 .4 .4]" 
+$Dilation ".5" 
+$ParallaxStrength "0.25" 
+$CorneaBumpStrength ".5" 
+$halflambert 1
+$nodecal 1
+$ambientocclusion 1
+
+$RaytraceSphere 1 
+$SphereTexkillCombo 0 
+}
+ materials/models/survivors/manager louis_color_it ñ”@ÙU ¼à     ÿÿpatch
+{
+
+include "materials/models/survivors/survivors_it_shared.vmt"
+insert
+{
+
+$baseTexture "models\survivors\manager\louis_color"
+$bumpmap "models\survivors\Manager/louis_normal"
+$halflambert 1
+$phong 1
+$phongboost "1.5"
+$phongexponent 5
+$phongtint "[.85 .85 1]"
+$phongfresnelranges "[.3 .65 30]"
+$ambientocclusion 1
+}
+}
+louis_head T¸[” ¼à     ÿÿvertexlitgeneric
+{
+
+$baseTexture "models\survivors\manager\louis_head"
+$compress "models\survivors\manager\louis_head_compress"
+$stretch "models\survivors\manager\louis_head_compress"
+$bumpmap "models\survivors\Manager/louis_head_normal"
+$halflambert 1
+$phong 1
+$phongboost "1.5"
+$phongexponent 7
+$phongtint "[.80 .80 1]"
+$phongfresnelranges "[.3 .65 1]"
+$nodecal 1
+$ambientocclusion 1
+}
+louis_head_it Ö9ã¨× ¼à     ÿÿpatch
+{
+
+include "materials/models/survivors/survivors_it_shared.vmt"
+insert
+{
+
+$baseTexture "models\survivors\manager\louis_head"
+$bumpmap "models\survivors\Manager/louis_head_normal"
+$compress "models\survivors\manager\louis_head_compress"
+$stretch "models\survivors\manager\louis_head_compress"
+$halflambert 1
+$phong 1
+$phongboost "1.5"
+$phongexponent 7
+$phongtint "[.80 .80 1]"
+$phongfresnelranges "[.3 .65 1]"
+$nodecal 1
+$ambientocclusion 1
+}
+}
+ materials/models/survivors/namvet bill_hair ¿©7{  ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\survivors\namvet/bill_hair"
+$halflambert 1
+$translucent 1
+
+
+
+$nocull 1
+}
+bill_head ‰¶‡ ¼à     ÿÿvertexlitgeneric
+{
+
+$baseTexture "models\survivors\namvet\bill_head"
+$compress "models\survivors\namvet\bill_head_compress"
+$stretch "models\survivors\namvet\bill_head_compress"
+$bumpmap "models\survivors\namvet/bill_head_normal"
+$halflambert 1
+$phong 1
+$phongboost 1
+$phongexponent 9
+$phongtint "[.85 .85 1]"
+$phongfresnelranges "[.3 3 30]"
+$nodecal 1
+$ambientocclusion 1
+}
+ materials/models/survivors/teenangst teenangst_eyeball_l |VØŸ ¼à     ÿÿEyeRefract
+{
+$Iris "models/survivors/green_iris" 
+$AmbientOcclTexture "models/survivors/survivor_eye_ao" 
+$Envmap "Engine/eye-reflection-cubemap-" 
+$CorneaTexture "Engine/eye-cornea" 
+$EyeballRadius "0.6" 
+$AmbientOcclColor "[.4 .4 .4]" 
+$Dilation ".5" 
+$ParallaxStrength "0.25" 
+$CorneaBumpStrength ".5" 
+$halflambert 1
+$nodecal 1
+$ambientocclusion 1
+
+$RaytraceSphere 1 
+$SphereTexkillCombo 0 
+}
+teenangst_eyeball_r |VØŸ ¼à     ÿÿEyeRefract
+{
+$Iris "models/survivors/green_iris" 
+$AmbientOcclTexture "models/survivors/survivor_eye_ao" 
+$Envmap "Engine/eye-reflection-cubemap-" 
+$CorneaTexture "Engine/eye-cornea" 
+$EyeballRadius "0.6" 
+$AmbientOcclColor "[.4 .4 .4]" 
+$Dilation ".5" 
+$ParallaxStrength "0.25" 
+$CorneaBumpStrength ".5" 
+$halflambert 1
+$nodecal 1
+$ambientocclusion 1
+
+$RaytraceSphere 1 
+$SphereTexkillCombo 0 
+}
+zoey_color_it Û,ˆŒW ¼à     ÿÿpatch
+{
+
+include "materials/models/survivors/survivors_it_shared.vmt"
+insert
+{
+
+$baseTexture "models\survivors\TeenAngst/zoey_color"
+$bumpmap "models\survivors\TeenAngst/zoey_normal"
+$halflambert 1
+$phong 1
+$phongboost "1.5"
+$phongexponent 5
+$phongtint "[.85 .85 1]"
+$phongfresnelranges "[.5 .85 30]"
+$ambientocclusion 1
+}
+}
+zoey_hair ‹bº\«  ¼à     ÿÿpatch
+{
+
+include "materials/models/survivors/survivors_it_shared.vmt"
+insert
+{
+$baseTexture "models\survivors\TeenAngst/zoey_hair"
+$translucent 1
+$nocull 1
+}
+}
+zoey_head Ü ’=• ¼à     ÿÿvertexlitgeneric
+{
+
+$basetexture "models\survivors\TeenAngst/zoey_head"
+$compress "models\survivors\TeenAngst/zoey_head_compress"
+$stretch "models\survivors\TeenAngst/zoey_head_compress"
+$bumpmap "models\survivors\TeenAngst/zoey_head_normal"
+$halflambert 1
+$phong 1
+$phongboost 1
+$phongexponent 5
+$phongtint "[1 .85 .85]"
+$phongfresnelranges "[.5 .85 30]"
+$nodecal 1
+$ambientocclusion 1
+}
+zoey_head_it p“Ø ¼à     ÿÿpatch
+{
+
+include "materials/models/survivors/survivors_it_shared.vmt"
+insert
+{
+
+$baseTexture "models\survivors\TeenAngst/zoey_head"
+$bumpmap "models\survivors\TeenAngst/zoey_head_normal"
+$compress "models\survivors\TeenAngst/zoey_head_compress"
+$stretch "models\survivors\TeenAngst/zoey_head_compress"
+$halflambert 1
+$phong 1
+$phongboost 1
+$phongexponent 5
+$phongtint "[1 .85 .85]"
+$phongfresnelranges "[.5 .85 30]"
+$nodecal 1
+$ambientocclusion 1
+}
+}
+ materials/models/v_models/weapons/m60 m60 s!,7 ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models\v_models\Weapons\m60/m60"
+
+$phong 1
+$phongboost 10
+
+$phongfresnelranges "[.1 .4 1]"
+
+$basemapalphaphongmask 1
+$basemapalphaenvmapmask 1
+$envmap env_cubemap
+$envmapfresnel 1
+$envmapFresnelMinMaxExp "[0 5 .4]"
+$envmaptint "[.5 .5 .5]"
+$phongalbedotint 1
+}
+ materials/models/weapons/melee golf_club ÷İ\G< ¼à     ÿÿVertexLitGeneric
+{
+$baseTexture "models/Weapons/melee/Golf_club"
+$bumpmap "models/Weapons/melee/Golf_club_normal"
+$phong 1
+$phongboost 1
+$phongexponent 1
+$phongfresnelranges "[.1 .4 2]"
+
+$normalmapalphaenvmapmask 1
+
+$envmap env_cubemap
+$envmapfresnel 1
+$envmapFresnelMinMaxExp "[0 5 .4]"
+
+$detail "models/infected/hunter/hunter_01_detail.vtf"
+$detailscale "1.75"
+$detailblendfactor .001 
+$detailblendmode 0
+$detailAmount 0
+Proxies
+{
+BloodyHands
+{
+resultVar $detailAmount
+}
+Equals
+{
+srcVar1 $detailAmount
+resultVar $detailblendfactor
+}
+}
+}
+ materials/nature blend_dirt_mud_01 ’İ?R ¼à     ÿÿWorldVertexTransition
+{
+$basetexture "nature/milground019_dry"
+$basetexture2 "decals/sewer_slime01_decal"
+\\$bumpmap "nature/ground_grass03_height-ssbump"
+\\$bumpmap2 "nature/ground_grass04_height-ssbump"
+
+$surfaceprop2 dirt
+$surfaceprop dirt
+"%keywords" l4d2
+
+
+}blend_grasslawn_dirt_nosprites ã}&Ì  ¼à     ÿÿLightmappedGeneric
+{
+$baseTexture "nature/grasslawn_dry01"
+$basetexture2 "nature/mud_ext_01"
+$surfaceprop grass
+$surfaceprop2 dirt
+"%keywords" l4d2
+}
+blend_urbandirtlawn01wet W?6› ¼à     ÿÿWorldVertexTransition
+{
+$basetexture2 "Nature/mud_ext_01"
+$baseTexture "nature/ground_grass03"
+$surfaceprop grass
+$surfaceprop2 dirt
+"%detailtype" urban_dry_overgrown
+$bumptransform "center .75 .75 scale .4 .4 rotate 0 translate 0 0"
+$bumpmap "concrete/pavement2_height-ssbump"
+$ssbump 1
+$SSBumpMathFix 1
+$envmap env_cubemap
+$normalmapalphaenvmapmask 1
+$envmaptint "[.1 .1 .1]"
+"%keywords" l4d2
+}cobweb00 |Î)ŞU  ¼à     ÿÿLightmappedGeneric
+{
+$baseTexture "nature/cobweb00"
+$translucent 1
+$nocull 1
+}
+ materials/overlays decomposing_puddle ñÇáÒV  ¼à     ÿÿLightmappedGeneric
+{
+$baseTexture "overlays/decomposing_puddle"
+$translucent 1
+}
+rug001a 0üu  ¼à     ÿÿLightmappedGeneric
+{
+$basetexture "overlays/rug001a"
+$translucent 1
+$decal 1
+$vertexcolor 1
+$vertexalpha 1
+}
+signage_sewers_surfaceaccess ¥¢rŠ  ¼à     ÿÿLightmappedGeneric
+{
+$baseTexture "overlays/signage_sewers_surfaceaccess"
+$Translucent 1
+$Decal 1
+$vertexcolor 1
+$vertexalpha 1
+}
+ materials/plaster urban_plasterwall_04a ÁÇ ¼à     ÿÿLightmappedGeneric
+{
+$baseTexture "plaster/urban_plasterwall_04a"
+$surfaceprop plaster
+$color "[ .75 .75 .75]"
+
+$bumpmap "plaster/urban_plasterwall_height-ssbump"
+$envmap env_cubemap
+$normalmapalphaenvmapmask 1
+$envmaptint "[ .03 .03 .03 ]"
+
+
+$ssbump 1
+
+
+}
+ materials/signs poster_bar_riders_01 cñK…O  ¼à     ÿÿlightmappedgeneric
+{
+$basetexture "signs/poster_bar_riders_01"
+$decal 1
+}
+poster_bar_riders_02 çªÑÖO  ¼à     ÿÿlightmappedgeneric
+{
+$basetexture "signs/poster_bar_riders_02"
+$decal 1
+}
+poster_bar_riders_03 ¤awQO  ¼à     ÿÿlightmappedgeneric
+{
+$basetexture "signs/poster_bar_riders_03"
+$decal 1
+}
+poster_bar_riders_04 ïåqO  ¼à     ÿÿlightmappedgeneric
+{
+$basetexture "signs/poster_bar_riders_04"
+$decal 1
+}
+rent01 >{vh  ¼à     ÿÿLightmappedGeneric
+{
+$baseTexture "signs/rent01"
+$translucent 1
+$decal 1
+$decalscale "0.20000"
+}
+sign_safety_checklist_mod01 ›ÄÆz  ¼à     ÿÿLightMappedGeneric
+{
+$basetexture "signs/sign_safety_checklist_mod01"
+$surfaceprop default
+$translucent 1
+$decal 1
+}urban_sign001 H7›Q  ¼à     ÿÿLightmappedGeneric
+{
+$baseTexture "signs/urban_sign001"
+$surfaceprop wood
+}
+ materials/skybox sky_l4d_c6m1_hdrbk S†YÕ  ¼à     ÿÿsky
+{
+"GPU<1"
+{
+$fallbackmaterial "skybox/sky_l4d_c6m1_ldrbk"
+}
+$hdrcompressedTexture "skybox/sky_l4d_c6m1_hdrbk"
+$nofog 1
+$ignorez 1
+$basetexturetransform "center 0 0 scale 1 2 rotate 0 translate 0 0"
+}sky_l4d_c6m1_hdrdn ¸5è½  ¼à     ÿÿsky
+{
+"GPU<1"
+{
+$fallbackmaterial "skybox/sky_l4d_c6m1_ldrdn"
+}
+$hdrcompressedTexture "skybox/sky_l4d_c6m1_hdrdn"
+$nofog 1
+$ignorez 1
+}sky_l4d_c6m1_hdrft ·xóÊÕ  ¼à     ÿÿsky
+{
+"GPU<1"
+{
+$fallbackmaterial "skybox/sky_l4d_c6m1_ldrft"
+}
+$hdrcompressedTexture "skybox/sky_l4d_c6m1_hdrft"
+$nofog 1
+$ignorez 1
+$basetexturetransform "center 0 0 scale 1 2 rotate 0 translate 0 0"
+}sky_l4d_c6m1_hdrlf í¾½ÇÕ  ¼à     ÿÿsky
+{
+"GPU<1"
+{
+$fallbackmaterial "skybox/sky_l4d_c6m1_ldrlf"
+}
+$hdrcompressedTexture "skybox/sky_l4d_c6m1_hdrlf"
+$nofog 1
+$ignorez 1
+$basetexturetransform "center 0 0 scale 1 2 rotate 0 translate 0 0"
+}sky_l4d_c6m1_hdrrt ¥·ÑÕ  ¼à     ÿÿsky
+{
+"GPU<1"
+{
+$fallbackmaterial "skybox/sky_l4d_c6m1_ldrrt"
+}
+$hdrcompressedTexture "skybox/sky_l4d_c6m1_hdrrt"
+$nofog 1
+$ignorez 1
+$basetexturetransform "center 0 0 scale 1 2 rotate 0 translate 0 0"
+}sky_l4d_c6m1_hdrup 2™ ’  ¼à     ÿÿsky
+{
+"GPU<1"
+{
+$fallbackmaterial "skybox/sky_l4d_c6m1_ldrup"
+}
+$hdrcompressedTexture "skybox/sky_l4d_c6m1_hdrup"
+$nofog 1
+$ignorez 1
+}
+ materials/sprites light_glow02_noz vıõŸ~  ¼à     ÿÿSprite
+{
+$spriteorientation vp_parallel
+$spriteorigin "[ 0.50 0.50 ]"
+$basetexture "sprites/light_glow02"
+$ignorez 1
+}
+ materials/stone counter01 ‚:jÊ  ¼à     ÿÿLightmappedGeneric
+{
+$baseTexture "stone\counter01"
+$Surfaceprop rock
+$Envmap env_cubemap
+$EnvmapMask "stone\counter01_ref"
+$EnvmapTint "[1 1 1]"
+$EnvmapContrast ".6"
+$EnvmapSaturation ".5"
+}
+waterfront_cobblestone_01a  \y  ¼à     ÿÿLightmappedGeneric
+{
+$basetexture "Stone/waterfront_cobblestone_01a"
+$surfaceprop concrete
+"%keywords" l4d2_dlc1
+}
+waterfront_cobblestone_03a lOy  ¼à     ÿÿLightmappedGeneric
+{
+$basetexture "Stone/waterfront_cobblestone_03a"
+$surfaceprop concrete
+"%keywords" l4d2_dlc1
+}
+waterfront_stone_01a ä`¤Rs  ¼à     ÿÿLightmappedGeneric
+{
+$basetexture "Stone/waterfront_stone_01a"
+$surfaceprop concrete
+"%keywords" l4d2_dlc1
+}
+waterfront_stone_02a >šJPs  ¼à     ÿÿLightmappedGeneric
+{
+$basetexture "Stone/waterfront_stone_02a"
+$surfaceprop concrete
+"%keywords" l4d2_dlc1
+}
+waterfront_stone_03a ˆ3ïQs  ¼à     ÿÿLightmappedGeneric
+{
+$basetexture "Stone/waterfront_stone_03a"
+$surfaceprop concrete
+"%keywords" l4d2_dlc1
+}
+ materials/vgui/achievements ach_complete_challenge_modes ^¯¯»S  ¼à     ÿÿUnlitGeneric
+{
+$baseTexture "vgui\achievements/ACH_COMPLETE_CHALLENGE_MODES"
+}
+ach_heads_with_golf_club sŒAéO  ¼à     ÿÿUnlitGeneric
+{
+$baseTexture "vgui\achievements/ACH_HEADS_WITH_GOLF_CLUB"
+}
+ach_hear_ballad ³Ò‚ªF  ¼à     ÿÿUnlitGeneric
+{
+$baseTexture "vgui\achievements/ACH_HEAR_BALLAD"
+}
+ach_kill_tank_l4d1_only P{$MN  ¼à     ÿÿUnlitGeneric
+{
+$baseTexture "vgui\achievements/ACH_KILL_TANK_L4D1_ONLY"
+}
+ach_kills_with_m60 ''½óI  ¼à     ÿÿUnlitGeneric
+{
+$baseTexture "vgui\achievements/ACH_KILLS_WITH_M60"
+}
+ach_open_foot_lockers Û_ßL  ¼à     ÿÿUnlitGeneric
+{
+$baseTexture "vgui\achievements/ACH_OPEN_FOOT_LOCKERS"
+}
+ach_scavenge_fallen_survivor ‡FÉíS  ¼à     ÿÿUnlitGeneric
+{
+$baseTexture "vgui\achievements/ACH_SCAVENGE_FALLEN_SURVIVOR"
+}
+ach_scavenge_play_c6_finale R†änR  ¼à     ÿÿUnlitGeneric
+{
+$baseTexture "vgui\achievements/ACH_SCAVENGE_PLAY_C6_FINALE"
+}
+ach_survive_the_passing ïzpyN  ¼à     ÿÿUnlitGeneric
+{
+$baseTexture "vgui\achievements/ACH_SURVIVE_THE_PASSING"
+}
+ach_vs_charge_through_chairs <bS  ¼à     ÿÿUnlitGeneric
+{
+$baseTexture "vgui\achievements/ACH_VS_CHARGE_THROUGH_CHAIRS"
+}
+asset_dlc1_locked ä2H  ¼à     ÿÿUnlitGeneric
+{
+$baseTexture "vgui\achievements/ASSET_DLC1_LOCKED"
+}
+asset_gnome ¼wB  ¼à     ÿÿUnlitGeneric
+{
+$baseTexture "vgui\achievements/ASSET_GNOME"
+}
+asset_l4d2_hat ˆõ°E  ¼à     ÿÿUnlitGeneric
+{
+$baseTexture "vgui\achievements/ASSET_L4D2_HAT"
+}
+ materials/vgui loadingscreen_thepassing põ¦¡  ¼à     ÿÿUnlitGeneric
+{
+
+
+$translucent 1
+$basetexture "VGUI\LoadingScreen_ThePassing"
+$vertexcolor 1
+$vertexalpha 1
+$no_fullbright 1
+$ignorez 1
+$additive 0
+}
+loadingscreen_thepassing_widescreen î.('¬  ¼à     ÿÿUnlitGeneric
+{
+
+
+$translucent 1
+$basetexture "VGUI\LoadingScreen_ThePassing_widescreen"
+$vertexcolor 1
+$vertexalpha 1
+$no_fullbright 1
+$ignorez 1
+$additive 0
+}
+outrotitle_thepassing AÒf  ¼à     ÿÿUnlitGeneric
+{
+
+
+$translucent 1
+$basetexture "VGUI\outroTitle_ThePassing"
+$vertexcolor 1
+$vertexalpha 1
+$no_fullbright 1
+$ignorez 1
+$additive 0
+}
+ materials/wood infceilinga )ÛÄÖN  ¼à     ÿÿLightmappedGeneric
+{
+$basetexture "wood\infceilinga"
+$surfaceprop wood
+}
+milwall017 išaS  ¼à     ÿÿLightmappedGeneric
+{
+$basetexture "wood\milwall017"
+$surfaceprop wood_plank
+}
+urban_woodfloor01 œıë  ¼à     ÿÿLightmappedGeneric
+{
+$baseTexture "wood/urban_woodfloor01"
+$surfaceprop wood
+$bumpmap "wood/urban_woodfloor01_ssbump"
+$ssbump 1
+$envmap env_cubemap
+$normalmapalphaenvmapmask 1
+$envmaptint "[ .15 .15 .15 ]"
+"%keywords" l4d
+}
+wall01 ÆPœI  ¼à     ÿÿLightmappedGeneric
+{
+$baseTexture "wood/wall01"
+$surfaceprop wood
+}
+woodfloor002 ”À6ˆ`  ¼à     ÿÿLightmappedGeneric
+{
+$baseTexture "wood/woodfloor002"
+$surfaceprop wood
+"%keywords" dod
+}
+woodfloor005a GâO)e  ¼à     ÿÿlightmappedGeneric
+{
+$baseTexture "wood/woodfloor005a"
+$surfaceprop wood
+"%keywords" cstrike
+}
