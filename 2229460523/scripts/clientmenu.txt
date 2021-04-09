@@ -17785,22 +17785,22 @@
     
 		"1"
 		{
-			"command"	 "play buttons/button14;scripted_user_func pitch,0.4;show_menu saved_line_menu1"
+			"command"	 "scripted_user_func pitch,0.4;show_menu saved_line_menu1"
 			"label"		 " x0.4 talking speed"
 		}
 		"2"
 		{
-			"command"	 "play buttons/button14;scripted_user_func pitch,0.7;show_menu saved_line_menu1"
+			"command"	 "scripted_user_func pitch,0.7;show_menu saved_line_menu1"
 			"label"		 " x0.7 talking speed"
 		}
 		"3"
 		{
-			"command"	 "play buttons/button14;scripted_user_func pitch,1.3;show_menu saved_line_menu1"
+			"command"	 "scripted_user_func pitch,1.3;show_menu saved_line_menu1"
 			"label"		 " x1.3 talking speed"
 		}
 		"4"
 		{
-			"command"	 "play buttons/button14;scripted_user_func pitch,1.7;show_menu saved_line_menu1"
+			"command"	 "scripted_user_func pitch,1.7;show_menu saved_line_menu1"
 			"label"		 " x1.7 talking speed"
 		}
 		"5"
@@ -17810,7 +17810,7 @@
 		}
 		"6"
 		{
-			"command"	 "scripted_user_func speak_saved;scripted_user_func pitch,1.0;show_menu saved_line_menu1"
+			"command"	 "scripted_user_func pitch,1.0;show_menu saved_line_menu1"
 			"label"		 " x1.0 talking speed"
 		}
 		"8"
@@ -52679,37 +52679,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/360_controller_0;show_menu decals_hud_icons1"
-			"label"		" vgui/hud/360_controller_01"
+			"label"		" vgui/hud/360_controller_0"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/360_controller_1;show_menu decals_hud_icons1"
-			"label"		" vgui/hud/360_controller_12"
+			"label"		" vgui/hud/360_controller_1"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/360_controller_2;show_menu decals_hud_icons1"
-			"label"		" vgui/hud/360_controller_23"
+			"label"		" vgui/hud/360_controller_2"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/360_controller_3;show_menu decals_hud_icons1"
-			"label"		" vgui/hud/360_controller_34"
+			"label"		" vgui/hud/360_controller_3"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/800corner;show_menu decals_hud_icons1"
-			"label"		" vgui/hud/800corner5"
+			"label"		" vgui/hud/800corner"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/autoaim;show_menu decals_hud_icons1"
-			"label"		" vgui/hud/autoaim6"
+			"label"		" vgui/hud/autoaim"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/crouch_infected;show_menu decals_hud_icons1"
-			"label"		" vgui/hud/crouch_infected7"
+			"label"		" vgui/hud/crouch_infected"
 		}
 		"8"
 		{
@@ -52733,37 +52733,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/detail_scratches_bottom_1;show_menu decals_hud_icons2"
-			"label"		" vgui/hud/detail_scratches_bottom_11"
+			"label"		" vgui/hud/detail_scratches_bottom_1"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/detail_scratches_top_1;show_menu decals_hud_icons2"
-			"label"		" vgui/hud/detail_scratches_top_12"
+			"label"		" vgui/hud/detail_scratches_top_1"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/ZombieTeamImage_Boomer;show_menu decals_hud_icons2"
-			"label"		" vgui/hud/ZombieTeamImage_Boomer3"
+			"label"		" vgui/hud/ZombieTeamImage_Boomer"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/ZombieTeamImage_Charger;show_menu decals_hud_icons2"
-			"label"		" vgui/hud/ZombieTeamImage_Charger4"
+			"label"		" vgui/hud/ZombieTeamImage_Charger"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/ZombieTeamImage_Hunter;show_menu decals_hud_icons2"
-			"label"		" vgui/hud/ZombieTeamImage_Hunter5"
+			"label"		" vgui/hud/ZombieTeamImage_Hunter"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/ZombieTeamImage_Jockey;show_menu decals_hud_icons2"
-			"label"		" vgui/hud/ZombieTeamImage_Jockey6"
+			"label"		" vgui/hud/ZombieTeamImage_Jockey"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/ZombieTeamImage_Smoker;show_menu decals_hud_icons2"
-			"label"		" vgui/hud/ZombieTeamImage_Smoker7"
+			"label"		" vgui/hud/ZombieTeamImage_Smoker"
 		}
 		"8"
 		{
@@ -52787,37 +52787,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/ZombieTeamImage_Spitter;show_menu decals_hud_icons3"
-			"label"		" vgui/hud/ZombieTeamImage_Spitter1"
+			"label"		" vgui/hud/ZombieTeamImage_Spitter"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/ZombieTeamImage_Tank;show_menu decals_hud_icons3"
-			"label"		" vgui/hud/ZombieTeamImage_Tank2"
+			"label"		" vgui/hud/ZombieTeamImage_Tank"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/healthbar_bg_4;show_menu decals_hud_icons3"
-			"label"		" vgui/hud/healthbar_bg_43"
+			"label"		" vgui/hud/healthbar_bg_4"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_assistanceRequired;show_menu decals_hud_icons3"
-			"label"		" vgui/hud/icon_assistanceRequired4"
+			"label"		" vgui/hud/icon_assistanceRequired"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_check;show_menu decals_hud_icons3"
-			"label"		" vgui/hud/icon_check5"
+			"label"		" vgui/hud/icon_check"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_commentary_off;show_menu decals_hud_icons3"
-			"label"		" vgui/hud/icon_commentary_off6"
+			"label"		" vgui/hud/icon_commentary_off"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_commentary_small;show_menu decals_hud_icons3"
-			"label"		" vgui/hud/icon_commentary_small7"
+			"label"		" vgui/hud/icon_commentary_small"
 		}
 		"8"
 		{
@@ -52841,37 +52841,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_complete;show_menu decals_hud_icons4"
-			"label"		" vgui/hud/icon_complete1"
+			"label"		" vgui/hud/icon_complete"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_key_down;show_menu decals_hud_icons4"
-			"label"		" vgui/hud/icon_key_down2"
+			"label"		" vgui/hud/icon_key_down"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_key_left;show_menu decals_hud_icons4"
-			"label"		" vgui/hud/icon_key_left3"
+			"label"		" vgui/hud/icon_key_left"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_key_right;show_menu decals_hud_icons4"
-			"label"		" vgui/hud/icon_key_right4"
+			"label"		" vgui/hud/icon_key_right"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_key_up;show_menu decals_hud_icons4"
-			"label"		" vgui/hud/icon_key_up5"
+			"label"		" vgui/hud/icon_key_up"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_locator_arrow;show_menu decals_hud_icons4"
-			"label"		" vgui/hud/icon_locator_arrow6"
+			"label"		" vgui/hud/icon_locator_arrow"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_locator_generic;show_menu decals_hud_icons4"
-			"label"		" vgui/hud/icon_locator_generic7"
+			"label"		" vgui/hud/icon_locator_generic"
 		}
 		"8"
 		{
@@ -52895,37 +52895,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_locked;show_menu decals_hud_icons5"
-			"label"		" vgui/hud/icon_locked1"
+			"label"		" vgui/hud/icon_locked"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_medkit;show_menu decals_hud_icons5"
-			"label"		" vgui/hud/icon_medkit2"
+			"label"		" vgui/hud/icon_medkit"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/healthbar_bg_2;show_menu decals_hud_icons5"
-			"label"		" vgui/hud/healthbar_bg_23"
+			"label"		" vgui/hud/healthbar_bg_2"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/healthbar_bg_3;show_menu decals_hud_icons5"
-			"label"		" vgui/hud/healthbar_bg_34"
+			"label"		" vgui/hud/healthbar_bg_3"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/PZ_charge_bg;show_menu decals_hud_icons5"
-			"label"		" vgui/hud/PZ_charge_bg5"
+			"label"		" vgui/hud/PZ_charge_bg"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/PZ_charge_Boomer;show_menu decals_hud_icons5"
-			"label"		" vgui/hud/PZ_charge_Boomer6"
+			"label"		" vgui/hud/PZ_charge_Boomer"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/PZ_charge_Boomer_fill;show_menu decals_hud_icons5"
-			"label"		" vgui/hud/PZ_charge_Boomer_fill7"
+			"label"		" vgui/hud/PZ_charge_Boomer_fill"
 		}
 		"8"
 		{
@@ -52949,37 +52949,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/PZ_charge_charger;show_menu decals_hud_icons6"
-			"label"		" vgui/hud/PZ_charge_charger1"
+			"label"		" vgui/hud/PZ_charge_charger"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/PZ_charge_charger_charge;show_menu decals_hud_icons6"
-			"label"		" vgui/hud/PZ_charge_charger_charge2"
+			"label"		" vgui/hud/PZ_charge_charger_charge"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/PZ_charge_Jockey;show_menu decals_hud_icons6"
-			"label"		" vgui/hud/PZ_charge_Jockey3"
+			"label"		" vgui/hud/PZ_charge_Jockey"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/PZ_charge_Lunge;show_menu decals_hud_icons6"
-			"label"		" vgui/hud/PZ_charge_Lunge4"
+			"label"		" vgui/hud/PZ_charge_Lunge"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/PZ_charge_Pounce;show_menu decals_hud_icons6"
-			"label"		" vgui/hud/PZ_charge_Pounce5"
+			"label"		" vgui/hud/PZ_charge_Pounce"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/PZ_charge_Smoker;show_menu decals_hud_icons6"
-			"label"		" vgui/hud/PZ_charge_Smoker6"
+			"label"		" vgui/hud/PZ_charge_Smoker"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/PZ_charge_Spitter;show_menu decals_hud_icons6"
-			"label"		" vgui/hud/PZ_charge_Spitter7"
+			"label"		" vgui/hud/PZ_charge_Spitter"
 		}
 		"8"
 		{
@@ -53003,37 +53003,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/PZ_charge_Tank;show_menu decals_hud_icons7"
-			"label"		" vgui/hud/PZ_charge_Tank1"
+			"label"		" vgui/hud/PZ_charge_Tank"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/PZ_healthbar_250;show_menu decals_hud_icons7"
-			"label"		" vgui/hud/PZ_healthbar_2502"
+			"label"		" vgui/hud/PZ_healthbar_250"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/PZ_healthbar_3000;show_menu decals_hud_icons7"
-			"label"		" vgui/hud/PZ_healthbar_30003"
+			"label"		" vgui/hud/PZ_healthbar_3000"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/PZ_healthbar_50;show_menu decals_hud_icons7"
-			"label"		" vgui/hud/PZ_healthbar_504"
+			"label"		" vgui/hud/PZ_healthbar_50"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/ScalablePanel_bgBlack50_outlineWhite;show_menu decals_hud_icons7"
-			"label"		" vgui/hud/ScalablePanel_bgBlack50_outlineWhite5"
+			"label"		" vgui/hud/ScalablePanel_bgBlack50_outlineWhite"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/ScalablePanel_bgBlack_outlineWhite;show_menu decals_hud_icons7"
-			"label"		" vgui/hud/ScalablePanel_bgBlack_outlineWhite6"
+			"label"		" vgui/hud/ScalablePanel_bgBlack_outlineWhite"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/survival_medal_platinum;show_menu decals_hud_icons7"
-			"label"		" vgui/hud/survival_medal_platinum7"
+			"label"		" vgui/hud/survival_medal_platinum"
 		}
 		"8"
 		{
@@ -53057,37 +53057,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/xbox_reticle;show_menu decals_hud_icons8"
-			"label"		" vgui/hud/xbox_reticle1"
+			"label"		" vgui/hud/xbox_reticle"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_arrow_plain;show_menu decals_hud_icons8"
-			"label"		" vgui/hud/icon_arrow_plain2"
+			"label"		" vgui/hud/icon_arrow_plain"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_arrow_up;show_menu decals_hud_icons8"
-			"label"		" vgui/hud/icon_arrow_up3"
+			"label"		" vgui/hud/icon_arrow_up"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_arrow_right;show_menu decals_hud_icons8"
-			"label"		" vgui/hud/icon_arrow_right4"
+			"label"		" vgui/hud/icon_arrow_right"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/ScalablePanel_bgBlack_outlineGrey;show_menu decals_hud_icons8"
-			"label"		" vgui/hud/ScalablePanel_bgBlack_outlineGrey5"
+			"label"		" vgui/hud/ScalablePanel_bgBlack_outlineGrey"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/ScalablePanel_bgBlack;show_menu decals_hud_icons8"
-			"label"		" vgui/hud/ScalablePanel_bgBlack6"
+			"label"		" vgui/hud/ScalablePanel_bgBlack"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/survivalTimerClock;show_menu decals_hud_icons8"
-			"label"		" vgui/hud/survivalTimerClock7"
+			"label"		" vgui/hud/survivalTimerClock"
 		}
 		"8"
 		{
@@ -53111,37 +53111,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/survivalTimerClockFace;show_menu decals_hud_icons9"
-			"label"		" vgui/hud/survivalTimerClockFace1"
+			"label"		" vgui/hud/survivalTimerClockFace"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/survivalTimerBackground;show_menu decals_hud_icons9"
-			"label"		" vgui/hud/survivalTimerBackground2"
+			"label"		" vgui/hud/survivalTimerBackground"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/healthbar_bg_1;show_menu decals_hud_icons9"
-			"label"		" vgui/hud/healthbar_bg_13"
+			"label"		" vgui/hud/healthbar_bg_1"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/infected_healthbar_bg_1;show_menu decals_hud_icons9"
-			"label"		" vgui/hud/infected_healthbar_bg_14"
+			"label"		" vgui/hud/infected_healthbar_bg_1"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/ScalablePanel_bgBlack_outlineRed;show_menu decals_hud_icons9"
-			"label"		" vgui/hud/ScalablePanel_bgBlack_outlineRed5"
+			"label"		" vgui/hud/ScalablePanel_bgBlack_outlineRed"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/ScalablePanel_bgBlack50_outlineGrey;show_menu decals_hud_icons9"
-			"label"		" vgui/hud/ScalablePanel_bgBlack50_outlineGrey6"
+			"label"		" vgui/hud/ScalablePanel_bgBlack50_outlineGrey"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/PZ_charge_meter;show_menu decals_hud_icons9"
-			"label"		" vgui/hud/PZ_charge_meter7"
+			"label"		" vgui/hud/PZ_charge_meter"
 		}
 		"8"
 		{
@@ -53165,37 +53165,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/progressbar_fill;show_menu decals_hud_icons10"
-			"label"		" vgui/hud/progressbar_fill1"
+			"label"		" vgui/hud/progressbar_fill"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/progressbar_bg;show_menu decals_hud_icons10"
-			"label"		" vgui/hud/progressbar_bg2"
+			"label"		" vgui/hud/progressbar_bg"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/crouch_survivor;show_menu decals_hud_icons10"
-			"label"		" vgui/hud/crouch_survivor3"
+			"label"		" vgui/hud/crouch_survivor"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/overlay_dead;show_menu decals_hud_icons10"
-			"label"		" vgui/hud/overlay_dead4"
+			"label"		" vgui/hud/overlay_dead"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/healthbar_bg_player;show_menu decals_hud_icons10"
-			"label"		" vgui/hud/healthbar_bg_player5"
+			"label"		" vgui/hud/healthbar_bg_player"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/PZ_charge_crosshair;show_menu decals_hud_icons10"
-			"label"		" vgui/hud/PZ_charge_crosshair6"
+			"label"		" vgui/hud/PZ_charge_crosshair"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/vote_no;show_menu decals_hud_icons10"
-			"label"		" vgui/hud/vote_no7"
+			"label"		" vgui/hud/vote_no"
 		}
 		"8"
 		{
@@ -53219,37 +53219,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/vote_yes;show_menu decals_hud_icons11"
-			"label"		" vgui/hud/vote_yes1"
+			"label"		" vgui/hud/vote_yes"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/splatter_vertical_right;show_menu decals_hud_icons11"
-			"label"		" vgui/hud/splatter_vertical_right2"
+			"label"		" vgui/hud/splatter_vertical_right"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/splatter2;show_menu decals_hud_icons11"
-			"label"		" vgui/hud/splatter23"
+			"label"		" vgui/hud/splatter2"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/splatter_horizontal_bottom;show_menu decals_hud_icons11"
-			"label"		" vgui/hud/splatter_horizontal_bottom4"
+			"label"		" vgui/hud/splatter_horizontal_bottom"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/splatter_corner_upper_right;show_menu decals_hud_icons11"
-			"label"		" vgui/hud/splatter_corner_upper_right5"
+			"label"		" vgui/hud/splatter_corner_upper_right"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/splatter3;show_menu decals_hud_icons11"
-			"label"		" vgui/hud/splatter36"
+			"label"		" vgui/hud/splatter3"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/splatter1;show_menu decals_hud_icons11"
-			"label"		" vgui/hud/splatter17"
+			"label"		" vgui/hud/splatter1"
 		}
 		"8"
 		{
@@ -53273,37 +53273,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/ZombieTeamImages;show_menu decals_hud_icons12"
-			"label"		" vgui/hud/ZombieTeamImages1"
+			"label"		" vgui/hud/ZombieTeamImages"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/ScalablePanel_bgMidGrey_outlineGreen_glow;show_menu decals_hud_icons12"
-			"label"		" vgui/hud/ScalablePanel_bgMidGrey_outlineGreen_glow2"
+			"label"		" vgui/hud/ScalablePanel_bgMidGrey_outlineGreen_glow"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/ScalablePanel_bgMidGrey_outlineGrey;show_menu decals_hud_icons12"
-			"label"		" vgui/hud/ScalablePanel_bgMidGrey_outlineGrey3"
+			"label"		" vgui/hud/ScalablePanel_bgMidGrey_outlineGrey"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/ScalablePanel_bgMidGrey_glow;show_menu decals_hud_icons12"
-			"label"		" vgui/hud/ScalablePanel_bgMidGrey_glow4"
+			"label"		" vgui/hud/ScalablePanel_bgMidGrey_glow"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/ScalablePanel_bgMidGrey;show_menu decals_hud_icons12"
-			"label"		" vgui/hud/ScalablePanel_bgMidGrey5"
+			"label"		" vgui/hud/ScalablePanel_bgMidGrey"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/ScalablePanel_bgBlack_outlineGrey_sm;show_menu decals_hud_icons12"
-			"label"		" vgui/hud/ScalablePanel_bgBlack_outlineGrey_sm6"
+			"label"		" vgui/hud/ScalablePanel_bgBlack_outlineGrey_sm"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/iconsheet3;show_menu decals_hud_icons12"
-			"label"		" vgui/hud/iconsheet37"
+			"label"		" vgui/hud/iconsheet3"
 		}
 		"8"
 		{
@@ -53327,37 +53327,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/iconsheet2;show_menu decals_hud_icons13"
-			"label"		" vgui/hud/iconsheet21"
+			"label"		" vgui/hud/iconsheet2"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/iconsheet;show_menu decals_hud_icons13"
-			"label"		" vgui/hud/iconsheet2"
+			"label"		" vgui/hud/iconsheet"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/S_equip_bg_inactive;show_menu decals_hud_icons13"
-			"label"		" vgui/hud/S_equip_bg_inactive3"
+			"label"		" vgui/hud/S_equip_bg_inactive"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/S_equip_bg_active;show_menu decals_hud_icons13"
-			"label"		" vgui/hud/S_equip_bg_active4"
+			"label"		" vgui/hud/S_equip_bg_active"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_commentary;show_menu decals_hud_icons13"
-			"label"		" vgui/hud/icon_commentary5"
+			"label"		" vgui/hud/icon_commentary"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/s_healthbar_outline;show_menu decals_hud_icons13"
-			"label"		" vgui/hud/s_healthbar_outline6"
+			"label"		" vgui/hud/s_healthbar_outline"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/survival_medal_bronze;show_menu decals_hud_icons13"
-			"label"		" vgui/hud/survival_medal_bronze7"
+			"label"		" vgui/hud/survival_medal_bronze"
 		}
 		"8"
 		{
@@ -53381,37 +53381,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/survival_medal_silver;show_menu decals_hud_icons14"
-			"label"		" vgui/hud/survival_medal_silver1"
+			"label"		" vgui/hud/survival_medal_silver"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/survival_medal_gold;show_menu decals_hud_icons14"
-			"label"		" vgui/hud/survival_medal_gold2"
+			"label"		" vgui/hud/survival_medal_gold"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/800corner4;show_menu decals_hud_icons14"
-			"label"		" vgui/hud/800corner43"
+			"label"		" vgui/hud/800corner4"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/800corner3;show_menu decals_hud_icons14"
-			"label"		" vgui/hud/800corner34"
+			"label"		" vgui/hud/800corner3"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/800corner2;show_menu decals_hud_icons14"
-			"label"		" vgui/hud/800corner25"
+			"label"		" vgui/hud/800corner2"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/800corner1;show_menu decals_hud_icons14"
-			"label"		" vgui/hud/800corner16"
+			"label"		" vgui/hud/800corner1"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_adrenaline;show_menu decals_hud_icons14"
-			"label"		" vgui/hud/icon_adrenaline7"
+			"label"		" vgui/hud/icon_adrenaline"
 		}
 		"8"
 		{
@@ -53435,37 +53435,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_autoshotgun;show_menu decals_hud_icons15"
-			"label"		" vgui/hud/icon_autoshotgun1"
+			"label"		" vgui/hud/icon_autoshotgun"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_baseball_bat;show_menu decals_hud_icons15"
-			"label"		" vgui/hud/icon_baseball_bat2"
+			"label"		" vgui/hud/icon_baseball_bat"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_chainsaw;show_menu decals_hud_icons15"
-			"label"		" vgui/hud/icon_chainsaw3"
+			"label"		" vgui/hud/icon_chainsaw"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_cricket_bat;show_menu decals_hud_icons15"
-			"label"		" vgui/hud/icon_cricket_bat4"
+			"label"		" vgui/hud/icon_cricket_bat"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_crowbar;show_menu decals_hud_icons15"
-			"label"		" vgui/hud/icon_crowbar5"
+			"label"		" vgui/hud/icon_crowbar"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_defibrillator;show_menu decals_hud_icons15"
-			"label"		" vgui/hud/icon_defibrillator6"
+			"label"		" vgui/hud/icon_defibrillator"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_electric_guitar;show_menu decals_hud_icons15"
-			"label"		" vgui/hud/icon_electric_guitar7"
+			"label"		" vgui/hud/icon_electric_guitar"
 		}
 		"8"
 		{
@@ -53489,37 +53489,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_fireaxe;show_menu decals_hud_icons16"
-			"label"		" vgui/hud/icon_fireaxe1"
+			"label"		" vgui/hud/icon_fireaxe"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_first_aid_kit;show_menu decals_hud_icons16"
-			"label"		" vgui/hud/icon_first_aid_kit2"
+			"label"		" vgui/hud/icon_first_aid_kit"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_frying_pan;show_menu decals_hud_icons16"
-			"label"		" vgui/hud/icon_frying_pan3"
+			"label"		" vgui/hud/icon_frying_pan"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_golfclub;show_menu decals_hud_icons16"
-			"label"		" vgui/hud/icon_golfclub4"
+			"label"		" vgui/hud/icon_golfclub"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_grenade_launcher;show_menu decals_hud_icons16"
-			"label"		" vgui/hud/icon_grenade_launcher5"
+			"label"		" vgui/hud/icon_grenade_launcher"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_hunting_rifle;show_menu decals_hud_icons16"
-			"label"		" vgui/hud/icon_hunting_rifle6"
+			"label"		" vgui/hud/icon_hunting_rifle"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_katana;show_menu decals_hud_icons16"
-			"label"		" vgui/hud/icon_katana7"
+			"label"		" vgui/hud/icon_katana"
 		}
 		"8"
 		{
@@ -53543,37 +53543,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_knife;show_menu decals_hud_icons17"
-			"label"		" vgui/hud/icon_knife1"
+			"label"		" vgui/hud/icon_knife"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_machete;show_menu decals_hud_icons17"
-			"label"		" vgui/hud/icon_machete2"
+			"label"		" vgui/hud/icon_machete"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_molotov;show_menu decals_hud_icons17"
-			"label"		" vgui/hud/icon_molotov3"
+			"label"		" vgui/hud/icon_molotov"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_painpills;show_menu decals_hud_icons17"
-			"label"		" vgui/hud/icon_painpills4"
+			"label"		" vgui/hud/icon_painpills"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_pipebomb;show_menu decals_hud_icons17"
-			"label"		" vgui/hud/icon_pipebomb5"
+			"label"		" vgui/hud/icon_pipebomb"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_pistol;show_menu decals_hud_icons17"
-			"label"		" vgui/hud/icon_pistol6"
+			"label"		" vgui/hud/icon_pistol"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_pistol_magnum;show_menu decals_hud_icons17"
-			"label"		" vgui/hud/icon_pistol_magnum7"
+			"label"		" vgui/hud/icon_pistol_magnum"
 		}
 		"8"
 		{
@@ -53597,37 +53597,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_pitchfork;show_menu decals_hud_icons18"
-			"label"		" vgui/hud/icon_pitchfork1"
+			"label"		" vgui/hud/icon_pitchfork"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_pumpshotgun;show_menu decals_hud_icons18"
-			"label"		" vgui/hud/icon_pumpshotgun2"
+			"label"		" vgui/hud/icon_pumpshotgun"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_rifle;show_menu decals_hud_icons18"
-			"label"		" vgui/hud/icon_rifle3"
+			"label"		" vgui/hud/icon_rifle"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_rifle_ak47;show_menu decals_hud_icons18"
-			"label"		" vgui/hud/icon_rifle_ak474"
+			"label"		" vgui/hud/icon_rifle_ak47"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_rifle_desert;show_menu decals_hud_icons18"
-			"label"		" vgui/hud/icon_rifle_desert5"
+			"label"		" vgui/hud/icon_rifle_desert"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_rifle_m60;show_menu decals_hud_icons18"
-			"label"		" vgui/hud/icon_rifle_m606"
+			"label"		" vgui/hud/icon_rifle_m60"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_rifle_sg552;show_menu decals_hud_icons18"
-			"label"		" vgui/hud/icon_rifle_sg5527"
+			"label"		" vgui/hud/icon_rifle_sg552"
 		}
 		"8"
 		{
@@ -53651,37 +53651,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_shotgun_chrome;show_menu decals_hud_icons19"
-			"label"		" vgui/hud/icon_shotgun_chrome1"
+			"label"		" vgui/hud/icon_shotgun_chrome"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_shotgun_spas;show_menu decals_hud_icons19"
-			"label"		" vgui/hud/icon_shotgun_spas2"
+			"label"		" vgui/hud/icon_shotgun_spas"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_shovel;show_menu decals_hud_icons19"
-			"label"		" vgui/hud/icon_shovel3"
+			"label"		" vgui/hud/icon_shovel"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_smg;show_menu decals_hud_icons19"
-			"label"		" vgui/hud/icon_smg4"
+			"label"		" vgui/hud/icon_smg"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_smg_mp5;show_menu decals_hud_icons19"
-			"label"		" vgui/hud/icon_smg_mp55"
+			"label"		" vgui/hud/icon_smg_mp5"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_smg_silenced;show_menu decals_hud_icons19"
-			"label"		" vgui/hud/icon_smg_silenced6"
+			"label"		" vgui/hud/icon_smg_silenced"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_sniper_awp;show_menu decals_hud_icons19"
-			"label"		" vgui/hud/icon_sniper_awp7"
+			"label"		" vgui/hud/icon_sniper_awp"
 		}
 		"8"
 		{
@@ -53705,37 +53705,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_sniper_military;show_menu decals_hud_icons20"
-			"label"		" vgui/hud/icon_sniper_military1"
+			"label"		" vgui/hud/icon_sniper_military"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_sniper_scout;show_menu decals_hud_icons20"
-			"label"		" vgui/hud/icon_sniper_scout2"
+			"label"		" vgui/hud/icon_sniper_scout"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_tonfa;show_menu decals_hud_icons20"
-			"label"		" vgui/hud/icon_tonfa3"
+			"label"		" vgui/hud/icon_tonfa"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_upgradepack_explosive;show_menu decals_hud_icons20"
-			"label"		" vgui/hud/icon_upgradepack_explosive4"
+			"label"		" vgui/hud/icon_upgradepack_explosive"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_upgradepack_incendiary;show_menu decals_hud_icons20"
-			"label"		" vgui/hud/icon_upgradepack_incendiary5"
+			"label"		" vgui/hud/icon_upgradepack_incendiary"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_vomitjar;show_menu decals_hud_icons20"
-			"label"		" vgui/hud/icon_vomitjar6"
+			"label"		" vgui/hud/icon_vomitjar"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/iconsheet_dlc1;show_menu decals_hud_icons20"
-			"label"		" vgui/hud/iconsheet_dlc17"
+			"label"		" vgui/hud/iconsheet_dlc1"
 		}
 		"8"
 		{
@@ -53756,37 +53756,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_COLLECT_HOLIDAY_GIFTS;show_menu decals_achievements1"
-			"label"		" vgui/achievements/ACH_COLLECT_HOLIDAY_GIFTS1"
+			"label"		" vgui/achievements/ACH_COLLECT_HOLIDAY_GIFTS"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_COLLECT_HOLIDAY_GIFTS_LOCKED;show_menu decals_achievements1"
-			"label"		" vgui/achievements/ACH_COLLECT_HOLIDAY_GIFTS_LOCKED2"
+			"label"		" vgui/achievements/ACH_COLLECT_HOLIDAY_GIFTS_LOCKED"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_COOP_LOCKED;show_menu decals_achievements1"
-			"label"		" vgui/achievements/ACH_COOP_LOCKED3"
+			"label"		" vgui/achievements/ACH_COOP_LOCKED"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SCAVENGE_LOCKED;show_menu decals_achievements1"
-			"label"		" vgui/achievements/ACH_SCAVENGE_LOCKED4"
+			"label"		" vgui/achievements/ACH_SCAVENGE_LOCKED"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VERSUS_LOCKED;show_menu decals_achievements1"
-			"label"		" vgui/achievements/ACH_VERSUS_LOCKED5"
+			"label"		" vgui/achievements/ACH_VERSUS_LOCKED"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ASSET_BULL_SHIFTERS_SHIRT;show_menu decals_achievements1"
-			"label"		" vgui/achievements/ASSET_BULL_SHIFTERS_SHIRT6"
+			"label"		" vgui/achievements/ASSET_BULL_SHIFTERS_SHIRT"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ASSET_DEPECHE_MODE_SHIRT;show_menu decals_achievements1"
-			"label"		" vgui/achievements/ASSET_DEPECHE_MODE_SHIRT7"
+			"label"		" vgui/achievements/ASSET_DEPECHE_MODE_SHIRT"
 		}
 		"8"
 		{
@@ -53810,37 +53810,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ASSET_LEFT_4_DEAD_2_SHIRT;show_menu decals_achievements2"
-			"label"		" vgui/achievements/ASSET_LEFT_4_DEAD_2_SHIRT1"
+			"label"		" vgui/achievements/ASSET_LEFT_4_DEAD_2_SHIRT"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ASSET_LOCKED;show_menu decals_achievements2"
-			"label"		" vgui/achievements/ASSET_LOCKED2"
+			"label"		" vgui/achievements/ASSET_LOCKED"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ASSET_MED_KIT;show_menu decals_achievements2"
-			"label"		" vgui/achievements/ASSET_MED_KIT3"
+			"label"		" vgui/achievements/ASSET_MED_KIT"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ASSET_ZOMBIE_HAND_SHIRT;show_menu decals_achievements2"
-			"label"		" vgui/achievements/ASSET_ZOMBIE_HAND_SHIRT4"
+			"label"		" vgui/achievements/ASSET_ZOMBIE_HAND_SHIRT"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SCAVENGE_CAN_DROP_GRIND;show_menu decals_achievements2"
-			"label"		" vgui/achievements/ACH_SCAVENGE_CAN_DROP_GRIND5"
+			"label"		" vgui/achievements/ACH_SCAVENGE_CAN_DROP_GRIND"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SCAVENGE_MAKE_SURVIVOR_DROP_CAN;show_menu decals_achievements2"
-			"label"		" vgui/achievements/ACH_SCAVENGE_MAKE_SURVIVOR_DROP_CAN6"
+			"label"		" vgui/achievements/ACH_SCAVENGE_MAKE_SURVIVOR_DROP_CAN"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SCAVENGE_SHUT_OUT;show_menu decals_achievements2"
-			"label"		" vgui/achievements/ACH_SCAVENGE_SHUT_OUT7"
+			"label"		" vgui/achievements/ACH_SCAVENGE_SHUT_OUT"
 		}
 		"8"
 		{
@@ -53864,37 +53864,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SCAVENGE_COLLECT_ALL_CANS;show_menu decals_achievements3"
-			"label"		" vgui/achievements/ACH_SCAVENGE_COLLECT_ALL_CANS1"
+			"label"		" vgui/achievements/ACH_SCAVENGE_COLLECT_ALL_CANS"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SCAVENGE_COLLECT_CAN_GRIND;show_menu decals_achievements3"
-			"label"		" vgui/achievements/ACH_SCAVENGE_COLLECT_CAN_GRIND2"
+			"label"		" vgui/achievements/ACH_SCAVENGE_COLLECT_CAN_GRIND"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SCAVENGE_WIN_A_GAME;show_menu decals_achievements3"
-			"label"		" vgui/achievements/ACH_SCAVENGE_WIN_A_GAME3"
+			"label"		" vgui/achievements/ACH_SCAVENGE_WIN_A_GAME"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SURVIVAL_GET_MEDAL_MELEE_ONLY;show_menu decals_achievements3"
-			"label"		" vgui/achievements/ACH_SURVIVAL_GET_MEDAL_MELEE_ONLY4"
+			"label"		" vgui/achievements/ACH_SURVIVAL_GET_MEDAL_MELEE_ONLY"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_CHARGER_LONG_CARRY;show_menu decals_achievements3"
-			"label"		" vgui/achievements/ACH_VS_CHARGER_LONG_CARRY5"
+			"label"		" vgui/achievements/ACH_VS_CHARGER_LONG_CARRY"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_CHARGER_GROUND_SMASH;show_menu decals_achievements3"
-			"label"		" vgui/achievements/ACH_VS_CHARGER_GROUND_SMASH6"
+			"label"		" vgui/achievements/ACH_VS_CHARGER_GROUND_SMASH"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_BOWL_ENEMY_TEAM;show_menu decals_achievements3"
-			"label"		" vgui/achievements/ACH_VS_BOWL_ENEMY_TEAM7"
+			"label"		" vgui/achievements/ACH_VS_BOWL_ENEMY_TEAM"
 		}
 		"8"
 		{
@@ -53918,37 +53918,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_SPIT_ON_SMOKERED_PLAYER;show_menu decals_achievements4"
-			"label"		" vgui/achievements/ACH_VS_SPIT_ON_SMOKERED_PLAYER1"
+			"label"		" vgui/achievements/ACH_VS_SPIT_ON_SMOKERED_PLAYER"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_SPIT_ON_ENEMY_TEAM;show_menu decals_achievements4"
-			"label"		" vgui/achievements/ACH_VS_SPIT_ON_ENEMY_TEAM2"
+			"label"		" vgui/achievements/ACH_VS_SPIT_ON_ENEMY_TEAM"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_JOCKEY_INTO_ACID;show_menu decals_achievements4"
-			"label"		" vgui/achievements/ACH_VS_JOCKEY_INTO_ACID3"
+			"label"		" vgui/achievements/ACH_VS_JOCKEY_INTO_ACID"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_JOCKEY_TWO_PLAYERS;show_menu decals_achievements4"
-			"label"		" vgui/achievements/ACH_VS_JOCKEY_TWO_PLAYERS4"
+			"label"		" vgui/achievements/ACH_VS_JOCKEY_TWO_PLAYERS"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_JOCKEY_LONG_RIDE;show_menu decals_achievements4"
-			"label"		" vgui/achievements/ACH_VS_JOCKEY_LONG_RIDE5"
+			"label"		" vgui/achievements/ACH_VS_JOCKEY_LONG_RIDE"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_FORM_PARTY_AND_WIN_4V4;show_menu decals_achievements4"
-			"label"		" vgui/achievements/ACH_VS_FORM_PARTY_AND_WIN_4V46"
+			"label"		" vgui/achievements/ACH_VS_FORM_PARTY_AND_WIN_4V4"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_LEAVE_SAFE_ROOM_DEFIB_TEAMMATE;show_menu decals_achievements4"
-			"label"		" vgui/achievements/ACH_VS_LEAVE_SAFE_ROOM_DEFIB_TEAMMATE7"
+			"label"		" vgui/achievements/ACH_VS_LEAVE_SAFE_ROOM_DEFIB_TEAMMATE"
 		}
 		"8"
 		{
@@ -53972,37 +53972,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_BRIDGE_TIMED_RUN;show_menu decals_achievements5"
-			"label"		" vgui/achievements/ACH_BRIDGE_TIMED_RUN1"
+			"label"		" vgui/achievements/ACH_BRIDGE_TIMED_RUN"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_IMPOUND_LOT_NO_ALARMS;show_menu decals_achievements5"
-			"label"		" vgui/achievements/ACH_IMPOUND_LOT_NO_ALARMS2"
+			"label"		" vgui/achievements/ACH_IMPOUND_LOT_NO_ALARMS"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_WITCH_TOWN_NO_WITCH_KILLS;show_menu decals_achievements5"
-			"label"		" vgui/achievements/ACH_WITCH_TOWN_NO_WITCH_KILLS3"
+			"label"		" vgui/achievements/ACH_WITCH_TOWN_NO_WITCH_KILLS"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_AIRLINE_FINALE_NO_DAMAGE;show_menu decals_achievements5"
-			"label"		" vgui/achievements/ACH_AIRLINE_FINALE_NO_DAMAGE4"
+			"label"		" vgui/achievements/ACH_AIRLINE_FINALE_NO_DAMAGE"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_GNOME_RESCUE;show_menu decals_achievements5"
-			"label"		" vgui/achievements/ACH_GNOME_RESCUE5"
+			"label"		" vgui/achievements/ACH_GNOME_RESCUE"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_STRONGMAN_GAME;show_menu decals_achievements5"
-			"label"		" vgui/achievements/ACH_STRONGMAN_GAME6"
+			"label"		" vgui/achievements/ACH_STRONGMAN_GAME"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_STASH_WHACKER;show_menu decals_achievements5"
-			"label"		" vgui/achievements/ACH_STASH_WHACKER7"
+			"label"		" vgui/achievements/ACH_STASH_WHACKER"
 		}
 		"8"
 		{
@@ -54026,37 +54026,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SAVE_PLAYER_FROM_JOCKEY_FAST;show_menu decals_achievements6"
-			"label"		" vgui/achievements/ACH_SAVE_PLAYER_FROM_JOCKEY_FAST1"
+			"label"		" vgui/achievements/ACH_SAVE_PLAYER_FROM_JOCKEY_FAST"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_KILL_SPITTER_FAST;show_menu decals_achievements6"
-			"label"		" vgui/achievements/ACH_KILL_SPITTER_FAST2"
+			"label"		" vgui/achievements/ACH_KILL_SPITTER_FAST"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_MELEE_A_CHARGER;show_menu decals_achievements6"
-			"label"		" vgui/achievements/ACH_MELEE_A_CHARGER3"
+			"label"		" vgui/achievements/ACH_MELEE_A_CHARGER"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_INCENDIARY_CLOWN_POSSE;show_menu decals_achievements6"
-			"label"		" vgui/achievements/ACH_INCENDIARY_CLOWN_POSSE4"
+			"label"		" vgui/achievements/ACH_INCENDIARY_CLOWN_POSSE"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_HONK_A_CLOWNS_NOSE;show_menu decals_achievements6"
-			"label"		" vgui/achievements/ACH_HONK_A_CLOWNS_NOSE5"
+			"label"		" vgui/achievements/ACH_HONK_A_CLOWNS_NOSE"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_COLLECT_CEDA_VIALS;show_menu decals_achievements6"
-			"label"		" vgui/achievements/ACH_COLLECT_CEDA_VIALS6"
+			"label"		" vgui/achievements/ACH_COLLECT_CEDA_VIALS"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_KILL_SUBMERGED_MUDMEN;show_menu decals_achievements6"
-			"label"		" vgui/achievements/ACH_KILL_SUBMERGED_MUDMEN7"
+			"label"		" vgui/achievements/ACH_KILL_SUBMERGED_MUDMEN"
 		}
 		"8"
 		{
@@ -54080,37 +54080,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_KILL_EVERY_UNCOMMON_INFECTED;show_menu decals_achievements7"
-			"label"		" vgui/achievements/ACH_KILL_EVERY_UNCOMMON_INFECTED1"
+			"label"		" vgui/achievements/ACH_KILL_EVERY_UNCOMMON_INFECTED"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_BILE_A_TANK;show_menu decals_achievements7"
-			"label"		" vgui/achievements/ACH_BILE_A_TANK2"
+			"label"		" vgui/achievements/ACH_BILE_A_TANK"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_KILL_ZOMBIES_GRENADE_BLAST;show_menu decals_achievements7"
-			"label"		" vgui/achievements/ACH_KILL_ZOMBIES_GRENADE_BLAST3"
+			"label"		" vgui/achievements/ACH_KILL_ZOMBIES_GRENADE_BLAST"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_IGNITE_INFECTED_FIRE_AMMO;show_menu decals_achievements7"
-			"label"		" vgui/achievements/ACH_IGNITE_INFECTED_FIRE_AMMO4"
+			"label"		" vgui/achievements/ACH_IGNITE_INFECTED_FIRE_AMMO"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_DEPLOY_AMMO_UPGRADE;show_menu decals_achievements7"
-			"label"		" vgui/achievements/ACH_DEPLOY_AMMO_UPGRADE5"
+			"label"		" vgui/achievements/ACH_DEPLOY_AMMO_UPGRADE"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SPEED_REVIVE_WITH_ADRENALINE;show_menu decals_achievements7"
-			"label"		" vgui/achievements/ACH_SPEED_REVIVE_WITH_ADRENALINE6"
+			"label"		" vgui/achievements/ACH_SPEED_REVIVE_WITH_ADRENALINE"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_RES_SURVIVORS_WITH_DEFIB;show_menu decals_achievements7"
-			"label"		" vgui/achievements/ACH_RES_SURVIVORS_WITH_DEFIB7"
+			"label"		" vgui/achievements/ACH_RES_SURVIVORS_WITH_DEFIB"
 		}
 		"8"
 		{
@@ -54134,37 +54134,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_KILL_TANK_MELEE_ONLY;show_menu decals_achievements8"
-			"label"		" vgui/achievements/ACH_KILL_TANK_MELEE_ONLY1"
+			"label"		" vgui/achievements/ACH_KILL_TANK_MELEE_ONLY"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_KILL_INFECTED_WITH_CHAINSAW;show_menu decals_achievements8"
-			"label"		" vgui/achievements/ACH_KILL_INFECTED_WITH_CHAINSAW2"
+			"label"		" vgui/achievements/ACH_KILL_INFECTED_WITH_CHAINSAW"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_KILL_WITH_EVERY_MELEE;show_menu decals_achievements8"
-			"label"		" vgui/achievements/ACH_KILL_WITH_EVERY_MELEE3"
+			"label"		" vgui/achievements/ACH_KILL_WITH_EVERY_MELEE"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_CUT_OFF_HEADS_MELEE;show_menu decals_achievements8"
-			"label"		" vgui/achievements/ACH_CUT_OFF_HEADS_MELEE4"
+			"label"		" vgui/achievements/ACH_CUT_OFF_HEADS_MELEE"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_FINISH_CAMPAIGN_MELEE_ONLY;show_menu decals_achievements8"
-			"label"		" vgui/achievements/ACH_FINISH_CAMPAIGN_MELEE_ONLY5"
+			"label"		" vgui/achievements/ACH_FINISH_CAMPAIGN_MELEE_ONLY"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SURVIVE_EXPERT_REALISM;show_menu decals_achievements8"
-			"label"		" vgui/achievements/ACH_SURVIVE_EXPERT_REALISM6"
+			"label"		" vgui/achievements/ACH_SURVIVE_EXPERT_REALISM"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_BEAT_CAMPAIGNS_EXPERT_MODE;show_menu decals_achievements8"
-			"label"		" vgui/achievements/ACH_BEAT_CAMPAIGNS_EXPERT_MODE7"
+			"label"		" vgui/achievements/ACH_BEAT_CAMPAIGNS_EXPERT_MODE"
 		}
 		"8"
 		{
@@ -54188,37 +54188,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SURVIVE_BRIDGE;show_menu decals_achievements9"
-			"label"		" vgui/achievements/ACH_SURVIVE_BRIDGE1"
+			"label"		" vgui/achievements/ACH_SURVIVE_BRIDGE"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SURVIVE_TOWN;show_menu decals_achievements9"
-			"label"		" vgui/achievements/ACH_SURVIVE_TOWN2"
+			"label"		" vgui/achievements/ACH_SURVIVE_TOWN"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SURVIVE_SWAMP;show_menu decals_achievements9"
-			"label"		" vgui/achievements/ACH_SURVIVE_SWAMP3"
+			"label"		" vgui/achievements/ACH_SURVIVE_SWAMP"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SURVIVE_ROAD;show_menu decals_achievements9"
-			"label"		" vgui/achievements/ACH_SURVIVE_ROAD4"
+			"label"		" vgui/achievements/ACH_SURVIVE_ROAD"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SURVIVE_MALL;show_menu decals_achievements9"
-			"label"		" vgui/achievements/ACH_SURVIVE_MALL5"
+			"label"		" vgui/achievements/ACH_SURVIVE_MALL"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_COMPLETE_CHALLENGE_MODES;show_menu decals_achievements9"
-			"label"		" vgui/achievements/ACH_COMPLETE_CHALLENGE_MODES6"
+			"label"		" vgui/achievements/ACH_COMPLETE_CHALLENGE_MODES"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_HEADS_WITH_GOLF_CLUB;show_menu decals_achievements9"
-			"label"		" vgui/achievements/ACH_HEADS_WITH_GOLF_CLUB7"
+			"label"		" vgui/achievements/ACH_HEADS_WITH_GOLF_CLUB"
 		}
 		"8"
 		{
@@ -54242,37 +54242,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_HEAR_BALLAD;show_menu decals_achievements10"
-			"label"		" vgui/achievements/ACH_HEAR_BALLAD1"
+			"label"		" vgui/achievements/ACH_HEAR_BALLAD"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_KILL_TANK_L4D1_ONLY;show_menu decals_achievements10"
-			"label"		" vgui/achievements/ACH_KILL_TANK_L4D1_ONLY2"
+			"label"		" vgui/achievements/ACH_KILL_TANK_L4D1_ONLY"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_KILLS_WITH_M60;show_menu decals_achievements10"
-			"label"		" vgui/achievements/ACH_KILLS_WITH_M603"
+			"label"		" vgui/achievements/ACH_KILLS_WITH_M60"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_OPEN_FOOT_LOCKERS;show_menu decals_achievements10"
-			"label"		" vgui/achievements/ACH_OPEN_FOOT_LOCKERS4"
+			"label"		" vgui/achievements/ACH_OPEN_FOOT_LOCKERS"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SCAVENGE_FALLEN_SURVIVOR;show_menu decals_achievements10"
-			"label"		" vgui/achievements/ACH_SCAVENGE_FALLEN_SURVIVOR5"
+			"label"		" vgui/achievements/ACH_SCAVENGE_FALLEN_SURVIVOR"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SCAVENGE_PLAY_C6_FINALE;show_menu decals_achievements10"
-			"label"		" vgui/achievements/ACH_SCAVENGE_PLAY_C6_FINALE6"
+			"label"		" vgui/achievements/ACH_SCAVENGE_PLAY_C6_FINALE"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SURVIVE_THE_PASSING;show_menu decals_achievements10"
-			"label"		" vgui/achievements/ACH_SURVIVE_THE_PASSING7"
+			"label"		" vgui/achievements/ACH_SURVIVE_THE_PASSING"
 		}
 		"8"
 		{
@@ -54296,37 +54296,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_CHARGE_THROUGH_CHAIRS;show_menu decals_achievements11"
-			"label"		" vgui/achievements/ACH_VS_CHARGE_THROUGH_CHAIRS1"
+			"label"		" vgui/achievements/ACH_VS_CHARGE_THROUGH_CHAIRS"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ASSET_DLC1_LOCKED;show_menu decals_achievements11"
-			"label"		" vgui/achievements/ASSET_DLC1_LOCKED2"
+			"label"		" vgui/achievements/ASSET_DLC1_LOCKED"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ASSET_GNOME;show_menu decals_achievements11"
-			"label"		" vgui/achievements/ASSET_GNOME3"
+			"label"		" vgui/achievements/ASSET_GNOME"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ASSET_L4D2_HAT;show_menu decals_achievements11"
-			"label"		" vgui/achievements/ASSET_L4D2_HAT4"
+			"label"		" vgui/achievements/ASSET_L4D2_HAT"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_COMPLETE_THE_SACRIFICE;show_menu decals_achievements11"
-			"label"		" vgui/achievements/ACH_COMPLETE_THE_SACRIFICE5"
+			"label"		" vgui/achievements/ACH_COMPLETE_THE_SACRIFICE"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_KILL_SPECIAL_WITH_BARREL;show_menu decals_achievements11"
-			"label"		" vgui/achievements/ACH_KILL_SPECIAL_WITH_BARREL6"
+			"label"		" vgui/achievements/ACH_KILL_SPECIAL_WITH_BARREL"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_RUN_ALL_GENERATORS;show_menu decals_achievements11"
-			"label"		" vgui/achievements/ACH_RUN_ALL_GENERATORS7"
+			"label"		" vgui/achievements/ACH_RUN_ALL_GENERATORS"
 		}
 		"8"
 		{
@@ -54350,37 +54350,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SACRIFICE_BILL;show_menu decals_achievements12"
-			"label"		" vgui/achievements/ACH_SACRIFICE_BILL1"
+			"label"		" vgui/achievements/ACH_SACRIFICE_BILL"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_PREVENT_SACRIFICE;show_menu decals_achievements12"
-			"label"		" vgui/achievements/ACH_VS_PREVENT_SACRIFICE2"
+			"label"		" vgui/achievements/ACH_VS_PREVENT_SACRIFICE"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ASSET_DLC2_LOCKED;show_menu decals_achievements12"
-			"label"		" vgui/achievements/ASSET_DLC2_LOCKED3"
+			"label"		" vgui/achievements/ASSET_DLC2_LOCKED"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_HELP_FREE_CHRISTMAS_PLAYER_SURVIVE;show_menu decals_achievements12"
-			"label"		" vgui/achievements/ACH_HELP_FREE_CHRISTMAS_PLAYER_SURVIVE4"
+			"label"		" vgui/achievements/ACH_HELP_FREE_CHRISTMAS_PLAYER_SURVIVE"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_HELP_FREE_PLAYER_SURVIVE;show_menu decals_achievements12"
-			"label"		" vgui/achievements/ACH_HELP_FREE_PLAYER_SURVIVE5"
+			"label"		" vgui/achievements/ACH_HELP_FREE_PLAYER_SURVIVE"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SURVIVE_COLD_STREAM;show_menu decals_achievements12"
-			"label"		" vgui/achievements/ACH_SURVIVE_COLD_STREAM6"
+			"label"		" vgui/achievements/ACH_SURVIVE_COLD_STREAM"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_COMPLETE_DEAD_AIR;show_menu decals_achievements12"
-			"label"		" vgui/achievements/ACH_VS_COMPLETE_DEAD_AIR7"
+			"label"		" vgui/achievements/ACH_VS_COMPLETE_DEAD_AIR"
 		}
 		"8"
 		{
@@ -54404,37 +54404,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_CAUSE_X_POUNCE_DAMAGE;show_menu decals_achievements13"
-			"label"		" vgui/achievements/ACH_CAUSE_X_POUNCE_DAMAGE1"
+			"label"		" vgui/achievements/ACH_CAUSE_X_POUNCE_DAMAGE"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_CAUSE_X_POUNCE_DAMAGE_LOCKED;show_menu decals_achievements13"
-			"label"		" vgui/achievements/ACH_CAUSE_X_POUNCE_DAMAGE_LOCKED2"
+			"label"		" vgui/achievements/ACH_CAUSE_X_POUNCE_DAMAGE_LOCKED"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_COLLECT_GOLDEN_CROWBARS;show_menu decals_achievements13"
-			"label"		" vgui/achievements/ACH_COLLECT_GOLDEN_CROWBARS3"
+			"label"		" vgui/achievements/ACH_COLLECT_GOLDEN_CROWBARS"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_CONCERT_FINALE_DONT_LEAVE_STAGE;show_menu decals_achievements13"
-			"label"		" vgui/achievements/ACH_CONCERT_FINALE_DONT_LEAVE_STAGE4"
+			"label"		" vgui/achievements/ACH_CONCERT_FINALE_DONT_LEAVE_STAGE"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_CONCERT_FINALE_DONT_LEAVE_STAGE_LOCKED;show_menu decals_achievements13"
-			"label"		" vgui/achievements/ACH_CONCERT_FINALE_DONT_LEAVE_STAGE_LOCKED5"
+			"label"		" vgui/achievements/ACH_CONCERT_FINALE_DONT_LEAVE_STAGE_LOCKED"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_DESTROY_TANK_ROCK;show_menu decals_achievements13"
-			"label"		" vgui/achievements/ACH_DESTROY_TANK_ROCK6"
+			"label"		" vgui/achievements/ACH_DESTROY_TANK_ROCK"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_DESTROY_TANK_ROCK_LOCKED;show_menu decals_achievements13"
-			"label"		" vgui/achievements/ACH_DESTROY_TANK_ROCK_LOCKED7"
+			"label"		" vgui/achievements/ACH_DESTROY_TANK_ROCK_LOCKED"
 		}
 		"8"
 		{
@@ -54458,37 +54458,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_EARN_ALL_BRONZE_MEDALS;show_menu decals_achievements14"
-			"label"		" vgui/achievements/ACH_EARN_ALL_BRONZE_MEDALS1"
+			"label"		" vgui/achievements/ACH_EARN_ALL_BRONZE_MEDALS"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_EARN_ALL_BRONZE_MEDALS_LOCKED;show_menu decals_achievements14"
-			"label"		" vgui/achievements/ACH_EARN_ALL_BRONZE_MEDALS_LOCKED2"
+			"label"		" vgui/achievements/ACH_EARN_ALL_BRONZE_MEDALS_LOCKED"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_EARN_ALL_GOLD_MEDALS;show_menu decals_achievements14"
-			"label"		" vgui/achievements/ACH_EARN_ALL_GOLD_MEDALS3"
+			"label"		" vgui/achievements/ACH_EARN_ALL_GOLD_MEDALS"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_EARN_ALL_GOLD_MEDALS_LOCKED;show_menu decals_achievements14"
-			"label"		" vgui/achievements/ACH_EARN_ALL_GOLD_MEDALS_LOCKED4"
+			"label"		" vgui/achievements/ACH_EARN_ALL_GOLD_MEDALS_LOCKED"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_EARN_ALL_SILVER_MEDALS;show_menu decals_achievements14"
-			"label"		" vgui/achievements/ACH_EARN_ALL_SILVER_MEDALS5"
+			"label"		" vgui/achievements/ACH_EARN_ALL_SILVER_MEDALS"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_EARN_ALL_SILVER_MEDALS_LOCKED;show_menu decals_achievements14"
-			"label"		" vgui/achievements/ACH_EARN_ALL_SILVER_MEDALS_LOCKED6"
+			"label"		" vgui/achievements/ACH_EARN_ALL_SILVER_MEDALS_LOCKED"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_ESCAPE_MALL_FINALE_NO_TANKS;show_menu decals_achievements14"
-			"label"		" vgui/achievements/ACH_ESCAPE_MALL_FINALE_NO_TANKS7"
+			"label"		" vgui/achievements/ACH_ESCAPE_MALL_FINALE_NO_TANKS"
 		}
 		"8"
 		{
@@ -54512,37 +54512,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_ESCAPE_MALL_FINALE_NO_TANKS_LOCKED;show_menu decals_achievements15"
-			"label"		" vgui/achievements/ACH_ESCAPE_MALL_FINALE_NO_TANKS_LOCKED1"
+			"label"		" vgui/achievements/ACH_ESCAPE_MALL_FINALE_NO_TANKS_LOCKED"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_FIND_LIGHTHOUSE_HIDDEN_ROOM;show_menu decals_achievements15"
-			"label"		" vgui/achievements/ACH_FIND_LIGHTHOUSE_HIDDEN_ROOM2"
+			"label"		" vgui/achievements/ACH_FIND_LIGHTHOUSE_HIDDEN_ROOM"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_FIND_LIGHTHOUSE_HIDDEN_ROOM_LOCKED;show_menu decals_achievements15"
-			"label"		" vgui/achievements/ACH_FIND_LIGHTHOUSE_HIDDEN_ROOM_LOCKED3"
+			"label"		" vgui/achievements/ACH_FIND_LIGHTHOUSE_HIDDEN_ROOM_LOCKED"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_FREE_SELF_FROM_SMOKER_WITH_MELEE;show_menu decals_achievements15"
-			"label"		" vgui/achievements/ACH_FREE_SELF_FROM_SMOKER_WITH_MELEE4"
+			"label"		" vgui/achievements/ACH_FREE_SELF_FROM_SMOKER_WITH_MELEE"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_FREE_SELF_FROM_SMOKER_WITH_MELEE_LOCKED;show_menu decals_achievements15"
-			"label"		" vgui/achievements/ACH_FREE_SELF_FROM_SMOKER_WITH_MELEE_LOCKED5"
+			"label"		" vgui/achievements/ACH_FREE_SELF_FROM_SMOKER_WITH_MELEE_LOCKED"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_KILL_LEAPING_HUNTER_WITH_SHOTGUN;show_menu decals_achievements15"
-			"label"		" vgui/achievements/ACH_KILL_LEAPING_HUNTER_WITH_SHOTGUN6"
+			"label"		" vgui/achievements/ACH_KILL_LEAPING_HUNTER_WITH_SHOTGUN"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_KILL_LEAPING_HUNTER_WITH_SHOTGUN_LOCKED;show_menu decals_achievements15"
-			"label"		" vgui/achievements/ACH_KILL_LEAPING_HUNTER_WITH_SHOTGUN_LOCKED7"
+			"label"		" vgui/achievements/ACH_KILL_LEAPING_HUNTER_WITH_SHOTGUN_LOCKED"
 		}
 		"8"
 		{
@@ -54566,37 +54566,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_KILL_WITCH_MELEE_ONLY;show_menu decals_achievements16"
-			"label"		" vgui/achievements/ACH_KILL_WITCH_MELEE_ONLY1"
+			"label"		" vgui/achievements/ACH_KILL_WITCH_MELEE_ONLY"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_KILL_WITCH_MELEE_ONLY_LOCKED;show_menu decals_achievements16"
-			"label"		" vgui/achievements/ACH_KILL_WITCH_MELEE_ONLY_LOCKED2"
+			"label"		" vgui/achievements/ACH_KILL_WITCH_MELEE_ONLY_LOCKED"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_KILL_X_INFECTED_LIFETIME;show_menu decals_achievements16"
-			"label"		" vgui/achievements/ACH_KILL_X_INFECTED_LIFETIME3"
+			"label"		" vgui/achievements/ACH_KILL_X_INFECTED_LIFETIME"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_KILL_X_INFECTED_LIFETIME_LOCKED;show_menu decals_achievements16"
-			"label"		" vgui/achievements/ACH_KILL_X_INFECTED_LIFETIME_LOCKED4"
+			"label"		" vgui/achievements/ACH_KILL_X_INFECTED_LIFETIME_LOCKED"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_KILL_X_JOCKEYS_WITH_MELEE;show_menu decals_achievements16"
-			"label"		" vgui/achievements/ACH_KILL_X_JOCKEYS_WITH_MELEE5"
+			"label"		" vgui/achievements/ACH_KILL_X_JOCKEYS_WITH_MELEE"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_KILL_X_JOCKEYS_WITH_MELEE_LOCKED;show_menu decals_achievements16"
-			"label"		" vgui/achievements/ACH_KILL_X_JOCKEYS_WITH_MELEE_LOCKED6"
+			"label"		" vgui/achievements/ACH_KILL_X_JOCKEYS_WITH_MELEE_LOCKED"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_LAST_STAND_TIMED;show_menu decals_achievements16"
-			"label"		" vgui/achievements/ACH_LAST_STAND_TIMED7"
+			"label"		" vgui/achievements/ACH_LAST_STAND_TIMED"
 		}
 		"8"
 		{
@@ -54620,37 +54620,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_LAST_STAND_TIMED_LOCKED;show_menu decals_achievements17"
-			"label"		" vgui/achievements/ACH_LAST_STAND_TIMED_LOCKED1"
+			"label"		" vgui/achievements/ACH_LAST_STAND_TIMED_LOCKED"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_ONE_SHOT_KILL_WITCH_BRIDE;show_menu decals_achievements17"
-			"label"		" vgui/achievements/ACH_ONE_SHOT_KILL_WITCH_BRIDE2"
+			"label"		" vgui/achievements/ACH_ONE_SHOT_KILL_WITCH_BRIDE"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_ONE_SHOT_KILL_WITCH_BRIDE_LOCKED;show_menu decals_achievements17"
-			"label"		" vgui/achievements/ACH_ONE_SHOT_KILL_WITCH_BRIDE_LOCKED3"
+			"label"		" vgui/achievements/ACH_ONE_SHOT_KILL_WITCH_BRIDE_LOCKED"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_RESCUE_X_PLAYERS_TOGETHER;show_menu decals_achievements17"
-			"label"		" vgui/achievements/ACH_RESCUE_X_PLAYERS_TOGETHER4"
+			"label"		" vgui/achievements/ACH_RESCUE_X_PLAYERS_TOGETHER"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_RESCUE_X_PLAYERS_TOGETHER_LOCKED;show_menu decals_achievements17"
-			"label"		" vgui/achievements/ACH_RESCUE_X_PLAYERS_TOGETHER_LOCKED5"
+			"label"		" vgui/achievements/ACH_RESCUE_X_PLAYERS_TOGETHER_LOCKED"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_REVIVE_WITH_ACTIVE_TANK;show_menu decals_achievements17"
-			"label"		" vgui/achievements/ACH_REVIVE_WITH_ACTIVE_TANK6"
+			"label"		" vgui/achievements/ACH_REVIVE_WITH_ACTIVE_TANK"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_REVIVE_WITH_ACTIVE_TANK_LOCKED;show_menu decals_achievements17"
-			"label"		" vgui/achievements/ACH_REVIVE_WITH_ACTIVE_TANK_LOCKED7"
+			"label"		" vgui/achievements/ACH_REVIVE_WITH_ACTIVE_TANK_LOCKED"
 		}
 		"8"
 		{
@@ -54674,37 +54674,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SURVIVAL_BRONZE_MEDAL;show_menu decals_achievements18"
-			"label"		" vgui/achievements/ACH_SURVIVAL_BRONZE_MEDAL1"
+			"label"		" vgui/achievements/ACH_SURVIVAL_BRONZE_MEDAL"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SURVIVAL_GOLD_MEDAL;show_menu decals_achievements18"
-			"label"		" vgui/achievements/ACH_SURVIVAL_GOLD_MEDAL2"
+			"label"		" vgui/achievements/ACH_SURVIVAL_GOLD_MEDAL"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SURVIVAL_SILVER_MEDAL;show_menu decals_achievements18"
-			"label"		" vgui/achievements/ACH_SURVIVAL_SILVER_MEDAL3"
+			"label"		" vgui/achievements/ACH_SURVIVAL_SILVER_MEDAL"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SURVIVAL_VERSUS_X_MINUTES;show_menu decals_achievements18"
-			"label"		" vgui/achievements/ACH_SURVIVAL_VERSUS_X_MINUTES4"
+			"label"		" vgui/achievements/ACH_SURVIVAL_VERSUS_X_MINUTES"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SURVIVAL_VERSUS_X_MINUTES_LOCKED;show_menu decals_achievements18"
-			"label"		" vgui/achievements/ACH_SURVIVAL_VERSUS_X_MINUTES_LOCKED5"
+			"label"		" vgui/achievements/ACH_SURVIVAL_VERSUS_X_MINUTES_LOCKED"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SURVIVAL_X_MINUTES;show_menu decals_achievements18"
-			"label"		" vgui/achievements/ACH_SURVIVAL_X_MINUTES6"
+			"label"		" vgui/achievements/ACH_SURVIVAL_X_MINUTES"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SURVIVAL_X_MINUTES_LOCKED;show_menu decals_achievements18"
-			"label"		" vgui/achievements/ACH_SURVIVAL_X_MINUTES_LOCKED7"
+			"label"		" vgui/achievements/ACH_SURVIVAL_X_MINUTES_LOCKED"
 		}
 		"8"
 		{
@@ -54728,37 +54728,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SURVIVE_LIGHTHOUSE;show_menu decals_achievements19"
-			"label"		" vgui/achievements/ACH_SURVIVE_LIGHTHOUSE1"
+			"label"		" vgui/achievements/ACH_SURVIVE_LIGHTHOUSE"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SURVIVE_LIGHTHOUSE_EXPERT_REALISM;show_menu decals_achievements19"
-			"label"		" vgui/achievements/ACH_SURVIVE_LIGHTHOUSE_EXPERT_REALISM2"
+			"label"		" vgui/achievements/ACH_SURVIVE_LIGHTHOUSE_EXPERT_REALISM"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SURVIVE_LIGHTHOUSE_EXPERT_REALISM_LOCKED;show_menu decals_achievements19"
-			"label"		" vgui/achievements/ACH_SURVIVE_LIGHTHOUSE_EXPERT_REALISM_LOCKED3"
+			"label"		" vgui/achievements/ACH_SURVIVE_LIGHTHOUSE_EXPERT_REALISM_LOCKED"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_SURVIVE_LIGHTHOUSE_LOCKED;show_menu decals_achievements19"
-			"label"		" vgui/achievements/ACH_SURVIVE_LIGHTHOUSE_LOCKED4"
+			"label"		" vgui/achievements/ACH_SURVIVE_LIGHTHOUSE_LOCKED"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_BILE_PLAYER_NO_LINE_OF_SIGHT;show_menu decals_achievements19"
-			"label"		" vgui/achievements/ACH_VS_BILE_PLAYER_NO_LINE_OF_SIGHT5"
+			"label"		" vgui/achievements/ACH_VS_BILE_PLAYER_NO_LINE_OF_SIGHT"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_BILE_PLAYER_NO_LINE_OF_SIGHT_LOCKED;show_menu decals_achievements19"
-			"label"		" vgui/achievements/ACH_VS_BILE_PLAYER_NO_LINE_OF_SIGHT_LOCKED6"
+			"label"		" vgui/achievements/ACH_VS_BILE_PLAYER_NO_LINE_OF_SIGHT_LOCKED"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_CHARGER_INSTANT_KILL;show_menu decals_achievements19"
-			"label"		" vgui/achievements/ACH_VS_CHARGER_INSTANT_KILL7"
+			"label"		" vgui/achievements/ACH_VS_CHARGER_INSTANT_KILL"
 		}
 		"8"
 		{
@@ -54782,37 +54782,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_CHARGER_INSTANT_KILL_LOCKED;show_menu decals_achievements20"
-			"label"		" vgui/achievements/ACH_VS_CHARGER_INSTANT_KILL_LOCKED1"
+			"label"		" vgui/achievements/ACH_VS_CHARGER_INSTANT_KILL_LOCKED"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_SPIT_ON_CHARGED_PLAYER;show_menu decals_achievements20"
-			"label"		" vgui/achievements/ACH_VS_SPIT_ON_CHARGED_PLAYER2"
+			"label"		" vgui/achievements/ACH_VS_SPIT_ON_CHARGED_PLAYER"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_SPIT_ON_CHARGED_PLAYER_LOCKED;show_menu decals_achievements20"
-			"label"		" vgui/achievements/ACH_VS_SPIT_ON_CHARGED_PLAYER_LOCKED3"
+			"label"		" vgui/achievements/ACH_VS_SPIT_ON_CHARGED_PLAYER_LOCKED"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_SPIT_ON_GAS_CANS;show_menu decals_achievements20"
-			"label"		" vgui/achievements/ACH_VS_SPIT_ON_GAS_CANS4"
+			"label"		" vgui/achievements/ACH_VS_SPIT_ON_GAS_CANS"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_SPIT_ON_GAS_CANS_LOCKED;show_menu decals_achievements20"
-			"label"		" vgui/achievements/ACH_VS_SPIT_ON_GAS_CANS_LOCKED5"
+			"label"		" vgui/achievements/ACH_VS_SPIT_ON_GAS_CANS_LOCKED"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_SPIT_ON_POUNCED_PLAYER;show_menu decals_achievements20"
-			"label"		" vgui/achievements/ACH_VS_SPIT_ON_POUNCED_PLAYER6"
+			"label"		" vgui/achievements/ACH_VS_SPIT_ON_POUNCED_PLAYER"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/ACH_VS_SPIT_ON_POUNCED_PLAYER_LOCKED;show_menu decals_achievements20"
-			"label"		" vgui/achievements/ACH_VS_SPIT_ON_POUNCED_PLAYER_LOCKED7"
+			"label"		" vgui/achievements/ACH_VS_SPIT_ON_POUNCED_PLAYER_LOCKED"
 		}
 		"8"
 		{
@@ -54836,12 +54836,12 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/GLOBAL_GNOME_ALONE;show_menu decals_achievements21"
-			"label"		" vgui/achievements/GLOBAL_GNOME_ALONE1"
+			"label"		" vgui/achievements/GLOBAL_GNOME_ALONE"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/achievements/GLOBAL_GNOME_ALONE_LOCKED;show_menu decals_achievements21"
-			"label"		" vgui/achievements/GLOBAL_GNOME_ALONE_LOCKED2"
+			"label"		" vgui/achievements/GLOBAL_GNOME_ALONE_LOCKED"
 		}
 		"8"
 		{
@@ -54862,37 +54862,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/resource/downarrow;show_menu decals_arrows1"
-			"label"		" vgui/resource/downarrow1"
+			"label"		" vgui/resource/downarrow"
 		}
 		"2"
 		{
-			"command"	"play buttons/button14;scripted_user_func decal,Models/props_junk/wheelbarrowo1a;show_menu decals_arrows1"
-			"label"		" Models/props_junk/wheelbarrowo1a2"
+			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_arrow_right;show_menu decals_arrows1"
+			"label"		" vgui/hud/icon_arrow_right"
 		}
 		"3"
 		{
-			"command"	"play buttons/button14;scripted_user_func decal,models/props_interiors/elevator_arrows;show_menu decals_arrows1"
-			"label"		" models/props_interiors/elevator_arrows3"
+			"command"	"play buttons/button14;scripted_user_func decal,decals/checkpointarrow01_black;show_menu decals_arrows1"
+			"label"		" decals/checkpointarrow01_black"
 		}
 		"4"
 		{
-			"command"	"play buttons/button14;scripted_user_func decal,models/props_interiors/elevator_arrows_on;show_menu decals_arrows1"
-			"label"		" models/props_interiors/elevator_arrows_on4"
+			"command"	"play buttons/button14;scripted_user_func decal,decals/checkpointarrow01_orange;show_menu decals_arrows1"
+			"label"		" decals/checkpointarrow01_orange"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,concrete/street_overlay_arrow;show_menu decals_arrows1"
-			"label"		" concrete/street_overlay_arrow5"
+			"label"		" concrete/street_overlay_arrow"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_locator_arrow;show_menu decals_arrows1"
-			"label"		" vgui/hud/icon_locator_arrow6"
+			"label"		" vgui/hud/icon_locator_arrow"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_arrow_plain;show_menu decals_arrows1"
-			"label"		" vgui/hud/icon_arrow_plain7"
+			"label"		" vgui/hud/icon_arrow_plain"
 		}
 		"8"
 		{
@@ -54916,37 +54916,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_arrow_up;show_menu decals_arrows2"
-			"label"		" vgui/hud/icon_arrow_up1"
+			"label"		" vgui/hud/icon_arrow_up"
 		}
 		"2"
 		{
-			"command"	"play buttons/button14;scripted_user_func decal,vgui/hud/icon_arrow_right;show_menu decals_arrows2"
-			"label"		" vgui/hud/icon_arrow_right2"
+			"command"	"play buttons/button14;scripted_user_func decal,vgui/icon_arrow;show_menu decals_arrows2"
+			"label"		" vgui/icon_arrow"
 		}
 		"3"
 		{
-			"command"	"play buttons/button14;scripted_user_func decal,decals/checkpointarrow01_black;show_menu decals_arrows2"
-			"label"		" decals/checkpointarrow01_black3"
+			"command"	"play buttons/button14;scripted_user_func decal,vgui/icon_arrow_down;show_menu decals_arrows2"
+			"label"		" vgui/icon_arrow_down"
 		}
 		"4"
 		{
-			"command"	"play buttons/button14;scripted_user_func decal,decals/checkpointarrow01_orange;show_menu decals_arrows2"
-			"label"		" decals/checkpointarrow01_orange4"
+			"command"	"play buttons/button14;scripted_user_func decal,decals/checkpointarrow01_orange_noalpha;show_menu decals_arrows2"
+			"label"		" decals/checkpointarrow01_orange_noalpha"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/arrow_left;show_menu decals_arrows2"
-			"label"		" vgui/arrow_left5"
+			"label"		" vgui/arrow_left"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/arrow_right;show_menu decals_arrows2"
-			"label"		" vgui/arrow_right6"
+			"label"		" vgui/arrow_right"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/icon_button_arrow_left;show_menu decals_arrows2"
-			"label"		" vgui/icon_button_arrow_left7"
+			"label"		" vgui/icon_button_arrow_left"
 		}
 		"8"
 		{
@@ -54970,74 +54970,39 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/icon_button_arrow_right;show_menu decals_arrows3"
-			"label"		" vgui/icon_button_arrow_right1"
+			"label"		" vgui/icon_button_arrow_right"
 		}
 		"2"
 		{
-			"command"	"play buttons/button14;scripted_user_func decal,vgui/icon_arrow;show_menu decals_arrows3"
-			"label"		" vgui/icon_arrow2"
+			"command"	"play buttons/button14;scripted_user_func decal,decals/subwayarrow01;show_menu decals_arrows3"
+			"label"		" decals/subwayarrow01"
 		}
 		"3"
 		{
-			"command"	"play buttons/button14;scripted_user_func decal,vgui/icon_arrow_down;show_menu decals_arrows3"
-			"label"		" vgui/icon_arrow_down3"
+			"command"	"play buttons/button14;scripted_user_func decal,de_train/train_bombsite_arrow_01;show_menu decals_arrows3"
+			"label"		" de_train/train_bombsite_arrow_01"
 		}
 		"4"
 		{
-			"command"	"play buttons/button14;scripted_user_func decal,decals/checkpointarrow01_orange_noalpha;show_menu decals_arrows3"
-			"label"		" decals/checkpointarrow01_orange_noalpha4"
+			"command"	"play buttons/button14;scripted_user_func decal,de_train/train_bombsite_arrow_02;show_menu decals_arrows3"
+			"label"		" de_train/train_bombsite_arrow_02"
 		}
 		"5"
 		{
-			"command"	"play buttons/button14;scripted_user_func decal,decals/subwayarrow01;show_menu decals_arrows3"
-			"label"		" decals/subwayarrow015"
-		}
-		"6"
-		{
-			"command"	"play buttons/button14;scripted_user_func decal,de_train/train_bombsite_arrow_01;show_menu decals_arrows3"
-			"label"		" de_train/train_bombsite_arrow_016"
-		}
-		"7"
-		{
-			"command"	"play buttons/button14;scripted_user_func decal,de_train/train_bombsite_arrow_02;show_menu decals_arrows3"
-			"label"		" de_train/train_bombsite_arrow_027"
+			"command"	"play buttons/button14;scripted_user_func decal,glass/sign_arrow;show_menu decals_arrows3"
+			"label"		" glass/sign_arrow"
 		}
 		"8"
 		{
 			"command"	"play buttons/button14;;show_menu decals_arrows2"
 			"label"		" << Back"
 		}
-		"9"
-		{
-			"command"	"play buttons/button14;show_menu decals_arrows4"
-			"label"		" >> Next"
-		}
 		"0"
 		{
 			"command"	"play buttons/button14;"
 			"label"		" Exit"
 		}
 	}
-	"decals_arrows4"
-	{
-		"Title"		"arrows decals 4"
-		"1"
-		{
-			"command"	"play buttons/button14;scripted_user_func decal,glass/sign_arrow;show_menu decals_arrows4"
-			"label"		" glass/sign_arrow1"
-		}
-		"8"
-		{
-			"command"	"play buttons/button14;;show_menu decals_arrows3"
-			"label"		" << Back"
-		}
-		"0"
-		{
-			"command"	"play buttons/button14;"
-			"label"		" Exit"
-		}
-	}
-
 
 	"decals_blood1"
 	{
@@ -55045,37 +55010,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/blood1;show_menu decals_blood1"
-			"label"		" decals/blood11"
+			"label"		" decals/blood1"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/blood2;show_menu decals_blood1"
-			"label"		" decals/blood22"
+			"label"		" decals/blood2"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/blood3;show_menu decals_blood1"
-			"label"		" decals/blood33"
+			"label"		" decals/blood3"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/blood4;show_menu decals_blood1"
-			"label"		" decals/blood44"
+			"label"		" decals/blood4"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/blood5;show_menu decals_blood1"
-			"label"		" decals/blood55"
+			"label"		" decals/blood5"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/blood6;show_menu decals_blood1"
-			"label"		" decals/blood66"
+			"label"		" decals/blood6"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/blood1_subrect;show_menu decals_blood1"
-			"label"		" decals/blood1_subrect7"
+			"label"		" decals/blood1_subrect"
 		}
 		"8"
 		{
@@ -55099,37 +55064,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/blood2_subrect;show_menu decals_blood2"
-			"label"		" decals/blood2_subrect1"
+			"label"		" decals/blood2_subrect"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/blood3_subrect;show_menu decals_blood2"
-			"label"		" decals/blood3_subrect2"
+			"label"		" decals/blood3_subrect"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/blood4_subrect;show_menu decals_blood2"
-			"label"		" decals/blood4_subrect3"
+			"label"		" decals/blood4_subrect"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/blood5_subrect;show_menu decals_blood2"
-			"label"		" decals/blood5_subrect4"
+			"label"		" decals/blood5_subrect"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/blood6_subrect;show_menu decals_blood2"
-			"label"		" decals/blood6_subrect5"
+			"label"		" decals/blood6_subrect"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/flesh/blood1;show_menu decals_blood2"
-			"label"		" decals/flesh/blood16"
+			"label"		" decals/flesh/blood1"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/flesh/blood2;show_menu decals_blood2"
-			"label"		" decals/flesh/blood27"
+			"label"		" decals/flesh/blood2"
 		}
 		"8"
 		{
@@ -55153,37 +55118,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/flesh/blood3;show_menu decals_blood3"
-			"label"		" decals/flesh/blood31"
+			"label"		" decals/flesh/blood3"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/flesh/blood4;show_menu decals_blood3"
-			"label"		" decals/flesh/blood42"
+			"label"		" decals/flesh/blood4"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/flesh/blood5;show_menu decals_blood3"
-			"label"		" decals/flesh/blood53"
+			"label"		" decals/flesh/blood5"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/flesh/blood1_subrect;show_menu decals_blood3"
-			"label"		" decals/flesh/blood1_subrect4"
+			"label"		" decals/flesh/blood1_subrect"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/flesh/blood2_subrect;show_menu decals_blood3"
-			"label"		" decals/flesh/blood2_subrect5"
+			"label"		" decals/flesh/blood2_subrect"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/flesh/blood3_subrect;show_menu decals_blood3"
-			"label"		" decals/flesh/blood3_subrect6"
+			"label"		" decals/flesh/blood3_subrect"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/flesh/blood4_subrect;show_menu decals_blood3"
-			"label"		" decals/flesh/blood4_subrect7"
+			"label"		" decals/flesh/blood4_subrect"
 		}
 		"8"
 		{
@@ -55207,37 +55172,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/flesh/blood5_subrect;show_menu decals_blood4"
-			"label"		" decals/flesh/blood5_subrect1"
+			"label"		" decals/flesh/blood5_subrect"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,effects/blood_core;show_menu decals_blood4"
-			"label"		" effects/blood_core2"
+			"label"		" effects/blood_core"
 		}
 		"3"
 		{
-			"command"	"play buttons/button14;scripted_user_func decal,effects/blood_core_hdr.vtf;show_menu decals_blood4"
-			"label"		" effects/blood_core_hdr.vtf3"
+			"command"	"play buttons/button14;scripted_user_func decal,effects/blood2;show_menu decals_blood4"
+			"label"		" effects/blood2"
 		}
 		"4"
 		{
-			"command"	"play buttons/button14;scripted_user_func decal,effects/blood2;show_menu decals_blood4"
-			"label"		" effects/blood24"
+			"command"	"play buttons/button14;scripted_user_func decal,effects/blood;show_menu decals_blood4"
+			"label"		" effects/blood"
 		}
 		"5"
 		{
-			"command"	"play buttons/button14;scripted_user_func decal,effects/blood;show_menu decals_blood4"
-			"label"		" effects/blood5"
+			"command"	"play buttons/button14;scripted_user_func decal,sprites/bloodspray;show_menu decals_blood4"
+			"label"		" sprites/bloodspray"
 		}
 		"6"
 		{
-			"command"	"play buttons/button14;scripted_user_func decal,sprites/bloodspray;show_menu decals_blood4"
-			"label"		" sprites/bloodspray6"
+			"command"	"play buttons/button14;scripted_user_func decal,Decals/blood8;show_menu decals_blood4"
+			"label"		" Decals/blood8"
 		}
 		"7"
 		{
-			"command"	"play buttons/button14;scripted_user_func decal,Decals/blood8;show_menu decals_blood4"
-			"label"		" Decals/blood87"
+			"command"	"play buttons/button14;scripted_user_func decal,particle/blood_splatter/bloodsplatter;show_menu decals_blood4"
+			"label"		" particle/blood_splatter/bloodsplatter"
 		}
 		"8"
 		{
@@ -55261,37 +55226,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,Decals/bloodstain_001;show_menu decals_blood5"
-			"label"		" Decals/bloodstain_0011"
+			"label"		" Decals/bloodstain_001"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,Decals/bloodstain_002;show_menu decals_blood5"
-			"label"		" Decals/bloodstain_0022"
+			"label"		" Decals/bloodstain_002"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,Decals/bloodstain_003b;show_menu decals_blood5"
-			"label"		" Decals/bloodstain_003b3"
+			"label"		" Decals/bloodstain_003b"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,Decals/bloodstain_101;show_menu decals_blood5"
-			"label"		" Decals/bloodstain_1014"
+			"label"		" Decals/bloodstain_101"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,decals/bloodstain_hand;show_menu decals_blood5"
-			"label"		" decals/bloodstain_hand5"
+			"label"		" decals/bloodstain_hand"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,Decals/bloodstain_003;show_menu decals_blood5"
-			"label"		" Decals/bloodstain_0036"
+			"label"		" Decals/bloodstain_003"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,Decals/blood_splatter;show_menu decals_blood5"
-			"label"		" Decals/blood_splatter7"
+			"label"		" Decals/blood_splatter"
 		}
 		"8"
 		{
@@ -55312,73 +55277,20 @@
 	"decals_blood6"
 	{
 		"Title"		"blood decals 6"
+
 		"1"
 		{
-			"command"	"play buttons/button14;scripted_user_func decal,particle/blood_mist/blood_mist.vtf;show_menu decals_blood6"
-			"label"		" particle/blood_mist/blood_mist.vtf1"
+			"command"	"play buttons/button14;scripted_user_func decal,particle/blood_drop;show_menu decals_blood6"
+			"label"		" particle/blood_drop"
 		}
 		"2"
 		{
-			"command"	"play buttons/button14;scripted_user_func decal,particle/blood_splatter/bloodsplatter;show_menu decals_blood6"
-			"label"		" particle/blood_splatter/bloodsplatter2"
-		}
-		"3"
-		{
-			"command"	"play buttons/button14;scripted_user_func decal,particle/beam_blood_01.vtf;show_menu decals_blood6"
-			"label"		" particle/beam_blood_01.vtf3"
-		}
-		"4"
-		{
-			"command"	"play buttons/button14;scripted_user_func decal,particle/blood_drop;show_menu decals_blood6"
-			"label"		" particle/blood_drop4"
-		}
-		"5"
-		{
-			"command"	"play buttons/button14;scripted_user_func decal,models/effects/blood_pool;show_menu decals_blood6"
-			"label"		" models/effects/blood_pool5"
-		}
-		"6"
-		{
-			"command"	"play buttons/button14;scripted_user_func decal,Decals/blood_gunshot_decal;show_menu decals_blood6"
-			"label"		" Decals/blood_gunshot_decal6"
-		}
-		"7"
-		{
 			"command"	"play buttons/button14;scripted_user_func decal,Decals/blood_splatter2;show_menu decals_blood6"
-			"label"		" Decals/blood_splatter27"
+			"label"		" Decals/blood_splatter2"
 		}
 		"8"
 		{
 			"command"	"play buttons/button14;;show_menu decals_blood5"
-			"label"		" << Back"
-		}
-		"9"
-		{
-			"command"	"play buttons/button14;show_menu decals_blood7"
-			"label"		" >> Next"
-		}
-		"0"
-		{
-			"command"	"play buttons/button14;"
-			"label"		" Exit"
-		}
-	}
-	"decals_blood7"
-	{
-		"Title"		"blood decals 7"
-		"1"
-		{
-			"command"	"play buttons/button14;scripted_user_func decal,lighthouse/graffiti/generic/bloody_hands;show_menu decals_blood7"
-			"label"		" lighthouse/graffiti/generic/bloody_hands1"
-		}
-		"2"
-		{
-			"command"	"play buttons/button14;scripted_user_func decal,lighthouse/graffiti/team/easteregg_updateteam_blood;show_menu decals_blood7"
-			"label"		" lighthouse/graffiti/team/easteregg_updateteam_blood2"
-		}
-		"8"
-		{
-			"command"	"play buttons/button14;;show_menu decals_blood6"
 			"label"		" << Back"
 		}
 		"0"
@@ -55395,37 +55307,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_background;show_menu decals_loading_screens1"
-			"label"		" VGUI/LoadingScreen_background1"
+			"label"		" VGUI/LoadingScreen_background"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_BloodHarvest;show_menu decals_loading_screens1"
-			"label"		" VGUI/LoadingScreen_BloodHarvest2"
+			"label"		" VGUI/LoadingScreen_BloodHarvest"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_Campaign1;show_menu decals_loading_screens1"
-			"label"		" VGUI/LoadingScreen_Campaign13"
+			"label"		" VGUI/LoadingScreen_Campaign1"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_Campaign1_widescreen;show_menu decals_loading_screens1"
-			"label"		" VGUI/LoadingScreen_Campaign1_widescreen4"
+			"label"		" VGUI/LoadingScreen_Campaign1_widescreen"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_Campaign4;show_menu decals_loading_screens1"
-			"label"		" VGUI/LoadingScreen_Campaign45"
+			"label"		" VGUI/LoadingScreen_Campaign4"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_Campaign4_widescreen;show_menu decals_loading_screens1"
-			"label"		" VGUI/LoadingScreen_Campaign4_widescreen6"
+			"label"		" VGUI/LoadingScreen_Campaign4_widescreen"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_DarkCarnival;show_menu decals_loading_screens1"
-			"label"		" VGUI/LoadingScreen_DarkCarnival7"
+			"label"		" VGUI/LoadingScreen_DarkCarnival"
 		}
 		"8"
 		{
@@ -55449,37 +55361,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_DarkCarnival_widescreen;show_menu decals_loading_screens2"
-			"label"		" VGUI/LoadingScreen_DarkCarnival_widescreen1"
+			"label"		" VGUI/LoadingScreen_DarkCarnival_widescreen"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_DeadAir;show_menu decals_loading_screens2"
-			"label"		" VGUI/LoadingScreen_DeadAir2"
+			"label"		" VGUI/LoadingScreen_DeadAir"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_DeathToll;show_menu decals_loading_screens2"
-			"label"		" VGUI/LoadingScreen_DeathToll3"
+			"label"		" VGUI/LoadingScreen_DeathToll"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_default;show_menu decals_loading_screens2"
-			"label"		" VGUI/LoadingScreen_default4"
+			"label"		" VGUI/LoadingScreen_default"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_LastStand;show_menu decals_loading_screens2"
-			"label"		" VGUI/LoadingScreen_LastStand5"
+			"label"		" VGUI/LoadingScreen_LastStand"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_NoMercy;show_menu decals_loading_screens2"
-			"label"		" VGUI/LoadingScreen_NoMercy6"
+			"label"		" VGUI/LoadingScreen_NoMercy"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_SwampFever;show_menu decals_loading_screens2"
-			"label"		" VGUI/LoadingScreen_SwampFever7"
+			"label"		" VGUI/LoadingScreen_SwampFever"
 		}
 		"8"
 		{
@@ -55503,37 +55415,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_SwampFever_widescreen;show_menu decals_loading_screens3"
-			"label"		" VGUI/LoadingScreen_SwampFever_widescreen1"
+			"label"		" VGUI/LoadingScreen_SwampFever_widescreen"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_TheParish;show_menu decals_loading_screens3"
-			"label"		" VGUI/LoadingScreen_TheParish2"
+			"label"		" VGUI/LoadingScreen_TheParish"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_TheParish_widescreen;show_menu decals_loading_screens3"
-			"label"		" VGUI/LoadingScreen_TheParish_widescreen3"
+			"label"		" VGUI/LoadingScreen_TheParish_widescreen"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_ThePassing;show_menu decals_loading_screens3"
-			"label"		" VGUI/LoadingScreen_ThePassing4"
+			"label"		" VGUI/LoadingScreen_ThePassing"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_ThePassing_widescreen;show_menu decals_loading_screens3"
-			"label"		" VGUI/LoadingScreen_ThePassing_widescreen5"
+			"label"		" VGUI/LoadingScreen_ThePassing_widescreen"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_NoMercy_widescreen;show_menu decals_loading_screens3"
-			"label"		" VGUI/LoadingScreen_NoMercy_widescreen6"
+			"label"		" VGUI/LoadingScreen_NoMercy_widescreen"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_the_sacrifice;show_menu decals_loading_screens3"
-			"label"		" VGUI/LoadingScreen_the_sacrifice7"
+			"label"		" VGUI/LoadingScreen_the_sacrifice"
 		}
 		"8"
 		{
@@ -55557,37 +55469,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_the_sacrifice_standard;show_menu decals_loading_screens4"
-			"label"		" VGUI/LoadingScreen_the_sacrifice_standard1"
+			"label"		" VGUI/LoadingScreen_the_sacrifice_standard"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_BloodHarvest_widescreen;show_menu decals_loading_screens4"
-			"label"		" VGUI/LoadingScreen_BloodHarvest_widescreen2"
+			"label"		" VGUI/LoadingScreen_BloodHarvest_widescreen"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_ColdStream;show_menu decals_loading_screens4"
-			"label"		" VGUI/LoadingScreen_ColdStream3"
+			"label"		" VGUI/LoadingScreen_ColdStream"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_ColdStream_widescreen;show_menu decals_loading_screens4"
-			"label"		" VGUI/LoadingScreen_ColdStream_widescreen4"
+			"label"		" VGUI/LoadingScreen_ColdStream_widescreen"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_CrashCourse;show_menu decals_loading_screens4"
-			"label"		" VGUI/LoadingScreen_CrashCourse5"
+			"label"		" VGUI/LoadingScreen_CrashCourse"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_CrashCourse_widescreen;show_menu decals_loading_screens4"
-			"label"		" VGUI/LoadingScreen_CrashCourse_widescreen6"
+			"label"		" VGUI/LoadingScreen_CrashCourse_widescreen"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_DeadAir_widescreen;show_menu decals_loading_screens4"
-			"label"		" VGUI/LoadingScreen_DeadAir_widescreen7"
+			"label"		" VGUI/LoadingScreen_DeadAir_widescreen"
 		}
 		"8"
 		{
@@ -55611,12 +55523,12 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_DeathToll_widescreen;show_menu decals_loading_screens5"
-			"label"		" VGUI/LoadingScreen_DeathToll_widescreen1"
+			"label"		" VGUI/LoadingScreen_DeathToll_widescreen"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,VGUI/LoadingScreen_LastStand_widescreen;show_menu decals_loading_screens5"
-			"label"		" VGUI/LoadingScreen_LastStand_widescreen2"
+			"label"		" VGUI/LoadingScreen_LastStand_widescreen"
 		}
 		"8"
 		{
@@ -55637,37 +55549,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/addon;show_menu decals_map_backgrounds1"
-			"label"		" vgui/maps/addon1"
+			"label"		" vgui/maps/addon"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/background01_exit;show_menu decals_map_backgrounds1"
-			"label"		" vgui/maps/background01_exit2"
+			"label"		" vgui/maps/background01_exit"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/background01_exit_widescreen;show_menu decals_map_backgrounds1"
-			"label"		" vgui/maps/background01_exit_widescreen3"
+			"label"		" vgui/maps/background01_exit_widescreen"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/background02_exit;show_menu decals_map_backgrounds1"
-			"label"		" vgui/maps/background02_exit4"
+			"label"		" vgui/maps/background02_exit"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/background02_exit_widescreen;show_menu decals_map_backgrounds1"
-			"label"		" vgui/maps/background02_exit_widescreen5"
+			"label"		" vgui/maps/background02_exit_widescreen"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/background03_exit;show_menu decals_map_backgrounds1"
-			"label"		" vgui/maps/background03_exit6"
+			"label"		" vgui/maps/background03_exit"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/background03_exit_widescreen;show_menu decals_map_backgrounds1"
-			"label"		" vgui/maps/background03_exit_widescreen7"
+			"label"		" vgui/maps/background03_exit_widescreen"
 		}
 		"8"
 		{
@@ -55691,37 +55603,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/background04_exit;show_menu decals_map_backgrounds2"
-			"label"		" vgui/maps/background04_exit1"
+			"label"		" vgui/maps/background04_exit"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/background05_exit;show_menu decals_map_backgrounds2"
-			"label"		" vgui/maps/background05_exit2"
+			"label"		" vgui/maps/background05_exit"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/background05_exit_widescreen;show_menu decals_map_backgrounds2"
-			"label"		" vgui/maps/background05_exit_widescreen3"
+			"label"		" vgui/maps/background05_exit_widescreen"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c1;show_menu decals_map_backgrounds2"
-			"label"		" vgui/maps/c14"
+			"label"		" vgui/maps/c1"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c1m1_hotel;show_menu decals_map_backgrounds2"
-			"label"		" vgui/maps/c1m1_hotel5"
+			"label"		" vgui/maps/c1m1_hotel"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c1m1_tempname;show_menu decals_map_backgrounds2"
-			"label"		" vgui/maps/c1m1_tempname6"
+			"label"		" vgui/maps/c1m1_tempname"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c1m2_streets;show_menu decals_map_backgrounds2"
-			"label"		" vgui/maps/c1m2_streets7"
+			"label"		" vgui/maps/c1m2_streets"
 		}
 		"8"
 		{
@@ -55745,37 +55657,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c1m2_tempname;show_menu decals_map_backgrounds3"
-			"label"		" vgui/maps/c1m2_tempname1"
+			"label"		" vgui/maps/c1m2_tempname"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c1m3_mall;show_menu decals_map_backgrounds3"
-			"label"		" vgui/maps/c1m3_mall2"
+			"label"		" vgui/maps/c1m3_mall"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c1m3_tempname;show_menu decals_map_backgrounds3"
-			"label"		" vgui/maps/c1m3_tempname3"
+			"label"		" vgui/maps/c1m3_tempname"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c1m4_atrium;show_menu decals_map_backgrounds3"
-			"label"		" vgui/maps/c1m4_atrium4"
+			"label"		" vgui/maps/c1m4_atrium"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c1m4_tempname;show_menu decals_map_backgrounds3"
-			"label"		" vgui/maps/c1m4_tempname5"
+			"label"		" vgui/maps/c1m4_tempname"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c1m5_tempname;show_menu decals_map_backgrounds3"
-			"label"		" vgui/maps/c1m5_tempname6"
+			"label"		" vgui/maps/c1m5_tempname"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c2;show_menu decals_map_backgrounds3"
-			"label"		" vgui/maps/c27"
+			"label"		" vgui/maps/c2"
 		}
 		"8"
 		{
@@ -55799,37 +55711,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c2m1_highway;show_menu decals_map_backgrounds4"
-			"label"		" vgui/maps/c2m1_highway1"
+			"label"		" vgui/maps/c2m1_highway"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c2m1_motel;show_menu decals_map_backgrounds4"
-			"label"		" vgui/maps/c2m1_motel2"
+			"label"		" vgui/maps/c2m1_motel"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c2m2_fairgrounds;show_menu decals_map_backgrounds4"
-			"label"		" vgui/maps/c2m2_fairgrounds3"
+			"label"		" vgui/maps/c2m2_fairgrounds"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c2m3_coaster;show_menu decals_map_backgrounds4"
-			"label"		" vgui/maps/c2m3_coaster4"
+			"label"		" vgui/maps/c2m3_coaster"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c2m4_barns;show_menu decals_map_backgrounds4"
-			"label"		" vgui/maps/c2m4_barns5"
+			"label"		" vgui/maps/c2m4_barns"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c2m5_concert;show_menu decals_map_backgrounds4"
-			"label"		" vgui/maps/c2m5_concert6"
+			"label"		" vgui/maps/c2m5_concert"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c3;show_menu decals_map_backgrounds4"
-			"label"		" vgui/maps/c37"
+			"label"		" vgui/maps/c3"
 		}
 		"8"
 		{
@@ -55853,37 +55765,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c3m1_plankcountry;show_menu decals_map_backgrounds5"
-			"label"		" vgui/maps/c3m1_plankcountry1"
+			"label"		" vgui/maps/c3m1_plankcountry"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c3m1_village;show_menu decals_map_backgrounds5"
-			"label"		" vgui/maps/c3m1_village2"
+			"label"		" vgui/maps/c3m1_village"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c3m2_swamp;show_menu decals_map_backgrounds5"
-			"label"		" vgui/maps/c3m2_swamp3"
+			"label"		" vgui/maps/c3m2_swamp"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c3m3_shantytown;show_menu decals_map_backgrounds5"
-			"label"		" vgui/maps/c3m3_shantytown4"
+			"label"		" vgui/maps/c3m3_shantytown"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c3m4_plantation;show_menu decals_map_backgrounds5"
-			"label"		" vgui/maps/c3m4_plantation5"
+			"label"		" vgui/maps/c3m4_plantation"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c4;show_menu decals_map_backgrounds5"
-			"label"		" vgui/maps/c46"
+			"label"		" vgui/maps/c4"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c4m1_burgertank;show_menu decals_map_backgrounds5"
-			"label"		" vgui/maps/c4m1_burgertank7"
+			"label"		" vgui/maps/c4m1_burgertank"
 		}
 		"8"
 		{
@@ -55907,37 +55819,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c4m1_milltown_a;show_menu decals_map_backgrounds6"
-			"label"		" vgui/maps/c4m1_milltown_a1"
+			"label"		" vgui/maps/c4m1_milltown_a"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c4m2_sugarmill_a;show_menu decals_map_backgrounds6"
-			"label"		" vgui/maps/c4m2_sugarmill_a2"
+			"label"		" vgui/maps/c4m2_sugarmill_a"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c4m3_sugarmill_b;show_menu decals_map_backgrounds6"
-			"label"		" vgui/maps/c4m3_sugarmill_b3"
+			"label"		" vgui/maps/c4m3_sugarmill_b"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c4m4_milltown_b;show_menu decals_map_backgrounds6"
-			"label"		" vgui/maps/c4m4_milltown_b4"
+			"label"		" vgui/maps/c4m4_milltown_b"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c4m5_milltown_escape;show_menu decals_map_backgrounds6"
-			"label"		" vgui/maps/c4m5_milltown_escape5"
+			"label"		" vgui/maps/c4m5_milltown_escape"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c5;show_menu decals_map_backgrounds6"
-			"label"		" vgui/maps/c56"
+			"label"		" vgui/maps/c5"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c5m1_waterfront;show_menu decals_map_backgrounds6"
-			"label"		" vgui/maps/c5m1_waterfront7"
+			"label"		" vgui/maps/c5m1_waterfront"
 		}
 		"8"
 		{
@@ -55961,37 +55873,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c5m2_busdepot;show_menu decals_map_backgrounds7"
-			"label"		" vgui/maps/c5m2_busdepot1"
+			"label"		" vgui/maps/c5m2_busdepot"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c5m2_park;show_menu decals_map_backgrounds7"
-			"label"		" vgui/maps/c5m2_park2"
+			"label"		" vgui/maps/c5m2_park"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c5m3_cemetery;show_menu decals_map_backgrounds7"
-			"label"		" vgui/maps/c5m3_cemetery3"
+			"label"		" vgui/maps/c5m3_cemetery"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c5m4_quarter;show_menu decals_map_backgrounds7"
-			"label"		" vgui/maps/c5m4_quarter4"
+			"label"		" vgui/maps/c5m4_quarter"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c5m5_bridge;show_menu decals_map_backgrounds7"
-			"label"		" vgui/maps/c5m5_bridge5"
+			"label"		" vgui/maps/c5m5_bridge"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c5m5_bridge_end;show_menu decals_map_backgrounds7"
-			"label"		" vgui/maps/c5m5_bridge_end6"
+			"label"		" vgui/maps/c5m5_bridge_end"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/credits;show_menu decals_map_backgrounds7"
-			"label"		" vgui/maps/credits7"
+			"label"		" vgui/maps/credits"
 		}
 		"8"
 		{
@@ -56015,37 +55927,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/left4dead1;show_menu decals_map_backgrounds8"
-			"label"		" vgui/maps/left4dead11"
+			"label"		" vgui/maps/left4dead1"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/unknown;show_menu decals_map_backgrounds8"
-			"label"		" vgui/maps/unknown2"
+			"label"		" vgui/maps/unknown"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/background04_exit_widescreen;show_menu decals_map_backgrounds8"
-			"label"		" vgui/maps/background04_exit_widescreen3"
+			"label"		" vgui/maps/background04_exit_widescreen"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/any;show_menu decals_map_backgrounds8"
-			"label"		" vgui/maps/any4"
+			"label"		" vgui/maps/any"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/l4d_hospital01_apartment;show_menu decals_map_backgrounds8"
-			"label"		" vgui/maps/l4d_hospital01_apartment5"
+			"label"		" vgui/maps/l4d_hospital01_apartment"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/l4d_hospital03_sewers;show_menu decals_map_backgrounds8"
-			"label"		" vgui/maps/l4d_hospital03_sewers6"
+			"label"		" vgui/maps/l4d_hospital03_sewers"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/l4d_hospital04_interior;show_menu decals_map_backgrounds8"
-			"label"		" vgui/maps/l4d_hospital04_interior7"
+			"label"		" vgui/maps/l4d_hospital04_interior"
 		}
 		"8"
 		{
@@ -56069,37 +55981,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/l4d_river01_docks;show_menu decals_map_backgrounds9"
-			"label"		" vgui/maps/l4d_river01_docks1"
+			"label"		" vgui/maps/l4d_river01_docks"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/l4d_river02_barge;show_menu decals_map_backgrounds9"
-			"label"		" vgui/maps/l4d_river02_barge2"
+			"label"		" vgui/maps/l4d_river02_barge"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c10;show_menu decals_map_backgrounds9"
-			"label"		" vgui/maps/c103"
+			"label"		" vgui/maps/c10"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c10m1_caves;show_menu decals_map_backgrounds9"
-			"label"		" vgui/maps/c10m1_caves4"
+			"label"		" vgui/maps/c10m1_caves"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c10m2_drainage;show_menu decals_map_backgrounds9"
-			"label"		" vgui/maps/c10m2_drainage5"
+			"label"		" vgui/maps/c10m2_drainage"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c10m3_ranchhouse;show_menu decals_map_backgrounds9"
-			"label"		" vgui/maps/c10m3_ranchhouse6"
+			"label"		" vgui/maps/c10m3_ranchhouse"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c10m4_mainstreet;show_menu decals_map_backgrounds9"
-			"label"		" vgui/maps/c10m4_mainstreet7"
+			"label"		" vgui/maps/c10m4_mainstreet"
 		}
 		"8"
 		{
@@ -56123,37 +56035,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c10m5_houseboat;show_menu decals_map_backgrounds10"
-			"label"		" vgui/maps/c10m5_houseboat1"
+			"label"		" vgui/maps/c10m5_houseboat"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c11;show_menu decals_map_backgrounds10"
-			"label"		" vgui/maps/c112"
+			"label"		" vgui/maps/c11"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c11m1_greenhouse;show_menu decals_map_backgrounds10"
-			"label"		" vgui/maps/c11m1_greenhouse3"
+			"label"		" vgui/maps/c11m1_greenhouse"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c11m2_offices;show_menu decals_map_backgrounds10"
-			"label"		" vgui/maps/c11m2_offices4"
+			"label"		" vgui/maps/c11m2_offices"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c11m3_garage;show_menu decals_map_backgrounds10"
-			"label"		" vgui/maps/c11m3_garage5"
+			"label"		" vgui/maps/c11m3_garage"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c11m4_terminal;show_menu decals_map_backgrounds10"
-			"label"		" vgui/maps/c11m4_terminal6"
+			"label"		" vgui/maps/c11m4_terminal"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c11m5_runway;show_menu decals_map_backgrounds10"
-			"label"		" vgui/maps/c11m5_runway7"
+			"label"		" vgui/maps/c11m5_runway"
 		}
 		"8"
 		{
@@ -56177,37 +56089,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c12;show_menu decals_map_backgrounds11"
-			"label"		" vgui/maps/c121"
+			"label"		" vgui/maps/c12"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c12m1_hilltop;show_menu decals_map_backgrounds11"
-			"label"		" vgui/maps/c12m1_hilltop2"
+			"label"		" vgui/maps/c12m1_hilltop"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c12m2_traintunnel;show_menu decals_map_backgrounds11"
-			"label"		" vgui/maps/c12m2_traintunnel3"
+			"label"		" vgui/maps/c12m2_traintunnel"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c12m3_bridge;show_menu decals_map_backgrounds11"
-			"label"		" vgui/maps/c12m3_bridge4"
+			"label"		" vgui/maps/c12m3_bridge"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c12m4_barn;show_menu decals_map_backgrounds11"
-			"label"		" vgui/maps/c12m4_barn5"
+			"label"		" vgui/maps/c12m4_barn"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c12m5_cornfield;show_menu decals_map_backgrounds11"
-			"label"		" vgui/maps/c12m5_cornfield6"
+			"label"		" vgui/maps/c12m5_cornfield"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c13;show_menu decals_map_backgrounds11"
-			"label"		" vgui/maps/c137"
+			"label"		" vgui/maps/c13"
 		}
 		"8"
 		{
@@ -56231,37 +56143,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c9;show_menu decals_map_backgrounds12"
-			"label"		" vgui/maps/c91"
+			"label"		" vgui/maps/c9"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c9m1_alleys;show_menu decals_map_backgrounds12"
-			"label"		" vgui/maps/c9m1_alleys2"
+			"label"		" vgui/maps/c9m1_alleys"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c9m2_lots;show_menu decals_map_backgrounds12"
-			"label"		" vgui/maps/c9m2_lots3"
+			"label"		" vgui/maps/c9m2_lots"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c10m2_drains;show_menu decals_map_backgrounds12"
-			"label"		" vgui/maps/c10m2_drains4"
+			"label"		" vgui/maps/c10m2_drains"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c13m1_alpinecreek;show_menu decals_map_backgrounds12"
-			"label"		" vgui/maps/c13m1_alpinecreek5"
+			"label"		" vgui/maps/c13m1_alpinecreek"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c13m2_southpinestream;show_menu decals_map_backgrounds12"
-			"label"		" vgui/maps/c13m2_southpinestream6"
+			"label"		" vgui/maps/c13m2_southpinestream"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c13m3_junkyard;show_menu decals_map_backgrounds12"
-			"label"		" vgui/maps/c13m3_junkyard7"
+			"label"		" vgui/maps/c13m3_junkyard"
 		}
 		"8"
 		{
@@ -56285,37 +56197,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c13m3_memorialbridge;show_menu decals_map_backgrounds13"
-			"label"		" vgui/maps/c13m3_memorialbridge1"
+			"label"		" vgui/maps/c13m3_memorialbridge"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c13m4_cutthroatcreek;show_menu decals_map_backgrounds13"
-			"label"		" vgui/maps/c13m4_cutthroatcreek2"
+			"label"		" vgui/maps/c13m4_cutthroatcreek"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c13m4_waterworks;show_menu decals_map_backgrounds13"
-			"label"		" vgui/maps/c13m4_waterworks3"
+			"label"		" vgui/maps/c13m4_waterworks"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c14;show_menu decals_map_backgrounds13"
-			"label"		" vgui/maps/c144"
+			"label"		" vgui/maps/c14"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c14m1_lighthouse;show_menu decals_map_backgrounds13"
-			"label"		" vgui/maps/c14m1_lighthouse5"
+			"label"		" vgui/maps/c14m1_lighthouse"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c1m2_gunshop;show_menu decals_map_backgrounds13"
-			"label"		" vgui/maps/c1m2_gunshop6"
+			"label"		" vgui/maps/c1m2_gunshop"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c5m1_waterfront_survival;show_menu decals_map_backgrounds13"
-			"label"		" vgui/maps/c5m1_waterfront_survival7"
+			"label"		" vgui/maps/c5m1_waterfront_survival"
 		}
 		"8"
 		{
@@ -56339,37 +56251,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c5m4_float;show_menu decals_map_backgrounds14"
-			"label"		" vgui/maps/c5m4_float1"
+			"label"		" vgui/maps/c5m4_float"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c6;show_menu decals_map_backgrounds14"
-			"label"		" vgui/maps/c62"
+			"label"		" vgui/maps/c6"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c6m1_riverbank;show_menu decals_map_backgrounds14"
-			"label"		" vgui/maps/c6m1_riverbank3"
+			"label"		" vgui/maps/c6m1_riverbank"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c6m1_riverbank_survival;show_menu decals_map_backgrounds14"
-			"label"		" vgui/maps/c6m1_riverbank_survival4"
+			"label"		" vgui/maps/c6m1_riverbank_survival"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c6m2_bedlam;show_menu decals_map_backgrounds14"
-			"label"		" vgui/maps/c6m2_bedlam5"
+			"label"		" vgui/maps/c6m2_bedlam"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c6m2_bedlam_survival;show_menu decals_map_backgrounds14"
-			"label"		" vgui/maps/c6m2_bedlam_survival6"
+			"label"		" vgui/maps/c6m2_bedlam_survival"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c6m3_port;show_menu decals_map_backgrounds14"
-			"label"		" vgui/maps/c6m3_port7"
+			"label"		" vgui/maps/c6m3_port"
 		}
 		"8"
 		{
@@ -56393,37 +56305,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c7;show_menu decals_map_backgrounds15"
-			"label"		" vgui/maps/c71"
+			"label"		" vgui/maps/c7"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c7m1_docks_scavenge;show_menu decals_map_backgrounds15"
-			"label"		" vgui/maps/c7m1_docks_scavenge2"
+			"label"		" vgui/maps/c7m1_docks_scavenge"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c7m2_barge_scavenge;show_menu decals_map_backgrounds15"
-			"label"		" vgui/maps/c7m2_barge_scavenge3"
+			"label"		" vgui/maps/c7m2_barge_scavenge"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c8;show_menu decals_map_backgrounds15"
-			"label"		" vgui/maps/c84"
+			"label"		" vgui/maps/c8"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c8m1_apartment_scavenge;show_menu decals_map_backgrounds15"
-			"label"		" vgui/maps/c8m1_apartment_scavenge5"
+			"label"		" vgui/maps/c8m1_apartment_scavenge"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c8m5_rooftop_scavenge;show_menu decals_map_backgrounds15"
-			"label"		" vgui/maps/c8m5_rooftop_scavenge6"
+			"label"		" vgui/maps/c8m5_rooftop_scavenge"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c9m1_bridge;show_menu decals_map_backgrounds15"
-			"label"		" vgui/maps/c9m1_bridge7"
+			"label"		" vgui/maps/c9m1_bridge"
 		}
 		"8"
 		{
@@ -56447,27 +56359,27 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/c9m2_depot;show_menu decals_map_backgrounds16"
-			"label"		" vgui/maps/c9m2_depot1"
+			"label"		" vgui/maps/c9m2_depot"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/l4d_hospital02_subway;show_menu decals_map_backgrounds16"
-			"label"		" vgui/maps/l4d_hospital02_subway2"
+			"label"		" vgui/maps/l4d_hospital02_subway"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/l4d_hospital05_rooftop;show_menu decals_map_backgrounds16"
-			"label"		" vgui/maps/l4d_hospital05_rooftop3"
+			"label"		" vgui/maps/l4d_hospital05_rooftop"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/l4d_river01_tankcar;show_menu decals_map_backgrounds16"
-			"label"		" vgui/maps/l4d_river01_tankcar4"
+			"label"		" vgui/maps/l4d_river01_tankcar"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/maps/l4d_river03_port;show_menu decals_map_backgrounds16"
-			"label"		" vgui/maps/l4d_river03_port5"
+			"label"		" vgui/maps/l4d_river03_port"
 		}
 		"8"
 		{
@@ -56488,37 +56400,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,signs/poster_midnight_riders_01;show_menu decals_midnight1"
-			"label"		" signs/poster_midnight_riders_011"
+			"label"		" signs/poster_midnight_riders_01"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,signs/poster_midnight_riders_album;show_menu decals_midnight1"
-			"label"		" signs/poster_midnight_riders_album2"
+			"label"		" signs/poster_midnight_riders_album"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,signs/poster_midnight_riders_dusty;show_menu decals_midnight1"
-			"label"		" signs/poster_midnight_riders_dusty3"
+			"label"		" signs/poster_midnight_riders_dusty"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,signs/poster_midnight_riders_jake;show_menu decals_midnight1"
-			"label"		" signs/poster_midnight_riders_jake4"
+			"label"		" signs/poster_midnight_riders_jake"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,signs/poster_midnight_riders_ox;show_menu decals_midnight1"
-			"label"		" signs/poster_midnight_riders_ox5"
+			"label"		" signs/poster_midnight_riders_ox"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,signs/poster_midnight_riders_smitty;show_menu decals_midnight1"
-			"label"		" signs/poster_midnight_riders_smitty6"
+			"label"		" signs/poster_midnight_riders_smitty"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/logos/spray_stencil_midnight_logo_01;show_menu decals_midnight1"
-			"label"		" vgui/logos/spray_stencil_midnight_logo_017"
+			"label"		" vgui/logos/spray_stencil_midnight_logo_01"
 		}
 		"8"
 		{
@@ -56542,7 +56454,7 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,vgui/logos/spray_stencil_midnight_riders_01;show_menu decals_midnight2"
-			"label"		" vgui/logos/spray_stencil_midnight_riders_011"
+			"label"		" vgui/logos/spray_stencil_midnight_riders_01"
 		}
 		"8"
 		{
@@ -56563,37 +56475,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,wallpaper/green01;show_menu decals_wallpapers1"
-			"label"		" wallpaper/green011"
+			"label"		" wallpaper/green01"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,wallpaper/yellow02;show_menu decals_wallpapers1"
-			"label"		" wallpaper/yellow022"
+			"label"		" wallpaper/yellow02"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,wallpaper/yellow04;show_menu decals_wallpapers1"
-			"label"		" wallpaper/yellow043"
+			"label"		" wallpaper/yellow04"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,wood/wallpaper02;show_menu decals_wallpapers1"
-			"label"		" wood/wallpaper024"
+			"label"		" wood/wallpaper02"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,plaster/wallpaper001;show_menu decals_wallpapers1"
-			"label"		" plaster/wallpaper0015"
+			"label"		" plaster/wallpaper001"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,plaster/wallpaper01;show_menu decals_wallpapers1"
-			"label"		" plaster/wallpaper016"
+			"label"		" plaster/wallpaper01"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,plaster/urban_wallpaper_01a;show_menu decals_wallpapers1"
-			"label"		" plaster/urban_wallpaper_01a7"
+			"label"		" plaster/urban_wallpaper_01a"
 		}
 		"8"
 		{
@@ -56617,37 +56529,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,plaster/urban_wallpaper_02a;show_menu decals_wallpapers2"
-			"label"		" plaster/urban_wallpaper_02a1"
+			"label"		" plaster/urban_wallpaper_02a"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,plaster/urban_wallpaper_04a;show_menu decals_wallpapers2"
-			"label"		" plaster/urban_wallpaper_04a2"
+			"label"		" plaster/urban_wallpaper_04a"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,wallpaper/blue03elevdoor;show_menu decals_wallpapers2"
-			"label"		" wallpaper/blue03elevdoor3"
+			"label"		" wallpaper/blue03elevdoor"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,wallpaper/green04;show_menu decals_wallpapers2"
-			"label"		" wallpaper/green044"
+			"label"		" wallpaper/green04"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,wallpaper/blue08;show_menu decals_wallpapers2"
-			"label"		" wallpaper/blue085"
+			"label"		" wallpaper/blue08"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,plaster/wallpaper02;show_menu decals_wallpapers2"
-			"label"		" plaster/wallpaper026"
+			"label"		" plaster/wallpaper02"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,plaster/wallpaper02base;show_menu decals_wallpapers2"
-			"label"		" plaster/wallpaper02base7"
+			"label"		" plaster/wallpaper02base"
 		}
 		"8"
 		{
@@ -56671,37 +56583,37 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,wallpaper/blue01;show_menu decals_wallpapers3"
-			"label"		" wallpaper/blue011"
+			"label"		" wallpaper/blue01"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,wallpaper/blue05;show_menu decals_wallpapers3"
-			"label"		" wallpaper/blue052"
+			"label"		" wallpaper/blue05"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,wallpaper/blue05c;show_menu decals_wallpapers3"
-			"label"		" wallpaper/blue05c3"
+			"label"		" wallpaper/blue05c"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,wallpaper/blue06;show_menu decals_wallpapers3"
-			"label"		" wallpaper/blue064"
+			"label"		" wallpaper/blue06"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,wallpaper/blue07;show_menu decals_wallpapers3"
-			"label"		" wallpaper/blue075"
+			"label"		" wallpaper/blue07"
 		}
 		"6"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,wallpaper/flowers02;show_menu decals_wallpapers3"
-			"label"		" wallpaper/flowers026"
+			"label"		" wallpaper/flowers02"
 		}
 		"7"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,wallpaper/red01;show_menu decals_wallpapers3"
-			"label"		" wallpaper/red017"
+			"label"		" wallpaper/red01"
 		}
 		"8"
 		{
@@ -56725,27 +56637,27 @@
 		"1"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,wallpaper/tan03;show_menu decals_wallpapers4"
-			"label"		" wallpaper/tan031"
+			"label"		" wallpaper/tan03"
 		}
 		"2"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,wallpaper/tanpanel01;show_menu decals_wallpapers4"
-			"label"		" wallpaper/tanpanel012"
+			"label"		" wallpaper/tanpanel01"
 		}
 		"3"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,wallpaper/yellow03;show_menu decals_wallpapers4"
-			"label"		" wallpaper/yellow033"
+			"label"		" wallpaper/yellow03"
 		}
 		"4"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,wallpaper/yellow03_A;show_menu decals_wallpapers4"
-			"label"		" wallpaper/yellow03_A4"
+			"label"		" wallpaper/yellow03_A"
 		}
 		"5"
 		{
 			"command"	"play buttons/button14;scripted_user_func decal,wallpaper/yellow05;show_menu decals_wallpapers4"
-			"label"		" wallpaper/yellow055"
+			"label"		" wallpaper/yellow05"
 		}
 		"8"
 		{
