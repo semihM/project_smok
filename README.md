@@ -81,6 +81,12 @@
 
     - [**Ragdolling**](#ragdoll)
 
+    - [**Texture commands**](#texture-commands)
+    
+    - [**Animation commands**](#animating-commands)
+  
+    - [**Experimental commands**](#experimental-commands)
+    
     - [**Other commands**](#other)
 
     - [**Debugging, scripting and setting related**](#debugging-scripting-and-settings-related)
@@ -606,10 +612,10 @@
 #### **prop**
 -  Create a prop of the given type with given model
 
-   Chat Syntax | (!,/,?)prop *type model_path extra_height yaw mass_scale*
+   Chat Syntax | (!,/,?)prop *type model_path origin_offset angles mass_scale*
    ------------- | -------------
 
-   Console Syntax | scripted_user_func *prop,type,model_path,extra_height,yaw,mass_scale* 
+   Console Syntax | scripted_user_func *prop,type,model_path,origin_offset,angles,mass_scale* 
    ------------- | -------------
     
    Menu Sequence | _6->1->1_ AND _6->1->2_ 
@@ -622,13 +628,12 @@
        // {model_path} follows the formats:
 	   //   - "models/props_{category}/{name}.mdl" for a specific model
 	   //	- "!random" for a random model
-	   //	- ">{custom_name}" for a customized prop
+	   //	- ">{custom_name}" for a customized prop. Available ones: heli, rescue_heli, c130, pickup_loaded, cargo_ship, soda_can 
 	   //
        // Multiple models can be given, seperated with "&" character, to create parented props ( parented by first model )
-	   //
-       // To check out all possible models: Left 4 Dead 2 Authoring Tools>Hammer World Editor>CTRL+N>CTRL+SHIFT+M>Search all models
-       prop {type: (physicsM, dynamic, ragdoll)} {model_path | !random | >custom_name} {extra_height} {yaw:degrees} {massScale}
-       prop {type: (physicsM, dynamic, ragdoll)} {model_path | !random | >custom_name} // extra_height = 0, yaw = 0, massScale = 1
+       // Use search_model and random_model commands to look for model names
+       prop {type: (physicsM, dynamic, ragdoll)} {model_path | !random | >custom_name} {origin_offset:(pos|{x_offset}|{y_offset}|{z_offset}, z_offset)} {angles:(ang|{pitch}|{yaw}|{roll}, yaw)} {massScale}
+       prop {type: (physicsM, dynamic, ragdoll)} {model_path | !random | >custom_name} // origin_offset = 0, angles = 0, massScale = 1
 
        // Example: Create a flower barrel with physics
        prop physicsM models/props_foliage/flower_barrel.mdl
@@ -642,8 +647,8 @@
        // Example: Create a physics prop car with its windows attached(parented by the car), model origins will match
        prop physicsM models/props_vehicles/cara_69sedan.mdl&models/props_vehicles/cara_69sedan_glass.mdl
 
-       // Example: Create a ragdoll of coach
-       prop ragdoll models/survivors/survivor_coach.mdl
+       // Example: Create a ragdoll of coach, 125 inches above aimed point, upside down
+       prop ragdoll models/survivors/survivor_coach.mdl 125 ang|180|0|0
 
        // Example: Create a helicopter, using it's custom settings 
        prop dynamic >heli
@@ -675,6 +680,86 @@
        
        // Example (dynamic prop with Gift model with color rgb(90,30,60) and angles Pitch,Yaw,Roll->(-30,10,0) ): 
        ent prop_dynamic model>models\items\l4d_gift.mdl&rendercolor>str|90|30|60&angles>ang|-30|10|0
+```
+---
+#### **search_model**
+- Search all models with a pattern or a keyword and print one or more names.
+
+   Chat Syntax | (!,/,?)search_model *pattern limit*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *search_model,pattern,limit*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+
+```cpp 
+        // Overloads:
+	// {pattern} allows regular expressions
+	// {limit} positive integer or "all"
+	// Models searched DO NOT have the "models/" prefix and ".mdl" suffix
+        search_model {pattern} {limit}
+        search_model {pattern}  // limit = 15
+        
+        // Example print maximum 3 model names with the word "bus" in them
+        search_model bus 3
+	
+        // Example print maximum 15 model names with the word "bus" in them
+        search_model furniture
+	
+        // Example print all model names starting with "props_junk/trash"
+        search_model ^props_junk/trash all
+```
+---
+#### **random_model**
+- Print random model names with or without a pattern or a keyword and print one or more names. Works similar to **search_model**
+
+   Chat Syntax | (!,/,?)random_model *limit pattern*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *random_model,limit,pattern*
+   ------------- | -------------
+    
+   Menu Sequence | _6->1->4_
+   ------------- | -------------
+
+```cpp 
+        // Overloads:
+	// {limit} positive integer or "all"
+	// {pattern} allows regular expressions
+	// Models searched DO NOT have the "models/" prefix and ".mdl" suffix
+        random_model {limit} {pattern} 
+        random_model {limit}  // pattern = no pattern
+        random_model // limit = 1, pattern = no pattern
+        
+        // Example print a random model name
+        random_model
+	
+        // Example print all model names with the word "mannequin" in them
+        random_model all mannequin
+```
+---
+#### **random_phys_model**
+- Print random physics model names with or without a pattern or a keyword and print one or more names. Works similar to **random_model**
+
+   Chat Syntax | (!,/,?)random_phys_model *limit pattern*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *random_phys_model,limit,pattern*
+   ------------- | -------------
+    
+   Menu Sequence | _6->1->5_
+   ------------- | -------------
+
+```cpp 
+        // Overloads:
+	// {limit} positive integer or "all"
+	// {pattern} allows regular expressions
+	// Models searched DO NOT have the "models/" prefix and ".mdl" suffix
+        random_phys_model {limit} {pattern} 
+        random_phys_model {limit}  // pattern = no pattern
+        random_phys_model // limit = 1, pattern = no pattern
 ```
 ---
 #### **save_model**
@@ -1075,6 +1160,23 @@
        randomline coach
 ```
 ---
+#### **pitch**
+- Change the pitch(talking speed) of voice line currently being spoken
+
+   Chat Syntax | (!,/,?)pitch *speed*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *pitch,speed*  
+   ------------- | -------------
+    
+   Menu Sequence | _6->5->5->1, 6->5->5->2, 6->5->5->3, 6->5->5->4 AND 6->5->5->6_
+   ------------- | -------------
+```cpp 
+       //Overloads:
+       // speed: Talking speed, default is 1.0
+       pitch {speed: float}
+```
+---
 #### **randomline_save_last**
 - Change state of saving the last random line spoken
 
@@ -1148,6 +1250,51 @@
 ```cpp 
        //Overloads:
        particle {name: particle_name | random}
+```
+---
+#### **search_particle**
+- Search particle effects with a pattern or a keyword 
+
+   Chat Syntax | (!,/,?)search_particle *pattern limit*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *search_particle,pattern,limit* 
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+
+```cpp
+       //Overloads:
+       // {pattern}: Regular expression or keyword
+       search_particle {pattern} {limit}
+       search_particle {pattern} // limit = 15
+       
+       // Example: Print 5 decal names with the word "fire" in them
+       search_particle fire 5 
+```
+---
+#### **random_particle**
+- Print random particle effects with or without a pattern or a keyword 
+
+   Chat Syntax | (!,/,?)random_particle *limit pattern*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *random_particle,limit,pattern* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->3->6->7->5_
+   ------------- | -------------
+
+```cpp
+       //Overloads:
+       // {pattern}: Regular expression or keyword
+       random_particle {limit} {pattern}
+       random_particle {limit} // pattern = no pattern
+       random_particle  // limit = 1 , pattern = no pattern
+       
+       // Example: Print 3 random particle names
+       random_particle 3 
 ```
 ---
 #### **spawn_particle_saved**
@@ -1287,23 +1434,6 @@
        // Example: Stop last sound played for everyone
        sound all stop
 ```
----
-#### **pitch**
-- Change the pitch(talking speed) of voice line currently being spoken
-
-   Chat Syntax | (!,/,?)pitch *speed*
-   ------------- | -------------
-
-   Console Syntax | scripted_user_func *pitch,speed*  
-   ------------- | -------------
-    
-   Menu Sequence | _6->5->5->1, 6->5->5->2, 6->5->5->3, 6->5->5->4 AND 6->5->5->6_
-   ------------- | -------------
-```cpp 
-       //Overloads:
-       // speed: Talking speed, default is 1.0
-       pitch {speed: float}
-``` 
 ---
 #### **sound_script_info**
 - Get information about a sound script
@@ -1854,7 +1984,7 @@
    Console Syntax | scripted_user_func *stop_time,target_type* 
    ------------- | -------------
     
-   Menu Sequence | _6->3->9->2 AND 6->3->9->2->9_
+   Menu Sequence | _6->3->9->1 AND 6->3->9->1->9_
    ------------- | -------------
 
 ```cpp
@@ -1878,7 +2008,7 @@
    Console Syntax | scripted_user_func *resume_time,target_type* 
    ------------- | -------------
     
-   Menu Sequence | _6->3->9->2 AND 6->3->9->2->9_
+   Menu Sequence | _6->3->9->1 AND 6->3->9->1->9_
    ------------- | -------------
 
 ```cpp
@@ -2086,47 +2216,160 @@
    ------------- | -------------
 
 ---
-### Other
+### Texture Commands
 
-#### **invisible_walls**
-- Enable/Disable **most if not all** of the invisible walls around. Some of them can not be disabled.
+#### **decal**
+- Place a decal(texture) at aimed point
 
-   Chat Syntax | (!,/,?)invisible_walls *state apply_to_all*
+   Chat Syntax | (!,/,?)decal *decal_path*
    ------------- | -------------
 
-   Console Syntax | scripted_user_func *invisible_walls,state,apply_to_all* 
+   Console Syntax | scripted_user_func *decal,decal_path* 
    ------------- | -------------
     
-   Menu Sequence | _6->9->9->6_
+   Menu Sequence | _6->3->9->2->1 AND 6->3->9->2->2_
    ------------- | -------------
+
 ```cpp
        //Overloads:
-       invisible_walls {state: (disable, enable)} {apply_to_all_possible_walls}
+       decal {decal_path: ({path_name} | random }
+       decal   // decal_path = random
        
-       //Example: Try disabling all invisible walls/clips
-       invisible_walls disable all
+       // Example: Place a random decal at aimed point
+       decal 
+       
+       // Example: Place a decal named "Decals/bloodstain_002"
+       decal Decals/bloodstain_002
 ```
 ---
-#### **ladder_team**
-- Change teams of ladders
+#### **search_decal**
+- Search decal names with a pattern or a keyword 
 
-   Chat Syntax | (!,/,?)ladder_team *team*
+   Chat Syntax | (!,/,?)search_decal *pattern limit*
    ------------- | -------------
 
-   Console Syntax | scripted_user_func *ladder_team,team* 
+   Console Syntax | scripted_user_func *search_decal,pattern,limit* 
    ------------- | -------------
     
-   Menu Sequence | _6->9->9->7_
+   Menu Sequence | _Not in the menu_
    ------------- | -------------
+
 ```cpp
        //Overloads:
-       // "reset" to reset ladders back to their default teams
-       ladder_team {team : (all,survivor,infected,spectator,l4d1) | reset}
-    
+       // {pattern}: Regular expression or keyword
+       search_decal {pattern} {limit}
+       search_decal {pattern} // limit = 15
+       
+       // Example: Print 5 decal names with the word "blood" in them
+       search_decal blood 5 
 ```
 ---
+#### **random_decal**
+- Print random decal names with or without a pattern or a keyword 
+
+   Chat Syntax | (!,/,?)random_decal *limit pattern*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *random_decal,limit,pattern* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->3->9->2->3_
+   ------------- | -------------
+
+```cpp
+       //Overloads:
+       // {pattern}: Regular expression or keyword
+       random_decal {limit} {pattern}
+       random_decal {limit} // pattern = no pattern
+       random_decal  // limit = 1 , pattern = no pattern
+       
+       // Example: Print maximum 5 decal names which has the words "Shell" or "shell" in them
+       random_decal 5 [Ss]hell 
+```
+---
+### Animation Commands
+
+#### **set_animation**
+- Start a animation or a sequence on the aimed object or the given target 
+
+   Chat Syntax | (!,/,?)set_animation *sequence_name_or_id targetname*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *set_animation,sequence_name_or_id,targetname* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->3->9->3->1_
+   ------------- | -------------
+
+```cpp
+       //Overloads:
+       // {pattern}: Regular expression or keyword
+       // {sequence_name_or_id}: If given value wasn't a valid sequence name, value is assumed to be a sequence index. If both fail, execution stops
+       set_animation {sequence_name_or_id: ({sequence_id} | {sequence_name} | !random } {targetname}
+       set_animation {sequence_name_or_id} // targetname = !picker
+       set_animation   // sequence_name_or_id = !random, targetname = !picker
+       
+       // Example: Start a random sequence on aimed object
+       set_animation 
+       
+       // Example: Start the sequence 24 of aimed object
+       set_animation 24
+       
+       // Example: Start the sequence named "crouchwalk_rifle" on #42
+       set_animation crouchwalk_rifle #42
+```
+---
+#### **search_animation**
+- Search animation names of aimed object or given target with a pattern or a keyword 
+
+   Chat Syntax | (!,/,?)search_animation *pattern limit targetname*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *search_animation,pattern,limit,targetname* 
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+
+```cpp
+       //Overloads:
+       // {pattern}: Regular expression or keyword
+       search_animation {pattern} {limit} {targetname: (#{ID} | {targetname} | !picker }
+       search_animation {pattern} {limit}   // targetname = !picker 
+       search_animation {pattern} // limit = 15 , targetname = !picker 
+       
+       // Example: Print all sequence names of aimed object with the word "walk" in them
+       search_animation walk all 
+```
+---
+#### **random_animation**
+- Print random animation names of aimed object or given target with or without a pattern or a keyword 
+
+   Chat Syntax | (!,/,?)random_animation *limit pattern targetname*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *random_animation,limit,pattern,targetname* 
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+
+```cpp
+       //Overloads:
+       // {pattern}: Regular expression or keyword
+       random_animation {limit} {pattern} {targetname: (#{ID} | {targetname} | !picker }
+       random_animation {limit} {pattern}   // targetname = !picker 
+       random_animation {limit} // pattern = no pattern , targetname = !picker 
+       random_animation  // limit = 1 , pattern = no pattern , targetname = !picker 
+       
+       // Example: Print maximum 4 sequence names of #66 which has the words "heal" or "Heal" in them
+       random_animation 4 [Hh]eal #66 
+```
+---
+### Experimental Commands
+
 #### **drive**
-- (**EXPERIMENTAL**)"Drive" targeted car/object or stop driving. **Hold left-click** to keep aiming forward, **DO NOT** jump while moving
+- "Drive" targeted car/object or stop driving. **Hold left-click** to keep aiming forward, **DO NOT** jump while moving
 
    Chat Syntax | (!,/,?)drive
    ------------- | -------------
@@ -2136,54 +2379,7 @@
     
    Menu Sequence | _6->9->9->9->3->1_
    ------------- | -------------
-
----
-#### **stop_car_alarms**
-- Stops all car alarms playing
-
-   Chat Syntax | (!,/,?)stop_car_alarms
-   ------------- | -------------
-
-   Console Syntax | scripted_user_func *stop_car_alarms* 
-   ------------- | -------------
-    
-   Menu Sequence | _6->9->5->1_
-   ------------- | -------------
- 
----
-#### **remove_fall_cams**
-- Remove falling follower cameras which lock movement and view. Example: Views on the No Mercy rooftop while falling
-
-   Chat Syntax | (!,/,?)remove_fall_cams
-   ------------- | -------------
-
-   Console Syntax | scripted_user_func *remove_fall_cams* 
-   ------------- | -------------
-    
-   Menu Sequence | _6->9->5->2_
-   ------------- | -------------
- 
----
-#### **hurt_triggers**
-- Remove falling follower cameras which lock movement and view. Example: Views on the No Mercy rooftop while falling
-
-   Chat Syntax | (!,/,?)hurt_triggers *state*
-   ------------- | -------------
-
-   Console Syntax | scripted_user_func *hurt_triggers,state* 
-   ------------- | -------------
-    
-   Menu Sequence | _6->9->5->3 and 6->9->5->4_
-   ------------- | -------------
-
-```cpp
-       //Overloads:
-       hurt_triggers {state:(enable,disable)}
-       hurt_triggers     // state = disable
-       
-       //Example: Re-enable hurt triggers in the map
-       hurt_triggers enable
-``` 
+   
 ---
 #### **wear_hat**
 - _Wear_ aimed object like a hat
@@ -2236,6 +2432,196 @@
        hat_position {attachment_point:(eyes, mouth, survivor_neck, ...)}
 ```
 ---
+#### **point_light**
+- Create a point light source pointing at objects at the moment of spawning
+
+   Chat Syntax | (!,/,?)point_light *light_color light_fov extra_height*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *point_light,light_color,light_fov,extra_height*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+
+```cpp
+       //Overloads
+       point_light {light_color: ( red,green,blue,yellow,cyan,magenta,pink,purple,white | random | {red}|{green}|{blue} )} {light_fov: degrees_between_0_180 | random} {extra_height}
+       point_light {light_color} {light_fov}  // extra_height = 0
+       point_light {light_color}  // light_fov = 90.0 , extra_height = 0
+       point_light   // light_color = random , light_fov = 90.0 , extra_height = 0
+       
+       // Example: Create a pink light with fov of 120
+       point_light pink 120
+       
+       // Example: Create a light with rgb : (200,80,150) , random fov, spawn it 10 inches above aimed point
+       point_light 200|80|150 random 10
+```
+---
+#### **point_light_follow**
+- Create a point light source pointing at objects all times.
+
+   Chat Syntax | (!,/,?)point_light_follow *light_color target light_fov extra_height*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *point_light_follow,light_color,target,light_fov,extra_height*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+
+```cpp
+       //Overloads
+       // {light_color} {light_fov} {extra_height} works same as point_light
+       point_light_follow {light_color} {target: (#{ID} | {targetname} | self)} {light_fov} {extra_height}
+       point_light_follow {light_color} {target} {light_fov}  // extra_height = 0
+       point_light_follow {light_color}  // target = self , light_fov = 90.0 , extra_height = 0
+       point_light_follow   // light_color = random , target = self , light_fov = 90.0 , extra_height = 0
+       
+       // Example: Create a red light pointing at you from the aimed point
+       point_light_follow red
+       
+       // Example: Create a light with rgb : (30,150,170) , 50 degrees fov, aiming at #555 spawn it 5 inches above aimed point
+       point_light_follow 30|150|170 #555 50 5
+```
+---
+#### **spawn_point_light**
+- Create a point light source pointing at objects using console variables. Works similar to **point_light** when used with no arguments, **point_light_follow** if a target is given.
+
+   Chat Syntax | (!,/,?)spawn_point_light *target*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *spawn_point_light,target*
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->7->1->variable->1, 6->9->9->9->7->1->variable->2 AND 6->9->9->9->7->1->variable->3_
+   ------------- | -------------
+
+```cpp
+       //Overloads
+       // {light_color} is taken from console variable:  ps_preferred_light_color (if not defined: random)
+       // {light_fov} is taken from console variable:  ps_preferred_light_fov (if not defined: 90.0)
+       // {extra_height} is taken from console variable: ps_preferred_light_raise (if not defined: 0)
+       spawn_point_light {target: (#{ID} | {targetname} | !self | !picker)}
+       spawn_point_light   // target = no target(only aims at you at spawn)
+       
+       // Example: Create a point light using current console variables
+       spawn_point_light
+       
+       // Example: Create a point light using current console variables, pointing at you all times
+       spawn_point_light !self
+       
+       // Example: Create a point light using current console variables, pointing at aimed object all times
+       spawn_point_light !picker
+```
+---
+#### **remove_lights**
+- Remove certain spawned point light sources.
+
+   Chat Syntax | (!,/,?)remove_lights *target*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *remove_lights,target*
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->7->1->variable->4_
+   ------------- | -------------
+
+```cpp
+       //Overloads
+       remove_lights {target: (#{ID} | {targetname} | !self | !picker | all)}
+       remove_lights  // target = all
+       
+       // Example: Remove all lights aiming at you
+       remove_lights !self
+```
+---
+### Other
+
+#### **invisible_walls**
+- Enable/Disable **most if not all** of the invisible walls around. Some of them can not be disabled.
+
+   Chat Syntax | (!,/,?)invisible_walls *state apply_to_all*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *invisible_walls,state,apply_to_all* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->6_
+   ------------- | -------------
+```cpp
+       //Overloads:
+       invisible_walls {state: (disable, enable)} {apply_to_all_possible_walls}
+       
+       //Example: Try disabling all invisible walls/clips
+       invisible_walls disable all
+```
+---
+#### **ladder_team**
+- Change teams of ladders
+
+   Chat Syntax | (!,/,?)ladder_team *team*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *ladder_team,team* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->7_
+   ------------- | -------------
+```cpp
+       //Overloads:
+       // "reset" to reset ladders back to their default teams
+       ladder_team {team : (all,survivor,infected,spectator,l4d1) | reset}
+    
+```
+---
+#### **stop_car_alarms**
+- Stops all car alarms playing
+
+   Chat Syntax | (!,/,?)stop_car_alarms
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *stop_car_alarms* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->5->1_
+   ------------- | -------------
+ 
+---
+#### **remove_fall_cams**
+- Remove falling follower cameras which lock movement and view. Example: Views on the No Mercy rooftop while falling
+
+   Chat Syntax | (!,/,?)remove_fall_cams
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *remove_fall_cams* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->5->2_
+   ------------- | -------------
+ 
+---
+#### **hurt_triggers**
+- Remove falling follower cameras which lock movement and view. Example: Views on the No Mercy rooftop while falling
+
+   Chat Syntax | (!,/,?)hurt_triggers *state*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *hurt_triggers,state* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->5->3 and 6->9->5->4_
+   ------------- | -------------
+
+```cpp
+       //Overloads:
+       hurt_triggers {state:(enable,disable)}
+       hurt_triggers     // state = disable
+       
+       //Example: Re-enable hurt triggers in the map
+       hurt_triggers enable
+``` 
+---
 #### **update_aimed_ent_direction**
 - Make aimed object face the same way as you
 
@@ -2247,20 +2633,7 @@
     
    Menu Sequence | _6->9->9->9->1->6->3_
    ------------- | -------------
-
----
-#### **random_model**
-- Prints a random model name to chat, only visible to caller
-
-   Chat Syntax | (!,/,?)random_model
-   ------------- | -------------
-
-   Console Syntax | scripted_user_func *random_model* 
-   ------------- | -------------
-    
-   Menu Sequence | _6->9->3->9->1_
-   ------------- | -------------
-                             
+                   
 ---
 #### **give_physics**
 - Enable physics on object(s) around a radius or of which aimed at
@@ -3154,7 +3527,7 @@
 ---
 ### Detailed Tables
 ---
-- There are currently **3** big tables containing detailed information about the objects in the game.
+- There are currently **5** big tables containing detailed information about the objects in the game.
   + **_NetPropTables_ : Contains network property members and their basic information for every base class defined.** 
      - **Example:** Access to render color member information of props:
        ```cpp
@@ -3178,6 +3551,23 @@
      - **Example:** Get **Zombat3_Intro_Fairgrounds** event details: 
        ```cpp
        ::SoundScipts["Event.Zombat3_Intro_Fairgrounds"]
+       ```
+     
+  + **_ModelDetails_ : Contains all built-in model data. Includes sequences defined for models** 
+     - **Example:** Get **props_vehicles/bus01** model details: 
+       ```cpp
+       ::ModelDetails["props_vehicles/bus01"]
+       ```
+       
+     - **Example:** Get **props_vehicles/c130** model sequence names(Some models may not have this property): 
+       ```cpp
+       ::ModelDetails["props_vehicles/c130"].sequences
+       ```  
+       
+  + **_MaterialDetails_ : Contains all built-in material tables** 
+     - **Example:** Get **lighthouse/river01** material table: 
+       ```cpp
+       ::MaterialDetails["lighthouse/river01"]
        ```
 ---
 ## Other Links
