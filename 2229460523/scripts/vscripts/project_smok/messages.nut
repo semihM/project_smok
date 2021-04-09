@@ -1629,8 +1629,35 @@
             {
                 local cmd = CMDDocs(
                     "random_model",
-                    [],
-                    "Prints out a random model path to chat only visible to caller"
+                    [
+                        CMDParam("limit","Maximum amount of paths to return",true,"uses 1"),
+                        CMDParam("pattern","Regular expression, keyword to include",true,"completely random picks")
+                    ],
+                    "Prints out a single or given amount of random model path(s)"
+                    )
+                return cmd.Describe();
+            }
+            random_phys_model = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "random_phys_model",
+                    [
+                        CMDParam("limit","Maximum amount of paths to return",true,"uses 1"),
+                        CMDParam("pattern","Regular expression, keyword to include",true,"completely random picks")
+                    ],
+                    "Prints out a single or given amount of random physics available model path(s)"
+                    )
+                return cmd.Describe();
+            }
+            search_model = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "search_model",
+                    [
+                        CMDParam("pattern","Regular expression, keyword to include"),
+                        CMDParam("limit","Maximum amount of paths to return",true,"uses 15")
+                    ],
+                    "Prints model paths following given pattern or has given keyword"
                     )
                 return cmd.Describe();
             }
@@ -2288,6 +2315,79 @@
                     )
                 return cmd.Describe();
             }
+            spawn_point_light = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "spawn_point_light",
+                    [
+                        CMDParam("target","Object to point at: (#{ID}|{targetname}|!self|!picker)",true,"no targets, points towards player")
+                    ],
+                    "Spawn a point light source facing the player or given target. If target is given, light tries pointing at it all times."
+                    )
+                return cmd.Describe();
+            }
+            point_light = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "point_light",
+                    [
+                        CMDParam("light_color","Color name| {{R}|{G}|{B}} | random",true,"uses a random color"),
+                        CMDParam("light_fov","FOV of light, >0 and <180 | random",true,"uses a random fov"),
+                        CMDParam("extra_height","Extra spawn height",true,"spawn light at aimed point")
+                    ],
+                    "Spawn a point light source facing the player."
+                    )
+                return cmd.Describe();
+            }
+            point_light_follow = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "point_light_follow",
+                    [
+                        CMDParam("light_color","Color name| {{R}|{G}|{B}} | random",true,"uses a random color"),
+                        CMDParam("target","Target to follow: (#{ID} | {targetname} | self)",true,"uses the player"),
+                        CMDParam("light_fov","FOV of light, >0 and <180 | random",true,"uses a random fov"),
+                        CMDParam("extra_height","Extra spawn height",true,"spawn light at aimed point")
+                    ],
+                    "Spawn a point light source facing the player or the given target at all times."
+                    )
+                return cmd.Describe();
+            }
+            decal = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "decal",
+                    [
+                        CMDParam("decal_path","Decal path|random",true,"a random texture is placed")
+                    ],
+                    "Place a texture at aimed point"
+                    )
+                return cmd.Describe();
+            }
+            search_decal = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "search_decal",
+                    [
+                        CMDParam("pattern","Regular expression, keyword to include"),
+                        CMDParam("limit","Maximum amount of paths to return",true,"uses 15")
+                    ],
+                    "Prints texture names following given pattern or has given keyword"
+                    )
+                return cmd.Describe();
+            }
+            random_decal = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "random_decal",
+                    [
+                        CMDParam("limit","Maximum amount of paths to return",true,"uses 1"),
+                        CMDParam("pattern","Regular expression, keyword to include",true,"completely random picks")
+                    ],
+                    "Prints a single or given amount of random texture names, allows patterns and keywords"
+                    )
+                return cmd.Describe();
+            }
             particle = function(player,args)
             {
                 local cmd = CMDDocs(
@@ -2296,6 +2396,68 @@
                         CMDParam("effect_name","Particle effect name|random")
                     ],
                     "Spawn a particle effect at aimed point"
+                    )
+                return cmd.Describe();
+            }
+            random_particle = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "random_particle",
+                    [
+                        CMDParam("limit","Maximum amount of paths to return",true,"uses 1"),
+                        CMDParam("pattern","Regular expression, keyword to include",true,"completely random picks")
+                    ],
+                    "Prints a single or given amount of random particle names, allows patterns and keywords"
+                    )
+                return cmd.Describe();
+            }
+            search_particle = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "search_particle",
+                    [
+                        CMDParam("pattern","Regular expression, keyword to include"),
+                        CMDParam("limit","Maximum amount of paths to return",true,"uses 15")
+                    ],
+                    "Prints particle effect names following given pattern or has given keyword"
+                    )
+                return cmd.Describe();
+            }
+            set_animation = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "set_animation",
+                    [
+                        CMDParam("sequence","Animation name or the sequence id | !random",true,"uses a random animation"),
+                        CMDParam("target","Target to animate: ({#ID} | {targetname} | !picker)",true,"uses aimed object")
+                    ],
+                    "Play animations/sequences on aimed object or given target"
+                    )
+                return cmd.Describe();
+            }
+            random_animation = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "random_animation",
+                    [
+                        CMDParam("limit","Maximum amount of names to return",true,"uses 1"),
+                        CMDParam("pattern","Regular expression, keyword to include",true,"completely random picks"),
+                        CMDParam("target","Target to get animations from: ({#ID} | {targetname} | !picker)",true,"uses aimed object")
+                    ],
+                    "Prints a single or given amount of random animation names picked from aimed object or the given target"
+                    )
+                return cmd.Describe();
+            }
+            search_animation = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "search_animation",
+                    [
+                        CMDParam("pattern","Regular expression, keyword to include"),
+                        CMDParam("limit","Maximum amount of names to return",true,"uses 15"),
+                        CMDParam("target","Target to get animations from: ({#ID} | {targetname} | !picker)",true,"uses aimed object")
+                    ],
+                    "Prints animation/sequence names following given pattern or has given keyword"
                     )
                 return cmd.Describe();
             }
@@ -2351,7 +2513,7 @@
                             CMDParam("text","Text to make yourself say")
                         ]
                     ],
-                    "Print given text as if it was said by given player(s)/yourself\nUse hex characters for non-alphabetical characters while using from console"
+                    "Print given text as if it was said by given player(s)/yourself\nUse hex characters for non-alphabetical characters while using from console\nCan't be used from chat"
                     )
                 return cmd.Describe();
             }
