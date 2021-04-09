@@ -1,5 +1,5 @@
 //-----------------------------------------------------
-printl("Activating Admin System");
+printl("Activating Admin System - project_smok");
 
 /**
  * Admin System by Rayman1103
@@ -23,6 +23,14 @@ IncludeScript("Resource_tables/EntityDetailTables");
 // Sound script tables
 IncludeScript("Resource_tables/SoundScripts");
 ::SoundScriptsArray <- Utils.TableToArray(::SoundScripts)
+// Material details table
+IncludeScript("Resource_tables/MaterialDetails");
+// Decal names table
+IncludeScript("Resource_tables/DecalPaths");
+// Model details table
+IncludeScript("Resource_tables/ModelDetails");
+::ModelNamesArray <- Utils.TableKeys(::ModelDetails)
+::PhysicsAvailableModels <- Utils.TableKeys(Utils.TableFilterByValue(::ModelDetails,@(v) "mass" in v))
 
 // Include the Message Class
 IncludeScript("Project_smok/Messages");
@@ -36,6 +44,8 @@ IncludeScript("Project_smok/AliasCompiler");
 IncludeScript("Project_smok/SpellChecker");
 // Include Zero-G and GivePhysics Limits
 IncludeScript("Project_smok/PhysicsLimits");
+
+printl(format("project_smok %s , Date: %s",::Constants.Version.Number,::Constants.Version.Date))
 
 // Messages
 ::CmdMessages <- ::Messages.BIM.CMD;
@@ -2756,9 +2766,49 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.MeleeCmd( player, args );
 			break;
 		}
+		case "random_decal":
+		{
+			AdminSystem.RandomDecalCmd( player, args );
+			break;
+		}
+		case "search_decal":
+		{
+			AdminSystem.SearchDecalCmd( player, args );
+			break;
+		}
+		case "decal":
+		{
+			AdminSystem.DecalCmd( player, args );
+			break;
+		}
+		case "spawn_point_light":
+		{
+			AdminSystem.SpawnPointLightCmd( player, args );
+			break;
+		}
+		case "point_light":
+		{
+			AdminSystem.PointLightCmd( player, args );
+			break;
+		}
+		case "point_light_follow":
+		{
+			AdminSystem.PointLightFollowCmd( player, args );
+			break;
+		}
 		case "particle":
 		{
 			AdminSystem.ParticleCmd( player, args );
+			break;
+		}
+		case "random_particle":
+		{
+			AdminSystem.RandomParticleCmd( player, args );
+			break;
+		}
+		case "search_particle":
+		{
+			AdminSystem.SearchParticleCmd( player, args );
 			break;
 		}
 		case "explosion_setting":
@@ -2836,9 +2886,34 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.GrabMethodCmd( player, args );
 			break;
 		}
+		case "set_animation":
+		{
+			AdminSystem.SetAnimationCmd( player, args );
+			break;
+		}
+		case "search_animation":
+		{
+			AdminSystem.SearchAnimationCmd( player, args );
+			break;
+		}
+		case "random_animation":
+		{
+			AdminSystem.RandomAnimationCmd( player, args );
+			break;
+		}
+		case "random_phys_model":
+		{
+			AdminSystem.RandomPhysModelCmd( player, args );
+			break;
+		}
 		case "random_model":
 		{
 			AdminSystem.RandomModelCmd( player, args );
+			break;
+		}
+		case "search_model":
+		{
+			AdminSystem.SearchModelCmd( player, args );
 			break;
 		}
 		case "model":
@@ -4156,7 +4231,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		local new_ent = null;
 		local keyvals = 
 		{
-			classname = "prop_physics_multiplayer",
+			classname = RagdollOrPhysicsDecider(ent.GetModel()),
 			model = ent.GetModel(),
 			origin = ent.GetOrigin(),
 			angles = ent.GetAngles(),
@@ -4169,6 +4244,8 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 		if(new_ent != null)
 		{
+			if(keyvals.classname == "prop_ragdoll")
+				new_ent.SetNetProp("m_CollisionGroup",1)
 			RecreateHierarchy(ent,new_ent,{color=color,skin=skin,scale=scale,name=ent.GetName()});
 		}
 		else
@@ -4199,6 +4276,31 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			converter.Input("Kill")
 		}
 	}
+}
+
+/*
+ * @authors rhino
+ */
+::ShortenModelName <- function(mdl)
+{
+	mdl = mdl.slice(mdl.find("/")+1)
+	mdl = mdl.slice(0,mdl.len()-4)
+	return mdl
+}
+::FixShortModelName <- function(mdl)
+{
+	return "models/" + mdl + ".mdl"
+}
+
+/*
+ * @authors rhino
+ */
+::CheckPhysicsAvailabilityForModel <- function(modelname)
+{	
+	if(modelname == "")
+		return false
+	modelname = ShortenModelName(modelname)
+	return "mass" in ::ModelDetails[modelname]
 }
 
 /*
@@ -4241,23 +4343,14 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		if(entclass == "player")
 			continue;
 
-		if(!(entmdl in ::FreePassModelNames))
-		{
-			if(entmdl in ::ForbiddenNoCollisionModels)
-				continue;
+		if(entmdl.find("*") != null)
+			continue;
+		
+		if((entmdl.find("hybridphysx") != null)) // Animation props etc ignored
+			continue;
 
-			local invalid = false
-			foreach(cat,_v in ::ForbiddenModelCategories)
-			{
-				if(entmdl.find(cat) != null)
-				{
-					invalid = true
-					break;
-				}
-			}
-			if(invalid)
-				continue
-		}
+		if((entmdl.find("skybox") != null)) // Skybox stuff
+			continue;
 
 		if(SessionState.MapName in ::GivePhysicsMapSpecificBans)
 		{ 
@@ -4299,15 +4392,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		else if(!AdminSystem.Vars._grabAvailable[entclass])
 			continue
 		
-		if(entmdl.find("*") != null)
-			continue;
-		
-		if((entmdl.find("hybridphysx") != null)) // Animation props etc ignored
-			continue;
+		if(!::CheckPhysicsAvailabilityForModel(entmdl))
+			continue
 
-		if((entmdl.find("skybox") != null)) // Skybox stuff
-			continue;
-			
 		i += 1
 		if(i > maxproc)
 		{
@@ -4416,23 +4503,14 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			if(entclass == "player")
 				continue;
 			
-			if(!(entmdl in ::FreePassModelNames))
-			{
-				if(entmdl in ::ForbiddenNoCollisionModels)
-					continue;
+			if(entmdl.find("*") != null)
+				continue;
+			
+			if((entmdl.find("hybridphysx") != null)) // Animation props etc ignored
+				continue;
 
-				local invalid = false
-				foreach(cat,_v in ::ForbiddenModelCategories)
-				{
-					if(entmdl.find(cat) != null)
-					{
-						invalid = true
-						break;
-					}
-				}
-				if(invalid)
-					continue
-			}
+			if((entmdl.find("skybox") != null)) // Skybox stuff
+				continue;
 				
 			if(SessionState.MapName in ::GivePhysicsMapSpecificBans)
 			{ 
@@ -4473,15 +4551,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			else if(!AdminSystem.Vars._grabAvailable[entclass])
 				continue
 			
-			if(entmdl.find("*") != null)
-				continue;
-			
-			if((entmdl.find("hybridphysx") != null)) // Animation props etc ignored
-				continue;
+			if(!::CheckPhysicsAvailabilityForModel(entmdl))
+				continue
 
-			if((entmdl.find("skybox") != null)) // Skybox stuff
-				continue;
-				
 			i += 1
 			if(i > maxproc)
 			{
@@ -9596,6 +9668,12 @@ function Notifications::OnAbilityUsed::_TankRockSpawning(player,ability,args)
 {
 	local clsname = "prop_physics_multiplayer"
 
+	foreach(m,_v in RagdollModelBans)
+	{	
+		if(mdl.find(m) != null)
+			return clsname
+	}
+
 	if(mdl.find("models/survivors/") != null 
 		|| mdl.find("models/infected/") != null 
 		|| mdl.find("models/deadbodies/") != null)
@@ -10177,6 +10255,38 @@ function ChatTriggers::restore_model( player, args, text )
 					? Messages.DocCmdPlayer(player,CmdDocs.restore_model(player,args))
 					: null
 
+function ChatTriggers::set_animation( player, args, text )
+{
+	AdminSystem.SetAnimationCmd( player, args );
+}
+::ChatTriggerDocs.set_animation <- @(player,args) AdminSystem.IsPrivileged(player) && "set_animation" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.set_animation(player,args))
+					: null
+
+function ChatTriggers::random_animation( player, args, text )
+{
+	AdminSystem.RandomAnimationCmd( player, args );
+}
+::ChatTriggerDocs.random_animation <- @(player,args) AdminSystem.IsPrivileged(player) && "random_animation" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.random_animation(player,args))
+					: null
+					
+function ChatTriggers::search_animation( player, args, text )
+{
+	AdminSystem.SearchAnimationCmd( player, args );
+}
+::ChatTriggerDocs.search_animation <- @(player,args) AdminSystem.IsPrivileged(player) && "search_animation" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.search_animation(player,args))
+					: null
+
+function ChatTriggers::random_phys_model( player, args, text )
+{
+	AdminSystem.RandomPhysModelCmd( player, args );
+}
+::ChatTriggerDocs.random_phys_model <- @(player,args) AdminSystem.IsPrivileged(player) && "random_phys_model" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.random_phys_model(player,args))
+					: null
+
 function ChatTriggers::random_model( player, args, text )
 {
 	AdminSystem.RandomModelCmd( player, args );
@@ -10185,6 +10295,14 @@ function ChatTriggers::random_model( player, args, text )
 					? Messages.DocCmdPlayer(player,CmdDocs.random_model(player,args))
 					: null
 
+function ChatTriggers::search_model( player, args, text )
+{
+	AdminSystem.SearchModelCmd( player, args );
+}
+::ChatTriggerDocs.search_model <- @(player,args) AdminSystem.IsPrivileged(player) && "search_model" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.search_model(player,args))
+					: null
+					
 function ChatTriggers::drive( player, args, text )
 {
 	AdminSystem.DriveCmd( player, args );
@@ -10849,12 +10967,76 @@ function ChatTriggers::melee( player, args, text )
 					? Messages.DocCmdPlayer(player,CmdDocs.melee(player,args))
 					: null
 
+function ChatTriggers::random_decal( player, args, text )
+{
+	AdminSystem.RandomDecalCmd( player, args );
+}
+::ChatTriggerDocs.random_decal <- @(player,args) AdminSystem.IsPrivileged(player) && "random_decal" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.random_decal(player,args))
+					: null
+
+function ChatTriggers::search_decal( player, args, text )
+{
+	AdminSystem.SearchDecalCmd( player, args );
+}
+::ChatTriggerDocs.search_decal <- @(player,args) AdminSystem.IsPrivileged(player) && "search_decal" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.search_decal(player,args))
+					: null
+
+function ChatTriggers::decal( player, args, text )
+{
+	AdminSystem.DecalCmd( player, args );
+}
+::ChatTriggerDocs.decal <- @(player,args) AdminSystem.IsPrivileged(player) && "decal" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.decal(player,args))
+					: null
+
+function ChatTriggers::spawn_point_light( player, args, text )
+{
+	AdminSystem.SpawnPointLightCmd( player, args );
+}
+::ChatTriggerDocs.spawn_point_light <- @(player,args) AdminSystem.IsPrivileged(player) && "spawn_point_light" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.spawn_point_light(player,args))
+					: null
+
+function ChatTriggers::point_light( player, args, text )
+{
+	AdminSystem.PointLightCmd( player, args );
+}
+::ChatTriggerDocs.point_light <- @(player,args) AdminSystem.IsPrivileged(player) && "point_light" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.point_light(player,args))
+					: null
+
+function ChatTriggers::point_light_follow( player, args, text )
+{
+	AdminSystem.PointLightFollowCmd( player, args );
+}
+::ChatTriggerDocs.point_light_follow <- @(player,args) AdminSystem.IsPrivileged(player) && "point_light_follow" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.point_light_follow(player,args))
+					: null
+
 function ChatTriggers::particle( player, args, text )
 {
 	AdminSystem.ParticleCmd( player, args );
 }
 ::ChatTriggerDocs.particle <- @(player,args) AdminSystem.IsPrivileged(player) && "particle" in CmdDocs
 					? Messages.DocCmdPlayer(player,CmdDocs.particle(player,args))
+					: null
+					
+function ChatTriggers::random_particle( player, args, text )
+{
+	AdminSystem.RandomParticleCmd( player, args );
+}
+::ChatTriggerDocs.random_particle <- @(player,args) AdminSystem.IsPrivileged(player) && "random_particle" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.random_particle(player,args))
+					: null
+					
+function ChatTriggers::search_particle( player, args, text )
+{
+	AdminSystem.SearchParticleCmd( player, args );
+}
+::ChatTriggerDocs.search_particle <- @(player,args) AdminSystem.IsPrivileged(player) && "search_particle" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.search_particle(player,args))
 					: null
 
 function ChatTriggers::barrel( player, args, text )
@@ -13218,16 +13400,390 @@ if ( Director.GetGameMode() == "holdout" )
 	g_ModeScript.SpawnMeleeWeapon( Melee, EyePosition, Vector(0,0,90) );
 }
 
+::AnimationModelMaps <- 
+{
+	"survivors/survivor_gambler" : "survivors/anim_gambler"
+	"survivors/survivor_mechanic" : "survivors/anim_mechanic"
+	"survivors/survivor_coach" : "survivors/anim_coach"
+	"survivors/survivor_producer" : "survivors/anim_producer"
+	"survivors/survivor_teenangst" : "survivors/anim_teenangst"
+	"survivors/survivor_namvet" : "survivors/anim_namvet"
+	"survivors/survivor_biker" : "survivors/anim_biker"
+	"infected/hunter" : "infected/anim_hunter"
+	"infected/hunter_l4d1" : "infected/anim_hunter"
+	"infected/boomer" : "infected/anim_boomer"
+	"infected/smoker" : "infected/anim_smoker"
+	"infected/charger" : "infected/anim_charger"
+	"infected/spitter" : "infected/anim_spitter"
+	"infected/jockey" : "infected/anim_jockey"
+	"infected/hulk" : "infected/anim_hulk"
+	"infected/witch" : "infected/anim_witch"
+	"infected/witch_bride" : "infected/anim_witch"
+}
+
 /*
  * @authors rhino
  */
-::AdminSystem.RandomModelCmd <- function(player,args)
+::AdminSystem.SetAnimationCmd <- function ( player, args )
 {
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	ClientPrint(player.GetBaseEntity(),3,"\x05"+RandomPick(::ModelPaths.all));
-} 
+	local ent = null
+	local target = GetArgument(2)
+	if(target != null && target != "!picker")
+	{
+		target = Entity(target)
+		if(!target.IsEntityValid())
+			return
+		ent = target
+	}
+	else if(target == null || target == "!picker")
+	{
+		ent = player.GetLookingEntity(TRACE_MASK_VISIBLE_AND_NPCS|TRACE_MASK_SHOT)
+		if(!ent)
+		{	
+			// Try to find aimed commentary_dummy 
+			local bestDot = 0.95;
+			local bestDist = null
+			local dist_tol = 0.01
+
+			local org = player.GetOrigin()
+			local facing = player.GetEyeAngles().Forward()
+			foreach(e in Objects.All())
+			{
+				if(e.GetClassname() != "commentary_dummy" && e.GetClassname() != "prop_physics_multiplayer")
+					continue
+				// Make vector to entity
+				local distvec = e.GetOrigin() - org;
+				local dist = distvec.Length()
+				if(bestDist == null)
+					bestDist = dist
+				distvec = distvec.Scale(1.0/dist)
+
+				local dot =  Utils.VectorDotProduct(facing,distvec);
+				if (dot <= bestDot)
+				{
+					if( bestDot - dot > dist_tol || dist > bestDist)
+						continue;
+				}
+					
+				bestDot	= dot;
+				ent = e;
+			}
+			
+			if(!ent)
+				return;
+		}
+	}
+	
+	local mdl = ent.GetModel()
+	if(mdl.find("*") != null)
+		return;
+	
+	mdl = ShortenModelName(mdl)
+ 
+	if(mdl in AnimationModelMaps)
+		mdl = AnimationModelMaps[mdl]
+
+	ent = ent.GetBaseEntity()
+
+	if(!("sequences" in ::ModelDetails[mdl]))
+		return
+
+	local seq_arr = ::ModelDetails[mdl].sequences
+
+	local seq = GetArgument(1)
+	
+	if(!seq || seq == "!random")
+	{
+		seq = Utils.GetRandValueFromArray(seq_arr)
+	}
+	
+	local seq_id = ent.LookupSequence(seq)
+	if(seq_id == -1)
+	{
+		try
+		{
+			seq_id = seq.tointeger()
+			seq = ent.GetSequenceName(seq_id)
+			if(seq == "Not Found!")
+				return
+		}
+		catch(e)
+		{
+			return
+		}
+	}
+
+	if(ent.GetClassname() == "commentary_dummy")
+		ent.SetSequence(seq_id)
+	else
+		DoEntFire("!self","setanimation",seq,0,null,ent)
+
+	::Printer(player,"Starting animation("+TXTCLR.OG(seq_id)+") named "+TXTCLR.OR(seq)+" on "+TXTCLR.BG("#"+ent.GetEntityIndex()))
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.RandomAnimationCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	local ent = null
+	local target = GetArgument(3)
+	if(target != null && target != "!picker")
+	{
+		target = Entity(target)
+		if(!target.IsEntityValid())
+			return
+		ent = target
+	}
+	else if(target == null || target == "!picker")
+	{
+		ent = player.GetLookingEntity(TRACE_MASK_VISIBLE_AND_NPCS|TRACE_MASK_SHOT)
+		if(!ent)
+		{	
+			// Try to find aimed commentary_dummy 
+			local bestDot = 0.95;
+			local bestDist = null
+			local dist_tol = 0.01
+
+			local org = player.GetOrigin()
+			local facing = player.GetEyeAngles().Forward()
+			foreach(e in Objects.All())
+			{
+				if(e.GetClassname() != "commentary_dummy" && e.GetClassname() != "prop_physics_multiplayer")
+					continue
+				// Make vector to entity
+				local distvec = e.GetOrigin() - org;
+				local dist = distvec.Length()
+				if(bestDist == null)
+					bestDist = dist
+				distvec = distvec.Scale(1.0/dist)
+
+				local dot =  Utils.VectorDotProduct(facing,distvec);
+				if (dot <= bestDot)
+				{
+					if( bestDot - dot > dist_tol || dist > bestDist)
+						continue;
+				}
+					
+				bestDot	= dot;
+				ent = e;
+			}
+			
+			if(!ent)
+				return;
+		}
+	}
+	local mdl = ent.GetModel()
+	if(mdl.find("*") != null)
+		return;
+	
+	mdl = ShortenModelName(mdl)
+ 
+	if(mdl in AnimationModelMaps)
+		mdl = AnimationModelMaps[mdl]
+
+	ent = ent.GetBaseEntity()
+
+	if(!("sequences" in ::ModelDetails[mdl]))
+		return
+
+	local seq_arr = ::ModelDetails[mdl].sequences
+
+	local limit = GetArgument(1)
+	local pattern = GetArgument(2)
+	if(!limit)
+		limit = 1
+	else
+		limit = limit.tointeger()
+		
+	if(!pattern)
+	{
+		if (limit == 1)
+			Printer(player,Utils.GetRandValueFromArray(seq_arr))
+		else
+			Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArray(seq_arr,limit)))
+	}
+	else if (limit == 1)
+		Printer(player,Utils.GetRandValueFromArray(Utils.ArraySearchFilterReturnAll(seq_arr,pattern)))
+	else
+		Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArray(Utils.ArraySearchFilterReturnAll(seq_arr,pattern),limit)))
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.SearchAnimationCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local pattern = GetArgument(1)
+	if(!pattern)
+		return
+
+	local limit = GetArgument(2)
+	local target = GetArgument(3)
+
+	local ent = null
+	if(target != null && target != "!picker")
+	{
+		target = Entity(target)
+		if(!target.IsEntityValid())
+			return
+		ent = target
+	}
+	else if(target == null || target == "!picker")
+	{
+		ent = player.GetLookingEntity(TRACE_MASK_VISIBLE_AND_NPCS|TRACE_MASK_SHOT)
+		if(!ent)
+		{	
+			// Try to find aimed commentary_dummy 
+			local bestDot = 0.95;
+			local bestDist = null
+			local dist_tol = 0.01
+
+			local org = player.GetOrigin()
+			local facing = player.GetEyeAngles().Forward()
+			foreach(e in Objects.All())
+			{
+				if(e.GetClassname() != "commentary_dummy" && e.GetClassname() != "prop_physics_multiplayer")
+					continue
+				// Make vector to entity
+				local distvec = e.GetOrigin() - org;
+				local dist = distvec.Length()
+				if(bestDist == null)
+					bestDist = dist
+				distvec = distvec.Scale(1.0/dist)
+
+				local dot =  Utils.VectorDotProduct(facing,distvec);
+				if (dot <= bestDot)
+				{
+					if( bestDot - dot > dist_tol || dist > bestDist)
+						continue;
+				}
+					
+				bestDot	= dot;
+				ent = e;
+			}
+			
+			if(!ent)
+				return;
+		}
+	}	
+	local mdl = ent.GetModel()
+	if(mdl.find("*") != null)
+		return;
+	
+	mdl = ShortenModelName(mdl)
+	
+	if(mdl in AnimationModelMaps)
+		mdl = AnimationModelMaps[mdl]
+
+	ent = ent.GetBaseEntity()
+
+	if(!("sequences" in ::ModelDetails[mdl]))
+		return
+
+	local seq_arr = ::ModelDetails[mdl].sequences
+
+	if(!limit)
+		limit = 15
+	else if(limit != "all")
+		limit = limit.tointeger()
+		
+	if(limit == "all")
+		Printer(player,Utils.ArrayString(Utils.ArraySearchFilterReturnAll(seq_arr,pattern,@(s) s)))
+	else if (limit == 1)
+		Printer(player,Utils.GetRandValueFromArray(Utils.ArraySearchFilterReturnAll(seq_arr,pattern)))
+	else
+		Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArray(Utils.ArraySearchFilterReturnAll(seq_arr,pattern),limit)))
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.RandomPhysModelCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local limit = GetArgument(1)
+	local pattern = GetArgument(2)
+	if(!limit)
+		limit = 1
+	else
+		limit = limit.tointeger()
+		
+	if(!pattern)
+	{
+		if (limit == 1)
+			Printer(player,FixShortModelName(Utils.GetRandValueFromArray(::PhysicsAvailableModels)))
+		else
+			Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArrayFilter(PhysicsAvailableModels,limit,@(v,c) FixShortModelName(v))))
+	}
+	else if (limit == 1)
+		Printer(player,FixShortModelName(Utils.GetRandValueFromArray(Utils.ArraySearchFilterReturnAll(::PhysicsAvailableModels,pattern))))
+	else
+		Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArrayFilter(Utils.ArraySearchFilterReturnAll(::PhysicsAvailableModels,pattern),limit,@(v,c) FixShortModelName(v))))
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.RandomModelCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local limit = GetArgument(1)
+	local pattern = GetArgument(2)
+	if(!limit)
+		limit = 1
+	else
+		limit = limit.tointeger()
+		
+	if(!pattern)
+	{
+		if (limit == 1)
+			Printer(player,FixShortModelName(Utils.GetRandValueFromArray(::ModelNamesArray)))
+		else
+			Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArrayFilter(ModelNamesArray,limit,@(v,c) FixShortModelName(v))))
+	}
+	else if (limit == 1)
+		Printer(player,FixShortModelName(Utils.GetRandValueFromArray(Utils.ArraySearchFilterReturnAll(::ModelNamesArray,pattern))))
+	else
+		Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArrayFilter(Utils.ArraySearchFilterReturnAll(::ModelNamesArray,pattern),limit,@(v,c) FixShortModelName(v))))
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.SearchModelCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local pattern = GetArgument(1)
+	local limit = GetArgument(2)
+	if(!limit)
+		limit = 15
+	else if(limit != "all")
+		limit = limit.tointeger()
+		
+	if(!pattern)
+		return
+	else if(limit == "all")
+		Printer(player,Utils.ArrayString(Utils.ArraySearchFilterReturnAll(ModelNamesArray,pattern,@(s) s, @(v,c) FixShortModelName(v))))
+	else if (limit == 1)
+		Printer(player,FixShortModelName(Utils.GetRandValueFromArray(Utils.ArraySearchFilterReturnAll(ModelNamesArray,pattern))))
+	else
+		Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArrayFilter(Utils.ArraySearchFilterReturnAll(ModelNamesArray,pattern),limit,@(v,c) FixShortModelName(v))))
+}
 
 /*
  * @authors rhino
@@ -13243,7 +13799,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local ent = GetArgument(1);
 	
 	if(ent == "!picker")
-		ent = player.GetLookingEntity();
+		ent = player.GetLookingEntity(TRACE_MASK_VISIBLE_AND_NPCS|TRACE_MASK_SHOT);
 	else if(ent == "!self")
 		ent = player;
 	else if(ent.find("#") != null)
@@ -13307,7 +13863,7 @@ if ( Director.GetGameMode() == "holdout" )
 	
 	local ent = GetArgument(1);
 	if(ent == "!picker")
-		ent = player.GetLookingEntity();
+		ent = player.GetLookingEntity(TRACE_MASK_VISIBLE_AND_NPCS|TRACE_MASK_SHOT);
 	else if(ent == "!self")
 		ent = player;
 	else if(ent.find("#") != null)
@@ -13346,7 +13902,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if(::VSLib.EasyLogic.NextMapContinues)
 		return;
 	
-	local ent = player.GetLookingEntity();
+	local ent = player.GetLookingEntity(TRACE_MASK_VISIBLE_AND_NPCS|TRACE_MASK_SHOT);
 	
 	if(ent == null)
 	{
@@ -13391,6 +13947,147 @@ if ( Director.GetGameMode() == "holdout" )
 /*
  * @authors rhino
  */
+::AdminSystem.RandomDecalCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local limit = GetArgument(1)
+	local pattern = GetArgument(2)
+	if(!limit)
+		limit = 1
+	else
+		limit = limit.tointeger()
+		
+	if(!pattern)
+	{
+		if (limit == 1)
+			Printer(player,Utils.GetRandValueFromArray(::DecalPaths.all))
+		else
+			Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArray(DecalPaths.all,limit)))
+	}
+	else if (limit == 1)
+		Printer(player,Utils.GetRandValueFromArray(Utils.ArraySearchFilterReturnAll(::DecalPaths.all,pattern)))
+	else
+		Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArray(Utils.ArraySearchFilterReturnAll(::DecalPaths.all,pattern),limit)))
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.SearchDecalCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local pattern = GetArgument(1)
+	local limit = GetArgument(2)
+	if(!limit)
+		limit = 15
+	else if(limit != "all")
+		limit = limit.tointeger()
+		
+	if(!pattern)
+		return
+	else if(limit == "all")
+		Printer(player,Utils.ArrayString(Utils.ArraySearchFilterReturnAll(::DecalPaths.all,pattern)))
+	else if (limit == 1)
+		Printer(player,Utils.GetRandValueFromArray(Utils.ArraySearchFilterReturnAll(::DecalPaths.all,pattern)))
+	else
+		Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArray(Utils.ArraySearchFilterReturnAll(::DecalPaths.all,pattern),limit)))
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.DecalCmd <- function ( player, args )
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local name = player.GetCharacterNameLower();
+	local decal = GetArgument(1);
+	if(!decal || decal == "random")
+		decal = Utils.GetRandValueFromArray(::DecalPaths.all)
+	
+	local use_eye_angles = GetArgument(2)
+
+	local keyvals = 
+	{
+		classname = "infodecal"
+		texture = decal
+		origin = player.GetLookingLocation()
+		angles = use_eye_angles ? player.GetEyeAngles() : QAngle(0,0,0)
+	}
+
+	local dec_ent = Utils.CreateEntityWithTable(keyvals)
+	if(dec_ent)
+	{
+		DoEntFire("!self","Activate","",0,null,dec_ent.GetBaseEntity())
+		Printer(player,"Created decal: "+decal);
+	}
+	else
+	{
+		Printer(player,"Failed to create decal: "+decal)
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.RandomParticleCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local limit = GetArgument(1)
+	local pattern = GetArgument(2)
+	if(!limit)
+		limit = 1
+	else
+		limit = limit.tointeger()
+		
+	if(!pattern)
+	{
+		if (limit == 1)
+			Printer(player,Utils.GetRandValueFromArray(::Particlenames.names))
+		else
+			Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArray(::Particlenames.names,limit)))
+	}
+	else if (limit == 1)
+		Printer(player,Utils.GetRandValueFromArray(Utils.ArraySearchFilterReturnAll(::Particlenames.names,pattern)))
+	else
+		Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArray(Utils.ArraySearchFilterReturnAll(::Particlenames.names,pattern),limit)))
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.SearchParticleCmd <- function ( player, args )
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local pattern = GetArgument(1)
+	local limit = GetArgument(2)
+	if(!limit)
+		limit = 15
+	else if(limit != "all")
+		limit = limit.tointeger()
+		
+	if(!pattern)
+		return
+	else if(limit == "all")
+		Printer(player,Utils.ArrayString(Utils.ArraySearchFilterReturnAll(::Particlenames.names,pattern)))
+	else if (limit == 1)
+		Printer(player,Utils.GetRandValueFromArray(Utils.ArraySearchFilterReturnAll(::Particlenames.names,pattern)))
+	else
+		Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArray(Utils.ArraySearchFilterReturnAll(::Particlenames.names,pattern),limit)))
+}
+
+/*
+ * @authors rhino
+ */
 ::AdminSystem.ParticleCmd <- function ( player, args )
 {	
 	if (!AdminSystem.IsPrivileged( player ))
@@ -13412,6 +14109,339 @@ if ( Director.GetGameMode() == "holdout" )
 	g_ModeScript.CreateParticleSystemAt( null, EyePosition, Particle, true );
 
 	Printer(player,CmdMessages.Particles.SpawnSuccess(Particle,EyePosition));
+}
+
+/*
+ * @authors rhino
+ * TO-DO: Redundant af, clean it up
+ */
+::AdminSystem.SpawnPointLightCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local colors =
+	{
+		white = "255 255 255 200"
+		red = "255 0 0 200"
+		green = "0 255 0 200"
+		blue = "0 0 255 200"
+		yellow = "255 255 0 200"
+		cyan = "0 255 255 200"
+		magenta = "255 0 255 200"
+		purple = "128 0 128 200"
+		pink = "205 105 180 200"
+	}
+
+	local playeridx = player.GetIndex()
+	local color = Convars.GetClientConvarValue("ps_preferred_light_color",playeridx)
+
+	if(!color || color == "random" || color == "")
+		color = colors[Utils.GetRandValueFromArray(Utils.TableKeys(colors))]
+	else
+	{	
+		if(color in colors)
+			color = colors[color]
+		else
+			color = CastCustomSetting(player,["color","str|"+color])+" 200"
+	}
+	local EyePosition = player.GetLookingLocation();
+	local move_closer = player.GetEyeAngles().Forward().Scale(-2)
+	
+	local fov = Convars.GetClientConvarValue("ps_preferred_light_fov",playeridx)
+	if(!fov || fov == "")
+		fov = 90.0
+	else if(fov == "random")
+	{
+		fov = RandomInt(1,179)
+	}
+	else
+	{	
+		fov = fov.tofloat()
+		if (fov >= 180) // TO-DO: Maybe spawn 2 more facing the other side(no overlapping)
+			fov = 179
+		else if (fov <= 0)
+			fov = 1
+	}
+
+	local extra_height = Convars.GetClientConvarValue("ps_preferred_light_raise",playeridx)
+	if(!extra_height || extra_height == "")
+		extra_height = 0
+	else
+		extra_height = extra_height.tofloat()
+
+	local kvs =
+	{
+		classname = "env_projectedtexture"
+		origin = EyePosition+move_closer+Vector(0,0,extra_height)
+		spawnflags = 1
+		enableshadows = 1
+		shadowquality = 1
+
+		lightcolor = color
+		lightonlytarget = 0
+		cameraspace = 0
+
+		nearz = 0.5
+		farz = 450.0
+		lightfov = fov
+	}
+	local target = GetArgument(1)
+	if(!target)
+		kvs.angles <- RotateOrientation(player.GetEyeAngles(),QAngle(180,0,0))
+	else
+	{
+		if(target == "!self")
+			target = "#"+playeridx
+		else if(target == "!picker")
+		{
+			local aimed = player.GetLookingEntity()
+			if(!aimed)
+				return
+			target = "#"+aimed.GetIndex()
+		}
+		else
+		{
+			local t_ent = Entity(target)
+			if(!t_ent.IsEntityValid())
+				return
+			target = "#"+t_ent.GetIndex()
+		}
+		kvs.target <- target
+	}
+	local ent = Utils.CreateEntityWithTable(kvs)
+	ent.SetFlags(1)
+
+	DoEntFire("!self","TurnOff","",0,null,ent.GetBaseEntity())
+	DoEntFire("!self","TurnOn","",0.3,null,ent.GetBaseEntity())
+	
+	if(target)
+	{
+		ent.GetScriptScope()["thinktime"] <- 0
+		ent.GetScriptScope()["target"] <- Entity(kvs.target).GetIndex()
+		ent.GetScriptScope()["lastorg"] <- Entity(kvs.target).GetOrigin()
+		local transitional = Utils.CreateEntityWithTable(kvs)
+		transitional.SetFlags(1)
+
+		ent.GetScriptScope()["transit"] <- "#"+transitional.GetIndex()
+
+		DoEntFire("!self","SetParent","#"+ent.GetIndex(),0,null,transitional.GetBaseEntity())
+		DoEntFire("!self","TurnOff","",0,null,transitional.GetBaseEntity())
+		
+		AddThinkToEnt(ent.GetBaseEntity(),"EnvProjectTextureTraceFunc")
+	}
+
+	Printer(player,CmdMessages.Prop.Success(format("light <color: %s> <fov: %s>",kvs.lightcolor,kvs.lightfov.tostring()),ent));
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.PointLightCmd <- function ( player, args )
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local color = GetArgument(1);
+	local colors =
+	{
+		white = "255 255 255 200"
+		red = "255 0 0 200"
+		green = "0 255 0 200"
+		blue = "0 0 255 200"
+		yellow = "255 255 0 200"
+		cyan = "0 255 255 200"
+		magenta = "255 0 255 200"
+		purple = "128 0 128 200"
+		pink = "205 105 180 200"
+	}
+	if(!color || color == "random")
+		color = colors[Utils.GetRandValueFromArray(Utils.TableKeys(colors))]
+	else
+	{	
+		if(color in colors)
+			color = colors[color]
+		else
+			color = CastCustomSetting(player,["color","str|"+color])+" 200"
+	}
+	local EyePosition = player.GetLookingLocation();
+	local move_closer = player.GetEyeAngles().Forward().Scale(-2)
+	
+	local fov = GetArgument(2)
+	if(!fov)
+		fov = 90.0
+	else if(fov == "random")
+	{
+		fov = RandomInt(1,179)
+	}
+	else
+	{	
+		fov = fov.tofloat()
+		if (fov >= 180) // TO-DO: Maybe spawn 2 more facing the other side(no overlapping)
+			fov = 179
+		else if (fov <= 0)
+			fov = 1
+	}
+
+	local extra_height = GetArgument(3)
+	if(!extra_height)
+		extra_height = 0
+	else
+		extra_height = extra_height.tofloat()
+
+	local kvs =
+	{
+		classname = "env_projectedtexture"
+		origin = EyePosition+move_closer+Vector(0,0,extra_height)
+		angles = RotateOrientation(player.GetEyeAngles(),QAngle(180,0,0))
+		spawnflags = 1
+		enableshadows = 1
+		shadowquality = 1
+
+		lightcolor = color
+		lightonlytarget = 0
+		cameraspace = 0
+
+		nearz = 0.5
+		farz = 450.0
+		lightfov = fov
+	}
+	local ent = Utils.CreateEntityWithTable(kvs)
+	ent.SetFlags(1)
+	
+	DoEntFire("!self","TurnOff","",0,null,ent.GetBaseEntity())
+	DoEntFire("!self","TurnOn","",0.3,null,ent.GetBaseEntity())
+
+	Printer(player,CmdMessages.Prop.Success(format("light <color: %s> <fov: %s>",kvs.lightcolor,kvs.lightfov.tostring()),ent));
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.PointLightFollowCmd <- function ( player, args )
+{	
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local playeridx = player.GetIndex()
+	local color = GetArgument(1);
+	local colors =
+	{
+		white = "255 255 255 200"
+		red = "255 0 0 200"
+		green = "0 255 0 200"
+		blue = "0 0 255 200"
+		yellow = "255 255 0 200"
+		cyan = "0 255 255 200"
+		magenta = "255 0 255 200"
+		purple = "128 0 128 200"
+		pink = "205 105 180 200"
+	}
+	if(!color || color == "random")
+		color = colors[Utils.GetRandValueFromArray(Utils.TableKeys(colors))]
+	else
+	{	
+		if(color in colors)
+			color = colors[color]
+		else
+			color = CastCustomSetting(player,["color","str|"+color])+" 200"
+	}
+	local EyePosition = player.GetLookingLocation();
+	local move_closer = player.GetEyeAngles().Forward().Scale(-2)
+	
+	local target = GetArgument(2)
+	if(!target || target == "self")
+		target = "#"+playeridx
+
+	local targetent = Entity(target)
+	if(!targetent.IsEntityValid()) 
+		return
+
+	local fov = GetArgument(3)
+	if(!fov)
+		fov = 90.0
+	else if(fov == "random")
+	{
+		fov = RandomInt(1,179)
+	}
+	else
+	{	
+		fov = fov.tofloat()
+		if (fov >= 180)
+			fov = 179
+		else if (fov <= 0)
+			fov = 1
+	}
+
+	local extra_height = GetArgument(4)
+	if(!extra_height)
+		extra_height = 0
+	else
+		extra_height = extra_height.tofloat()
+
+	local kvs =
+	{
+		classname = "env_projectedtexture"
+		origin = EyePosition+move_closer+Vector(0,0,extra_height)
+		spawnflags = 1
+		enableshadows = 1
+		shadowquality = 1
+
+		target = "#"+playeridx
+		lightcolor = color
+		lightonlytarget = 0
+		cameraspace = 0
+
+		nearz = 0.5
+		farz = 450.0
+		lightfov = fov
+	}
+	local ent = Utils.CreateEntityWithTable(kvs)
+	ent.SetFlags(1)
+	
+	ent.GetScriptScope()["thinktime"] <- 0
+	ent.GetScriptScope()["target"] <- playeridx
+	ent.GetScriptScope()["lastorg"] <- player.GetOrigin()
+	DoEntFire("!self","TurnOff","",0,null,ent.GetBaseEntity())
+	DoEntFire("!self","TurnOn","",0.3,null,ent.GetBaseEntity())
+
+
+	local transitional = Utils.CreateEntityWithTable(kvs)
+	transitional.SetFlags(1)
+
+	ent.GetScriptScope()["transit"] <- "#"+transitional.GetIndex()
+
+	DoEntFire("!self","SetParent","#"+ent.GetIndex(),0,null,transitional.GetBaseEntity())
+	DoEntFire("!self","TurnOff","",0,null,transitional.GetBaseEntity())
+	
+	AddThinkToEnt(ent.GetBaseEntity(),"EnvProjectTextureTraceFunc")
+
+	Printer(player,CmdMessages.Prop.Success(format("light <color: %s> <fov: %s>",kvs.lightcolor,kvs.lightfov.tostring()),ent));
+}
+
+::EnvProjectTextureTraceFunc <- function(...)
+{
+	if(self.GetScriptScope()["thinktime"] == 1)
+	{
+		if((Ent(self.GetScriptScope()["target"]).GetOrigin()-self.GetScriptScope()["lastorg"]).Length() > 2)
+		{
+			//AdminSystem.out(TXTCLR.BG(Time()))
+			self.GetScriptScope()["thinktime"] = 0
+			self.GetScriptScope()["lastorg"] = Ent(self.GetScriptScope()["target"]).GetOrigin()
+
+			NetProps.SetPropIntArray( self, "m_bState", 0, 0);
+			NetProps.SetPropIntArray( Ent(self.GetScriptScope()["transit"]), "m_bState", 1, 0);
+
+			DoEntFire("!self","RunScriptCode","NetProps.SetPropIntArray( self, \"m_bState\", 1, 0)",0.05,null,self)
+			DoEntFire(self.GetScriptScope()["transit"],"RunScriptCode","NetProps.SetPropIntArray( self, \"m_bState\", 0, 0)",0.05,null,self)
+		}
+		// TO-DO: Sometimes both lights are off, write fallback here
+	}
+	else
+	{
+		NetProps.SetPropIntArray( Ent(self.GetScriptScope()["transit"]), "m_bState", 0, 0);
+		self.GetScriptScope()["thinktime"] = self.GetScriptScope()["thinktime"] + 1
+	}
 }
 
 /* @authors rhino
@@ -15003,48 +16033,74 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
-	function PostSettingsManualChanges(raise,yaw,tbl)
+	function PostSettingsManualChanges(raise,yaw,tbl,player)
 	{
 		if(raise != null)
 		{
-			try
+			if(raise.find("|") != null)
 			{
-				raise = raise.tofloat();
+				raise = CastCustomSetting(player,["origin_offset",raise])
+				tbl.origin = tbl.origin + raise;
 			}
-			catch(e)
+			else
 			{
-				printl("<"+(typeof raise)+"> type "+raise+" couldnt be parsed as float.");
-				raise = 0
+				try
+				{
+					raise = raise.tofloat();
+				}
+				catch(e)
+				{
+					printl("<"+(typeof raise)+"> type "+raise+" couldnt be parsed as float.");
+					raise = 0
+				}
+				tbl.origin = tbl.origin + Vector(0,0,raise);
+
 			}
-			tbl.origin = tbl.origin + Vector(0,0,raise);
 		}
 		if(yaw != null)
 		{
-			try
+			if(yaw.find("|") != null)
 			{
-				yaw = yaw.tofloat();
+				yaw = CastCustomSetting(player,["angle_offset",yaw])
+				tbl.angles = tbl.angles + yaw;
 			}
-			catch(e)
+			else
 			{
-				printl("<"+(typeof yaw)+"> type "+yaw+" couldnt be parsed as float.");
-				yaw = 0
+				try
+				{
+					yaw = yaw.tofloat();
+				}
+				catch(e)
+				{
+					printl("<"+(typeof yaw)+"> type "+yaw+" couldnt be parsed as float.");
+					yaw = 0
+				}
+				tbl.angles = tbl.angles + QAngle(0,yaw,0);
 			}
-			tbl.angles = tbl.angles + QAngle(0,yaw,0);
 		}
 	}
 
 	local typename = GetArgument(1);
+	local propsettingname = (typename == "physics" || typename == "physicsM") ? "physics"
+							: (typename == "ragdoll") ? "ragdoll"
+								: "dynamic"
 	local MDL = GetArgument(2);
 	local israndom = false
 	if(MDL == "!random")
 	{
 		israndom = true
-		local nonparentedlen = ::ModelPaths.all.len()
+		local nonparentedlen = ::ModelNamesArray.len()
 		local parentedlen = ::ModelPaths.parented.len()
 		if( ( rand() % (nonparentedlen + parentedlen) ) < parentedlen ) // Randomly pick between single or parented
 			MDL = RandomPick(::ModelPaths.parented)
 		else
-			MDL = RandomPick(::ModelPaths.all)
+		{
+			if(propsettingname == "physics")
+				MDL = "models/"+RandomPick(::PhysicsAvailableModels)+".mdl"
+			else
+				MDL = "models/"+RandomPick(::ModelNamesArray)+".mdl"
+
+		}
 	}
 
 	local raise = GetArgument(3);
@@ -15072,13 +16128,10 @@ if ( Director.GetGameMode() == "holdout" )
 		massScale = massScale
 		post = {}
 	}
-	local propsettingname = (typename == "physics" || typename == "physicsM") ? "physics"
-							: (typename == "ragdoll") ? "ragdoll"
-								: "dynamic"
 	// Prop spawn settings
 	ApplyPropSettingsToTable(player,propsettingname,settings);
 	// Settings from arguments
-	PostSettingsManualChanges(raise,yaw,settings);
+	PostSettingsManualChanges(raise,yaw,settings,player);
 	// Settings from special model
 	MDL = GetSpecialModelOptions(MDL,settings)
 		
@@ -15225,7 +16278,13 @@ if ( Director.GetGameMode() == "holdout" )
 	if(createdent == null || createdent == [] || singlefailed || parentfailed)
 	{
 		if(singlefailed)
-		{
+		{	
+			if(!::CheckPhysicsAvailabilityForModel(Utils.CleanColoredString(MDL)) && propsettingname == "physics")
+			{
+				AdminSystem.out(MDL+" can't be used as a physics object!",player)
+				return
+			}
+
 			local ent = Utils.SpawnDynamicProp( Utils.CleanColoredString(MDL), origin, angles );
 			if(ent == null)
 			{
@@ -16017,7 +17076,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local Value = GetArgument(3);
 	local Value2 = GetArgument(4);
 	local Value3 = GetArgument(5);
-	local Entity = player.GetLookingEntity();
+	local Entity = player.GetLookingEntity(TRACE_MASK_VISIBLE_AND_NPCS|TRACE_MASK_SHOT);
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
 
 	if(Action.tolower() == "addoutput")
@@ -16126,7 +17185,7 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	val = val.tofloat();
 
-	local entlooked = player.GetLookingEntity();
+	local entlooked = player.GetLookingEntity(TRACE_MASK_VISIBLE_AND_NPCS|TRACE_MASK_SHOT);
 	local newAngle = null;
 
 	if(uselocal != null)
@@ -16236,7 +17295,7 @@ if ( Director.GetGameMode() == "holdout" )
 			pitchofeye = pitchofeye.tofloat()*-1;
 	}
 
-	local entlooked = player.GetLookingEntity();
+	local entlooked = player.GetLookingEntity(TRACE_MASK_VISIBLE_AND_NPCS|TRACE_MASK_SHOT);
 	if(entlooked)
 	{	
 		if(entlooked.GetParent() != null)
@@ -16329,7 +17388,7 @@ if ( Director.GetGameMode() == "holdout" )
 		pitchofeye = pitchofeye.tofloat()*-1;
 	}
 
-	local entlooked = player.GetLookingEntity();
+	local entlooked = player.GetLookingEntity(TRACE_MASK_VISIBLE_AND_NPCS|TRACE_MASK_SHOT);
 	
 	if(uselocal != null)
 	{
@@ -16498,7 +17557,7 @@ if ( Director.GetGameMode() == "holdout" )
 		direction = "forward";
 	}
 
-	local entlooked = player.GetLookingEntity();
+	local entlooked = player.GetLookingEntity(TRACE_MASK_VISIBLE_AND_NPCS|TRACE_MASK_SHOT);
 	if(entlooked)
 	{	
 		if(entlooked.GetParent() != null)
@@ -20960,11 +22019,21 @@ if ( Director.GetGameMode() == "holdout" )
 		local skin = ent.GetNetProp("m_nSkin");
 		local color = ent.GetNetProp("m_clrRender");
 		local scale = ent.GetModelScale();
+		
+		if(keyvals.classname.find("physics") != null && !::CheckPhysicsAvailabilityForModel(keyvals.model))
+		{
+			AdminSystem.out(keyvals.model+" can't be used as a physics object!",Player("!"+name))
+			AdminSystem.Vars._heldEntity[name].entid = "";
+			return
+		}
 
 		new_ent = Utils.CreateEntityWithTable(keyvals);
 
 		if(new_ent != null)
 		{
+			if(keyvals.classname == "prop_ragdoll")
+				new_ent.SetNetProp("m_CollisionGroup",1)
+
 			RecreateHierarchy(ent,new_ent,{color=color,skin=skin,scale=scale,name=ent.GetName()});
 			new_ent.Input("RunScriptCode",func+"(Entity("+new_ent.GetIndex()+")"+extra_arg+")",0);
 		}
@@ -21075,8 +22144,14 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	local movetype = ent.GetClassname() == "player" ? MOVETYPE_WALK : MOVETYPE_VPHYSICS
 	local a=ent.GetOrigin();
-	if(ent.GetBaseEntity() != null && "SetSequence" in ent.GetBaseEntity())
+	if(ent.GetBaseEntity() != null && "ResetSequence" in ent.GetBaseEntity())
+	{
+		local seq = ent.GetBaseEntity().GetSequence()
+		ent.GetBaseEntity().ResetSequence(seq);
+		/*
 		ent.GetBaseEntity().SetSequence(0);
+		DoEntFire("!self","runscriptcode","self.SetSequence("+seq+")",0.1,null,ent.GetBaseEntity());*/
+	}
 	//ent.Input("wake","",0);
 	ent.SetMoveType(movetype);
 	ent.SetOrigin(a);
@@ -21663,17 +22738,8 @@ if ( Director.GetGameMode() == "holdout" )
 	if((entmdl.find("skybox") != null)) // Skybox stuff
 		return false
 
-	if(!(entmdl in ::FreePassModelNames))
-	{
-		foreach(cat,_v in ::ForbiddenModelCategories)
-		{
-			if(entmdl.find(cat) != null)
-				return false
-		}
-
-		if(entmdl in ::ForbiddenNoCollisionModels)
-			return false
-	}
+	if(!::CheckPhysicsAvailabilityForModel(entmdl))
+		return false
 
 	if(SessionState.MapName in ::ZeroGMapSpecificBans
 		&& 
@@ -21689,130 +22755,9 @@ if ( Director.GetGameMode() == "holdout" )
 		  )
 		)
 		return false
-
-	if(ent.HasChildOfAnyClassname(::ZeroGForbiddenChildClasses))
-		return false
 	
 	return true
 }
-
-// Classnames which are not allowed as a child entity's class
-::ZeroGForbiddenChildClasses <- {}
-
-::ZeroGMapSpecificBans <- 
-{
-	"c5m1_waterfront":
-	{
-		models = 
-		{
-		}
-
-		entities =
-		{
-			"tug_boat_intro":
-			{
-				id = 532
-				classname = "prop_dynamic"
-			}
-		}
-	}
-
-	"c5m3_cemetery" :
-	{
-		models =
-		{
-		}
-
-		entities =
-		{
-			"destruction_car_phys" :
-			{
-				id = 1433
-				classname = "prop_physics"
-
-			} 
-		}
-	}
-
-	"c5m5_bridge" :
-	{
-		models =
-		{
-			"models/props/cs_office/light_shopb.mdl" : true
-		}
-
-		entities =
-		{
-		}
-	}
-
-	"c14m2_lighthouse":
-	{
-		models = 
-		{
-		}
-
-		entities =
-		{
-			"model_boat":
-			{
-				id = 68
-				classname = "prop_dynamic"
-			}
-		}
-	}
-}
-
-::GivePhysicsMapSpecificBans <- 
-{
-	"c5m1_waterfront":
-	{
-		models = 
-		{
-			"models/props_vehicles/boat_rescue_tug_sunshine.mdl" : true
-		}
-
-		entities =
-		{
-			"tug_boat_intro":
-			{
-				id = 532
-				classname = "prop_dynamic"
-			}
-		}
-	}
-	
-	"c5m5_bridge" :
-	{
-		models =
-		{
-			"models/props/cs_office/light_shopb.mdl" : true
-		}
-
-		entities =
-		{
-		}
-	}
-
-	"c14m2_lighthouse":
-	{
-		models = 
-		{
-		}
-
-		entities =
-		{
-			"model_boat":
-			{
-				id = 68
-				classname = "prop_dynamic"
-			}
-		}
-	}
-}
-
-// Models which are allowed to skip ForbiddenNoCollisionModels and ForbiddenModelCategories
-::FreePassModelNames <- {}	
 
 ::ZeroGClassTable <- 
 {
