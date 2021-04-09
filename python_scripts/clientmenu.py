@@ -203,7 +203,7 @@ propPerPage = 7
 pageCount = math.ceil(len(arguments) / float(propPerPage))
 
 def decallabeler(index):
-    return label+str(index)
+    return label
 
 def decalcmd(menuname):
     return "play "+SOUND_DEFAULT+";"+"scripted_user_func decal,$argument;show_menu "+menuname
