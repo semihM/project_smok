@@ -2781,6 +2781,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.DecalCmd( player, args );
 			break;
 		}
+		case "remove_lights":
+		{
+			AdminSystem.RemoveLightsCmd( player, args );
+			break;
+		}
 		case "spawn_point_light":
 		{
 			AdminSystem.SpawnPointLightCmd( player, args );
@@ -10991,6 +10996,14 @@ function ChatTriggers::decal( player, args, text )
 					? Messages.DocCmdPlayer(player,CmdDocs.decal(player,args))
 					: null
 
+function ChatTriggers::remove_lights( player, args, text )
+{
+	AdminSystem.RemoveLightsCmd( player, args );
+}
+::ChatTriggerDocs.remove_lights <- @(player,args) AdminSystem.IsPrivileged(player) && "remove_lights" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.remove_lights(player,args))
+					: null
+
 function ChatTriggers::spawn_point_light( player, args, text )
 {
 	AdminSystem.SpawnPointLightCmd( player, args );
@@ -14113,6 +14126,64 @@ if ( Director.GetGameMode() == "holdout" )
 
 /*
  * @authors rhino
+ */
+::AdminSystem.RemoveLightsCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local target = GetArgument(1)
+	if(!target)
+		target = "all"
+
+	if(target == "all")
+	{
+		foreach(l in Objects.OfClassname("env_projectedtexture"))
+		{
+			if(l.GetParent() == null)
+				l.Kill()
+		}
+		::Printer(player,"Removed all point light sources")
+	}
+	else if(target == "!self")
+	{
+		foreach(l in Objects.OfClassname("env_projectedtexture"))
+		{
+			if(l.GetParent() == null && l.GetNetProp("m_hTargetEntity") != -1 && l.GetNetProp("m_hTargetEntity").GetEntityHandle() == player.GetEntityHandle())
+				l.Kill()
+		}
+		::Printer(player,"Removed all point light sources targeting you")
+	}
+	else if(target == "!picker")
+	{
+		target = player.GetLookingEntity()
+		if(!target)
+			return
+
+		foreach(l in Objects.OfClassname("env_projectedtexture"))
+		{
+			if(l.GetParent() == null && l.GetNetProp("m_hTargetEntity") != -1 && l.GetNetProp("m_hTargetEntity").GetEntityHandle() == target.GetEntityHandle())
+				l.Kill()
+		}
+		::Printer(player,"Removed all point light sources targeting "+TXTCLR.BG("#"+target.GetIndex()))
+	}
+	else
+	{
+		target = Entity(target)
+		if(!target.IsEntityValid())
+			return
+
+		foreach(l in Objects.OfClassname("env_projectedtexture"))
+		{
+			if(l.GetParent() == null && l.GetNetProp("m_hTargetEntity") != -1 && l.GetNetProp("m_hTargetEntity").GetEntityHandle() == target.GetEntityHandle())
+				l.Kill()
+		}
+		::Printer(player,"Removed all point light sources targeting "+TXTCLR.BG("#"+target.GetIndex()))
+	}
+}
+
+/*
+ * @authors rhino
  * TO-DO: Redundant af, clean it up
  */
 ::AdminSystem.SpawnPointLightCmd <- function(player,args)
@@ -14435,7 +14506,10 @@ if ( Director.GetGameMode() == "holdout" )
 			DoEntFire("!self","RunScriptCode","NetProps.SetPropIntArray( self, \"m_bState\", 1, 0)",0.05,null,self)
 			DoEntFire(self.GetScriptScope()["transit"],"RunScriptCode","NetProps.SetPropIntArray( self, \"m_bState\", 0, 0)",0.05,null,self)
 		}
-		// TO-DO: Sometimes both lights are off, write fallback here
+		else
+		{
+			NetProps.SetPropIntArray( self, "m_bState", 1, 0);
+		}
 	}
 	else
 	{
