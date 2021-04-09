@@ -19,6 +19,9 @@
 # Scripts
 *.vbs
 
+# Temporary folders
+menus/
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
