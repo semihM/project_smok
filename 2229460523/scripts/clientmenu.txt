@@ -38943,15 +38943,20 @@
 			}
 			"4"
 			{
+				"command"		 "play buttons/button14;scripted_user_func remove_lights;show_menu pointlights_static_3_1"
+				"label"			 " Remove all lights"
+			}
+			"5"
+			{
 					"command"    "play buttons/button14;show_menu pointlights_static_1"
 					"label"      " Current color: <cvar ps_preferred_light_color>"
 			}
-			"5"
+			"6"
 			{
 					"command"    "play buttons/button14;show_menu pointlights_static_1_1"
 					"label"      " Current fov: <cvar ps_preferred_light_fov>"
 			}
-			"6"
+			"7"
 			{
 					"command"    "play buttons/button14;show_menu pointlights_static_2_1"
 					"label"      " Current height: <cvar ps_preferred_light_raise>"
