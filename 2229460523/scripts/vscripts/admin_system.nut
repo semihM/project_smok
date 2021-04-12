@@ -4305,7 +4305,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	if(modelname == "")
 		return false
 	modelname = ShortenModelName(modelname)
-	return "mass" in ::ModelDetails[modelname]
+	return modelname in ::ModelDetails && "mass" in ::ModelDetails[modelname]
 }
 
 /*
@@ -13501,7 +13501,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	ent = ent.GetBaseEntity()
 
-	if(!("sequences" in ::ModelDetails[mdl]))
+	if(!(mdl in ::ModelDetails) || !("sequences" in ::ModelDetails[mdl]))
 		return
 
 	local seq_arr = ::ModelDetails[mdl].sequences
@@ -13602,7 +13602,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	ent = ent.GetBaseEntity()
 
-	if(!("sequences" in ::ModelDetails[mdl]))
+	if(!(mdl in ::ModelDetails) || !("sequences" in ::ModelDetails[mdl]))
 		return
 
 	local seq_arr = ::ModelDetails[mdl].sequences
@@ -13699,7 +13699,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	ent = ent.GetBaseEntity()
 
-	if(!("sequences" in ::ModelDetails[mdl]))
+	if(!(mdl in ::ModelDetails) || !("sequences" in ::ModelDetails[mdl]))
 		return
 
 	local seq_arr = ::ModelDetails[mdl].sequences
