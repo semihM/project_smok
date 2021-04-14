@@ -2541,10 +2541,10 @@
 #### **create_loot_sources**
 - Make props lootable, dropping items when they are used
 
-   Chat Syntax | (!,/,?)create_loot_sources *state apply_to_all*
+   Chat Syntax | (!,/,?)create_loot_sources *category*
    ------------- | -------------
 
-   Console Syntax | scripted_user_func *create_loot_sources,state,apply_to_all* 
+   Console Syntax | scripted_user_func *create_loot_sources,category* 
    ------------- | -------------
     
    Menu Sequence | _6->3->9->4_
