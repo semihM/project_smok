@@ -687,18 +687,30 @@ class ::AliasCompiler.Alias
     return cmdval;
 }
 
-::AliasCompiler.ExpressionCompiler <- function(cmdval)
+::AliasCompiler.ExpressionCompiler <- function(cmdval,optionals=null)
 {
     local compreg = regexp(::AliasCompiler.CompileExpressionPattern)
     local compcapture = compreg.capture(cmdval) 
     if(compcapture != null) // Has stuff to compile
     {
-        if(compcapture.len() == 2)   // arg_x = $(exp)
+        if(compcapture.len() == 2)   // arg_x = $[exp]
         {   
             local compile_part = cmdval.slice(compcapture[1].begin,compcapture[1].end)
             //::AdminSystem.out("compile: "+compile_part)
-            cmdval = compilestring("local __tempvar__ ="+compile_part+";return __tempvar__;")()
-            cmdval = cmdval == null ? cmdval : (""+cmdval)
+            if(optionals != null)
+            {
+                local cstr = ""
+                foreach(opt,val in optionals)
+                {
+                    cstr += "local "+opt+" = "+val + ";\n"
+                }
+                cmdval = compilestring(cstr+"local __tempvar__ ="+compile_part+";return __tempvar__;")()
+            }
+            else
+            {
+                cmdval = compilestring("local __tempvar__ ="+compile_part+";return __tempvar__;")()
+                cmdval = cmdval == null ? cmdval : (""+cmdval)
+            }
         }
     }
     return cmdval;
