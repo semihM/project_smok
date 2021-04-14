@@ -5,14 +5,19 @@
 {
 	Version = 
 	{
-		Number = "v1.3.0"
-		Date = "09.04.2021"
+		Number = "v1.4.0"
+		Date = "14.04.2021"
 		Source = "https://github.com/semihM/project_smok"
 	}
 
 	AliasExampleVersions =
 	{
 		"v1.1.0" : 1
+	}
+
+	EntityGroupsExampleVersions =
+	{
+
 	}
 }
 
@@ -76,6 +81,14 @@
 	/// Custom hooks
 	CustomHooks = "admin system/hooks/file_list.txt"
 	CustomHooksExample = "admin system/hooks/example_hook_file.nut"
+
+	/// Special props
+	CustomProps = "admin system/entitygroups/file_list.txt"
+	CustomPropsExample = "admin system/entitygroups/example_entity_file.nut"
+	CustomPropsExampleVersionBased = @(v) "admin system/entitygroups/example_entity_file_"+v+".nut"
+
+	/// Loot tables
+	LootTables = "admin system/loot_tables.txt"
 }
 
 /**************************\
@@ -564,69 +577,123 @@
 }"
 }
 
-// Initial proposal
-// TO-DO: Move default values to parameters instead
-// TO-DO: Fix regexps
-/*
-::Constants.CommandAliasesDefaults <-
-@"// This file is for aliasing and combining commands
+::Constants.CustomPropsListDefaults <-
+@"// This file contains the files names of the entity group tables to make sure they get read
+// Add file names of the entity group table files below as shown (without // characters at the begining) to include them!
+
+// Characters // indicate comments starting after them, which are ignored
+// To include the ""example_entity_file.nut"" remove the // characters at the beginning of the line!
+// !!!!!!!!!!!!!!
+// IT IS NOT RECOMMENDED TO USE THE EXAMPLE FILES FOR NEW SPECIAL PROPS
+// !!!!!!!!!!!!!!
+
+//example_entity_file // This will make project_smok look for ""example_entity_file.nut"" and read it if it exists! Write any additional files below this line..."+ "\n\r"
+
+::Constants.CustomPropsDefaults <-
+{
+	v1_4_0 =
+@"// This file contains entity group tables to be registered in the games
+// Examples present in this file includes new features introduced in v1.4.0
+//
+// These entity groups are used with the ""prop"" command.
+//		- Example(from chat): Spawn the ExampleGnome present in this file
+//			!prop >ExampleGnome
+//
+// For more examples, download L4D2 Authoring Tools and check out the directory: ""Left 4 Dead 2\sdk_content\scripting\scripts\vscripts\entitygroups""
+// If you wish to use those examples:
+//		1. Remove the line with the ""RegisterEntityGroup"" function call, this call is done internally later.
+//		2. Replace ""<-"" with ""="" after the entity group name	
+//
 // Characters // indicate the start of a comment, which are ignored while reading the file
-// Format can be shown as:
-// 		alias_name parameter_1_for_command_1 parameter_2_for_command_1 ... ; parameter_1_for_command_2 parameter_1_for_command_2 ... {command_1 default_val_1_1 default_val_1_2 ... ; command_2 default_val_2_1 default_val_2_2 ... ; ...}
-// Default values are not necessary while creating the commands, but may be required for the original command so be careful and check the command documentations
-// Check out the given shorter format examples before writing aliases
-// ------------------------------------------------------------------
-// FORMAT EXAMPLES:
-// ->Creating a new command alias_1 as an alias to command_name_1 command
-// 		alias_1 {command_name_1}
-//
-// ->Creating a new command parsed_alias_1 as an alias which passes default values as arguments to original command
-// 		parsed_alias_1 {command_name_1 argument_1 argument_2}
-//
-// ->Creating a new command parametered_alias_1 as an alias which passes its parameters as arguments to original command
-//   	o Positions of the parameters can be changed in the {command_name_1 ...} if desired
-// 		parametered_alias_1 parameter_1 parameter_2 {command_name_1 $parameter_1 $parameter_2}
-//
-// ->Creating a new command parametered_parsed_alias_1 as an alias which passes its parameters as arguments to original command and uses default values if called with it's parameters missing values
-// 		o If no arguments passed while calling this alias, default_value_1 will be used as first argument and second argument will be null
-//		o If parameter_1 has an argument passed to it, it will overwrite the default_value_1
-// 		parametered_parsed_alias_1 parameter_1 parameter_2 {command_name_1 $parameter_1:default_value_1 $parameter_2}
-//
-// ->Creating a new command combined_alias_1 as an alias for calling multiple commands
-// 		combined_alias_1 {command_name_1;command_name_2}
-//
-// ->Creating a new command combined_parsed_alias_1 as an alias for calling multiple commands with default values
-// 		combined_parsed_alias_1 {command_name_1 default_value_1_1 default_value_1_2 ; command_name_2 default_value_2_1}
-//
-// ->Creating a new command combined_parametered_alias_1 as an alias which is a multi-command format of parametered_alias_1 alias example above
-// 		combined_parametered_alias_1 parameter_1_1 parameter_1_2 ; parameter_2_1 {command_name_1 $parameter_1_1 $parameter_1_2; command_name_2 $parameter_2_1}
-//
-// ->Creating a new command combined_parametered_alias_2 as an alias which is a multi-command format of parametered_alias_1 alias example above but uses it's parameter for more than a single command
-// 		combined_parametered_alias_2 parameter_1_1 parameter_1_2 {command_name_1 $parameter_1_1 $parameter_1_2; command_name_2 $parameter_1_1 ; command_name_3 $parameter_1_2}
-//
-// ->Creating a new command combined_parametered_parsed_alias_1 as an alias which is a multi-command format of parametered_parsed_alias_1 alias example above
-// 		combined_parametered_parsed_alias_1 parameter_1_1 parameter_1_2 ; parameter_2_1 {command_name_1 $parameter_1_1:default_value_1_1 $parameter_1_2:default_value_1_2 ; command_name_2 $parameter_2_1:default_value_2_1}
-// ------------------------------------------------------------------
-// REAL EXAMPLES:
-// ->Create a new command rotate_y with ""degrees"" parameter which is passed to the original command's degrees parameter
-// 		o Call example from chat: !rotate_y 90
-// 		rotate_y degrees {ent_rotate y $degrees}
-//
-// ->Set all survivors model to mdl, in this case mdl can be !random which would randomize all survivors' models
-// 		o Call example from chat: !set_survivor_models !random
-// 		set_survivor_models mdl {model !bill $mdl ; model !francis $mdl ; model !louis $mdl ; model !zoey $mdl}
-//
-// ->Create a new command do_the_work which applies 180 degrees around yaw axis, applies rainbow effect for 30 seconds with 0.5 intervals and pushes the object towards the player at 2000 units/s
-// 		do_the_work {ent_rotate y 180 ; rainbow 30 0.5 ; ent_push backward 2000}
-//
-// ->Previous example parameterized with default values 
-// 		o Call examples from chat: 
-//			!do_the_work_params y 90 10 0.1 forward 1500
-//			!do_the_work_params z 180
-// 		do_the_work_params axis rotation duration interval direction speed {ent_rotate $axis:y $rotation:180 ; rainbow $duration:30 $interval:0.5 ; ent_push $direction:backward $speed:2000}
-// ------------------------------------------------------------------
+// !!!!!!!
+// >>> FILE SIZE SHOULD NOT EXCEED 16.5 KB, OR FILE WILL NOT BE READ
+// !!!!!!!
+// If the file size is bigger than 16.5 KB:
+// 		1. Create a new file named however you like
+//		2. Add the file name to ""file_list.txt"" to make sure project_smok knows it exists
+//		3. Follow the example formats, don't forget to write the { and } characters at the begining and the end
+
+// The name declared here will be used with the commands
+ExampleGnome =
+{
+	//-------------------------------------------------------
+	// Required Interface functions
+	// - These following functions are REQUIRED to register an entity group
+	//-------------------------------------------------------
+	// - Add references of entities which has a model in this
+	function GetPrecacheList()
+	{
+		local precacheModels =
+		[
+			EntityGroup.SpawnTables.gnome,
+		]
+		return precacheModels
+	}
+
+	//-------------------------------------------------------
+	// - Add references of entities here to spawn them 
+	function GetSpawnList()
+	{
+		local spawnEnts =
+		[
+			EntityGroup.SpawnTables.gnome,
+		]
+		return spawnEnts
+	}
+
+	//-------------------------------------------------------
+	// - Don't change this, although make sure it exists
+	function GetEntityGroup()
+	{
+		return EntityGroup
+	}
+
+	//-------------------------------------------------------
+	// Table of entities that make up this group
+	//-------------------------------------------------------
+	EntityGroup =
+	{
+		// Entities to spawn
+		SpawnTables =
+		{
+			// Name of the this entity's table, refer to this on the functions above
+			// ""targetname"" is used to name the spawned entity
+			gnome = 
+			{
+				// Key value pairs for this entity
+				SpawnInfo =
+				{
+					classname = ""$classname""
+					angles = Vector( 0, 180, 0 )
+					glowcolor = ""56 150 58""
+					glowrange = ""0""
+					glowrangemin = ""0""
+					glowstate = ""3""
+					massScale = ""5""
+					model = ""models/props_junk/gnome.mdl""
+					spawnflags = ""0""
+					targetname = ""$targetname""	// Keep the replacing parameter named same(especially for targetname)!
+					origin = Vector( -6, 8, 11 )
+				}
+			}
+		} // SpawnTables
+		// Add a table named ReplaceParmDefaults to change values in key-value pairs
+		// Use $[expression] format to evaluate expressions for every single spawn call
+		//  - If $[expression] is used in an entity group, it will require SCRIPT AUTHORIZATION for players to use this entity group
+		//	- With the $[expression] format, you can access to some external variables:
+		//		1. To get the command caller player as VSLib.Player use ""player"" variable
+		//		2. To get the table of arguments used with the command use ""GetArgument(idx)"" for idx'th argument
+		ReplaceParmDefaults =
+		{
+			""$classname"" : ""prop_physics_multiplayer""
+			// By default, any parameter name starting with ""$targetname"" is taken as a targetname while printing messages, so be reasonable while naming the parameters!
+			""$targetname"" : ""$[\""gnome_spawned_by_\""+player.GetCharacterNameLower()]""	
+		}
+	} // EntityGroup
+} // ExampleGnome
 "
-*/
+}
+
 ::Constants.ValidateAliasTableFromChat <- function(player,als,code,triggertbl)
 {
 	local tbl = null
@@ -831,6 +898,134 @@
 	}
 }
 
+::Constants.ValidateEntityGroupsTable <- function(fileContents,filename,first=false,reload=false)
+{
+	local news = {}
+	local tbl = null
+	try
+	{
+		tbl = compilestring("local __tempvar__=\n{"+strip(fileContents)+"\n}\n;return __tempvar__;")()
+	}
+	catch(e){printl("[Entity_Group-Compile-Error] Failed to compile "+filename+". Error: "+e)}
+
+	if(tbl == null || typeof tbl != "table")
+	{
+		local badformat = filename.slice(0,filename.find(".nut"))+"_bad_format.nut";
+		printl("[Entity_Group-Error] "+filename+" was formatted incorrectly, check {} and \"\" characters!")
+		printl("[Entity_Group-Error] Keeping incorrectly formatted file named as "+badformat+" and replacing it with the v1.0.0 examples...")
+
+		StringToFile(badformat,fileContents);
+
+		StringToFile(filename,Constants.CustomPropsDefaults.v1_4_0);
+
+		fileContents = FileToString(filename);
+		return null
+	}
+	else
+	{	
+		if(tbl.len() != 0)
+		{	
+			local deletes = []
+			if(first)
+				printl("[Entity_Group-Checks] Doing entity group table checks...")
+
+			foreach(EG_name,main_tbl in tbl)
+			{
+				if(!("GetPrecacheList" in main_tbl))
+				{
+					printl("[Entity_Group-Error] GetPrecacheList is missing in "+EG_name+" group... skipping")
+					deletes.append(EG_name)
+					continue;
+				}
+				if(!("GetSpawnList" in main_tbl))
+				{
+					printl("[Entity_Group-Error] GetSpawnList is missing in "+EG_name+" group... skipping")
+					deletes.append(EG_name)
+					continue;
+				}
+				if(!("GetEntityGroup" in main_tbl))
+				{
+					printl("[Entity_Group-Error] GetEntityGroup is missing in "+EG_name+" group... skipping")
+					deletes.append(EG_name)
+					continue;
+				}
+				if(!("EntityGroup" in main_tbl))
+				{
+					printl("[Entity_Group-Error] EntityGroup is missing in "+EG_name+" group... skipping")
+					deletes.append(EG_name)
+					continue;
+				}
+				else
+				{
+					if(!("SpawnTables" in main_tbl.EntityGroup))
+					{
+						printl("[Entity_Group-Error] EntityGroup.SpawnTables is missing in "+EG_name+" group... skipping")
+						deletes.append(EG_name)
+						continue;
+					}
+					
+					if("ReplaceParmDefaults" in main_tbl.EntityGroup)
+					{
+						foreach(name,val in main_tbl.EntityGroup.ReplaceParmDefaults)
+						{
+							if((typeof val == "string") && (val.find("$[") == 0 && val.find("]") == (val.len()-1)))
+							{
+								news[EG_name] <- true
+								break;
+							}
+						}
+					}
+					else
+					{
+						news[EG_name] <- false
+					}
+
+					g_MapScript.RegisterEntityGroup( EG_name, main_tbl )
+					g_MapScript[EG_name] <- main_tbl
+
+					if(g_MapScript.GetEntityGroup( EG_name ) == null)
+					{
+						printl("[Entity_Group-Error] Failed to register "+EG_name)
+						deletes.append(EG_name)
+						delete news[EG_name]
+					}
+				}
+			}
+
+			if(deletes.len() > 0)
+			{
+				foreach(i,name in deletes)
+				{
+					if(name in tbl)
+						delete tbl[name]
+				}
+			}
+			if(news.len() > 0)
+			{	
+				if(reload)
+					printl("[Entity_Group-Table] New aliases after reloading "+filename+" ("+news.len()+"):")
+				else
+					printl("[Entity_Group-Table] Entity groups registered from "+filename+" ("+news.len()+"):")
+
+				foreach(al,vl in news)
+				{
+					printl("\t[*] "+al)
+				}
+			}
+			else 
+			{
+				if(reload)
+					printl("[Entity_Group-Table] No new valid entity groups were loaded from "+filename)
+				else
+					printl("[Entity_Group-Table] No valid entity groups were registered from "+filename)
+			}
+
+		}
+
+		return {groups=tbl,restrictions=news};
+	}
+}
+
 ::Constants.DisabledCommandsDefaults <-
 @"// This file contains names of the commands you want disabled
 // Characters // indicate the start of a comment, which are ignored while reading the file
@@ -868,6 +1063,172 @@ command_name_2 //Take notes by adding // after the command name if needed"
 	}
 }"
 
+::Constants.LootSourcesLootTablesDefaults <-
+@"// This file contains loot types, probabilities and settings used with !create_loot_sources command
+// Characters // indicate the start of a comment, which are ignored while reading the file
+// DO NOT REMOVE ANY COMMA("","") CHARACTERS
+// IF YOU ADD ANY TABLES, MAKE SURE TABLE BEFORE THAT HAS A COMMA AT THE END
+//
+// Current loots are weapons, grenades, packs and pills/adrenaline shots
+//   ent: Class name of the loot
+//   prob: Probability values below are not normalized, they are relative to total value of the ""prob"" from all the tables in this file.
+//		+ This means if sum is 200, table with prob = 10 has 10/200 = 5% probabilty of being chosen
+//   ammo: Ammo beside the full clip
+//   melee_type: Melee name to use with ""weapon_melee_spawn""
+
+{
+	ent = ""weapon_rifle""			
+	prob = 10		
+	ammo = 50	
+	melee_type = null	
+},
+{
+	ent = ""weapon_shotgun_spas""	
+	prob = 10		
+	ammo = 10	
+	melee_type = null	
+},
+{
+	ent = ""weapon_sniper_military""	
+	prob = 10		
+	ammo = 15	
+	melee_type = null	
+},
+{
+	ent = ""weapon_rifle_ak47""		
+	prob = 10		
+	ammo = 40	
+	melee_type = null	
+},
+{
+	ent = ""weapon_autoshotgun""		
+	prob = 10		
+	ammo = 10	
+	melee_type = null	
+},
+{
+	ent = ""weapon_rifle_desert""	
+	prob = 10		
+	ammo = 60	
+	melee_type = null	
+},
+{
+	ent = ""weapon_hunting_rifle""	
+	prob = 15		
+	ammo = 15	
+	melee_type = null	
+},
+{
+	ent = ""weapon_rifle_m60""		
+	prob = 2		
+	ammo = 50	
+	melee_type = null	
+},
+{
+	ent = ""weapon_grenade_launcher""	
+	prob = 2	
+	ammo = 50	
+	melee_type = null	
+},
+{
+	ent = ""weapon_smg_silenced""	
+	prob = 20		
+	ammo = 50	
+	melee_type = null	
+},
+{
+	ent = ""weapon_smg""				
+	prob = 20		
+	ammo = 50	
+	melee_type = null	
+},
+{
+	ent = ""weapon_shotgun_chrome""	
+	prob = 20		
+	ammo = 10	
+	melee_type = null	
+},
+{
+	ent = ""weapon_pumpshotgun""		
+	prob = 20		
+	ammo = 10	
+	melee_type = null	
+},
+{
+	ent = ""weapon_pistol_magnum""	
+	prob = 5		
+	ammo = null	
+	melee_type = null	
+},
+{
+	ent = ""weapon_pistol""			
+	prob = 10		
+	ammo = null	
+	melee_type = null	
+},
+{
+	ent = ""weapon_adrenaline"" 		
+	prob = 10		
+	ammo = null	
+	melee_type = null	
+},
+{
+	ent = ""weapon_pain_pills"" 		
+	prob = 20		
+	ammo = null	
+	melee_type = null	
+},
+{
+	ent = ""weapon_vomitjar"" 		
+	prob = 3		
+	ammo = null	
+	melee_type = null	
+},
+{
+	ent = ""weapon_molotov"" 		
+	prob = 10		
+	ammo = null	
+	melee_type = null	
+},
+{
+	ent = ""weapon_pipe_bomb"" 		
+	prob = 10		
+	ammo = null	
+	melee_type = null	
+},
+{
+	ent = ""weapon_first_aid_kit"" 	
+	prob = 1		
+	ammo = null	
+	melee_type = null	
+},
+
+// Note: These items don't retain their entities when spawned, and cannot be tracked.
+{
+	ent = ""weapon_melee_spawn""		
+	prob = 10		
+	ammo = null	
+	melee_type = ""any""	
+},
+{
+	ent = ""upgrade_spawn"" 			
+	prob = 3		
+	ammo = null	
+	melee_type = null	
+},
+// Laser sight
+{
+	ent = ""weapon_upgradepack_explosive"" 		
+	prob = 5		
+	ammo = null	
+	melee_type = null	
+},
+{
+	ent = ""weapon_upgradepack_incendiary"" 		
+	prob = 7		
+	ammo = null	
+	melee_type = null	
+}"
 /********************\
 *  DEFAULT SETTINGS  *
 \********************/
@@ -1049,7 +1410,48 @@ command_name_2 //Take notes by adding // after the command name if needed"
 			//			weapon_ammo_spawn = false" 
             }
         }
+		
+		LootSources =
+		{
+			Title = "\t\t/// Lootable prop parameters, used with create_loot_sources command"
+			Value =
+			{
+				LootDuration = 2.5
 
+				NoItemProb = 0.35
+				MinItems = 1
+				MaxItems = 2
+				SpawnDist = 10
+
+				GlowR = 255
+				GlowG = 80
+				GlowB = 255
+				GlowA = 255
+				GlowRange = 180
+
+				BarText = "Lootable Prop"
+				BarSubText = "There might be something valuable in here!"
+			}
+
+            ValueComments =
+			{
+				LootDuration = "// How long it should take to loot a prop in seconds"
+
+				NoItemProb = "// Probability of the prop having no loot, 0 = 0% , 1 = 100%"
+				MinItems = "// Minimum amount of items to drop when the prop is looted"
+				MaxItems = "// Maximum amount of items to drop when the prop is looted"
+				SpawnDist = "// Spawning distance of the loots to looter player, loots spawn around the player"
+
+				GlowR = "// Red value of glowing color of lootable props"
+				GlowG = "// Green value of glowing color of lootable props"
+				GlowB = "// Blue value of glowing color of lootable props"
+				GlowA = "// Alpha value of glowing color of lootable props"
+				GlowRange = "// Range to start glowing for players "
+
+				BarText = "// Big text to display for the looting bar"
+				BarSubText = "// Sub text to display for the looting bar"
+			}
+		}
         
         Hats = 
         {   
@@ -1598,6 +2000,34 @@ command_name_2 //Take notes by adding // after the command name if needed"
     }
     return __SingleValWithComment(::Constants.DefaultsDetailed.Tables.Outputs,"State",tblref.Tables.Outputs);
 }
+::__StringifyLootSourcesSettings <- function(tblref=null)
+{
+	if(tblref == null)
+	{
+		local maintbl = ::Constants.DefaultsDetailed.Tables.LootSources;
+
+		local s = ""
+		foreach(setting,val in maintbl.Value)
+		{
+			s += "\t\t\t" + setting + " = " + ((typeof val == "string") ? "\""+val+"\"": val) + "\t" + maintbl.ValueComments[setting] + "\n\r"
+		}
+
+		return s;
+	}
+	else
+	{
+		local maintbl = ::Constants.DefaultsDetailed.Tables.LootSources;
+		local maintblref = tblref.Tables.LootSources
+
+		local s = ""
+		foreach(setting,val in maintbl.Value)
+		{	
+			s += "\t\t\t" + setting + " = " + ((typeof maintblref[setting] == "string") ? "\""+maintblref[setting]+"\"": maintblref[setting]) + "\t" + maintbl.ValueComments[setting] + "\n\r"
+		}
+
+		return s;
+	}
+}
 ::__StringifyGrabYeetSettings <- function(tblref=null)
 {
 	if(tblref == null)
@@ -2118,6 +2548,11 @@ command_name_2 //Take notes by adding // after the command name if needed"
 		+ Constants.DefaultsDetailed.Tables.GrabYeet.Title + "\n\r\t\t"
 		+ "GrabYeet =\n\r\t\t{\n\r"
 		+ __StringifyGrabYeetSettings(tbl)
+		+ "\n\r\t\t}\n\r"
+
+		+ Constants.DefaultsDetailed.Tables.LootSources.Title + "\n\r\t\t"
+		+ "LootSources =\n\r\t\t{\n\r"
+		+ __StringifyLootSourcesSettings(tbl)
 		+ "\n\r\t\t}\n\r"
 
 		+ Constants.DefaultsDetailed.Tables.Hats.Title + "\n\r\t\t"
@@ -2658,6 +3093,25 @@ command_name_2 //Take notes by adding // after the command name if needed"
 				{
 					fixapplied.append("Use default Tables.TankRock."+setting)
 					tbl.Tables.TankRock[setting] <- correcttbl.Tables.TankRock[setting]
+				}
+			}
+		}
+		
+		// Loot sources
+		if(!ValidateTbl(tbl.Tables,"LootSources"))
+		{
+			fixapplied.append("Re-create default Tables.LootSources")
+			tbl.Tables.LootSources <- correcttbl.Tables.LootSources
+		}
+		else
+		{
+			foreach(setting,val in correcttbl.Tables.LootSources)
+			{
+				if(!ValidateTbl(tbl.Tables.LootSources,setting,false) 
+				|| !ValidateSimilarTyp(tbl.Tables.LootSources,correcttbl.Tables.LootSources,setting))
+				{
+					fixapplied.append("Use default Tables.LootSources."+setting)
+					tbl.Tables.LootSources[setting] <- correcttbl.Tables.LootSources[setting]
 				}
 			}
 		}
