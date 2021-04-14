@@ -832,7 +832,16 @@
                 {
                     return "Updated " + COLOR_ORANGE + typ + COLOR_DEFAULT + " spawn setting " + COLOR_OLIVE_GREEN + setting + COLOR_ORANGE + "." + COLOR_OLIVE_GREEN + vf + COLOR_DEFAULT  + " to " + COLOR_ORANGE + val;
                 }
+
+                EntGroupSuccess = function(eg,st)
+                {
+                    return "Spawned entity group "+COLOR_ORANGE+eg+COLOR_DEFAULT+" "+st
+                }
                 
+                EntGroupFailure = function(eg)
+                {
+                    return "Failed to spawn entity group "+COLOR_ORANGE+eg+COLOR_DEFAULT
+                }
             }
 
             FireEx = 
@@ -1011,9 +1020,9 @@
                     "prop",
                     [
                         CMDParam("classname","Class name of the prop"),
-                        CMDParam("model_path","Model path(s), use model1&model2&... format to spawn multiple props parented by model1"),
-                        CMDParam("extra_height","Extra spawn height",true,"spawn at aimed point"),
-                        CMDParam("yaw_rotation","Rotation around Z axis(yaw) in degrees",true,"spawn with default angles"),
+                        CMDParam("model_path","Model path(s), {path} OR {parent&child1&child2&...} OR >{entity_group}\n  Using {parent&child1&child2&...} format allows multiple prop spawns parented by first prop\n  Using >{entity_group} allows spawning entity groups defined in admin system/entitygroups/"),
+                        CMDParam("height_OR_offset","Extra spawn height OR pos|{x_offset}|{y_offset}|{z_offset} origin offset",true,"spawn at aimed point"),
+                        CMDParam("yaw_OR_offset","Rotation around Z axis(yaw) in degrees OR ang|{pitch}|{yaw}|{roll} angle offset",true,"spawn with default angles"),
                         CMDParam("mass_scale","Scale factor of mass, used with physicsM classname",true,"default mass value")
                     ],
                     "Spawn a prop or multiple props parented by a prop of given class using given model(s) and settings if any"
@@ -2591,6 +2600,35 @@
                     "reload_aliases",
                     [],
                     "Reload custom alias files in the configuration folders"
+                    )
+                return cmd.Describe();
+            }
+            reload_loots = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "reload_loots",
+                    [],
+                    "Reload loot tables file in the configuration folder"
+                    )
+                return cmd.Describe();
+            }
+            create_loot_sources = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "create_loot_sources",
+                    [
+                        CMDParam("category","Category of props to make lootable: (cars, boxes, all) OR !picker to make aimed object lootable",true,"uses \"all\" category")
+                    ],
+                    "Make props lootable, dropping items when used"
+                    )
+                return cmd.Describe();
+            }
+            reload_ent_groups = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "reload_ent_groups",
+                    [],
+                    "Reload custom entity group table files in the configuration folders"
                     )
                 return cmd.Describe();
             }
