@@ -39159,8 +39159,8 @@
 			}
 			"7"
 			{
-				"command"		 "play buttons/button14;scripted_user_func give_physics,3000;show_menu givephys_menu1"
-				"label"			 " Objects around 3000 units radius of aimed location(may lag)"
+				"command"		 "play buttons/button14;scripted_user_func give_physics,all;show_menu givephys_menu1"
+				"label"			 " All available objects"
 			}
 			"8"
 			{
