@@ -528,6 +528,149 @@ Convars.SetValue( "precache_all_survivors", "1" );
 /*
  * @authors rhino
  */
+::AdminSystem.LoadLootTables <- function()
+{
+	local fileContents = FileToString(Constants.Directories.LootTables);
+	if(fileContents == null)
+	{
+		printl("[Loot-Tables] Creating "+Constants.Directories.LootTables+" for the first time...")
+		StringToFile(Constants.Directories.LootTables,strip(Constants.LootSourcesLootTablesDefaults));
+		fileContents = FileToString(Constants.Directories.LootTables);
+	}
+	local arr = []
+	try
+	{
+		arr = compilestring("local __tempvar__ =[\n"+strip(fileContents)+"\n];return __tempvar__;")()
+	}
+	catch(e)
+	{
+		printl("[Loot-Tables-Error] File format was invalid, using default loots! Error: "+e)
+		::AdminSystem.LootSourcesLootTables <- null
+		return null;
+	}
+
+	if(arr == null || typeof arr != "array")
+	{
+		printl("[Loot-Tables-Error] File format was invalid, using default loots!")
+		::AdminSystem.LootSourcesLootTables <- null
+		return null;
+	}
+	else
+	{
+		local valid_arr = []
+		printl("[Loot-Tables-Checks] Doing loot table checks...")
+		foreach(i,tbl in arr)
+		{
+			if(typeof tbl != "table")
+			{
+				printl("[Loot-Tables-Error] File should contain tables seperated with commas! Using default loots!")
+				::AdminSystem.LootSourcesLootTables <- null
+				return null;
+			}
+			else
+			{
+				if(!("ent" in tbl))
+				{
+					printl("[Loot-Tables-Warning] There is a table missing \"ent\" entry, skipping the table")
+					continue
+				}
+				if(!("prob" in tbl))
+				{
+					printl("[Loot-Tables-Warning] There is a table missing \"prob\" entry, skipping the table")
+					continue
+				}
+				if(!("ammo" in tbl))
+				{
+					printl("\t[Loot-Tables-Warning] There is a table missing \"ammo\" entry, using 0 ammo")
+					tbl.ammo <- 0
+				}
+				if(!("melee_type" in tbl))
+				{
+					printl("\t[Loot-Tables-Warning] There is a table missing \"melee_type\" entry, using \"any\" melee_type")
+					tbl.melee_type <- null
+				}
+				valid_arr.append(tbl)
+			}
+		}
+		::AdminSystem.LootSourcesLootTables <- valid_arr
+		printl("[Loot-Tables-Checks] Completed checks and loaded the loot tables")
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.LoadEntityGroups <- function(reload=false)
+{
+	local filelist = FileToString(Constants.Directories.CustomProps);	// List of files
+	if(filelist == null)
+	{
+		printl("[Custom-Entity_Groups] Creating "+Constants.Directories.CustomProps+" for the first time...")
+		StringToFile(Constants.Directories.CustomProps,strip(Constants.CustomPropsListDefaults));
+		filelist = FileToString(Constants.Directories.CustomProps);
+	}
+
+	local example = FileToString(Constants.Directories.CustomPropsExample);	// Example v140
+	if(example == null)
+	{
+		printl("[Entity_Groups-Examples] Creating v1.4.0 examples in "+Constants.Directories.CustomPropsExample+" for the first time...")
+		StringToFile(Constants.Directories.CustomPropsExample,strip(Constants.CustomPropsDefaults.v1_4_0));
+		example = FileToString(Constants.Directories.CustomPropsExample);
+	}
+
+	// Version based examples
+	foreach(vers,count in ::Constants.EntityGroupsExampleVersions)
+	{	
+		local cleanvers = Utils.StringReplace(vers,@"\.","_");
+		local pth = Constants.Directories.CustomPropsExampleVersionBased(cleanvers)
+		local ex = FileToString(pth);
+		if(ex == null)
+		{
+			printl("[Alias-Examples] Creating "+count+" new examples from version "+vers+" in "+pth+" for the first time...")
+			StringToFile(pth,Constants.CustomPropsDefaults[cleanvers]);
+			ex = FileToString(pth);
+		}
+	}
+
+	if(!("EntityGroupSpawnRestrictions" in AdminSystem))
+	{
+		AdminSystem.EntityGroupSpawnRestrictions <- {}
+	}
+
+	local filelist = split(filelist, "\r\n");
+	local missingfound = false
+	foreach (i,filename in filelist)
+	{	
+		filename = strip(filename)
+
+		if(filename.find("//") == 0)
+			continue;
+		else if(filename.find("//") != null)
+		{
+			filename = strip(split(filename,"//")[0])
+		}
+
+		filename = "admin system/entitygroups/"+filename+".nut"
+		local fileContents = FileToString(filename)
+		if(fileContents == null)
+		{
+			continue;
+		}
+		fileContents = strip(fileContents);
+		local tbls = ::Constants.ValidateEntityGroupsTable(fileContents,filename,i==0,reload);
+		if(tbls)
+		{
+			foreach(name,restr in tbls.restrictions)
+			{
+				AdminSystem.EntityGroupSpawnRestrictions[name] <- restr
+			}
+		}
+	}
+}
+
+/*
+ * @authors rhino
+ */
 ::AdminSystem.AddDisabledCommandCmd <- function(player,args)
 {
 	if(!AdminSystem.IsPrivileged(player) || !AdminSystem.HasScriptAuth(player))
@@ -1187,6 +1330,8 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	AdminSystem.LoadCustomScripts()
 	AdminSystem.LoadCustomHooks()
 	AdminSystem.LoadAliasedCommands()
+	AdminSystem.LoadEntityGroups()
+	AdminSystem.LoadLootTables()
 	
 	AdminSystem.LoadDisabledCommands()
 	AdminSystem.LoadCommandRestrictions()
@@ -2226,6 +2371,20 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		case "attach_hook":
 		{
 			AdminSystem.AttachHook(player,args);
+			break;
+		}
+		case "reload_loots":
+		{
+			if(!AdminSystem.HasScriptAuth(player))
+				return;
+			AdminSystem.LoadLootTables();
+			break;
+		}
+		case "reload_ent_groups":
+		{
+			if(!AdminSystem.HasScriptAuth(player))
+				return;
+			AdminSystem.LoadEntityGroups(true);
 			break;
 		}
 		case "reload_aliases":
@@ -3322,6 +3481,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.DeleteSequenceCmd( player, args );
 			break;
 		}
+		case "create_loot_sources":
+		{
+			AdminSystem.CreateLootSourcesCmd(player,args);
+			break;
+		}
 		case "start_the_shower":
 		{
 			AdminSystem.Start_the_showerCmd(player,args);
@@ -4209,8 +4373,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 /*
  * @authors rhino
  */
-::GivePhysicsToEntity <- function(ent,entclass)
+::GivePhysicsToEntity <- function(ent)
 {
+	local entclass = ent.GetClassname()
 	if(entclass.find("physics") != null || entclass == "prop_car_alarm") // physics entity
 	{
 		if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics" || entclass == "prop_car_alarm")
@@ -4297,15 +4462,112 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	return "models/" + mdl + ".mdl"
 }
 
+::CreateMassCheckerEnt <- function()
+{
+	local keyvaltable = 
+	{	
+		classname = "filter_activator_mass_greater"
+		origin = Vector(0,0,0)
+		spawnflags = 0
+		filtermass = getconsttable()["PHYS_MIN_MASS"]
+	}
+	local mass_checker = Utils.CreateEntityWithTable(keyvaltable)
+	mass_checker.SetName("project_smok_mass_checker")
+
+	DoEntFire("!self","AddOutput","OnPass !self,CallScriptFunction,DoCallbacksAfterMassPass,0,-1",0,null,mass_checker.GetBaseEntity())
+	DoEntFire("!self","AddOutput","OnFail !self,CallScriptFunction,DoCallbacksAfterMassFail,0,-1",0,null,mass_checker.GetBaseEntity())
+	mass_checker.GetScriptScope()["IsFree"] <- true
+	mass_checker.GetScriptScope()["DoCallbacksAfterMassPass"] <- function(...)
+	{
+		local ent = Entity(self.GetScriptScope()["ActivatorID"])
+		if(ent.IsEntityValid())
+		{
+			if(self.GetScriptScope()["PassCallbackArgs"] == null)
+			{
+				self.GetScriptScope()["PassCallback"](ent)
+			}
+			else
+			{
+				self.GetScriptScope()["PassCallback"](self.GetScriptScope()["PassCallbackArgs"])
+			}
+
+		}
+		self.GetScriptScope()["IsFree"] = true
+	}
+
+	mass_checker.GetScriptScope()["DoCallbacksAfterMassFail"] <- function(...)
+	{
+		local ent = Entity(self.GetScriptScope()["ActivatorID"])
+		if(ent.IsEntityValid())
+		{
+			if(self.GetScriptScope()["KillOnFailure"])
+			{
+				ent.Kill()
+			}
+		}
+		self.GetScriptScope()["IsFree"] = true
+	}
+	return mass_checker
+}
+
 /*
  * @authors rhino
  */
-::CheckPhysicsAvailabilityForModel <- function(modelname)
+::CheckPhysicsAvailabilityForModel <- function(modelname,curr_ent,callback,callback_backupargs=null,kill_onfail=false)
 {	
 	if(modelname == "")
 		return false
-	modelname = ShortenModelName(modelname)
-	return modelname in ::ModelDetails && "mass" in ::ModelDetails[modelname]
+
+	modelname = ShortenModelName(modelname).tolower()
+
+	if(modelname in ::ModelDetails)
+		return "mass" in ::ModelDetails[modelname]
+	else
+	{
+		local mass_checker = Entity("project_smok_mass_checker")
+		if(!mass_checker.IsEntityValid())
+		{
+			mass_checker = CreateMassCheckerEnt()
+		}
+
+		local scope = mass_checker.GetScriptScope()
+		if(scope["IsFree"])
+		{
+			scope["IsFree"] <- false
+			scope["ActivatorID"] <- curr_ent.GetIndex()
+			scope["KillOnFailure"] <- kill_onfail
+			scope["PassCallback"] <- callback
+			scope["PassCallbackArgs"] <- callback_backupargs
+			DoEntFire("!self","testactivator","",0.1,curr_ent.GetBaseEntity(),mass_checker.GetBaseEntity())
+		}
+		else
+		{
+			Timers.AddTimer(0.2,false,DoMassStartProcessCheck,{ActivatorID=curr_ent.GetIndex(),KillOnFailure=kill_onfail,PassCallback=callback,PassCallbackArgs=callback_backupargs})
+		}
+		
+	}
+}
+::DoMassStartProcessCheck <- function(args)
+{
+	local mass_checker = Entity("project_smok_mass_checker")
+	if(!mass_checker.IsEntityValid())
+	{
+		mass_checker = CreateMassCheckerEnt()
+	}
+	local scope = mass_checker.GetScriptScope()
+	if(scope["IsFree"])
+	{
+		scope["IsFree"] <- false
+		scope["ActivatorID"] <- args.ActivatorID
+		scope["KillOnFailure"] <- args.KillOnFailure
+		scope["PassCallback"] <- args.PassCallback
+		scope["PassCallbackArgs"] <- args.PassCallbackArgs
+		DoEntFire("!self","testactivator","",0.05,Ent(args.ActivatorID),mass_checker.GetBaseEntity())
+	}
+	else
+	{
+		Timers.AddTimer(0.15,false,DoMassStartProcessCheck,{ActivatorID=args.ActivatorID,KillOnFailure=args.KillOnFailure,PassCallback=args.PassCallback,PassCallbackArgs=args.PassCallbackArgs})
+	}
 }
 
 /*
@@ -4326,6 +4588,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 	if(all_len == 0)
 	{	
+		::LongProcessIterAvailability.give_physics = true
 		::AdminSystem.out("Physics Progress: "+Utils.BuildProgressBar(20.0,20.0,20.0,"|", ". "))
 		return;
 	}
@@ -4397,7 +4660,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		else if(!AdminSystem.Vars._grabAvailable[entclass])
 			continue
 		
-		if(!::CheckPhysicsAvailabilityForModel(entmdl))
+		if(!::CheckPhysicsAvailabilityForModel(entmdl,ent,GivePhysicsToEntity))
 			continue
 
 		i += 1
@@ -4407,7 +4670,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			break;
 		}
 
-		::GivePhysicsToEntity(ent,entclass)
+		::GivePhysicsToEntity(ent)
 	}
 
 	if(last_index != all_len-1)
@@ -4421,6 +4684,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	}
 	else
 	{	
+		::LongProcessIterAvailability.give_physics = true
 		::AdminSystem.out("Physics Progress: "+Utils.BuildProgressBar(20.0,20.0,20.0,"|", ". "))
 	}
 }
@@ -4433,6 +4697,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
+	if(!::LongProcessIterAvailability.zero_g || !::LongProcessIterAvailability.give_physics)
+	{
+		Printer(player,"You can't use this command while one or both zero_g and give_physics processes are still running!")
+		return
+	}
 	local rad = GetArgument(1);
 
 	if(rad == "!picker")
@@ -4476,10 +4745,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		if((looked.GetModel().find("skybox") != null)) // Skybox stuff
 			return;
 			
-		::GivePhysicsToEntity(looked,entclass)
+		::GivePhysicsToEntity(looked)
 	}
 	else if(rad == "all")
 	{
+		::LongProcessIterAvailability.give_physics = false
 		local i = 0
 		local maxproc = getconsttable()["PHYS_MAX_PROCESS"]
 		local maxiter = getconsttable()["PHYS_MAX_ITER"]
@@ -4556,7 +4826,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			else if(!AdminSystem.Vars._grabAvailable[entclass])
 				continue
 			
-			if(!::CheckPhysicsAvailabilityForModel(entmdl))
+			if(!::CheckPhysicsAvailabilityForModel(entmdl,ent,GivePhysicsToEntity))
 				continue
 
 			i += 1
@@ -4566,7 +4836,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				break;
 			}
 
-			::GivePhysicsToEntity(ent,entclass)
+			::GivePhysicsToEntity(ent)
 		}
 
 		if(last_index != all_len-1)
@@ -4579,6 +4849,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		}
 		else
 		{	
+			::LongProcessIterAvailability.give_physics = true
 			::AdminSystem.out("Physics Progress: "+Utils.BuildProgressBar(20.0,20.0,20.0,"|", ". "))
 		}
 	}
@@ -4619,16 +4890,20 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			else if(!AdminSystem.Vars._grabAvailable[entclass])
 				continue
 			
-			if(ent.GetModel().find("*") != null)
+			local entmdl = ent.GetModel()
+			if(entmdl.find("*") != null)
 				continue;
 			
-			if((ent.GetModel().find("hybridphysx") != null)) // Animation props etc ignored
+			if((entmdl.find("hybridphysx") != null)) // Animation props etc ignored
 				continue;
 			
-			if((ent.GetModel().find("skybox") != null)) // Skybox stuff
+			if((entmdl.find("skybox") != null)) // Skybox stuff
 				continue;
 
-			::GivePhysicsToEntity(ent,entclass)	
+			if(!::CheckPhysicsAvailabilityForModel(entmdl,ent,GivePhysicsToEntity))
+				continue
+
+			::GivePhysicsToEntity(ent)	
 		}
 	}
 }
@@ -7339,6 +7614,353 @@ enum __
 		ClientPrint(null,3,debugstr);
 }
 
+::AdminSystem.LootCategories <-
+{
+	cars =
+	{
+		forbidden_patterns =
+		{
+			"models/props_vehicles/carparts" : true
+			"models/props_vehicles/police_car_lightbar.mdl" : true
+			"glass.mdl" : true
+			"windows.mdl" : true
+			"outro.mdl" : true
+			"collision.mdl" : true
+		}
+		path_patterns =
+		{
+			"models/props_vehicles/car" : true
+			"models/props_vehicles/taxi" : true
+			"models/props_vehicles/racecar.mdl" : true
+			"models/props_vehicles/racecar_damaged.mdl" : true
+			"models/props_vehicles/pickup_truck" : true
+			"models/props_vehicles/truck" : true
+			"models/props_vehicles/semi" : true
+			"models/props_vehicles/pickup_dually.mdl" : true
+			"models/props_vehicles/pickup_4x4.mdl" : true
+			"models/props_vehicles/pickup_regcab.mdl" : true
+			"models/props_vehicles/flatnose" : true
+			"models/props_vehicles/airport_baggage_cart2.mdl" : true
+		}
+	}
+	
+	boxes =
+	{
+		forbidden_patterns =
+		{
+		}
+		path_patterns =
+		{
+			"models/props/cs_assault/box_stack" : true
+			"models/props/cs_assault/washer_box.mdl" : true
+			"models/props/cs_militia/boxes_frontroom.mdl" : true
+			"models/props/cs_militia/boxes_garage_lower.mdl" : true
+			"models/props/cs_militia/mailbox01.mdl" : true
+			"models/props/cs_office/cardboard_box0" : true
+			"models/props/cs_office/file_box.mdl" : true
+			"models/props/cs_office/paperbox_pile_01.mdl" : true
+			"models/props_junk/cardboard_box0" : true
+			"models/props_street/mail_dropbox.mdl" : true
+			"models/props_unique/spawn_apartment/boxes_rooftop.mdl" : true
+			"models/props_misc/bodybag_0" : true
+			"models/props_street/garbage_can" : true
+			"models/props_urban/garbage_can00" : true
+			"models/props/cs_office/trash_can.mdl" : true
+			"models/props/cs_office/trash_can_p.mdl" : true
+			"models/props/de_prodigy/ammo_can_0" : true
+			"models/props_interiors/trashcan" : true
+			"models/props_junk/trashbin" : true
+			"models/props_junk/trashcluster01a.mdl" : true
+			"models/props_junk/trashdumpster01a.mdl" : true
+			"models/props_street/trashbin01.mdl" : true
+			"models/props_unique/airport/trash_bin1.mdl" : true
+			"models/props_junk/dumpster" : true
+			"models/props_junk/metal_paintcan001" : true
+			"models/props_trainstation/trashcan_indoor001b.mdl" : true
+			"models/props/cs_office/shelves_metal1.mdl" : true
+			"models/props/cs_office/shelves_metal2.mdl" : true
+			"models/props/cs_office/shelves_metal3.mdl" : true
+			"models/props/cs_militia/crate_extralargemill.mdl" : true
+			"models/props/de_nuke/crate_small.mdl" : true
+			"models/props_crates/static_crate_40.mdl" : true
+			"models/props_crates/supply_crate01.mdl" : true
+			"models/props_crates/supply_crate02.mdl" : true
+			"models/props_junk/wood_crate001a.mdl" : true
+			"models/props_junk/wood_crate002a.mdl" : true
+			"models/props_equipment/toolchest_01.mdl" : true
+			"models/props_urban/plastic_icechest00" : true
+			"models/props_debris/paintbucket01" : true
+			"models/props_junk/metalbucket0" : true
+			"models/props_junk/pooh_bucket_01.mdl" : true
+			"models/props_urban/plastic_bucket001.mdl" : true
+			"models/props_unique/mopbucket01.mdl" : true
+		}
+	}
+}
+
+::MakeEntityLootable <- function(args)
+{
+	local obj = args.ent
+	local forbidden = args.forbidden
+	local allowed = args.allowed
+	local mdl = args.mdl
+			
+	if(("PS_LootPlaced" in obj.GetScriptScope() && obj.GetScriptScope()["PS_LootPlaced"]) || Utils.TableKeyFindSearch(forbidden,mdl) || !Utils.TableKeyFindSearch(allowed,mdl) )
+		return
+	
+	local sc = obj.GetScriptScope()
+
+	sc["PS_OldName"] <- obj.GetName()
+	obj.SetName(obj.GetName()+"project_smok_loot"+UniqueString())
+	sc["PS_LootPlaced"] <- true
+	
+	local keyvals = 
+	{
+		classname = "point_script_use_target",
+		model = obj.GetName(), 
+		origin = Vector(0,0,0)
+	};
+
+	local params = ::AdminSystem.Vars.LootCreationParams
+	local duration = params.LootDuration
+	if(duration <= 0)
+		duration = 1
+
+	local pscr = Utils.CreateEntityWithTable(keyvals,null,false);
+
+	if(!pscr)
+	{
+		obj.SetName(sc["PS_OldName"])
+		sc["PS_LootPlaced"] <- false
+		return
+	}
+	
+	local b = pscr.GetBaseEntity()
+	local bsrc = pscr.GetScriptScope()
+
+	bsrc["ItemCount"] <- rand().tofloat()/RAND_MAX < params.NoItemProb ? 0 : RandomInt(params.MinItems,params.MaxItems)
+	bsrc["Duration"] <- duration
+	bsrc["FinishLoot"] <- function()
+	{
+		self.CanShowBuildPanel( false );
+
+		local p = self.GetScriptScope().LastPlayer
+		local c = ::VSLib.Entity(self.GetUseModelName())
+		local count = self.GetScriptScope().ItemCount
+		if(count != 0)
+		{	
+			local orgs = []
+			local fw = Vector(0,p.GetForwardVector().Scale(params.SpawnDist).y,0)
+			for(local i=0;i<count;i++)
+			{
+				orgs.append(p.GetOrigin() + RotatePosition(p.GetOrigin(),QAngle(0,i*30),fw) + Vector(0,0,7))
+			}
+			local loots = ::VSLib.RandomItemSpawner(orgs,::AdminSystem.LootSourcesLootTables)
+			loots.SpawnRandomItems(count)
+		}
+
+		c.Input("SetGlowRange","1")
+		c.Input("StopGlowing","")
+		c.SetName(c.GetScriptScope()["PS_OldName"])
+		c.GetScriptScope()["PS_LootPlaced"] <- false
+		DoEntFire("!self","kill","",0,null,self)
+	}
+	bsrc["Started"] <- function()
+	{
+		local user = self.GetScriptScope().PlayerUsingMe
+		local player = null
+		if(user == 0)
+			self.StopUse()
+		else
+		{
+			while( player = Entities.FindByClassname( player, "player" ))
+			{
+				if( player.GetEntityHandle() == user )
+				{
+					self.GetScriptScope()["LastPlayer"] <- ::VSLib.Player(player)
+					return
+				}
+			}
+		}
+	}
+
+	b.CanShowBuildPanel(true)
+	b.SetProgressBarText(params.BarText)
+	b.SetProgressBarSubText(params.BarSubText)
+	
+	b.SetProgressBarFinishTime(duration)
+
+	b.ConnectOutput("OnUseStarted","Started")
+	pscr.Input("AddOutput","OnUseFinished !self,CallScriptFunction,FinishLoot,0,1")
+	obj.SetGlowColor(params.GlowR,params.GlowG,params.GlowB,params.GlowA)
+	obj.Input("SetGlowRange",params.GlowRange.tostring())
+	obj.Input("StartGlowing","")
+}
+
+/* 
+ * @authors rhino
+ */
+::AdminSystem.CreateLootSourcesCmd <- function (player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	if(!::LongProcessIterAvailability.create_loot_sources)
+	{
+		Printer(player,"You can't use this command while a create_loot_sources process is still running!")
+		return
+	}
+
+	local category = GetArgument(1)
+	local forbidden = {}
+	local allowed = {}
+
+	if(!category || category.tolower() == "all")
+	{
+		::LongProcessIterAvailability.create_loot_sources = false
+		category = "all"
+		foreach(tbl in ::AdminSystem.LootCategories)
+		{
+			Utils.ExtendTable(forbidden,tbl.forbidden_patterns)
+			Utils.ExtendTable(allowed,tbl.path_patterns)
+		}
+	}
+	else if(category in ::AdminSystem.LootCategories)
+	{
+		::LongProcessIterAvailability.create_loot_sources = false
+		Utils.ExtendTable(forbidden,::AdminSystem.LootCategories[category].forbidden_patterns)
+		Utils.ExtendTable(allowed,::AdminSystem.LootCategories[category].path_patterns)
+	}
+	else if(category == "!picker")
+	{
+		local looked = player.GetLookingEntity()
+		if(!looked)
+			return
+
+		local mdl = looked.GetModel()
+		local cls = looked.GetClassname()
+		if(mdl.find("*") != null)
+			return;
+
+		if(cls == "player" || cls == "infected" || cls.find("weapon") != null || cls.find("door") != null)
+			return;
+
+		::MakeEntityLootable({ent=looked,forbidden={},allowed={mdl=mdl},mdl=mdl})
+		return
+	}
+	else
+	{
+		Printer(player,"Unknown category. Current available categories: "+TXTCLR.OG("all")+", "+TXTCLR.OG("cars")+", "+TXTCLR.OG("boxes"),"error")
+		return
+	}
+
+	local i = 0
+	local maxproc = 50
+	local maxiter = 150
+
+	local objs = Utils.TableToArray(Objects.All())
+	
+	local all_len = objs.len()
+	local last_index = 0
+	local keepiter = false
+	
+	foreach(idx, ent in objs)
+	{
+		last_index = idx
+		if(idx >= maxiter)
+		{
+			keepiter = true
+			break;
+		}
+
+		local mdl = ent.GetModel()
+		if(!mdl || mdl == "" || mdl.find("*") != null)
+			continue
+
+		i += 1
+		if(i > maxproc)
+		{
+			keepiter = true
+			break;
+		}
+
+		::MakeEntityLootable({ent=ent,forbidden=forbidden,allowed=allowed,mdl=mdl})
+	}
+
+	if(last_index != all_len-1)
+	{
+		objs = objs.slice(last_index)
+	}
+	if(keepiter)
+	{
+		Timers.AddTimer(0.4,false,DoMakeLootIter,{total=all_len,left=objs.len(),objs=objs,forbidden=forbidden,allowed=allowed})
+	}
+	else
+	{	
+		::LongProcessIterAvailability.create_loot_sources = true
+		::AdminSystem.out("Loot-Source Progress: "+Utils.BuildProgressBar(20.0,20.0,20.0,"|", ". "))
+	}
+}
+
+::DoMakeLootIter <- function(args={})
+{
+	::AdminSystem.out("Loot-Source Progress: "+Utils.BuildProgressBar(20.0,((args.total-args.left).tofloat()/args.total.tofloat())*20.0,20.0,"|", ". "))
+	local i = 0
+	local maxproc = 50
+	local maxiter = 150
+
+	local objs = args.objs
+	local forbidden = args.forbidden
+	local allowed = args.allowed
+	
+	local all_len = objs.len()
+	local last_index = 0
+	local keepiter = false
+
+	if(all_len == 0)
+	{	
+		::LongProcessIterAvailability.create_loot_sources = true
+		::AdminSystem.out("Loot-Source Progress: "+Utils.BuildProgressBar(20.0,20.0,20.0,"|", ". "))
+		return;
+	}
+
+	foreach(idx, ent in objs)
+	{
+		last_index = idx
+		if(idx >= maxiter)
+		{
+			keepiter = true
+			break;
+		}
+
+		local mdl = ent.GetModel()
+		if(!mdl || mdl == "" || mdl.find("*") != null)
+			continue
+
+		i += 1
+		if(i > maxproc)
+		{
+			keepiter = true
+			break;
+		}
+
+		::MakeEntityLootable({ent=ent,forbidden=forbidden,allowed=allowed,mdl=mdl})
+	}
+	
+	if(last_index != all_len-1)
+	{
+		objs = objs.slice(last_index)
+	}
+	if(keepiter)
+	{
+		Timers.AddTimer(0.4,false,::DoMakeLootIter,{total=args.total,left=objs.len(),objs=objs,forbidden=forbidden,allowed=allowed})
+	}
+	else
+	{	
+		::LongProcessIterAvailability.create_loot_sources = true
+		::AdminSystem.out("Loot-Source Progress: "+Utils.BuildProgressBar(20.0,20.0,20.0,"|", ". "))
+	}
+}
 
 /* @authors rhino
  * Start the meteor shower
@@ -9988,6 +10610,27 @@ function ChatTriggers::replace_alias( player, args, text )
 					? Messages.DocCmdPlayer(player,CmdDocs.replace_alias(player,args))
 					: null
 
+function ChatTriggers::reload_ent_groups( player, args, text )
+{
+	if(!AdminSystem.HasScriptAuth(player))
+		return;
+	AdminSystem.LoadEntityGroups(true);
+}
+::ChatTriggerDocs.reload_ent_groups <- @(player,args) AdminSystem.IsPrivileged(player) && "reload_ent_groups" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.reload_ent_groups(player,args))
+					: null
+
+function ChatTriggers::reload_loots( player, args, text )
+{
+	if(!AdminSystem.HasScriptAuth(player))
+		return;
+	AdminSystem.LoadLootTables();
+}
+::ChatTriggerDocs.reload_loots <- @(player,args) AdminSystem.IsPrivileged(player) && "reload_loots" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.reload_loots(player,args))
+					: null
+
+
 function ChatTriggers::reload_aliases( player, args, text )
 {
 	if(!AdminSystem.HasScriptAuth(player))
@@ -10458,6 +11101,14 @@ function ChatTriggers::save_particle(player,args,text)
  * @authors rhino
  */
 ////////////////////////entity_stuff/////////////////////////////
+
+function ChatTriggers::create_loot_sources( player, args, text )
+{
+	AdminSystem.CreateLootSourcesCmd( player, args );
+}
+::ChatTriggerDocs.create_loot_sources <- @(player,args) AdminSystem.IsPrivileged(player) && "create_loot_sources" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.create_loot_sources(player,args))
+					: null
 
 function ChatTriggers::ent( player, args, text )
 {
@@ -13026,7 +13677,7 @@ if ( Director.GetGameMode() == "holdout" )
 			parented[tbl2.entid.tointeger()] <- tbl2.entid.tointeger()
 		}
 	}
-	local exp = regexp(@"_\d+(?:_our_particles|_singlesimple|_meteorspawn|_spawnedspeaker|_spawnedmic|_vslib_tmp_)")
+	local exp = regexp(@"_\d+(?:_our_particles|_Admin|_singlesimple|_meteorspawn|_spawnedspeaker|_spawnedmic|_vslib_tmp_)")
 
 	foreach(ent in Objects.All())
 	{
@@ -14496,7 +15147,6 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		if((Ent(self.GetScriptScope()["target"]).GetOrigin()-self.GetScriptScope()["lastorg"]).Length() > 2)
 		{
-			//AdminSystem.out(TXTCLR.BG(Time()))
 			self.GetScriptScope()["thinktime"] = 0
 			self.GetScriptScope()["lastorg"] = Ent(self.GetScriptScope()["target"]).GetOrigin()
 
@@ -14505,16 +15155,20 @@ if ( Director.GetGameMode() == "holdout" )
 
 			DoEntFire("!self","RunScriptCode","NetProps.SetPropIntArray( self, \"m_bState\", 1, 0)",0.05,null,self)
 			DoEntFire(self.GetScriptScope()["transit"],"RunScriptCode","NetProps.SetPropIntArray( self, \"m_bState\", 0, 0)",0.05,null,self)
+			//AdminSystem.out("move: "+NetProps.GetPropIntArray( self, "m_bState", 0) + " "+NetProps.GetPropIntArray( Ent(self.GetScriptScope()["transit"]), "m_bState", 0))
 		}
 		else
 		{
 			NetProps.SetPropIntArray( self, "m_bState", 1, 0);
+			//AdminSystem.out("no move: "+NetProps.GetPropIntArray( self, "m_bState", 0) + " "+NetProps.GetPropIntArray( Ent(self.GetScriptScope()["transit"]), "m_bState", 0))
 		}
 	}
 	else
 	{
 		NetProps.SetPropIntArray( Ent(self.GetScriptScope()["transit"]), "m_bState", 0, 0);
+		NetProps.SetPropIntArray( self, "m_bState", 1, 0);
 		self.GetScriptScope()["thinktime"] = self.GetScriptScope()["thinktime"] + 1
+		//AdminSystem.out("no think: "+NetProps.GetPropIntArray( self, "m_bState", 0) + " "+NetProps.GetPropIntArray( Ent(self.GetScriptScope()["transit"]), "m_bState", 0))
 	}
 }
 
@@ -15994,32 +16648,46 @@ if ( Director.GetGameMode() == "holdout" )
 
 }
 
-::GetSpecialModelOptions <- function(MDL,tbl)
+::GetPositionRelativeToPlayer <- function(player,pos)
 {
-	if(MDL.find(">") == 0)
+	local fwvec = player.GetEyeAngles().Forward();
+	local temp = Vector(fwvec.x,fwvec.y,0);
+
+	fwvec.x = -temp.y;
+	fwvec.y = temp.x;
+	fwvec.z = 0;
+	fwvec = fwvec.Scale(pos.y/fwvec.Length());
+
+	return Vector(fwvec.x,fwvec.y,pos.z) + temp.Scale(pos.x/temp.Length()); 
+}
+
+::GetSpecialModelOptions <- function(player,MDL,tbl)
+{
+	local special = MDL.slice(1,MDL.len())
+	if(special in ::ModelPaths.special)
 	{
-		local special = MDL.slice(1,MDL.len())
-		if(special in ::ModelPaths.special)
-		{
-			local tblref = ::ModelPaths.special[special]
-			local mdlspec = tblref.mdl
-			MDL = typeof mdlspec == "array" 
-						? Utils.GetRandValueFromArray(mdlspec)
-						: mdlspec
+		local tblref = ::ModelPaths.special[special]
+		local mdlspec = tblref.mdl
+		MDL = typeof mdlspec == "array" 
+					? Utils.GetRandValueFromArray(mdlspec)
+					: mdlspec
 
-			if("origin_offset" in tblref)
-				tbl.origin += tblref.origin_offset
-			if("angles_offset" in tblref)
-				tbl.angles += tblref.angles_offset
+		if("origin_offset" in tblref)
+			tbl.origin += tblref.origin_offset
+		if("angles_offset" in tblref)
+			tbl.angles += tblref.angles_offset
 
-			if("mass_scale" in tblref)
-				tbl.massScale = tblref.mass_scale
+		if("mass_scale" in tblref)
+			tbl.massScale = tblref.mass_scale
 
-			if("post_spawn" in tblref)
-				tbl.post = tblref.post_spawn
-		}
+		if("post_spawn" in tblref)
+			tbl.post = tblref.post_spawn
+		return MDL
 	}
-	return MDL;
+	else
+	{
+		return  g_MapScript.GetEntityGroup( special )
+	}
 }
 
 ::DoPostSpawnSettings <- function(createdent,propsettingname,settings)
@@ -16114,7 +16782,7 @@ if ( Director.GetGameMode() == "holdout" )
 			if(raise.find("|") != null)
 			{
 				raise = CastCustomSetting(player,["origin_offset",raise])
-				tbl.origin = tbl.origin + raise;
+				tbl.origin = tbl.origin + GetPositionRelativeToPlayer(player,raise);
 			}
 			else
 			{
@@ -16155,10 +16823,20 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 
 	local typename = GetArgument(1);
-	local propsettingname = (typename == "physics" || typename == "physicsM") ? "physics"
+	if(!typename)
+		return;
+
+	local MDL = GetArgument(2);
+	local propsettingname = "UNKNOWN"
+	if(MDL != null)
+	{
+		propsettingname = (typename == "physics" || typename == "physicsM") ? "physics"
 							: (typename == "ragdoll") ? "ragdoll"
 								: "dynamic"
-	local MDL = GetArgument(2);
+	}
+	else
+		MDL = typename
+
 	local israndom = false
 	if(MDL == "!random")
 	{
@@ -16193,7 +16871,8 @@ if ( Director.GetGameMode() == "holdout" )
 	local createdent = null;
 	local parentfailed = false
 	local singlefailed = false
-		
+	local is_entitygroup = false
+
 	// +++++++++++++++ SETTINGS START 
 	local settings = 
 	{
@@ -16202,12 +16881,111 @@ if ( Director.GetGameMode() == "holdout" )
 		massScale = massScale
 		post = {}
 	}
+
 	// Prop spawn settings
-	ApplyPropSettingsToTable(player,propsettingname,settings);
+	if(propsettingname != "UNKNOWN")
+	{
+		ApplyPropSettingsToTable(player,propsettingname,settings);
+	}
 	// Settings from arguments
 	PostSettingsManualChanges(raise,yaw,settings,player);
+
 	// Settings from special model
-	MDL = GetSpecialModelOptions(MDL,settings)
+	if(MDL.find(">") == 0)
+	{
+		local e_g = GetSpecialModelOptions(player,MDL,settings)
+		if(e_g == null) // Unknown ent group
+		{
+			Messages.ThrowPlayer(player,CmdMessages.Prop.Failed(propsettingname+"("+MDL+")"));
+			return;
+		}
+		else if(typeof e_g == "string") // Known special prop
+		{
+			if(!GetArgument(2))
+			{
+				Messages.ThrowPlayer(player,"A prop type has to be specified for "+COLOR_ORANGE+e_g);
+				return;
+			}
+			MDL = e_g
+		}
+		else	// Known ent group
+		{
+			MDL = MDL.slice(1,MDL.len())
+			local recover_parms = {}
+			if(MDL in AdminSystem.EntityGroupSpawnRestrictions && AdminSystem.EntityGroupSpawnRestrictions[MDL])
+			{
+				if(!AdminSystem.HasScriptAuth(player,true))
+				{
+					Printer(player,"You need script authorization to spawn this entity!")
+					return;
+				}
+
+				foreach(name,val in g_MapScript.GetReplaceParms("",g_MapScript.GetEntityGroup(MDL)))
+				{
+					if((typeof val == "string") && (val.find("$[") == 0 && val.find("]") == (val.len()-1)))
+					{
+						recover_parms[name] <- val
+						g_MapScript.GetEntityGroup(MDL).ReplaceParmDefaults[name] = ::AliasCompiler.ExpressionCompiler(val,{player=format("Player(%s)",player.GetIndex().tostring())})
+					}
+				}
+			}
+			
+			local spawnedents = ""
+			try
+			{
+				g_MapScript.SpawnSingleAt( e_g, settings.origin, settings.angles );
+				
+				local keys = Utils.TableKeys(g_MapScript.UniqueTargetnames)
+				local length = g_MapScript.UniqueTargetnames.len()
+				local wrotenames = false
+				for(local i=0;i<length;i++)
+				{
+					local ind = Entity(g_MapScript.UniqueTargetnames[keys[i]]).GetIndex()
+					if(ind == 0)
+						ind = TXTCLR.OR(Entity(g_MapScript.UniqueTargetnames[keys[i]]).GetName())
+					else if(ind == -1)	// Custom targetnames
+					{
+						if(wrotenames)
+							continue
+
+						local namesfound = Utils.TableKeySearchFilterReturnAll( g_MapScript.GetEntityGroup(MDL).ReplaceParmDefaults,@"\$targetname")
+						local tgkeys = Utils.TableKeys(namesfound)
+						local namelength = namesfound.len()
+						for(local j=0;j<namelength;j++)
+						{
+							ind = TXTCLR.OR(namesfound[tgkeys[j]])
+							local o = Objects.OfName(namesfound[tgkeys[j]])
+							if(o.len() == 1)
+							{
+								ind += "("+TXTCLR.BG("#"+o[0].GetIndex())+")"
+							}
+							if(j != namelength - 1 )
+								spawnedents += ", "
+						}
+					}
+					else
+						ind = TXTCLR.OG("#"+TXTCLR.BG(ind))
+						
+					spawnedents += ind
+					if(i != length - 1 )
+						spawnedents += ", "
+				}
+			}
+			catch(e)
+			{}
+
+			foreach(name,val in recover_parms)
+			{
+				g_MapScript.GetEntityGroup(MDL).ReplaceParmDefaults[name] = val
+			}
+
+			if(spawnedents.len() != 0)
+				Printer(player,CmdMessages.Prop.EntGroupSuccess(MDL,spawnedents));
+			else
+				Printer(player,CmdMessages.Prop.EntGroupFailure(MDL));
+			return
+		}
+	}
 		
 	origin = settings.origin
 	angles = settings.angles
@@ -16353,28 +17131,42 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		if(singlefailed)
 		{	
-			if(!::CheckPhysicsAvailabilityForModel(Utils.CleanColoredString(MDL)) && propsettingname == "physics")
+			local args = 
 			{
-				AdminSystem.out(MDL+" can't be used as a physics object!",player)
-				return
+				MDL = args.MDL
+				typename = args.typename
+				origin = args.origin
+				angles = args.angles
+				player = args.player
+				name = name
 			}
-
-			local ent = Utils.SpawnDynamicProp( Utils.CleanColoredString(MDL), origin, angles );
-			if(ent == null)
+			if(propsettingname == "physics")
 			{
-				Messages.ThrowPlayer(player,CmdMessages.Prop.Failed(typename));
-				return;
-			}
-			local cuniq = UniqueString()
-			local oldind = ent.GetIndex()
-			local thinker = Utils.CreateEntityWithTable({targetname=cuniq,classname="info_target",origin=origin,angles=angles,spawnflags=0})
-			PropFailureFixCheck[thinker.GetName()] <- {id=ent.GetIndex(),thinkstart=Time(),israndom=israndom,pid=player.GetIndex(),character=name,searchname=ent.GetName()}
+				
+				local ent = Utils.SpawnDynamicProp( Utils.CleanColoredString(MDL), origin, angles );
+				if(ent == null)
+				{
+					Messages.ThrowPlayer(player,CmdMessages.Prop.Failed(typename));
+					return;
+				}
+				args.ent = ent
 
-			local convertername = ::Constants.Targetnames.PhysConverter+cuniq
-			local converter = Utils.CreateEntityWithTable({classname="phys_convert",targetname=convertername,target="#"+oldind,spawnflags=3})
-			converter.Input("converttarget")
-			converter.Input("Kill")
-			AddThinkToEnt(thinker.GetBaseEntity(),"PropTryFindSimplePhysSingle")
+				if(::CheckPhysicsAvailabilityForModel(Utils.CleanColoredString(MDL),ent,DoDummyConversionProcessProp,args,true) == false)
+				{
+					Printer(player,TXTCLR.OG(MDL)+" can't be used as a physics object!")
+					ent.Kill()
+				}
+			}
+			else
+			{
+				local ent = Utils.SpawnDynamicProp( Utils.CleanColoredString(MDL), origin, angles );
+				if(ent == null)
+				{
+					Messages.ThrowPlayer(player,CmdMessages.Prop.Failed(typename));
+					return;
+				}
+			}
+			return
 		}
 		else if(parentfailed)
 		{	
@@ -16448,6 +17240,31 @@ if ( Director.GetGameMode() == "holdout" )
 	
 	// Post spawn inputs and scripts
 	DoPostSpawnSettings(createdent,propsettingname,settings)
+}
+
+::DoDummyConversionProcessProp <- function(args)
+{
+	local MDL = args.MDL
+	local typename = args.typename
+	local origin = args.origin
+	local angles = args.angles
+	local player = args.player
+	local name = player.GetCharacterNameLower()
+
+	local ent = args.ent
+	if(!ent.IsEntityValid())
+		return
+
+	local cuniq = UniqueString()
+	local oldind = ent.GetIndex()
+	local thinker = Utils.CreateEntityWithTable({targetname=cuniq,classname="info_target",origin=origin,angles=angles,spawnflags=0})
+	PropFailureFixCheck[thinker.GetName()] <- {id=oldind,thinkstart=Time(),israndom=israndom,pid=player.GetIndex(),character=name,searchname=ent.GetName()}
+
+	local convertername = ::Constants.Targetnames.PhysConverter+cuniq
+	local converter = Utils.CreateEntityWithTable({classname="phys_convert",targetname=convertername,target="#"+oldind,spawnflags=3})
+	converter.Input("converttarget")
+	converter.Input("Kill")
+	AddThinkToEnt(thinker.GetBaseEntity(),"PropTryFindSimplePhysSingle")
 }
 
 ::PropFailureFixCheck <- {}
@@ -17477,42 +18294,37 @@ if ( Director.GetGameMode() == "holdout" )
 			else
 				return;
 		}
-		local fwvec =  entlooked.GetLocalOrigin();
-		local entpos = entlooked.GetLocalOrigin();
+
+		local move_vec = Vector(0,0,0)
+
 		if(direction == "backward")
 		{	
-			fwvec.z *= -1;
-			fwvec.y *= -1;
-			fwvec.x *= -1;
+			move_vec.x = -units
 		}
 		else if(direction == "left")
 		{	
-			fwvec.x = -entpos.y;
-			fwvec.y = entpos.x;
-			fwvec.z = 0;
+			move_vec.y = units
 		}
 		else if(direction == "right")
 		{
-			fwvec.x = entpos.y;
-			fwvec.y = -entpos.x;
-			fwvec.z = 0;
+			move_vec.y = -units
 		}
 		else if(direction == "up")
 		{
-			fwvec.z = units;
-			fwvec.y = 0;
-			fwvec.x = 0;
+			move_vec.z = units
 		}
 		else if(direction == "down")
 		{
-			fwvec.z = -units;
-			fwvec.y = 0;
-			fwvec.x = 0;
+			move_vec.z = -units
 		}
+		else
+		{
+			move_vec.x = units
+		}
+
+		entlooked.SetOrigin(entlooked.GetOrigin()+GetPositionRelativeToPlayer(player,move_vec))
 		
-		fwvec = fwvec.Scale(units/fwvec.Length());
-		entlooked.SetLocalOrigin(Vector(entpos.x+fwvec.x,entpos.y+fwvec.y,entpos.z+fwvec.z));
-		Printer(player,CmdMessages.Force.MoveSuccess(entlooked.GetIndex(),units,direction,pitchofeye));
+		Printer(player,CmdMessages.Force.MoveSuccess(entlooked.GetIndex(),units,direction,0));
 	}
 	else if(entlooked)
 	{	
@@ -20225,7 +21037,7 @@ if ( Director.GetGameMode() == "holdout" )
 			printB(playername,"Eye angles"+"\x05"+"-> "+"\x03"+ent.GetEyeAngles().ToKVString(),true,"debug",false,false);
 		}
 		
-		printB(playername,"================physics_debug=================",true,"debug",false,false);
+		printB(playername,"================physics_debug(of aimed object)=================",true,"debug",false,false);
 		AdminSystem._Clientbroadcast(playername,"physics_debug_entity",1,false);
 		if(svcheatsval==1.0)
 		{
@@ -22090,53 +22902,33 @@ if ( Director.GetGameMode() == "holdout" )
 			origin = ent.GetOrigin(),
 			angles = ent.GetAngles(),
 		};
-		local skin = ent.GetNetProp("m_nSkin");
-		local color = ent.GetNetProp("m_clrRender");
-		local scale = ent.GetModelScale();
 		
-		if(keyvals.classname.find("physics") != null && !::CheckPhysicsAvailabilityForModel(keyvals.model))
-		{
-			AdminSystem.out(keyvals.model+" can't be used as a physics object!",Player("!"+name))
-			AdminSystem.Vars._heldEntity[name].entid = "";
-			return
-		}
-
 		new_ent = Utils.CreateEntityWithTable(keyvals);
-
+		
 		if(new_ent != null)
 		{
 			if(keyvals.classname == "prop_ragdoll")
 				new_ent.SetNetProp("m_CollisionGroup",1)
 
+			local skin = ent.GetNetProp("m_nSkin");
+			local color = ent.GetNetProp("m_clrRender");
+			local scale = ent.GetModelScale();
 			RecreateHierarchy(ent,new_ent,{color=color,skin=skin,scale=scale,name=ent.GetName()});
 			new_ent.Input("RunScriptCode",func+"(Entity("+new_ent.GetIndex()+")"+extra_arg+")",0);
 		}
 		else
 		{
-			local cuniq = UniqueString();
-
-			local oldind = ent.GetIndex()
-
-			ent.SetName(ent.GetName()+UniqueString())
-			local oldname = ent.GetName()
-
-			local org = ent.GetOrigin()
-
-			local dummyent = Utils.CreateEntityWithTable({classname="prop_dynamic_override",model="models/props_misc/pot-1.mdl",origin=org,angles=QAngle(0,0,0),Solid=6,spawnflags=8,targetname=cuniq})
-			dummyent.SetRenderMode(RENDER_NONE);
-			dummyent.SetNetProp("m_CollisionGroup",1)
-			dummyent.SetNetProp("m_clrRender",color);
-			dummyent.SetNetProp("m_nSkin",skin);
-			dummyent.SetModelScale(scale);
-
-			AddThinkToEnt(dummyent.GetBaseEntity(),"PostConvertChecker")
-
-			ConvertCheckTable[dummyent.GetName()] <- {searchname=oldname,dummytime=Time(),func=func,extra_arg=extra_arg,angles=ent.GetAngles()}
-
-			local convertername = ::Constants.Targetnames.PhysConverter+cuniq
-			local converter = Utils.CreateEntityWithTable({classname="phys_convert",targetname=convertername,target="#"+oldind,spawnflags=3})
-			converter.Input("converttarget")
-			converter.Input("Kill")
+			if(keyvals.classname.find("physics") != null)
+			{	
+				if(::CheckPhysicsAvailabilityForModel(keyvals.model,ent,DoDummyConversionProcess) == false)
+				{
+					Printer(Player("!"+name),TXTCLR.OG(keyvals.model)+" can't be used as a physics object!")
+				}
+			}
+			else
+			{
+				Printer(Player("!"+name),TXTCLR.OG(keyvals.model)+" can't be used as a ragdoll/physics object!")
+			}
 		}
 
 		AdminSystem.Vars._heldEntity[name].entid = "";
@@ -22144,6 +22936,38 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 
 	AdminSystem.Vars._heldEntity[name].entid = "";
+}
+
+::DoDummyConversionProcess <- function(ent)
+{
+	local skin = ent.GetNetProp("m_nSkin");
+	local color = ent.GetNetProp("m_clrRender");
+	local scale = ent.GetModelScale();
+
+	local cuniq = UniqueString();
+
+	local oldind = ent.GetIndex()
+
+	ent.SetName(ent.GetName()+UniqueString())
+	local oldname = ent.GetName()
+
+	local org = ent.GetOrigin()
+
+	local dummyent = Utils.CreateEntityWithTable({classname="prop_dynamic_override",model="models/props_misc/pot-1.mdl",origin=org,angles=QAngle(0,0,0),Solid=6,spawnflags=8,targetname=cuniq})
+	dummyent.SetRenderMode(RENDER_NONE);
+	dummyent.SetNetProp("m_CollisionGroup",1)
+	dummyent.SetNetProp("m_clrRender",color);
+	dummyent.SetNetProp("m_nSkin",skin);
+	dummyent.SetModelScale(scale);
+
+	AddThinkToEnt(dummyent.GetBaseEntity(),"PostConvertChecker")
+
+	ConvertCheckTable[dummyent.GetName()] <- {searchname=oldname,dummytime=Time(),func=func,extra_arg=extra_arg,angles=ent.GetAngles()}
+
+	local convertername = ::Constants.Targetnames.PhysConverter+cuniq
+	local converter = Utils.CreateEntityWithTable({classname="phys_convert",targetname=convertername,target="#"+oldind,spawnflags=3})
+	converter.Input("converttarget")
+	converter.Input("Kill")
 }
 
 ::ConvertCheckTable <- {}
@@ -22303,8 +23127,17 @@ if ( Director.GetGameMode() == "holdout" )
 		post={}
 	}
 
-	local MDL = GetSpecialModelOptions(">soda_can",keyvals)
-	keyvals.model <- MDL
+	local MDL = ">soda_can"
+	local e_g = GetSpecialModelOptions(player,MDL,settings)
+	if(typeof e_g == "string")
+	{
+		MDL = e_g
+	}
+	else
+	{
+		Printer(player,"Something went wrong...");
+		return
+	}
 
 	local can = Utils.CreateEntityWithTable(keyvals);
 
@@ -22390,7 +23223,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	b.CanShowBuildPanel(true)
 	b.SetProgressBarText(Utils.GetRandValueFromArray(names))
-	b.SetProgressBarSubText("Drink to restore health!")
+	b.SetProgressBarSubText("Drink to restore "+restorehp+" HP!")
 	
 	b.SetProgressBarFinishTime(duration)
 
@@ -22710,6 +23543,13 @@ if ( Director.GetGameMode() == "holdout" )
 	Messages.InformAll(player.GetCharacterName()+( newstate ? "\x03"+" enabled"+"\x01":"\x04"+" disabled"+"\x01")+" custom sharing");
 }
 
+::LongProcessIterAvailability <-
+{
+	zero_g = true
+	give_physics = true
+	create_loot_sources = true
+}
+
 /*
  * @authors rhino
  */
@@ -22718,6 +23558,11 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 
+	if(!::LongProcessIterAvailability.zero_g || !::LongProcessIterAvailability.give_physics)
+	{
+		Printer(player,"You can't use this command while one or both zero_g and give_physics processes are still running!")
+		return
+	}
 	local targets = GetArgument(1);
 	
 	if(targets == null || targets == "!picker")
@@ -22727,10 +23572,14 @@ if ( Director.GetGameMode() == "holdout" )
 		if(!::ZeroGValidate(ent))
 			return
 
+		if(!::CheckPhysicsAvailabilityForModel(ent.GetModel(),ent,GetRidOfGravity))
+			return
+
 		GetRidOfGravity(ent)
 	}
 	else if(targets == "all")
 	{
+		::LongProcessIterAvailability.zero_g = false
 		local i = 0
 		local maxproc = getconsttable()["ZG_MAX_PROCESS"]
 		local maxiter = getconsttable()["ZG_MAX_ITER"]
@@ -22753,6 +23602,9 @@ if ( Director.GetGameMode() == "holdout" )
 			if(!::ZeroGValidate(ent))
 				continue
 
+			if(!::CheckPhysicsAvailabilityForModel(ent.GetModel(),ent,GetRidOfGravity))
+				continue
+
 			i += 1
 			if(i > maxproc)
 			{
@@ -22772,6 +23624,7 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		else
 		{	
+			::LongProcessIterAvailability.zero_g = true
 			::AdminSystem.out("Zero-G Progress: "+Utils.BuildProgressBar(20.0,20.0,20.0,"|", ". "))
 		}
 	}
@@ -22782,6 +23635,9 @@ if ( Director.GetGameMode() == "holdout" )
 		if(!::ZeroGValidate(ent))
 			return
 		
+		if(!::CheckPhysicsAvailabilityForModel(ent.GetModel(),ent,GetRidOfGravity))
+			return
+
 		GetRidOfGravity(ent)
 	}
 }
@@ -22812,9 +23668,6 @@ if ( Director.GetGameMode() == "holdout" )
 	if((entmdl.find("skybox") != null)) // Skybox stuff
 		return false
 
-	if(!::CheckPhysicsAvailabilityForModel(entmdl))
-		return false
-
 	if(SessionState.MapName in ::ZeroGMapSpecificBans
 		&& 
 		  ((
@@ -22829,7 +23682,7 @@ if ( Director.GetGameMode() == "holdout" )
 		  )
 		)
 		return false
-	
+
 	return true
 }
 
@@ -22840,7 +23693,7 @@ if ( Director.GetGameMode() == "holdout" )
 	prop_physics_multiplayer = true
 	prop_physics_override = true
 	func_physbox = true
-	simple_physics_prop = true	// TO-DO: Causing lots of problems because of collision models missing
+	simple_physics_prop = true
 	prop_fuel_barrel = true
 }
 
@@ -22898,6 +23751,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	if(all_len == 0)
 	{	
+		::LongProcessIterAvailability.zero_g = true
 		::AdminSystem.out("Zero-G Progress: "+Utils.BuildProgressBar(20.0,20.0,20.0,"|", ". "))
 		return;
 	}
@@ -22914,6 +23768,9 @@ if ( Director.GetGameMode() == "holdout" )
 		if(!::ZeroGValidate(ent))
 			continue
 
+		if(!::CheckPhysicsAvailabilityForModel(ent.GetModel(),ent,GetRidOfGravity))
+			continue
+
 		i += 1
 		if(i > maxproc)
 		{
@@ -22921,7 +23778,6 @@ if ( Director.GetGameMode() == "holdout" )
 			break;
 		}
 		
-		printl(ent.GetClassname()+": "+ent.GetModel())
 		::GetRidOfGravity(ent)
 	}
 	
@@ -22936,6 +23792,7 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{	
+		::LongProcessIterAvailability.zero_g = true
 		::AdminSystem.out("Zero-G Progress: "+Utils.BuildProgressBar(20.0,20.0,20.0,"|", ". "))
 	}
 }
