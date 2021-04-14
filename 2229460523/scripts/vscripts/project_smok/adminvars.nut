@@ -142,6 +142,12 @@
     tbl._heldEntity <- AdminVars.RepeatTableForSurvivors(::Constants.Defaults.Tables.GrabYeet.SurvivorSettings);
 }
 
+// Loot settings
+::AdminVars.SetUpLootMakerSettings <- function(tbl)
+{
+    tbl.LootCreationParams <- ::VSLib.Utils.TableCopy(::Constants.Defaults.Tables.LootSources);
+}
+
 // Hat stuff
 ::AdminVars.SetDefaultHatSettings <- function(tbl)
 {
@@ -389,6 +395,8 @@
 
     tbl.SetDefaultGrabYeetSettings <- ref.SetDefaultGrabYeetSettings;
 
+    tbl.SetUpLootMakerSettings <- ref.SetUpLootMakerSettings;
+
     tbl.SetDefaultModelSaveSettings <- ref.SetDefaultModelSaveSettings;
 
     tbl.SetDefaultHatSettings <- ref.SetDefaultHatSettings;
@@ -425,6 +433,8 @@
 ::AdminVars.SetDefaultExplosionSettings(::AdminVars);
 
 ::AdminVars.SetDefaultGrabYeetSettings(::AdminVars);
+
+::AdminVars.SetUpLootMakerSettings(::AdminVars);
 
 ::AdminVars.SetDefaultModelSaveSettings(::AdminVars);
 

@@ -2861,6 +2861,29 @@ function VSLib::Utils::TableKeys(tbl)
 /*
  * @author rhino
  *
+ * @description ıterate through table keys and try finding a key as a sub-string of given string
+ *
+ * @param tbl <table> : Table to iterate over
+ * @param fullstr <string> : String to find a sub-string key match
+ *
+ * @return  if there ever is a non-null found result: true;
+ *			otherwise: false
+ */
+function VSLib::Utils::TableKeyFindSearch(tbl,fullstr)
+{
+	foreach(key,val in tbl)
+	{
+		if(fullstr.find(key) != null)
+		{
+			return true
+		}
+	}
+	return false
+}
+
+/*
+ * @author rhino
+ *
  * @description Search over table keys using the given expression
  *
  * @param tbl <table> : Table to iterate over

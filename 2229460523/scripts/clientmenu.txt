@@ -17854,6 +17854,11 @@
 				"command"		 "play buttons/button14;scripted_user_func random_phys_model;show_menu smok_menu_prop_main1"
 				"label"			 " Get a random physics model"
 			}
+			"6"
+			{
+				"command"		 "play buttons/button14;show_menu smok_menu_prop_sodacans1"
+				"label"			 " Spawn drinkable soda cans"
+			}
 			"8"
 			{
 					"command"	 "play buttons/button14;show_menu smok_menu"
@@ -17879,6 +17884,57 @@
 			{
 				"command"	 "play buttons/button14;scripted_user_func display_saved_model;show_menu smok_menu_model_settings1"
 				"label"		 " Display saved model and class name"
+			}
+			"8"
+			{
+					"command"	 "play buttons/button14;show_menu smok_menu_prop_main1"
+					"label"		 " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"smok_menu_prop_sodacans1"
+	{
+			"Title"     "Soda cans"
+			
+			"1"
+			{
+				"command"	 "play buttons/button14;scripted_user_func soda_can,5;show_menu smok_menu_prop_sodacans1"
+				"label"		 " 5 HP soda can"
+			}
+			"2"
+			{
+				"command"	 "play buttons/button14;scripted_user_func soda_can,10;show_menu smok_menu_prop_sodacans1"
+				"label"		 " 10 HP soda can"
+			}
+			"3"
+			{
+				"command"	 "play buttons/button14;scripted_user_func soda_can,20;show_menu smok_menu_prop_sodacans1"
+				"label"		 " 20 HP soda can"
+			}
+			"4"
+			{
+				"command"	 "play buttons/button14;scripted_user_func soda_can,30;show_menu smok_menu_prop_sodacans1"
+				"label"		 " 30 HP soda can"
+			}
+			"5"
+			{
+				"command"	 "play buttons/button14;scripted_user_func soda_can,50;show_menu smok_menu_prop_sodacans1"
+				"label"		 " 50 HP soda can"
+			}
+			"6"
+			{
+				"command"	 "play buttons/button14;scripted_user_func soda_can,70;show_menu smok_menu_prop_sodacans1"
+				"label"		 " 70 HP soda can"
+			}
+			"7"
+			{
+				"command"	 "play buttons/button14;scripted_user_func soda_can,100;show_menu smok_menu_prop_sodacans1"
+				"label"		 " 100 HP soda can"
 			}
 			"8"
 			{
@@ -20207,9 +20263,51 @@
 				"command"		 "play buttons/button14;show_menu ent_fire_animations1"
 				"label"			 " Animate objects"
 			}
+			"4"
+			{
+				"command"		 "play buttons/button14;show_menu ent_fire_lootables1"
+				"label"			 " Make objects lootable"
+			}
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu ent_fire_menu1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ent_fire_lootables1"
+	{
+			"Title"		 "Lootable props"
+
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func create_loot_sources,cars;show_menu ent_fire_lootables1"
+				"label"			 " Make cars/vehicles lootable"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func create_loot_sources,boxes;show_menu ent_fire_lootables1"
+				"label"			 " Make boxes/cans etc. lootable"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func create_loot_sources,all;show_menu ent_fire_lootables1"
+				"label"			 " Make cars and boxes/cans etc. lootable"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func create_loot_sources,!picker;show_menu ent_fire_lootables1"
+				"label"			 " Make aimed object lootable"
+			}
+		
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ent_fire_menu2"
 					"label"      " << Back"
 			}
 			"0"
@@ -39061,8 +39159,8 @@
 			}
 			"7"
 			{
-				"command"		 "play buttons/button14;scripted_user_func give_physics,3000;show_menu givephys_menu1"
-				"label"			 " Objects around 3000 units radius of aimed location(may lag)"
+				"command"		 "play buttons/button14;scripted_user_func give_physics,all;show_menu givephys_menu1"
+				"label"			 " All available objects"
 			}
 			"8"
 			{
@@ -39091,17 +39189,17 @@
 			"3"
 			{
 				"command"		 "play buttons/button14;scripted_user_func hat_position,eyes;show_menu wear_hat_menu1"
-				"label"			 " Wear above eyes"
+				"label"			 " Default wearing height: Above eyes"
 			}
 			"4"
 			{
 				"command"		 "play buttons/button14;scripted_user_func hat_position,mouth;show_menu wear_hat_menu1"
-				"label"			 " Wear above mouth"
+				"label"			 " Default wearing height: Above mouth"
 			}
 			"5"
 			{
 				"command"		 "play buttons/button14;scripted_user_func hat_position,survivor_neck;show_menu wear_hat_menu1"
-				"label"			 " Wear above neck"
+				"label"			 " Default wearing height: Above neck"
 			}
 			"6"
 			{
@@ -39110,13 +39208,13 @@
 			}
 			"7"
 			{
-				"command"	 	"play buttons/button14;c_thirdpersonshoulder 0;show_menu wear_hat_menu1"
-				"label"		 	" First-person"
+				"command"	 "play buttons/button14;c_thirdpersonshoulder 0;firstperson;show_menu wear_hat_menu1"
+				"label"		 " First-person"
 			}
 			"8"
 			{
-				"command"	 	"play buttons/button14;c_thirdpersonshoulder 1;c_thirdpersonshoulderaimdist 360;c_thirdpersonshoulderdist 90;c_thirdpersonshoulderheight 15;c_thirdpersonshoulderoffset 0;thirdpersonshoulder;thirdpersonshoulder;show_menu wear_hat_menu1"
-				"label"		 	" Third-person Center"
+				"command"	 "play buttons/button14;c_thirdpersonshoulder 1;c_thirdpersonshoulderaimdist 360;c_thirdpersonshoulderdist 90;c_thirdpersonshoulderheight 15;c_thirdpersonshoulderoffset 0;thirdpersonshoulder;thirdpersonshoulder;show_menu wear_hat_menu1"
+				"label"		 " Third-person Center"
 			}
 			"9"
 			{
@@ -39344,7 +39442,7 @@
 
 	"ent_hat_movemain"
 	{	
-			"Title"     "Move direction (May be reversed)"
+			"Title"     "Move direction"
 			"1"
 			{
 				"command"	 "play buttons/button14;show_menu ent_hat_move_forward"

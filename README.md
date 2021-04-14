@@ -2538,6 +2538,36 @@
 ---
 ### Other
 
+#### **create_loot_sources**
+- Make props lootable, dropping items when they are used
+
+   Chat Syntax | (!,/,?)create_loot_sources *state apply_to_all*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *create_loot_sources,state,apply_to_all* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->3->9->4_
+   ------------- | -------------
+```cpp
+       //Overloads:
+       // category: cars = All vehicles
+       //           boxes = All box-like props
+       //           all = All vehicles and box-like props
+       //           !picker = Aimed object. Players, zombies, doors, weapons and some other props are not permitted
+       create_loot_sources {category: (cars, boxes, all, !picker)}
+       create_loot_sources   //  category = all
+       
+       //Example: Make cars lootable
+       create_loot_sources cars
+
+       //Example: Make cars and boxes/cans lootable
+       create_loot_sources
+
+       //Example: Make aimed object lootable
+       create_loot_sources !picker
+```
+---
 #### **invisible_walls**
 - Enable/Disable **most if not all** of the invisible walls around. Some of them can not be disabled.
 
@@ -3330,6 +3360,32 @@
    ------------- | -------------
    
 ---
+#### **reload_ent_groups**
+- Reload custom entity group tables from **admin system/entitygroups/**
+
+   Chat Syntax | (!,/,?)reload_ent_groups
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *reload_ent_groups*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+   
+---
+#### **reload_loots**
+- Reload loot tables from **admin system/loot_tables.txt**
+
+   Chat Syntax | (!,/,?)reload_loots
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *reload_loots*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+   
+---
 #### **detach_hook**
 - Detach a custom hook function from an event
 
@@ -3463,6 +3519,11 @@
       
       - **_example\_alias\_file\_v{Major}\_{Minor}\_{Patch}.txt_**: File containing examples using new features from version v{Major}.{Minor}.{Patch}
 
+   + **_entitygroups_** : Custom alias files folder
+      - **_file\_list.txt_**: List of file names to read as custom entity group tables
+
+      - **_example\_entity\_file.txt_**: An example file containing information about how to create entity groups, version v1.4.0 
+      
    + **_hooks_** : Custom hook files folder
       - **_file\_list.txt_**: List of file names to read as custom hook functions
 
@@ -3490,6 +3551,8 @@
    + **_disabled\_commands_.txt_** : List of command names to disable 
 
    + **_ghost\_zombies\_settings.txt_** : Ghost zombies event custom settings
+
+   + **_loot\_tables.txt_** : Loot tables used while making props lootable
    
    + **_meteor\_shower\_settings.txt_** : Meteor shower event custom settings
 
@@ -3523,6 +3586,8 @@
 - **"ghost_zombies_settings.txt"** file contains the settings to use for the _ghost zombies_ event. Probabilistic values are normalized between 0 and 1.
 
 - **"meteor_shower_settings.txt"** file contains the settings to use for the _meteor shower_ event. Probabilistic values are normalized between 0 and 1.
+
+- **entitygroups/** folder can be used to easily import entity group tables. Follow the instructions in the example file: **_entitygroups/example\_entity\_file.txt_**
 
 ---
 ### Detailed Tables
