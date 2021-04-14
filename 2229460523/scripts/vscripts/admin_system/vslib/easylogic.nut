@@ -673,6 +673,7 @@ getconsttable()["ZG_MAX_PROCESS"] <- 30;	// Maximum zero-gravity process at a ti
 \*******************/
 getconsttable()["PHYS_MAX_ITER"] <- 150;	// Maximum iteration at a time
 getconsttable()["PHYS_MAX_PROCESS"] <- 25;	// Maximum zero-gravity process at a time
+getconsttable()["PHYS_MIN_MASS"] <- 1.0;	// Maximum zero-gravity process at a time
 
 ////////////////////////////////////////////////////////////////
 // Difficulty to be used with OnDifficulty()
