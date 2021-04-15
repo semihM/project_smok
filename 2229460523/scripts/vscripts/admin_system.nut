@@ -7744,20 +7744,88 @@ enum __
 	{
 		self.CanShowBuildPanel( false );
 
+		local count = self.GetScriptScope().ItemCount
+		local lparams = ::AdminSystem.Vars.LootCreationParams
+
 		local p = self.GetScriptScope().LastPlayer
 		local c = ::VSLib.Entity(self.GetUseModelName())
-		local count = self.GetScriptScope().ItemCount
+
+		local porg = p.GetOrigin()
 		if(count != 0)
 		{	
 			local orgs = []
-			local fw = Vector(0,p.GetForwardVector().Scale(params.SpawnDist).y,0)
+			local fw = Vector(0,p.GetForwardVector().Scale(lparams.SpawnDist).y,0)
 			for(local i=0;i<count;i++)
 			{
-				orgs.append(p.GetOrigin() + RotatePosition(p.GetOrigin(),QAngle(0,i*30),fw) + Vector(0,0,7))
+				orgs.append(porg + RotatePosition(porg,QAngle(0,i*30),fw) + Vector(0,0,7))
 			}
+
+			foreach(obj in Objects.AroundRadius(porg,lparams.SpawnDist+15))
+			{
+				obj.GetScriptScope()["PS_Random_Tracked"] <- true
+			}
+
 			local loots = ::VSLib.RandomItemSpawner(orgs,::AdminSystem.LootSourcesLootTables)
-			loots.SpawnRandomItems(count)
+			local spawns = loots.SpawnRandomItems(count)
+
+			local enttbl = {}
+
+			local total = spawns.len()
+			
+			if(total != count)
+			{
+				foreach(obj in Objects.AroundRadius(porg,lparams.SpawnDist+15))
+				{
+					if(obj.GetParent() != null || obj.GetName().find("random_spawned_item") != null || ("PS_Random_Tracked" in obj.GetScriptScope() && obj.GetScriptScope()["PS_Random_Tracked"]) )
+						continue
+						
+					obj.GetScriptScope()["PS_Random_Tracked"] <- true
+					spawns.append(obj)
+				}
+				total = spawns.len()
+			}
+
+			if(total == 1)
+			{
+				local clsn = spawns[0].GetClassname()
+				if(clsn == "weapon_melee_spawn")
+				{
+					local emdl = spawns[0].GetModel()
+					local i = emdl.find("models/weapons/melee/")
+					if(i != null)
+						clsn = emdl.slice(21,emdl.find(".mdl"))
+				}
+				::Printer(p,"Found a "+TXTCLR.OR(clsn)+"!")
+			}
+			else
+			{
+				for(local i=0;i<total;i++)
+				{
+					local e = spawns[i]
+					local clsn = e.GetClassname()
+					if(clsn == "weapon_melee_spawn")
+					{
+						local emdl = e.GetModel()
+						local i = emdl.find("models/weapons/melee/")
+						if(i != null)
+							clsn = emdl.slice(21,emdl.find(".mdl"))
+					}
+					_dropit(e)
+					if(clsn in enttbl)
+						enttbl[clsn]++
+					else
+						enttbl[clsn] <- 1 
+				}
+				local st = "" 
+				foreach(c,e in enttbl)
+				{
+					st += TXTCLR.OR(c) + "(" + TXTCLR.BG("x" + e) + ") "
+				}
+				::Printer(p,"Found "+TXTCLR.OR(total)+" items! "+st)
+			}
 		}
+		else
+			::Printer(p,"No items found!")
 
 		c.Input("SetGlowRange","1")
 		c.Input("StopGlowing","")
@@ -23128,10 +23196,11 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 
 	local MDL = ">soda_can"
-	local e_g = GetSpecialModelOptions(player,MDL,settings)
+	local e_g = GetSpecialModelOptions(player,MDL,keyvals)
 	if(typeof e_g == "string")
 	{
 		MDL = e_g
+		keyvals.model <- MDL
 	}
 	else
 	{
@@ -23140,7 +23209,11 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 
 	local can = Utils.CreateEntityWithTable(keyvals);
-
+	if(!can)
+	{
+		Printer(player,"Something went wrong...");
+		return
+	}
 	local cuniq = UniqueString()
 	local oldind = can.GetIndex()
 	local thinker = Utils.CreateEntityWithTable({targetname=cuniq,classname="info_target",origin=keyvals.origin,angles=keyvals.angles,spawnflags=0})
