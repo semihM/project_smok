@@ -85,6 +85,8 @@
     
     - [**Animation commands**](#animation-commands)
   
+    - [**Looting commands**](#looting-commands)
+    
     - [**Experimental commands**](#experimental-commands)
     
     - [**Other commands**](#other)
@@ -2366,6 +2368,104 @@
        random_animation 4 [Hh]eal #66 
 ```
 ---
+### Looting Commands
+
+#### **create_loot_sources**
+- Make props lootable, dropping items when they are used
+
+   Chat Syntax | (!,/,?)create_loot_sources *category*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *create_loot_sources,category* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->3->9->4_
+   ------------- | -------------
+```cpp
+       //Overloads:
+       // category: cars = All vehicles
+       //           boxes = All box-like props
+       //           all = All vehicles and box-like props
+       //           !picker = Aimed object. Players, zombies, doors, weapons and some other props are not permitted
+       create_loot_sources {category: (cars, boxes, all, !picker)}
+       create_loot_sources   //  category = all
+       
+       //Example: Make cars lootable
+       create_loot_sources cars
+
+       //Example: Make cars and boxes/cans lootable
+       create_loot_sources
+
+       //Example: Make aimed object lootable
+       create_loot_sources !picker
+```
+---
+#### **show_looting_settings**
+- Show current *create_loot_sources* command settings in console
+
+   Chat Syntax | (!,/,?)show_looting_settings
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *show_looting_settings* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->3->9->4->5_
+   ------------- | -------------
+
+    Setting | Default Value | Description
+    ------------ | ------------- | -------------
+    LootDuration | 2.5 | How long it should take to loot a prop in seconds
+    NoItemProb | 0.35 | Probability of the prop having no loot, 0 = 0% , 1 = 100%
+    MinItems | 1 | Minimum amount of items to drop when the prop is looted
+    MaxItems | 2 | Maximum amount of items to drop when the prop is looted
+    BarText | "Lootable Prop" | Big text to display for the looting bar
+    BarSubText | "There might be something valuable in here!" | Sub text to display for the looting bar
+    GlowRange | 180 | Range to start glowing for players
+    GlowR | 255 | Red value of glowing color of lootable props
+    GlowG | 80 | Green value of glowing color of lootable props
+    GlowB | 255 | Blue value of glowing color of lootable props
+    GlowA | 255 | Alpha value of glowing color of lootable props
+    events_enabled | true | true: Enable random events upon looting, false: no random events
+    hurt_prob | 0.1 | Probability of getting hurt once or several times
+    ambush_prob | 0.05 | Probability of a special zombie ambush
+    explosion_prob | 0.05 | Probability of explosion
+    horde_prob | 0.07 | Probability of calling a horde
+
+---
+#### **looting_setting**
+- Update *create_loot_sources* command settings
+
+   Chat Syntax | (!,/,?)looting_setting *setting new_value*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *looting_setting,setting,new_value* 
+   ------------- | -------------
+    
+   Menu Sequence | _Command hinted at 6->3->9->4->6_
+   ------------- | -------------
+
+```cpp
+       //Overloads:
+       // Check out the settings and their values with show_looting_settings
+       looting_setting {setting} {new_value}
+       
+       // Example: Change maximum amount of drops from looting from 2 to 4
+       looting_setting MaxItems 4
+```
+---
+#### **reload_loots**
+- Reload loot tables from **admin system/loot_tables.txt**
+
+   Chat Syntax | (!,/,?)reload_loots
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *reload_loots*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+   
+---
 ### Experimental Commands
 
 #### **drive**
@@ -2538,34 +2638,53 @@
 ---
 ### Other
 
-#### **create_loot_sources**
-- Make props lootable, dropping items when they are used
+#### **give_physics**
+- Enable physics on object(s) around a radius or of which aimed at
 
-   Chat Syntax | (!,/,?)create_loot_sources *category*
+   Chat Syntax | (!,/,?)give_physics *radius*
    ------------- | -------------
 
-   Console Syntax | scripted_user_func *create_loot_sources,category* 
+   Console Syntax | scripted_user_func *give_physics,radius*
    ------------- | -------------
     
-   Menu Sequence | _6->3->9->4_
+   Menu Sequence | _6->9->9->9->4_
    ------------- | -------------
+
 ```cpp
-       //Overloads:
-       // category: cars = All vehicles
-       //           boxes = All box-like props
-       //           all = All vehicles and box-like props
-       //           !picker = Aimed object. Players, zombies, doors, weapons and some other props are not permitted
-       create_loot_sources {category: (cars, boxes, all, !picker)}
-       create_loot_sources   //  category = all
+       //Overloads
+       give_physics {radius:positive_number|!picker|all}
+       give_physics     // radius = 150 units
        
-       //Example: Make cars lootable
-       create_loot_sources cars
+       // Example (give physics to aimed object (if possible))
+       give_physics !picker
+       
+       // Example (give physics to objects within 500 units around aimed point)
+       give_physics 500
+       
+       // Example (give physics to all the objects in the map)
+       give_physics all
+```
+---
+#### **zero_g**
+- Disable gravitational forces on objects
 
-       //Example: Make cars and boxes/cans lootable
-       create_loot_sources
+   Chat Syntax | (!,/,?)zero_g *targets*
+   ------------- | -------------
 
-       //Example: Make aimed object lootable
-       create_loot_sources !picker
+   Console Syntax | scripted_user_func *zero_g,targets*
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->5_
+   ------------- | -------------
+
+```cpp
+       //Overloads
+       zero_g {targets:all|!picker}
+       zero_g     // targets = !picker (aimed object)
+       
+       // Example: Make all physics objects have zero gravity
+       zero_g all
+       
 ```
 ---
 #### **invisible_walls**
@@ -2588,7 +2707,7 @@
 ```
 ---
 #### **ladder_team**
-- Change teams of ladders
+- Change the teams of ladders
 
    Chat Syntax | (!,/,?)ladder_team *team*
    ------------- | -------------
@@ -2652,68 +2771,6 @@
        hurt_triggers enable
 ``` 
 ---
-#### **update_aimed_ent_direction**
-- Make aimed object face the same way as you
-
-   Chat Syntax | (!,/,?)update_aimed_ent_direction
-   ------------- | -------------
-
-   Console Syntax | scripted_user_func *update_aimed_ent_direction* 
-   ------------- | -------------
-    
-   Menu Sequence | _6->9->9->9->1->6->3_
-   ------------- | -------------
-                   
----
-#### **give_physics**
-- Enable physics on object(s) around a radius or of which aimed at
-
-   Chat Syntax | (!,/,?)give_physics *radius*
-   ------------- | -------------
-
-   Console Syntax | scripted_user_func *give_physics,radius*
-   ------------- | -------------
-    
-   Menu Sequence | _6->9->9->9->4_
-   ------------- | -------------
-
-```cpp
-       //Overloads
-       give_physics {radius:positive_number|!picker|all}
-       give_physics     // radius = 150 units
-       
-       // Example (give physics to aimed object (if possible))
-       give_physics !picker
-       
-       // Example (give physics to objects within 500 units around aimed point)
-       give_physics 500
-       
-       // Example (give physics to all the objects in the map)
-       give_physics all
-```
----
-#### **zero_g**
-- Disable gravitational forces on objects
-
-   Chat Syntax | (!,/,?)zero_g *targets*
-   ------------- | -------------
-
-   Console Syntax | scripted_user_func *zero_g,targets*
-   ------------- | -------------
-    
-   Menu Sequence | _6->9->9->9->5_
-   ------------- | -------------
-
-```cpp
-       //Overloads
-       zero_g {targets:all|!picker}
-       zero_g     // targets = !picker (aimed object)
-       
-       // Example: Make all physics objects have zero gravity
-       zero_g all
-       
-```
----
 #### **soda_can**
 - Spawn a drinkable soda which recovers health for players
 
@@ -2734,6 +2791,19 @@
        // Example: Spawn a drink which restores 15HP when a player uses it
        soda_can 15
 ```
+---
+#### **update_aimed_ent_direction**
+- Make aimed object face the same way as you
+
+   Chat Syntax | (!,/,?)update_aimed_ent_direction
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *update_aimed_ent_direction* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->1->6->3_
+   ------------- | -------------
+
 ---
 ### Debugging, scripting and settings related
 
@@ -3373,19 +3443,6 @@
    ------------- | -------------
    
 ---
-#### **reload_loots**
-- Reload loot tables from **admin system/loot_tables.txt**
-
-   Chat Syntax | (!,/,?)reload_loots
-   ------------- | -------------
-
-   Console Syntax | scripted_user_func *reload_loots*
-   ------------- | -------------
-    
-   Menu Sequence | _Not in the menu_
-   ------------- | -------------
-   
----
 #### **detach_hook**
 - Detach a custom hook function from an event
 
@@ -3436,7 +3493,66 @@
     
    Menu Sequence | _Not in the menu_
    ------------- | -------------
-   
+
+--- 
+#### **reload_binds**
+- Reload bind table files from **admin system/binds/**
+
+   Chat Syntax | (!,/,?)reload_binds
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *reload_binds*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+
+--- 
+#### **bind**
+- Re-bind a unbound command/function
+
+   Chat Syntax | (!,/,?)bind *target key_name cmd_func_name*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *bind,target,key_name,cmd_func_name* 
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+
+```cpp
+       //Overloads
+       bind {target:(!self,#{ID},{Name})} {keyname:(FORWARD,BACK,LEFT,RIGHT,ATTACK,ZOOM,SHOVE,RELOAD,JUMP,WALK,DUCK,USE,SCORE,ALT1,ALT2)} {cmd_func_name}
+       
+       // Example: Re-bind grab command bound in ALT1 for yourself
+       bind !self ALT1 !grab
+       
+       // Example: Re-bind foo_func function bound in ATTACK (mouse1) for the admin playing as Bill
+       bind !bill ATTACK foo_func
+```
+---
+#### **unbind**
+- Unbind a command/function bound to a key via *admin system/binds* tables
+
+   Chat Syntax | (!,/,?)unbind *target key_name cmd_func_name*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *unbind,target,key_name,cmd_func_name* 
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+
+```cpp
+       //Overloads
+       unbind {target:(!self,#{ID},{Name})} {keyname:(FORWARD,BACK,LEFT,RIGHT,ATTACK,ZOOM,SHOVE,RELOAD,JUMP,WALK,DUCK,USE,SCORE,ALT1,ALT2)} {cmd_func_name}
+       
+       // Example: Unbind grab command bound in ALT1 for yourself
+       unbind !self ALT1 !grab
+       
+       // Example: Unbind foo_func function bound in ATTACK (mouse1) for the admin playing as Bill
+       unbind !bill ATTACK foo_func
+```  
 ---
 
 ## Hooks
@@ -3519,6 +3635,11 @@
       
       - **_example\_alias\_file\_v{Major}\_{Minor}\_{Patch}.txt_**: File containing examples using new features from version v{Major}.{Minor}.{Patch}
 
+   + **_binds_** : Custom bind tables files folder
+      - **_file\_list.txt_**: List of file names to read as custom bind tables
+
+      - **_example\_bind\_file.nut_**: An example file containing information about how to create binds
+
    + **_entitygroups_** : Custom alias files folder
       - **_file\_list.txt_**: List of file names to read as custom entity group tables
 
@@ -3567,7 +3688,7 @@
       - [Squirrel Language Highlighting](https://marketplace.visualstudio.com/items?itemName=monkeygroover.vscode-squirrel-lang)
       - [Visual Studio IntelliCode](https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode)
 
-- File sizes are restricted to **16.5 KB maximum**
+- File sizes are restricted to **16.5 KB maximum**. If a file bigger than **16.5 KB** was tried to read, it will prevent the add-on from loading properly!
 
 - If an issue occurs while reading the file, it will be printed in **red** in the console. Removing the file can help solve reading issues by letting the addon re-creating the file again in the next reset.
 
