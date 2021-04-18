@@ -19,6 +19,97 @@ IncludeScript("Resource_tables/Survivorlines_paths/Producer");
         rochelle = ::Producer.rochelle
     }
     
+	DeathScream =
+	{
+        bill = 
+		[
+			"deathscream01.vcd",
+			"deathscream02.vcd",
+			"deathscream03.vcd",
+			"deathscream04.vcd",
+			"deathscream05.vcd",
+			"deathscream06.vcd",
+			"deathscream07.vcd",
+			"deathscream08.vcd"
+		]
+        francis = 
+		[
+			"deathscream01.vcd",
+			"deathscream02.vcd",
+			"deathscream03.vcd",
+			"deathscream04.vcd",
+			"deathscream05.vcd",
+			"deathscream06.vcd",
+			"deathscream07.vcd",
+			"deathscream08.vcd",
+			"deathscream09.vcd",
+			"deathscream10.vcd"
+		]
+        louis = 
+		[
+			"deathscream01.vcd",
+			"deathscream02.vcd",
+			"deathscream03.vcd",
+			"deathscream04.vcd",
+			"deathscream05.vcd",
+			"deathscream06.vcd",
+			"deathscream07.vcd",
+			"deathscream08.vcd",
+			"deathscream09.vcd",
+			"deathscream10.vcd"
+		]
+        zoey = 
+		[
+			"deathscream01.vcd",
+			"deathscream02.vcd",
+			"deathscream03.vcd",
+			"deathscream04.vcd",
+			"deathscream05.vcd",
+			"deathscream06.vcd",
+			"deathscream07.vcd",
+			"deathscream08.vcd",
+			"deathscream09.vcd",
+			"deathscream10.vcd",
+			"deathscream11.vcd"
+		]
+        nick = 
+		[
+			"deathscream01.vcd",
+			"deathscream02.vcd",
+			"deathscream03.vcd",
+			"deathscream04.vcd",
+			"deathscream05.vcd",
+			"deathscream06.vcd",
+			"deathscream07.vcd"
+		]
+        ellis = 
+		[
+			"deathscream01.vcd",
+			"deathscream02.vcd",
+			"deathscream03.vcd",
+			"deathscream04.vcd",
+			"deathscream05.vcd",
+			"deathscream06.vcd"
+		]
+        coach = 
+		[
+			"deathscream01.vcd",
+			"deathscream02.vcd",
+			"deathscream03.vcd",
+			"deathscream04.vcd",
+			"deathscream05.vcd",
+			"deathscream06.vcd",
+			"deathscream07.vcd",
+			"deathscream08.vcd",
+			"deathscream09.vcd"
+		]
+        rochelle = 
+		[
+			"deathscream01.vcd",
+			"deathscream02.vcd"
+		]
+	}
+
 	ShareItem =
 	{
         bill = 
