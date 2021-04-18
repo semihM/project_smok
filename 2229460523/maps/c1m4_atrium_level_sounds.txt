@@ -20832,3 +20832,11 @@ Buttons.snd46
 	"soundlevel"	    "SNDLVL_130dB"
 	"wave"	"ambient/machines/steam_release_2.wav"
 }
+"loot_get"
+{
+	"channel"		"CHAN_REPLACE"
+	"volume"		"1.0"
+	"pitch"			"PITCH_NORM"
+	"soundlevel"	    "SNDLVL_160dB"
+	"wave"	"lootget/lootget.wav"
+}
