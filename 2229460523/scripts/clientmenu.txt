@@ -20304,6 +20304,16 @@
 				"command"		 "play buttons/button14;scripted_user_func create_loot_sources,!picker;show_menu ent_fire_lootables1"
 				"label"			 " Make aimed object lootable"
 			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func show_looting_settings;show_menu ent_fire_lootables1"
+				"label"			 " Show looting settings"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button10;show_menu ent_fire_lootables1"
+				"label"			 " Change looting settings (Use looting_setting {setting} {value})"
+			}
 		
 			"8"
 			{
@@ -39807,18 +39817,13 @@
 			}
 			"3"
 			{
-				"command"	 	"play buttons/button14;c_thirdpersonshoulder 0;show_menu drivemenu1"
-				"label"		 	" First-person"
+				"command"	 "play buttons/button14;c_thirdpersonshoulder 0;firstperson;show_menu drivemenu1"
+				"label"		 " First-person"
 			}
 			"4"
 			{
-				"command"	 	"play buttons/button14;c_thirdpersonshoulder 1;c_thirdpersonshoulderaimdist 360;c_thirdpersonshoulderdist 90;c_thirdpersonshoulderheight 15;c_thirdpersonshoulderoffset 0;thirdpersonshoulder;thirdpersonshoulder;show_menu drivemenu1"
-				"label"		 	" Third-person Center"
-			}
-			"5"
-			{
-				"command"	 	"play buttons/button14;c_thirdpersonshoulder 1;c_thirdpersonshoulderaimdist 720;c_thirdpersonshoulderdist 40;c_thirdpersonshoulderheight 3;c_thirdpersonshoulderoffset 0;thirdpersonshoulder;cam_idealdist 30;thirdpersonshoulder;cam_idealdist 30;show_menu drivemenu1"
-				"label"		 	" Third-person Shoulder Center"
+				"command"	 "play buttons/button14;c_thirdpersonshoulder 1;c_thirdpersonshoulderaimdist 360;c_thirdpersonshoulderdist 90;c_thirdpersonshoulderheight 15;c_thirdpersonshoulderoffset 0;thirdpersonshoulder;thirdpersonshoulder;show_menu drivemenu1"
+				"label"		 " Third-person Center"
 			}
 
 			"8"

@@ -675,6 +675,14 @@ getconsttable()["PHYS_MAX_ITER"] <- 150;	// Maximum iteration at a time
 getconsttable()["PHYS_MAX_PROCESS"] <- 25;	// Maximum zero-gravity process at a time
 getconsttable()["PHYS_MIN_MASS"] <- 1.0;	// Maximum zero-gravity process at a time
 
+/*************\
+* QUIX TIMERS *
+\*************/
+getconsttable()["PS_WHILE_UNPRESSED"] <- (1 << 0)
+getconsttable()["PS_WHEN_PRESSED"] <- (1 << 1)
+getconsttable()["PS_WHILE_PRESSED"] <- (1 << 2) 
+getconsttable()["PS_WHEN_UNPRESSED"] <- (1 << 3)
+
 ////////////////////////////////////////////////////////////////
 // Difficulty to be used with OnDifficulty()
 getconsttable()["EASY"] <- "easy";

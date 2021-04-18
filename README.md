@@ -85,6 +85,8 @@
     
     - [**Animation commands**](#animation-commands)
   
+    - [**Looting commands**](#looting-commands)
+    
     - [**Experimental commands**](#experimental-commands)
     
     - [**Other commands**](#other)
@@ -92,6 +94,10 @@
     - [**Debugging, scripting and setting related**](#debugging-scripting-and-settings-related)
 
     - [**Custom Script Related**](#custom-script-related)
+
+- [**Binds**](#binds)
+
+    - [**Binds File Format**](#binds-file-format)   
 
 - [**Hooks**](#hooks)
 
@@ -278,9 +284,9 @@
    #### Alias File Format
    - Following is an example alias file content including an alias called **my_alias_1** documented, referring to **2** commands and is only available for script authorized admins. Syntax follows the Squirrel Language table data type, but the file should be saved as a text **(.txt)** file at the end.
    + **WARNING**: While copy-pasting the examples, it will most likely fail while compiling. Some solutions:
-      - Remove the comments around and inside the table, anything after **"//"** inclusively, may cause "expected identifier" error messages
+      - Remove the comments around and inside the table, anything after **"//"** inclusively, may be the cause of "expected identifier" error messages
       - Re-write the example with better indentation OR no indentation OR single line without comments 
-   ```nut 
+```nut 
 {
 	// Alias name
 	my_alias_1 =
@@ -380,7 +386,7 @@
 		}
 	}
 }
-   ```
+```
    
    #### Commands to create or replace aliases for a single game session
    1. Start a game
@@ -434,9 +440,9 @@
    #### Script File Format
    - Following is an example script file content for creating a command called **my_command_1**. Commands are read from the **::PS_Scripts** table, so they should initialized under this table.
    + **WARNING**: While copy-pasting the examples, it will most likely fail while compiling. Some solutions:
-      - Remove the comments around and inside the table, anything after **"//"** inclusively, may cause "expected identifier" error messages
+      - Remove the comments around and inside the table, anything after **"//"** inclusively, may be the cause of "expected identifier" error messages
       - Re-write the example with better indentation OR no indentation OR single line without comments  
-   ```nut
+```nut
 // If you are a beginner to Squirrel scripting language, check out: http://squirrel-lang.org/squirreldoc/
 // If you don't know how to use the VSLib library, check out: https://l4d2scripters.github.io/vslib/docs/index.html
 // Some methods of VSLib may behave differently, make sure to check out the source code for those: https://github.com/semihM/project_smok/tree/master/2229460523/scripts/vscripts/admin_system/vslib
@@ -517,7 +523,8 @@
 	// At the end, print out a message for the player(s) if needed, prints to wherever the given player has his output state set to
 	::Printer(player,"Put the message here!")
 }
-   ```
+```
+
 ---
 ## Character limitations
 - There are certain limitations of the game by default which can prevent certain commands or formats not work as intended. These limitations are generally about usage of special characters and length of the messages/commands sent.
@@ -2366,6 +2373,104 @@
        random_animation 4 [Hh]eal #66 
 ```
 ---
+### Looting Commands
+
+#### **create_loot_sources**
+- Make props lootable, dropping items when they are used
+
+   Chat Syntax | (!,/,?)create_loot_sources *category*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *create_loot_sources,category* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->3->9->4_
+   ------------- | -------------
+```cpp
+       //Overloads:
+       // category: cars = All vehicles
+       //           boxes = All box-like props
+       //           all = All vehicles and box-like props
+       //           !picker = Aimed object. Players, zombies, doors, weapons and some other props are not permitted
+       create_loot_sources {category: (cars, boxes, all, !picker)}
+       create_loot_sources   //  category = all
+       
+       //Example: Make cars lootable
+       create_loot_sources cars
+
+       //Example: Make cars and boxes/cans lootable
+       create_loot_sources
+
+       //Example: Make aimed object lootable
+       create_loot_sources !picker
+```
+---
+#### **show_looting_settings**
+- Show current *create_loot_sources* command settings in console
+
+   Chat Syntax | (!,/,?)show_looting_settings
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *show_looting_settings* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->3->9->4->5_
+   ------------- | -------------
+
+    Setting | Default Value | Description
+    ------------ | ------------- | -------------
+    LootDuration | 2.5 | How long it should take to loot a prop in seconds
+    NoItemProb | 0.35 | Probability of the prop having no loot, 0 = 0% , 1 = 100%
+    MinItems | 1 | Minimum amount of items to drop when the prop is looted
+    MaxItems | 2 | Maximum amount of items to drop when the prop is looted
+    BarText | "Lootable Prop" | Big text to display for the looting bar
+    BarSubText | "There might be something valuable in here!" | Sub text to display for the looting bar
+    GlowRange | 180 | Range to start glowing for players
+    GlowR | 255 | Red value of glowing color of lootable props
+    GlowG | 80 | Green value of glowing color of lootable props
+    GlowB | 255 | Blue value of glowing color of lootable props
+    GlowA | 255 | Alpha value of glowing color of lootable props
+    events_enabled | true | true: Enable random events upon looting, false: no random events
+    hurt_prob | 0.1 | Probability of getting hurt once or several times
+    ambush_prob | 0.05 | Probability of a special zombie ambush
+    explosion_prob | 0.05 | Probability of explosion
+    horde_prob | 0.07 | Probability of calling a horde
+
+---
+#### **looting_setting**
+- Update *create_loot_sources* command settings
+
+   Chat Syntax | (!,/,?)looting_setting *setting new_value*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *looting_setting,setting,new_value* 
+   ------------- | -------------
+    
+   Menu Sequence | _Command hinted at 6->3->9->4->6_
+   ------------- | -------------
+
+```cpp
+       //Overloads:
+       // Check out the settings and their values with show_looting_settings
+       looting_setting {setting} {new_value}
+       
+       // Example: Change maximum amount of drops from looting from 2 to 4
+       looting_setting MaxItems 4
+```
+---
+#### **reload_loots**
+- Reload loot tables from **admin system/loot_tables.txt**
+
+   Chat Syntax | (!,/,?)reload_loots
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *reload_loots*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+   
+---
 ### Experimental Commands
 
 #### **drive**
@@ -2538,34 +2643,53 @@
 ---
 ### Other
 
-#### **create_loot_sources**
-- Make props lootable, dropping items when they are used
+#### **give_physics**
+- Enable physics on object(s) around a radius or of which aimed at
 
-   Chat Syntax | (!,/,?)create_loot_sources *category*
+   Chat Syntax | (!,/,?)give_physics *radius*
    ------------- | -------------
 
-   Console Syntax | scripted_user_func *create_loot_sources,category* 
+   Console Syntax | scripted_user_func *give_physics,radius*
    ------------- | -------------
     
-   Menu Sequence | _6->3->9->4_
+   Menu Sequence | _6->9->9->9->4_
    ------------- | -------------
+
 ```cpp
-       //Overloads:
-       // category: cars = All vehicles
-       //           boxes = All box-like props
-       //           all = All vehicles and box-like props
-       //           !picker = Aimed object. Players, zombies, doors, weapons and some other props are not permitted
-       create_loot_sources {category: (cars, boxes, all, !picker)}
-       create_loot_sources   //  category = all
+       //Overloads
+       give_physics {radius:positive_number|!picker|all}
+       give_physics     // radius = 150 units
        
-       //Example: Make cars lootable
-       create_loot_sources cars
+       // Example (give physics to aimed object (if possible))
+       give_physics !picker
+       
+       // Example (give physics to objects within 500 units around aimed point)
+       give_physics 500
+       
+       // Example (give physics to all the objects in the map)
+       give_physics all
+```
+---
+#### **zero_g**
+- Disable gravitational forces on objects
 
-       //Example: Make cars and boxes/cans lootable
-       create_loot_sources
+   Chat Syntax | (!,/,?)zero_g *targets*
+   ------------- | -------------
 
-       //Example: Make aimed object lootable
-       create_loot_sources !picker
+   Console Syntax | scripted_user_func *zero_g,targets*
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->5_
+   ------------- | -------------
+
+```cpp
+       //Overloads
+       zero_g {targets:all|!picker}
+       zero_g     // targets = !picker (aimed object)
+       
+       // Example: Make all physics objects have zero gravity
+       zero_g all
+       
 ```
 ---
 #### **invisible_walls**
@@ -2588,7 +2712,7 @@
 ```
 ---
 #### **ladder_team**
-- Change teams of ladders
+- Change the teams of ladders
 
    Chat Syntax | (!,/,?)ladder_team *team*
    ------------- | -------------
@@ -2652,68 +2776,6 @@
        hurt_triggers enable
 ``` 
 ---
-#### **update_aimed_ent_direction**
-- Make aimed object face the same way as you
-
-   Chat Syntax | (!,/,?)update_aimed_ent_direction
-   ------------- | -------------
-
-   Console Syntax | scripted_user_func *update_aimed_ent_direction* 
-   ------------- | -------------
-    
-   Menu Sequence | _6->9->9->9->1->6->3_
-   ------------- | -------------
-                   
----
-#### **give_physics**
-- Enable physics on object(s) around a radius or of which aimed at
-
-   Chat Syntax | (!,/,?)give_physics *radius*
-   ------------- | -------------
-
-   Console Syntax | scripted_user_func *give_physics,radius*
-   ------------- | -------------
-    
-   Menu Sequence | _6->9->9->9->4_
-   ------------- | -------------
-
-```cpp
-       //Overloads
-       give_physics {radius:positive_number|!picker|all}
-       give_physics     // radius = 150 units
-       
-       // Example (give physics to aimed object (if possible))
-       give_physics !picker
-       
-       // Example (give physics to objects within 500 units around aimed point)
-       give_physics 500
-       
-       // Example (give physics to all the objects in the map)
-       give_physics all
-```
----
-#### **zero_g**
-- Disable gravitational forces on objects
-
-   Chat Syntax | (!,/,?)zero_g *targets*
-   ------------- | -------------
-
-   Console Syntax | scripted_user_func *zero_g,targets*
-   ------------- | -------------
-    
-   Menu Sequence | _6->9->9->9->5_
-   ------------- | -------------
-
-```cpp
-       //Overloads
-       zero_g {targets:all|!picker}
-       zero_g     // targets = !picker (aimed object)
-       
-       // Example: Make all physics objects have zero gravity
-       zero_g all
-       
-```
----
 #### **soda_can**
 - Spawn a drinkable soda which recovers health for players
 
@@ -2734,6 +2796,19 @@
        // Example: Spawn a drink which restores 15HP when a player uses it
        soda_can 15
 ```
+---
+#### **update_aimed_ent_direction**
+- Make aimed object face the same way as you
+
+   Chat Syntax | (!,/,?)update_aimed_ent_direction
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *update_aimed_ent_direction* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->1->6->3_
+   ------------- | -------------
+
 ---
 ### Debugging, scripting and settings related
 
@@ -3373,19 +3448,6 @@
    ------------- | -------------
    
 ---
-#### **reload_loots**
-- Reload loot tables from **admin system/loot_tables.txt**
-
-   Chat Syntax | (!,/,?)reload_loots
-   ------------- | -------------
-
-   Console Syntax | scripted_user_func *reload_loots*
-   ------------- | -------------
-    
-   Menu Sequence | _Not in the menu_
-   ------------- | -------------
-   
----
 #### **detach_hook**
 - Detach a custom hook function from an event
 
@@ -3436,8 +3498,239 @@
     
    Menu Sequence | _Not in the menu_
    ------------- | -------------
-   
+
+--- 
+#### **reload_binds**
+- Reload bind table files from **admin system/binds/**
+
+   Chat Syntax | (!,/,?)reload_binds
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *reload_binds*
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+
+--- 
+#### **bind**
+- Re-bind a unbound command/function
+
+   Chat Syntax | (!,/,?)bind *target key_name cmd_func_name*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *bind,target,key_name,cmd_func_name* 
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+
+```cpp
+       //Overloads
+       bind {target:(!self,#{ID},{Name})} {keyname:(FORWARD,BACK,LEFT,RIGHT,ATTACK,ZOOM,SHOVE,RELOAD,JUMP,WALK,DUCK,USE,SCORE,ALT1,ALT2)} {cmd_func_name}
+       
+       // Example: Re-bind grab command bound in ALT1 for yourself
+       bind !self ALT1 !grab
+       
+       // Example: Re-bind foo_func function bound in ATTACK (mouse1) for the admin playing as Bill
+       bind !bill ATTACK foo_func
+```
 ---
+#### **unbind**
+- Unbind a command/function bound to a key via *admin system/binds* tables
+
+   Chat Syntax | (!,/,?)unbind *target key_name cmd_func_name*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *unbind,target,key_name,cmd_func_name* 
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+
+```cpp
+       //Overloads
+       unbind {target:(!self,#{ID},{Name})} {keyname:(FORWARD,BACK,LEFT,RIGHT,ATTACK,ZOOM,SHOVE,RELOAD,JUMP,WALK,DUCK,USE,SCORE,ALT1,ALT2)} {cmd_func_name}
+       
+       // Example: Unbind grab command bound in ALT1 for yourself
+       unbind !self ALT1 !grab
+       
+       // Example: Unbind foo_func function bound in ATTACK (mouse1) for the admin playing as Bill
+       unbind !bill ATTACK foo_func
+```  
+---
+
+## Binds
+- project_smok allows you to bind commands and your own functions to general keys.
+   + Available keys:
+      - Movement keys: **FORWARD**, **BACK**, **LEFT**, **RIGHT**, **WALK**, **JUMP**, **DUCK** 
+      - Attack keys: **ATTACK**, **ZOOM**, **SHOVE**, **RELOAD**
+      - Other keys: **USE**, **SCORE**, **ALT1**, **ALT2**
+   
+   + Available binding usage types:
+      - Single calls: **PS_WHEN_PRESSED** , **PS_WHEN_UNPRESSED**
+      - Continious calls: **PS_WHILE_PRESSED**, **PS_WHILE_UNPRESSED**
+
+   + Follow the example file in **admin system/bind/** directory to start writing your own binds!
+   
+   + When a key is bound, the key is checked every **~33ms**(~30 times a second) and fire if conditions are met
+
+   + Binds are quite reliable and consistent most of the time, but it is **NOT RECOMMENDED** to spam them.
+
+ #### Binds File Format
+   - Following is an example format for creating a bind.
+   + **WARNING**: While copy-pasting the examples, it will most likely fail while compiling. Some solutions:
+      - Remove the comments around and inside the table, anything after **"//"** inclusively, may be the cause of "expected identifier" error messages
+      - Re-write the example with better indentation OR no indentation OR single line without comments 
+	
+```nut
+// If you are a beginner to Squirrel scripting language, check out: http://squirrel-lang.org/squirreldoc/
+// If you don't know how to use the VSLib library, check out: https://l4d2scripters.github.io/vslib/docs/index.html
+// Some methods of VSLib may behave differently, make sure to check out the source code for those: https://github.com/semihM/project_smok/tree/master/2229460523/scripts/vscripts/admin_system/vslib
+
+// Some useful global tables:
+//      1. ::VSLib.Utils
+//          o Basic common manipulation methods for all data types
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/utils.nut
+//
+//      2. ::VSLib.Timers
+//          o Adding and managing timers for concurrent execution
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/timer.nut
+//
+//      3. ::VSLib.EasyLogic
+//          o Easier handling of game events
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/easylogic.nut
+//
+//      4. ::AdminSystem
+//          o Managing player restrictions, storing session variables and reading/writing configuration files
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system.nut
+//
+//      5. ::Messages
+//          o Message printing methods for printing to a player's or to everybody's chat(s) or console(s)
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/project_smok/messages.nut
+//          o File in the link above includes most of the messages displayed by the addon, you can update them in these script files if you want, but be careful with formatting
+//
+// Start by finding the admin's steam id, use admins.txt or check https://steamidfinder.com/ 
+// You can use "all" instead of a steam ID to create the binds inside for all admins
+"STEAM_1:X:XXXXXX":
+{
+	// Use a key name given above (FORWARD, ATTACK, USE, etc.)
+	"KEY_NAME":
+	{
+		// Add "!" before the command names to bind them
+		"!command_name":
+		{
+			// Decide how its gonna be used with "Usage" key
+			//		PS_WHEN_PRESSED = Calls once everytime this button gets pressed
+			//		PS_WHEN_UNPRESSED = Calls once everytime this button gets unpressed; use this with caution
+			//		PS_WHILE_PRESSED = Keeps calling while this button is pressed; SKIPS the first press input to let PS_WHEN_PRESSED work
+			//		PS_WHILE_UNPRESSED = Keeps calling while this button is not pressed; SKIPS the first unpress input to let PS_WHEN_UNPRESSED work
+			//		0 = Disables this bind (Constants above has values 1,2,4,8 respectively)
+			Usage = PS_WHEN_PRESSED
+
+			// Pass arguments with "Arguments" key
+			//    This will be same as: !command_name arg_1 arg_2 ...
+			Arguments =
+			{
+				arg_1 = "argument_1"
+				arg_2 = "argument_2"  
+				// Follow "arg_X" format for Xth argument
+			}
+		}
+
+		// If you want to create a custom function, use its name directly
+		"my_function_name":
+		{
+			// Decide how its gonna be used with "Usage" key
+			// 		o You can combine the usages with "|" operator
+			Usage = PS_WHEN_PRESSED | PS_WHEN_UNPRESSED
+
+			// Create the function which takes 2 parameters:
+			//		1. player : Player's entity as VSLib.Player object
+			//		2. press_info: A table containing:
+			//			o usage_type : Use this value to differentiate the combined "Usage" values, compare it to each usage value you used to understand which call was fired
+			//			o press_time : Time() value when this button was last pressed.
+			//			o unpress_time : Time() value when this button was last unpressed.
+			//			o press_count: How many times this button was pressed since this bind was bound, starts from 1, increments after releasing the key
+			//			o press_length: How long last pressing duration was in seconds. Until first press-unpress, it will be 0
+			Function = function(player, press_info)
+			{
+				local usage_type = press_info.usage_type
+				local press_time = press_info.press_time
+				local unpress_time = press_info.unpress_time
+				local count = press_info.press_count
+				local duration = press_info.press_length
+
+				// If you have combined "Usage" values, use something similar to expression below
+				switch(usage_type)
+				{
+					case PS_WHEN_PRESSED:
+						// Write instructions for "pressing" event
+						break;
+
+					case PS_WHEN_UNPRESSED:
+						// Write instructions for "unpressing" event
+						break;
+				}
+
+				// If you don't have combined usage values, just write the rest of the instructions here
+			}
+		}
+	}
+}
+```
+   ---
+   - Following is a working example bind. This bind:
+      + Gets bound for all admins once they join the game
+      + Is bound to the **ZOOM** key
+      + Calls **grab** command when **ZOOM** is pressed
+      + Calls **message_me** custom function when **ZOOM** is pressed and unpressed
+      + Calls **yeet** command when **ZOOM** is unpressed
+```nut
+"all":
+{
+	"ZOOM":
+	{
+		"!grab":
+		{
+			Usage = PS_WHEN_PRESSED
+			Arguments = {}
+		}
+
+		"!yeet":
+		{
+			Usage = PS_WHEN_UNPRESSED
+			Arguments = {}
+		}
+      
+		"message_me":
+		{
+			Usage = PS_WHEN_PRESSED | PS_WHEN_UNPRESSED
+
+			Function = function(player, press_info)
+			{
+				local usage_type = press_info.usage_type
+				local press_time = press_info.press_time
+				local unpress_time = press_info.unpress_time
+				local count = press_info.press_count
+				local duration = press_info.press_length
+
+				switch(usage_type)
+				{
+					case PS_WHEN_PRESSED:
+						::Printer(player,"Pressed ZOOM key! Total press count: " + count)
+						break;
+
+					case PS_WHEN_UNPRESSED:
+						::Printer(player,"Have pressed for " + duration + " seconds!")
+						break;
+				}
+
+			}
+		}
+	}
+}
+```
 
 ## Hooks
 - project_smok allows you to hook your own functions to game events.
@@ -3452,10 +3745,10 @@
  #### Hook File Format
    - Following is an example file content for hooking **2** functions named **VeryCoolHook** and **AnotherCoolHook** to game event **OnPlayerConnected**, which are called after a player finishes their connection process. **PS_Hooks** table have to be used as the main table for hooking functions.
    + **WARNING**: While copy-pasting the examples, it will most likely fail while compiling. Some solutions:
-      - Remove the comments around and inside the table, anything after **"//"** inclusively, may cause "expected identifier" error messages
+      - Remove the comments around and inside the table, anything after **"//"** inclusively, may be the cause of "expected identifier" error messages
       - Re-write the example with better indentation OR no indentation OR single line without comments 
 	
-   ```nut
+```nut
 // If you are a beginner to Squirrel scripting language, check out: http://squirrel-lang.org/squirreldoc/
 // If you don't know how to use the VSLib library, check out: https://l4d2scripters.github.io/vslib/docs/index.html
 // Some methods of VSLib may behave differently, make sure to check out the source code for those: https://github.com/semihM/project_smok/tree/master/2229460523/scripts/vscripts/admin_system/vslib
@@ -3503,7 +3796,8 @@
 	if(AdminSystem.IsPrivileged(player,true))
 		::Messages.InformAll(COLOR_ORANGE + player.GetName() + COLOR_DEFAULT + " is here to smok- some boomers!");	
 } 
-   ```
+```
+
 ## Extra
 
 ### Changing settings, adding custom responses without launching the game
@@ -3518,6 +3812,11 @@
       - **_example\_alias\_file.txt_**: An example file containing information about how to create aliases, version v1.0.0 
       
       - **_example\_alias\_file\_v{Major}\_{Minor}\_{Patch}.txt_**: File containing examples using new features from version v{Major}.{Minor}.{Patch}
+
+   + **_binds_** : Custom bind tables files folder
+      - **_file\_list.txt_**: List of file names to read as custom bind tables
+
+      - **_example\_bind\_file.nut_**: An example file containing information about how to create binds
 
    + **_entitygroups_** : Custom alias files folder
       - **_file\_list.txt_**: List of file names to read as custom entity group tables
@@ -3567,10 +3866,13 @@
       - [Squirrel Language Highlighting](https://marketplace.visualstudio.com/items?itemName=monkeygroover.vscode-squirrel-lang)
       - [Visual Studio IntelliCode](https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode)
 
-- File sizes are restricted to **16.5 KB maximum**
+- File sizes are restricted to **16.5 KB maximum**. If a file bigger than **16.5 KB** was tried to read, it will prevent the add-on from loading properly!
 
 - If an issue occurs while reading the file, it will be printed in **red** in the console. Removing the file can help solve reading issues by letting the addon re-creating the file again in the next reset.
 
+- **IMPORTANT**: These **file_list.txt** files has a character (may be invisible) at the end of them which will prevent anything written after it from being read. To solve this issue:
+   + **Solution 1**: Before you start a new line at the end of the file, remove the last character (may appear as an error character or a space) of the last line
+   + **Solution 2**: Remove the contents of the file, write the file names after cleaning  
 
 #### Extra Notes
 - **"custom_responses.json"** file can be opened with a text editor and new custom sequences can be defined  for each admin's steam ID with the example format given in the file.

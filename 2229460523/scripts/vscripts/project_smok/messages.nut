@@ -700,6 +700,14 @@
                 }
             }
 
+            Looting =
+            {
+                SettingSuccess = function(setting,old,new)
+                {
+                    return "Changed looting setting " + setting + " from " + old + " to " + new;
+                }
+            }
+
             Explosions =
             {
                 SettingSuccess = function(setting,old,new)
@@ -2620,6 +2628,62 @@
                         CMDParam("category","Category of props to make lootable: (cars, boxes, all) OR !picker to make aimed object lootable",true,"uses \"all\" category")
                     ],
                     "Make props lootable, dropping items when used"
+                    )
+                return cmd.Describe();
+            }
+            show_looting_settings = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "show_looting_settings",
+                    [],
+                    "Show current looting settings"
+                    )
+                return cmd.Describe();
+            }
+            looting_setting = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "looting_setting",
+                    [
+                        CMDParam("setting","Setting to change"),
+                        CMDParam("value","New value")
+                    ],
+                    "Change a looting settings. Check show_looting_settings command"
+                    )
+                return cmd.Describe();
+            }
+            bind = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "bind",
+                    [
+                        CMDParam("target","Admin targetname"),
+                        CMDParam("key_name","Key name: FORWARD,BACK,LEFT,RIGHT,ATTACK,ZOOM,SHOVE,RELOAD,JUMP,WALK,DUCK,USE,SCORE,ALT1,ALT2"),
+                        CMDParam("cmd_or_func","Command or function name, add ! before command name")
+                    ],
+                    "Re-bind an unbound command of a key for a key"
+                    )
+                return cmd.Describe();
+            }
+            unbind = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "unbind",
+                    [
+                        CMDParam("target","Admin targetname"),
+                        CMDParam("key_name","Key name: FORWARD,BACK,LEFT,RIGHT,ATTACK,ZOOM,SHOVE,RELOAD,JUMP,WALK,DUCK,USE,SCORE,ALT1,ALT2"),
+                        CMDParam("cmd_or_func","Command or function name, add ! before command name")
+                    ],
+                    "Unbind a bound command of a key for a key"
+                    )
+                return cmd.Describe();
+            }
+            reload_binds = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "reload_binds",
+                    [],
+                    "Reload the admin system/binds bind tables"
                     )
                 return cmd.Describe();
             }

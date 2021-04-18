@@ -533,14 +533,26 @@ class ::AliasCompiler.Alias
 
 ::AliasCompiler.CommandCall <- function(func,player,cmdargs,text)
 {
-    local lastargscopy = clone ::VSLib.EasyLogic.LastArgs
+    if("LastArgs" in ::VSLib.EasyLogic)
+    {
+        local lastargscopy = clone ::VSLib.EasyLogic.LastArgs
+        // Set temporary last args
+        ::VSLib.EasyLogic.LastArgs <- cmdargs
+        // Call the command
+        func(player,cmdargs,text)
 
-    // Set temporary last args
-    ::VSLib.EasyLogic.LastArgs <- cmdargs
-    // Call the command
-    func(player,cmdargs,text)
+        ::VSLib.EasyLogic.LastArgs = lastargscopy
+    }
+    else
+    {
+        // Set temporary last args
+        ::VSLib.EasyLogic.LastArgs <- cmdargs
+        // Call the command
+        func(player,cmdargs,text)
 
-    ::VSLib.EasyLogic.LastArgs <- lastargscopy
+        delete ::VSLib.EasyLogic.LastArgs
+    }
+
 }
 
 ::AliasCompiler.CommandCallWrapper <- function(args)
