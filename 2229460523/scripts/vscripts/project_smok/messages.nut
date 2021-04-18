@@ -2652,6 +2652,41 @@
                     )
                 return cmd.Describe();
             }
+            bind = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "bind",
+                    [
+                        CMDParam("target","Admin targetname"),
+                        CMDParam("key_name","Key name: FORWARD,BACK,LEFT,RIGHT,ATTACK,ZOOM,SHOVE,RELOAD,JUMP,WALK,DUCK,USE,SCORE,ALT1,ALT2"),
+                        CMDParam("cmd_or_func","Command or function name, add ! before command name")
+                    ],
+                    "Re-bind an unbound command of a key for a key"
+                    )
+                return cmd.Describe();
+            }
+            unbind = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "unbind",
+                    [
+                        CMDParam("target","Admin targetname"),
+                        CMDParam("key_name","Key name: FORWARD,BACK,LEFT,RIGHT,ATTACK,ZOOM,SHOVE,RELOAD,JUMP,WALK,DUCK,USE,SCORE,ALT1,ALT2"),
+                        CMDParam("cmd_or_func","Command or function name, add ! before command name")
+                    ],
+                    "Unbind a bound command of a key for a key"
+                    )
+                return cmd.Describe();
+            }
+            reload_binds = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "reload_binds",
+                    [],
+                    "Reload the admin system/binds bind tables"
+                    )
+                return cmd.Describe();
+            }
             reload_ent_groups = function(player,args)
             {
                 local cmd = CMDDocs(
