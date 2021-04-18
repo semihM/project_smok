@@ -95,6 +95,10 @@
 
     - [**Custom Script Related**](#custom-script-related)
 
+- [**Binds**](#binds)
+
+    - [**Binds File Format**](#binds-file-format)   
+
 - [**Hooks**](#hooks)
 
     - [**Hook File Format**](#hook-file-format)    	
@@ -280,9 +284,9 @@
    #### Alias File Format
    - Following is an example alias file content including an alias called **my_alias_1** documented, referring to **2** commands and is only available for script authorized admins. Syntax follows the Squirrel Language table data type, but the file should be saved as a text **(.txt)** file at the end.
    + **WARNING**: While copy-pasting the examples, it will most likely fail while compiling. Some solutions:
-      - Remove the comments around and inside the table, anything after **"//"** inclusively, may cause "expected identifier" error messages
+      - Remove the comments around and inside the table, anything after **"//"** inclusively, may be the cause of "expected identifier" error messages
       - Re-write the example with better indentation OR no indentation OR single line without comments 
-   ```nut 
+```nut 
 {
 	// Alias name
 	my_alias_1 =
@@ -382,7 +386,7 @@
 		}
 	}
 }
-   ```
+```
    
    #### Commands to create or replace aliases for a single game session
    1. Start a game
@@ -436,9 +440,9 @@
    #### Script File Format
    - Following is an example script file content for creating a command called **my_command_1**. Commands are read from the **::PS_Scripts** table, so they should initialized under this table.
    + **WARNING**: While copy-pasting the examples, it will most likely fail while compiling. Some solutions:
-      - Remove the comments around and inside the table, anything after **"//"** inclusively, may cause "expected identifier" error messages
+      - Remove the comments around and inside the table, anything after **"//"** inclusively, may be the cause of "expected identifier" error messages
       - Re-write the example with better indentation OR no indentation OR single line without comments  
-   ```nut
+```nut
 // If you are a beginner to Squirrel scripting language, check out: http://squirrel-lang.org/squirreldoc/
 // If you don't know how to use the VSLib library, check out: https://l4d2scripters.github.io/vslib/docs/index.html
 // Some methods of VSLib may behave differently, make sure to check out the source code for those: https://github.com/semihM/project_smok/tree/master/2229460523/scripts/vscripts/admin_system/vslib
@@ -519,7 +523,8 @@
 	// At the end, print out a message for the player(s) if needed, prints to wherever the given player has his output state set to
 	::Printer(player,"Put the message here!")
 }
-   ```
+```
+
 ---
 ## Character limitations
 - There are certain limitations of the game by default which can prevent certain commands or formats not work as intended. These limitations are generally about usage of special characters and length of the messages/commands sent.
@@ -3555,6 +3560,178 @@
 ```  
 ---
 
+## Binds
+- project_smok allows you to bind commands and your own functions to general keys.
+   + Available keys:
+      - Movement keys: **FORWARD**, **BACK**, **LEFT**, **RIGHT**, **WALK**, **JUMP**, **DUCK** 
+      - Attack keys: **ATTACK**, **ZOOM**, **SHOVE**, **RELOAD**
+      - Other keys: **USE**, **SCORE**, **ALT1**, **ALT2**
+   
+   + Available binding usage types:
+      - Single calls: **PS_WHEN_PRESSED** , **PS_WHEN_UNPRESSED**
+      - Continious calls: **PS_WHILE_PRESSED**, **PS_WHILE_UNPRESSED**
+
+   + Follow the example file in **admin system/bind/** directory to start writing your own binds!
+   
+   + When a key is bound, the key is checked every **~33ms**(~30 times a second) and fire if conditions are met
+
+   + Binds are quite reliable and consistent most of the time, but it is **NOT RECOMMENDED** to spam them.
+
+ #### Binds File Format
+   - Following is an example format for creating a bind.
+   + **WARNING**: While copy-pasting the examples, it will most likely fail while compiling. Some solutions:
+      - Remove the comments around and inside the table, anything after **"//"** inclusively, may be the cause of "expected identifier" error messages
+      - Re-write the example with better indentation OR no indentation OR single line without comments 
+	
+```nut
+// If you are a beginner to Squirrel scripting language, check out: http://squirrel-lang.org/squirreldoc/
+// If you don't know how to use the VSLib library, check out: https://l4d2scripters.github.io/vslib/docs/index.html
+// Some methods of VSLib may behave differently, make sure to check out the source code for those: https://github.com/semihM/project_smok/tree/master/2229460523/scripts/vscripts/admin_system/vslib
+
+// Some useful global tables:
+//      1. ::VSLib.Utils
+//          o Basic common manipulation methods for all data types
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/utils.nut
+//
+//      2. ::VSLib.Timers
+//          o Adding and managing timers for concurrent execution
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/timer.nut
+//
+//      3. ::VSLib.EasyLogic
+//          o Easier handling of game events
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system/vslib/easylogic.nut
+//
+//      4. ::AdminSystem
+//          o Managing player restrictions, storing session variables and reading/writing configuration files
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system.nut
+//
+//      5. ::Messages
+//          o Message printing methods for printing to a player's or to everybody's chat(s) or console(s)
+//          o https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/project_smok/messages.nut
+//          o File in the link above includes most of the messages displayed by the addon, you can update them in these script files if you want, but be careful with formatting
+//
+// Start by finding the admin's steam id, use admins.txt or check https://steamidfinder.com/ 
+// You can use "all" instead of a steam ID to create the binds inside for all admins
+"STEAM_1:X:XXXXXX":
+{
+	// Use a key name given above (FORWARD, ATTACK, USE, etc.)
+	"KEY_NAME":
+	{
+		// Add "!" before the command names to bind them
+		"!command_name":
+		{
+			// Decide how its gonna be used with "Usage" key
+			//		PS_WHEN_PRESSED = Calls once everytime this button gets pressed
+			//		PS_WHEN_UNPRESSED = Calls once everytime this button gets unpressed; use this with caution
+			//		PS_WHILE_PRESSED = Keeps calling while this button is pressed; SKIPS the first press input to let PS_WHEN_PRESSED work
+			//		PS_WHILE_UNPRESSED = Keeps calling while this button is not pressed; SKIPS the first unpress input to let PS_WHEN_UNPRESSED work
+			//		0 = Disables this bind (Constants above has values 1,2,4,8 respectively)
+			Usage = PS_WHEN_PRESSED
+
+			// Pass arguments with "Arguments" key
+         //    This will be same as: !command_name arg_1 arg_2 ...
+			Arguments =
+			{
+				arg_1 = "argument_1"
+				arg_2 = "argument_2"  
+				// Follow "arg_X" format for Xth argument
+			}
+		}
+
+		// If you want to create a custom function, use its name directly
+		"my_function_name":
+		{
+			// Decide how its gonna be used with "Usage" key
+			// 		o You can combine the usages with "|" operator
+			Usage = PS_WHEN_PRESSED | PS_WHEN_UNPRESSED
+
+			// Create the function which takes 2 parameters:
+			//		1. player : Player's entity as VSLib.Player object
+			//		2. press_info: A table containing:
+			//			o usage_type : Use this value to differentiate the combined "Usage" values, compare it to each usage value you used to understand which call was fired
+			//			o press_time : Time() value when this button was last pressed.
+			//			o unpress_time : Time() value when this button was last unpressed.
+			//			o press_count: How many times this button was pressed since this bind was bound, starts from 1, increments after releasing the key
+			//			o press_length: How long last pressing duration was in seconds. Until first press-unpress, it will be 0
+			Function = function(player, press_info)
+			{
+				local usage_type = press_info.usage_type
+				local press_time = press_info.press_time
+				local unpress_time = press_info.unpress_time
+				local count = press_info.press_count
+				local duration = press_info.press_length
+
+				// If you have combined "Usage" values, use something similar to expression below
+				switch(usage_type)
+				{
+					case PS_WHEN_PRESSED:
+						// Write instructions for "pressing" event
+						break;
+
+					case PS_WHEN_UNPRESSED:
+						// Write instructions for "unpressing" event
+						break;
+				}
+
+				// If you don't have combined usage values, just write the rest of the instructions here
+			}
+		}
+	}
+}
+```
+   ---
+   - Following is a working example bind. This bind:
+      + Gets bound for all admins once they join the game
+      + Is bound to the **ZOOM** key
+      + Calls **grab** command when **ZOOM** is pressed
+      + Calls **message_me** custom function when **ZOOM** is pressed and unpressed
+      + Calls **yeet** command when **ZOOM** is unpressed
+```nut
+"all":
+{
+	"ZOOM":
+	{
+		"!grab":
+		{
+			Usage = PS_WHEN_PRESSED
+			Arguments = {}
+		}
+
+		"!yeet":
+		{
+			Usage = PS_WHEN_UNPRESSED
+			Arguments = {}
+		}
+      
+		"message_me":
+		{
+			Usage = PS_WHEN_PRESSED | PS_WHEN_UNPRESSED
+
+			Function = function(player, press_info)
+			{
+				local usage_type = press_info.usage_type
+				local press_time = press_info.press_time
+				local unpress_time = press_info.unpress_time
+				local count = press_info.press_count
+				local duration = press_info.press_length
+
+				switch(usage_type)
+				{
+					case PS_WHEN_PRESSED:
+						::Printer(player,"Pressed ZOOM key! Total press count: " + count)
+						break;
+
+					case PS_WHEN_UNPRESSED:
+						::Printer(player,"Have pressed for " + duration + " seconds!")
+						break;
+				}
+
+			}
+		}
+	}
+}
+```
+
 ## Hooks
 - project_smok allows you to hook your own functions to game events.
    + Available game event names can be found [here](https://github.com/semihM/project_smok/blob/c3f631100a80913c6ad5f49fe74a24a772a03f40/2229460523/scripts/vscripts/admin_system/vslib/easylogic.nut#L194)
@@ -3568,10 +3745,10 @@
  #### Hook File Format
    - Following is an example file content for hooking **2** functions named **VeryCoolHook** and **AnotherCoolHook** to game event **OnPlayerConnected**, which are called after a player finishes their connection process. **PS_Hooks** table have to be used as the main table for hooking functions.
    + **WARNING**: While copy-pasting the examples, it will most likely fail while compiling. Some solutions:
-      - Remove the comments around and inside the table, anything after **"//"** inclusively, may cause "expected identifier" error messages
+      - Remove the comments around and inside the table, anything after **"//"** inclusively, may be the cause of "expected identifier" error messages
       - Re-write the example with better indentation OR no indentation OR single line without comments 
 	
-   ```nut
+```nut
 // If you are a beginner to Squirrel scripting language, check out: http://squirrel-lang.org/squirreldoc/
 // If you don't know how to use the VSLib library, check out: https://l4d2scripters.github.io/vslib/docs/index.html
 // Some methods of VSLib may behave differently, make sure to check out the source code for those: https://github.com/semihM/project_smok/tree/master/2229460523/scripts/vscripts/admin_system/vslib
@@ -3619,7 +3796,8 @@
 	if(AdminSystem.IsPrivileged(player,true))
 		::Messages.InformAll(COLOR_ORANGE + player.GetName() + COLOR_DEFAULT + " is here to smok- some boomers!");	
 } 
-   ```
+```
+
 ## Extra
 
 ### Changing settings, adding custom responses without launching the game
@@ -3692,6 +3870,9 @@
 
 - If an issue occurs while reading the file, it will be printed in **red** in the console. Removing the file can help solve reading issues by letting the addon re-creating the file again in the next reset.
 
+- **IMPORTANT**: These **file_list.txt** files has a character (may be invisible) at the end of them which will prevent anything written after it from being read. To solve this issue:
+   + **Solution 1**: Before you start a new line at the end of the file, remove the last character (may appear as an error character or a space) of the last line
+   + **Solution 2**: Remove the contents of the file, write the file names after cleaning  
 
 #### Extra Notes
 - **"custom_responses.json"** file can be opened with a text editor and new custom sequences can be defined  for each admin's steam ID with the example format given in the file.
