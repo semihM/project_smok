@@ -350,17 +350,17 @@
             {
                 keymask = 0
                 forward = Vector(0,0,0)
-                speed = 575.0
-                reversescale = -0.12
+                speed = 155.0
+                reversescale = -0.07
                 speedscale = 3
                 overridefriction = 0.03
-                turnpertick = 8
+                turnpertick = 2
                 listenerid = -1
             };
             basetbl._RagdollControl[spec] <- 
             {
                 keymask = 0
-                speed = 250.0
+                speed = 60.0
                 overridefriction = 0.3
                 frictionduration = 1
                 listenerid = -1
