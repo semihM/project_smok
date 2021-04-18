@@ -1146,18 +1146,31 @@ command_name_2 //Take notes by adding // after the command name if needed"
 			// Create the function which takes 2 parameters:
 			//		1. player : Player's entity as VSLib.Player object
 			//		2. press_info: A table containing:
+			//			o usage_type : Use this value to differentiate the combined ""Usage"" values, compare it to each usage value you used to understand which call was fired
 			//			o press_time : Time() value when this button was last pressed.
 			//			o unpress_time : Time() value when this button was last unpressed.
 			//			o press_count: How many times this button was pressed since this bind was bound, starts from 1, increments after releasing the key
 			//			o press_length: How long last pressing duration was in seconds. Until first press-unpress, it will be 0
 			Function = function(player, press_info)
 			{
+				local usage_type = press_info.usage_type
 				local press_time = press_info.press_time
 				local unpress_time = press_info.unpress_time
 				local count = press_info.press_count
 				local duration = press_info.press_length
 
-				// Write the rest of the instructions here
+				// If you have combined ""Usage"" values, use something similar to expression below
+				switch(usage_type)
+				{
+					case PS_WHEN_PRESSED:
+						// Write instructions for ""pressing"" event
+						break;
+					case PS_WHEN_UNPRESSED:
+						// Write instructions for ""unpressing"" event
+						break;
+				}
+
+				// If you don't have combined usage values, just write the rest of the instructions here
 			}
 		}
 	}
@@ -1294,7 +1307,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 						if(tbl[steamID][keyname].len() != 0)
 						{
 							news[steamID][keyname] <- []
-							foreach(foo,vals in tbl[steamID][keyname].len())
+							foreach(foo,vals in tbl[steamID][keyname])
 							{
 								news[steamID][keyname].append(foo+": "+::Constants.ConstStrLookUp("PS_WH",vals.Usage))
 							}

@@ -209,7 +209,8 @@
     scp["press_count"] <- 0
     scp["press_length"] <- 0
     scp["pressed_last_time"] <- false
-    
+    scp["usage_value"] <- usage
+
 	scp["callback"] <- callback
 
     if(usage == PS_WHEN_PRESSED)
@@ -232,6 +233,7 @@
                     scp["press_time"] = Time()
                     local info = 
                     {
+                        usage_type = scp["usage_value"]
                         press_time  = scp["press_time"]
                         unpress_time  = scp["unpress_time"]
                         press_count = scp["press_count"]
@@ -275,6 +277,7 @@
                 }
                 local info = 
                 {
+                    usage_type = scp["usage_value"]
                     press_time  = scp["press_time"]
                     unpress_time  = scp["unpress_time"]
                     press_count = scp["press_count"]
@@ -331,6 +334,7 @@
                 scp["pressed_last_time"] = false
                 local info = 
                 {
+                    usage_type = scp["usage_value"]
                     press_time  = scp["press_time"]
                     unpress_time  = scp["unpress_time"]
                     press_count = scp["press_count"]
@@ -362,6 +366,7 @@
             {
                 local info = 
                 {
+                    usage_type = scp["usage_value"]
                     press_time  = scp["press_time"]
                     unpress_time  = scp["unpress_time"]
                     press_count = scp["press_count"]
