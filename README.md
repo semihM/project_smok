@@ -3629,7 +3629,7 @@
 			Usage = PS_WHEN_PRESSED
 
 			// Pass arguments with "Arguments" key
-         //    This will be same as: !command_name arg_1 arg_2 ...
+			//    This will be same as: !command_name arg_1 arg_2 ...
 			Arguments =
 			{
 				arg_1 = "argument_1"
