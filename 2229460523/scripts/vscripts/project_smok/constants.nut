@@ -5,8 +5,8 @@
 {
 	Version = 
 	{
-		Number = "v1.4.0"
-		Date = "14.04.2021"
+		Number = "v1.5.0"
+		Date = "18.04.2021"
 		Source = "https://github.com/semihM/project_smok"
 	}
 
@@ -89,6 +89,11 @@
 
 	/// Loot tables
 	LootTables = "admin system/loot_tables.txt"
+
+	/// Custom binds
+	CustomBinds = "admin system/binds/file_list.txt"
+	CustomBindsExample = "admin system/binds/example_bind_file.nut"
+	//CustomBindsExampleVersionBased = @(v) "admin system/binds/example_bind_file_"+v+".nut"
 }
 
 /**************************\
@@ -912,7 +917,7 @@ ExampleGnome =
 	{
 		local badformat = filename.slice(0,filename.find(".nut"))+"_bad_format.nut";
 		printl("[Entity_Group-Error] "+filename+" was formatted incorrectly, check {} and \"\" characters!")
-		printl("[Entity_Group-Error] Keeping incorrectly formatted file named as "+badformat+" and replacing it with the v1.0.0 examples...")
+		printl("[Entity_Group-Error] Keeping incorrectly formatted file named as "+badformat+" and replacing it with the v1.4.0 examples...")
 
 		StringToFile(badformat,fileContents);
 
@@ -1062,6 +1067,284 @@ command_name_2 //Take notes by adding // after the command name if needed"
 		CoolDownAll = 0
 	}
 }"
+
+::Constants.CustomBindsListDefaults <-
+@"// This file contains the files names of the key bind tables to make sure they get read
+// Add file names of the key bind table files below as shown (without // characters at the begining) to include them!
+
+// Characters // indicate comments starting after them, which are ignored
+// To include the ""example_bind_file.nut"" remove the // characters at the beginning of the line!
+// !!!!!!!!!!!!!!
+// IT IS NOT RECOMMENDED TO USE THE EXAMPLE FILES FOR NEW BINDS
+// !!!!!!!!!!!!!!
+
+//example_bind_file // This will make project_smok look for ""example_bind_file.nut"" and read it if it exists! Write any additional files below this line..."
+
+::Constants.CustomBindsTableDefaults <-
+{
+	v1_5_0 =
+@"// This file contains commands and functions to bind to most used game keys
+// Examples present in this file includes new features introduced in v1.5.0
+// Keys are checked every ~33ms, meaning roughly every frame of a ~30fps game, the keys are checked if they are/were pressed.
+// Available keys:
+//		o MOVEMENT KEYS: 
+//			+ FORWARD
+//			+ BACK
+//			+ LEFT
+//			+ RIGHT
+//			+ JUMP
+//			+ DUCK
+//			+ WALK
+//		o COMBAT KEYS:
+//			+ ATTACK
+//			+ SHOVE
+//			+ ZOOM
+//			+ RELOAD
+//		o MISCELLANEOUS KEYS:
+//			+ USE
+//			+ SCORE
+//			+ ALT1
+//			+ ALT2
+// Characters // indicate the start of a comment, which are ignored while reading the file
+// Binds are unique to STEAM IDs, so each admin can have their own binds
+// Check out the examples below to see how it works
+//
+// Start by finding the admin's steam id, use admins.txt or check https://steamidfinder.com/ 
+// You can use ""all"" instead of a steam ID to create the binds inside for all admins
+""STEAM_1:X:XXXXXX"":
+{
+	// Use a key name given above (FORWARD, MOUSE1, etc.)
+	""KEY_NAME_HERE"":
+	{
+		// Add ""!"" before the command names to bind them
+		""!command_name"":
+		{
+			// Decide how its gonna be used with ""Usage"" key
+			//		PS_WHEN_PRESSED = Calls once everytime this button gets pressed
+			//		PS_WHEN_UNPRESSED = Calls once everytime this button gets unpressed; use this with caution
+			//		PS_WHILE_PRESSED = Keeps calling while this button is pressed; SKIPS the first press input to let PS_WHEN_PRESSED work
+			//		PS_WHILE_UNPRESSED = Keeps calling while this button is not pressed; SKIPS the first unpress input to let PS_WHEN_UNPRESSED work
+			//		0 = Disables this bind (Constants above has values 1,2,4,8 respectively)
+			Usage = PS_WHEN_PRESSED
+
+			// Pass arguments with ""Arguments"" key
+			Arguments =
+			{
+				arg_1 = ""argument_1""
+				arg_2 = ""argument_2""  
+				// Follow ""arg_X"" format for Xth argument
+			}
+		}
+
+		// If you want to create a custom function, use its name directly
+		""my_function_name"":
+		{
+			// Decide how its gonna be used with ""Usage"" key
+			// 		o You can combine the usages with ""|"" operator
+			Usage = PS_WHEN_PRESSED | PS_WHEN_UNPRESSED
+
+			// Create the function which takes 2 parameters:
+			//		1. player : Player's entity as VSLib.Player object
+			//		2. press_info: A table containing:
+			//			o press_time : Time() value when this button was last pressed.
+			//			o unpress_time : Time() value when this button was last unpressed.
+			//			o press_count: How many times this button was pressed since this bind was bound, starts from 1, increments after releasing the key
+			//			o press_length: How long last pressing duration was in seconds. Until first press-unpress, it will be 0
+			Function = function(player, press_info)
+			{
+				local press_time = press_info.press_time
+				local unpress_time = press_info.unpress_time
+				local count = press_info.press_count
+				local duration = press_info.press_length
+
+				// Write the rest of the instructions here
+			}
+		}
+	}
+}"
+}
+
+::Constants.ValidateBindsTable <- function(fileContents,filename,first=false,reload=false)
+{
+	local news = {}
+	local tbl = null
+	try
+	{
+		tbl = compilestring("local __tempvar__=\n{"+strip(fileContents)+"\n}\n;return __tempvar__;")()
+	}
+	catch(e){printl("[Binds-Compile-Error] Failed to compile "+filename+". Error: "+e)}
+
+	if(tbl == null || typeof tbl != "table")
+	{
+		local badformat = filename.slice(0,filename.find(".nut"))+"_bad_format.nut";
+		printl("[Binds-Error] "+filename+" was formatted incorrectly, check {} and \"\" characters!")
+		printl("[Binds-Error] Keeping incorrectly formatted file named as "+badformat+" and replacing it with the v1.5.0 examples...")
+
+		StringToFile(badformat,fileContents);
+
+		StringToFile(filename,Constants.CustomBindsTableDefaults.v1_5_0);
+
+		fileContents = FileToString(filename);
+		return null
+	}
+	else
+	{	
+		if(tbl.len() != 0)
+		{	
+			if(first)
+				printl("[Binds-Checks] Doing bind table checks...")
+
+			foreach(steamID,keystbl in Utils.TableCopy(tbl))
+			{
+				news[steamID] <- {}
+				foreach(keyname,binds in keystbl)
+				{
+					local keyval = 0
+					local valid = true
+					if(keyname.find("|") != null)
+					{
+						foreach(i,key in split(keyname,"|"))
+						{
+							if(!("BUTTON_"+key in getconsttable()))
+							{
+								printl("[Binds-Key-Error] Key name "+key+" is unknown... skipping")
+								valid = false
+								break;
+							}
+							keyval = getconsttable()["BUTTON_"+key] | keyval
+						}
+						if(!valid)
+						{
+							delete tbl[steamID][keyname]
+							continue;
+						}
+					}
+					else if(!("BUTTON_"+keyname in getconsttable()))
+					{
+						printl("[Binds-Key-Error] Key name "+keyname+" is unknown... skipping")
+						delete tbl[steamID][keyname]
+						continue
+					}
+					else
+						keyval = getconsttable()["BUTTON_"+keyname] | keyval
+					
+					foreach(funcname,deftbl in binds)
+					{
+						if(funcname.find("!") == 0)
+						{
+							local func_real_name = funcname.slice(1) 
+							if(!(func_real_name in ::ChatTriggers))
+							{
+								printl("[Binds-Command-Error] Command name "+func_real_name+" is unknown... skipping")
+								delete tbl[steamID][keyname][funcname]
+								continue
+							}
+							else
+							{
+								if(!("Usage" in deftbl))
+								{
+									printl("[Binds-Command-Warning] Command usage for "+func_real_name+" is unknown... using PS_WHEN_PRESSED")
+									tbl[steamID][keyname][funcname].Usage <- PS_WHEN_PRESSED
+								}
+								else if(typeof deftbl.Usage != "integer")
+								{
+									printl("[Binds-Command-Warning] Command usage for "+func_real_name+" is not a known constant! Using PS_WHEN_PRESSED instead...")
+									tbl[steamID][keyname][funcname].Usage = PS_WHEN_PRESSED
+								}
+
+								if(!("Arguments" in deftbl))
+								{
+									printl("[Binds-Command-Warning] Command arguments table for "+func_real_name+" is unknown... using empty arguments table")
+									tbl[steamID][keyname][funcname].Arguments <- {}
+								}
+								else if(typeof deftbl.Arguments != "table")
+								{
+									printl("[Binds-Command-Warning] Command arguments table for "+func_real_name+" is not a table! Using empty arguments table instead...")
+									tbl[steamID][keyname][funcname].Arguments = {}
+								}
+
+								tbl[steamID][keyname][funcname].Arguments = Utils.TableKeySearchFilterReturnAll(tbl[steamID][keyname][funcname].Arguments,@"arg_\d+",@(k,c) c-1)
+							}
+						}
+						else
+						{
+							if(!("Usage" in deftbl))
+							{
+								printl("[Binds-Function-Warning] Function usage for "+funcname+" is unknown... using PS_WHEN_PRESSED")
+								tbl[steamID][keyname][funcname].Usage <- PS_WHEN_PRESSED
+							}
+							else if(typeof deftbl.Usage != "integer")
+							{
+								printl("[Binds-Function-Warning] Function usage for "+funcname+" is not a known constant! Using PS_WHEN_PRESSED instead...")
+								tbl[steamID][keyname][funcname].Usage = PS_WHEN_PRESSED
+							}
+
+							if(!("Function" in deftbl))
+							{
+								printl("[Binds-Function-Error] Function key for "+funcname+" is unknown... skipping the function")
+								delete tbl[steamID][keyname][funcname]
+							}
+							else if(typeof deftbl.Function != "function")
+							{
+								printl("[Binds-Function-Error] Function key for "+funcname+" is not a function! Skipping it...")
+								delete tbl[steamID][keyname][funcname]
+							}
+						}
+
+						if(tbl[steamID][keyname].len() != 0)
+						{
+							news[steamID][keyname] <- []
+							foreach(foo,vals in tbl[steamID][keyname].len())
+							{
+								news[steamID][keyname].append(foo+": "+::Constants.ConstStrLookUp("PS_WH",vals.Usage))
+							}
+						}
+						else
+						{
+							delete tbl[steamID][keyname]
+						}
+					}
+
+					if(tbl[steamID].len() == 0)
+					{
+						delete tbl[steamID]
+					}
+				}
+			}
+
+			if(news.len() > 0)
+			{	
+				if(reload)
+					printl("[Binds-Table] New binds after reloading "+filename+":")
+				else
+					printl("[Binds-Table] Valid binds found in "+filename+":")
+
+				foreach(steamid,keyns in news)
+				{
+					printl("\t[*] "+steamid+ " ("+keyns.len()+" keys): ")
+					foreach(keyn,cmds in keyns)
+					{
+						printl("\t\t[*] "+keyn+ " : "+cmds.len()+" functions/commands")
+						foreach(_i,fstr in cmds)
+						{
+							printl("\t\t\t[*] "+fstr)
+						}
+					}
+				}
+			}
+			else 
+			{
+				if(reload)
+					printl("[Binds-Table] No new valid binds were loaded from "+filename)
+				else
+					printl("[Binds-Table] No valid binds were registered from "+filename)
+			}
+
+		}
+
+		return tbl;
+	}
+}
 
 ::Constants.LootSourcesLootTablesDefaults <-
 @"// This file contains loot types, probabilities and settings used with !create_loot_sources command
@@ -1229,6 +1512,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 	ammo = null	
 	melee_type = null	
 }"
+
 /********************\
 *  DEFAULT SETTINGS  *
 \********************/
@@ -1431,6 +1715,13 @@ command_name_2 //Take notes by adding // after the command name if needed"
 
 				BarText = "Lootable Prop"
 				BarSubText = "There might be something valuable in here!"
+
+				events_enabled = true
+
+				explosion_prob = 0.05
+				hurt_prob = 0.1
+				horde_prob = 0.07
+				ambush_prob = 0.05
 			}
 
             ValueComments =
@@ -1450,6 +1741,12 @@ command_name_2 //Take notes by adding // after the command name if needed"
 
 				BarText = "// Big text to display for the looting bar"
 				BarSubText = "// Sub text to display for the looting bar"
+				
+				events_enabled = "// true: Enable random events upon looting, false: no random events"
+				explosion_prob = "// Probability of explosion"
+				hurt_prob = "// Probability of getting hurt once or several times"
+				horde_prob = "// Probability of calling a horde"
+				ambush_prob = "// Probability of a special zombie ambush"
 			}
 		}
         
