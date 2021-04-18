@@ -44,6 +44,8 @@ IncludeScript("Project_smok/AliasCompiler");
 IncludeScript("Project_smok/SpellChecker");
 // Include Zero-G and GivePhysics Limits
 IncludeScript("Project_smok/PhysicsLimits");
+// Include the Quix timers
+IncludeScript("Project_smok/QuickTimers");
 
 printl(format("project_smok %s , Date: %s",::Constants.Version.Number,::Constants.Version.Date))
 
@@ -594,6 +596,342 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		}
 		::AdminSystem.LootSourcesLootTables <- valid_arr
 		printl("[Loot-Tables-Checks] Completed checks and loaded the loot tables")
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.BindWithQuixCmd <- function(player,args)
+{
+	if(!AdminSystem.HasScriptAuth(player))
+		return;
+	
+	local target = GetArgument(1)
+	local keyv = GetArgument(2)
+	local cmd = GetArgument(3)
+	if(cmd == null)
+		return
+	
+	if(target == "!self")
+	{
+		target = player
+	}
+	else if(target)
+	{
+		target = Player(target)
+		if(!target || !target.IsEntityValid())
+			return
+	}
+
+	local steamid = target.GetSteamID()
+	local keyv = ::Quix.GetKeyConst(keyv,player)
+
+	local timername = ::Quix.FormatName(target,keyv,cmd)
+	if(timername in ::Quix.Table)
+	{
+		Quix.Remove(timername)
+	}
+
+	if("CustomBindsTable" in AdminSystem)
+	{
+
+		if("all" in AdminSystem.CustomBindsTable)
+		{
+			foreach(key,keytbl in AdminSystem.CustomBindsTable.all)
+			{
+				if(::Quix.GetKeyConst(key) != keyv)
+					continue
+				else
+				{
+					::Quix.ProcessTable(player,key,keytbl)
+				}
+			}
+		}
+		if(steamid in AdminSystem.CustomBindsTable)
+		{
+			foreach(key,keytbl in AdminSystem.CustomBindsTable[steamid])
+			{
+				if(::Quix.GetKeyConst(key) != keyv)
+					continue
+				else
+				{
+					::Quix.ProcessTable(player,key,keytbl)
+				}
+			}
+		}
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.UnbindWithQuixCmd <- function(player,args)
+{
+	if(!AdminSystem.HasScriptAuth(player))
+		return;
+	
+	local target = GetArgument(1)
+	local keyv = GetArgument(2)
+	local cmd = GetArgument(3)
+	if(cmd == null)
+		return
+	
+	if(target == "!self")
+	{
+		target = player
+	}
+	else if(target)
+	{
+		target = Player(target)
+		if(!target || !target.IsEntityValid())
+			return
+	}
+
+	local steamid = target.GetSteamID()
+
+	local timername = ::Quix.FormatName(target,keyv,cmd)
+	if(timername in ::Quix.Table)
+	{
+		Quix.Remove(timername)
+	}
+}
+
+function Notifications::OnPlayerConnected::ProcessQuixBinds(player,args)
+{
+	if(!AdminSystem.IsPrivileged(player,true))
+		return;
+
+	local steamid = player.GetSteamID()
+	if("CustomBindsTable" in AdminSystem)
+	{
+		printl("[Binds-Process] Processing binds for "+player.GetName()+format("(%s)",steamid))
+		if(steamid in AdminSystem.CustomBindsTable)
+		{
+			foreach(key,keytbl in AdminSystem.CustomBindsTable[steamid])
+			{
+				::Quix.ProcessTable(player,key,keytbl)
+			}
+		}
+
+		if("all" in AdminSystem.CustomBindsTable)
+		{
+			foreach(key,keytbl in AdminSystem.CustomBindsTable.all)
+			{
+				::Quix.ProcessTable(player,key,keytbl)
+			}
+		}
+	}
+}
+
+function Notifications::OnPlayerLeft::RemoveQuixBinds(player, name, steamID, params)
+{
+	if(!AdminSystem.IsPrivileged(player,true))
+		return;
+
+	if("CustomBindsTable" in AdminSystem)
+	{
+		printl("[Binds-Removal] Removing binds for "+name)
+		
+		if(steamID in AdminSystem.CustomBindsTable)
+		{
+			foreach(key,keytbl in AdminSystem.CustomBindsTable[steamID])
+			{
+				foreach(func,tbl in keytbl)
+				{
+					::Quix.Remove(::Quix.FormatName(player,key,func))
+				}
+			}
+		}
+
+		if("all" in AdminSystem.CustomBindsTable)
+		{
+			foreach(key,keytbl in AdminSystem.CustomBindsTable.all)
+			{
+				foreach(func,tbl in keytbl)
+				{
+					::Quix.Remove(::Quix.FormatName(player,key,func))
+				}
+			}
+		}
+	}
+}
+
+/*
+ * @authors rhino
+ */
+function Notifications::OnPlayerReplacedBot::ProcessQuixBinds(player,bot,args)
+{
+	if(!AdminSystem.IsPrivileged(player,true))
+		return;
+
+	local steamid = player.GetSteamID()
+	if("CustomBindsTable" in AdminSystem)
+	{
+		printl("[Binds-Process] Processing binds for "+player.GetName()+format("(%s)",steamid))
+		if(steamid in AdminSystem.CustomBindsTable)
+		{
+			foreach(key,keytbl in AdminSystem.CustomBindsTable[steamid])
+			{
+				::Quix.ProcessTable(player,key,keytbl)
+			}
+		}
+
+		if("all" in AdminSystem.CustomBindsTable)
+		{
+			foreach(key,keytbl in AdminSystem.CustomBindsTable.all)
+			{
+				::Quix.ProcessTable(player,key,keytbl)
+			}
+		}
+	}
+}
+
+/*
+ * @authors rhino
+ */
+function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
+{
+	if(AdminSystem.IsPrivileged(player,true))
+	{
+		if("CustomBindsTable" in AdminSystem)
+		{
+			local name = player.GetName()
+			local steamID = player.GetSteamID()
+
+			printl("[Binds-Removal] Removing binds for "+name)
+			
+			if(steamID in AdminSystem.CustomBindsTable)
+			{
+				foreach(key,keytbl in AdminSystem.CustomBindsTable[steamID])
+				{
+					foreach(func,tbl in keytbl)
+					{
+						::Quix.Remove(::Quix.FormatName(player,key,func))
+					}
+				}
+			}
+
+			if("all" in AdminSystem.CustomBindsTable)
+			{
+				foreach(key,keytbl in AdminSystem.CustomBindsTable.all)
+				{
+					foreach(func,tbl in keytbl)
+					{
+						::Quix.Remove(::Quix.FormatName(player,key,func))
+					}
+				}
+			}
+		}
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.LoadQuixBinds <- function(reload=false)
+{
+	local filelist = FileToString(Constants.Directories.CustomBinds);	// List of files
+	if(filelist == null)
+	{
+		printl("[Custom-Binds] Creating "+Constants.Directories.CustomBinds+" for the first time...")
+		StringToFile(Constants.Directories.CustomBinds,strip(Constants.CustomBindsListDefaults));
+		filelist = FileToString(Constants.Directories.CustomBinds);
+	}
+
+	local example = FileToString(Constants.Directories.CustomBindsExample);	// Example v150
+	if(example == null)
+	{
+		printl("[Binds-Examples] Creating v1.5.0 examples in "+Constants.Directories.CustomBindsExample+" for the first time...")
+		StringToFile(Constants.Directories.CustomBindsExample,strip(Constants.CustomBindsTableDefaults.v1_5_0));
+		example = FileToString(Constants.Directories.CustomBindsExample);
+	}
+
+	// Version based examples
+	// foreach(vers,count in ::Constants.CustomBindsExampleVersions)
+	// {	
+	// 	local cleanvers = Utils.StringReplace(vers,@"\.","_");
+	// 	local pth = Constants.Directories.CustomBindsExampleVersionBased(cleanvers)
+	// 	local ex = FileToString(pth);
+	// 	if(ex == null)
+	// 	{
+	// 		printl("[Binds-Examples] Creating "+count+" new examples from version "+vers+" in "+pth+" for the first time...")
+	// 		StringToFile(pth,Constants.CustomBindsTableDefaults[cleanvers]);
+	// 		ex = FileToString(pth);
+	// 	}
+	// }
+
+	if(!("CustomBindsTable" in AdminSystem))
+	{
+		AdminSystem.CustomBindsTable <- {}
+	}
+
+	local filelist = split(filelist, "\r\n");
+	
+	foreach (i,filename in filelist)
+	{	
+		filename = strip(filename)
+
+		if(filename.find("//") == 0)
+			continue;
+		else if(filename.find("//") != null)
+		{
+			filename = strip(split(filename,"//")[0])
+		}
+
+		filename = "admin system/binds/"+filename+".nut"
+		local fileContents = FileToString(filename)
+		if(fileContents == null)
+		{
+			continue;
+		}
+		fileContents = strip(fileContents);
+		local tbl = ::Constants.ValidateBindsTable(fileContents,filename,i==0,reload);
+
+		foreach(s_id,keys in tbl)
+		{
+			if(!(s_id in AdminSystem.CustomBindsTable))
+				AdminSystem.CustomBindsTable[s_id] <- {}
+
+			foreach(key,binds in keys)
+			{
+				if(!(key in AdminSystem.CustomBindsTable[s_id]))
+					AdminSystem.CustomBindsTable[s_id][key] <- {}
+					
+				foreach(k,v in binds)
+				{
+					AdminSystem.CustomBindsTable[s_id][key][k] <- v
+				}
+			}
+		}
+	}
+
+	foreach(steam_id,keys in AdminSystem.CustomBindsTable)
+	{
+		if(steam_id == "all")
+		{
+			foreach(surv in Players.AliveSurvivors())
+			{
+				if (surv.GetSteamID() == "BOT" || !AdminSystem.IsPrivileged(surv,true))
+					continue;
+									
+				foreach(key,keytbl in keys)
+				{
+					::Quix.ProcessTable(surv,key,keytbl)
+				}
+			}
+		}
+		else
+		{
+			local ent = Utils.GetPlayerFromSteamID(steam_id)
+			if(ent)
+			{
+				foreach(key,keytbl in keys)
+				{
+					::Quix.ProcessTable(ent,key,keytbl)
+				}
+			}
+		}
 	}
 }
 
@@ -1287,7 +1625,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 	{
 		local vel = player.GetVelocity();
 		local maxSpeed = 400.0;
-		local speed = 200.0;
+		local speed = 50.0;
 		
 		if ( (vel.z + speed) > maxSpeed )
 			vel.z = maxSpeed;
@@ -1332,6 +1670,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	AdminSystem.LoadAliasedCommands()
 	AdminSystem.LoadEntityGroups()
 	AdminSystem.LoadLootTables()
+	AdminSystem.LoadQuixBinds()
 	
 	AdminSystem.LoadDisabledCommands()
 	AdminSystem.LoadCommandRestrictions()
@@ -1603,6 +1942,11 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 		{
 			lookup = "boolean"
 			blackliststr = "lastmodel,original"
+		}
+		LootCreationParams =
+		{
+			lookup = "boolean"
+			blackliststr = "explosion_prob,hurt_prob,horde_prob,ambush_prob,LootDuration,NoItemProb,MinItems,MaxItems,SpawnDist,GlowR,GlowG,GlowB,GlowA,GlowRange,BarText,BarSubText"
 		}
 	}
 	
@@ -2349,6 +2693,23 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 	switch ( cleanBaseCmd )
 	{
+		case "bind":
+		{
+			AdminSystem.BindWithQuixCmd(player,args);
+			break;
+		}
+		case "unbind":
+		{
+			AdminSystem.UnbindWithQuixCmd(player,args);
+			break;
+		}
+		case "reload_binds":
+		{
+			if(!AdminSystem.HasScriptAuth(player))
+				return;
+			AdminSystem.LoadQuixBinds(true);
+			break;
+		}
 		case "reload_scripts":
 		{
 			if(!AdminSystem.HasScriptAuth(player))
@@ -3481,6 +3842,16 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.DeleteSequenceCmd( player, args );
 			break;
 		}
+		case "show_looting_settings":
+		{
+			AdminSystem.Show_loot_settingsCmd(player,args);
+			break;
+		}
+		case "looting_setting":
+		{
+			AdminSystem.Loot_settingCmd(player,args);
+			break;
+		}
 		case "create_loot_sources":
 		{
 			AdminSystem.CreateLootSourcesCmd(player,args);
@@ -4521,7 +4892,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	modelname = ShortenModelName(modelname).tolower()
 
 	if(modelname in ::ModelDetails)
-		return "mass" in ::ModelDetails[modelname]
+		return ("mass" in ::ModelDetails[modelname]) || ("totalmass" in ::ModelDetails[modelname])
 	else
 	{
 		local mass_checker = Entity("project_smok_mass_checker")
@@ -6383,15 +6754,15 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				pushvec = pushvec.Scale(-1);
 				pushvec = RotatePosition(Vector(0,0,0),QAngle(0,-turnangle,0),pushvec);
 				if((mask>>4) % 2 == 1)
-					ent.SetForwardVector(pushvec.Scale(-1));
-				AdminSystem._CarControl[name].forward = pushvec.Scale(-1/speed);
+					ent.SetForwardVector(pushvec.Scale(-1/pushvec.Length()));
+				AdminSystem._CarControl[name].forward = pushvec.Scale(-1/pushvec.Length());
 			}
 			else
 			{
 				pushvec = RotatePosition(Vector(0,0,0),QAngle(0,turnangle,0),pushvec);
 				if((mask>>4) % 2 == 1)
-					ent.SetForwardVector(pushvec);
-				AdminSystem._CarControl[name].forward = pushvec.Scale(1/speed);
+					ent.SetForwardVector(pushvec.Scale(1/pushvec.Length()));
+				AdminSystem._CarControl[name].forward = pushvec.Scale(1/pushvec.Length());
 			}
 			
 			ent.Push(pushvec);
@@ -6405,22 +6776,22 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				pushvec = pushvec.Scale(-1);
 				pushvec = RotatePosition(Vector(0,0,0),QAngle(0,turnangle,0),pushvec);
 				if((mask>>4) % 2 == 1)
-					ent.SetForwardVector(pushvec.Scale(-1))
-				AdminSystem._CarControl[name].forward = pushvec.Scale(-1/speed)
+					ent.SetForwardVector(pushvec.Scale(-1/pushvec.Length()))
+				AdminSystem._CarControl[name].forward = pushvec.Scale(-1/pushvec.Length())
 			}
 			else
 			{
 				pushvec = RotatePosition(Vector(0,0,0),QAngle(0,-turnangle,0),pushvec);
 				if((mask>>4) % 2 == 1)
-					ent.SetForwardVector(pushvec)
-				AdminSystem._CarControl[name].forward = pushvec.Scale(1/speed)
+					ent.SetForwardVector(pushvec.Scale(1/pushvec.Length()))
+				AdminSystem._CarControl[name].forward = pushvec.Scale(1/pushvec.Length())
 			}
 			
 			ent.Push(pushvec);
 		}
 		else if((mask>>1) % 2 == 1) // BACKWARD
 		{
-			ent.OverrideFriction(0.5,tbl.overridefriction)
+			ent.OverrideFriction(0.2,tbl.overridefriction)
 			pushvec = pushvec.Scale(tbl.reversescale);
 			ent.Push(pushvec);
 		}
@@ -6428,7 +6799,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		{
 			if((mask>>4) % 2 == 1)
 				ent.SetForwardVector(pushvec);
-			ent.OverrideFriction(1.5,tbl.overridefriction/2)
+			ent.OverrideFriction(0.2,tbl.overridefriction/2)
 			ent.Push(RotatePosition(Vector(0,0,0),QAngle(-8,0,0),pushvec));
 		}
 		
@@ -6455,11 +6826,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	{
 		keymask = 0
 		forward = Vector(0,0,0)
-		speed = 675.0
-		reversescale = -0.1
-		speedscale = 5
-		overridefriction = 0.05
-		turnpertick = 8
+		speed = 450.0
+		reversescale = -0.07
+		speedscale = 5.5
+		overridefriction = 0.03
+		turnpertick = 3.5
 		listenerid = -1
 	}
 );
@@ -6483,7 +6854,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 ::AdminSystem._RagdollControl <- ::AdminVars.RepeatTableForSurvivors(
 	{
 		keymask = 0
-		speed = 250.0
+		speed = 60.0
 		overridefriction = 0.3
 		frictionduration = 1
 		listenerid = -1
@@ -6561,35 +6932,26 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	local name = ent.GetCharacterNameLower()
 	if(forcar)
 	{
-		if (Constants.TimerNames.CarPush+name in ::VSLib.Timers.TimersID)
-		{
-			::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[Constants.TimerNames.CarPush+name]);
-			delete ::VSLib.Timers.TimersID[Constants.TimerNames.CarPush+name];
+		::Quix.Remove(Constants.TimerNames.CarPush+name);
 
-			local id = AdminSystem._CarControl[name].listenerid;
+		local id = AdminSystem._CarControl[name].listenerid;
 
-			Ent(id).Kill();
-			AdminSystem._CarControl[name].forward = Vector(0,0,0)
-			AdminSystem._CarControl[name].keymask = 0
-			AdminSystem._CarControl[name].listenerid = -1
+		Ent(id).Kill();
+		AdminSystem._CarControl[name].forward = Vector(0,0,0)
+		AdminSystem._CarControl[name].keymask = 0
+		AdminSystem._CarControl[name].listenerid = -1
 
-			::VSLib.Timers.AddTimer(1, false, _SetCarControl,{ent=ent,grav=1,speedscale=1.0});
-
-		}
+		::VSLib.Timers.AddTimer(1, false, _SetCarControl,{ent=ent,grav=1,speedscale=1.0});
 	}
 	else
 	{
-		if (Constants.TimerNames.RagdollControl+ent.GetIndex() in ::VSLib.Timers.TimersID)
-		{
-			::VSLib.Timers.RemoveTimer(::VSLib.Timers.TimersID[Constants.TimerNames.RagdollControl+ent.GetIndex()]);
-			delete ::VSLib.Timers.TimersID[Constants.TimerNames.RagdollControl+ent.GetIndex()];
+		::Quix.Remove(Constants.TimerNames.RagdollControl+ent.GetIndex());
 
-			local id = AdminSystem._RagdollControl[name].listenerid;
+		local id = AdminSystem._RagdollControl[name].listenerid;
 
-			Ent(id).Kill();
-			AdminSystem._RagdollControl[name].keymask = 0
-			AdminSystem._RagdollControl[name].listenerid = -1
-		}
+		Ent(id).Kill();
+		AdminSystem._RagdollControl[name].keymask = 0
+		AdminSystem._RagdollControl[name].listenerid = -1
 	}
 }
 
@@ -6677,8 +7039,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		AdminSystem._CarControl[name].keymask = currentmask;
 		AdminSystem._CarControl[name].listenerid = listener.GetIndex();
 		
-		::VSLib.Timers.AddTimer(0.1, false, _SetCarControl,{ent=ent,grav=5,speedscale=AdminSystem._CarControl[name].speedscale});
-		::VSLib.Timers.AddTimerByName(Constants.TimerNames.CarPush+name,0.1, true, AdminSystem._Pusher,{ent=ent});
+		::VSLib.Timers.AddTimer(0.1, false, _SetCarControl,{ent=ent,grav=5,speedscale=AdminSystem._CarControl[name].speedscale,name=name});
 	}
 	else
 	{
@@ -6701,14 +7062,17 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		AdminSystem._RagdollControl[name].listenerid = listener.GetIndex();
 		AdminSystem._RagdollControl[name].keymask = currentmask;
 
-		::VSLib.Timers.AddTimerByName(Constants.TimerNames.RagdollControl+forIndex,0.1, true, AdminSystem._RagdollPusher,{ent=ent});
+		::Quix.AddUnlimited(Constants.TimerNames.RagdollControl+forIndex,@(i,c) Ent(forIndex).GetButtonMask()!=0,@(i,s,c) AdminSystem._RagdollPusher(c),null,{ent=ent})
 	}
 }
 
 ::_SetCarControl <- function(args)
 {
+	local ind = args.ent.GetIndex()
 	args.ent.SetGravity(args.grav);
 	args.ent.SetNetProp("m_flLaggedMovementValue",args.speedscale)
+	if("name" in args)
+		::Quix.AddUnlimited(Constants.TimerNames.CarPush+args.name,@(i,c) Ent(ind).GetButtonMask()!=0,@(i,s,c) AdminSystem._Pusher(c),null,{ent=args.ent})
 }
 
 ::AdminSystem._GetHexString <- function(str)
@@ -7241,6 +7605,11 @@ enum __
 
 	local setting = GetArgument(1);
 	local val = GetArgument(2);
+	if(val == null)
+	{
+		return
+	}
+
 	if(!(setting in AdminSystem._meteor_shower_args))
 	{
 		::SpellChecker.Levenshtein(5,3,"setting").PrintBestMatches(player.GetBaseEntity(),setting,AdminSystem._meteor_shower_args)
@@ -7629,6 +7998,10 @@ enum __
 		}
 		path_patterns =
 		{
+			"models/props_vehicles/police_car_city.mdl" : true
+			"models/props_vehicles/police_car.mdl" : true
+			"models/props_vehicles/police_car_opentrunk.mdl" : true
+			"models/props_vehicles/police_car_rural.mdl" : true
 			"models/props_vehicles/car" : true
 			"models/props_vehicles/taxi" : true
 			"models/props_vehicles/racecar.mdl" : true
@@ -7651,6 +8024,11 @@ enum __
 		}
 		path_patterns =
 		{
+			"models/props_interiors/bookcase_48_96.mdl" : true
+			"models/props_interiors/bookcase_64_96.mdl" : true
+			"models/props_interiors/bookcasehutch01.mdl" : true
+			"models/props/cs_office/bookshelf2.mdl" : true
+			"models/props_urban/ashtray_stand001.mdl" : true
 			"models/props/cs_assault/box_stack" : true
 			"models/props/cs_assault/washer_box.mdl" : true
 			"models/props/cs_militia/boxes_frontroom.mdl" : true
@@ -7750,6 +8128,7 @@ enum __
 		local p = self.GetScriptScope().LastPlayer
 		local c = ::VSLib.Entity(self.GetUseModelName())
 
+		local event_state = lparams.events_enabled
 		local porg = p.GetOrigin()
 		if(count != 0)
 		{	
@@ -7827,6 +8206,35 @@ enum __
 		else
 			::Printer(p,"No items found!")
 
+		if(event_state)
+		{
+			local ambush_prob = lparams.ambush_prob
+			local horde_prob = lparams.horde_prob
+			local hurt_prob = lparams.hurt_prob
+			local explosion_prob = lparams.explosion_prob
+
+			// THERE IS BLOOD IN THE BOX
+			local lootget_prob = ::THEREISBLOODINTHEBOX
+
+			local events = 
+			{
+				"ambush" : ambush_prob
+				"horde" : horde_prob
+				"hurt" : hurt_prob
+				"explosion" : explosion_prob
+				"lootget" : lootget_prob
+			}
+
+			foreach(e_name,e_prob in events)
+			{
+				local rnd = rand().tofloat()/RAND_MAX
+				if(rnd <= e_prob)
+				{
+					::TriggerLootRandomEvent(c,p,e_name)
+				}
+			}
+		}
+
 		c.Input("SetGlowRange","1")
 		c.Input("StopGlowing","")
 		c.SetName(c.GetScriptScope()["PS_OldName"])
@@ -7864,6 +8272,119 @@ enum __
 	obj.Input("SetGlowRange",params.GlowRange.tostring())
 	obj.Input("StartGlowing","")
 }
+
+::LootingRandomEventParams <-
+{
+	blood_splatter =
+	[
+		"screen_blood_splatter",
+		"screen_blood_splatter_a",
+		"screen_blood_splatter_b",
+		"screen_blood_splatter_melee",
+		"screen_blood_splatter_melee_b",
+		"screen_blood_splatter_melee_blunt"
+	]
+	screen_blood_min = 4
+	screen_blood_max = 7
+
+	blood_spill =
+	[
+		"blood_bleedout",
+		"blood_bleedout_2",
+		"blood_bleedout_3"
+	]
+	ground_blood_min = 3
+	ground_blood_max = 6
+
+	expradius = 120
+	pushspeed = 350
+	expdmg_min = 10
+	expdmg_max = 20
+
+	cut_count_min = 1
+	cut_count_max = 8
+	cut_dmg_min = 3
+	cut_dmg_max = 5
+
+	horde_alarm_sound = "c5m2.Security_alarm"
+	horde_alarm_sound_length = 9
+}
+
+::TriggerLootRandomEvent <- function(loot_ent,looter,event_name)
+{
+	switch(event_name)
+	{
+		case "lootget":
+		{
+			local blood_splatter = ::LootingRandomEventParams.blood_splatter
+			local blood_spill = ::LootingRandomEventParams.blood_spill
+
+			local clr = looter.GetNetProp("m_clrRender");
+			looter.InputColor(255, 0, 0, 0);
+			Timers.AddTimer(15, false, ColorResetWrap, {ent=looter,clr=clr});
+			
+			loot_ent.EmitSound("loot_get")
+			looter.Speak(Utils.GetRandValueFromArray(::Survivorlines.DeathScream[looter.GetCharacterNameLower()]));
+			
+			local screen_b_count = RandomInt(::LootingRandomEventParams.screen_blood_min,::LootingRandomEventParams.screen_blood_max)
+			local b_out_count = RandomInt(::LootingRandomEventParams.ground_blood_min,::LootingRandomEventParams.ground_blood_max)
+			local looter_org = looter.GetOrigin()
+			for(local i=0;i<screen_b_count;i++)
+			{
+				g_ModeScript.CreateParticleSystemAt( null, looter_org, Utils.GetRandValueFromArray(blood_splatter), true );
+			}
+			for(local i=0;i<b_out_count;i++)
+			{
+				g_ModeScript.CreateParticleSystemAt( null, looter_org+RotatePosition(looter_org,QAngle(0,30*i,0),looter.GetForwardVector()).Scale(25), Utils.GetRandValueFromArray(blood_spill), true );
+			}
+			
+			Printer(looter,"LOOTGET!")
+			break;
+		}
+		case "explosion":
+		{
+			local rad = ::LootingRandomEventParams.expradius
+			local l_org = looter.GetOrigin()
+			local expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = l_org, iRadiusOverride = rad });
+			local expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = l_org});
+			
+			_explosionPush({ents=_RemoveNonPhysicsFromTable(Objects.AroundRadius(l_org,rad),l_org,rad),pushspeed=::LootingRandomEventParams.pushspeed,origin=l_org,explosion=expent,explosion_sound=expsoundent})
+			
+			looter.Damage(RandomInt(::LootingRandomEventParams.expdmg_min,::LootingRandomEventParams.expdmg_max))
+
+			Printer(looter,"Somebody really didn't want this one to be looted...")
+			break;
+		}
+		case "hurt":
+		{
+			local count = RandomInt(::LootingRandomEventParams.cut_count_min,::LootingRandomEventParams.cut_count_max)
+			for(local i=0;i<count;i++)
+			{
+				Timers.AddTimer(0.1+(i*1.4),false,@(...) looter.Damage(RandomInt(::LootingRandomEventParams.cut_dmg_min,::LootingRandomEventParams.cut_dmg_max)))
+			}
+			Printer(looter,"You cut yourself!")
+			break;
+		}
+		case "horde":
+		{
+			local snd = LootingRandomEventParams.horde_alarm_sound
+			Utils.SpawnZombie( Z_MOB, loot_ent.GetOrigin() );
+			loot_ent.EmitSound(snd)
+			loot_ent.Input("RunScriptCode","Entity("+loot_ent.GetIndex()+").StopSound(\""+snd+"\")",::LootingRandomEventParams.horde_alarm_sound_length)
+			Printer(looter,"Uh oh...")
+			break;
+		}
+		case "ambush":
+		{
+			local typ = Utils.GetRandValueFromArray([Z_JOCKEY,Z_HUNTER])
+			Utils.SpawnZombie( typ, loot_ent.GetEyePosition() );
+			Printer(looter,"It's a trap!")
+			break;
+		}
+	}
+}
+
+::THEREISBLOODINTHEBOX <- 0.02
 
 /* 
  * @authors rhino
@@ -8028,6 +8549,69 @@ enum __
 		::LongProcessIterAvailability.create_loot_sources = true
 		::AdminSystem.out("Loot-Source Progress: "+Utils.BuildProgressBar(20.0,20.0,20.0,"|", ". "))
 	}
+}
+
+/* 
+ * @authors rhino
+ */
+::AdminSystem.Show_loot_settingsCmd <- function (player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterNameLower()])
+	{
+		Messages.InformPlayer(player,"Looting Settings:");
+		foreach(setting,val in AdminSystem.Vars.LootCreationParams)
+		{
+			Messages.InformPlayer(player,"\x05"+setting+"\x03"+" -> "+"\x04"+val.tostring()+"\x01"+"\n")
+		}
+	}
+	else
+	{
+		printB(player.GetCharacterName(),"",false,"",true,false);
+		foreach(setting,val in AdminSystem.Vars.LootCreationParams)
+		{
+			printB(player.GetCharacterName(),"[Looting-Setting] "+setting+"->"+val.tostring(),false,"",false,false)
+		}
+		printB(player.GetCharacterName(),"",false,"",false,true,0.1);
+	}
+}
+
+/* 
+ * @authors rhino
+ */
+::AdminSystem.Loot_settingCmd <- function (player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+	local name = player.GetCharacterName();
+	local setting = GetArgument(1);
+	local val = GetArgument(2);
+	if(val == null)
+		return
+
+	if(!(setting in AdminSystem.Vars.LootCreationParams))
+	{
+		::SpellChecker.Levenshtein(3,3,"setting").PrintBestMatches(player.GetBaseEntity(),setting,AdminSystem.Vars.LootCreationParams)
+		return;
+	}
+	
+	Printer(player,CmdMessages.Looting.SettingSuccess(setting,AdminSystem.Vars.LootCreationParams[setting],val));
+
+	switch(setting)
+	{
+		case "BarSubText":
+		case "BarText":
+			break;
+		case "events_enabled":
+			val = (val == "true" || val == "True") ? true : false
+			break
+		default:
+			val = val.tofloat()
+	}
+	AdminSystem.Vars.LootCreationParams[setting] = val;
 }
 
 /* @authors rhino
@@ -10678,6 +11262,32 @@ function ChatTriggers::replace_alias( player, args, text )
 					? Messages.DocCmdPlayer(player,CmdDocs.replace_alias(player,args))
 					: null
 
+function ChatTriggers::unbind( player, args, text )
+{
+	AdminSystem.UnbindWithQuixCmd(player,args);
+}
+::ChatTriggerDocs.unbind <- @(player,args) AdminSystem.IsPrivileged(player) && "unbind" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.unbind(player,args))
+					: null
+
+function ChatTriggers::bind( player, args, text )
+{
+	AdminSystem.BindWithQuixCmd(player,args);
+}
+::ChatTriggerDocs.bind <- @(player,args) AdminSystem.IsPrivileged(player) && "bind" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.bind(player,args))
+					: null
+
+function ChatTriggers::reload_binds( player, args, text )
+{
+	if(!AdminSystem.HasScriptAuth(player))
+		return;
+	AdminSystem.LoadQuixBinds(true);
+}
+::ChatTriggerDocs.reload_binds <- @(player,args) AdminSystem.IsPrivileged(player) && "reload_binds" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.reload_binds(player,args))
+					: null
+
 function ChatTriggers::reload_ent_groups( player, args, text )
 {
 	if(!AdminSystem.HasScriptAuth(player))
@@ -11176,6 +11786,22 @@ function ChatTriggers::create_loot_sources( player, args, text )
 }
 ::ChatTriggerDocs.create_loot_sources <- @(player,args) AdminSystem.IsPrivileged(player) && "create_loot_sources" in CmdDocs
 					? Messages.DocCmdPlayer(player,CmdDocs.create_loot_sources(player,args))
+					: null
+
+function ChatTriggers::show_looting_settings( player, args, text )
+{
+	AdminSystem.Show_loot_settingsCmd( player, args );
+}
+::ChatTriggerDocs.show_looting_settings <- @(player,args) AdminSystem.IsPrivileged(player) && "show_looting_settings" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.show_looting_settings(player,args))
+					: null
+
+function ChatTriggers::looting_setting( player, args, text )
+{
+	AdminSystem.Loot_settingCmd( player, args );
+}
+::ChatTriggerDocs.looting_setting <- @(player,args) AdminSystem.IsPrivileged(player) && "looting_setting" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.looting_setting(player,args))
 					: null
 
 function ChatTriggers::ent( player, args, text )
@@ -13091,7 +13717,7 @@ if ( Director.GetGameMode() == "holdout" )
 				if ( survivorID in ::AdminSystem.Vars.IsFlyingEnabled && ::AdminSystem.Vars.IsFlyingEnabled[survivorID] )
 				{
 					AdminSystem.Vars.IsFlyingEnabled[survivorID] <- false;
-					Timers.RemoveTimerByName ( survivorID.tostring() + "Fly" );
+					::Quix.Remove(survivorID.tostring() + "Fly")
 					survivor.Input( "IgnoreFallDamageWithoutReset", 0.1 );
 					survivor.Input( "EnableLedgeHang" );
 					if ( AdminSystem.DisplayMsgs )
@@ -13100,7 +13726,7 @@ if ( Director.GetGameMode() == "holdout" )
 				else
 				{
 					AdminSystem.Vars.IsFlyingEnabled[survivorID] <- true;
-					Timers.AddTimerByName( survivorID.tostring() + "Fly", 0.1, true, AdminSystem.CalculateFly, survivor );
+					::Quix.AddListener(survivorID.tostring() + "Fly","!"+survivor.GetCharacterNameLower(),BUTTON_JUMP,@(p,tbl) AdminSystem.CalculateFly(p), PS_WHILE_PRESSED)
 					survivor.Input( "IgnoreFallDamageWithoutReset", 999999 );
 					survivor.Input( "DisableLedgeHang" );
 					if ( AdminSystem.DisplayMsgs )
@@ -13117,7 +13743,7 @@ if ( Director.GetGameMode() == "holdout" )
 			if ( targetID in ::AdminSystem.Vars.IsFlyingEnabled && ::AdminSystem.Vars.IsFlyingEnabled[targetID] )
 			{
 				AdminSystem.Vars.IsFlyingEnabled[targetID] <- false;
-				Timers.RemoveTimerByName ( targetID.tostring() + "Fly" );
+				::Quix.Remove(targetID.tostring() + "Fly")
 				Target.Input( "IgnoreFallDamageWithoutReset", 0.1 );
 				Target.Input( "EnableLedgeHang" );
 				if ( AdminSystem.DisplayMsgs )
@@ -13126,7 +13752,7 @@ if ( Director.GetGameMode() == "holdout" )
 			else
 			{
 				AdminSystem.Vars.IsFlyingEnabled[targetID] <- true;
-				Timers.AddTimerByName( targetID.tostring() + "Fly", 0.1, true, AdminSystem.CalculateFly, Target );
+				::Quix.AddListener(targetID.tostring() + "Fly","!"+Target.GetCharacterNameLower(),BUTTON_JUMP,@(p,tbl) AdminSystem.CalculateFly(p), PS_WHILE_PRESSED)
 				Target.Input( "IgnoreFallDamageWithoutReset", 999999 );
 				Target.Input( "DisableLedgeHang" );
 				if ( AdminSystem.DisplayMsgs )
@@ -13139,7 +13765,7 @@ if ( Director.GetGameMode() == "holdout" )
 		if ( ID in ::AdminSystem.Vars.IsFlyingEnabled && ::AdminSystem.Vars.IsFlyingEnabled[ID] )
 		{
 			AdminSystem.Vars.IsFlyingEnabled[ID] <- false;
-			Timers.RemoveTimerByName ( ID.tostring() + "Fly" );
+			::Quix.Remove(ID.tostring() + "Fly")
 			player.Input( "IgnoreFallDamageWithoutReset", 0.1 );
 			player.Input( "EnableLedgeHang" );
 			if ( AdminSystem.DisplayMsgs )
@@ -13148,7 +13774,7 @@ if ( Director.GetGameMode() == "holdout" )
 		else
 		{
 			AdminSystem.Vars.IsFlyingEnabled[ID] <- true;
-			Timers.AddTimerByName( ID.tostring() + "Fly", 0.1, true, AdminSystem.CalculateFly, player );
+			::Quix.AddListener(ID.tostring() + "Fly","!"+player.GetCharacterNameLower(),BUTTON_JUMP,@(p,tbl) AdminSystem.CalculateFly(p), PS_WHILE_PRESSED)
 			player.Input( "IgnoreFallDamageWithoutReset", 999999 );
 			player.Input( "DisableLedgeHang" );
 			if ( AdminSystem.DisplayMsgs )
@@ -14489,7 +15115,7 @@ if ( Director.GetGameMode() == "holdout" )
 	else if (limit == 1)
 		Printer(player,FixShortModelName(Utils.GetRandValueFromArray(Utils.ArraySearchFilterReturnAll(::ModelNamesArray,pattern))))
 	else
-		Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArrayFilter(Utils.ArraySearchFilterReturnAll(::ModelNamesArray,pattern),limit,@(v,c) FixShortModelName(v))))
+		Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArrayFilter(Utils.ArraySearchFilterReturnAll(::ModelNamesArray,pattern,@(s) s ,@(v,c) FixShortModelName(v)),limit)))
 }
 
 /*
@@ -14514,7 +15140,7 @@ if ( Director.GetGameMode() == "holdout" )
 	else if (limit == 1)
 		Printer(player,FixShortModelName(Utils.GetRandValueFromArray(Utils.ArraySearchFilterReturnAll(ModelNamesArray,pattern))))
 	else
-		Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArrayFilter(Utils.ArraySearchFilterReturnAll(ModelNamesArray,pattern),limit,@(v,c) FixShortModelName(v))))
+		Printer(player,Utils.ArrayString(Utils.GetNRandValueFromArrayFilter(Utils.ArraySearchFilterReturnAll(ModelNamesArray,pattern,@(s) s ,@(v,c) FixShortModelName(v)),limit)))
 }
 
 /*
@@ -15278,6 +15904,10 @@ if ( Director.GetGameMode() == "holdout" )
 	local name = player.GetCharacterName();
 	local setting = GetArgument(1);
 	local val = GetArgument(2);
+	
+	if(val == null)
+		return
+
 	if(!(setting in AdminSystem.Vars._explosion_settings[name.tolower()]))
 	{
 		::SpellChecker.Levenshtein(3,3,"setting").PrintBestMatches(player.GetBaseEntity(),setting,AdminSystem.Vars._explosion_settings[name.tolower()])
@@ -15307,6 +15937,7 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		switch(entity.GetClassname())
 		{
+			case "simple_physics_prop":
 			case "prop_physics":
 			case "prop_physics_multiplayer":
 			case "prop_ragdoll":
@@ -15324,6 +15955,7 @@ if ( Director.GetGameMode() == "holdout" )
 			}
 		}
 	}
+	return tbl
 }
 
 /*
@@ -17201,12 +17833,13 @@ if ( Director.GetGameMode() == "holdout" )
 		{	
 			local args = 
 			{
-				MDL = args.MDL
-				typename = args.typename
-				origin = args.origin
-				angles = args.angles
-				player = args.player
+				MDL = MDL
+				typename = typename
+				origin = origin
+				angles = angles
+				player = player
 				name = name
+				israndom = israndom
 			}
 			if(propsettingname == "physics")
 			{
@@ -17217,12 +17850,41 @@ if ( Director.GetGameMode() == "holdout" )
 					Messages.ThrowPlayer(player,CmdMessages.Prop.Failed(typename));
 					return;
 				}
-				args.ent = ent
+				args.ent <- ent
 
-				if(::CheckPhysicsAvailabilityForModel(Utils.CleanColoredString(MDL),ent,DoDummyConversionProcessProp,args,true) == false)
+				switch(::CheckPhysicsAvailabilityForModel(Utils.CleanColoredString(MDL),ent,DoDummyConversionProcessProp,args,true))
 				{
-					Printer(player,TXTCLR.OG(MDL)+" can't be used as a physics object!")
-					ent.Kill()
+					case false:
+						if(AdminSystem.Vars._grabbackupprop.enabled)
+						{
+							local keyvals = 
+							{
+								classname = AdminSystem.Vars._grabbackupprop.classname,
+								model = AdminSystem.Vars._grabbackupprop.modelname,
+								origin = ent.GetOrigin(),
+								angles = ent.GetAngles(),
+							};
+							
+							local new_ent = Utils.CreateEntityWithTable(keyvals);
+							if(!new_ent || !new_ent.IsEntityValid())
+							{
+								Printer(player,TXTCLR.OG(MDL)+" can't be used as a physics object! Failed to create the backup prop!")
+							}
+							else
+								Printer(player,CmdMessages.Prop.Success("physicsM",new_ent));
+					
+						}
+						else
+						{
+							Printer(player,TXTCLR.OG(MDL)+" can't be used as a physics object!")
+						}
+						ent.Kill()
+						break
+					case true:
+						DoDummyConversionProcessProp(args)
+						break;
+					case null:
+						break;
 				}
 			}
 			else
@@ -17326,7 +17988,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local cuniq = UniqueString()
 	local oldind = ent.GetIndex()
 	local thinker = Utils.CreateEntityWithTable({targetname=cuniq,classname="info_target",origin=origin,angles=angles,spawnflags=0})
-	PropFailureFixCheck[thinker.GetName()] <- {id=oldind,thinkstart=Time(),israndom=israndom,pid=player.GetIndex(),character=name,searchname=ent.GetName()}
+	PropFailureFixCheck[thinker.GetName()] <- {id=oldind,thinkstart=Time(),israndom=args.israndom,pid=player.GetIndex(),character=name,searchname=ent.GetName()}
 
 	local convertername = ::Constants.Targetnames.PhysConverter+cuniq
 	local converter = Utils.CreateEntityWithTable({classname="phys_convert",targetname=convertername,target="#"+oldind,spawnflags=3})
@@ -18183,34 +18845,48 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else if(entlooked)
 	{	
-		local vel = entlooked.GetPhysicsVelocity()
 		entlooked.Input("sleep","",0)
-		newAngle = entlooked.GetAngles();
-		
-		if( axis == "x" )
-		{	
-			newAngle.x += val;
-		}
-		else if ( axis == "z")
+
+		if(entlooked.GetParent() == null)
 		{
-			newAngle.z += val;
+			newAngle = entlooked.GetAngles();
+			
+			if( axis == "x" )
+			{	
+				newAngle.x += val;
+			}
+			else if ( axis == "z")
+			{
+				newAngle.z += val;
+			}
+			else
+			{
+				newAngle.y += val;
+			}
+			
+			local org = entlooked.GetOrigin()
+			entlooked.Input("RunScriptCode",format("self.SetAngles(QAngle(%s,%s,%s))",newAngle.x.tostring(),newAngle.y.tostring(),newAngle.z.tostring()),0)
 		}
 		else
 		{
-			newAngle.y += val;
+			//entlooked.Input("sleep","",0)
+			newAngle = entlooked.GetLocalAngles();
+			if( axis == "x" )
+			{	
+				newAngle.x += val;
+				entlooked.SetLocalAngles(newAngle);
+			}
+			else if ( axis == "z")
+			{
+				newAngle.z += val;
+				entlooked.SetLocalAngles(newAngle);
+			}
+			else
+			{
+				newAngle.y += val;
+				entlooked.SetLocalAngles(newAngle);
+			}
 		}
-		
-		local org = entlooked.GetOrigin()
-		entlooked.Input("RunScriptCode",format("self.SetAngles(QAngle(%s,%s,%s))",newAngle.x.tostring(),newAngle.y.tostring(),newAngle.z.tostring()),0)
-		
-		entlooked.Input("RunScriptCode",format("self.SetOrigin(Vector(%s,%s,%s))",org.x.tostring(),org.y.tostring(),org.z.tostring()),0.05)
-		
-		if(entlooked.GetClassname().find("physics") != null)
-		{
-			//entlooked.Input("RunScriptCode",format("self.SetForwardVector(QAngle(%s,%s,%s).Forward())",newAngle.x.tostring(),newAngle.y.tostring(),newAngle.z.tostring()),0)
-			entlooked.Input("RunScriptCode",format("self.ApplyAbsVelocityImpulse(Vector(%s,%s,%s))",vel.x.tostring(),vel.y.tostring(),vel.z.tostring()),0.05)
-		}
-
 		Printer(player,CmdMessages.Force.RotateSuccess(entlooked.GetIndex(),newAngle));
 	}
 }
@@ -18390,95 +19066,73 @@ if ( Director.GetGameMode() == "holdout" )
 			move_vec.x = units
 		}
 
-		entlooked.SetOrigin(entlooked.GetOrigin()+GetPositionRelativeToPlayer(player,move_vec))
+		entlooked.SetLocalOrigin(entlooked.GetLocalOrigin()+move_vec)
 		
 		Printer(player,CmdMessages.Force.MoveSuccess(entlooked.GetIndex(),units,direction,0));
 	}
 	else if(entlooked)
 	{	
-		if(entlooked.GetParent() != null)
+		if(entlooked.GetParent() == null)
 		{
-			local fwvec = RotateOrientation(player.GetEyeAngles(),QAngle(pitchofeye,0,0)).Forward();
-			local temp = Vector(fwvec.x,fwvec.y,0);
-
-			local entpos = entlooked.GetLocalOrigin();
+			local move_vec = Vector(0,0,0)
 
 			if(direction == "backward")
 			{	
-				fwvec.z *= -1;
-				fwvec.y *= -1;
-				fwvec.x *= -1;
+				move_vec.x = -units
 			}
 			else if(direction == "left")
 			{	
-				fwvec.x = -temp.y;
-				fwvec.y = temp.x;
-				fwvec.z = 0;
+				move_vec.y = units
 			}
 			else if(direction == "right")
 			{
-				fwvec.x = temp.y;
-				fwvec.y = -temp.x;
-				fwvec.z = 0;
+				move_vec.y = -units
 			}
 			else if(direction == "up")
 			{
-				fwvec.z = units;
-				fwvec.y = 0;
-				fwvec.x = 0;
+				move_vec.z = units
 			}
 			else if(direction == "down")
 			{
-				fwvec.z = -units;
-				fwvec.y = 0;
-				fwvec.x = 0;
+				move_vec.z = -units
 			}
-			
-			fwvec = fwvec.Scale(units/fwvec.Length());
-			
-			entlooked.SetLocalOrigin(Vector(entpos.x+fwvec.x,entpos.y+fwvec.y,entpos.z+fwvec.z));
+			else
+			{
+				move_vec.x = units
+			}
+
+			entlooked.SetOrigin(entlooked.GetOrigin()+GetPositionRelativeToPlayer(player,move_vec))
 		}
 		else
 		{
-			local fwvec = RotateOrientation(player.GetEyeAngles(),QAngle(pitchofeye,0,0)).Forward();
-			local temp = Vector(fwvec.x,fwvec.y,0);
-
-			local entpos = entlooked.GetPosition();
+			local move_vec = Vector(0,0,0)
 
 			if(direction == "backward")
 			{	
-				fwvec.z *= -1;
-				fwvec.y *= -1;
-				fwvec.x *= -1;
+				move_vec.x = -units
 			}
 			else if(direction == "left")
 			{	
-				fwvec.x = -temp.y;
-				fwvec.y = temp.x;
-				fwvec.z = 0;
+				move_vec.y = units
 			}
 			else if(direction == "right")
 			{
-				fwvec.x = temp.y;
-				fwvec.y = -temp.x;
-				fwvec.z = 0;
+				move_vec.y = -units
 			}
 			else if(direction == "up")
 			{
-				fwvec.z = units;
-				fwvec.y = 0;
-				fwvec.x = 0;
+				move_vec.z = units
 			}
 			else if(direction == "down")
 			{
-				fwvec.z = -units;
-				fwvec.y = 0;
-				fwvec.x = 0;
+				move_vec.z = -units
 			}
-			
-			fwvec = fwvec.Scale(units/fwvec.Length());
-			
-			entlooked.SetOrigin(Vector(entpos.x+fwvec.x,entpos.y+fwvec.y,entpos.z+fwvec.z));
+			else
+			{
+				move_vec.x = units
+			}
+
+			entlooked.SetLocalOrigin(entlooked.GetLocalOrigin()+move_vec)
 		}
 
 		Printer(player,CmdMessages.Force.MoveSuccess(entlooked.GetIndex(),units,direction,pitchofeye));
@@ -22829,7 +23483,7 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 
 		player.AttachOther(ent,false,0,null);
-		player.SetAttachmentPoint(ent,tbl_heldEnt.grabAttachPos,true,0.1);
+		player.SetAttachmentPoint(ent,tbl_heldEnt.grabAttachPos,true,0.05);
 		
 		AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = entind;
 	}
@@ -22887,7 +23541,7 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
-
+	
 	local name = player.GetCharacterNameLower();
 	if(AdminSystem.Vars._heldEntity[name].entid == "")
 		return;
@@ -22988,9 +23642,48 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			if(keyvals.classname.find("physics") != null)
 			{	
-				if(::CheckPhysicsAvailabilityForModel(keyvals.model,ent,DoDummyConversionProcess) == false)
+				switch(::CheckPhysicsAvailabilityForModel(keyvals.model,ent,DoDummyConversionProcess))
 				{
-					Printer(Player("!"+name),TXTCLR.OG(keyvals.model)+" can't be used as a physics object!")
+					case false:
+						if(AdminSystem.Vars._grabbackupprop.enabled)
+						{
+							local keyvals = 
+							{
+								classname = AdminSystem.Vars._grabbackupprop.classname,
+								model = AdminSystem.Vars._grabbackupprop.modelname,
+								origin = ent.GetOrigin(),
+								angles = ent.GetAngles(),
+							};
+							
+							local new_ent = Utils.CreateEntityWithTable(keyvals);
+							if(!new_ent || !new_ent.IsEntityValid())
+							{
+								Printer(Player("!"+name),TXTCLR.OG(new_ent.GetModel())+" can't be used as a physics object! Failed to create the backup prop!")
+							}
+							else
+							{
+								if(keyvals.classname == "prop_ragdoll")
+									new_ent.SetNetProp("m_CollisionGroup",1)
+
+								local skin = ent.GetNetProp("m_nSkin");
+								local color = ent.GetNetProp("m_clrRender");
+								local scale = ent.GetModelScale();
+								RecreateHierarchy(ent,new_ent,{color=color,skin=skin,scale=scale,name=ent.GetName()});
+								new_ent.Input("RunScriptCode",func+"(Entity("+new_ent.GetIndex()+")"+extra_arg+")",0);
+								Printer(Player("!"+name),CmdMessages.Prop.Success("physicsM",new_ent));
+								ent.Kill()
+							}
+						}
+						else
+						{
+							Printer(Player("!"+name),TXTCLR.OG(ent.GetModel())+" can't be used as a physics object!")
+						}
+						break
+					case true:
+						DoDummyConversionProcess(ent)
+						break;
+					case null:
+						break;
 				}
 			}
 			else
@@ -23125,11 +23818,12 @@ if ( Director.GetGameMode() == "holdout" )
 	ent.Push(Vector(0,0,10))
 }
 ::_yeetit <- function(ent,p)
-{
+{	
 	_dropit(ent);
 	local fwvec = RotateOrientation(p.GetEyeAngles(),QAngle(AdminSystem.Vars._heldEntity[p.GetCharacterNameLower()].yeetPitch,0,0)).Forward();
 	fwvec = fwvec.Scale(AdminSystem.Vars._heldEntity[p.GetCharacterNameLower()].yeetSpeed/fwvec.Length());
-	ent.Push(fwvec);
+	ent.Push(fwvec)
+	//DoEntFire("!self","RunScriptCode","self.ApplyAbsVelocityImpulse(Vector("+fwvec.x+","+fwvec.y+","+fwvec.z+"))",0.03,null,ent.GetBaseEntity());
 }
 ::deltimer <- function(name)
 {
