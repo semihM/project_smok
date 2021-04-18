@@ -1113,7 +1113,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 // You can use ""all"" instead of a steam ID to create the binds inside for all admins
 ""STEAM_1:X:XXXXXX"":
 {
-	// Use a key name given above (FORWARD, MOUSE1, etc.)
+	// Use a key name given above (FORWARD, ATTACK, USE, etc.)
 	""KEY_NAME_HERE"":
 	{
 		// Add ""!"" before the command names to bind them
