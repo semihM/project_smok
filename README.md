@@ -2236,7 +2236,7 @@
    Console Syntax | scripted_user_func *start_driving,vehicle_type* 
    ------------- | -------------
     
-   Menu Sequence | _6->9->9->9->3->\[3,4,5,6\]_
+   Menu Sequence | _6->9->9->9->3->1->\[3,4,5,6\]_
    ------------- | -------------
   
 ```cpp
@@ -2261,7 +2261,7 @@
    Console Syntax | scripted_user_func *stop_driving* 
    ------------- | -------------
     
-   Menu Sequence | _6->9->9->9->3->2_
+   Menu Sequence | _6->9->9->9->3->1->2_
    ------------- | -------------
 
 ---
@@ -2274,9 +2274,9 @@
    Console Syntax | scripted_user_func *make_driveable* 
    ------------- | -------------
     
-   Menu Sequence | _6->9->9->9->3->7_
+   Menu Sequence | _6->9->9->9->3->1->7_
    ------------- | -------------
-     
+
 ---
 #### **change_seat_position**
 - Change your seat position while driving
@@ -2287,7 +2287,7 @@
    Console Syntax | scripted_user_func *change_seat_position,axis,units* 
    ------------- | -------------
     
-   Menu Sequence | _6->9->9->9->3->8->\[2,3,4,5,6,7\]_
+   Menu Sequence | _6->9->9->9->3->1->8->\[2,3,4,5,6,7\]_
    ------------- | -------------
   
 ```cpp
@@ -2307,7 +2307,7 @@
    Console Syntax | scripted_user_func *set_default_seat_position* 
    ------------- | -------------
     
-   Menu Sequence | _6->9->9->9->3->8->8_
+   Menu Sequence | _6->9->9->9->3->1->8->8_
    ------------- | -------------
    
 ---
@@ -2320,7 +2320,7 @@
    Console Syntax | scripted_user_func *change_drive_direction,direction* 
    ------------- | -------------
     
-   Menu Sequence | _6->9->9->9->3->8->1->\[1,2,3,4\]_
+   Menu Sequence | _6->9->9->9->3->1->8->1->\[1,2,3,4\]_
    ------------- | -------------
 
 ```cpp
@@ -2330,6 +2330,52 @@
        // Example: Make the "left face" of the vehicle "forward" direction
        change_drive_direction left
 ```    
+---
+#### **get_in**
+- Get into the aimed vehicle as a passenger if possible. 
+
+   Chat Syntax | (!,/,?)get_in
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *get_in* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->3->2->1_
+   ------------- | -------------
+ 
+---
+#### **get_out**
+- Get into the aimed vehicle as a passenger if possible. 
+
+   Chat Syntax | (!,/,?)get_out
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *get_out* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->3->2->2_
+   ------------- | -------------
+                   
+---
+#### **change_passenger_seat_position**
+- Change your seat position as a passenger
+
+   Chat Syntax | (!,/,?)change_passenger_seat_position *axis,units*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *change_passenger_seat_position,axis,units* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->3->2->\[3,4,5,6,7,8\]_
+   ------------- | -------------
+  
+```cpp
+       //Overloads:
+       change_passenger_seat_position {axis:(x,y,z)} {units:inches}
+       
+       // Example: Move your seat 20 inches right
+       change_passenger_seat_position y -20
+```  
 ---
 #### **reload_vehicles**
 - Reload vehicle table files from *admin system/vehicles/* directory
