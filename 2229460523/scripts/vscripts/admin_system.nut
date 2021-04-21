@@ -6781,7 +6781,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
         return
 
 	local entmdl = ShortenModelName(ent.GetModel())
-	if(!(entmdl in DriveableCarModels))
+	if(!(entmdl in DriveableCarModels) 
+		|| (!(("PS_HAS_DRIVER" in ent.GetScriptScope()) && ent.GetScriptScope()["PS_HAS_DRIVER"])
+			&& !(("PS_HAS_DRIVE_ABILITY" in ent.GetScriptScope()) && ent.GetScriptScope()["PS_HAS_DRIVE_ABILITY"])))
 		return
 
 	local p_org = DriveableCarModels[entmdl].driver_origin + Vector(0,-35,0)
@@ -10978,7 +10980,7 @@ function Notifications::OnMapEnd::_GetOutOfTheVehicle()
 }
 function Notifications::OnIncapacitatedStart::_GetOutOfTheVehicle(victim,attacker,args)
 {
-	::GetOutAsPassenger(player)
+	::GetOutAsPassenger(victim)
 	
 	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
 		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
