@@ -1678,12 +1678,73 @@
                     )
                 return cmd.Describe();
             }
+            make_driveable = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "make_driveable",
+                    [],
+                    "Make aimed object driveable if possible"
+                    )
+                return cmd.Describe();
+            }
+            stop_driving = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "stop_driving",
+                    [],
+                    "Stop driving your current car"
+                    )
+                return cmd.Describe();
+            }
+            start_driving = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "start_driving",
+                    [
+                        CMDParam("car_or_model","Car name:(sedan1,sedan2,sedan3,hatchback) or model path",true,"uses sedan1")
+                    ],
+                    "Start driving a car or a prop with given model"
+                    )
+                return cmd.Describe();
+            }
+            set_default_seat_position = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "set_default_seat_position",
+                    [],
+                    "Set default driver seat position of currently driven vehicle type to current position"
+                    )
+                return cmd.Describe();
+            }
+            change_drive_direction = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "change_drive_direction",
+                    [
+                        CMDParam("direction","Direction name:(straight,reversed,left,right)")
+                    ],
+                    "Set default driving direction of currently driven vehicle type"
+                    )
+                return cmd.Describe();
+            }
+            change_seat_position = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "change_seat_position",
+                    [
+                        CMDParam("axis","Axis name:(x,y,z)"),
+                        CMDParam("units","How many inches to move")
+                    ],
+                    "Change your current driving seat position relative to driving direction of the driven vehicle"
+                    )
+                return cmd.Describe();
+            }
             drive = function(player,args)
             {
                 local cmd = CMDDocs(
                     "drive",
                     [],
-                    "Start(or stop if driving) to drive aimed object"
+                    TXTCLR.OG("drive")+" command has been "+TXTCLR.OG("deprecated")+"! Use "+TXTCLR.BG("start_driving")+" and "+TXTCLR.BG("stop_driving")+" instead"
                     )
                 return cmd.Describe();
             }
@@ -2684,6 +2745,15 @@
                     "reload_binds",
                     [],
                     "Reload the admin system/binds bind tables"
+                    )
+                return cmd.Describe();
+            }
+            reload_vehicles = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "reload_vehicles",
+                    [],
+                    "Reload the admin system/vehicles vehicle tables"
                     )
                 return cmd.Describe();
             }
