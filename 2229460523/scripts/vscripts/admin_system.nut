@@ -6732,7 +6732,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			filename = strip(split(filename,"//")[0])
 		}
 
-		filename = "admin system/vehicles/"+filename+".txt"
+		filename = "admin system/vehicles/"+filename+".nut"
 		local fileContents = FileToString(filename)
 		if(fileContents == null)
 		{
@@ -6791,7 +6791,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		car = "props_vehicles/cara_95sedan"
 	
 	car = ShortenModelName(car)
-	
+
 	if(car in ::CarTypes)
 		car = ::CarTypes[car]
 
