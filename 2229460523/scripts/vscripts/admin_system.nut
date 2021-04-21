@@ -46,8 +46,12 @@ IncludeScript("Project_smok/SpellChecker");
 IncludeScript("Project_smok/PhysicsLimits");
 // Include the Quix timers
 IncludeScript("Project_smok/QuickTimers");
+// Include the vehicle scripts
+IncludeScript("Project_smok/Vehicles");
 
-printl(format("project_smok %s , Date: %s",::Constants.Version.Number,::Constants.Version.Date))
+printl("|-------------------------------------------|")
+printl(format("| project_smok %s , Date: %s",::Constants.Version.Number,::Constants.Version.Date))
+printl("|-------------------------------------------|")
 
 // Messages
 ::CmdMessages <- ::Messages.BIM.CMD;
@@ -1671,6 +1675,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	AdminSystem.LoadEntityGroups()
 	AdminSystem.LoadLootTables()
 	AdminSystem.LoadQuixBinds()
+	AdminSystem.LoadVehicles()
 	
 	AdminSystem.LoadDisabledCommands()
 	AdminSystem.LoadCommandRestrictions()
@@ -2693,6 +2698,13 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 	switch ( cleanBaseCmd )
 	{
+		case "reload_vehicles":
+		{
+			if(!AdminSystem.HasScriptAuth(player))
+				return;
+			AdminSystem.LoadVehicles(true);
+			break;
+		}
 		case "bind":
 		{
 			AdminSystem.BindWithQuixCmd(player,args);
@@ -3928,8 +3940,35 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			break;
 		}
 		case "drive":
+			AdminSystem.out(TXTCLR.OG("drive")+" command has been "+TXTCLR.OG("deprecated")+"! Use "+TXTCLR.BG("start_driving")+" and "+TXTCLR.BG("stop_driving")+" instead",player)
+		case "start_driving":
 		{
-			AdminSystem.DriveCmd(player,args);
+			AdminSystem.StartDriveCmd(player,args);
+			break;
+		}
+		case "stop_driving":
+		{
+			AdminSystem.StopDriveCmd(player,args);
+			break;
+		}
+		case "make_driveable":
+		{
+			AdminSystem.MakeDriveableCmd(player,args);
+			break;
+		}
+		case "change_drive_direction":
+		{
+			AdminSystem.ChangeDriveDirectionCmd(player,args);
+			break;
+		}
+		case "change_seat_position":
+		{
+			AdminSystem.ChangeSeatPositionCmd(player,args);
+			break;
+		}
+		case "set_default_seat_position":
+		{
+			AdminSystem.SetDefaultSeatPositionCmd(player,args);
 			break;
 		}
 		case "kind_bots":
@@ -4766,6 +4805,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			ent.SetEffects(effects);
 		}
 		ent.Input("RunScriptCode","_dropit(Entity("+ent.GetIndex()+"))",0);
+		return ent
 	}
 	else // non physics, try creating entity with its model
 	{
@@ -4788,6 +4828,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			if(keyvals.classname == "prop_ragdoll")
 				new_ent.SetNetProp("m_CollisionGroup",1)
 			RecreateHierarchy(ent,new_ent,{color=color,skin=skin,scale=scale,name=ent.GetName()});
+			return new_ent
 		}
 		else
 		{
@@ -4815,6 +4856,8 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			local converter = Utils.CreateEntityWithTable({classname="phys_convert",targetname=convertername,target="#"+oldind,spawnflags=3})
 			converter.Input("converttarget")
 			converter.Input("Kill")
+
+			return oldname
 		}
 	}
 }
@@ -4824,13 +4867,25 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
  */
 ::ShortenModelName <- function(mdl)
 {
-	mdl = mdl.slice(mdl.find("/")+1)
-	mdl = mdl.slice(0,mdl.len()-4)
+	local mdls = mdl.find("models/")
+	if(mdls != null)
+	{
+		mdl = mdl.slice(mdls+7)
+	}
+	mdls = mdl.find(".mdl")
+	if(mdls != null)
+	{
+		mdl = mdl.slice(0,mdl.len()-4)
+	}
 	return mdl
 }
 ::FixShortModelName <- function(mdl)
 {
-	return "models/" + mdl + ".mdl"
+	if(mdl.find("models/") != 0)
+		mdl = "models/" + mdl
+	if(mdl.find(".mdl") == null)
+		mdl = mdl + ".mdl"
+	return  mdl
 }
 
 ::CreateMassCheckerEnt <- function()
@@ -4902,6 +4957,16 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		}
 
 		local scope = mass_checker.GetScriptScope()
+		if(curr_ent == null)
+		{
+			if(callback_backupargs != null)
+			{
+				curr_ent = callback_backupargs.ent
+			}
+			else
+				return false
+		}
+
 		if(scope["IsFree"])
 		{
 			scope["IsFree"] <- false
@@ -6622,218 +6687,238 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	}
 }
 
-/*
- * @authors rhino
- */
-::AdminSystem.DriveCmd <- function(player,args)
+::AdminSystem.LoadVehicles <- function(reload=false)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
-	if(::VSLib.EasyLogic.NextMapContinues)
-		return;
-
-	if(player.GetParent() != null)
+	local filelist = FileToString(Constants.Directories.CustomVehicle);	// List of files
+	if(filelist == null)
 	{
-		player.Input("clearparent","",0);
-		player.Input("RunScriptCode","_dropit(Player(self.GetEntityIndex()))",0.1);
+		printl("[Custom-Vehicle] Creating "+Constants.Directories.CustomVehicle+" for the first time...")
+		StringToFile(Constants.Directories.CustomVehicle,strip(Constants.CustomVehicleListDefaults));
+		filelist = FileToString(Constants.Directories.CustomVehicle);
 	}
-	local name = player.GetCharacterNameLower();
-	if(AdminSystem._CarControl[name].listenerid != -1)
+
+	local example = FileToString(Constants.Directories.CustomVehicleExample);	// Example v150
+	if(example == null)
 	{
-		AdminSystem._StopKeyListenerCmd(player,args)
+		printl("[Vehicle-Examples] Creating v1.6.0 examples in "+Constants.Directories.CustomVehicleExample+" for the first time...")
+		StringToFile(Constants.Directories.CustomVehicleExample,strip(Constants.CustomVehicleDefaults.v1_6_0));
+		example = FileToString(Constants.Directories.CustomVehicleExample);
+	}
 
-		local currentmodel = player.GetModel();
-		Utils.ResetModels(name);
+	// Version based examples
+	// foreach(vers,count in ::Constants.CustomBindsExampleVersions)
+	// {	
+	// 	local cleanvers = Utils.StringReplace(vers,@"\.","_");
+	// 	local pth = Constants.Directories.CustomBindsExampleVersionBased(cleanvers)
+	// 	local ex = FileToString(pth);
+	// 	if(ex == null)
+	// 	{
+	// 		printl("[Binds-Examples] Creating "+count+" new examples from version "+vers+" in "+pth+" for the first time...")
+	// 		StringToFile(pth,Constants.CustomBindsTableDefaults[cleanvers]);
+	// 		ex = FileToString(pth);
+	// 	}
+	// }
 
-		local fw = player.GetForwardVector()
-		fw = fw.Scale(AdminSystem.Vars._heldEntity[name].grabDistMin/fw.Length())
-		local replica = Utils.CreateEntityWithTable(
+	local filelist = split(filelist, "\r\n");
+	
+	foreach (i,filename in filelist)
+	{	
+		filename = strip(filename)
+
+		if(filename.find("//") == 0)
+			continue;
+		else if(filename.find("//") != null)
+		{
+			filename = strip(split(filename,"//")[0])
+		}
+
+		filename = "admin system/vehicles/"+filename+".txt"
+		local fileContents = FileToString(filename)
+		if(fileContents == null)
+		{
+			continue;
+		}
+		fileContents = strip(fileContents);
+		local tbl = ::Constants.ValidateVehicleTable(fileContents,filename,i==0,reload);
+
+		if(typeof tbl == "table")
+		{
+			foreach(v_name,v_tbl in tbl)
 			{
-				classname="prop_physics_multiplayer",
-				origin=player.GetOrigin()+fw,
-				model=currentmodel,
-				angles=QAngle(0,0,0)
-			})
-		printl("New replica #"+replica.GetIndex())
-		player.Input("enableledgehang","")
-		player.SetNetProp("m_flMaxspeed",220);
-		player.SetNetProp("m_Local.m_iHideHUD", player.GetNetProp("m_Local.m_iHideHUD") & ~HIDEHUD_WEAPONSELECTION)
-		local targetID = AdminSystem.GetID( player );
-		if ( targetID in ::AdminSystem.Vars.IsGodEnabled && ::AdminSystem.Vars.IsGodEnabled[targetID] )
-		{
-			AdminSystem.Vars.IsGodEnabled[targetID] <- false;
-		}
-		return;
-	}
-
-	local lookedent = player.GetLookingEntity()
-
-	if(lookedent == null)
-		return;
-	else if(lookedent.GetParent() != null)
-		return; 
-	else if(Utils.CalculateDistance(player.GetOrigin(),player.GetLookingLocation())>100)
-		return;
-	
-	// TO-DO: Maybe try with parenting
-	player.SetModel(lookedent.GetModel())
-	player.Input("disableledgehand","")
-	player.SetNetProp("m_flMaxspeed",AdminSystem._CarControl[name].speed);
-	
-	local targetID = AdminSystem.GetID( player );
-	AdminSystem.Vars.IsGodEnabled[targetID] <- true;
-	foreach(s in Players.AliveSurvivors())
-	{
-		if(s.GetIndex() == lookedent.GetIndex())
-		{
-			AdminSystem._CreateKeyListenerCmd(player,args);
-			return
+				local shortmdl = ShortenModelName(v_tbl.MDL)
+				::CarTypes[v_name] <- shortmdl
+				::DriveableCarModels[shortmdl] <- v_tbl
+				::DriveParameters[shortmdl] <- v_tbl.parameters
+        		::DefaultDriveableCarCollisionParameters(::DriveableCarModels[shortmdl])
+			}
 		}
 	}
-	AdminSystem._CreateKeyListenerCmd(player,args);
-	lookedent.Kill();
 }
 
-/*
- * @authors rhino
- */
-::AdminSystem._Pusher <- function(args)
+::AdminSystem.StopDriveCmd <- function(player,args)
 {
-	local ent = args.ent;
-	local name = ent.GetCharacterNameLower();
-	local tbl = AdminSystem._CarControl[name]
-	local speed = tbl.speed;
-	local pushvec = tbl.forward.Scale(speed);
-	local mask = tbl.keymask;
-	local turnangle = tbl.turnpertick;
+	if(!::AdminSystem.IsPrivileged(player))
+		return
 
-	ent.SetNetProp("m_stunTimer.m_duration",0.2);
-	ent.SetNetProp("m_stunTimer.m_timestamp",Time()+0.2);
+	if(!("PS_VEHICLE_ENT" in player.GetScriptScope()) 
+		|| player.GetScriptScope()["PS_VEHICLE_ENT"] == null
+		|| !player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+		return
 
-	if(mask == 0)
-		return;
-	
-	if((mask == 16) || (mask == 28) || (mask == 31))
-		return;
-	
-	// FORWARD+BACKWARD OR NONE
-	if((mask % 2 == 1 && (mask>>1) % 2 == 1) || (mask % 2 == 0 && (mask>>1) % 2 == 0))
-	{
-		if((mask>>4) % 2 == 1)
-			ent.SetForwardVector(pushvec);
-		return;
-	}
+	::DriveMainFunctions.RemoveListeners(player)
 
-	// CANCEL LEFT+RIGHT
-	if((mask>>2) % 2 == 1 && (mask>>3) % 2 == 1)
-	{
-		if((mask>>4) % 2 == 1)
-			ent.SetForwardVector(pushvec);
+	::DriveMainFunctions.RestoreDriver(player)
 
-		if((mask>>1) % 2 == 1) // BACKWARD
-		{
-			ent.OverrideFriction(0.5,tbl.overridefriction)
-			pushvec = pushvec.Scale(tbl.reversescale);
-			ent.Push(pushvec);
-		}
-		else  // FORWARD
-		{
-			ent.OverrideFriction(1,tbl.overridefriction/2)
-			ent.Push(pushvec);
-		}
-	}
-	else
-	{
-		// LEFT
-		if((mask>>2) % 2 == 1)
-		{
-			ent.OverrideFriction(0.5,tbl.overridefriction)
-			if((mask>>1) % 2 == 1) // BACKWARD LEFT
-			{
-				pushvec = pushvec.Scale(-1);
-				pushvec = RotatePosition(Vector(0,0,0),QAngle(0,-turnangle,0),pushvec);
-				if((mask>>4) % 2 == 1)
-					ent.SetForwardVector(pushvec.Scale(-1/pushvec.Length()));
-				AdminSystem._CarControl[name].forward = pushvec.Scale(-1/pushvec.Length());
-			}
-			else
-			{
-				pushvec = RotatePosition(Vector(0,0,0),QAngle(0,turnangle,0),pushvec);
-				if((mask>>4) % 2 == 1)
-					ent.SetForwardVector(pushvec.Scale(1/pushvec.Length()));
-				AdminSystem._CarControl[name].forward = pushvec.Scale(1/pushvec.Length());
-			}
-			
-			ent.Push(pushvec);
-		}
-		// RIGHT
-		else if((mask>>3) % 2 == 1)
-		{	
-			ent.OverrideFriction(0.5,tbl.overridefriction)
-			if((mask>>1) % 2 == 1) // BACKWARD RIGHT
-			{
-				pushvec = pushvec.Scale(-1);
-				pushvec = RotatePosition(Vector(0,0,0),QAngle(0,turnangle,0),pushvec);
-				if((mask>>4) % 2 == 1)
-					ent.SetForwardVector(pushvec.Scale(-1/pushvec.Length()))
-				AdminSystem._CarControl[name].forward = pushvec.Scale(-1/pushvec.Length())
-			}
-			else
-			{
-				pushvec = RotatePosition(Vector(0,0,0),QAngle(0,-turnangle,0),pushvec);
-				if((mask>>4) % 2 == 1)
-					ent.SetForwardVector(pushvec.Scale(1/pushvec.Length()))
-				AdminSystem._CarControl[name].forward = pushvec.Scale(1/pushvec.Length())
-			}
-			
-			ent.Push(pushvec);
-		}
-		else if((mask>>1) % 2 == 1) // BACKWARD
-		{
-			ent.OverrideFriction(0.2,tbl.overridefriction)
-			pushvec = pushvec.Scale(tbl.reversescale);
-			ent.Push(pushvec);
-		}
-		else // FORWARD
-		{
-			if((mask>>4) % 2 == 1)
-				ent.SetForwardVector(pushvec);
-			ent.OverrideFriction(0.2,tbl.overridefriction/2)
-			ent.Push(RotatePosition(Vector(0,0,0),QAngle(-8,0,0),pushvec));
-		}
-		
-	}
-	
 }
 
-/*
- * @authors rhino
- */
-::AdminSystem._KeyMasker <- function(arg)
+::AdminSystem.StartDriveCmd <- function(player,args)
 {
-	local spl = split(arg,"__")
-	local ind = spl[0].tointeger();
-	local key = spl[1].tointeger();
+	if(!::AdminSystem.IsPrivileged(player))
+		return
 
-	local ent = VSLib.Player(ind.tointeger());
-	local name = ent.GetCharacterNameLower();
-	local currmask = AdminSystem._CarControl[name].keymask;
-
-	AdminSystem._CarControl[name].keymask = currmask ^ key;
-}
-::AdminSystem._CarControl <- ::AdminVars.RepeatTableForSurvivors(
+	if("PS_VEHICLE_VALID" in player.GetScriptScope() && player.GetScriptScope()["PS_VEHICLE_VALID"])
+		return
+	
+	if(::DriverStateCheck(player))
 	{
-		keymask = 0
-		forward = Vector(0,0,0)
-		speed = 450.0
-		reversescale = -0.07
-		speedscale = 5.5
-		overridefriction = 0.03
-		turnpertick = 3.5
-		listenerid = -1
+		Messages.ThrowPlayer(player,"You aren't in a condition to be driving right now!")
+		return
 	}
-);
+
+	local car = GetArgument(1)
+
+	if(!car)
+		car = "props_vehicles/cara_95sedan"
+	
+	car = ShortenModelName(car)
+	
+	if(car in ::CarTypes)
+		car = ::CarTypes[car]
+
+	local new_car = !(car in DriveableCarModels)
+	if(!(car in DriveParameters))
+	{
+		::DriveParameters[car] <- ::DefaultDrivingParameters()
+	}
+	if(new_car)
+	{
+		::DriveableCarModels[car] <-
+		{
+			MDL = FixShortModelName(car)
+			driver_origin = Vector(0,0,0)
+			getting_out_point = Vector(0,0,0)
+		}
+		::DefaultDriveableCarCollisionParameters(::DriveableCarModels[car])
+	}
+
+	local tbl = ::DriveMainFunctions.CreateVehicle(player,car)
+	if(tbl == null)
+	{
+		Messages.ThrowPlayer(player,CmdMessages.Prop.Failed(propsettingname+"("+car+")"));
+	}
+
+	local parentent = tbl.parentent
+	local createdent = tbl.createdent
+	local bbox = parentent.GetNetProp("m_Collision")
+
+	if(!("driver_origin" in ::DriveableCarModels[car]) || new_car)
+		::DriveableCarModels[car].driver_origin <- Vector(0,0,2.0-bbox.z)
+
+	if(!("getting_out_point" in ::DriveableCarModels[car]) || new_car)
+		::DriveableCarModels[car].getting_out_point <- bbox 
+	
+
+	::PreparePlayerForDriving(player,parentent,car)
+
+	Printer(player,CmdMessages.Prop.SuccessParented("vehicle entity",createdent));
+}
+
+::AdminSystem.ChangeDriveDirectionCmd <- function(player,args)
+{
+	if(!::AdminSystem.IsPrivileged(player))
+		return
+
+	if(!("PS_VEHICLE_ENT" in player.GetScriptScope()) 
+		|| player.GetScriptScope()["PS_VEHICLE_ENT"] == null
+		|| !player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+		return
+
+	local dirs =
+	{
+		straight = getconsttable()["DRIVE_DIRECTION_STRAIGHT"]
+		reversed = getconsttable()["DRIVE_DIRECTION_REVERSED"]
+		left = getconsttable()["DRIVE_DIRECTION_LEFT"]
+		right = getconsttable()["DRIVE_DIRECTION_RIGHT"]
+	}
+	local direction = GetArgument(1)
+	if(!(direction in dirs))
+	{
+		::Printer(player,"Available directions: straight, reversed, left, right")
+		return
+	}
+
+	::DriveParameters[player.GetScriptScope()["PS_VEHICLE_TYPE"]].driving_direction = dirs[direction]
+	::AdminSystem.out("Driving direction of "+TXTCLR.BG(player.GetScriptScope()["PS_VEHICLE_TYPE"])+" vehicles are now set to: "+TXTCLR.OG(direction))
+}
+
+::AdminSystem.ChangeSeatPositionCmd <- function(player,args)
+{
+	if(!::AdminSystem.IsPrivileged(player))
+		return
+
+	if(!("PS_VEHICLE_ENT" in player.GetScriptScope()) 
+		|| player.GetScriptScope()["PS_VEHICLE_ENT"] == null
+		|| !player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+		return
+
+	local axis = GetArgument(1)
+	if(!axis)
+		return
+	local units = GetArgument(2)
+	if(!units)
+		return
+	units = units.tofloat()
+	local dir = ::DriveParameters[player.GetScriptScope()["PS_VEHICLE_TYPE"]].driving_direction
+	switch(axis)
+	{
+		case "x":
+			player.GetScriptScope()["PS_VEHICLE_DRIVER_OFFSET"] = RotatePosition(Vector(0,0,0),dir,Vector(units,0,0)) + player.GetScriptScope()["PS_VEHICLE_DRIVER_OFFSET"]
+			break
+		case "y":
+			player.GetScriptScope()["PS_VEHICLE_DRIVER_OFFSET"] = RotatePosition(Vector(0,0,0),dir,Vector(0,units,0)) + player.GetScriptScope()["PS_VEHICLE_DRIVER_OFFSET"]
+			break
+		case "z":
+			player.GetScriptScope()["PS_VEHICLE_DRIVER_OFFSET"] = RotatePosition(Vector(0,0,0),dir,Vector(0,0,units)) + player.GetScriptScope()["PS_VEHICLE_DRIVER_OFFSET"]
+			break
+	}
+}
+
+::AdminSystem.SetDefaultSeatPositionCmd <- function(player,args)
+{
+	if(!::AdminSystem.IsPrivileged(player))
+		return
+
+	if(!("PS_VEHICLE_ENT" in player.GetScriptScope()) 
+		|| player.GetScriptScope()["PS_VEHICLE_ENT"] == null
+		|| !player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+		return
+
+	::DriveableCarModels[player.GetScriptScope()["PS_VEHICLE_TYPE"]].driver_origin = player.GetScriptScope()["PS_VEHICLE_DRIVER_OFFSET"]
+	::AdminSystem.out("Driver origin of "+TXTCLR.BG(player.GetScriptScope()["PS_VEHICLE_TYPE"])+" vehicles are now set to "+TXTCLR.OG(player.GetScriptScope()["PS_VEHICLE_DRIVER_OFFSET"].ToKVString()))
+}
+
+::AdminSystem.MakeDriveableCmd <- function(player,args)
+{
+	if(!::AdminSystem.IsPrivileged(player))
+		return
+
+	local vehicle = ::ValidateDrivableEntity(player.GetLookingEntity(GRAB_YEET_TRACE_MASK))
+	if(typeof vehicle == "string" || vehicle)
+	{
+		Timers.AddTimer(0.5,false,::MakeDriveableWrapper,{player=player,vehicle=vehicle})
+		return
+	}
+}
 
 /*
  * @authors rhino
@@ -6924,35 +7009,20 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	}
 }
 	
-::AdminSystem._StopKeyListenerCmd <- function(ent,args,forcar=true)
+::AdminSystem._StopKeyListenerCmd <- function(ent,args)
 {
 	if (!AdminSystem.IsPrivileged( ent ))
 		return;
 
 	local name = ent.GetCharacterNameLower()
-	if(forcar)
-	{
-		::Quix.Remove(Constants.TimerNames.CarPush+name);
+	
+	::Quix.Remove(Constants.TimerNames.RagdollControl+ent.GetIndex());
 
-		local id = AdminSystem._CarControl[name].listenerid;
+	local id = AdminSystem._RagdollControl[name].listenerid;
 
-		Ent(id).Kill();
-		AdminSystem._CarControl[name].forward = Vector(0,0,0)
-		AdminSystem._CarControl[name].keymask = 0
-		AdminSystem._CarControl[name].listenerid = -1
-
-		::VSLib.Timers.AddTimer(1, false, _SetCarControl,{ent=ent,grav=1,speedscale=1.0});
-	}
-	else
-	{
-		::Quix.Remove(Constants.TimerNames.RagdollControl+ent.GetIndex());
-
-		local id = AdminSystem._RagdollControl[name].listenerid;
-
-		Ent(id).Kill();
-		AdminSystem._RagdollControl[name].keymask = 0
-		AdminSystem._RagdollControl[name].listenerid = -1
-	}
+	Ent(id).Kill();
+	AdminSystem._RagdollControl[name].keymask = 0
+	AdminSystem._RagdollControl[name].listenerid = -1
 }
 
 ::_ConvertMaskToListenerMask <- function(player)
@@ -6973,7 +7043,8 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	
 	return currentmask
 }
-::AdminSystem._CreateKeyListenerCmd <- function(ent,args,forcar=true)
+
+::AdminSystem._CreateKeyListenerCmd <- function(ent,args)
 {
 	if(typeof ent == "string")
 	{
@@ -6982,20 +7053,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			return
 	}
 
-	if(typeof forcar != "bool")
-	{
-		switch(forcar.tostring().tolower())
-		{
-			case "true":
-			case "1":
-			case "yes":
-				forcar = true
-				break;
-			default:
-				forcar = false
-				break;
-		}
-	}
 	local forIndex = ent.GetIndex();
 
 	local keyvals = 
@@ -7017,62 +7074,28 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	local currentmask = _ConvertMaskToListenerMask(ent)
 
 	forward = forward.Scale(1/forward.Length())
-	if(forcar)
-	{
-		listener.Input("addoutput",__.FP+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_FORWARD)+"),0,-1",0,null)
-		listener.Input("addoutput",__.FU+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_FORWARD)+"),0,-1",0,null)
-		listener.Input("addoutput",__.BP+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_BACKWARD)+"),0,-1",0,null)
-		listener.Input("addoutput",__.BU+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_BACKWARD)+"),0,-1",0,null)
-		listener.Input("addoutput",__.LP+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_LEFT)+"),0,-1",0,null)
-		listener.Input("addoutput",__.LU+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_LEFT)+"),0,-1",0,null)
-		listener.Input("addoutput",__.RP+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_RIGHT)+"),0,-1",0,null)
-		listener.Input("addoutput",__.RU+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_RIGHT)+"),0,-1",0,null)
+	
+	//TO-DO: Use quix listeners instead of timers
+	listener.Input("addoutput",__.FP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_FORWARD)+"),0,-1",0,null)
+	listener.Input("addoutput",__.FU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_FORWARD)+"),0,-1",0,null)
+	listener.Input("addoutput",__.BP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_BACKWARD)+"),0,-1",0,null)
+	listener.Input("addoutput",__.BU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_BACKWARD)+"),0,-1",0,null)
+	listener.Input("addoutput",__.LP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_LEFT)+"),0,-1",0,null)
+	listener.Input("addoutput",__.LU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_LEFT)+"),0,-1",0,null)
+	listener.Input("addoutput",__.RP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_RIGHT)+"),0,-1",0,null)
+	listener.Input("addoutput",__.RU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_RIGHT)+"),0,-1",0,null)
 
-		listener.Input("addoutput",__.aP+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_ATTACK)+"),0,-1",0,null)
-		listener.Input("addoutput",__.aU+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_ATTACK)+"),0,-1",0,null)
-		listener.Input("addoutput",__.AP+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_ATTACK2)+"),0,-1",0,null)
-		listener.Input("addoutput",__.AU+" !self,RunScriptCode,AdminSystem._KeyMasker("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_ATTACK2)+"),0,-1",0,null)
+	listener.Input("addoutput",__.aP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_ATTACK)+"),0,-1",0,null)
+	listener.Input("addoutput",__.aU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_ATTACK)+"),0,-1",0,null)
+	listener.Input("addoutput",__.AP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_ATTACK2)+"),0,-1",0,null)
+	listener.Input("addoutput",__.AU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_ATTACK2)+"),0,-1",0,null)
 
-		listener.Input("activate","",0,ent.GetBaseEntity())
+	listener.Input("activate","",0,ent.GetBaseEntity())
 
-		AdminSystem._CarControl[name].forward = forward;
-		AdminSystem._CarControl[name].keymask = currentmask;
-		AdminSystem._CarControl[name].listenerid = listener.GetIndex();
-		
-		::VSLib.Timers.AddTimer(0.1, false, _SetCarControl,{ent=ent,grav=5,speedscale=AdminSystem._CarControl[name].speedscale,name=name});
-	}
-	else
-	{
-		listener.Input("addoutput",__.FP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_FORWARD)+"),0,-1",0,null)
-		listener.Input("addoutput",__.FU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_FORWARD)+"),0,-1",0,null)
-		listener.Input("addoutput",__.BP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_BACKWARD)+"),0,-1",0,null)
-		listener.Input("addoutput",__.BU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_BACKWARD)+"),0,-1",0,null)
-		listener.Input("addoutput",__.LP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_LEFT)+"),0,-1",0,null)
-		listener.Input("addoutput",__.LU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_LEFT)+"),0,-1",0,null)
-		listener.Input("addoutput",__.RP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_RIGHT)+"),0,-1",0,null)
-		listener.Input("addoutput",__.RU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_RIGHT)+"),0,-1",0,null)
+	AdminSystem._RagdollControl[name].listenerid = listener.GetIndex();
+	AdminSystem._RagdollControl[name].keymask = currentmask;
 
-		listener.Input("addoutput",__.aP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_ATTACK)+"),0,-1",0,null)
-		listener.Input("addoutput",__.aU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_ATTACK)+"),0,-1",0,null)
-		listener.Input("addoutput",__.AP+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_ATTACK2)+"),0,-1",0,null)
-		listener.Input("addoutput",__.AU+" !self,RunScriptCode,AdminSystem._KeyMaskerRagdoll("+::AdminSystem._GetEnumString(forIndex+"__"+LISTENER_ATTACK2)+"),0,-1",0,null)
-
-		listener.Input("activate","",0,ent.GetBaseEntity())
-
-		AdminSystem._RagdollControl[name].listenerid = listener.GetIndex();
-		AdminSystem._RagdollControl[name].keymask = currentmask;
-
-		::Quix.AddUnlimited(Constants.TimerNames.RagdollControl+forIndex,@(i,c) Ent(forIndex).GetButtonMask()!=0,@(i,s,c) AdminSystem._RagdollPusher(c),null,{ent=ent})
-	}
-}
-
-::_SetCarControl <- function(args)
-{
-	local ind = args.ent.GetIndex()
-	args.ent.SetGravity(args.grav);
-	args.ent.SetNetProp("m_flLaggedMovementValue",args.speedscale)
-	if("name" in args)
-		::Quix.AddUnlimited(Constants.TimerNames.CarPush+args.name,@(i,c) Ent(ind).GetButtonMask()!=0,@(i,s,c) AdminSystem._Pusher(c),null,{ent=args.ent})
+	::Quix.AddUnlimited(Constants.TimerNames.RagdollControl+forIndex,@(i,c) Ent(forIndex).GetButtonMask()!=0,@(i,s,c) AdminSystem._RagdollPusher(c),null,{ent=ent})
 }
 
 ::AdminSystem._GetHexString <- function(str)
@@ -10784,6 +10807,187 @@ function Notifications::OnChargerChargeEnd::_RecoverRagdolls(charger,args)
 	RecoverRagdollInitial(rag);
 }
 
+// Vehicles
+/*
+ * @authors rhino
+ */
+::DriverStateCheck <- function(player)
+{
+	return player.IsIncapacitated()
+			|| !player.IsAlive() 
+			|| player.IsDead() 
+			|| player.IsDying() 
+			|| player.IsHangingFromLedge() 
+			|| player.IsHealing() 
+			//|| player.IsBeingHealed()
+			|| player.IsHangingFromTongue() 
+			|| player.IsBeingJockeyed() 
+			|| player.IsPounceVictim()
+			|| player.IsTongueVictim() 
+			|| player.IsCarryVictim() 
+			|| player.IsPummelVictim() 
+			|| (player.GetIndex() in ::VSLib.EasyLogic.Cache 
+				&& "_curAttker" in ::VSLib.EasyLogic.Cache[player.GetIndex()] 
+				&& ::VSLib.EasyLogic.Cache[player.GetIndex()]._curAttker != null)
+}
+
+function Notifications::OnBotReplacedPlayer::_GetOutOfTheVehicle(player,bot,args)
+{
+	if(!("PS_VEHICLE_ENT" in player.GetScriptScope()) 
+		|| player.GetScriptScope()["PS_VEHICLE_ENT"] == null
+		|| !player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+		return
+
+	::DriveMainFunctions.RemoveListeners(player)
+
+	::DriveMainFunctions.RestoreDriver(player)
+}
+
+function Notifications::OnPlayerConnected::_GetOutOfTheVehicle(player,args)
+{
+	if(!("PS_VEHICLE_ENT" in player.GetScriptScope()) 
+		|| player.GetScriptScope()["PS_VEHICLE_ENT"] == null
+		|| !player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+		return
+
+	::DriveMainFunctions.RemoveListeners(player)
+
+	::DriveMainFunctions.RestoreDriver(player)
+}
+
+function Notifications::OnMapEnd::_GetOutOfTheVehicle()
+{
+	foreach(obj in Players.AliveSurvivors())
+	{
+		if(!("PS_VEHICLE_ENT" in player.GetScriptScope()) 
+			|| player.GetScriptScope()["PS_VEHICLE_ENT"] == null
+			|| !player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+			return
+
+		::DriveMainFunctions.RemoveListeners(player)
+
+		::DriveMainFunctions.RestoreDriver(player)
+	}
+}
+function Notifications::OnIncapacitatedStart::_GetOutOfTheVehicle(victim,attacker,args)
+{
+	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
+		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
+		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+		return
+
+	::DriveMainFunctions.RemoveListeners(victim)
+
+	::DriveMainFunctions.RestoreDriver(victim)
+}
+function Notifications::OnDeath::_GetOutOfTheVehicle(victim,attacker,args)
+{
+	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
+		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
+		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+		return
+
+	::DriveMainFunctions.RemoveListeners(victim)
+
+	::DriveMainFunctions.RestoreDriver(victim)
+}
+//smoker
+function Notifications::OnSmokerTongueGrab::_GetOutOfTheVehicle(smoker,victim,args)
+{
+	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
+		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
+		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+		return
+
+	::DriveMainFunctions.RemoveListeners(victim)
+
+	::DriveMainFunctions.RestoreDriver(victim)
+}
+function Notifications::OnSmokerChokeBegin::_GetOutOfTheVehicle(smoker,victim,args)
+{
+	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
+		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
+		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+		return
+
+	::DriveMainFunctions.RemoveListeners(victim)
+
+	::DriveMainFunctions.RestoreDriver(victim)
+}
+//hunter
+function Notifications::OnHunterPouncedVictim::_GetOutOfTheVehicle(hunter,victim,args)
+{
+	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
+		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
+		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+		return
+
+	::DriveMainFunctions.RemoveListeners(victim)
+
+	::DriveMainFunctions.RestoreDriver(victim)
+}
+//jockey
+function Notifications::OnJockeyRideStart::_GetOutOfTheVehicle(jockey,victim,args)
+{
+	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
+		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
+		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+		return
+
+	::DriveMainFunctions.RemoveListeners(victim)
+
+	::DriveMainFunctions.RestoreDriver(victim)
+}
+//charger
+function Notifications::OnChargerCarryVictim::_GetOutOfTheVehicle(charger,victim,args)
+{
+	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
+		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
+		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+		return
+
+	::DriveMainFunctions.RemoveListeners(victim)
+
+	::DriveMainFunctions.RestoreDriver(victim)
+}
+function Notifications::OnChargerImpact::_GetOutOfTheVehicle(charger,victim,args)
+{
+	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
+		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
+		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+		return
+
+	::DriveMainFunctions.RemoveListeners(victim)
+
+	::DriveMainFunctions.RestoreDriver(victim)
+}
+function Notifications::OnChargerPummelBegin::_GetOutOfTheVehicle(charger,victim,args)
+{
+	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
+		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
+		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+		return
+
+	::DriveMainFunctions.RemoveListeners(victim)
+
+	::DriveMainFunctions.RestoreDriver(victim)
+}
+function Notifications::OnChargerChargeEnd::_GetOutOfTheVehicle(charger,args)
+{
+	local victim = ::VSLib.EasyLogic.GetEventPlayer(args, "victim");
+	if(victim == null)
+		return;
+		
+	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
+		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
+		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+		return
+
+	::DriveMainFunctions.RemoveListeners(victim)
+
+	::DriveMainFunctions.RestoreDriver(victim)
+}
+
 // Model restoration
 /*
  * @authors rhino
@@ -11240,6 +11444,16 @@ function ChatTriggers::hex_string( player, args, text )
 					? Messages.DocCmdPlayer(player,CmdDocs.hex_string(player,args))
 					: null
 
+function ChatTriggers::reload_vehicles( player, args, text )
+{
+	if(!AdminSystem.HasScriptAuth(player))
+		return;
+	AdminSystem.LoadVehicles(true);
+}
+::ChatTriggerDocs.reload_vehicles <- @(player,args) AdminSystem.IsPrivileged(player) && "reload_vehicles" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.reload_vehicles(player,args))
+					: null
+
 function ChatTriggers::create_alias( player, args, text )
 {
 	if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
@@ -11631,10 +11845,59 @@ function ChatTriggers::search_model( player, args, text )
 					
 function ChatTriggers::drive( player, args, text )
 {
-	AdminSystem.DriveCmd( player, args );
+	AdminSystem.out(TXTCLR.OG("drive")+" command has been "+TXTCLR.OG("deprecated")+"! Use "+TXTCLR.BG("start_driving")+" and "+TXTCLR.BG("stop_driving")+" instead",player)
+	AdminSystem.StartDriveCmd(player,args);
 }
 ::ChatTriggerDocs.drive <- @(player,args) AdminSystem.IsPrivileged(player) && "drive" in CmdDocs
 					? Messages.DocCmdPlayer(player,CmdDocs.drive(player,args))
+					: null
+
+function ChatTriggers::start_driving( player, args, text )
+{
+	AdminSystem.StartDriveCmd( player, args );
+}
+::ChatTriggerDocs.start_driving <- @(player,args) AdminSystem.IsPrivileged(player) && "start_driving" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.start_driving(player,args))
+					: null
+
+function ChatTriggers::stop_driving( player, args, text )
+{
+	AdminSystem.StopDriveCmd( player, args );
+}
+::ChatTriggerDocs.stop_driving <- @(player,args) AdminSystem.IsPrivileged(player) && "stop_driving" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.stop_driving(player,args))
+					: null
+
+function ChatTriggers::make_driveable( player, args, text )
+{
+	AdminSystem.MakeDriveableCmd( player, args );
+}
+::ChatTriggerDocs.make_driveable <- @(player,args) AdminSystem.IsPrivileged(player) && "make_driveable" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.make_driveable(player,args))
+					: null
+
+function ChatTriggers::change_drive_direction( player, args, text )
+{
+	AdminSystem.ChangeDriveDirectionCmd( player, args );
+}
+::ChatTriggerDocs.change_drive_direction <- @(player,args) AdminSystem.IsPrivileged(player) && "change_drive_direction" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.change_drive_direction(player,args))
+					: null
+
+function ChatTriggers::change_seat_position( player, args, text )
+{
+	AdminSystem.ChangeSeatPositionCmd( player, args );
+}
+::ChatTriggerDocs.change_seat_position <- @(player,args) AdminSystem.IsPrivileged(player) && "change_seat_position" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.change_seat_position(player,args))
+					: null
+
+function ChatTriggers::set_default_seat_position( player, args, text )
+{
+	AdminSystem.SetDefaultSeatPositionCmd( player, args );
+}
+::ChatTriggerDocs.set_default_seat_position <- @(player,args) AdminSystem.IsPrivileged(player) && "set_default_seat_position" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.set_default_seat_position(player,args))
 					: null
 
 function ChatTriggers::kind_bots( player, args, text )
@@ -13270,6 +13533,11 @@ if ( Director.GetGameMode() == "holdout" )
 				if(rag != null && rag.IsEntityValid())
 					continue;
 
+				if(("PS_VEHICLE_ENT" in survivor.GetScriptScope()) 
+					&& survivor.GetScriptScope()["PS_VEHICLE_ENT"] != null
+					&& survivor.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+					continue
+
 				if ( survivorID in ::AdminSystem.Vars.IsGodEnabled && ::AdminSystem.Vars.IsGodEnabled[survivorID] )
 				{
 					AdminSystem.Vars.IsGodEnabled[survivorID] <- false;
@@ -13323,6 +13591,11 @@ if ( Director.GetGameMode() == "holdout" )
 			if(rag != null && rag.IsEntityValid())
 				return;
 
+			if(("PS_VEHICLE_ENT" in Target.GetScriptScope()) 
+				&& Target.GetScriptScope()["PS_VEHICLE_ENT"] != null
+				&& Target.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+				return
+
 			local targetID = AdminSystem.GetID( Target );
 			if ( targetID in ::AdminSystem.Vars.IsGodEnabled && ::AdminSystem.Vars.IsGodEnabled[targetID] )
 			{
@@ -13343,6 +13616,11 @@ if ( Director.GetGameMode() == "holdout" )
 		local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+player.GetIndex())
 		if(rag != null && rag.IsEntityValid())
 			return;
+
+		if(("PS_VEHICLE_ENT" in player.GetScriptScope()) 
+			&& player.GetScriptScope()["PS_VEHICLE_ENT"] != null
+			&& player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+			return
 
 		if ( ID in ::AdminSystem.Vars.IsGodEnabled && ::AdminSystem.Vars.IsGodEnabled[ID] )
 		{
@@ -13492,6 +13770,11 @@ if ( Director.GetGameMode() == "holdout" )
 				if(rag != null && rag.IsEntityValid())
 					continue;
 
+				if(("PS_VEHICLE_ENT" in survivor.GetScriptScope()) 
+					&& survivor.GetScriptScope()["PS_VEHICLE_ENT"] != null
+					&& survivor.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+					continue
+
 				local survivorID = AdminSystem.GetID( survivor );
 				if ( survivorID in ::AdminSystem.Vars.IsFreezeEnabled && ::AdminSystem.Vars.IsFreezeEnabled[survivorID] )
 				{
@@ -13518,6 +13801,11 @@ if ( Director.GetGameMode() == "holdout" )
 			if(rag != null && rag.IsEntityValid())
 				return;
 
+			if(("PS_VEHICLE_ENT" in Target.GetScriptScope()) 
+				&& Target.GetScriptScope()["PS_VEHICLE_ENT"] != null
+				&& Target.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+				return
+
 			local targetID = AdminSystem.GetID( Target );
 			if ( targetID in ::AdminSystem.Vars.IsFreezeEnabled && ::AdminSystem.Vars.IsFreezeEnabled[targetID] )
 			{
@@ -13540,6 +13828,11 @@ if ( Director.GetGameMode() == "holdout" )
 		local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+player.GetIndex())
 		if(rag != null && rag.IsEntityValid())
 			return;
+
+		if(("PS_VEHICLE_ENT" in player.GetScriptScope()) 
+			&& player.GetScriptScope()["PS_VEHICLE_ENT"] != null
+			&& player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+			return
 
 		if ( ID in ::AdminSystem.Vars.IsFreezeEnabled && ::AdminSystem.Vars.IsFreezeEnabled[ID] )
 		{
@@ -13579,6 +13872,11 @@ if ( Director.GetGameMode() == "holdout" )
 				if(rag != null && rag.IsEntityValid())
 					continue;
 
+				if(("PS_VEHICLE_ENT" in survivor.GetScriptScope()) 
+					&& survivor.GetScriptScope()["PS_VEHICLE_ENT"] != null
+					&& survivor.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+					continue
+
 				if ( survivorID in ::AdminSystem.Vars.IsNoclipEnabled && ::AdminSystem.Vars.IsNoclipEnabled[survivorID] )
 				{
 					survivor.SetNetProp("movetype", 2);
@@ -13604,6 +13902,11 @@ if ( Director.GetGameMode() == "holdout" )
 			if(rag != null && rag.IsEntityValid())
 				return;
 
+			if(("PS_VEHICLE_ENT" in Target.GetScriptScope()) 
+				&& Target.GetScriptScope()["PS_VEHICLE_ENT"] != null
+				&& Target.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+				return
+				
 			local targetID = AdminSystem.GetID( Target );
 			if ( targetID in ::AdminSystem.Vars.IsNoclipEnabled && ::AdminSystem.Vars.IsNoclipEnabled[targetID] )
 			{
@@ -13627,6 +13930,11 @@ if ( Director.GetGameMode() == "holdout" )
 		if(rag != null && rag.IsEntityValid())
 			return;
 
+		if(("PS_VEHICLE_ENT" in player.GetScriptScope()) 
+			&& player.GetScriptScope()["PS_VEHICLE_ENT"] != null
+			&& player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+			return
+			
 		if ( ID in ::AdminSystem.Vars.IsNoclipEnabled && ::AdminSystem.Vars.IsNoclipEnabled[ID] )
 		{
 			player.SetNetProp("movetype", 2);
@@ -17727,6 +18035,11 @@ if ( Director.GetGameMode() == "holdout" )
 			createdent = Utils.SpawnPhysicsProp( Utils.CleanColoredString(MDL), origin, angles );
 			if(createdent == null)
 				singlefailed = true;
+			else
+			{
+				local bbox = createdent.GetNetProp("m_Collision")
+				createdent.SetOrigin(createdent.GetOrigin()+Vector(0,0,0.1-bbox.z))
+			}
 		}
 	}
 	else if ( typename == "physicsM" )
@@ -17763,6 +18076,11 @@ if ( Director.GetGameMode() == "holdout" )
 			createdent = Utils.SpawnPhysicsMProp( Utils.CleanColoredString(MDL), origin, angles, {massScale = massScale} );
 			if(createdent == null)
 				singlefailed = true;
+			else
+			{
+				local bbox = createdent.GetNetProp("m_Collision")
+				createdent.SetOrigin(createdent.GetOrigin()+Vector(0,0,0.1-bbox.z))
+			}
 		}
 	}
 	else if ( typename == "ragdoll" )
@@ -17807,6 +18125,12 @@ if ( Director.GetGameMode() == "holdout" )
 			createdent = Utils.SpawnRagdoll( "models/infected/hulk_dlc3.mdl", origin, angles );
 		else
 			createdent = Utils.SpawnRagdoll( MDL, origin, angles );
+		
+		if(createdent != null)
+		{
+			local bbox = createdent.GetNetProp("m_Collision")
+			createdent.SetOrigin(createdent.GetOrigin()+Vector(0,0,0.1-bbox.z))
+		}
 	}
 	else
 	{	
@@ -17823,6 +18147,11 @@ if ( Director.GetGameMode() == "holdout" )
 		else
 		{
 			createdent = Utils.SpawnDynamicProp( Utils.CleanColoredString(MDL), origin, angles );
+			if(createdent != null)
+			{
+				local bbox = createdent.GetNetProp("m_Collision")
+				createdent.SetOrigin(createdent.GetOrigin()+Vector(0,0,0.1-bbox.z))
+			}
 		}
 	}
 
@@ -17895,6 +18224,8 @@ if ( Director.GetGameMode() == "holdout" )
 					Messages.ThrowPlayer(player,CmdMessages.Prop.Failed(typename));
 					return;
 				}
+				local bbox = ent.GetNetProp("m_Collision")
+				ent.SetOrigin(ent.GetOrigin()+Vector(0,0,0.1-bbox.z))
 			}
 			return
 		}
@@ -18056,6 +18387,9 @@ if ( Director.GetGameMode() == "holdout" )
 					Printer(Player(PropFailureFixCheck[name].pid),CmdMessages.Prop.SuccessParented("physicsM",createdent));
 					obj.SetNetProp("m_CollisionGroup",0)
 					obj.Input("RunScriptCode","_dropit(Entity("+obj.GetIndex()+"))",0);
+					
+					local bbox = obj.GetNetProp("m_Collision")
+					obj.SetOrigin(obj.GetOrigin()+Vector(0,0,0.1-bbox.z))
 
 					delete PropFailureFixCheck[name]
 					Entity(self.GetEntityIndex()).Input("Kill");	
@@ -18699,8 +19033,12 @@ if ( Director.GetGameMode() == "holdout" )
 	local Value3 = GetArgument(5);
 	local Entity = player.GetLookingEntity(TRACE_MASK_VISIBLE_AND_NPCS|TRACE_MASK_SHOT);
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
+	
+	if(!Action)
+		return
 
-	if(Action.tolower() == "addoutput")
+	local act = strip(Action.tolower())
+	if(act == "addoutput" || act == "runscriptcode" || act == "runscriptfile")
 	{
 		if(!AdminSystem.HasScriptAuth(player))
 			return;
@@ -18731,6 +19069,11 @@ if ( Director.GetGameMode() == "holdout" )
 			else if(Entity.GetClassname() == "prop_ragdoll" && Entity.GetName().find(Constants.Targetnames.Ragdoll) != null)
 			{
 				printl(player.GetCharacterNameLower()+"->Ignore attempt to kill player ragdoll:"+Entity.GetName());
+				return;
+			}
+			else if("PS_HAS_DRIVER" in Entity.GetScriptScope() && Entity.GetScriptScope()["PS_HAS_DRIVER"])
+			{
+				printl(player.GetCharacterNameLower()+"->Ignore attempt to kill player vehicle:"+Entity.GetName());
 				return;
 			}
 			else
@@ -23304,6 +23647,14 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		// 
 	}
+	
+	if(("PS_VEHICLE_ENT" in player.GetScriptScope()) 
+		&& player.GetScriptScope()["PS_VEHICLE_ENT"] != null
+		&& player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+	{
+		Printer(player,"You can't grab things while you are driving!")
+		return
+	}
 
 	ent = player.GetLookingEntity(GRAB_YEET_TRACE_MASK);
 	local lookedpoint = player.GetLookingLocation(GRAB_YEET_TRACE_MASK);
@@ -23313,7 +23664,7 @@ if ( Director.GetGameMode() == "holdout" )
 	local entmodel = null;
 	local taken = null;
 	local closestgrabbed = false;
-	
+	local player_has_parent = player.GetParent() != null
 	if(ent == null)
 	{
 		objtable = VSLib.EasyLogic.Objects.AroundRadius(lookedpoint,AdminSystem.Vars._grabRadiusTolerance);	// Get entities within radius
@@ -23642,7 +23993,7 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			if(keyvals.classname.find("physics") != null)
 			{	
-				switch(::CheckPhysicsAvailabilityForModel(keyvals.model,ent,DoDummyConversionProcess))
+				switch(::CheckPhysicsAvailabilityForModel(keyvals.model,null,DoDummyConversionProcess,{ent=ent,func=func,extra_arg=extra_arg}))
 				{
 					case false:
 						if(AdminSystem.Vars._grabbackupprop.enabled)
@@ -23680,7 +24031,7 @@ if ( Director.GetGameMode() == "holdout" )
 						}
 						break
 					case true:
-						DoDummyConversionProcess(ent)
+						DoDummyConversionProcess({ent=ent,func=func,extra_arg=extra_arg})
 						break;
 					case null:
 						break;
@@ -23699,8 +24050,11 @@ if ( Director.GetGameMode() == "holdout" )
 	AdminSystem.Vars._heldEntity[name].entid = "";
 }
 
-::DoDummyConversionProcess <- function(ent)
+::DoDummyConversionProcess <- function(args)
 {
+	local ent = args.ent
+	local func = args.func
+	local extra_arg = args.extra_arg
 	local skin = ent.GetNetProp("m_nSkin");
 	local color = ent.GetNetProp("m_clrRender");
 	local scale = ent.GetModelScale();
@@ -23709,8 +24063,9 @@ if ( Director.GetGameMode() == "holdout" )
 
 	local oldind = ent.GetIndex()
 
-	ent.SetName(ent.GetName()+UniqueString())
 	local oldname = ent.GetName()
+	ent.SetName(ent.GetName()+UniqueString())
+	local searchname = ent.GetName()
 
 	local org = ent.GetOrigin()
 
@@ -23723,7 +24078,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	AddThinkToEnt(dummyent.GetBaseEntity(),"PostConvertChecker")
 
-	ConvertCheckTable[dummyent.GetName()] <- {searchname=oldname,dummytime=Time(),func=func,extra_arg=extra_arg,angles=ent.GetAngles()}
+	ConvertCheckTable[dummyent.GetName()] <- {oldname=oldname,searchname=searchname,dummytime=Time(),func=func,extra_arg=extra_arg,angles=ent.GetAngles()}
 
 	local convertername = ::Constants.Targetnames.PhysConverter+cuniq
 	local converter = Utils.CreateEntityWithTable({classname="phys_convert",targetname=convertername,target="#"+oldind,spawnflags=3})
@@ -23792,6 +24147,7 @@ if ( Director.GetGameMode() == "holdout" )
 			obj.SetNetProp("m_clrRender",color);
 			obj.SetNetProp("m_nSkin",skin);
 			obj.SetModelScale(scale);
+			obj.SetName(ConvertCheckTable[name].oldname)
 			obj.Input("RunScriptCode",ConvertCheckTable[name].func+"(Entity("+obj.GetIndex()+")"+ConvertCheckTable[name].extra_arg+")",0);
 			obj.Input("RunScriptCode","self.SetAngles(ConvertCheckTable[\""+name+"\"].angles)",0.1);
 			return;
@@ -23831,41 +24187,35 @@ if ( Director.GetGameMode() == "holdout" )
 	delete ::VSLib.Timers.TimersID[name];
 }
 
-// TO-DO: Dynamic->Physics objects' children entities' local origins get offset a bit
 ::RecreateHierarchy <- function(oldparent,newparent,other,killold=true)
 {
-	//newparent.SetMoveType(MOVETYPE_NONE);
-	//oldparent.SetMoveType(MOVETYPE_NONE);
 	// Create a copy of the old hierarchy
 	local firstchild = oldparent.FirstMoveChild();
 	while(firstchild != null)
 	{
-		local next = firstchild.NextMovePeer();
-
 		// Parent the new child
 		local locorg = firstchild.GetLocalOrigin();
 		local locang = firstchild.GetLocalAngles();
-		//::AdminSystem.out(locorg);
+
 		firstchild.Input("clearparent","",0);
-		firstchild.Input("setparent","#"+newparent.GetIndex(),0);
-		firstchild.SetLocalOrigin(locorg);
-		firstchild.SetLocalAngles(locang);
+		firstchild.Input("setparent","#"+newparent.GetIndex(),0.03);
+		firstchild.Input("runscriptcode","self.SetLocalOrigin(Vector("+locorg.x+","+locorg.y+","+locorg.z+"))",0.1);
+		firstchild.Input("runscriptcode","self.SetLocalAngles(QAngle("+locang.x+","+locang.y+","+locang.z+"))",0.1);
 		
-		//::AdminSystem.out(firstchild.GetLocalOrigin());
 		// Move the next child in the same level
-		firstchild = next;
+		firstchild = firstchild.NextMovePeer();
 	}
 
 	// Remove old hierarchy
 	if(killold)
 		oldparent.KillDelayed(0.1);
 
-	//newparent.SetMoveType(MOVETYPE_VPHYSICS);
 	newparent.SetName(other.name);
 	newparent.SetNetProp("m_clrRender",other.color);
 	newparent.SetNetProp("m_nSkin",other.skin);
 	newparent.SetModelScale(other.scale);
 }
+
 
 /*
  * @authors rhino

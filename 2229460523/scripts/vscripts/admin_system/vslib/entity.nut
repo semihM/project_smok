@@ -2113,6 +2113,10 @@ function VSLib::Entity::SetEyeAngles(pitch=0,yaw=0,roll=0)
 		return;
 	}
 	
+	if(typeof pitch == "QAngle")
+	{
+		return _ent.SnapEyeAngles(pitch);
+	}
 	return _ent.SnapEyeAngles(QAngle(pitch,yaw,roll));
 }
 

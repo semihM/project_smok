@@ -38797,7 +38797,7 @@
 			"3"
 			{
 				"command"		 "play buttons/button14;show_menu drivemenu1"
-				"label"			" Enable drive mechanics (Experimental)"
+				"label"			" Drive vehicles or props"
 			}
 			"4"
 			{
@@ -39808,27 +39808,136 @@
 			"1"
 			{
 				"command"		 "play buttons/button10;show_menu drivemenu1"
-				"label"			 " Hold left-click to keep aim forward, don't jump with movement keys!"
+				"label"			 " WASD: Movement; Mouse2: Aim forward; Space: Bounce; Shift: Nitrous"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func drive;show_menu drivemenu1"
-				"label"			 " Start/Stop driving as targeted car/object"
+				"command"		 "play buttons/button14;scripted_user_func stop_driving;show_menu drivemenu1"
+				"label"			 " Stop driving"
 			}
 			"3"
 			{
-				"command"	 "play buttons/button14;c_thirdpersonshoulder 0;firstperson;show_menu drivemenu1"
-				"label"		 " First-person"
+				"command"		 "play buttons/button14;scripted_user_func start_driving,sedan1;show_menu drivemenu1"
+				"label"			 " Start driving 95 sedan"
 			}
 			"4"
 			{
-				"command"	 "play buttons/button14;c_thirdpersonshoulder 1;c_thirdpersonshoulderaimdist 360;c_thirdpersonshoulderdist 90;c_thirdpersonshoulderheight 15;c_thirdpersonshoulderoffset 0;thirdpersonshoulder;thirdpersonshoulder;show_menu drivemenu1"
-				"label"		 " Third-person Center"
+				"command"		 "play buttons/button14;scripted_user_func start_driving,sedan2;show_menu drivemenu1"
+				"label"			 " Start driving 84 sedan"
 			}
-
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func start_driving,sedan3;show_menu drivemenu1"
+				"label"			 " Start driving 69 sedan"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func start_driving,hatchback;show_menu drivemenu1"
+				"label"			 " Start driving 82 hatchback"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func make_driveable;show_menu drivemenu1"
+				"label"			 " Make aimed object driveable"
+			}
 			"8"
 			{
+					"command"    "play buttons/button14;show_menu drivemenu_settings1"
+					"label"      " Driving Settings"
+			}
+			"9"
+			{
 					"command"    "play buttons/button14;show_menu smok_menu4"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	"drivemenu_settings1"
+	{
+			"Title"		"Driving settings menu"
+			
+			"1"
+			{
+				"command"		 "play buttons/button14;show_menu drivemenu_settings2"
+				"label"			 " Change driving direction"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_seat_position,z,5;show_menu drivemenu_settings1"
+				"label"			 " Increase seat height (+5)"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_seat_position,z,-5;show_menu drivemenu_settings1"
+				"label"			 " Decrease seat height (-5)"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_seat_position,y,5;show_menu drivemenu_settings1"
+				"label"			 " Move seat to left (+5)"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_seat_position,y,-5;show_menu drivemenu_settings1"
+				"label"			 " Move seat to right (-5)"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_seat_position,x,5;show_menu drivemenu_settings1"
+				"label"			 " Move seat forward (+5)"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_seat_position,x,-5;show_menu drivemenu_settings1"
+				"label"			 " Move seat back (-5)"
+			}
+			"8"
+			{
+				"command"		 "play buttons/button14;scripted_user_func set_default_seat_position;show_menu drivemenu_settings1"
+				"label"			 " Save this seat position for current vehicle"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu drivemenu1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	"drivemenu_settings2"
+	{
+			"Title"		"Driving direction for current vehicle type"
+			
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_drive_direction,straight;show_menu drivemenu_settings2"
+				"label"			 " Driving direction: Straight"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_drive_direction,reversed;show_menu drivemenu_settings2"
+				"label"			 " Driving direction: Reversed"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_drive_direction,left;show_menu drivemenu_settings2"
+				"label"			 " Driving direction: Left"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_drive_direction,right;show_menu drivemenu_settings2"
+				"label"			 " Driving direction: Right"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu drivemenu_settings1"
 					"label"      " << Back"
 			}
 			"0"

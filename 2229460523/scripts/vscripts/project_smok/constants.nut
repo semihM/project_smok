@@ -5,8 +5,8 @@
 {
 	Version = 
 	{
-		Number = "v1.5.0"
-		Date = "18.04.2021"
+		Number = "v1.6.0"
+		Date = "21.04.2021"
 		Source = "https://github.com/semihM/project_smok"
 	}
 
@@ -94,6 +94,10 @@
 	CustomBinds = "admin system/binds/file_list.txt"
 	CustomBindsExample = "admin system/binds/example_bind_file.nut"
 	//CustomBindsExampleVersionBased = @(v) "admin system/binds/example_bind_file_"+v+".nut"
+
+	/// Vehicles
+	CustomVehicle = "admin system/vehicles/file_list.txt"
+	CustomVehicleExample = "admin system/vehicles/example_vehicle_file.txt"
 }
 
 /**************************\
@@ -1224,7 +1228,10 @@ command_name_2 //Take notes by adding // after the command name if needed"
 								valid = false
 								break;
 							}
-							keyval = getconsttable()["BUTTON_"+key] | keyval
+							if(key == "LEFT" || key == "RIGHT")
+								keyval = getconsttable()["BUTTON_MOVE"+key] | keyval
+							else
+								keyval = getconsttable()["BUTTON_"+key] | keyval
 						}
 						if(!valid)
 						{
@@ -1239,7 +1246,12 @@ command_name_2 //Take notes by adding // after the command name if needed"
 						continue
 					}
 					else
-						keyval = getconsttable()["BUTTON_"+keyname] | keyval
+					{
+						if(keyname == "LEFT" || keyname == "RIGHT")
+							keyval = getconsttable()["BUTTON_MOVE"+keyname] | keyval
+						else
+							keyval = getconsttable()["BUTTON_"+keyname] | keyval
+					}
 					
 					foreach(funcname,deftbl in binds)
 					{
@@ -1276,7 +1288,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 									tbl[steamID][keyname][funcname].Arguments = {}
 								}
 
-								tbl[steamID][keyname][funcname].Arguments = Utils.TableKeySearchFilterReturnAll(tbl[steamID][keyname][funcname].Arguments,@"arg_\d+",@(k,c) c-1)
+								tbl[steamID][keyname][funcname].Arguments = Utils.TableKeySearchFilterReturnAll(tbl[steamID][keyname][funcname].Arguments,@"arg_\d+",@(k) k,@(k,c) c-1)
 							}
 						}
 						else
@@ -1351,6 +1363,200 @@ command_name_2 //Take notes by adding // after the command name if needed"
 					printl("[Binds-Table] No new valid binds were loaded from "+filename)
 				else
 					printl("[Binds-Table] No valid binds were registered from "+filename)
+			}
+
+		}
+
+		return tbl;
+	}
+}
+
+::Constants.CustomVehicleListDefaults <-
+@"// This file contains the files names of the vehicle tables
+// Add file names of the vehicle table files below as shown (without // characters at the begining) to include them!
+
+// Characters // indicate comments starting after them, which are ignored
+// To include the ""example_vehicle_file.nut"" remove the // characters at the beginning of the line!
+// !!!!!!!!!!!!!!
+// IT IS NOT RECOMMENDED TO USE THE EXAMPLE FILES FOR NEW VEHICLES
+// !!!!!!!!!!!!!!
+// WARNING: If this is the first time this file is being edited, there is an invisible character at the end of this file which stops the rest of the file's reading process
+//				make sure to remove any trailing spaces/invisible characters after the example line below
+
+//example_vehicle_file // This will make project_smok look for ""example_vehicle_file.nut"" and read it if it exists! Write any additional files above this line..."
+
+::Constants.CustomVehicleDefaults <-
+{
+	v1_6_0 =
+@"// This file contains custom driveable vehicle tables
+// Examples present in this file includes new features introduced in v1.6.0
+//
+// Start by choosing a name for the vehicle, it's not recommended to overwrite built-in vehicle names: sedan1, sedan2, sedan3, hatchback
+// 		- This name will be used with ""start_driving"" command
+//		- From chat: !start_driving vehicle_name 
+""vehicle_name"":
+{
+	// A model path is required for the vehicle
+	//		- Parented models can be used with & character seperating them, example: ""models/props_vehicles/cara_69sedan.mdl&models/props_vehicles/cara_69sedan_glass.mdl""
+	MDL = ""models/props_vehicles/cara_69sedan.mdl""
+
+	// If you know where to driver seat is, assign it to driver_origin key. This is the local origin of player to vehicle
+	//		- If this key is not present, survivor will appear on top of the vehicle
+	//driver_origin = Vector(0,0,0)
+
+	// If you know where the driver should get out of the vehicle, assign it to getting_out_point key. This is the local origin of player to vehicle
+	//		- If this key is not present, survivor will get out of the vehicle at the right most-forward side of the vehicle
+	//getting_out_point = Vector(0,0,0)
+
+	// A parameter table is required for the vehicle. This table defines how the driving will work.
+	//		- All parameter names present in the table are required
+	parameters =
+	{
+		// Velocity factor of the impulse to apply every 33ms while holding FORWARD button
+		forward_push = 45.0
+		// Impulse multiplier to apply to forward_push while holding WALK button
+		nitrous_factor = 1.6
+		// Velocity factor of the impulse to apply every 33ms while holding BACK button
+		back_push = -25.0
+		// Downforce multiplier to use with the current speed while holding FORWARD or BACK buttons 
+		downforce = -0.1
+
+		// Maximum velocity of the vehicle to stop pushing
+		speed_max = 850.0
+		// Multiplier to apply to current speed while turning
+		turn_factor = 0.86
+		
+		// Minimum turning angle every 33ms while holding LEFT or RIGHT buttons, this value keeps going higher while turning until it is doubled.
+		turn_yaw = 3.3
+		// Slight pitch angle to apply while turning, helps suspension-like physics and keeping the vehicle straight
+		turn_pitch = 0.1
+
+		// Friction multiplier to apply while holding FORWARD or BACK buttons
+		friction = 0.08	
+		// Friction multiplier to apply while holding LEFT or RIGHT buttons with FORWARD or BACK buttons
+		turn_friction = 0.2
+		// Friction multiplier to apply while holding LEFT or RIGHT buttons and no acceleration
+		turn_friction_nothrottle = 0.23
+
+		// Some models have rotated models, which confuses the visible forward facing direction
+		//		- You can use 4 directions via constants: 
+		//			+ DRIVE_DIRECTION_STRAIGHT
+		//			+ DRIVE_DIRECTION_REVERSED
+		//			+ DRIVE_DIRECTION_LEFT
+		//			+ DRIVE_DIRECTION_RIGHT
+		//		- Or you can use QAngle(pitch,yaw,roll) angles do decide. DRIVE_DIRECTION_STRAIGHT is QAngle(0,0,0) and DRIVE_DIRECTION_LEFT is QAngle(0,90,0)
+		driving_direction = DRIVE_DIRECTION_STRAIGHT
+	}
+}"
+}
+
+::Constants.ValidateVehicleTable <- function(fileContents,filename,first=false,reload=false)
+{
+	local news = {}
+	local tbl = null
+	try
+	{
+		tbl = compilestring("local __tempvar__=\n{"+strip(fileContents)+"\n}\n;return __tempvar__;")()
+	}
+	catch(e){printl("[Vehicle-Compile-Error] Failed to compile "+filename+". Error: "+e)}
+
+	if(tbl == null || typeof tbl != "table")
+	{
+		local badformat = filename.slice(0,filename.find(".txt"))+"_bad_format.txt";
+		printl("[Vehicle-Error] "+filename+" was formatted incorrectly, check {} and \"\" characters!")
+		printl("[Vehicle-Error] Keeping incorrectly formatted file named as "+badformat+" and replacing it with the v1.5.0 examples...")
+
+		StringToFile(badformat,fileContents);
+
+		StringToFile(filename,Constants.CustomVehicleDefaults.v1_6_0);
+
+		fileContents = FileToString(filename);
+		return null
+	}
+	else
+	{	
+		if(tbl.len() != 0)
+		{	
+			if(first)
+				printl("[Vehicle-Checks] Doing vehicle table checks...")
+
+			foreach(vehicle_name,v_tbl in Utils.TableCopy(tbl))
+			{
+				news[vehicle_name] <- {}
+
+				if(!("MDL" in v_tbl))
+				{
+					printl("[Vehicle-Command-Error] Vehicle "+vehicle_name+" needs a model... skipping the table")
+					delete tbl[vehicle_name]
+					continue
+				}
+				else if(typeof v_tbl.MDL != "string")
+				{
+					printl("[Vehicle-Command-Error] Vehicle "+vehicle_name+" has a non-string model... skipping the table")
+					delete tbl[vehicle_name]
+					continue
+				}
+				if(("driver_origin" in v_tbl) && typeof v_tbl.driver_origin != "Vector")
+				{
+					printl("[Vehicle-Command-Warning] Vehicle "+vehicle_name+" has a non-vector driver origin... not using it")
+					delete tbl[vehicle_name].driver_origin
+				}
+
+				if(("getting_out_point" in v_tbl) && typeof v_tbl.getting_out_point != "Vector")
+				{
+					printl("[Vehicle-Command-Warning] Vehicle "+vehicle_name+" has a non-vector getting out point... not using it")
+					delete tbl[vehicle_name].getting_out_point
+				}
+
+				if(!("parameters" in v_tbl))
+				{
+					printl("[Vehicle-Parameters-Warning] Driving parameters for "+vehicle_name+" is unknown... using default parameters")
+					tbl[vehicle_name].parameters <- ::DefaultDrivingParameters()
+				}
+				else if(typeof v_tbl.parameters != "table")
+				{
+					printl("[Vehicle-Parameters-Warning] Driving parameters for "+vehicle_name+" is not a table... using default parameters")
+					tbl[vehicle_name].parameters <- ::DefaultDrivingParameters()
+				}
+				else
+				{
+					local defaults = ::DefaultDrivingParameters()
+					local tblparams = tbl[vehicle_name].parameters
+					foreach(key,val in defaults)
+					{
+						if(!(key in tblparams))
+						{
+							printl("[Vehicle-Parameters-Warning] Driving parameter "+key+" is missing for "+vehicle_name+". Using default value "+val)
+							tbl[vehicle_name].parameters[key] <- val
+						}
+						else if(!ValidateSimilarTyp(tblparams,defaults,key))
+						{
+							printl("[Vehicle-Parameters-Warning] Driving parameter "+key+" is not the right type for "+vehicle_name+". Using default value "+val)
+							tbl[vehicle_name].parameters[key] = val
+						}
+					}
+				}
+
+			}
+
+			if(news.len() > 0)
+			{	
+				if(reload)
+					printl("[Vehicle-Table] New vehicles after reloading "+filename+":")
+				else
+					printl("[Vehicle-Table] Valid vehicles found in "+filename+":")
+
+				foreach(vehicle_name,tbls in news)
+				{
+					printl("\t[*] "+vehicle_name)
+				}
+			}
+			else 
+			{
+				if(reload)
+					printl("[Vehicle-Table] No new valid vehicles were loaded from "+filename)
+				else
+					printl("[Vehicle-Table] No valid vehicles were registered from "+filename)
 			}
 
 		}

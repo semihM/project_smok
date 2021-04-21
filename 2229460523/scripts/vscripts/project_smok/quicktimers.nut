@@ -436,14 +436,20 @@
                 ::Printer(safe,"Key name "+key+" is unknown.","error")
                 return null;
             }
-            keyval = getconsttable()["BUTTON_"+key] | keyval
+            if(key == "LEFT" || key == "RIGHT")
+                keyval = getconsttable()["BUTTON_MOVE"+key] | keyval
+            else
+                keyval = getconsttable()["BUTTON_"+key] | keyval
         }
     }
     else
     {
         foreach(i,key in split(keyname,"|"))
         {
-            keyval = getconsttable()["BUTTON_"+key] | keyval
+            if(key == "LEFT" || key == "RIGHT")
+                keyval = getconsttable()["BUTTON_MOVE"+key] | keyval
+            else
+                keyval = getconsttable()["BUTTON_"+key] | keyval
         }
     }
     return keyval

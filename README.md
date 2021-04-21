@@ -81,6 +81,8 @@
 
     - [**Ragdolling**](#ragdoll)
 
+    - [**Driving**](#driving)
+    
     - [**Texture commands**](#texture-commands)
     
     - [**Animation commands**](#animation-commands)
@@ -2223,6 +2225,125 @@
    ------------- | -------------
 
 ---
+### Driving
+
+#### **start_driving**
+- Start driving a built-in vehicle, a custom vehicle or a prop with the given model. Movement: WASD; Aim forward: MOUSE2; N2O: SHIFT; BOUNCE: SPACE
+
+   Chat Syntax | (!,/,?)start_driving *vehicle_type*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *start_driving,vehicle_type* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->3->\[3,4,5,6\]_
+   ------------- | -------------
+  
+```cpp
+       //Overloads:
+       //  vehicle_type: You can use model path names instead of this; if possible it will spawn a prop with the model
+       start_driving {vehicle_type:(sedan1,sedan2,sedan3,hatchback, )}
+       start_driving   // vehicle_type = sedan1
+       
+       // Example: Start driving the built-in vehicle type sedan2
+       start_driving sedan2
+       
+       // Example: Start driving a bathtub!
+       start_driving props_furniture/bathtub1
+```
+---
+#### **stop_driving**
+- Stop driving your current car
+
+   Chat Syntax | (!,/,?)stop_driving
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *stop_driving* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->3->2_
+   ------------- | -------------
+
+---
+#### **make_driveable**
+- Try and make aimed object driveable. 
+
+   Chat Syntax | (!,/,?)make_driveable
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *make_driveable* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->3->7_
+   ------------- | -------------
+     
+---
+#### **change_seat_position**
+- Change your seat position while driving
+
+   Chat Syntax | (!,/,?)change_seat_position *axis,units*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *change_seat_position,axis,units* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->3->8->\[2,3,4,5,6,7\]_
+   ------------- | -------------
+  
+```cpp
+       //Overloads:
+       change_seat_position {axis:(x,y,z)} {units:inches}
+       
+       // Example: Move your seat 10 inches down
+       change_seat_position z -10
+```  
+---
+#### **set_default_seat_position**
+- Change the default driver seat location of currently driven vehicle to your current seat position
+
+   Chat Syntax | (!,/,?)set_default_seat_position
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *set_default_seat_position* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->3->8->8_
+   ------------- | -------------
+   
+---
+#### **change_drive_direction**
+- Change the driving direction of currently driven vehicle type. This helps with models with weird angles
+
+   Chat Syntax | (!,/,?)change_drive_direction *direction*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *change_drive_direction,direction* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->3->8->1->\[1,2,3,4\]_
+   ------------- | -------------
+
+```cpp
+       //Overloads:
+       change_drive_direction {direction:(straight,reversed,left,right)}
+       
+       // Example: Make the "left face" of the vehicle "forward" direction
+       change_drive_direction left
+```    
+---
+#### **reload_vehicles**
+- Reload vehicle table files from *admin system/vehicles/* directory
+
+   Chat Syntax | (!,/,?)reload_vehicles
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *reload_vehicles* 
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+   
+---
 ### Texture Commands
 
 #### **decal**
@@ -2473,19 +2594,6 @@
 ---
 ### Experimental Commands
 
-#### **drive**
-- "Drive" targeted car/object or stop driving. **Hold left-click** to keep aiming forward, **DO NOT** jump while moving
-
-   Chat Syntax | (!,/,?)drive
-   ------------- | -------------
-
-   Console Syntax | scripted_user_func *drive* 
-   ------------- | -------------
-    
-   Menu Sequence | _6->9->9->9->3->1_
-   ------------- | -------------
-   
----
 #### **wear_hat**
 - _Wear_ aimed object like a hat
 
@@ -3833,6 +3941,11 @@
 
       - **_example\_script\_file.nut_**: An example file containing information about how to create commands
 
+   + **_vehicles_** : Custom vehicle tables files folder
+      - **_file\_list.txt_**: List of file names to read as custom vehicle tables
+
+      - **_example\_vehicle\_file.nut_**: An example file containing information about how to create vehicle tables
+      
    + **_admins.txt_** : Admins
 
    + **_apocalypse\_settings.txt_** : Apocalypse event custom settings
