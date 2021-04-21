@@ -1739,6 +1739,36 @@
                     )
                 return cmd.Describe();
             }
+            get_in = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "get_in",
+                    [],
+                    "Get into the aimed vehicle/prop as a passenger if it has driveable features"
+                    )
+                return cmd.Describe();
+            }
+            get_out = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "get_out",
+                    [],
+                    "Get out of the vehicle you are in as a passenger"
+                    )
+                return cmd.Describe();
+            }
+            change_passenger_seat_position = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "change_passenger_seat_position",
+                    [
+                        CMDParam("axis","Axis name:(x,y,z)"),
+                        CMDParam("units","How many inches to move")
+                    ],
+                    "Change your current passenger seat position relative to driving direction of the vehicle you are in"
+                    )
+                return cmd.Describe();
+            }
             drive = function(player,args)
             {
                 local cmd = CMDDocs(
