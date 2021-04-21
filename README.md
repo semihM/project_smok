@@ -2345,7 +2345,7 @@
  
 ---
 #### **get_out**
-- Get into the aimed vehicle as a passenger if possible. 
+- Get out of the current vehicle you are a passenger of.
 
    Chat Syntax | (!,/,?)get_out
    ------------- | -------------
