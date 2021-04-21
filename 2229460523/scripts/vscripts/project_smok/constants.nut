@@ -97,7 +97,7 @@
 
 	/// Vehicles
 	CustomVehicle = "admin system/vehicles/file_list.txt"
-	CustomVehicleExample = "admin system/vehicles/example_vehicle_file.txt"
+	CustomVehicleExample = "admin system/vehicles/example_vehicle_file.nut"
 }
 
 /**************************\
