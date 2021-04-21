@@ -38796,8 +38796,8 @@
 			}
 			"3"
 			{
-				"command"		 "play buttons/button14;show_menu drivemenu1"
-				"label"			" Drive vehicles or props"
+				"command"		 "play buttons/button14;show_menu drivemenumain"
+				"label"			" Drive vehicles/props or be a passenger"
 			}
 			"4"
 			{
@@ -39802,9 +39802,89 @@
 			}
 	}
 
+	"drivemenumain"
+	{
+			"Title"		"Driver or a passenger seat"
+			"1"
+			{
+				"command"		 "play buttons/button14;show_menu drivemenu1"
+				"label"			 " Drive vehicles"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;show_menu drivemenupassenger1"
+				"label"			 " Be a passenger"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu smok_menu4"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"drivemenupassenger1"
+	{
+			"Title"		"Vehicle passenger options menu"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func get_in;show_menu drivemenupassenger1"
+				"label"			 " Get into the aimed vehicle"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func get_out;show_menu drivemenupassenger1"
+				"label"			 " Get out of the current passenger seat"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_passenger_seat_position,z,5;show_menu drivemenupassenger1"
+				"label"			 " Increase seat height (+5)"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_passenger_seat_position,z,-5;show_menu drivemenupassenger1"
+				"label"			 " Decrease seat height (-5)"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_passenger_seat_position,y,5;show_menu drivemenupassenger1"
+				"label"			 " Move seat to left (+5)"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_passenger_seat_position,y,-5;show_menu drivemenupassenger1"
+				"label"			 " Move seat to right (-5)"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_passenger_seat_position,x,5;show_menu drivemenupassenger1"
+				"label"			 " Move seat forward (+5)"
+			}
+			"8"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_passenger_seat_position,x,-5;show_menu drivemenupassenger1"
+				"label"			 " Move seat back (-5)"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu drivemenumain"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
 	"drivemenu1"
 	{
-			"Title"		"Driving options menu"
+			"Title"		"Driver options menu"
 			"1"
 			{
 				"command"		 "play buttons/button10;show_menu drivemenu1"
@@ -39847,7 +39927,7 @@
 			}
 			"9"
 			{
-					"command"    "play buttons/button14;show_menu smok_menu4"
+					"command"    "play buttons/button14;show_menu drivemenumain"
 					"label"      " << Back"
 			}
 			"0"
