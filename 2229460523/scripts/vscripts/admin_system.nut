@@ -3951,6 +3951,21 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.StopDriveCmd(player,args);
 			break;
 		}
+		case "get_in":
+		{
+			AdminSystem.GetInAsPassenger(player,args);
+			break;
+		}
+		case "get_out":
+		{
+			AdminSystem.GetOutAsPassenger(player,args);
+			break;
+		}
+		case "change_passenger_seat_position":
+		{
+			AdminSystem.ChangePassengerSeatPositionCmd(player,args);
+			break;
+		}
 		case "make_driveable":
 		{
 			AdminSystem.MakeDriveableCmd(player,args);
@@ -4836,8 +4851,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 			local oldind = ent.GetIndex()
 
-			ent.SetName(ent.GetName()+UniqueString())
 			local oldname = ent.GetName()
+			ent.SetName(ent.GetName()+UniqueString())
+			local searchname = ent.GetName()
 
 			local org = ent.GetOrigin()
 
@@ -4850,14 +4866,14 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 			AddThinkToEnt(dummyent.GetBaseEntity(),"PostConvertChecker")
 
-			ConvertCheckTable[dummyent.GetName()] <- {searchname=oldname,dummytime=Time(),func="_dropit",extra_arg="",angles=ent.GetAngles()}
+			ConvertCheckTable[dummyent.GetName()] <- {oldname=oldname,searchname=searchname,dummytime=Time(),func="_dropit",extra_arg="",angles=ent.GetAngles()}
 
 			local convertername = ::Constants.Targetnames.PhysConverter+cuniq
 			local converter = Utils.CreateEntityWithTable({classname="phys_convert",targetname=convertername,target="#"+oldind,spawnflags=3})
 			converter.Input("converttarget")
 			converter.Input("Kill")
 
-			return oldname
+			return searchname
 		}
 	}
 }
@@ -5424,7 +5440,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	DoEntFire("!self","RunScriptCode","AddThinkToEnt(self,"+::AdminSystem._GetEnumString("RagWepDisable")+")",0,null,rag.GetBaseEntity())
 	
 	Printer(player,"Created ragdoll #"+rag.GetIndex());
-	AdminSystem._CreateKeyListenerCmd(player,args,false)
+	AdminSystem._CreateKeyListenerCmd(player,args)
 }
 
 ::RagWepDisable <- function()
@@ -5489,7 +5505,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	}
 	AddThinkToEnt(rag.GetBaseEntity(),null)
 
-	AdminSystem._StopKeyListenerCmd(player,null,false)
+	AdminSystem._StopKeyListenerCmd(player,null)
 
 	if(RagParams.useseq)
 	{
@@ -6755,6 +6771,89 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	}
 }
 
+::AdminSystem.GetInAsPassenger <- function(player,args)
+{
+	if(!::AdminSystem.IsPrivileged(player))
+		return
+
+    local ent = player.GetLookingEntity()
+    if(!ent)
+        return
+
+	local entmdl = ShortenModelName(ent.GetModel())
+	if(!(entmdl in DriveableCarModels))
+		return
+
+	local p_org = DriveableCarModels[entmdl].driver_origin + Vector(0,-35,0)
+	
+	if(("PS_VEHICLE_ENT" in player.GetScriptScope()) 
+		&& player.GetScriptScope()["PS_VEHICLE_ENT"] != null
+		&& player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+	{
+		::DriveMainFunctions.RemoveListeners(player)
+
+		::DriveMainFunctions.RestoreDriver(player)
+	}
+	
+	player.GetScriptScope()["PS_IN_PASSENGER_CAR"] <- ent
+    player.SetNetProp("m_CollisionGroup",12)
+    player.SetNetProp("m_MoveCollide",0)
+    player.SetMoveType(MOVETYPE_CUSTOM)
+
+    player.SetNetProp("m_stunTimer.m_timestamp",Time()+99999)
+    player.SetNetProp("m_stunTimer.m_duration",99999)
+
+    player.Input("setparent","#"+ent.GetIndex())
+    player.Input("runscriptcode","self.SetLocalOrigin(Vector("+p_org.x+","+p_org.y+","+p_org.z+"))",0.1)
+
+}
+
+::AdminSystem.GetOutAsPassenger <- function(player,args)
+{
+	if(!::AdminSystem.IsPrivileged(player))
+		return
+
+	::GetOutAsPassenger(player)
+}
+
+::AdminSystem.ChangePassengerSeatPositionCmd <- function(player,args)
+{
+	if(!::AdminSystem.IsPrivileged(player))
+		return
+
+	if("PS_IN_PASSENGER_CAR" in player.GetScriptScope() 
+		&& player.GetScriptScope()["PS_IN_PASSENGER_CAR"] != null
+		&& player.GetScriptScope()["PS_IN_PASSENGER_CAR"].IsEntityValid())
+	{
+		local axis = GetArgument(1)
+		if(!axis)
+			return
+		local units = GetArgument(2)
+		if(!units)
+			return
+		units = units.tofloat()
+
+		local p_v = player.GetScriptScope()["PS_IN_PASSENGER_CAR"]
+		local entmdl = ShortenModelName(p_v.GetModel())
+		if(!(entmdl in DriveableCarModels))
+			return
+
+		local dir = ::DriveParameters[entmdl].driving_direction
+		switch(axis)
+		{
+			case "x":
+				player.SetLocalOrigin(RotatePosition(Vector(0,0,0),dir,Vector(units,0,0)) + player.GetLocalOrigin())
+				break
+			case "y":
+				player.SetLocalOrigin(RotatePosition(Vector(0,0,0),dir,Vector(0,units,0)) + player.GetLocalOrigin())
+				break
+			case "z":
+				player.SetLocalOrigin(RotatePosition(Vector(0,0,0),dir,Vector(0,0,units)) + player.GetLocalOrigin())
+				break
+		}
+	}
+}
+
 ::AdminSystem.StopDriveCmd <- function(player,args)
 {
 	if(!::AdminSystem.IsPrivileged(player))
@@ -6778,7 +6877,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 	if("PS_VEHICLE_VALID" in player.GetScriptScope() && player.GetScriptScope()["PS_VEHICLE_VALID"])
 		return
-	
+
+	if("PS_IN_PASSENGER_CAR" in player.GetScriptScope() && player.GetScriptScope()["PS_IN_PASSENGER_CAR"] != null && player.GetScriptScope()["PS_IN_PASSENGER_CAR"].IsEntityValid())
+		return
+
 	if(::DriverStateCheck(player))
 	{
 		Messages.ThrowPlayer(player,"You aren't in a condition to be driving right now!")
@@ -6814,7 +6916,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	local tbl = ::DriveMainFunctions.CreateVehicle(player,car)
 	if(tbl == null)
 	{
-		Messages.ThrowPlayer(player,CmdMessages.Prop.Failed(propsettingname+"("+car+")"));
+		Messages.ThrowPlayer(player,CmdMessages.Prop.Failed("physics"+"("+car+")"));
 	}
 
 	local parentent = tbl.parentent
@@ -6827,7 +6929,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	if(!("getting_out_point" in ::DriveableCarModels[car]) || new_car)
 		::DriveableCarModels[car].getting_out_point <- bbox 
 	
-
 	::PreparePlayerForDriving(player,parentent,car)
 
 	Printer(player,CmdMessages.Prop.SuccessParented("vehicle entity",createdent));
@@ -7019,8 +7120,8 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	::Quix.Remove(Constants.TimerNames.RagdollControl+ent.GetIndex());
 
 	local id = AdminSystem._RagdollControl[name].listenerid;
-
-	Ent(id).Kill();
+	if(Entity(id).IsEntityValid())
+		Entity(id).Kill();
 	AdminSystem._RagdollControl[name].keymask = 0
 	AdminSystem._RagdollControl[name].listenerid = -1
 }
@@ -10833,6 +10934,8 @@ function Notifications::OnChargerChargeEnd::_RecoverRagdolls(charger,args)
 
 function Notifications::OnBotReplacedPlayer::_GetOutOfTheVehicle(player,bot,args)
 {
+	::GetOutAsPassenger(player)
+
 	if(!("PS_VEHICLE_ENT" in player.GetScriptScope()) 
 		|| player.GetScriptScope()["PS_VEHICLE_ENT"] == null
 		|| !player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
@@ -10845,6 +10948,8 @@ function Notifications::OnBotReplacedPlayer::_GetOutOfTheVehicle(player,bot,args
 
 function Notifications::OnPlayerConnected::_GetOutOfTheVehicle(player,args)
 {
+	::GetOutAsPassenger(player)
+	
 	if(!("PS_VEHICLE_ENT" in player.GetScriptScope()) 
 		|| player.GetScriptScope()["PS_VEHICLE_ENT"] == null
 		|| !player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
@@ -10859,18 +10964,22 @@ function Notifications::OnMapEnd::_GetOutOfTheVehicle()
 {
 	foreach(obj in Players.AliveSurvivors())
 	{
-		if(!("PS_VEHICLE_ENT" in player.GetScriptScope()) 
-			|| player.GetScriptScope()["PS_VEHICLE_ENT"] == null
-			|| !player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
-			return
+		::GetOutAsPassenger(obj)
 
-		::DriveMainFunctions.RemoveListeners(player)
+		if(!("PS_VEHICLE_ENT" in obj.GetScriptScope()) 
+			|| obj.GetScriptScope()["PS_VEHICLE_ENT"] == null
+			|| !obj.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+			continue
+	
+		::DriveMainFunctions.RemoveListeners(obj)
 
-		::DriveMainFunctions.RestoreDriver(player)
+		::DriveMainFunctions.RestoreDriver(obj)
 	}
 }
 function Notifications::OnIncapacitatedStart::_GetOutOfTheVehicle(victim,attacker,args)
 {
+	::GetOutAsPassenger(player)
+	
 	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
 		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
 		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
@@ -10882,6 +10991,8 @@ function Notifications::OnIncapacitatedStart::_GetOutOfTheVehicle(victim,attacke
 }
 function Notifications::OnDeath::_GetOutOfTheVehicle(victim,attacker,args)
 {
+	::GetOutAsPassenger(victim)
+	
 	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
 		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
 		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
@@ -10894,6 +11005,8 @@ function Notifications::OnDeath::_GetOutOfTheVehicle(victim,attacker,args)
 //smoker
 function Notifications::OnSmokerTongueGrab::_GetOutOfTheVehicle(smoker,victim,args)
 {
+	::GetOutAsPassenger(victim)
+	
 	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
 		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
 		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
@@ -10905,6 +11018,8 @@ function Notifications::OnSmokerTongueGrab::_GetOutOfTheVehicle(smoker,victim,ar
 }
 function Notifications::OnSmokerChokeBegin::_GetOutOfTheVehicle(smoker,victim,args)
 {
+	::GetOutAsPassenger(victim)
+	
 	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
 		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
 		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
@@ -10917,6 +11032,8 @@ function Notifications::OnSmokerChokeBegin::_GetOutOfTheVehicle(smoker,victim,ar
 //hunter
 function Notifications::OnHunterPouncedVictim::_GetOutOfTheVehicle(hunter,victim,args)
 {
+	::GetOutAsPassenger(victim)
+	
 	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
 		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
 		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
@@ -10929,6 +11046,8 @@ function Notifications::OnHunterPouncedVictim::_GetOutOfTheVehicle(hunter,victim
 //jockey
 function Notifications::OnJockeyRideStart::_GetOutOfTheVehicle(jockey,victim,args)
 {
+	::GetOutAsPassenger(victim)
+	
 	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
 		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
 		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
@@ -10941,6 +11060,8 @@ function Notifications::OnJockeyRideStart::_GetOutOfTheVehicle(jockey,victim,arg
 //charger
 function Notifications::OnChargerCarryVictim::_GetOutOfTheVehicle(charger,victim,args)
 {
+	::GetOutAsPassenger(victim)
+	
 	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
 		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
 		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
@@ -10952,6 +11073,8 @@ function Notifications::OnChargerCarryVictim::_GetOutOfTheVehicle(charger,victim
 }
 function Notifications::OnChargerImpact::_GetOutOfTheVehicle(charger,victim,args)
 {
+	::GetOutAsPassenger(victim)
+	
 	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
 		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
 		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
@@ -10963,6 +11086,8 @@ function Notifications::OnChargerImpact::_GetOutOfTheVehicle(charger,victim,args
 }
 function Notifications::OnChargerPummelBegin::_GetOutOfTheVehicle(charger,victim,args)
 {
+	::GetOutAsPassenger(victim)
+	
 	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
 		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
 		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
@@ -10978,6 +11103,8 @@ function Notifications::OnChargerChargeEnd::_GetOutOfTheVehicle(charger,args)
 	if(victim == null)
 		return;
 		
+	::GetOutAsPassenger(victim)
+	
 	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
 		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
 		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
@@ -11866,6 +11993,30 @@ function ChatTriggers::stop_driving( player, args, text )
 }
 ::ChatTriggerDocs.stop_driving <- @(player,args) AdminSystem.IsPrivileged(player) && "stop_driving" in CmdDocs
 					? Messages.DocCmdPlayer(player,CmdDocs.stop_driving(player,args))
+					: null
+
+function ChatTriggers::get_in( player, args, text )
+{
+	AdminSystem.GetInAsPassenger( player, args );
+}
+::ChatTriggerDocs.get_in <- @(player,args) AdminSystem.IsPrivileged(player) && "get_in" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.get_in(player,args))
+					: null
+
+function ChatTriggers::get_out( player, args, text )
+{
+	AdminSystem.GetOutAsPassenger( player, args );
+}
+::ChatTriggerDocs.get_out <- @(player,args) AdminSystem.IsPrivileged(player) && "get_out" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.get_out(player,args))
+					: null
+
+function ChatTriggers::change_passenger_seat_position( player, args, text )
+{
+	AdminSystem.ChangePassengerSeatPositionCmd( player, args );
+}
+::ChatTriggerDocs.change_passenger_seat_position <- @(player,args) AdminSystem.IsPrivileged(player) && "change_passenger_seat_position" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.change_passenger_seat_position(player,args))
 					: null
 
 function ChatTriggers::make_driveable( player, args, text )
@@ -19056,29 +19207,42 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		if ( Entity )
 		{
-			if (Entity.GetClassname() == "player" && Action == "kill" && Entity.GetSteamID() !="BOT" && AdminSystem.Vars.IgnoreDeletingPlayers)
+			if (Entity.GetClassname() == "player" && act == "kill" && Entity.GetSteamID() !="BOT" && AdminSystem.Vars.IgnoreDeletingPlayers)
 			{
 				printl(player.GetCharacterNameLower()+"->Ignore attempt to kick player:"+Entity.GetName());
 				return;
 			}
-			else if (Entity.GetClassname() == "player" && Action == "becomeragdoll")
+			else if (Entity.GetClassname() == "player" && act == "becomeragdoll")
 			{
 				printl(player.GetCharacterNameLower()+"->Ignore attempt to make player ragdoll:"+Entity.GetName());
 				return;
 			}
-			else if(Entity.GetClassname() == "prop_ragdoll" && Entity.GetName().find(Constants.Targetnames.Ragdoll) != null)
+			else if(Entity.GetClassname() == "prop_ragdoll" && Entity.GetName().find(Constants.Targetnames.Ragdoll) != null && act == "kill")
 			{
 				printl(player.GetCharacterNameLower()+"->Ignore attempt to kill player ragdoll:"+Entity.GetName());
 				return;
 			}
-			else if("PS_HAS_DRIVER" in Entity.GetScriptScope() && Entity.GetScriptScope()["PS_HAS_DRIVER"])
+			else if("PS_HAS_DRIVER" in Entity.GetScriptScope() && Entity.GetScriptScope()["PS_HAS_DRIVER"] && act == "kill")
 			{
 				printl(player.GetCharacterNameLower()+"->Ignore attempt to kill player vehicle:"+Entity.GetName());
 				return;
 			}
 			else
 			{
-				if(Action == "kill")
+				foreach(s in Players.All())
+				{
+					if("PS_IN_PASSENGER_CAR" in s.GetScriptScope() 
+						&& s.GetScriptScope()["PS_IN_PASSENGER_CAR"] != null
+						&& s.GetScriptScope()["PS_IN_PASSENGER_CAR"].IsEntityValid())
+					{
+						if(Entity.GetEntityHandle() == s.GetScriptScope()["PS_IN_PASSENGER_CAR"].GetEntityHandle())
+						{
+							printl(player.GetCharacterNameLower()+"->Ignore attempt to kill player vehicle with passengers:"+Entity.GetName());
+							return
+						}
+					}
+				}
+				if(act == "kill")
 				{
 					foreach(tbl in AdminSystem.Vars._heldEntity)
 					{
