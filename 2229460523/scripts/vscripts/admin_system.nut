@@ -6789,7 +6789,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 	if(!car)
 		car = "props_vehicles/cara_95sedan"
-	else if(car in ::CarTypes)
+	
+	car = ShortenModelName(car)
+	
+	if(car in ::CarTypes)
 		car = ::CarTypes[car]
 
 	local new_car = !(car in DriveableCarModels)
