@@ -667,16 +667,25 @@ if(!("DriveParameters" in getroottable()))
 		sc["PS_HAS_DRIVE_ABILITY"] <- false
 		return
 	}
-	
+	pscr.SetName("PS_DRIVE_ADDER"+UniqueString())
 	local b = pscr.GetBaseEntity()
 	local bsrc = pscr.GetScriptScope()
 
 	bsrc["Duration"] <- duration
 	bsrc["FinishStartProcess"] <- function()
 	{
+		local player = self.GetScriptScope().LastPlayer
+		
+		if("PS_VEHICLE_VALID" in player.GetScriptScope() && player.GetScriptScope()["PS_VEHICLE_VALID"])
+			return
+
+		if(::DriverStateCheck(player))
+		{
+			Messages.ThrowPlayer(player,"You aren't in a condition to be driving right now!")
+			return
+		}
 		self.CanShowBuildPanel( false );
 
-		local player = self.GetScriptScope().LastPlayer
 		local vehicle = ::VSLib.Entity(self.GetUseModelName())
 
 		vehicle.Input("SetGlowRange","1")
@@ -684,16 +693,11 @@ if(!("DriveParameters" in getroottable()))
 
 		if(vehicle.GetModel() != null)
 		{
-			if(("PS_VEHICLE_ENT" in player.GetScriptScope()) 
-				&& player.GetScriptScope()["PS_VEHICLE_ENT"] != null
-				&& player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
-			{
-				player.GetScriptScope()["PS_VEHICLE_ENT"].GetScriptScope()["PS_HAS_DRIVE_ABILITY"] <- false
-				player.GetScriptScope()["PS_VEHICLE_ENT"].GetScriptScope()["PS_HAS_DRIVER"] <- false
-				player.GetScriptScope()["PS_VEHICLE_ENT"].GetScriptScope()["N2O_STATE"] <- false
-			}
-
-            ::DriveMainFunctions.RemoveListeners(player)
+			if("PS_VEHICLE_TYPE" in player.GetScriptScope())
+				::DriveMainFunctions.RemoveListeners(player)
+				
+			if("PS_IN_PASSENGER_CAR" in player.GetScriptScope() && player.GetScriptScope()["PS_IN_PASSENGER_CAR"] != null && player.GetScriptScope()["PS_IN_PASSENGER_CAR"].IsEntityValid())
+				player.GetScriptScope()["PS_IN_PASSENGER_CAR"] = null
 
 	        ::PreparePlayerForDriving(player,vehicle,ShortenModelName(vehicle.GetModel()))
         }
@@ -735,4 +739,22 @@ if(!("DriveParameters" in getroottable()))
 	vehicle.SetGlowColor(params.GlowR,params.GlowG,params.GlowB,params.GlowA)
 	vehicle.Input("SetGlowRange",params.GlowRange.tostring())
 	vehicle.Input("StartGlowing","")
+}
+
+::GetOutAsPassenger <- function(player)
+{
+	if("PS_IN_PASSENGER_CAR" in player.GetScriptScope() 
+		&& player.GetScriptScope()["PS_IN_PASSENGER_CAR"] != null
+		&& player.GetScriptScope()["PS_IN_PASSENGER_CAR"].IsEntityValid())
+	{
+		local corner = player.GetScriptScope()["PS_IN_PASSENGER_CAR"].GetNetProp("m_Collision")
+		player.GetScriptScope()["PS_IN_PASSENGER_CAR"] <- null
+		player.SetNetProp("m_stunTimer.m_timestamp",Time()+0.5)
+		player.SetNetProp("m_stunTimer.m_duration",0.5)
+		player.Input("runscriptcode","self.SetLocalOrigin(Vector("+corner.x+","+corner.y+","+corner.z+"))",0)
+		player.Input("clearparent",0.1)
+		player.Input("RunScriptCode","_dropit(Player("+player.GetIndex()+"))",0.15);
+		player.Input("RunScriptCode","Player("+player.GetIndex()+").SetNetProp(\"m_CollisionGroup\",5)",0.2);
+		player.SetMoveType(MOVETYPE_WALK);
+	}
 }
