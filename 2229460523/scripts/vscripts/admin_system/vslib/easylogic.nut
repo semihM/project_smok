@@ -683,6 +683,14 @@ getconsttable()["PS_WHEN_PRESSED"] <- (1 << 1)
 getconsttable()["PS_WHILE_PRESSED"] <- (1 << 2) 
 getconsttable()["PS_WHEN_UNPRESSED"] <- (1 << 3)
 
+/*******************\
+* DRIVING DIRECTIONS *
+\*******************/
+getconsttable()["DRIVE_DIRECTION_STRAIGHT"] <- QAngle(0,0,0)
+getconsttable()["DRIVE_DIRECTION_LEFT"] <- QAngle(0,90,0)
+getconsttable()["DRIVE_DIRECTION_RIGHT"] <- QAngle(0,-90,0)
+getconsttable()["DRIVE_DIRECTION_REVERSED"] <- QAngle(0,180,0)
+
 ////////////////////////////////////////////////////////////////
 // Difficulty to be used with OnDifficulty()
 getconsttable()["EASY"] <- "easy";
