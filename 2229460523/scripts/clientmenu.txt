@@ -26126,7 +26126,7 @@
 			}
 			"4"
 			{
-					"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/fire_escape_upper.mdl,130;show_menu props_furniture_stairs2"
+					"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/fire_escape_upper.mdl,0;show_menu props_furniture_stairs2"
 					"label"		 " Fire escape single, w/ platform" 
 			}
 			"5"
@@ -26547,7 +26547,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lighthouse/b_waterwheel01.mdl,150;show_menu props_laststand1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lighthouse/b_waterwheel01.mdl,0;show_menu props_laststand1"
 					"label"      " Waterwheel"
 			}
 			"3"
@@ -26618,7 +26618,7 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lighthouse/we_dont_go.mdl,22;show_menu props_laststand2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lighthouse/we_dont_go.mdl,0;show_menu props_laststand2"
 					"label"      " -We dont go- board'"
 			}
 			"6"
@@ -26709,7 +26709,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/de_train/de_train_horizontalcoolingtank_nophong.mdl,60;show_menu props_laststand3"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/de_train/de_train_horizontalcoolingtank_nophong.mdl,0;show_menu props_laststand3"
 					"label"      " Coolingtank H"
 			}
 			"7"
@@ -26734,32 +26734,32 @@
 			"Title"     "Debris 1"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_debris/wood_board04a.mdl,35;show_menu props_debris1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_debris/wood_board04a.mdl,0;show_menu props_debris1"
 					"label"      " Wooden board 1"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_debris/wood_board05a.mdl,71;show_menu props_debris1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_debris/wood_board05a.mdl,0;show_menu props_debris1"
 					"label"      " Wooden board 2"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_debris/concrete_debris256pile001a.mdl,22;show_menu props_debris1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_debris/concrete_debris256pile001a.mdl,0;show_menu props_debris1"
 					"label"      " Concrete debris 1"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_debris/concrete_debris256barricade001a.mdl,22;show_menu props_debris1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_debris/concrete_debris256barricade001a.mdl,0;show_menu props_debris1"
 					"label"      " Concrete debris 2"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_debris/concrete_debris128pile001b.mdl,11;show_menu props_debris1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_debris/concrete_debris128pile001b.mdl,0;show_menu props_debris1"
 					"label"      " Concrete debris 3"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_debris/concrete_debris128pile001a.mdl,11;show_menu props_debris1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_debris/concrete_debris128pile001a.mdl,0;show_menu props_debris1"
 					"label"      " Concrete debris 4"
 			}
 			"7"
@@ -26876,12 +26876,12 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/wood_crate001a.mdl,20;show_menu props_barrels1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/wood_crate001a.mdl,0;show_menu props_barrels1"
 					"label"      " Single wooden crate"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/wood_crate002a.mdl,20;show_menu props_barrels1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/wood_crate002a.mdl,0;show_menu props_barrels1"
 					"label"      " Double wooden crate"
 			}
 			"7"
@@ -26917,7 +26917,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_crates/supply_crate02.mdl,8;show_menu props_barrels2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_crates/supply_crate02.mdl,0;show_menu props_barrels2"
 					"label"      " Supply crate"
 			}
 			"3"
@@ -26968,7 +26968,7 @@
 			"Title"     "Plants 1"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_plants/planthanging01.mdl,12;show_menu props_plants1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_plants/planthanging01.mdl,0;show_menu props_plants1"
 					"label"      " Hanging plant"
 			}
 			"2"
@@ -27860,12 +27860,12 @@
 			
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/tire001.mdl,18;show_menu props_urban3"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/tire001.mdl,0;show_menu props_urban3"
 					"label"      " Car tire 1"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/tire001c_car.mdl,15;show_menu props_urban3"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/tire001c_car.mdl,0;show_menu props_urban3"
 					"label"      " Car tire 2"
 			}
 			"3"
@@ -28270,22 +28270,22 @@
 			"Title"     "Concrete tracks"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/track_straight_192.mdl,37;show_menu props_street_tracks1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/track_straight_192.mdl,0;show_menu props_street_tracks1"
 					"label"      " Straight short"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/track_straight_512.mdl,37;show_menu props_street_tracks1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/track_straight_512.mdl,0;show_menu props_street_tracks1"
 					"label"      " Straight long"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/track_curve_01.mdl,37;show_menu props_street_tracks1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/track_curve_01.mdl,0;show_menu props_street_tracks1"
 					"label"      " Curve short"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/track_curve_02.mdl,37;show_menu props_street_tracks1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/track_curve_02.mdl,0;show_menu props_street_tracks1"
 					"label"      " Curve long"
 			}
 			"7"
@@ -28340,7 +28340,7 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_wasteland/powertower01.mdl,750;show_menu props_street2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_wasteland/powertower01.mdl,0;show_menu props_street2"
 					"label"      " Power tower"
 			}
 			"8"
@@ -28426,17 +28426,17 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_exteriors/oil_tank_large01.mdl,240;show_menu props_street3"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_exteriors/oil_tank_large01.mdl,0;show_menu props_street3"
 					"label"      " Giant oil tank"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/cranes/crane_frame.mdl,5;show_menu props_street3"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/cranes/crane_frame.mdl,0;show_menu props_street3"
 					"label"      " Rusty crane base"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_unique/rope_bridge.mdl,45;show_menu props_street3"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_unique/rope_bridge.mdl,0;show_menu props_street3"
 					"label"      " Rope bridge"
 			}
 			"7"
@@ -28471,7 +28471,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_highway/bridge_pier.mdl,390;show_menu props_street4"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_highway/bridge_pier.mdl,0;show_menu props_street4"
 					"label"      " Bridge pillar wide"
 			}
 			"3"
@@ -28481,12 +28481,12 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_exteriors/concrete_plant01_maintanks.mdl,-33;show_menu props_street4"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_exteriors/concrete_plant01_maintanks.mdl,0;show_menu props_street4"
 					"label"      " Concrete plant maintanks"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_exteriors/concrete_plant01_conveyors02.mdl,3;show_menu props_street4"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_exteriors/concrete_plant01_conveyors02.mdl,0;show_menu props_street4"
 					"label"      " Concrete plant conveyor"
 			}
 			"6"
@@ -28521,7 +28521,7 @@
 			"Title"     "More exterior stuff 5"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lighthouse/props/estuary_bridge_beams.mdl&models/lighthouse/props/estuary_bridge_corrug.mdl,130;show_menu props_street5"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lighthouse/props/estuary_bridge_beams.mdl&models/lighthouse/props/estuary_bridge_corrug.mdl,0;show_menu props_street5"
 					"label"      " Raise roof on beams"
 			}
 			"2"
@@ -28531,7 +28531,7 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_wasteland/rock_cliff01.mdl,240;show_menu props_street5"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_wasteland/rock_cliff01.mdl,0;show_menu props_street5"
 					"label"      " Giant cliff"
 			}
 			"4"
@@ -28546,7 +28546,7 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_unique/airport_greenhouse.mdl,205,-90;show_menu props_street5"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_unique/airport_greenhouse.mdl,0,-90;show_menu props_street5"
 					"label"      " Greenhouse frame"
 			}
 			
@@ -28572,32 +28572,32 @@
 			"Title"     "Food related (Fast food)"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_fastfoodcontainer01a.mdl,5;show_menu props_food1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_fastfoodcontainer01a.mdl,0;show_menu props_food1"
 					"label"      " Fast food container"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/garbage_hamburger_container.mdl,5;show_menu props_food1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/garbage_hamburger_container.mdl,0;show_menu props_food1"
 					"label"      " Hamburger box"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_frenchfrycup01a.mdl,5;show_menu props_food1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_frenchfrycup01a.mdl,0;show_menu props_food1"
 					"label"      " French fries box"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/garbage_pizza_box.mdl,5;show_menu props_food1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/garbage_pizza_box.mdl,0;show_menu props_food1"
 					"label"      " Pizza box"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/garbage_popcorn_tub.mdl,5;show_menu props_food1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/garbage_popcorn_tub.mdl,0;show_menu props_food1"
 					"label"      " Popcorn bucket"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/garbage_popcorn_box.mdl,5;show_menu props_food1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_fairgrounds/garbage_popcorn_box.mdl,0;show_menu props_food1"
 					"label"      " Popcorn box"
 			}
 			"7"
@@ -28634,27 +28634,27 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_beancan01a.mdl,3;show_menu props_food2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_beancan01a.mdl,0;show_menu props_food2"
 					"label"      " Bean can"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_beercan01a.mdl,3;show_menu props_food2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_beercan01a.mdl,0;show_menu props_food2"
 					"label"      " Beer can"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_glassbottle003a.mdl,7;show_menu props_food2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_glassbottle003a.mdl,0;show_menu props_food2"
 					"label"      " Beer bottle"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_coffeemug001a.mdl,5;show_menu props_food2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_coffeemug001a.mdl,0;show_menu props_food2"
 					"label"      " Coffee mug"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_coffeecup01a.mdl,5;show_menu props_food2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_coffeecup01a.mdl,0;show_menu props_food2"
 					"label"      " Coffee cup"
 			}
 			"7"
@@ -28686,27 +28686,27 @@
 			
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/petfoodbag01.mdl,5;show_menu props_food3"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/petfoodbag01.mdl,0;show_menu props_food3"
 					"label"      " Dog food"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_tunacan01a.mdl,2;show_menu props_food3"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_tunacan01a.mdl,0;show_menu props_food3"
 					"label"      " Tuna can"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_milkcarton002a.mdl,6;show_menu props_food3"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_milkcarton002a.mdl,0;show_menu props_food3"
 					"label"      " Milk cartoon"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_cerealbox02a.mdl,7;show_menu props_food3"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_cerealbox02a.mdl,0;show_menu props_food3"
 					"label"      " Cereal box 1"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_cerealbox01a.mdl,7;show_menu props_food3"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/garbage_cerealbox01a.mdl,0;show_menu props_food3"
 					"label"      " Cereal box 2"
 			}
 			"7"
@@ -29135,27 +29135,27 @@
 			"Title"		 "Brick pallets"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_industrial/brickpallets.mdl,33;show_menu brickpalletmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_industrial/brickpallets.mdl,0;show_menu brickpalletmenu"
 					"label"      " Brick pallets"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_industrial/brickpallets_break01.mdl,17;show_menu brickpalletmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_industrial/brickpallets_break01.mdl,0;show_menu brickpalletmenu"
 					"label"      " Brick pallets broken 1"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_industrial/brickpallets_break02.mdl,17;show_menu brickpalletmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_industrial/brickpallets_break02.mdl,0;show_menu brickpalletmenu"
 					"label"      " Brick pallets broken 2"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_industrial/brickpallets_break03.mdl,17;show_menu brickpalletmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_industrial/brickpallets_break03.mdl,0;show_menu brickpalletmenu"
 					"label"      " Brick pallets broken 3"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_industrial/brickpallets_break04.mdl,17;show_menu brickpalletmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_industrial/brickpallets_break04.mdl,0;show_menu brickpalletmenu"
 					"label"      " Brick pallets broken 4"
 			}
 
@@ -29196,32 +29196,32 @@
 		"Title"			"Concrete pillar"
 		"1"
 		{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/concretepillar01.mdl,65;show_menu concretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/concretepillar01.mdl,0;show_menu concretepillarmenu"
 					"label"      " Concrete pillar"
 		}
 		"2"
 		{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/concretepiller01_dm01.mdl,65;show_menu concretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/concretepiller01_dm01.mdl,0;show_menu concretepillarmenu"
 					"label"      " Concrete pillar damaged"
 		}
 		"3"
 		{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/concretepiller01_dm01_1.mdl,7;show_menu concretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/concretepiller01_dm01_1.mdl,0;show_menu concretepillarmenu"
 					"label"      " Concrete pillar damaged_1"
 		}
 		"4"
 		{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/concretepiller01_dm01_2.mdl,33;show_menu concretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/concretepiller01_dm01_2.mdl,0;show_menu concretepillarmenu"
 					"label"      " Concrete pillar damaged_2"
 		}
 		"5"
 		{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/concretepiller01_dm01_3.mdl,33;show_menu concretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/concretepiller01_dm01_3.mdl,0;show_menu concretepillarmenu"
 					"label"      " Concrete pillar damaged_3"
 		}
 		"6"
 		{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/concretepiller01_dm01_4.mdl,3;show_menu concretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/concretepiller01_dm01_4.mdl,0;show_menu concretepillarmenu"
 					"label"      " Concrete pillar damaged_4"
 		}
 		"7"
@@ -29246,17 +29246,17 @@
 		"Title"			"Steel beam"
 		"1"
 		{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/ibeam_breakable01.mdl,61;show_menu ibeam_breakablemenu"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/ibeam_breakable01.mdl,0;show_menu ibeam_breakablemenu"
 					"label"      " Steel beam"
 		}
 		"2"
 		{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/ibeam_breakable01_damaged01.mdl,61;show_menu ibeam_breakablemenu"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/ibeam_breakable01_damaged01.mdl,0;show_menu ibeam_breakablemenu"
 					"label"      " Steel beam damaged 01"
 		}
 		"3"
 		{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/ibeam_breakable01_damaged02.mdl,27;show_menu ibeam_breakablemenu"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_interiors/ibeam_breakable01_damaged02.mdl,0;show_menu ibeam_breakablemenu"
 					"label"      " Steel beam damaged 02"
 		}
 		"7"
@@ -29361,7 +29361,7 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/trashdumpster02.mdl,65;show_menu props_containers1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_junk/trashdumpster02.mdl,0;show_menu props_containers1"
 					"label"      " Dumpster container 2"
 			}
 			"8"
@@ -29392,12 +29392,12 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_foliage/tree_trunk.mdl,30;show_menu tree_trunkmenu1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_foliage/tree_trunk.mdl,0;show_menu tree_trunkmenu1"
 					"label"      " Tree trunk base"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_foliage/tree_trunk_chunk01.mdl,22;show_menu tree_trunkmenu1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_foliage/tree_trunk_chunk01.mdl,0;show_menu tree_trunkmenu1"
 					"label"      " Tree trunk chunk 1"
 			}
 			"5"
@@ -29407,7 +29407,7 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_foliage/tree_trunk_chunk03.mdl,27;show_menu tree_trunkmenu1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_foliage/tree_trunk_chunk03.mdl,0;show_menu tree_trunkmenu1"
 					"label"      " Tree trunk chunk 3"
 			}
 
@@ -29444,12 +29444,12 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_foliage/tree_trunk_chunk05.mdl,32;show_menu tree_trunkmenu2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_foliage/tree_trunk_chunk05.mdl,0;show_menu tree_trunkmenu2"
 					"label"      " Tree trunk chunk 5"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_foliage/tree_trunk_chunk06.mdl,30;show_menu tree_trunkmenu2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_foliage/tree_trunk_chunk06.mdl,0;show_menu tree_trunkmenu2"
 					"label"      " Tree trunk chunk 6"
 			}
 			
@@ -29738,12 +29738,12 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_wasteland/exterior_fence002c.mdl,50;show_menu props_exteriors1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_wasteland/exterior_fence002c.mdl,0;show_menu props_exteriors1"
 					"label"      " Metal fence 2"
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_update/whitebrick_128.mdl,7;show_menu props_exteriors1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_update/whitebrick_128.mdl,0;show_menu props_exteriors1"
 					"label"      " White brick wall (horizontal)"
 			}
 			"8"
@@ -29829,12 +29829,12 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_industrial/construction_crane.mdl&models/props_industrial/construction_crane_leverbody.mdl&models/props_industrial/construction_crane_leverhandle.mdl&models/props_industrial/construction_crane_windows.mdl,723;show_menu props_industrial1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_industrial/construction_crane.mdl&models/props_industrial/construction_crane_leverbody.mdl&models/props_industrial/construction_crane_leverhandle.mdl&models/props_industrial/construction_crane_windows.mdl,0;show_menu props_industrial1"
 					"label"      " Crane"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_industrial/dumpsterconstruction01.mdl,64;show_menu props_industrial1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_industrial/dumpsterconstruction01.mdl,0;show_menu props_industrial1"
 					"label"      " Dumpster with crane part"
 			}
 			"5"
@@ -30210,22 +30210,22 @@
 			"Title"     "props_swamp1"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_swamp/boardwalk_rail_256_break.mdl,40;show_menu props_swamp1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_swamp/boardwalk_rail_256_break.mdl,0;show_menu props_swamp1"
 					"label"      " boardwalk_rail_256_break"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_swamp/boardwalk_rail_chunk01.mdl,40;show_menu props_swamp1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_swamp/boardwalk_rail_chunk01.mdl,0;show_menu props_swamp1"
 					"label"      " boardwalk_rail_chunk01"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_swamp/boardwalk_rail_chunk02.mdl,40;show_menu props_swamp1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_swamp/boardwalk_rail_chunk02.mdl,0;show_menu props_swamp1"
 					"label"      " boardwalk_rail_chunk02"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_swamp/boardwalk_rail_chunk03.mdl,40;show_menu props_swamp1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_swamp/boardwalk_rail_chunk03.mdl,0;show_menu props_swamp1"
 					"label"      " boardwalk_rail_chunk03"
 			}
 			"5"
@@ -30608,12 +30608,12 @@
 			"Title"     "Windows"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_windows/window_farmhouse_small.mdl,36;show_menu props_windows1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_windows/window_farmhouse_small.mdl,0;show_menu props_windows1"
 					"label"      " Small window"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_windows/window_farmhouse_big.mdl,42;show_menu props_windows1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_windows/window_farmhouse_big.mdl,0;show_menu props_windows1"
 					"label"      " Big window"
 			}
 			"3"
@@ -30690,27 +30690,27 @@
 			"Title"     "Windows"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/cs_militia/militiawindow02_breakable.mdl,37;show_menu props_windowsmilitia1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/cs_militia/militiawindow02_breakable.mdl,0;show_menu props_windowsmilitia1"
 					"label"      " Militia window"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/cs_militia/militiawindow02_breakable_chunk_01.mdl,37;show_menu props_windowsmilitia1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/cs_militia/militiawindow02_breakable_chunk_01.mdl,0;show_menu props_windowsmilitia1"
 					"label"      " Militia window chunk 1"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/cs_militia/militiawindow02_breakable_chunk_02.mdl,12;show_menu props_windowsmilitia1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/cs_militia/militiawindow02_breakable_chunk_02.mdl,0;show_menu props_windowsmilitia1"
 					"label"      " Militia window chunk 2"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/cs_militia/militiawindow02_breakable_chunk_03.mdl,37;show_menu props_windowsmilitia1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/cs_militia/militiawindow02_breakable_chunk_03.mdl,0;show_menu props_windowsmilitia1"
 					"label"      " Militia window chunk 3"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/cs_militia/militiawindow02_breakable_chunk_04.mdl,12;show_menu props_windowsmilitia1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/cs_militia/militiawindow02_breakable_chunk_04.mdl,0;show_menu props_windowsmilitia1"
 					"label"      " Militia window chunk 4"
 			}
 			"7"
@@ -30736,7 +30736,7 @@
 			"Title"     "Doors 1"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_doors/shackwall01.mdl,11;show_menu props_doors1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_doors/shackwall01.mdl,0;show_menu props_doors1"
 					"label"      " Wooden barn door"
 			}
 			"2"
@@ -30796,7 +30796,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func door,models/props_downtown/metal_door_112.mdl,-8;show_menu props_doors2"
+					"command"    "play buttons/button14;scripted_user_func door,models/props_downtown/metal_door_112.mdl,0;show_menu props_doors2"
 					"label"      " Metal door 2"
 			}
 			"3"
@@ -31149,12 +31149,12 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_unique/subwaycar_all_onetexture_sidedoorb.mdl,50;show_menu props_unique2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_unique/subwaycar_all_onetexture_sidedoorb.mdl,0;show_menu props_unique2"
 					"label"      " Subway train side door"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_unique/subwaycar_all_onetexture_enddoorb.mdl,50;show_menu props_unique2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_unique/subwaycar_all_onetexture_enddoorb.mdl,0;show_menu props_unique2"
 					"label"      " Subway train rear door"
 			}
 			"6"
@@ -31259,7 +31259,7 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/de_nuke/nuklogo.mdl,185;show_menu props_signs1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props/de_nuke/nuklogo.mdl,0;show_menu props_signs1"
 					"label"      " nuklogo"
 			}
 			"7"
@@ -31344,22 +31344,22 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_highway/highway_sign004.mdl,24;show_menu props_signs_highway1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_highway/highway_sign004.mdl,0;show_menu props_signs_highway1"
 					"label"      " Sign 4"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_highway/highway_sign005.mdl,20;show_menu props_signs_highway1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_highway/highway_sign005.mdl,0;show_menu props_signs_highway1"
 					"label"      " Sign 5"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_highway/highway_sign006.mdl,8;show_menu props_signs_highway1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_highway/highway_sign006.mdl,0;show_menu props_signs_highway1"
 					"label"      " Sign 6"
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_highway/highway_sign007.mdl,8;show_menu props_signs_highway1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_highway/highway_sign007.mdl,0;show_menu props_signs_highway1"
 					"label"      " Sign 7"
 			}
 			
@@ -31436,32 +31436,32 @@
 			
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/sailboat.mdl,40;show_menu props_boats1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/sailboat.mdl,0;show_menu props_boats1"
 					"label"      " Sail boat"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lostcoast/props_wasteland/boat_fishing01a.mdl,97;show_menu props_boats1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lostcoast/props_wasteland/boat_fishing01a.mdl,0;show_menu props_boats1"
 					"label"      " Big Fishing boat 1"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/boat_fishing02_static.mdl,360;show_menu props_boats1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/boat_fishing02_static.mdl,0;show_menu props_boats1"
 					"label"      " Big Fishing boat 2"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lostcoast/props_wasteland/boat_drydock01a.mdl,141;show_menu props_boats1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lostcoast/props_wasteland/boat_drydock01a.mdl,0;show_menu props_boats1"
 					"label"      " Rusty big boat"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/boat001.mdl,38;show_menu props_boats1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/boat001.mdl,0;show_menu props_boats1"
 					"label"      " Boat 1"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/boat002.mdl,18;show_menu props_boats1"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_urban/boat002.mdl,0;show_menu props_boats1"
 					"label"      " Boat 2"
 			}
 			"7"
@@ -31492,32 +31492,32 @@
 
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/boat_ski.mdl&models/props_vehicles/boat_ski_glass.mdl,18;show_menu props_boats2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/boat_ski.mdl&models/props_vehicles/boat_ski_glass.mdl,0;show_menu props_boats2"
 					"label"      " Speed boat"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/boat_smash.mdl&models/props_vehicles/boat_ski_glass.mdl,18;show_menu props_boats2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/boat_smash.mdl&models/props_vehicles/boat_ski_glass.mdl,0;show_menu props_boats2"
 					"label"      " Speed boat(breakable)"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lostcoast/props_wasteland/boat_wooden01a.mdl,32;show_menu props_boats2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lostcoast/props_wasteland/boat_wooden01a.mdl,0;show_menu props_boats2"
 					"label"      " Wooden boat 1"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lostcoast/props_wasteland/boat_wooden02a.mdl,32;show_menu props_boats2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lostcoast/props_wasteland/boat_wooden02a.mdl,0;show_menu props_boats2"
 					"label"      " Wooden boat 2"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lostcoast/props_wasteland/boat_wooden03a.mdl,32;show_menu props_boats2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/lostcoast/props_wasteland/boat_wooden03a.mdl,0;show_menu props_boats2"
 					"label"      " Wooden boat 3"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_canal/boat001a.mdl,22;show_menu props_boats2"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_canal/boat001a.mdl,0;show_menu props_boats2"
 					"label"      " Swamp boat"
 			}
 			"7"
@@ -31764,12 +31764,12 @@
 			}
 			"2"
 			{
-					"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/boat_cabin35ft.mdl&models/props_vehicles/boat_cabin35ft_glass.mdl,35;show_menu props_vehicles4"
+					"command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/boat_cabin35ft.mdl&models/props_vehicles/boat_cabin35ft_glass.mdl,0;show_menu props_vehicles4"
                     "label"		 " Boat 35ft2" 
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/boat_trailer35ft.mdl,57;show_menu props_vehicles4"
+					"command"    "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/boat_trailer35ft.mdl,0;show_menu props_vehicles4"
 					"label"      " Boat trailer 35ft2"
 			}
 			"4"
@@ -31935,32 +31935,32 @@
 			"Title"     "Junkyard cars 1"
 			"1"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/car001a_hatchback.mdl,26;show_menu props_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/car001a_hatchback.mdl,0;show_menu props_vehicles_junk1"
                     "label"		 " Hatchback 1" 
             }
 			"2"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/car001b_hatchback.mdl,22;show_menu props_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/car001b_hatchback.mdl,0;show_menu props_vehicles_junk1"
                     "label"		 " Hatchback 2" 
             }
 			"3"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/car002a.mdl,25;show_menu props_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/car002a.mdl,0;show_menu props_vehicles_junk1"
                     "label"		 " Old car 1" 
             }
 			"4"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/car002b.mdl,22;show_menu props_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/car002b.mdl,0;show_menu props_vehicles_junk1"
                     "label"		 " Old car 2" 
             }
 			"5"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/car003a.mdl,24;show_menu props_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/car003a.mdl,0;show_menu props_vehicles_junk1"
                     "label"		 " Sedan 1" 
             }
 			"6"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/car003b.mdl,24;show_menu props_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/car003b.mdl,0;show_menu props_vehicles_junk1"
                     "label"		 " Sedan 2" 
             }
 			"7"
@@ -31990,22 +31990,22 @@
 			"Title"     "Junkyard cars 2"
 			"1"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/car004a.mdl,26;show_menu props_vehicles_junk2"
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/car004a.mdl,0;show_menu props_vehicles_junk2"
                     "label"		 " Sedan 3" 
             }
 			"2"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/car004b.mdl,25;show_menu props_vehicles_junk2"
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/car004b.mdl,0;show_menu props_vehicles_junk2"
                     "label"		 " Sedan 4" 
             }
 			"3"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/car005a.mdl,27;show_menu props_vehicles_junk2"
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/car005a.mdl,0;show_menu props_vehicles_junk2"
                     "label"		 " Sedan 5"  
             }
 			"4"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/car005b.mdl,23;show_menu props_vehicles_junk2"
+                    "command"	 "play buttons/button14;scripted_user_func prop,dynamic,models/props_vehicles/car005b.mdl,0;show_menu props_vehicles_junk2"
                     "label"		 " Sedan 6"  
             }
            
@@ -32835,7 +32835,7 @@
 			}
 			"4"
 			{
-					"command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/fire_escape_upper.mdl,130,0,750;show_menu phys_props_furniture_stairs2"
+					"command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/fire_escape_upper.mdl,0,0,750;show_menu phys_props_furniture_stairs2"
 					"label"		 " Fire escape single, w/ platform" 
 			}
 			"7"
@@ -33245,7 +33245,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/b_waterwheel01.mdl,150;show_menu phys_props_laststand1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/b_waterwheel01.mdl,0;show_menu phys_props_laststand1"
 					"label"      " Waterwheel"
 			}
 			"3"
@@ -33306,17 +33306,17 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/checkpoint_door_lighthouse01.mdl&models/lighthouse/checkpoint_door_lighthouse01_metal.mdl,55;show_menu phys_props_laststand2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/checkpoint_door_lighthouse01.mdl&models/lighthouse/checkpoint_door_lighthouse01_metal.mdl,0;show_menu phys_props_laststand2"
 					"label"      " Saferoom door 1"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/checkpoint_door_lighthouse02.mdl&models/lighthouse/checkpoint_door_lighthouse02_metal.mdl,55;show_menu phys_props_laststand2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/checkpoint_door_lighthouse02.mdl&models/lighthouse/checkpoint_door_lighthouse02_metal.mdl,0;show_menu phys_props_laststand2"
 					"label"      " Saferoom door 2"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/we_dont_go.mdl,22;show_menu phys_props_laststand2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/we_dont_go.mdl,0;show_menu phys_props_laststand2"
 					"label"      " -We dont go- board'"
 			}
 			"6"
@@ -33407,7 +33407,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/de_train/de_train_horizontalcoolingtank_nophong.mdl,60;show_menu phys_props_laststand3"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/de_train/de_train_horizontalcoolingtank_nophong.mdl,0;show_menu phys_props_laststand3"
 					"label"      " Coolingtank H"
 			}
 			"7"
@@ -33432,32 +33432,32 @@
 			"Title"     "Debris 1"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_debris/wood_board04a.mdl,35;show_menu phys_props_debris1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_debris/wood_board04a.mdl,0;show_menu phys_props_debris1"
 					"label"      " Wooden board 1"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_debris/wood_board05a.mdl,71;show_menu phys_props_debris1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_debris/wood_board05a.mdl,0;show_menu phys_props_debris1"
 					"label"      " Wooden board 2"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_debris/concrete_debris256pile001a.mdl,22;show_menu phys_props_debris1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_debris/concrete_debris256pile001a.mdl,0;show_menu phys_props_debris1"
 					"label"      " Concrete debris 1"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_debris/concrete_debris256barricade001a.mdl,22;show_menu phys_props_debris1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_debris/concrete_debris256barricade001a.mdl,0;show_menu phys_props_debris1"
 					"label"      " Concrete debris 2"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_debris/concrete_debris128pile001b.mdl,11;show_menu phys_props_debris1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_debris/concrete_debris128pile001b.mdl,0;show_menu phys_props_debris1"
 					"label"      " Concrete debris 3"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_debris/concrete_debris128pile001a.mdl,11;show_menu phys_props_debris1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_debris/concrete_debris128pile001a.mdl,0;show_menu phys_props_debris1"
 					"label"      " Concrete debris 4"
 			}
 			"7"
@@ -33574,12 +33574,12 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/wood_crate001a.mdl,20;show_menu phys_props_barrels1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/wood_crate001a.mdl,0;show_menu phys_props_barrels1"
 					"label"      " Single wooden crate"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/wood_crate002a.mdl,20;show_menu phys_props_barrels1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/wood_crate002a.mdl,0;show_menu phys_props_barrels1"
 					"label"      " Double wooden crate"
 			}
 			"7"
@@ -33615,7 +33615,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_crates/supply_crate02.mdl,8;show_menu phys_props_barrels2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_crates/supply_crate02.mdl,0;show_menu phys_props_barrels2"
 					"label"      " Supply crate"
 			}
 			"3"
@@ -33666,7 +33666,7 @@
 			"Title"     "Plants 1"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_plants/planthanging01.mdl,12;show_menu phys_props_plants1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_plants/planthanging01.mdl,0;show_menu phys_props_plants1"
 					"label"      " Hanging plant"
 			}
 			"2"
@@ -34558,12 +34558,12 @@
 			
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/tire001.mdl,18;show_menu phys_props_urban3"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/tire001.mdl,0;show_menu phys_props_urban3"
 					"label"      " Car tire 1"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/tire001c_car.mdl,15;show_menu phys_props_urban3"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/tire001c_car.mdl,0;show_menu phys_props_urban3"
 					"label"      " Car tire 2"
 			}
 			"3"
@@ -34968,22 +34968,22 @@
 			"Title"     "Concrete tracks"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/track_straight_192.mdl,37;show_menu phys_props_street_tracks1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/track_straight_192.mdl,0;show_menu phys_props_street_tracks1"
 					"label"      " Straight short"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/track_straight_512.mdl,37;show_menu phys_props_street_tracks1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/track_straight_512.mdl,0;show_menu phys_props_street_tracks1"
 					"label"      " Straight long"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/track_curve_01.mdl,37;show_menu phys_props_street_tracks1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/track_curve_01.mdl,0;show_menu phys_props_street_tracks1"
 					"label"      " Curve short"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/track_curve_02.mdl,37;show_menu phys_props_street_tracks1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/track_curve_02.mdl,0;show_menu phys_props_street_tracks1"
 					"label"      " Curve long"
 			}
 			"7"
@@ -35038,7 +35038,7 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_wasteland/powertower01.mdl,750,0,150;show_menu phys_props_street2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_wasteland/powertower01.mdl,0,0,150;show_menu phys_props_street2"
 					"label"      " Power tower"
 			}
 			"8"
@@ -35124,17 +35124,17 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_exteriors/oil_tank_large01.mdl,240;show_menu phys_props_street3"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_exteriors/oil_tank_large01.mdl,0;show_menu phys_props_street3"
 					"label"      " Giant oil tank"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/cranes/crane_frame.mdl,5;show_menu phys_props_street3"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/cranes/crane_frame.mdl,0;show_menu phys_props_street3"
 					"label"      " Rusty crane base"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_unique/rope_bridge.mdl,45;show_menu phys_props_street3"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_unique/rope_bridge.mdl,0;show_menu phys_props_street3"
 					"label"      " Rope bridge"
 			}
 			"7"
@@ -35169,7 +35169,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_highway/bridge_pier.mdl,390;show_menu phys_props_street4"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_highway/bridge_pier.mdl,0;show_menu phys_props_street4"
 					"label"      " Bridge pillar wide"
 			}
 			"3"
@@ -35179,12 +35179,12 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_exteriors/concrete_plant01_maintanks.mdl,-33;show_menu phys_props_street4"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_exteriors/concrete_plant01_maintanks.mdl,0;show_menu phys_props_street4"
 					"label"      " Concrete plant maintanks"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_exteriors/concrete_plant01_conveyors02.mdl,3;show_menu phys_props_street4"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_exteriors/concrete_plant01_conveyors02.mdl,0;show_menu phys_props_street4"
 					"label"      " Concrete plant conveyor"
 			}
 			"6"
@@ -35219,7 +35219,7 @@
 			"Title"     "More exterior stuff 5"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/props/estuary_bridge_beams.mdl&models/lighthouse/props/estuary_bridge_corrug.mdl,130;show_menu phys_props_street5"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/props/estuary_bridge_beams.mdl&models/lighthouse/props/estuary_bridge_corrug.mdl,0;show_menu phys_props_street5"
 					"label"      " Raise roof on beams"
 			}
 			"2"
@@ -35229,7 +35229,7 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_wasteland/rock_cliff01.mdl,240,0,25;show_menu phys_props_street5"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_wasteland/rock_cliff01.mdl,0,0,25;show_menu phys_props_street5"
 					"label"      " Giant cliff"
 			}
 			"4"
@@ -35244,7 +35244,7 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_unique/airport_greenhouse.mdl,205,-90;show_menu phys_props_street5"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_unique/airport_greenhouse.mdl,0,-90;show_menu phys_props_street5"
 					"label"      " Greenhouse frame"
 			}
 			"7"
@@ -35370,32 +35370,32 @@
 			"Title"     "Food related (Fast food)"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_fastfoodcontainer01a.mdl,5;show_menu phys_props_food1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_fastfoodcontainer01a.mdl,0;show_menu phys_props_food1"
 					"label"      " Fast food container"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/garbage_hamburger_container.mdl,5;show_menu phys_props_food1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/garbage_hamburger_container.mdl,0;show_menu phys_props_food1"
 					"label"      " Hamburger box"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_frenchfrycup01a.mdl,5;show_menu phys_props_food1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_frenchfrycup01a.mdl,0;show_menu phys_props_food1"
 					"label"      " French fries box"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/garbage_pizza_box.mdl,5;show_menu phys_props_food1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/garbage_pizza_box.mdl,0;show_menu phys_props_food1"
 					"label"      " Pizza box"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/garbage_popcorn_tub.mdl,5;show_menu phys_props_food1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/garbage_popcorn_tub.mdl,0;show_menu phys_props_food1"
 					"label"      " Popcorn bucket"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/garbage_popcorn_box.mdl,5;show_menu phys_props_food1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_fairgrounds/garbage_popcorn_box.mdl,0;show_menu phys_props_food1"
 					"label"      " Popcorn box"
 			}
 			"7"
@@ -35432,27 +35432,27 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_beancan01a.mdl,3;show_menu phys_props_food2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_beancan01a.mdl,0;show_menu phys_props_food2"
 					"label"      " Bean can"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_beercan01a.mdl,3;show_menu phys_props_food2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_beercan01a.mdl,0;show_menu phys_props_food2"
 					"label"      " Beer can"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_glassbottle003a.mdl,7;show_menu phys_props_food2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_glassbottle003a.mdl,0;show_menu phys_props_food2"
 					"label"      " Beer bottle"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_coffeemug001a.mdl,5;show_menu phys_props_food2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_coffeemug001a.mdl,0;show_menu phys_props_food2"
 					"label"      " Coffee mug"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_coffeecup01a.mdl,5;show_menu phys_props_food2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_coffeecup01a.mdl,0;show_menu phys_props_food2"
 					"label"      " Coffee cup"
 			}
 			"7"
@@ -35489,22 +35489,22 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_tunacan01a.mdl,2;show_menu phys_props_food3"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_tunacan01a.mdl,0;show_menu phys_props_food3"
 					"label"      " Tuna can"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_milkcarton002a.mdl,7;show_menu phys_props_food3"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_milkcarton002a.mdl,0;show_menu phys_props_food3"
 					"label"      " Milk cartoon"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_cerealbox02a.mdl,7;show_menu phys_props_food3"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_cerealbox02a.mdl,0;show_menu phys_props_food3"
 					"label"      " Cereal box 1"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_cerealbox01a.mdl,7;show_menu phys_props_food3"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/garbage_cerealbox01a.mdl,0;show_menu phys_props_food3"
 					"label"      " Cereal box 2"
 			}
 			"7"
@@ -35832,27 +35832,27 @@
 			"Title"		 "Brick pallets"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_industrial/brickpallets.mdl,33;show_menu phys_brickpalletmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_industrial/brickpallets.mdl,0;show_menu phys_brickpalletmenu"
 					"label"      " Brick pallets"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_industrial/brickpallets_break01.mdl,17;show_menu phys_brickpalletmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_industrial/brickpallets_break01.mdl,0;show_menu phys_brickpalletmenu"
 					"label"      " Brick pallets broken 1"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_industrial/brickpallets_break02.mdl,17;show_menu phys_brickpalletmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_industrial/brickpallets_break02.mdl,0;show_menu phys_brickpalletmenu"
 					"label"      " Brick pallets broken 2"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_industrial/brickpallets_break03.mdl,17;show_menu phys_brickpalletmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_industrial/brickpallets_break03.mdl,0;show_menu phys_brickpalletmenu"
 					"label"      " Brick pallets broken 3"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_industrial/brickpallets_break04.mdl,17;show_menu phys_brickpalletmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_industrial/brickpallets_break04.mdl,0;show_menu phys_brickpalletmenu"
 					"label"      " Brick pallets broken 4"
 			}
 
@@ -35893,32 +35893,32 @@
 		"Title"			"Concrete pillar"
 		"1"
 		{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/concretepillar01.mdl,65;show_menu phys_concretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/concretepillar01.mdl,0;show_menu phys_concretepillarmenu"
 					"label"      " Concrete pillar"
 		}
 		"2"
 		{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/concretepiller01_dm01.mdl,65;show_menu phys_concretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/concretepiller01_dm01.mdl,0;show_menu phys_concretepillarmenu"
 					"label"      " Concrete pillar damaged"
 		}
 		"3"
 		{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/concretepiller01_dm01_1.mdl,7;show_menu phys_concretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/concretepiller01_dm01_1.mdl,0;show_menu phys_concretepillarmenu"
 					"label"      " Concrete pillar damaged_1"
 		}
 		"4"
 		{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/concretepiller01_dm01_2.mdl,33;show_menu phys_concretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/concretepiller01_dm01_2.mdl,0;show_menu phys_concretepillarmenu"
 					"label"      " Concrete pillar damaged_2"
 		}
 		"5"
 		{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/concretepiller01_dm01_3.mdl,33;show_menu phys_concretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/concretepiller01_dm01_3.mdl,0;show_menu phys_concretepillarmenu"
 					"label"      " Concrete pillar damaged_3"
 		}
 		"6"
 		{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/concretepiller01_dm01_4.mdl,3;show_menu phys_concretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/concretepiller01_dm01_4.mdl,0;show_menu phys_concretepillarmenu"
 					"label"      " Concrete pillar damaged_4"
 		}
 		"7"
@@ -35943,17 +35943,17 @@
 		"Title"			"Steel beam"
 		"1"
 		{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/ibeam_breakable01.mdl,61;show_menu phys_ibeam_breakablemenu"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/ibeam_breakable01.mdl,0;show_menu phys_ibeam_breakablemenu"
 					"label"      " Steel beam"
 		}
 		"2"
 		{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/ibeam_breakable01_damaged01.mdl,61;show_menu phys_ibeam_breakablemenu"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/ibeam_breakable01_damaged01.mdl,0;show_menu phys_ibeam_breakablemenu"
 					"label"      " Steel beam damaged 01"
 		}
 		"3"
 		{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/ibeam_breakable01_damaged02.mdl,27;show_menu phys_ibeam_breakablemenu"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_interiors/ibeam_breakable01_damaged02.mdl,0;show_menu phys_ibeam_breakablemenu"
 					"label"      " Steel beam damaged 02"
 		}
 		"7"
@@ -36058,7 +36058,7 @@
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/trashdumpster02.mdl,65;show_menu phys_props_containers1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_junk/trashdumpster02.mdl,0;show_menu phys_props_containers1"
 					"label"      " Dumpster container 2"
 			}
 			"8"
@@ -36089,12 +36089,12 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_foliage/tree_trunk.mdl,30;show_menu phys_tree_trunkmenu1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_foliage/tree_trunk.mdl,0;show_menu phys_tree_trunkmenu1"
 					"label"      " Tree trunk base"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_foliage/tree_trunk_chunk01.mdl,22;show_menu phys_tree_trunkmenu1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_foliage/tree_trunk_chunk01.mdl,0;show_menu phys_tree_trunkmenu1"
 					"label"      " Tree trunk chunk 1"
 			}
 			"5"
@@ -36104,7 +36104,7 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_foliage/tree_trunk_chunk03.mdl,27;show_menu phys_tree_trunkmenu1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_foliage/tree_trunk_chunk03.mdl,0;show_menu phys_tree_trunkmenu1"
 					"label"      " Tree trunk chunk 3"
 			}
 
@@ -36141,12 +36141,12 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_foliage/tree_trunk_chunk05.mdl,32;show_menu phys_tree_trunkmenu2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_foliage/tree_trunk_chunk05.mdl,0;show_menu phys_tree_trunkmenu2"
 					"label"      " Tree trunk chunk 5"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_foliage/tree_trunk_chunk06.mdl,30;show_menu phys_tree_trunkmenu2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_foliage/tree_trunk_chunk06.mdl,0;show_menu phys_tree_trunkmenu2"
 					"label"      " Tree trunk chunk 6"
 			}
 			
@@ -36435,12 +36435,12 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_wasteland/exterior_fence002c.mdl,50;show_menu phys_props_exteriors1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_wasteland/exterior_fence002c.mdl,0;show_menu phys_props_exteriors1"
 					"label"      " Metal fence 2"
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_update/whitebrick_128.mdl,7;show_menu phys_props_exteriors1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_update/whitebrick_128.mdl,0;show_menu phys_props_exteriors1"
 					"label"      " White brick wall (horizontal)"
 			}
 			"8"
@@ -36526,12 +36526,12 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_industrial/construction_crane.mdl&models/props_industrial/construction_crane_leverbody.mdl&models/props_industrial/construction_crane_leverhandle.mdl&models/props_industrial/construction_crane_windows.mdl,723;show_menu phys_props_industrial1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_industrial/construction_crane.mdl&models/props_industrial/construction_crane_leverbody.mdl&models/props_industrial/construction_crane_leverhandle.mdl&models/props_industrial/construction_crane_windows.mdl,0;show_menu phys_props_industrial1"
 					"label"      " Crane"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_industrial/dumpsterconstruction01.mdl,64;show_menu phys_props_industrial1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_industrial/dumpsterconstruction01.mdl,0;show_menu phys_props_industrial1"
 					"label"      " Dumpster with crane part"
 			}
 			"5"
@@ -36910,22 +36910,22 @@
 			"Title"     "phys_props_swamp1"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_swamp/boardwalk_rail_256_break.mdl,40;show_menu phys_props_swamp1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_swamp/boardwalk_rail_256_break.mdl,0;show_menu phys_props_swamp1"
 					"label"      " boardwalk_rail_256_break"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_swamp/boardwalk_rail_chunk01.mdl,40;show_menu phys_props_swamp1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_swamp/boardwalk_rail_chunk01.mdl,0;show_menu phys_props_swamp1"
 					"label"      " boardwalk_rail_chunk01"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_swamp/boardwalk_rail_chunk02.mdl,40;show_menu phys_props_swamp1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_swamp/boardwalk_rail_chunk02.mdl,0;show_menu phys_props_swamp1"
 					"label"      " boardwalk_rail_chunk02"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_swamp/boardwalk_rail_chunk03.mdl,40;show_menu phys_props_swamp1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_swamp/boardwalk_rail_chunk03.mdl,0;show_menu phys_props_swamp1"
 					"label"      " boardwalk_rail_chunk03"
 			}
 			"5"
@@ -37308,12 +37308,12 @@
 			"Title"     "Windows"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_windows/window_farmhouse_small.mdl,36;show_menu phys_props_windows1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_windows/window_farmhouse_small.mdl,0;show_menu phys_props_windows1"
 					"label"      " Small window"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_windows/window_farmhouse_big.mdl,42;show_menu phys_props_windows1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_windows/window_farmhouse_big.mdl,0;show_menu phys_props_windows1"
 					"label"      " Big window"
 			}
 			"3"
@@ -37390,27 +37390,27 @@
 			"Title"     "Windows"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/cs_militia/militiawindow02_breakable.mdl,37;show_menu phys_props_windowsmilitia1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/cs_militia/militiawindow02_breakable.mdl,0;show_menu phys_props_windowsmilitia1"
 					"label"      " Militia window"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/cs_militia/militiawindow02_breakable_chunk_01.mdl,37;show_menu phys_props_windowsmilitia1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/cs_militia/militiawindow02_breakable_chunk_01.mdl,0;show_menu phys_props_windowsmilitia1"
 					"label"      " Militia window chunk 1"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/cs_militia/militiawindow02_breakable_chunk_02.mdl,12;show_menu phys_props_windowsmilitia1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/cs_militia/militiawindow02_breakable_chunk_02.mdl,0;show_menu phys_props_windowsmilitia1"
 					"label"      " Militia window chunk 2"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/cs_militia/militiawindow02_breakable_chunk_03.mdl,37;show_menu phys_props_windowsmilitia1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/cs_militia/militiawindow02_breakable_chunk_03.mdl,0;show_menu phys_props_windowsmilitia1"
 					"label"      " Militia window chunk 3"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/cs_militia/militiawindow02_breakable_chunk_04.mdl,12;show_menu phys_props_windowsmilitia1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/cs_militia/militiawindow02_breakable_chunk_04.mdl,0;show_menu phys_props_windowsmilitia1"
 					"label"      " Militia window chunk 4"
 			}
 			"7"
@@ -37436,32 +37436,32 @@
 			"Title"     "Doors 1"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_doors/shackwall01.mdl,11;show_menu phys_props_doors1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_doors/shackwall01.mdl,0;show_menu phys_props_doors1"
 					"label"      " Wooden barn door"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_doors/doormainmetal01.mdl,55;show_menu phys_props_doors1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_doors/doormainmetal01.mdl,0;show_menu phys_props_doors1"
 					"label"      " Metal door 1"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_doors/doormain01.mdl,55;show_menu phys_props_doors1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_doors/doormain01.mdl,0;show_menu phys_props_doors1"
 					"label"      " Wooden door"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_doors/doorglassmain01.mdl,55;show_menu phys_props_doors1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_doors/doorglassmain01.mdl,0;show_menu phys_props_doors1"
 					"label"      " Metal door with window 1"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_doors/doormainmetalwindow01.mdl,55;show_menu phys_props_doors1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_doors/doormainmetalwindow01.mdl,0;show_menu phys_props_doors1"
 					"label"      " Metal door with window 2"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_doors/doorfreezer01.mdl,55;show_menu phys_props_doors1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_doors/doorfreezer01.mdl,0;show_menu phys_props_doors1"
 					"label"      " Freezer door"
 			}
 			"7"
@@ -37506,12 +37506,12 @@
 		    }
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/checkpoint_door_lighthouse01.mdl&models/lighthouse/checkpoint_door_lighthouse01_metal.mdl,55;show_menu phys_props_doors2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/checkpoint_door_lighthouse01.mdl&models/lighthouse/checkpoint_door_lighthouse01_metal.mdl,0;show_menu phys_props_doors2"
 					"label"      " Saferoom door 1 (The Last Stand)"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/checkpoint_door_lighthouse02.mdl&models/lighthouse/checkpoint_door_lighthouse02_metal.mdl,55;show_menu phys_props_doors2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lighthouse/checkpoint_door_lighthouse02.mdl&models/lighthouse/checkpoint_door_lighthouse02_metal.mdl,0;show_menu phys_props_doors2"
 					"label"      " Saferoom door 2 (The Last Stand)"
 			}
 			"7"
@@ -37849,12 +37849,12 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_unique/subwaycar_all_onetexture_sidedoorb.mdl,50;show_menu phys_props_unique2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_unique/subwaycar_all_onetexture_sidedoorb.mdl,0;show_menu phys_props_unique2"
 					"label"      " Subway train side door"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_unique/subwaycar_all_onetexture_enddoorb.mdl,50;show_menu phys_props_unique2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_unique/subwaycar_all_onetexture_enddoorb.mdl,0;show_menu phys_props_unique2"
 					"label"      " Subway train rear door"
 			}
 			"6"
@@ -37959,7 +37959,7 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/de_nuke/nuklogo.mdl,185;show_menu phys_props_signs1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props/de_nuke/nuklogo.mdl,0;show_menu phys_props_signs1"
 					"label"      " nuklogo"
 			}
 			"7"
@@ -38044,22 +38044,22 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_highway/highway_sign004.mdl,24;show_menu phys_props_signs_highway1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_highway/highway_sign004.mdl,0;show_menu phys_props_signs_highway1"
 					"label"      " Sign 4"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_highway/highway_sign005.mdl,20;show_menu phys_props_signs_highway1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_highway/highway_sign005.mdl,0;show_menu phys_props_signs_highway1"
 					"label"      " Sign 5"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_highway/highway_sign006.mdl,8;show_menu phys_props_signs_highway1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_highway/highway_sign006.mdl,0;show_menu phys_props_signs_highway1"
 					"label"      " Sign 6"
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_highway/highway_sign007.mdl,8;show_menu phys_props_signs_highway1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_highway/highway_sign007.mdl,0;show_menu phys_props_signs_highway1"
 					"label"      " Sign 7"
 			}
 			
@@ -38136,32 +38136,32 @@
 			
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/sailboat.mdl,40;show_menu phys_props_boats1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/sailboat.mdl,0;show_menu phys_props_boats1"
 					"label"      " Sail boat"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lostcoast/props_wasteland/boat_fishing01a.mdl,97;show_menu phys_props_boats1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lostcoast/props_wasteland/boat_fishing01a.mdl,0;show_menu phys_props_boats1"
 					"label"      " Big Fishing boat 1"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/boat_fishing02_static.mdl,360;show_menu phys_props_boats1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/boat_fishing02_static.mdl,0;show_menu phys_props_boats1"
 					"label"      " Big Fishing boat 2"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lostcoast/props_wasteland/boat_drydock01a.mdl,141;show_menu phys_props_boats1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lostcoast/props_wasteland/boat_drydock01a.mdl,0;show_menu phys_props_boats1"
 					"label"      " Rusty big boat"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/boat001.mdl,38;show_menu phys_props_boats1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/boat001.mdl,0;show_menu phys_props_boats1"
 					"label"      " Boat 1"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/boat002.mdl,18;show_menu phys_props_boats1"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_urban/boat002.mdl,0;show_menu phys_props_boats1"
 					"label"      " Boat 2"
 			}
 			"7"
@@ -38192,32 +38192,32 @@
 
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/boat_ski.mdl&models/props_vehicles/boat_ski_glass.mdl,18;show_menu phys_props_boats2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/boat_ski.mdl&models/props_vehicles/boat_ski_glass.mdl,0;show_menu phys_props_boats2"
 					"label"      " Speed boat"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/boat_smash.mdl&models/props_vehicles/boat_ski_glass.mdl,18;show_menu phys_props_boats2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/boat_smash.mdl&models/props_vehicles/boat_ski_glass.mdl,0;show_menu phys_props_boats2"
 					"label"      " Speed boat(breakable)"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lostcoast/props_wasteland/boat_wooden01a.mdl,32;show_menu phys_props_boats2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lostcoast/props_wasteland/boat_wooden01a.mdl,0;show_menu phys_props_boats2"
 					"label"      " Wooden boat 1"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lostcoast/props_wasteland/boat_wooden02a.mdl,32;show_menu phys_props_boats2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lostcoast/props_wasteland/boat_wooden02a.mdl,0;show_menu phys_props_boats2"
 					"label"      " Wooden boat 2"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lostcoast/props_wasteland/boat_wooden03a.mdl,32;show_menu phys_props_boats2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/lostcoast/props_wasteland/boat_wooden03a.mdl,0;show_menu phys_props_boats2"
 					"label"      " Wooden boat 3"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_canal/boat001a.mdl,22;show_menu phys_props_boats2"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_canal/boat001a.mdl,0;show_menu phys_props_boats2"
 					"label"      " Swamp boat"
 			}
 			"7"
@@ -38463,12 +38463,12 @@
 			}
 			"2"
 			{
-					"command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/boat_cabin35ft.mdl&models/props_vehicles/boat_cabin35ft_glass.mdl,35;show_menu phys_props_vehicles4"
+					"command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/boat_cabin35ft.mdl&models/props_vehicles/boat_cabin35ft_glass.mdl,0;show_menu phys_props_vehicles4"
                     "label"		 " Boat 35ft2" 
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/boat_trailer35ft.mdl,57;show_menu phys_props_vehicles4"
+					"command"    "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/boat_trailer35ft.mdl,0;show_menu phys_props_vehicles4"
 					"label"      " Boat trailer 35ft2"
 			}
 			"4"
@@ -38634,32 +38634,32 @@
 			"Title"     "Junkyard cars 1"
 			"1"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/car001a_hatchback.mdl,26;show_menu phys_props_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/car001a_hatchback.mdl,0;show_menu phys_props_vehicles_junk1"
                     "label"		 " Hatchback 1" 
             }
 			"2"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/car001b_hatchback.mdl,22;show_menu phys_props_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/car001b_hatchback.mdl,0;show_menu phys_props_vehicles_junk1"
                     "label"		 " Hatchback 2" 
             }
 			"3"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/car002a.mdl,25;show_menu phys_props_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/car002a.mdl,0;show_menu phys_props_vehicles_junk1"
                     "label"		 " Old car 1" 
             }
 			"4"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/car002b.mdl,22;show_menu phys_props_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/car002b.mdl,0;show_menu phys_props_vehicles_junk1"
                     "label"		 " Old car 2" 
             }
 			"5"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/car003a.mdl,24;show_menu phys_props_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/car003a.mdl,0;show_menu phys_props_vehicles_junk1"
                     "label"		 " Sedan 1" 
             }
 			"6"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/car003b.mdl,24;show_menu phys_props_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/car003b.mdl,0;show_menu phys_props_vehicles_junk1"
                     "label"		 " Sedan 2" 
             }
 			"7"
@@ -38689,22 +38689,22 @@
 			"Title"     "Junkyard cars 2"
 			"1"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/car004a.mdl,26;show_menu phys_props_vehicles_junk2"
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/car004a.mdl,0;show_menu phys_props_vehicles_junk2"
                     "label"		 " Sedan 3" 
             }
 			"2"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/car004b.mdl,25;show_menu phys_props_vehicles_junk2"
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/car004b.mdl,0;show_menu phys_props_vehicles_junk2"
                     "label"		 " Sedan 4" 
             }
 			"3"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/car005a.mdl,27;show_menu phys_props_vehicles_junk2"
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/car005a.mdl,0;show_menu phys_props_vehicles_junk2"
                     "label"		 " Sedan 5"  
             }
 			"4"
             {
-                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/car005b.mdl,23;show_menu phys_props_vehicles_junk2"
+                    "command"	 "play buttons/button14;scripted_user_func prop,physicsM,models/props_vehicles/car005b.mdl,0;show_menu phys_props_vehicles_junk2"
                     "label"		 " Sedan 6"  
             }
            
@@ -41611,7 +41611,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/lighthouse/b_waterwheel01.mdl,150;show_menu models_self_laststand1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/lighthouse/b_waterwheel01.mdl,0;show_menu models_self_laststand1"
 					"label"      " Waterwheel"
 			}
 			"3"
@@ -41621,7 +41621,7 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/lighthouse/junkyard_crane_arm.mdl,-60;show_menu models_self_laststand1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/lighthouse/junkyard_crane_arm.mdl,0;show_menu models_self_laststand1"
 					"label"      " Crane"
 			}
 			"5"
@@ -41682,7 +41682,7 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/lighthouse/we_dont_go.mdl,22;show_menu models_self_laststand2"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/lighthouse/we_dont_go.mdl,0;show_menu models_self_laststand2"
 					"label"      " -We dont go- board'"
 			}
 			"6"
@@ -41773,7 +41773,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props/de_train/de_train_horizontalcoolingtank_nophong.mdl,60;show_menu models_self_laststand3"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props/de_train/de_train_horizontalcoolingtank_nophong.mdl,0;show_menu models_self_laststand3"
 					"label"      " Coolingtank H"
 			}
 			"7"
@@ -41798,32 +41798,32 @@
 			"Title"     "Debris 1"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_debris/wood_board04a.mdl,35;show_menu models_self_debris1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_debris/wood_board04a.mdl,0;show_menu models_self_debris1"
 					"label"      " Wooden board 1"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_debris/wood_board05a.mdl,71;show_menu models_self_debris1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_debris/wood_board05a.mdl,0;show_menu models_self_debris1"
 					"label"      " Wooden board 2"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_debris/concrete_debris256pile001a.mdl,22;show_menu models_self_debris1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_debris/concrete_debris256pile001a.mdl,0;show_menu models_self_debris1"
 					"label"      " Concrete debris 1"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_debris/concrete_debris256barricade001a.mdl,22;show_menu models_self_debris1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_debris/concrete_debris256barricade001a.mdl,0;show_menu models_self_debris1"
 					"label"      " Concrete debris 2"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_debris/concrete_debris128pile001b.mdl,11;show_menu models_self_debris1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_debris/concrete_debris128pile001b.mdl,0;show_menu models_self_debris1"
 					"label"      " Concrete debris 3"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_debris/concrete_debris128pile001a.mdl,11;show_menu models_self_debris1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_debris/concrete_debris128pile001a.mdl,0;show_menu models_self_debris1"
 					"label"      " Concrete debris 4"
 			}
 			"7"
@@ -41919,12 +41919,12 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_junk/wood_crate001a.mdl,20;show_menu models_self_barrels1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_junk/wood_crate001a.mdl,0;show_menu models_self_barrels1"
 					"label"      " Single wooden crate"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_junk/wood_crate002a.mdl,20;show_menu models_self_barrels1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_junk/wood_crate002a.mdl,0;show_menu models_self_barrels1"
 					"label"      " Double wooden crate"
 			}
 			"7"
@@ -41960,7 +41960,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_crates/supply_crate02.mdl,8;show_menu models_self_barrels2"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_crates/supply_crate02.mdl,0;show_menu models_self_barrels2"
 					"label"      " Supply crate"
 			}
 			"3"
@@ -41990,7 +41990,7 @@
 			"Title"     "Plants 1"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_plants/planthanging01.mdl,12;show_menu models_self_plants1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_plants/planthanging01.mdl,0;show_menu models_self_plants1"
 					"label"      " Hanging plant"
 			}
 			"2"
@@ -42840,12 +42840,12 @@
 			
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_urban/tire001.mdl,18;show_menu models_self_urban3"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_urban/tire001.mdl,0;show_menu models_self_urban3"
 					"label"      " Car tire 1"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/tire001c_car.mdl,15;show_menu models_self_urban3"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/tire001c_car.mdl,0;show_menu models_self_urban3"
 					"label"      " Car tire 2"
 			}
 			"3"
@@ -43208,22 +43208,22 @@
 			"Title"     "Concrete tracks"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/track_straight_192.mdl,37;show_menu models_self_street_tracks1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/track_straight_192.mdl,0;show_menu models_self_street_tracks1"
 					"label"      " Straight short"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/track_straight_512.mdl,37;show_menu models_self_street_tracks1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/track_straight_512.mdl,0;show_menu models_self_street_tracks1"
 					"label"      " Straight long"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/track_curve_01.mdl,37;show_menu models_self_street_tracks1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/track_curve_01.mdl,0;show_menu models_self_street_tracks1"
 					"label"      " Curve short"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/track_curve_02.mdl,37;show_menu models_self_street_tracks1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_fairgrounds/track_curve_02.mdl,0;show_menu models_self_street_tracks1"
 					"label"      " Curve long"
 			}
 			"7"
@@ -43364,12 +43364,12 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_exteriors/oil_tank_large01.mdl,240;show_menu models_self_street3"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_exteriors/oil_tank_large01.mdl,0;show_menu models_self_street3"
 					"label"      " Giant oil tank"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/cranes/crane_frame.mdl,5;show_menu models_self_street3"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/cranes/crane_frame.mdl,0;show_menu models_self_street3"
 					"label"      " Rusty crane base"
 			}
 			"6"
@@ -43409,7 +43409,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_highway/bridge_pier.mdl,390;show_menu models_self_street4"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_highway/bridge_pier.mdl,0;show_menu models_self_street4"
 					"label"      " Bridge pillar wide"
 			}
 			"3"
@@ -43419,12 +43419,12 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_exteriors/concrete_plant01_maintanks.mdl,-33;show_menu models_self_street4"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_exteriors/concrete_plant01_maintanks.mdl,0;show_menu models_self_street4"
 					"label"      " Concrete plant maintanks"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_exteriors/concrete_plant01_conveyors02.mdl,3;show_menu models_self_street4"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_exteriors/concrete_plant01_conveyors02.mdl,0;show_menu models_self_street4"
 					"label"      " Concrete plant conveyor"
 			}
 			"6"
@@ -44031,27 +44031,27 @@
 			"Title"		 "Brick pallets"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_industrial/brickpallets.mdl,33;show_menu models_selfbrickpalletmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_industrial/brickpallets.mdl,0;show_menu models_selfbrickpalletmenu"
 					"label"      " Brick pallets"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_industrial/brickpallets_break01.mdl,17;show_menu models_selfbrickpalletmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_industrial/brickpallets_break01.mdl,0;show_menu models_selfbrickpalletmenu"
 					"label"      " Brick pallets broken 1"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_industrial/brickpallets_break02.mdl,17;show_menu models_selfbrickpalletmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_industrial/brickpallets_break02.mdl,0;show_menu models_selfbrickpalletmenu"
 					"label"      " Brick pallets broken 2"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_industrial/brickpallets_break03.mdl,17;show_menu models_selfbrickpalletmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_industrial/brickpallets_break03.mdl,0;show_menu models_selfbrickpalletmenu"
 					"label"      " Brick pallets broken 3"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_industrial/brickpallets_break04.mdl,17;show_menu models_selfbrickpalletmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_industrial/brickpallets_break04.mdl,0;show_menu models_selfbrickpalletmenu"
 					"label"      " Brick pallets broken 4"
 			}
 
@@ -44072,32 +44072,32 @@
 		"Title"			"Concrete pillar"
 		"1"
 		{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/concretepillar01.mdl,65;show_menu models_selfconcretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/concretepillar01.mdl,0;show_menu models_selfconcretepillarmenu"
 					"label"      " Concrete pillar"
 		}
 		"2"
 		{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/concretepiller01_dm01.mdl,65;show_menu models_selfconcretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/concretepiller01_dm01.mdl,0;show_menu models_selfconcretepillarmenu"
 					"label"      " Concrete pillar damaged"
 		}
 		"3"
 		{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/concretepiller01_dm01_1.mdl,7;show_menu models_selfconcretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/concretepiller01_dm01_1.mdl,0;show_menu models_selfconcretepillarmenu"
 					"label"      " Concrete pillar damaged_1"
 		}
 		"4"
 		{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/concretepiller01_dm01_2.mdl,33;show_menu models_selfconcretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/concretepiller01_dm01_2.mdl,0;show_menu models_selfconcretepillarmenu"
 					"label"      " Concrete pillar damaged_2"
 		}
 		"5"
 		{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/concretepiller01_dm01_3.mdl,33;show_menu models_selfconcretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/concretepiller01_dm01_3.mdl,0;show_menu models_selfconcretepillarmenu"
 					"label"      " Concrete pillar damaged_3"
 		}
 		"6"
 		{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/concretepiller01_dm01_4.mdl,3;show_menu models_selfconcretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/concretepiller01_dm01_4.mdl,0;show_menu models_selfconcretepillarmenu"
 					"label"      " Concrete pillar damaged_4"
 		}
 		"7"
@@ -44122,17 +44122,17 @@
 		"Title"			"Steel beam"
 		"1"
 		{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/ibeam_breakable01.mdl,61;show_menu models_selfibeam_breakablemenu"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/ibeam_breakable01.mdl,0;show_menu models_selfibeam_breakablemenu"
 					"label"      " Steel beam"
 		}
 		"2"
 		{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/ibeam_breakable01_damaged01.mdl,61;show_menu models_selfibeam_breakablemenu"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/ibeam_breakable01_damaged01.mdl,0;show_menu models_selfibeam_breakablemenu"
 					"label"      " Steel beam damaged 01"
 		}
 		"3"
 		{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/ibeam_breakable01_damaged02.mdl,27;show_menu models_selfibeam_breakablemenu"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_interiors/ibeam_breakable01_damaged02.mdl,0;show_menu models_selfibeam_breakablemenu"
 					"label"      " Steel beam damaged 02"
 		}
 		"7"
@@ -44268,12 +44268,12 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_foliage/tree_trunk.mdl,30;show_menu models_selftree_trunkmenu1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_foliage/tree_trunk.mdl,0;show_menu models_selftree_trunkmenu1"
 					"label"      " Tree trunk base"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_foliage/tree_trunk_chunk01.mdl,22;show_menu models_selftree_trunkmenu1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_foliage/tree_trunk_chunk01.mdl,0;show_menu models_selftree_trunkmenu1"
 					"label"      " Tree trunk chunk 1"
 			}
 			"5"
@@ -44283,7 +44283,7 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_foliage/tree_trunk_chunk03.mdl,27;show_menu models_selftree_trunkmenu1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_foliage/tree_trunk_chunk03.mdl,0;show_menu models_selftree_trunkmenu1"
 					"label"      " Tree trunk chunk 3"
 			}
 
@@ -44320,12 +44320,12 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_foliage/tree_trunk_chunk05.mdl,32;show_menu models_selftree_trunkmenu2"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_foliage/tree_trunk_chunk05.mdl,0;show_menu models_selftree_trunkmenu2"
 					"label"      " Tree trunk chunk 5"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_foliage/tree_trunk_chunk06.mdl,30;show_menu models_selftree_trunkmenu2"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_foliage/tree_trunk_chunk06.mdl,0;show_menu models_selftree_trunkmenu2"
 					"label"      " Tree trunk chunk 6"
 			}
 			
@@ -44593,12 +44593,12 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_wasteland/exterior_fence002c.mdl,50;show_menu models_self_exteriors1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_wasteland/exterior_fence002c.mdl,0;show_menu models_self_exteriors1"
 					"label"      " Metal fence 2"
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_update/whitebrick_128.mdl,7;show_menu models_self_exteriors1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_update/whitebrick_128.mdl,0;show_menu models_self_exteriors1"
 					"label"      " White brick wall (horizontal)"
 			}
 			"8"
@@ -44679,12 +44679,12 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_industrial/construction_crane.mdl,723;show_menu models_self_industrial1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_industrial/construction_crane.mdl,0;show_menu models_self_industrial1"
 					"label"      " Crane"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_industrial/dumpsterconstruction01.mdl,64;show_menu models_self_industrial1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_industrial/dumpsterconstruction01.mdl,0;show_menu models_self_industrial1"
 					"label"      " Dumpster with crane part"
 			}
 			"5"
@@ -45056,22 +45056,22 @@
 			"Title"     "models_self_swamp1"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_swamp/boardwalk_rail_256_break.mdl,40;show_menu models_self_swamp1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_swamp/boardwalk_rail_256_break.mdl,0;show_menu models_self_swamp1"
 					"label"      " boardwalk_rail_256_break"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_swamp/boardwalk_rail_chunk01.mdl,40;show_menu models_self_swamp1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_swamp/boardwalk_rail_chunk01.mdl,0;show_menu models_self_swamp1"
 					"label"      " boardwalk_rail_chunk01"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_swamp/boardwalk_rail_chunk02.mdl,40;show_menu models_self_swamp1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_swamp/boardwalk_rail_chunk02.mdl,0;show_menu models_self_swamp1"
 					"label"      " boardwalk_rail_chunk02"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_swamp/boardwalk_rail_chunk03.mdl,40;show_menu models_self_swamp1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_swamp/boardwalk_rail_chunk03.mdl,0;show_menu models_self_swamp1"
 					"label"      " boardwalk_rail_chunk03"
 			}
 			"5"
@@ -45374,12 +45374,12 @@
 			"Title"     "Windows"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_windows/window_farmhouse_small.mdl,36;show_menu models_self_windows1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_windows/window_farmhouse_small.mdl,0;show_menu models_self_windows1"
 					"label"      " Small window"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_windows/window_farmhouse_big.mdl,42;show_menu models_self_windows1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_windows/window_farmhouse_big.mdl,0;show_menu models_self_windows1"
 					"label"      " Big window"
 			}
 			"3"
@@ -45456,27 +45456,27 @@
 			"Title"     "Windows"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props/cs_militia/militiawindow02_breakable.mdl,37;show_menu models_self_windowsmilitia1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props/cs_militia/militiawindow02_breakable.mdl,0;show_menu models_self_windowsmilitia1"
 					"label"      " Militia window"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props/cs_militia/militiawindow02_breakable_chunk_01.mdl,37;show_menu models_self_windowsmilitia1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props/cs_militia/militiawindow02_breakable_chunk_01.mdl,0;show_menu models_self_windowsmilitia1"
 					"label"      " Militia window chunk 1"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props/cs_militia/militiawindow02_breakable_chunk_02.mdl,12;show_menu models_self_windowsmilitia1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props/cs_militia/militiawindow02_breakable_chunk_02.mdl,0;show_menu models_self_windowsmilitia1"
 					"label"      " Militia window chunk 2"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props/cs_militia/militiawindow02_breakable_chunk_03.mdl,37;show_menu models_self_windowsmilitia1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props/cs_militia/militiawindow02_breakable_chunk_03.mdl,0;show_menu models_self_windowsmilitia1"
 					"label"      " Militia window chunk 3"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props/cs_militia/militiawindow02_breakable_chunk_04.mdl,12;show_menu models_self_windowsmilitia1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props/cs_militia/militiawindow02_breakable_chunk_04.mdl,0;show_menu models_self_windowsmilitia1"
 					"label"      " Militia window chunk 4"
 			}
 			"7"
@@ -45502,7 +45502,7 @@
 			"Title"     "Doors 1"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_doors/shackwall01.mdl,11;show_menu models_self_doors1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_doors/shackwall01.mdl,0;show_menu models_self_doors1"
 					"label"      " Wooden barn door"
 			}
 			"2"
@@ -45815,12 +45815,12 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_unique/subwaycar_all_onetexture_sidedoorb.mdl,50;show_menu models_self_unique2"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_unique/subwaycar_all_onetexture_sidedoorb.mdl,0;show_menu models_self_unique2"
 					"label"      " Subway train side door"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_unique/subwaycar_all_onetexture_enddoorb.mdl,50;show_menu models_self_unique2"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_unique/subwaycar_all_onetexture_enddoorb.mdl,0;show_menu models_self_unique2"
 					"label"      " Subway train rear door"
 			}
 			"6"
@@ -45905,7 +45905,7 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props/de_nuke/nuklogo.mdl,185;show_menu models_self_signs1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props/de_nuke/nuklogo.mdl,0;show_menu models_self_signs1"
 					"label"      " nuklogo"
 			}
 			"7"
@@ -45990,22 +45990,22 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_highway/highway_sign004.mdl,24;show_menu models_self_signs_highway1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_highway/highway_sign004.mdl,0;show_menu models_self_signs_highway1"
 					"label"      " Sign 4"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_highway/highway_sign005.mdl,20;show_menu models_self_signs_highway1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_highway/highway_sign005.mdl,0;show_menu models_self_signs_highway1"
 					"label"      " Sign 5"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_highway/highway_sign006.mdl,8;show_menu models_self_signs_highway1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_highway/highway_sign006.mdl,0;show_menu models_self_signs_highway1"
 					"label"      " Sign 6"
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_highway/highway_sign007.mdl,8;show_menu models_self_signs_highway1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_highway/highway_sign007.mdl,0;show_menu models_self_signs_highway1"
 					"label"      " Sign 7"
 			}
 			
@@ -46082,32 +46082,32 @@
 			
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/sailboat.mdl,40;show_menu models_self_boats1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/sailboat.mdl,0;show_menu models_self_boats1"
 					"label"      " Sail boat"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/lostcoast/props_wasteland/boat_fishing01a.mdl,97;show_menu models_self_boats1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/lostcoast/props_wasteland/boat_fishing01a.mdl,0;show_menu models_self_boats1"
 					"label"      " Big Fishing boat 1"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/boat_fishing02_static.mdl,360;show_menu models_self_boats1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/boat_fishing02_static.mdl,0;show_menu models_self_boats1"
 					"label"      " Big Fishing boat 2"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/lostcoast/props_wasteland/boat_drydock01a.mdl,141;show_menu models_self_boats1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/lostcoast/props_wasteland/boat_drydock01a.mdl,0;show_menu models_self_boats1"
 					"label"      " Rusty big boat"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_urban/boat001.mdl,38;show_menu models_self_boats1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_urban/boat001.mdl,0;show_menu models_self_boats1"
 					"label"      " Boat 1"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_urban/boat002.mdl,18;show_menu models_self_boats1"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_urban/boat002.mdl,0;show_menu models_self_boats1"
 					"label"      " Boat 2"
 			}
 			"7"
@@ -46138,32 +46138,32 @@
 
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/boat_ski.mdl,18;show_menu models_self_boats2"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/boat_ski.mdl,0;show_menu models_self_boats2"
 					"label"      " Speed boat"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/boat_smash.mdl,18;show_menu models_self_boats2"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/boat_smash.mdl,0;show_menu models_self_boats2"
 					"label"      " Speed boat(breakable)"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/lostcoast/props_wasteland/boat_wooden01a.mdl,32;show_menu models_self_boats2"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/lostcoast/props_wasteland/boat_wooden01a.mdl,0;show_menu models_self_boats2"
 					"label"      " Wooden boat 1"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/lostcoast/props_wasteland/boat_wooden02a.mdl,32;show_menu models_self_boats2"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/lostcoast/props_wasteland/boat_wooden02a.mdl,0;show_menu models_self_boats2"
 					"label"      " Wooden boat 2"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/lostcoast/props_wasteland/boat_wooden03a.mdl,32;show_menu models_self_boats2"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/lostcoast/props_wasteland/boat_wooden03a.mdl,0;show_menu models_self_boats2"
 					"label"      " Wooden boat 3"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_canal/boat001a.mdl,22;show_menu models_self_boats2"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_canal/boat001a.mdl,0;show_menu models_self_boats2"
 					"label"      " Swamp boat"
 			}
 			"7"
@@ -46410,12 +46410,12 @@
 			}
 			"2"
 			{
-					"command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/boat_cabin35ft.mdl,35;show_menu models_self_vehicles4"
+					"command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/boat_cabin35ft.mdl,0;show_menu models_self_vehicles4"
                     "label"		 " Boat 35ft2" 
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/boat_trailer35ft.mdl,57;show_menu models_self_vehicles4"
+					"command"    "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/boat_trailer35ft.mdl,0;show_menu models_self_vehicles4"
 					"label"      " Boat trailer 35ft2"
 			}
 			"4"
@@ -46561,32 +46561,32 @@
 			"Title"     "Junkyard cars 1"
 			"1"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/car001a_hatchback.mdl,26;show_menu models_self_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/car001a_hatchback.mdl,0;show_menu models_self_vehicles_junk1"
                     "label"		 " Hatchback 1" 
             }
 			"2"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/car001b_hatchback.mdl,22;show_menu models_self_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/car001b_hatchback.mdl,0;show_menu models_self_vehicles_junk1"
                     "label"		 " Hatchback 2" 
             }
 			"3"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/car002a.mdl,25;show_menu models_self_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/car002a.mdl,0;show_menu models_self_vehicles_junk1"
                     "label"		 " Old car 1" 
             }
 			"4"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/car002b.mdl,22;show_menu models_self_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/car002b.mdl,0;show_menu models_self_vehicles_junk1"
                     "label"		 " Old car 2" 
             }
 			"5"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/car003a.mdl,24;show_menu models_self_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/car003a.mdl,0;show_menu models_self_vehicles_junk1"
                     "label"		 " Sedan 1" 
             }
 			"6"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/car003b.mdl,24;show_menu models_self_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/car003b.mdl,0;show_menu models_self_vehicles_junk1"
                     "label"		 " Sedan 2" 
             }
 			"7"
@@ -46616,22 +46616,22 @@
 			"Title"     "Junkyard cars 2"
 			"1"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/car004a.mdl,26;show_menu models_self_vehicles_junk2"
+                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/car004a.mdl,0;show_menu models_self_vehicles_junk2"
                     "label"		 " Sedan 3" 
             }
 			"2"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/car004b.mdl,25;show_menu models_self_vehicles_junk2"
+                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/car004b.mdl,0;show_menu models_self_vehicles_junk2"
                     "label"		 " Sedan 4" 
             }
 			"3"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/car005a.mdl,27;show_menu models_self_vehicles_junk2"
+                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/car005a.mdl,0;show_menu models_self_vehicles_junk2"
                     "label"		 " Sedan 5"  
             }
 			"4"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/car005b.mdl,23;show_menu models_self_vehicles_junk2"
+                    "command"	 "play buttons/button14;scripted_user_func model,!self,models/props_vehicles/car005b.mdl,0;show_menu models_self_vehicles_junk2"
                     "label"		 " Sedan 6"  
             }
            
@@ -47827,7 +47827,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lighthouse/b_waterwheel01.mdl,150;show_menu models_picker_laststand1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lighthouse/b_waterwheel01.mdl,0;show_menu models_picker_laststand1"
 					"label"      " Waterwheel"
 			}
 			"3"
@@ -47837,7 +47837,7 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lighthouse/junkyard_crane_arm.mdl,-60;show_menu models_picker_laststand1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lighthouse/junkyard_crane_arm.mdl,0;show_menu models_picker_laststand1"
 					"label"      " Crane"
 			}
 			"5"
@@ -47898,7 +47898,7 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lighthouse/we_dont_go.mdl,22;show_menu models_picker_laststand2"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lighthouse/we_dont_go.mdl,0;show_menu models_picker_laststand2"
 					"label"      " -We dont go- board'"
 			}
 			"6"
@@ -47989,7 +47989,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props/de_train/de_train_horizontalcoolingtank_nophong.mdl,60;show_menu models_picker_laststand3"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props/de_train/de_train_horizontalcoolingtank_nophong.mdl,0;show_menu models_picker_laststand3"
 					"label"      " Coolingtank H"
 			}
 			"7"
@@ -48014,32 +48014,32 @@
 			"Title"     "Debris 1"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_debris/wood_board04a.mdl,35;show_menu models_picker_debris1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_debris/wood_board04a.mdl,0;show_menu models_picker_debris1"
 					"label"      " Wooden board 1"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_debris/wood_board05a.mdl,71;show_menu models_picker_debris1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_debris/wood_board05a.mdl,0;show_menu models_picker_debris1"
 					"label"      " Wooden board 2"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_debris/concrete_debris256pile001a.mdl,22;show_menu models_picker_debris1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_debris/concrete_debris256pile001a.mdl,0;show_menu models_picker_debris1"
 					"label"      " Concrete debris 1"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_debris/concrete_debris256barricade001a.mdl,22;show_menu models_picker_debris1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_debris/concrete_debris256barricade001a.mdl,0;show_menu models_picker_debris1"
 					"label"      " Concrete debris 2"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_debris/concrete_debris128pile001b.mdl,11;show_menu models_picker_debris1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_debris/concrete_debris128pile001b.mdl,0;show_menu models_picker_debris1"
 					"label"      " Concrete debris 3"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_debris/concrete_debris128pile001a.mdl,11;show_menu models_picker_debris1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_debris/concrete_debris128pile001a.mdl,0;show_menu models_picker_debris1"
 					"label"      " Concrete debris 4"
 			}
 			"7"
@@ -48135,12 +48135,12 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_junk/wood_crate001a.mdl,20;show_menu models_picker_barrels1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_junk/wood_crate001a.mdl,0;show_menu models_picker_barrels1"
 					"label"      " Single wooden crate"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_junk/wood_crate002a.mdl,20;show_menu models_picker_barrels1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_junk/wood_crate002a.mdl,0;show_menu models_picker_barrels1"
 					"label"      " Double wooden crate"
 			}
 			"7"
@@ -48176,7 +48176,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_crates/supply_crate02.mdl,8;show_menu models_picker_barrels2"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_crates/supply_crate02.mdl,0;show_menu models_picker_barrels2"
 					"label"      " Supply crate"
 			}
 			"3"
@@ -48206,7 +48206,7 @@
 			"Title"     "Plants 1"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_plants/planthanging01.mdl,12;show_menu models_picker_plants1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_plants/planthanging01.mdl,0;show_menu models_picker_plants1"
 					"label"      " Hanging plant"
 			}
 			"2"
@@ -49056,12 +49056,12 @@
 			
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_urban/tire001.mdl,18;show_menu models_picker_urban3"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_urban/tire001.mdl,0;show_menu models_picker_urban3"
 					"label"      " Car tire 1"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/tire001c_car.mdl,15;show_menu models_picker_urban3"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/tire001c_car.mdl,0;show_menu models_picker_urban3"
 					"label"      " Car tire 2"
 			}
 			"3"
@@ -49424,22 +49424,22 @@
 			"Title"     "Concrete tracks"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/track_straight_192.mdl,37;show_menu models_picker_street_tracks1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/track_straight_192.mdl,0;show_menu models_picker_street_tracks1"
 					"label"      " Straight short"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/track_straight_512.mdl,37;show_menu models_picker_street_tracks1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/track_straight_512.mdl,0;show_menu models_picker_street_tracks1"
 					"label"      " Straight long"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/track_curve_01.mdl,37;show_menu models_picker_street_tracks1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/track_curve_01.mdl,0;show_menu models_picker_street_tracks1"
 					"label"      " Curve short"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/track_curve_02.mdl,37;show_menu models_picker_street_tracks1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_fairgrounds/track_curve_02.mdl,0;show_menu models_picker_street_tracks1"
 					"label"      " Curve long"
 			}
 			"7"
@@ -49580,17 +49580,17 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_exteriors/oil_tank_large01.mdl,240;show_menu models_picker_street3"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_exteriors/oil_tank_large01.mdl,0;show_menu models_picker_street3"
 					"label"      " Giant oil tank"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/cranes/crane_frame.mdl,5;show_menu models_picker_street3"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/cranes/crane_frame.mdl,0;show_menu models_picker_street3"
 					"label"      " Rusty crane base"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_unique/rope_bridge.mdl,45;show_menu models_picker_street3"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_unique/rope_bridge.mdl,0;show_menu models_picker_street3"
 					"label"      " Rope bridge"
 			}
 			"7"
@@ -49625,7 +49625,7 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_highway/bridge_pier.mdl,390;show_menu models_picker_street4"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_highway/bridge_pier.mdl,0;show_menu models_picker_street4"
 					"label"      " Bridge pillar wide"
 			}
 			"3"
@@ -49635,12 +49635,12 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_exteriors/concrete_plant01_maintanks.mdl,-33;show_menu models_picker_street4"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_exteriors/concrete_plant01_maintanks.mdl,0;show_menu models_picker_street4"
 					"label"      " Concrete plant maintanks"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_exteriors/concrete_plant01_conveyors02.mdl,3;show_menu models_picker_street4"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_exteriors/concrete_plant01_conveyors02.mdl,0;show_menu models_picker_street4"
 					"label"      " Concrete plant conveyor"
 			}
 			"6"
@@ -50246,27 +50246,27 @@
 			"Title"		 "Brick pallets"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_industrial/brickpallets.mdl,33;show_menu models_pickerbrickpalletmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_industrial/brickpallets.mdl,0;show_menu models_pickerbrickpalletmenu"
 					"label"      " Brick pallets"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_industrial/brickpallets_break01.mdl,17;show_menu models_pickerbrickpalletmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_industrial/brickpallets_break01.mdl,0;show_menu models_pickerbrickpalletmenu"
 					"label"      " Brick pallets broken 1"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_industrial/brickpallets_break02.mdl,17;show_menu models_pickerbrickpalletmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_industrial/brickpallets_break02.mdl,0;show_menu models_pickerbrickpalletmenu"
 					"label"      " Brick pallets broken 2"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_industrial/brickpallets_break03.mdl,17;show_menu models_pickerbrickpalletmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_industrial/brickpallets_break03.mdl,0;show_menu models_pickerbrickpalletmenu"
 					"label"      " Brick pallets broken 3"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_industrial/brickpallets_break04.mdl,17;show_menu models_pickerbrickpalletmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_industrial/brickpallets_break04.mdl,0;show_menu models_pickerbrickpalletmenu"
 					"label"      " Brick pallets broken 4"
 			}
 
@@ -50287,32 +50287,32 @@
 		"Title"			"Concrete pillar"
 		"1"
 		{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/concretepillar01.mdl,65;show_menu models_pickerconcretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/concretepillar01.mdl,0;show_menu models_pickerconcretepillarmenu"
 					"label"      " Concrete pillar"
 		}
 		"2"
 		{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/concretepiller01_dm01.mdl,65;show_menu models_pickerconcretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/concretepiller01_dm01.mdl,0;show_menu models_pickerconcretepillarmenu"
 					"label"      " Concrete pillar damaged"
 		}
 		"3"
 		{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/concretepiller01_dm01_1.mdl,7;show_menu models_pickerconcretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/concretepiller01_dm01_1.mdl,0;show_menu models_pickerconcretepillarmenu"
 					"label"      " Concrete pillar damaged_1"
 		}
 		"4"
 		{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/concretepiller01_dm01_2.mdl,33;show_menu models_pickerconcretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/concretepiller01_dm01_2.mdl,0;show_menu models_pickerconcretepillarmenu"
 					"label"      " Concrete pillar damaged_2"
 		}
 		"5"
 		{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/concretepiller01_dm01_3.mdl,33;show_menu models_pickerconcretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/concretepiller01_dm01_3.mdl,0;show_menu models_pickerconcretepillarmenu"
 					"label"      " Concrete pillar damaged_3"
 		}
 		"6"
 		{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/concretepiller01_dm01_4.mdl,3;show_menu models_pickerconcretepillarmenu"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/concretepiller01_dm01_4.mdl,0;show_menu models_pickerconcretepillarmenu"
 					"label"      " Concrete pillar damaged_4"
 		}
 		"7"
@@ -50337,17 +50337,17 @@
 		"Title"			"Steel beam"
 		"1"
 		{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/ibeam_breakable01.mdl,61;show_menu models_pickeribeam_breakablemenu"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/ibeam_breakable01.mdl,0;show_menu models_pickeribeam_breakablemenu"
 					"label"      " Steel beam"
 		}
 		"2"
 		{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/ibeam_breakable01_damaged01.mdl,61;show_menu models_pickeribeam_breakablemenu"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/ibeam_breakable01_damaged01.mdl,0;show_menu models_pickeribeam_breakablemenu"
 					"label"      " Steel beam damaged 01"
 		}
 		"3"
 		{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/ibeam_breakable01_damaged02.mdl,27;show_menu models_pickeribeam_breakablemenu"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_interiors/ibeam_breakable01_damaged02.mdl,0;show_menu models_pickeribeam_breakablemenu"
 					"label"      " Steel beam damaged 02"
 		}
 		"7"
@@ -50483,12 +50483,12 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_foliage/tree_trunk.mdl,30;show_menu models_pickertree_trunkmenu1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_foliage/tree_trunk.mdl,0;show_menu models_pickertree_trunkmenu1"
 					"label"      " Tree trunk base"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_foliage/tree_trunk_chunk01.mdl,22;show_menu models_pickertree_trunkmenu1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_foliage/tree_trunk_chunk01.mdl,0;show_menu models_pickertree_trunkmenu1"
 					"label"      " Tree trunk chunk 1"
 			}
 			"5"
@@ -50498,7 +50498,7 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_foliage/tree_trunk_chunk03.mdl,27;show_menu models_pickertree_trunkmenu1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_foliage/tree_trunk_chunk03.mdl,0;show_menu models_pickertree_trunkmenu1"
 					"label"      " Tree trunk chunk 3"
 			}
 
@@ -50535,12 +50535,12 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_foliage/tree_trunk_chunk05.mdl,32;show_menu models_pickertree_trunkmenu2"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_foliage/tree_trunk_chunk05.mdl,0;show_menu models_pickertree_trunkmenu2"
 					"label"      " Tree trunk chunk 5"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_foliage/tree_trunk_chunk06.mdl,30;show_menu models_pickertree_trunkmenu2"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_foliage/tree_trunk_chunk06.mdl,0;show_menu models_pickertree_trunkmenu2"
 					"label"      " Tree trunk chunk 6"
 			}
 			
@@ -50809,12 +50809,12 @@
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_wasteland/exterior_fence002c.mdl,50;show_menu models_picker_exteriors1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_wasteland/exterior_fence002c.mdl,0;show_menu models_picker_exteriors1"
 					"label"      " Metal fence 2"
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_update/whitebrick_128.mdl,7;show_menu models_picker_exteriors1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_update/whitebrick_128.mdl,0;show_menu models_picker_exteriors1"
 					"label"      " White brick wall (horizontal)"
 			}
 			"8"
@@ -50895,12 +50895,12 @@
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_industrial/construction_crane.mdl,723;show_menu models_picker_industrial1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_industrial/construction_crane.mdl,0;show_menu models_picker_industrial1"
 					"label"      " Crane"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_industrial/dumpsterconstruction01.mdl,64;show_menu models_picker_industrial1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_industrial/dumpsterconstruction01.mdl,0;show_menu models_picker_industrial1"
 					"label"      " Dumpster with crane part"
 			}
 			"5"
@@ -51273,22 +51273,22 @@
 			"Title"     "models_picker_swamp1"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_swamp/boardwalk_rail_256_break.mdl,40;show_menu models_picker_swamp1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_swamp/boardwalk_rail_256_break.mdl,0;show_menu models_picker_swamp1"
 					"label"      " boardwalk_rail_256_break"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_swamp/boardwalk_rail_chunk01.mdl,40;show_menu models_picker_swamp1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_swamp/boardwalk_rail_chunk01.mdl,0;show_menu models_picker_swamp1"
 					"label"      " boardwalk_rail_chunk01"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_swamp/boardwalk_rail_chunk02.mdl,40;show_menu models_picker_swamp1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_swamp/boardwalk_rail_chunk02.mdl,0;show_menu models_picker_swamp1"
 					"label"      " boardwalk_rail_chunk02"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_swamp/boardwalk_rail_chunk03.mdl,40;show_menu models_picker_swamp1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_swamp/boardwalk_rail_chunk03.mdl,0;show_menu models_picker_swamp1"
 					"label"      " boardwalk_rail_chunk03"
 			}
 			"5"
@@ -51591,12 +51591,12 @@
 			"Title"     "Windows"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_windows/window_farmhouse_small.mdl,36;show_menu models_picker_windows1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_windows/window_farmhouse_small.mdl,0;show_menu models_picker_windows1"
 					"label"      " Small window"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_windows/window_farmhouse_big.mdl,42;show_menu models_picker_windows1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_windows/window_farmhouse_big.mdl,0;show_menu models_picker_windows1"
 					"label"      " Big window"
 			}
 			"3"
@@ -51673,27 +51673,27 @@
 			"Title"     "Windows"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props/cs_militia/militiawindow02_breakable.mdl,37;show_menu models_picker_windowsmilitia1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props/cs_militia/militiawindow02_breakable.mdl,0;show_menu models_picker_windowsmilitia1"
 					"label"      " Militia window"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props/cs_militia/militiawindow02_breakable_chunk_01.mdl,37;show_menu models_picker_windowsmilitia1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props/cs_militia/militiawindow02_breakable_chunk_01.mdl,0;show_menu models_picker_windowsmilitia1"
 					"label"      " Militia window chunk 1"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props/cs_militia/militiawindow02_breakable_chunk_02.mdl,12;show_menu models_picker_windowsmilitia1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props/cs_militia/militiawindow02_breakable_chunk_02.mdl,0;show_menu models_picker_windowsmilitia1"
 					"label"      " Militia window chunk 2"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props/cs_militia/militiawindow02_breakable_chunk_03.mdl,37;show_menu models_picker_windowsmilitia1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props/cs_militia/militiawindow02_breakable_chunk_03.mdl,0;show_menu models_picker_windowsmilitia1"
 					"label"      " Militia window chunk 3"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props/cs_militia/militiawindow02_breakable_chunk_04.mdl,12;show_menu models_picker_windowsmilitia1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props/cs_militia/militiawindow02_breakable_chunk_04.mdl,0;show_menu models_picker_windowsmilitia1"
 					"label"      " Militia window chunk 4"
 			}
 			"7"
@@ -51719,7 +51719,7 @@
 			"Title"     "Doors 1"
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_doors/shackwall01.mdl,11;show_menu models_picker_doors1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_doors/shackwall01.mdl,0;show_menu models_picker_doors1"
 					"label"      " Wooden barn door"
 			}
 			"2"
@@ -52032,12 +52032,12 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_unique/subwaycar_all_onetexture_sidedoorb.mdl,50;show_menu models_picker_unique2"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_unique/subwaycar_all_onetexture_sidedoorb.mdl,0;show_menu models_picker_unique2"
 					"label"      " Subway train side door"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_unique/subwaycar_all_onetexture_enddoorb.mdl,50;show_menu models_picker_unique2"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_unique/subwaycar_all_onetexture_enddoorb.mdl,0;show_menu models_picker_unique2"
 					"label"      " Subway train rear door"
 			}
 			"6"
@@ -52122,7 +52122,7 @@
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props/de_nuke/nuklogo.mdl,185;show_menu models_picker_signs1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props/de_nuke/nuklogo.mdl,0;show_menu models_picker_signs1"
 					"label"      " nuklogo"
 			}
 			"7"
@@ -52207,22 +52207,22 @@
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_highway/highway_sign004.mdl,24;show_menu models_picker_signs_highway1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_highway/highway_sign004.mdl,0;show_menu models_picker_signs_highway1"
 					"label"      " Sign 4"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_highway/highway_sign005.mdl,20;show_menu models_picker_signs_highway1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_highway/highway_sign005.mdl,0;show_menu models_picker_signs_highway1"
 					"label"      " Sign 5"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_highway/highway_sign006.mdl,8;show_menu models_picker_signs_highway1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_highway/highway_sign006.mdl,0;show_menu models_picker_signs_highway1"
 					"label"      " Sign 6"
 			}
 			"7"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_highway/highway_sign007.mdl,8;show_menu models_picker_signs_highway1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_highway/highway_sign007.mdl,0;show_menu models_picker_signs_highway1"
 					"label"      " Sign 7"
 			}
 			
@@ -52299,32 +52299,32 @@
 			
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/sailboat.mdl,40;show_menu models_picker_boats1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/sailboat.mdl,0;show_menu models_picker_boats1"
 					"label"      " Sail boat"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lostcoast/props_wasteland/boat_fishing01a.mdl,97;show_menu models_picker_boats1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lostcoast/props_wasteland/boat_fishing01a.mdl,0;show_menu models_picker_boats1"
 					"label"      " Big Fishing boat 1"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/boat_fishing02_static.mdl,360;show_menu models_picker_boats1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/boat_fishing02_static.mdl,0;show_menu models_picker_boats1"
 					"label"      " Big Fishing boat 2"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lostcoast/props_wasteland/boat_drydock01a.mdl,141;show_menu models_picker_boats1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lostcoast/props_wasteland/boat_drydock01a.mdl,0;show_menu models_picker_boats1"
 					"label"      " Rusty big boat"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_urban/boat001.mdl,38;show_menu models_picker_boats1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_urban/boat001.mdl,0;show_menu models_picker_boats1"
 					"label"      " Boat 1"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_urban/boat002.mdl,18;show_menu models_picker_boats1"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_urban/boat002.mdl,0;show_menu models_picker_boats1"
 					"label"      " Boat 2"
 			}
 			"7"
@@ -52355,32 +52355,32 @@
 
 			"1"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/boat_ski.mdl,18;show_menu models_picker_boats2"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/boat_ski.mdl,0;show_menu models_picker_boats2"
 					"label"      " Speed boat"
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/boat_smash.mdl,18;show_menu models_picker_boats2"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/boat_smash.mdl,0;show_menu models_picker_boats2"
 					"label"      " Speed boat(breakable)"
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lostcoast/props_wasteland/boat_wooden01a.mdl,32;show_menu models_picker_boats2"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lostcoast/props_wasteland/boat_wooden01a.mdl,0;show_menu models_picker_boats2"
 					"label"      " Wooden boat 1"
 			}
 			"4"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lostcoast/props_wasteland/boat_wooden02a.mdl,32;show_menu models_picker_boats2"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lostcoast/props_wasteland/boat_wooden02a.mdl,0;show_menu models_picker_boats2"
 					"label"      " Wooden boat 2"
 			}
 			"5"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lostcoast/props_wasteland/boat_wooden03a.mdl,32;show_menu models_picker_boats2"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/lostcoast/props_wasteland/boat_wooden03a.mdl,0;show_menu models_picker_boats2"
 					"label"      " Wooden boat 3"
 			}
 			"6"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_canal/boat001a.mdl,22;show_menu models_picker_boats2"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_canal/boat001a.mdl,0;show_menu models_picker_boats2"
 					"label"      " Swamp boat"
 			}
 			"7"
@@ -52627,12 +52627,12 @@
 			}
 			"2"
 			{
-					"command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/boat_cabin35ft.mdl,35;show_menu models_picker_vehicles4"
+					"command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/boat_cabin35ft.mdl,0;show_menu models_picker_vehicles4"
                     "label"		 " Boat 35ft2" 
 			}
 			"3"
 			{
-					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/boat_trailer35ft.mdl,57;show_menu models_picker_vehicles4"
+					"command"    "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/boat_trailer35ft.mdl,0;show_menu models_picker_vehicles4"
 					"label"      " Boat trailer 35ft2"
 			}
 			"4"
@@ -52778,32 +52778,32 @@
 			"Title"     "Junkyard cars 1"
 			"1"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/car001a_hatchback.mdl,26;show_menu models_picker_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/car001a_hatchback.mdl,0;show_menu models_picker_vehicles_junk1"
                     "label"		 " Hatchback 1" 
             }
 			"2"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/car001b_hatchback.mdl,22;show_menu models_picker_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/car001b_hatchback.mdl,0;show_menu models_picker_vehicles_junk1"
                     "label"		 " Hatchback 2" 
             }
 			"3"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/car002a.mdl,25;show_menu models_picker_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/car002a.mdl,0;show_menu models_picker_vehicles_junk1"
                     "label"		 " Old car 1" 
             }
 			"4"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/car002b.mdl,22;show_menu models_picker_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/car002b.mdl,0;show_menu models_picker_vehicles_junk1"
                     "label"		 " Old car 2" 
             }
 			"5"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/car003a.mdl,24;show_menu models_picker_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/car003a.mdl,0;show_menu models_picker_vehicles_junk1"
                     "label"		 " Sedan 1" 
             }
 			"6"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/car003b.mdl,24;show_menu models_picker_vehicles_junk1"
+                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/car003b.mdl,0;show_menu models_picker_vehicles_junk1"
                     "label"		 " Sedan 2" 
             }
 			"7"
@@ -52833,22 +52833,22 @@
 			"Title"     "Junkyard cars 2"
 			"1"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/car004a.mdl,26;show_menu models_picker_vehicles_junk2"
+                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/car004a.mdl,0;show_menu models_picker_vehicles_junk2"
                     "label"		 " Sedan 3" 
             }
 			"2"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/car004b.mdl,25;show_menu models_picker_vehicles_junk2"
+                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/car004b.mdl,0;show_menu models_picker_vehicles_junk2"
                     "label"		 " Sedan 4" 
             }
 			"3"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/car005a.mdl,27;show_menu models_picker_vehicles_junk2"
+                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/car005a.mdl,0;show_menu models_picker_vehicles_junk2"
                     "label"		 " Sedan 5"  
             }
 			"4"
             {
-                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/car005b.mdl,23;show_menu models_picker_vehicles_junk2"
+                    "command"	 "play buttons/button14;scripted_user_func model,!picker,models/props_vehicles/car005b.mdl,0;show_menu models_picker_vehicles_junk2"
                     "label"		 " Sedan 6"  
             }
            

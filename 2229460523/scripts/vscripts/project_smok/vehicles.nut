@@ -143,10 +143,6 @@ if(!("DriveParameters" in getroottable()))
         local v_tbl = ::DriveableCarModels[cartype]
         local driver_origin = v_tbl.driver_origin
 
-        vehicle.SetName("PS_DRIVABLE_VEHICLE_"+player.GetCharacterNameLower())
-
-        vehicle.GetScriptScope()["PS_HAS_DRIVE_ABILITY"] <- true
-        vehicle.GetScriptScope()["PS_HAS_DRIVER"] <- true
 
         player.SetNetProp("m_CollisionGroup",v_tbl.player_collision)
         player.SetNetProp("m_MoveCollide",v_tbl.player_movecollide)
@@ -158,11 +154,7 @@ if(!("DriveParameters" in getroottable()))
         player.Input("setparent","#"+vehicle.GetIndex())
         player.Input("runscriptcode","self.SetLocalOrigin(Vector("+driver_origin.x+","+driver_origin.y+","+driver_origin.z+"))",0.1)
         
-        player.GetScriptScope()["PS_VEHICLE_ENT"] <- vehicle
-        player.GetScriptScope()["PS_VEHICLE_TYPE"] <- cartype
-        player.GetScriptScope()["PS_VEHICLE_DRIVER_OFFSET"] <- driver_origin
-        player.GetScriptScope()["PS_VEHICLE_VALID"] <- true
-        vehicle.GetScriptScope()["N2O_STATE"] <- false
+		player.SetDrivenVehicle(vehicle,cartype,driver_origin)
 
 	    player.Input("runscriptcode","self.SnapEyeAngles(QAngle(0,0,0))",0.08)
     }
@@ -562,20 +554,10 @@ if(!("DriveParameters" in getroottable()))
 
 ::ValidateDrivableEntity <- function(ent)
 {
-	if(ent == null)
+	if(ent == null || ent.HasDrivingAbility() || ent.HasDriver() || ent.GetParent() != null)
 		return false;
-
-	if(("PS_HAS_DRIVE_ABILITY" in ent.GetScriptScope() && ent.GetScriptScope()["PS_HAS_DRIVE_ABILITY"]) )
-		return false;
-	
-	if(("PS_HAS_DRIVER" in ent.GetScriptScope() && ent.GetScriptScope()["PS_HAS_DRIVER"]) )
-		return false;
-
-	if(ent.GetParent() != null)
-		return false; 
 
 	local entclass = ent.GetClassname();
-	local entmdl = ent.GetModel();
 
 	if(entclass == "player" || entclass.find("door") != null)
 		return false;
@@ -583,28 +565,15 @@ if(!("DriveParameters" in getroottable()))
 	if(!(entclass in AdminSystem.Vars._grabAvailable) || !AdminSystem.Vars._grabAvailable[entclass])
 		return false
 	
-	local entmdl = ent.GetModel()
-	if(entmdl.find("*") != null)
-		return false;
-	
-	if(entmdl.find("_glass.mdl") != null)
+	local entmdl = ent.GetModel();
+
+	if(ent.HasBadPhysicsModel() || (entmdl.find("_glass.mdl") != null))
 		return false;
 
-	if((entmdl.find("hybridphysx") != null)) // Animation props etc ignored
-		return false;
-	
-	if((entmdl.find("skybox") != null)) // Skybox stuff
-		return false;
-
-
-	local fullmdl = entmdl
-	entmdl = ShortenModelName(entmdl)
-
-	if(!("mass" in ::ModelDetails[entmdl]) && !("totalmass" in ::ModelDetails[entmdl]))
+	if(!ent.HasMassDefined())
 		return false;
 	
 	return ::GivePhysicsToEntity(ent)
-
 }
 
 ::MakeDriveableWrapper <- function(args)
@@ -676,7 +645,10 @@ if(!("DriveParameters" in getroottable()))
 	{
 		local player = self.GetScriptScope().LastPlayer
 		
-		if("PS_VEHICLE_VALID" in player.GetScriptScope() && player.GetScriptScope()["PS_VEHICLE_VALID"])
+		if(!::AdminSystem.IsPrivileged(player))
+			return
+
+		if(player.IsDriving())
 			return
 
 		if(::DriverStateCheck(player))
@@ -693,10 +665,10 @@ if(!("DriveParameters" in getroottable()))
 
 		if(vehicle.GetModel() != null)
 		{
-			if("PS_VEHICLE_TYPE" in player.GetScriptScope())
+			if(player.HasDrivenBefore())
 				::DriveMainFunctions.RemoveListeners(player)
 				
-			if("PS_IN_PASSENGER_CAR" in player.GetScriptScope() && player.GetScriptScope()["PS_IN_PASSENGER_CAR"] != null && player.GetScriptScope()["PS_IN_PASSENGER_CAR"].IsEntityValid())
+			if(player.IsPassenger())
 				player.GetScriptScope()["PS_IN_PASSENGER_CAR"] = null
 
 	        ::PreparePlayerForDriving(player,vehicle,ShortenModelName(vehicle.GetModel()))
@@ -720,7 +692,7 @@ if(!("DriveParameters" in getroottable()))
 					if(!AdminSystem.IsPrivileged(self.GetScriptScope()["LastPlayer"],true))
 					{
 						self.StopUse()
-						Printer(self.GetScriptScope()["LastPlayer"],"Sorry, only admins can drive vehicles!")
+						Messages.ThrowPlayer(self.GetScriptScope()["LastPlayer"],"Sorry, only admins can drive vehicles!")
 					}
 					return
 				}
@@ -739,14 +711,31 @@ if(!("DriveParameters" in getroottable()))
 	vehicle.SetGlowColor(params.GlowR,params.GlowG,params.GlowB,params.GlowA)
 	vehicle.Input("SetGlowRange",params.GlowRange.tostring())
 	vehicle.Input("StartGlowing","")
+
+	local ch = vehicle.FirstMoveChild()
+	while(ch)
+	{
+		ch.SetNetProp("m_CollisionGroup",10)
+		ch = ch.NextMovePeer()
+	}
 }
 
 ::GetOutAsPassenger <- function(player)
 {
-	if("PS_IN_PASSENGER_CAR" in player.GetScriptScope() 
-		&& player.GetScriptScope()["PS_IN_PASSENGER_CAR"] != null
-		&& player.GetScriptScope()["PS_IN_PASSENGER_CAR"].IsEntityValid())
+	if(player.IsPassenger())
 	{
+		if(player.IsDriving())
+		{
+			::DriveMainFunctions.RemoveListeners(player)
+			player.GetScriptScope()["PS_VEHICLE_VALID"] <- false
+			if(player.GetScriptScope()["PS_VEHICLE_ENT"] != null && player.GetScriptScope()["PS_VEHICLE_ENT"].GetScriptScope() != null)
+			{
+				player.GetScriptScope()["PS_VEHICLE_ENT"].GetScriptScope()["PS_HAS_DRIVE_ABILITY"] <- false
+				player.GetScriptScope()["PS_VEHICLE_ENT"].GetScriptScope()["PS_HAS_DRIVER"] <- false
+				player.GetScriptScope()["PS_VEHICLE_ENT"] <- null
+			}
+		}
+
 		local corner = player.GetScriptScope()["PS_IN_PASSENGER_CAR"].GetNetProp("m_Collision")
 		player.GetScriptScope()["PS_IN_PASSENGER_CAR"] <- null
 		player.SetNetProp("m_stunTimer.m_timestamp",Time()+0.5)
