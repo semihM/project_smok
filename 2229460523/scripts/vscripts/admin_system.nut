@@ -6818,8 +6818,8 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 ::AdminSystem.ChangePassengerSeatPositionCmd <- function(player,args)
 {
-	if(!::AdminSystem.IsPrivileged(player))
-		return
+	//if(!::AdminSystem.IsPrivileged(player))
+	//	return
 
 	if(player.IsPassenger())
 	{
