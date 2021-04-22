@@ -4580,6 +4580,266 @@ function VSLib::Entity::IsCarryingItem()
 	return false;
 }
 
+/// Some custom checks
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::HasRagdollPresent()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	
+	return Objects.AnyOfName(::Constants.Targetnames.Ragdoll+GetIndex()) != null;
+}
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::GetRagdollEntity()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	
+	return Objects.AnyOfName(::Constants.Targetnames.Ragdoll+GetIndex());
+}
+
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::HasMassDefined()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	
+	local mdl = ::ShortenModelName(GetModel())
+	return ("mass" in ::ModelDetails[mdl]) 
+			|| ("totalmass" in ::ModelDetails[mdl]);
+}
+
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::HasBadPhysicsModel()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	
+	local mdl = GetModel()
+	return ( mdl == null
+			|| mdl.find("*") != null) 
+			|| (mdl.find("hybridphysx") != null)
+			|| (mdl.find("skybox") != null)
+}
+
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::IsGrabable()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	
+	return (GetClassname() in AdminSystem.Vars._grabAvailable) && AdminSystem.Vars._grabAvailable[GetClassname()]
+}
+
+/// Driving mechanics related
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::HasDriver()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	
+	return ("PS_HAS_DRIVER" in GetScriptScope()) && (GetScriptScope()["PS_HAS_DRIVER"])
+}
+
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::HasDrivingAbility()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	
+	return ("PS_HAS_DRIVE_ABILITY" in GetScriptScope()) && (GetScriptScope()["PS_HAS_DRIVE_ABILITY"])
+}
+
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::IsValidPassengerVehicle()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	
+	return (::ShortenModelName(GetModel()) in ::DriveableCarModels) && (HasDriver() || HasDrivingAbility())
+}
+
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::HasDrivenBefore()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	
+	return "PS_VEHICLE_TYPE" in GetScriptScope();
+}
+
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::IsDriving()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	
+	return ("PS_VEHICLE_ENT" in GetScriptScope() 
+			&& GetScriptScope()["PS_VEHICLE_ENT"] != null
+			&& GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid()
+			&& "PS_VEHICLE_VALID" in GetScriptScope() 
+			&& GetScriptScope()["PS_VEHICLE_VALID"]);
+}
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::GetDrivenVehicle()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	
+	if(IsDriving())
+		return GetScriptScope()["PS_VEHICLE_TYPE"];
+		
+	return false
+}
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::SetDrivenVehicle(vh,typ,driver_origin)
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	if (!vh.IsEntityValid())
+	{
+		printl("Given vehicle is invalid.");
+		return false;
+	}
+	
+	GetScriptScope()["PS_VEHICLE_ENT"] <- vh
+	GetScriptScope()["PS_VEHICLE_TYPE"] <- typ
+    GetScriptScope()["PS_VEHICLE_DRIVER_OFFSET"] <- driver_origin
+	GetScriptScope()["PS_VEHICLE_VALID"] <- true
+
+	vh.GetScriptScope()["N2O_STATE"] <- false
+	vh.GetScriptScope()["PS_HAS_DRIVE_ABILITY"] <- true
+	vh.GetScriptScope()["PS_HAS_DRIVER"] <- true
+
+	vh.SetName("PS_DRIVABLE_VEHICLE_"+Player(GetIndex()).GetCharacterNameLower())
+}
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::GetDrivenVehicleType()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	
+	if(IsDriving())
+		return GetScriptScope()["PS_VEHICLE_TYPE"];
+
+	return false
+}
+
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::IsPassenger()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	
+	return ("PS_IN_PASSENGER_CAR" in GetScriptScope() 
+			&& GetScriptScope()["PS_IN_PASSENGER_CAR"] != null
+			&& GetScriptScope()["PS_IN_PASSENGER_CAR"].IsEntityValid());
+}
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::GetPassengerVehicle()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	
+	if(IsPassenger())
+		return GetScriptScope()["PS_IN_PASSENGER_CAR"];
+		
+	return false
+}
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::SetPassengerVehicle(vh)
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	if (!vh.IsEntityValid())
+	{
+		printl("Given vehicle is invalid.");
+		return false;
+	}
+	
+	return (GetScriptScope()["PS_IN_PASSENGER_CAR"] <- vh)
+}
+
 /**
  * Adds to the entity's THINK function. You can use "this.ent" when you need to use the VSLib::Entity.
  * 
