@@ -5479,9 +5479,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 		
-	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+player.GetIndex())
+	local rag = player.GetRagdollEntity()
 
-	if(rag == null || !rag.IsEntityValid())
+	if(rag == null)
 		return;
 	
 	RecoverRagdollInitial(rag);
@@ -6773,31 +6773,29 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 ::AdminSystem.GetInAsPassenger <- function(player,args)
 {
-	if(!::AdminSystem.IsPrivileged(player))
-		return
+	//if(!::AdminSystem.IsPrivileged(player))
+	//	return
 
-    local ent = player.GetLookingEntity()
+    local ent = player.GetLookingEntity(GRAB_YEET_TRACE_MASK)
     if(!ent)
         return
 
-	local entmdl = ShortenModelName(ent.GetModel())
-	if(!(entmdl in DriveableCarModels) 
-		|| (!(("PS_HAS_DRIVER" in ent.GetScriptScope()) && ent.GetScriptScope()["PS_HAS_DRIVER"])
-			&& !(("PS_HAS_DRIVE_ABILITY" in ent.GetScriptScope()) && ent.GetScriptScope()["PS_HAS_DRIVE_ABILITY"])))
+	if(!ent.IsValidPassengerVehicle())
 		return
 
+	local entmdl = ShortenModelName(ent.GetModel())
 	local p_org = DriveableCarModels[entmdl].driver_origin + Vector(0,-35,0)
 	
-	if(("PS_VEHICLE_ENT" in player.GetScriptScope()) 
-		&& player.GetScriptScope()["PS_VEHICLE_ENT"] != null
-		&& player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+	if(player.IsDriving())
 	{
 		::DriveMainFunctions.RemoveListeners(player)
 
 		::DriveMainFunctions.RestoreDriver(player)
 	}
 	
-	player.GetScriptScope()["PS_IN_PASSENGER_CAR"] <- ent
+	if(!player.SetPassengerVehicle(ent))
+		return
+
     player.SetNetProp("m_CollisionGroup",12)
     player.SetNetProp("m_MoveCollide",0)
     player.SetMoveType(MOVETYPE_CUSTOM)
@@ -6812,8 +6810,8 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 ::AdminSystem.GetOutAsPassenger <- function(player,args)
 {
-	if(!::AdminSystem.IsPrivileged(player))
-		return
+	//if(!::AdminSystem.IsPrivileged(player))
+	//	return
 
 	::GetOutAsPassenger(player)
 }
@@ -6823,9 +6821,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	if(!::AdminSystem.IsPrivileged(player))
 		return
 
-	if("PS_IN_PASSENGER_CAR" in player.GetScriptScope() 
-		&& player.GetScriptScope()["PS_IN_PASSENGER_CAR"] != null
-		&& player.GetScriptScope()["PS_IN_PASSENGER_CAR"].IsEntityValid())
+	if(player.IsPassenger())
 	{
 		local axis = GetArgument(1)
 		if(!axis)
@@ -6835,7 +6831,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			return
 		units = units.tofloat()
 
-		local p_v = player.GetScriptScope()["PS_IN_PASSENGER_CAR"]
+		local p_v = player.GetPassengerVehicle()
 		local entmdl = ShortenModelName(p_v.GetModel())
 		if(!(entmdl in DriveableCarModels))
 			return
@@ -6861,9 +6857,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	if(!::AdminSystem.IsPrivileged(player))
 		return
 
-	if(!("PS_VEHICLE_ENT" in player.GetScriptScope()) 
-		|| player.GetScriptScope()["PS_VEHICLE_ENT"] == null
-		|| !player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+	if(!player.IsDriving())
 		return
 
 	::DriveMainFunctions.RemoveListeners(player)
@@ -6877,10 +6871,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	if(!::AdminSystem.IsPrivileged(player))
 		return
 
-	if("PS_VEHICLE_VALID" in player.GetScriptScope() && player.GetScriptScope()["PS_VEHICLE_VALID"])
-		return
-
-	if("PS_IN_PASSENGER_CAR" in player.GetScriptScope() && player.GetScriptScope()["PS_IN_PASSENGER_CAR"] != null && player.GetScriptScope()["PS_IN_PASSENGER_CAR"].IsEntityValid())
+	if(player.IsDriving() || player.IsPassenger())
 		return
 
 	if(::DriverStateCheck(player))
@@ -6923,6 +6914,14 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 	local parentent = tbl.parentent
 	local createdent = tbl.createdent
+	
+	local ch = vehicle.FirstMoveChild()
+	while(ch)
+	{
+		ch.SetNetProp("m_CollisionGroup",10)
+		ch = ch.NextMovePeer()
+	}
+	
 	local bbox = parentent.GetNetProp("m_Collision")
 
 	if(!("driver_origin" in ::DriveableCarModels[car]) || new_car)
@@ -6941,9 +6940,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	if(!::AdminSystem.IsPrivileged(player))
 		return
 
-	if(!("PS_VEHICLE_ENT" in player.GetScriptScope()) 
-		|| player.GetScriptScope()["PS_VEHICLE_ENT"] == null
-		|| !player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+	if(!player.IsDriving())
 		return
 
 	local dirs =
@@ -6960,8 +6957,8 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		return
 	}
 
-	::DriveParameters[player.GetScriptScope()["PS_VEHICLE_TYPE"]].driving_direction = dirs[direction]
-	::AdminSystem.out("Driving direction of "+TXTCLR.BG(player.GetScriptScope()["PS_VEHICLE_TYPE"])+" vehicles are now set to: "+TXTCLR.OG(direction))
+	::DriveParameters[player.GetDrivenVehicleType()].driving_direction = dirs[direction]
+	::AdminSystem.out("Driving direction of "+TXTCLR.BG(player.GetDrivenVehicleType())+" vehicles are now set to: "+TXTCLR.OG(direction))
 }
 
 ::AdminSystem.ChangeSeatPositionCmd <- function(player,args)
@@ -6969,9 +6966,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	if(!::AdminSystem.IsPrivileged(player))
 		return
 
-	if(!("PS_VEHICLE_ENT" in player.GetScriptScope()) 
-		|| player.GetScriptScope()["PS_VEHICLE_ENT"] == null
-		|| !player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+	if(!player.IsDriving())
 		return
 
 	local axis = GetArgument(1)
@@ -6981,7 +6976,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	if(!units)
 		return
 	units = units.tofloat()
-	local dir = ::DriveParameters[player.GetScriptScope()["PS_VEHICLE_TYPE"]].driving_direction
+	local dir = ::DriveParameters[player.GetDrivenVehicleType()].driving_direction
 	switch(axis)
 	{
 		case "x":
@@ -7001,13 +6996,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	if(!::AdminSystem.IsPrivileged(player))
 		return
 
-	if(!("PS_VEHICLE_ENT" in player.GetScriptScope()) 
-		|| player.GetScriptScope()["PS_VEHICLE_ENT"] == null
-		|| !player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+	if(!player.IsDriving())
 		return
 
-	::DriveableCarModels[player.GetScriptScope()["PS_VEHICLE_TYPE"]].driver_origin = player.GetScriptScope()["PS_VEHICLE_DRIVER_OFFSET"]
-	::AdminSystem.out("Driver origin of "+TXTCLR.BG(player.GetScriptScope()["PS_VEHICLE_TYPE"])+" vehicles are now set to "+TXTCLR.OG(player.GetScriptScope()["PS_VEHICLE_DRIVER_OFFSET"].ToKVString()))
+	::DriveableCarModels[player.GetDrivenVehicleType()].driver_origin = player.GetScriptScope()["PS_VEHICLE_DRIVER_OFFSET"]
+	::AdminSystem.out("Driver origin of "+TXTCLR.BG(player.GetDrivenVehicleType())+" vehicles are now set to "+TXTCLR.OG(player.GetScriptScope()["PS_VEHICLE_DRIVER_OFFSET"].ToKVString()))
 }
 
 ::AdminSystem.MakeDriveableCmd <- function(player,args)
@@ -7059,14 +7052,15 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	local tbl = AdminSystem._RagdollControl[name]
 	local speed = tbl.speed;
 	local mask = tbl.keymask;
-	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+ent.GetIndex())
+
+	local rag = ent.GetRagdollEntity()
 	if(!rag)
-	{
 		return;
-	}
+
 	local eyeangles = ent.GetEyeAngles()
 	if(!eyeangles)
 		return
+
 	local fw = eyeangles.Forward()
 
 	//::AdminSystem.out(Constants.ConstStrLookUp("LISTENER_",mask))
@@ -10824,16 +10818,16 @@ function Notifications::OnMapEnd::_RecoverRagdolls()
 }
 function Notifications::OnIncapacitatedStart::_RecoverRagdolls(victim,attacker,args)
 {
-	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+victim.GetIndex())
-	if(rag == null || !rag.IsEntityValid())
+	local rag = victim.GetRagdollEntity()
+	if(!rag)
 		return;
 	
 	RecoverRagdollInitial(rag);
 }
 function Notifications::OnDeath::_RecoverRagdolls(victim,attacker,args)
 {
-	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+victim.GetIndex())
-	if(rag == null || !rag.IsEntityValid())
+	local rag = victim.GetRagdollEntity()
+	if(!rag)
 		return;
 	
 	RecoverRagdollInitial(rag);
@@ -10841,16 +10835,16 @@ function Notifications::OnDeath::_RecoverRagdolls(victim,attacker,args)
 //smoker
 function Notifications::OnSmokerTongueGrab::_RecoverRagdolls(smoker,victim,args)
 {
-	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+victim.GetIndex())
-	if(rag == null || !rag.IsEntityValid())
+	local rag = victim.GetRagdollEntity()
+	if(!rag)
 		return;
 	
 	RecoverRagdollInitial(rag);
 }
 function Notifications::OnSmokerChokeBegin::_RecoverRagdolls(smoker,victim,args)
 {
-	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+victim.GetIndex())
-	if(rag == null || !rag.IsEntityValid())
+	local rag = victim.GetRagdollEntity()
+	if(!rag)
 		return;
 	
 	RecoverRagdollInitial(rag);
@@ -10858,8 +10852,8 @@ function Notifications::OnSmokerChokeBegin::_RecoverRagdolls(smoker,victim,args)
 //hunter
 function Notifications::OnHunterPouncedVictim::_RecoverRagdolls(hunter,victim,args)
 {
-	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+victim.GetIndex())
-	if(rag == null || !rag.IsEntityValid())
+	local rag = victim.GetRagdollEntity()
+	if(!rag)
 		return;
 	
 	RecoverRagdollInitial(rag);
@@ -10867,8 +10861,8 @@ function Notifications::OnHunterPouncedVictim::_RecoverRagdolls(hunter,victim,ar
 //jockey
 function Notifications::OnJockeyRideStart::_RecoverRagdolls(jockey,victim,args)
 {
-	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+victim.GetIndex())
-	if(rag == null || !rag.IsEntityValid())
+	local rag = victim.GetRagdollEntity()
+	if(!rag)
 		return;
 	
 	RecoverRagdollInitial(rag);
@@ -10876,24 +10870,24 @@ function Notifications::OnJockeyRideStart::_RecoverRagdolls(jockey,victim,args)
 //charger
 function Notifications::OnChargerCarryVictim::_RecoverRagdolls(charger,victim,args)
 {
-	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+victim.GetIndex())
-	if(rag == null || !rag.IsEntityValid())
+	local rag = victim.GetRagdollEntity()
+	if(!rag)
 		return;
 	
 	RecoverRagdollInitial(rag);
 }
 function Notifications::OnChargerImpact::_RecoverRagdolls(charger,victim,args)
 {
-	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+victim.GetIndex())
-	if(rag == null || !rag.IsEntityValid())
+	local rag = victim.GetRagdollEntity()
+	if(!rag)
 		return;
 	
 	RecoverRagdollInitial(rag);
 }
 function Notifications::OnChargerPummelBegin::_RecoverRagdolls(charger,victim,args)
 {
-	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+victim.GetIndex())
-	if(rag == null || !rag.IsEntityValid())
+	local rag = victim.GetRagdollEntity()
+	if(!rag)
 		return;
 	
 	RecoverRagdollInitial(rag);
@@ -10903,8 +10897,9 @@ function Notifications::OnChargerChargeEnd::_RecoverRagdolls(charger,args)
 	local victim = ::VSLib.EasyLogic.GetEventPlayer(args, "victim");
 	if(victim == null)
 		return;
-	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+victim.GetEntityIndex())
-	if(rag == null || !rag.IsEntityValid())
+
+	local rag = victim.GetRagdollEntity()
+	if(!rag)
 		return;
 	
 	RecoverRagdollInitial(rag);
@@ -10938,9 +10933,7 @@ function Notifications::OnBotReplacedPlayer::_GetOutOfTheVehicle(player,bot,args
 {
 	::GetOutAsPassenger(player)
 
-	if(!("PS_VEHICLE_ENT" in player.GetScriptScope()) 
-		|| player.GetScriptScope()["PS_VEHICLE_ENT"] == null
-		|| !player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+	if(!player.IsDriving())
 		return
 
 	::DriveMainFunctions.RemoveListeners(player)
@@ -10952,9 +10945,7 @@ function Notifications::OnPlayerConnected::_GetOutOfTheVehicle(player,args)
 {
 	::GetOutAsPassenger(player)
 	
-	if(!("PS_VEHICLE_ENT" in player.GetScriptScope()) 
-		|| player.GetScriptScope()["PS_VEHICLE_ENT"] == null
-		|| !player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+	if(!player.IsDriving())
 		return
 
 	::DriveMainFunctions.RemoveListeners(player)
@@ -10968,9 +10959,7 @@ function Notifications::OnMapEnd::_GetOutOfTheVehicle()
 	{
 		::GetOutAsPassenger(obj)
 
-		if(!("PS_VEHICLE_ENT" in obj.GetScriptScope()) 
-			|| obj.GetScriptScope()["PS_VEHICLE_ENT"] == null
-			|| !obj.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+		if(!obj.IsDriving())
 			continue
 	
 		::DriveMainFunctions.RemoveListeners(obj)
@@ -10982,9 +10971,7 @@ function Notifications::OnIncapacitatedStart::_GetOutOfTheVehicle(victim,attacke
 {
 	::GetOutAsPassenger(victim)
 	
-	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
-		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
-		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+	if(!victim.IsDriving())
 		return
 
 	::DriveMainFunctions.RemoveListeners(victim)
@@ -10995,9 +10982,7 @@ function Notifications::OnDeath::_GetOutOfTheVehicle(victim,attacker,args)
 {
 	::GetOutAsPassenger(victim)
 	
-	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
-		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
-		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+	if(!victim.IsDriving())
 		return
 
 	::DriveMainFunctions.RemoveListeners(victim)
@@ -11009,9 +10994,7 @@ function Notifications::OnSmokerTongueGrab::_GetOutOfTheVehicle(smoker,victim,ar
 {
 	::GetOutAsPassenger(victim)
 	
-	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
-		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
-		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+	if(!victim.IsDriving())
 		return
 
 	::DriveMainFunctions.RemoveListeners(victim)
@@ -11022,9 +11005,7 @@ function Notifications::OnSmokerChokeBegin::_GetOutOfTheVehicle(smoker,victim,ar
 {
 	::GetOutAsPassenger(victim)
 	
-	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
-		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
-		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+	if(!victim.IsDriving())
 		return
 
 	::DriveMainFunctions.RemoveListeners(victim)
@@ -11036,9 +11017,7 @@ function Notifications::OnHunterPouncedVictim::_GetOutOfTheVehicle(hunter,victim
 {
 	::GetOutAsPassenger(victim)
 	
-	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
-		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
-		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+	if(!victim.IsDriving())
 		return
 
 	::DriveMainFunctions.RemoveListeners(victim)
@@ -11050,9 +11029,7 @@ function Notifications::OnJockeyRideStart::_GetOutOfTheVehicle(jockey,victim,arg
 {
 	::GetOutAsPassenger(victim)
 	
-	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
-		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
-		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+	if(!victim.IsDriving())
 		return
 
 	::DriveMainFunctions.RemoveListeners(victim)
@@ -11064,9 +11041,7 @@ function Notifications::OnChargerCarryVictim::_GetOutOfTheVehicle(charger,victim
 {
 	::GetOutAsPassenger(victim)
 	
-	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
-		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
-		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+	if(!victim.IsDriving())
 		return
 
 	::DriveMainFunctions.RemoveListeners(victim)
@@ -11077,9 +11052,7 @@ function Notifications::OnChargerImpact::_GetOutOfTheVehicle(charger,victim,args
 {
 	::GetOutAsPassenger(victim)
 	
-	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
-		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
-		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+	if(!victim.IsDriving())
 		return
 
 	::DriveMainFunctions.RemoveListeners(victim)
@@ -11090,9 +11063,7 @@ function Notifications::OnChargerPummelBegin::_GetOutOfTheVehicle(charger,victim
 {
 	::GetOutAsPassenger(victim)
 	
-	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
-		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
-		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+	if(!victim.IsDriving())
 		return
 
 	::DriveMainFunctions.RemoveListeners(victim)
@@ -11107,9 +11078,7 @@ function Notifications::OnChargerChargeEnd::_GetOutOfTheVehicle(charger,args)
 		
 	::GetOutAsPassenger(victim)
 	
-	if(!("PS_VEHICLE_ENT" in victim.GetScriptScope()) 
-		|| victim.GetScriptScope()["PS_VEHICLE_ENT"] == null
-		|| !victim.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+	if(!victim.IsDriving())
 		return
 
 	::DriveMainFunctions.RemoveListeners(victim)
@@ -13682,13 +13651,7 @@ if ( Director.GetGameMode() == "holdout" )
 			{
 				local survivorID = AdminSystem.GetID( survivor );
 
-				local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+survivor.GetIndex())
-				if(rag != null && rag.IsEntityValid())
-					continue;
-
-				if(("PS_VEHICLE_ENT" in survivor.GetScriptScope()) 
-					&& survivor.GetScriptScope()["PS_VEHICLE_ENT"] != null
-					&& survivor.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+				if(survivor.HasRagdollPresent() || survivor.IsDriving() || survivor.IsPassenger())
 					continue
 
 				if ( survivorID in ::AdminSystem.Vars.IsGodEnabled && ::AdminSystem.Vars.IsGodEnabled[survivorID] )
@@ -13740,13 +13703,7 @@ if ( Director.GetGameMode() == "holdout" )
 			if ( !Target )
 				return;
 			
-			local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+Target.GetIndex())
-			if(rag != null && rag.IsEntityValid())
-				return;
-
-			if(("PS_VEHICLE_ENT" in Target.GetScriptScope()) 
-				&& Target.GetScriptScope()["PS_VEHICLE_ENT"] != null
-				&& Target.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+			if(Target.HasRagdollPresent() || Target.IsDriving() || Target.IsPassenger())
 				return
 
 			local targetID = AdminSystem.GetID( Target );
@@ -13766,13 +13723,7 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{
-		local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+player.GetIndex())
-		if(rag != null && rag.IsEntityValid())
-			return;
-
-		if(("PS_VEHICLE_ENT" in player.GetScriptScope()) 
-			&& player.GetScriptScope()["PS_VEHICLE_ENT"] != null
-			&& player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+		if(player.HasRagdollPresent() || player.IsDriving() || player.IsPassenger())
 			return
 
 		if ( ID in ::AdminSystem.Vars.IsGodEnabled && ::AdminSystem.Vars.IsGodEnabled[ID] )
@@ -13919,13 +13870,7 @@ if ( Director.GetGameMode() == "holdout" )
 		{
 			foreach(survivor in Players.AliveSurvivors())
 			{
-				local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+survivor.GetIndex())
-				if(rag != null && rag.IsEntityValid())
-					continue;
-
-				if(("PS_VEHICLE_ENT" in survivor.GetScriptScope()) 
-					&& survivor.GetScriptScope()["PS_VEHICLE_ENT"] != null
-					&& survivor.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+				if(survivor.HasRagdollPresent() || survivor.IsDriving() || survivor.IsPassenger())
 					continue
 
 				local survivorID = AdminSystem.GetID( survivor );
@@ -13950,13 +13895,7 @@ if ( Director.GetGameMode() == "holdout" )
 			if ( !Target )
 				return;
 			
-			local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+Target.GetIndex())
-			if(rag != null && rag.IsEntityValid())
-				return;
-
-			if(("PS_VEHICLE_ENT" in Target.GetScriptScope()) 
-				&& Target.GetScriptScope()["PS_VEHICLE_ENT"] != null
-				&& Target.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+			if(Target.HasRagdollPresent() || Target.IsDriving() || Target.IsPassenger())
 				return
 
 			local targetID = AdminSystem.GetID( Target );
@@ -13978,13 +13917,7 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{
-		local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+player.GetIndex())
-		if(rag != null && rag.IsEntityValid())
-			return;
-
-		if(("PS_VEHICLE_ENT" in player.GetScriptScope()) 
-			&& player.GetScriptScope()["PS_VEHICLE_ENT"] != null
-			&& player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+		if(player.HasRagdollPresent() || player.IsDriving() || player.IsPassenger())
 			return
 
 		if ( ID in ::AdminSystem.Vars.IsFreezeEnabled && ::AdminSystem.Vars.IsFreezeEnabled[ID] )
@@ -14021,13 +13954,7 @@ if ( Director.GetGameMode() == "holdout" )
 			{
 				local survivorID = AdminSystem.GetID( survivor );
 
-				local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+survivor.GetIndex())
-				if(rag != null && rag.IsEntityValid())
-					continue;
-
-				if(("PS_VEHICLE_ENT" in survivor.GetScriptScope()) 
-					&& survivor.GetScriptScope()["PS_VEHICLE_ENT"] != null
-					&& survivor.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+				if(survivor.HasRagdollPresent() || survivor.IsDriving() || survivor.IsPassenger())
 					continue
 
 				if ( survivorID in ::AdminSystem.Vars.IsNoclipEnabled && ::AdminSystem.Vars.IsNoclipEnabled[survivorID] )
@@ -14051,15 +13978,9 @@ if ( Director.GetGameMode() == "holdout" )
 			if ( !Target )
 				return;
 			
-			local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+Target.GetIndex())
-			if(rag != null && rag.IsEntityValid())
-				return;
-
-			if(("PS_VEHICLE_ENT" in Target.GetScriptScope()) 
-				&& Target.GetScriptScope()["PS_VEHICLE_ENT"] != null
-				&& Target.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+			if(Target.HasRagdollPresent() || Target.IsDriving() || Target.IsPassenger())
 				return
-				
+
 			local targetID = AdminSystem.GetID( Target );
 			if ( targetID in ::AdminSystem.Vars.IsNoclipEnabled && ::AdminSystem.Vars.IsNoclipEnabled[targetID] )
 			{
@@ -14079,15 +14000,9 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{
-		local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+player.GetIndex())
-		if(rag != null && rag.IsEntityValid())
-			return;
-
-		if(("PS_VEHICLE_ENT" in player.GetScriptScope()) 
-			&& player.GetScriptScope()["PS_VEHICLE_ENT"] != null
-			&& player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+		if(player.HasRagdollPresent() || player.IsDriving() || player.IsPassenger())
 			return
-			
+
 		if ( ID in ::AdminSystem.Vars.IsNoclipEnabled && ::AdminSystem.Vars.IsNoclipEnabled[ID] )
 		{
 			player.SetNetProp("movetype", 2);
@@ -18017,6 +17932,7 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 
 	local raise = GetArgument(3);
+	local raised = raise != null && raise != "0"
 	local yaw = GetArgument(4);
 	local massScale = GetArgument(5);
 	if(massScale == null || ((typeof massScale == "integer" || typeof massScale == "float") && massScale <= 0))
@@ -18188,7 +18104,7 @@ if ( Director.GetGameMode() == "holdout" )
 			createdent = Utils.SpawnPhysicsProp( Utils.CleanColoredString(MDL), origin, angles );
 			if(createdent == null)
 				singlefailed = true;
-			else
+			else if(!raised)
 			{
 				local bbox = createdent.GetNetProp("m_Collision")
 				createdent.SetOrigin(createdent.GetOrigin()+Vector(0,0,0.1-bbox.z))
@@ -18229,7 +18145,7 @@ if ( Director.GetGameMode() == "holdout" )
 			createdent = Utils.SpawnPhysicsMProp( Utils.CleanColoredString(MDL), origin, angles, {massScale = massScale} );
 			if(createdent == null)
 				singlefailed = true;
-			else
+			else if(!raised)
 			{
 				local bbox = createdent.GetNetProp("m_Collision")
 				createdent.SetOrigin(createdent.GetOrigin()+Vector(0,0,0.1-bbox.z))
@@ -18300,7 +18216,7 @@ if ( Director.GetGameMode() == "holdout" )
 		else
 		{
 			createdent = Utils.SpawnDynamicProp( Utils.CleanColoredString(MDL), origin, angles );
-			if(createdent != null)
+			if(createdent != null && !raised)
 			{
 				local bbox = createdent.GetNetProp("m_Collision")
 				createdent.SetOrigin(createdent.GetOrigin()+Vector(0,0,0.1-bbox.z))
@@ -18377,8 +18293,11 @@ if ( Director.GetGameMode() == "holdout" )
 					Messages.ThrowPlayer(player,CmdMessages.Prop.Failed(typename));
 					return;
 				}
-				local bbox = ent.GetNetProp("m_Collision")
-				ent.SetOrigin(ent.GetOrigin()+Vector(0,0,0.1-bbox.z))
+				if(!raised)
+				{
+					local bbox = ent.GetNetProp("m_Collision")
+					ent.SetOrigin(ent.GetOrigin()+Vector(0,0,0.1-bbox.z))
+				}
 			}
 			return
 		}
@@ -18446,6 +18365,10 @@ if ( Director.GetGameMode() == "holdout" )
 
 		Printer(player,CmdMessages.Prop.SuccessParented(typename,createdent));
 		createdent = parentent
+		if(!raised)
+		{
+			parentent.Input("RunScriptCode","self.SetOrigin(self.GetOrigin() + Vector(0,0,0.1-Entity("+parentent.GetIndex()+").GetNetProp(\"m_Collision\").z ))",0.1);
+		}
 	}
 	else
 	{
@@ -19224,7 +19147,7 @@ if ( Director.GetGameMode() == "holdout" )
 				printl(player.GetCharacterNameLower()+"->Ignore attempt to kill player ragdoll:"+Entity.GetName());
 				return;
 			}
-			else if("PS_HAS_DRIVER" in Entity.GetScriptScope() && Entity.GetScriptScope()["PS_HAS_DRIVER"] && act == "kill")
+			else if(Entity.HasDriver() && act == "kill")
 			{
 				printl(player.GetCharacterNameLower()+"->Ignore attempt to kill player vehicle:"+Entity.GetName());
 				return;
@@ -19233,11 +19156,9 @@ if ( Director.GetGameMode() == "holdout" )
 			{
 				foreach(s in Players.All())
 				{
-					if("PS_IN_PASSENGER_CAR" in s.GetScriptScope() 
-						&& s.GetScriptScope()["PS_IN_PASSENGER_CAR"] != null
-						&& s.GetScriptScope()["PS_IN_PASSENGER_CAR"].IsEntityValid())
+					if(s.IsPassenger())
 					{
-						if(Entity.GetEntityHandle() == s.GetScriptScope()["PS_IN_PASSENGER_CAR"].GetEntityHandle())
+						if(Entity.GetEntityHandle() == s.GetPassengerVehicle().GetEntityHandle())
 						{
 							printl(player.GetCharacterNameLower()+"->Ignore attempt to kill player vehicle with passengers:"+Entity.GetName());
 							return
@@ -23814,11 +23735,9 @@ if ( Director.GetGameMode() == "holdout" )
 		// 
 	}
 	
-	if(("PS_VEHICLE_ENT" in player.GetScriptScope()) 
-		&& player.GetScriptScope()["PS_VEHICLE_ENT"] != null
-		&& player.GetScriptScope()["PS_VEHICLE_ENT"].IsEntityValid())
+	if(player.IsDriving())
 	{
-		Printer(player,"You can't grab things while you are driving!")
+		Messages.ThrowPlayer(player,"You can't grab things while you are driving!")
 		return
 	}
 
