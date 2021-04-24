@@ -3165,7 +3165,7 @@
    Chat Syntax | (!,/,?)command_ban *character command_name duration*
    ------------- | -------------
 
-   Console Syntax | scripted_user_func *command_ban,command_name,duration*
+   Console Syntax | scripted_user_func *command_ban,character,command_name,duration*
    ------------- | -------------
     
    Menu Sequence | _Not in the menu_
@@ -3190,7 +3190,7 @@
    Chat Syntax | (!,/,?)command_unban *character command_name*
    ------------- | -------------
 
-   Console Syntax | scripted_user_func *command_unban,command_name*
+   Console Syntax | scripted_user_func *command_unban,character,command_name*
    ------------- | -------------
     
    Menu Sequence | _Not in the menu_
