@@ -3217,6 +3217,11 @@ function VSLib::Utils::GetColor32( color32 )
  */
 function VSLib::Utils::SetColor32( red, green, blue, alpha )
 {
+	red = red.tointeger();
+	green = green.tointeger();
+	blue = blue.tointeger();
+	alpha = alpha.tointeger();
+	
 	// Shifts the bits left one byte and adds values to the lowest byte with bitwise OR.
 	local color = alpha //alpha
 	color = (color << 8) | blue //blue
