@@ -2332,7 +2332,7 @@
 ```    
 ---
 #### **get_in**
-- Get into the aimed vehicle as a passenger if possible. 
+- Get into the aimed vehicle as a passenger if possible. Allowed for non-admins by default
 
    Chat Syntax | (!,/,?)get_in
    ------------- | -------------
@@ -2345,7 +2345,7 @@
  
 ---
 #### **get_out**
-- Get out of the current vehicle you are a passenger of.
+- Get out of the current vehicle you are a passenger of. Allowed for non-admins by default
 
    Chat Syntax | (!,/,?)get_out
    ------------- | -------------
@@ -2358,7 +2358,7 @@
                    
 ---
 #### **change_passenger_seat_position**
-- Change your seat position as a passenger
+- Change your seat position as a passenger. Allowed for non-admins by default
 
    Chat Syntax | (!,/,?)change_passenger_seat_position *axis,units*
    ------------- | -------------
@@ -4000,13 +4000,13 @@
 
    + **_botparams.txt_** : Bots' sharing/looting parameters
 
-   + **_command\_limits_.txt_** : Restrictions to apply to admins for certain commands
+   + **_command\_limits.txt_** : Restrictions to apply to admins for certain commands
 
    + **_custom\_responses.json_** : Custom responses, doesn't include built-in ones
 
    + **_defaults.txt_** : Default settings and parameters
 
-   + **_disabled\_commands_.txt_** : List of command names to disable 
+   + **_disabled\_commands.txt_** : List of command names to disable 
 
    + **_ghost\_zombies\_settings.txt_** : Ghost zombies event custom settings
 
