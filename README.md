@@ -2340,7 +2340,7 @@
 ```    
 ---
 #### **get_in**
-- Get into the aimed vehicle as a passenger if possible. 
+- Get into the aimed vehicle as a passenger if possible.  Allowed for non-admins by default
 
    Chat Syntax | (!,/,?)get_in
    ------------- | -------------
@@ -2353,7 +2353,7 @@
  
 ---
 #### **get_out**
-- Get out of the current vehicle you are a passenger of.
+- Get out of the current vehicle you are a passenger of. Allowed for non-admins by default
 
    Chat Syntax | (!,/,?)get_out
    ------------- | -------------
@@ -2366,7 +2366,7 @@
                    
 ---
 #### **change_passenger_seat_position**
-- Change your seat position as a passenger
+- Change your seat position as a passenger. Allowed for non-admins by default
 
    Chat Syntax | (!,/,?)change_passenger_seat_position *axis,units*
    ------------- | -------------
@@ -3173,7 +3173,7 @@
    Chat Syntax | (!,/,?)command_ban *character command_name duration*
    ------------- | -------------
 
-   Console Syntax | scripted_user_func *command_ban,command_name,duration*
+   Console Syntax | scripted_user_func *command_ban,character,command_name,duration*
    ------------- | -------------
     
    Menu Sequence | _Not in the menu_
@@ -3198,7 +3198,7 @@
    Chat Syntax | (!,/,?)command_unban *character command_name*
    ------------- | -------------
 
-   Console Syntax | scripted_user_func *command_unban,command_name*
+   Console Syntax | scripted_user_func *command_unban,character,command_name*
    ------------- | -------------
     
    Menu Sequence | _Not in the menu_
