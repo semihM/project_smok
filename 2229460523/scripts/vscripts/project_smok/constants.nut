@@ -620,7 +620,6 @@
 // If the file size is bigger than 16.5 KB:
 // 		1. Create a new file named however you like
 //		2. Add the file name to ""file_list.txt"" to make sure project_smok knows it exists
-//		3. Follow the example formats, don't forget to write the { and } characters at the begining and the end
 
 // The name declared here will be used with the commands
 ExampleGnome =
@@ -673,7 +672,7 @@ ExampleGnome =
 				SpawnInfo =
 				{
 					classname = ""$classname""
-					angles = Vector( 0, 180, 0 )
+					angles = QAngle( 0, 180, 0 )
 					glowcolor = ""56 150 58""
 					glowrange = ""0""
 					glowrangemin = ""0""
