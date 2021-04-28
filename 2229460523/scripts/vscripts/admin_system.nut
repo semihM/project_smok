@@ -6915,7 +6915,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	local parentent = tbl.parentent
 	local createdent = tbl.createdent
 	
-	local ch = vehicle.FirstMoveChild()
+	local ch = parentent.FirstMoveChild()
 	while(ch)
 	{
 		ch.SetNetProp("m_CollisionGroup",10)

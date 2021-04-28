@@ -101,6 +101,14 @@
 
     - [**Binds File Format**](#binds-file-format)   
 
+- [**Entity groups**](#entity-groups)
+
+    - [**Entity Groups File Format**](#entity-groups-file-format) 
+    
+    - [**Creating Entity Groups**](#creating-entity-groups) 
+     
+    - [**Importing Entity Groups**](#importing-entity-groups)  
+    
 - [**Hooks**](#hooks)
 
     - [**Hook File Format**](#hook-file-format)    	
@@ -2332,7 +2340,7 @@
 ```    
 ---
 #### **get_in**
-- Get into the aimed vehicle as a passenger if possible. 
+- Get into the aimed vehicle as a passenger if possible.  Allowed for non-admins by default
 
    Chat Syntax | (!,/,?)get_in
    ------------- | -------------
@@ -2345,7 +2353,7 @@
  
 ---
 #### **get_out**
-- Get out of the current vehicle you are a passenger of.
+- Get out of the current vehicle you are a passenger of. Allowed for non-admins by default
 
    Chat Syntax | (!,/,?)get_out
    ------------- | -------------
@@ -2358,7 +2366,7 @@
                    
 ---
 #### **change_passenger_seat_position**
-- Change your seat position as a passenger
+- Change your seat position as a passenger. Allowed for non-admins by default
 
    Chat Syntax | (!,/,?)change_passenger_seat_position *axis,units*
    ------------- | -------------
@@ -3165,7 +3173,7 @@
    Chat Syntax | (!,/,?)command_ban *character command_name duration*
    ------------- | -------------
 
-   Console Syntax | scripted_user_func *command_ban,command_name,duration*
+   Console Syntax | scripted_user_func *command_ban,character,command_name,duration*
    ------------- | -------------
     
    Menu Sequence | _Not in the menu_
@@ -3190,7 +3198,7 @@
    Chat Syntax | (!,/,?)command_unban *character command_name*
    ------------- | -------------
 
-   Console Syntax | scripted_user_func *command_unban,command_name*
+   Console Syntax | scripted_user_func *command_unban,character,command_name*
    ------------- | -------------
     
    Menu Sequence | _Not in the menu_
@@ -3886,6 +3894,125 @@
 }
 ```
 
+## Entity Groups
+   - Following is an example file content for creating an entity group called **ExampleGnome**, which glows green and has a customized name depending on whoever spawns it.
+   - Entity groups can be spawned with [prop](#prop) command
+   + **WARNING**: While copy-pasting the examples, it will most likely fail while compiling. Some solutions:
+      - Remove the comments around and inside the table, anything after **"//"** inclusively, may be the cause of "expected identifier" error messages
+      - Re-write the example with better indentation OR no indentation OR single line without comments 
+    
+ #### Entity Groups File Format
+  - For more examples, download **L4D2 Authoring Tools** and check out the directory *"Left 4 Dead 2\sdk_content\scripting\scripts\vscripts\entitygroups"*
+```nut
+// The name declared here will be used with the commands
+ExampleGnome =
+{
+	// Required Interface functions
+	// - These following functions are REQUIRED to register an entity group
+	// - Add references of entities which has a model/sound in this
+	function GetPrecacheList()
+	{
+		local precacheModels =
+		[
+			EntityGroup.SpawnTables.gnome,
+		]
+		return precacheModels
+	}
+
+	// - Add references of entities here to spawn them 
+	function GetSpawnList()
+	{
+		local spawnEnts =
+		[
+			EntityGroup.SpawnTables.gnome,
+		]
+		return spawnEnts
+	}
+
+	// - This function has to return a reference to the table below
+	function GetEntityGroup()
+	{
+		return EntityGroup
+	}
+
+	// Table of entities that make up this group
+	EntityGroup =
+	{
+		// Entities to spawn
+		SpawnTables =
+		{
+			// Name of the this entity's table, refer to this on the functions above
+			// "targetname" is used to name the spawned entity
+			gnome = 
+			{
+				// Key value pairs for this entity
+				SpawnInfo =
+				{
+					classname = "$classname"
+					angles = Vector( 0, 180, 0 )
+					glowcolor = "56 150 58"
+					glowrange = "0"
+					glowrangemin = "0"
+					glowstate = "3"
+					massScale = "5"
+					model = "models/props_junk/gnome.mdl"
+					spawnflags = "0"
+					targetname = "$targetname"	// Keep the replacing parameter named same(especially for targetname)!
+					origin = Vector( -6, 8, 11 )
+				}
+			}
+		} // SpawnTables
+		// Add a table named ReplaceParmDefaults to change values in key-value pairs
+		// Use $[expression] format to evaluate expressions for every single spawn call
+		//  - If $[expression] is used in an entity group, it will require SCRIPT AUTHORIZATION for players to use this entity group
+		//	- With the $[expression] format, you can access to some external variables:
+		//		1. To get the command caller player as VSLib.Player use "player" variable
+		//		2. To get the table of arguments used with the command use "GetArgument(idx)" for idx'th argument
+		ReplaceParmDefaults =
+		{
+			"$classname" : "prop_physics_multiplayer"
+			// By default, any parameter name starting with "$targetname" is taken as a targetname while printing messages, so be reasonable while naming the parameters!
+			"$targetname" : "$[\"gnome_spawned_by_\"+player.GetCharacterNameLower()]"	
+		}
+	} // EntityGroup
+} // ExampleGnome
+```
+   
+#### Creating Entity Groups
+   - To create an entity group *from scratch*, follow these steps:
+      1. Decide for a name for the entity group
+      2. Create a table for the chosen name
+      3. Add the required *GetPrecacheList*, *GetSpawnList*, *GetEntityGroup* functions to the table 
+      4. Add a table called *EntityGroup* to store entity spawn tables and replaceable values, this name can be changed but it's reference has to be return from *GetEntityGroup* function
+      5. Add a table called *SpawnTables* inside *EntityGroup* table
+      6. Add tables of entities you want spawned inside *SpawnTables* table, these table names should be referred in *GetSpawnList* function
+      7. Add a table inside of each entity table named *SpawnInfo* storing key-value pairs for the entity
+      8. If you want to have dynamic values:
+           + Use **"$my_variable_name"** format as values for key-value pairs
+           + Add a table named *ReplaceParmDefaults* inside *EntityGroup* table
+           + Use the following format to replace a parameter with a static value
+           
+           <code> **"$my_variable_name"** : "value_to_use" </code>
+	   
+           + Use the following format to replace a parameter with an expression which gets evaluated every spawn call
+           
+           <code> **"$my_variable_name"** : "$[expression]" </code>
+	   
+           + With **$\[expression\]** format, caller can be accessed with variable name **player** and arguments of the command call can be accessed with **GetArgument(n)** function for *n'th* argument
+	   
+      9. Entity group is ready for spawning! You can use [prop](#prop) command to spawn it.
+      10. You can use [reload_ent_groups](#reload_ent_groups) command to reload the entity group files in-game 
+
+   - **WARNING**: While copy-pasting the examples, it will most likely fail while compiling. Some solutions:
+      - Remove the comments around and inside the table, anything after **"//"** inclusively, may be the cause of "expected identifier" error messages
+      - Re-write the example with better indentation OR no indentation OR single line without comments 
+
+#### Importing Entity Groups
+ - Importing an entity group that was auto-generated requires only **3 steps** after putting the file into the *admin system/entitygroups/* folder:
+      1. Remove the line with the "RegisterEntityGroup" function call, this call is done internally later
+      2. Replace "<-" with "=" after the entity group name
+      3. Entity group file is ready to be imported! Just add the file name to **file_list.txt**
+  
 ## Hooks
 - project_smok allows you to hook your own functions to game events.
    + Available game event names can be found [here](https://github.com/semihM/project_smok/blob/c3f631100a80913c6ad5f49fe74a24a772a03f40/2229460523/scripts/vscripts/admin_system/vslib/easylogic.nut#L194)

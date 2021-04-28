@@ -1140,7 +1140,7 @@ class ::VSLib.HUD.Menu extends ::VSLib.HUD.Item
 		
 		if (_width !=0 && _height !=0) // retain menu sizes when reattaching #shotgunefx
 		{
-			AttachTo(attachTo,false);
+			AttachTo(attachTo);
 		}
 		else
 		{
