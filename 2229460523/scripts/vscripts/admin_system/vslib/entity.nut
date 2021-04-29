@@ -4844,7 +4844,7 @@ function VSLib::Entity::GetDrivenVehicle()
 	}
 	
 	if(IsDriving())
-		return GetScriptScope()["PS_VEHICLE_TYPE"];
+		return GetScriptScope()["PS_VEHICLE_ENT"];
 		
 	return false
 }
