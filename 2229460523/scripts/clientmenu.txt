@@ -39221,6 +39221,11 @@
 			"6"
 			{
 				"command"		 "play buttons/button14;show_menu ragdolling_menu2"
+				"label"			 " Change remote controll viewing position"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;show_menu ragdolling_menu3"
 				"label"			 " Change ragdoll viewing position"
 			}
 			"8"
@@ -39279,6 +39284,50 @@
 			}
 	}
 
+	"ragdolling_menu3"
+	{
+			"Title"		"Change viewing position"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_ragdoll_view,z,5;show_menu ragdolling_menu3"
+				"label"			 " Increase viewing height (+5)"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_ragdoll_view,z,-5;show_menu ragdolling_menu3"
+				"label"			 " Decrease viewing height (-5)"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_ragdoll_view,y,5;show_menu ragdolling_menu3"
+				"label"			 " Move left (+5)"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_ragdoll_view,y,-5;show_menu ragdolling_menu3"
+				"label"			 " Move right (-5)"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_ragdoll_view,x,5;show_menu ragdolling_menu3"
+				"label"			 " Move forward (+5)"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_ragdoll_view,x,-5;show_menu ragdolling_menu3"
+				"label"			 " Move back (-5)"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ragdolling_menu1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
 	"zero_G_menu1"
 	{
 			"Title"		"Get rid of gravitational forces for"
