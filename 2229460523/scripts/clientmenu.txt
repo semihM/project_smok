@@ -39221,7 +39221,7 @@
 			"6"
 			{
 				"command"		 "play buttons/button14;show_menu ragdolling_menu2"
-				"label"			 " Change remote controll viewing position"
+				"label"			 " Change remote control viewing position"
 			}
 			"7"
 			{
