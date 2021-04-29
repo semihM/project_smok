@@ -346,15 +346,6 @@
         //Others
         if(basetbl != null)
         {
-            basetbl._RagdollControl[spec] <- 
-            {
-                keymask = 0
-                speed = 60.0
-                overridefriction = 0.3
-                frictionduration = 1
-                listenerid = -1
-            }
-
             basetbl._CurrentlyTradingItems[spec] <- false;
 
             basetbl.BotBringingItem[spec] <- false;

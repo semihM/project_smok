@@ -31,7 +31,7 @@
     e.SetName(Quix.TimerName+name)
 	e = e.GetBaseEntity()
 	
-	::Quix.Table[name] <- e.GetName()
+	::Quix.Table[name] <- e
 
     local interval = ::Quix.Interval
 	local scp = e.GetScriptScope()
@@ -98,7 +98,7 @@
     e.SetName(Quix.TimerName+name)
 	e = e.GetBaseEntity()
 	
-	::Quix.Table[name] <- e.GetName()
+	::Quix.Table[name] <- e
 
     local interval = ::Quix.Interval
 	local scp = e.GetScriptScope()
@@ -500,9 +500,17 @@
 {
     if(name in ::Quix.Table)
     {
-        foreach(obj in ::Quix.Table[name])
-		    DoEntFire("!self","Kill","",0,null,obj)
-		delete ::Quix.Table[name]
+        switch(typeof ::Quix.Table[name])
+        {
+            case "table":
+                foreach(obj in ::Quix.Table[name])
+                    DoEntFire("!self","Kill","",0,null,obj)
+                break;
+            default:
+                DoEntFire("!self","Kill","",0,null,::Quix.Table[name])
+                break;
+        }
+        delete ::Quix.Table[name]
     }
 	else
         printl(name+" doesn't exists!")
