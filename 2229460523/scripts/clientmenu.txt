@@ -38896,12 +38896,12 @@
 			"1"
 			{
 				"command"		 "play buttons/button14;show_menu wear_hat_menu1"
-				"label"			 " Wear hats (Experimental)"
+				"label"			 " Wear hats"
 			}
 			"2"
 			{
 				"command"		 "play buttons/button14;show_menu ragdolling_menu1"
-				"label"			 " Ragdolling"
+				"label"			 " Ragdolling and remote controlling"
 			}
 			"3"
 			{
@@ -39192,7 +39192,7 @@
 
 	"ragdolling_menu1"
 	{
-			"Title"		"Ragdolling commands"
+			"Title"		"Ragdolling and remote controlling"
 			"1"
 			{
 				"command"		 "play buttons/button14;scripted_user_func go_ragdoll;show_menu ragdolling_menu1"
@@ -39205,12 +39205,121 @@
 			}
 			"3"
 			{
+				"command"		 "play buttons/button14;scripted_user_func rc_prop,!picker;show_menu ragdolling_menu1"
+				"label"			 " Remote control aimed object"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func rc_prop;show_menu ragdolling_menu1"
+				"label"			 " Stop remote controling"
+			}
+			"5"
+			{
 				"command"		 "play buttons/button10;show_menu ragdolling_menu1"
 				"label"			 " Mouse1/Mouse2 to ascend/descend faster"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;show_menu ragdolling_menu2"
+				"label"			 " Change remote control viewing position"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;show_menu ragdolling_menu3"
+				"label"			 " Change ragdoll viewing position"
 			}
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu smok_menu4"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	"ragdolling_menu2"
+	{
+			"Title"		"Change RC viewing position"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_seat_position,z,5;show_menu ragdolling_menu2"
+				"label"			 " Increase viewing height (+5)"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_seat_position,z,-5;show_menu ragdolling_menu2"
+				"label"			 " Decrease viewing height (-5)"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_seat_position,y,5;show_menu ragdolling_menu2"
+				"label"			 " Move left (+5)"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_seat_position,y,-5;show_menu ragdolling_menu2"
+				"label"			 " Move right (-5)"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_seat_position,x,5;show_menu ragdolling_menu2"
+				"label"			 " Move forward (+5)"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_seat_position,x,-5;show_menu ragdolling_menu2"
+				"label"			 " Move back (-5)"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ragdolling_menu1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ragdolling_menu3"
+	{
+			"Title"		"Change ragdoll viewing position"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_ragdoll_view,z,5;show_menu ragdolling_menu3"
+				"label"			 " Increase viewing height (+5)"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_ragdoll_view,z,-5;show_menu ragdolling_menu3"
+				"label"			 " Decrease viewing height (-5)"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_ragdoll_view,y,5;show_menu ragdolling_menu3"
+				"label"			 " Move left (+5)"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_ragdoll_view,y,-5;show_menu ragdolling_menu3"
+				"label"			 " Move right (-5)"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_ragdoll_view,x,5;show_menu ragdolling_menu3"
+				"label"			 " Move forward (+5)"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_ragdoll_view,x,-5;show_menu ragdolling_menu3"
+				"label"			 " Move back (-5)"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ragdolling_menu1"
 					"label"      " << Back"
 			}
 			"0"

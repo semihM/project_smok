@@ -2248,7 +2248,55 @@
     
    Menu Sequence | _6->9->9->9->2->2_
    ------------- | -------------
+ 
+---
+#### **change_ragdoll_view**
+- Change your viewing position while ragdolling
 
+   Chat Syntax | (!,/,?)change_ragdoll_view *axis units*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *change_ragdoll_view,axis,units* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->2->7->\[1,2,3,4,5,6\]_
+   ------------- | -------------
+  
+```cpp
+       //Overloads:
+       // x: positive = forward, negative = back
+       // y: positive = left, negative = right
+       // z: positive = up, negative = down
+       change_ragdoll_view {axis:(x,y,z)} {units:inches}
+       
+       // Example: Move your view height 10 inches down
+       change_ragdoll_view z -10
+``` 
+---
+#### **rc_prop**
+- Start/stop remote controlling a prop with ragdoll controls
+
+   Chat Syntax | (!,/,?)rc_prop *target*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *rc_prop,target* 
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->2->3 AND 6->9->9->9->2->4_
+   ------------- | -------------
+  
+```cpp
+       //Overloads:
+       // target: a reference to an object, !picker for aimed object
+       // If target is not given, stops currently being controlled prop
+       rc_prop {target}
+       
+       // Example: Start controlling the aimed object
+       rc_prop !picker
+
+       // Example: Stop the remote control
+       rc_prop
+``` 
 ---
 ### Driving
 
@@ -2304,9 +2352,9 @@
 
 ---
 #### **change_seat_position**
-- Change your seat position while driving
+- Change your seat position while driving or the viewing position while remote controlling
 
-   Chat Syntax | (!,/,?)change_seat_position *axis,units*
+   Chat Syntax | (!,/,?)change_seat_position *axis units*
    ------------- | -------------
 
    Console Syntax | scripted_user_func *change_seat_position,axis,units* 
@@ -2317,6 +2365,9 @@
   
 ```cpp
        //Overloads:
+       // x: positive = forward, negative = back
+       // y: positive = left, negative = right
+       // z: positive = up, negative = down
        change_seat_position {axis:(x,y,z)} {units:inches}
        
        // Example: Move your seat 10 inches down
@@ -2385,7 +2436,7 @@
 #### **change_passenger_seat_position**
 - Change your seat position as a passenger. Allowed for non-admins by default
 
-   Chat Syntax | (!,/,?)change_passenger_seat_position *axis,units*
+   Chat Syntax | (!,/,?)change_passenger_seat_position *axis units*
    ------------- | -------------
 
    Console Syntax | scripted_user_func *change_passenger_seat_position,axis,units* 
@@ -2396,6 +2447,9 @@
   
 ```cpp
        //Overloads:
+       // x: positive = forward, negative = back
+       // y: positive = left, negative = right
+       // z: positive = up, negative = down
        change_passenger_seat_position {axis:(x,y,z)} {units:inches}
        
        // Example: Move your seat 20 inches right
@@ -3337,7 +3391,7 @@
 #### **stop_wnet**
 - Stop watching a netprop or class members of an entity
 
-   Chat Syntax | (!,/,?)stop_wnet *netprop_name,NAME_OR_ID*
+   Chat Syntax | (!,/,?)stop_wnet *netprop_name NAME_OR_ID*
    ------------- | -------------
 
    Console Syntax | scripted_user_func *stop_wnet,netprop_name,NAME_OR_ID*
@@ -3520,7 +3574,7 @@
 #### **flag_lookup**
 - Check what flags/constants are defined with a given prefix or check what flags/constants correspond to a given integer value
 
-   Chat Syntax | (!,/,?)flag_lookup *prefix,value*
+   Chat Syntax | (!,/,?)flag_lookup *prefix value*
    ------------- | -------------
 
    Console Syntax | scripted_user_func *flag_lookup,prefix,value*
@@ -3630,7 +3684,7 @@
 #### **detach_hook**
 - Detach a custom hook function from an event
 
-   Chat Syntax | (!,/,?)detach_hook *event,hook*
+   Chat Syntax | (!,/,?)detach_hook *event hook*
    ------------- | -------------
 
    Console Syntax | scripted_user_func *detach_hook,event,hook*
@@ -3649,7 +3703,7 @@
 #### **attach_hook**
 - Attach a custom hook function from an event back
 
-   Chat Syntax | (!,/,?)attach_hook *event,hook*
+   Chat Syntax | (!,/,?)attach_hook *event hook*
    ------------- | -------------
 
    Console Syntax | scripted_user_func *attach_hook,event,hook*

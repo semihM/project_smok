@@ -243,7 +243,8 @@ if(!("DriveParameters" in getroottable()))
         }
         player.SetNetProp("m_stunTimer.m_timestamp",Time()+0.5)
         player.SetNetProp("m_stunTimer.m_duration",0.5)
-        player.SetLocalOrigin(::DriveableCarModels[player.GetScriptScope()["PS_VEHICLE_TYPE"]].getting_out_point)
+		if(player.GetScriptScope()["PS_VEHICLE_TYPE"] in ::DriveableCarModels)
+        	player.SetLocalOrigin(::DriveableCarModels[player.GetScriptScope()["PS_VEHICLE_TYPE"]].getting_out_point)
         player.Input("clearparent",0.05)
         player.Input("RunScriptCode","_dropit(Player("+player.GetIndex()+"))",0.1);
         player.Input("RunScriptCode","Player("+player.GetIndex()+").SetNetProp(\"m_CollisionGroup\",5)",0.15);
@@ -679,8 +680,14 @@ if(!("DriveParameters" in getroottable()))
 				
 			if(player.IsPassenger())
 				player.GetScriptScope()["PS_IN_PASSENGER_CAR"] = null
+			
+			if(vehicle.GetParent() != null)
+			{
+				vehicle.Input("clearparent","",0);
+				vehicle.Input("RunScriptCode","_dropit(Entity(self.GetEntityIndex()))",0.05);
+			}
 
-	        ::PreparePlayerForDriving(player,vehicle,ShortenModelName(vehicle.GetModel()))
+	        Timers.AddTimer(0.1,false,@(...) ::PreparePlayerForDriving(player,vehicle,ShortenModelName(vehicle.GetModel())),null)
         }
 
 		DoEntFire("!self","kill","",0,null,self)
