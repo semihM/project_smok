@@ -5577,7 +5577,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
     {
 		rag.SetNetProp("m_CollisionGroup",0)
 		rag.GetBaseEntity().SetSequence(0)
-    	local bbox = rag.GetNetProp("m_Collision") + player.GetNetProp("m_Collision")
+		local coll = rag.GetNetProp("m_Collision")
+		local mx = coll.x < coll.y ? ( coll.z < coll.x ? coll.z : coll.x) : ( coll.z < coll.y ? coll.z : coll.y)
+		coll = Vector(mx,mx,coll.z)
+		local bbox = coll + player.GetNetProp("m_Collision")
 		local localorg = RotatePosition(Vector(0,0,0),QAngle(0,180,0),bbox).Scale(1.1);
 		// local localorg = Vector(0,0,1250)
 		rag.GetScriptScope()["PS_OWNER_ORIGIN"] <- localorg
@@ -6857,6 +6860,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	}
 }
 
+// TO-DO: Make optional driving mechanics
 ::AdminSystem.RemoteControlCmd <- function(player,args)
 {
 	if(!::AdminSystem.IsPrivileged(player))
@@ -6892,7 +6896,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		if(clsname.find("physics") == null && clsname.find("prop_car_alarm") == null)
 			return
 
-		local bbox = target.GetNetProp("m_Collision") + player.GetNetProp("m_Collision")
+		local coll = target.GetNetProp("m_Collision")
+		local mx = coll.x < coll.y ? ( coll.z < coll.x ? coll.z : coll.x) : ( coll.z < coll.y ? coll.z : coll.y)
+		coll = Vector(mx,mx,coll.z)
+		local bbox = coll + player.GetNetProp("m_Collision")
 		localorg = RotatePosition(Vector(0,0,0),QAngle(0,180,0),bbox).Scale(1.1);
 
 		player.SetDrivenVehicle(target,"PS_RC_CAR_UNIQ",localorg)
