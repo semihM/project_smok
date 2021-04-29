@@ -4895,6 +4895,23 @@ function VSLib::Entity::GetDrivenVehicleType()
 /*
  * @authors rhino
  */
+function VSLib::Entity::IsDrivingRCProp()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	
+	if(IsDriving())
+		return GetScriptScope()["PS_VEHICLE_TYPE"] == "PS_RC_CAR_UNIQ";
+
+	return false
+}
+
+/*
+ * @authors rhino
+ */
 function VSLib::Entity::IsPassenger()
 {
 	if (!IsEntityValid())
