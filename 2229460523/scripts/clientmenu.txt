@@ -39241,7 +39241,7 @@
 	}
 	"ragdolling_menu2"
 	{
-			"Title"		"Change viewing position"
+			"Title"		"Change RC viewing position"
 			"1"
 			{
 				"command"		 "play buttons/button14;scripted_user_func change_seat_position,z,5;show_menu ragdolling_menu2"
@@ -39286,7 +39286,7 @@
 
 	"ragdolling_menu3"
 	{
-			"Title"		"Change viewing position"
+			"Title"		"Change ragdoll viewing position"
 			"1"
 			{
 				"command"		 "play buttons/button14;scripted_user_func change_ragdoll_view,z,5;show_menu ragdolling_menu3"
