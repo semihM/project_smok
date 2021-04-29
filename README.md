@@ -2259,7 +2259,7 @@
    Console Syntax | scripted_user_func *change_ragdoll_view,axis,units* 
    ------------- | -------------
     
-   Menu Sequence | _6->9->9->9->2->6->\[1,2,3,4,5,6\]_
+   Menu Sequence | _6->9->9->9->2->7->\[1,2,3,4,5,6\]_
    ------------- | -------------
   
 ```cpp
