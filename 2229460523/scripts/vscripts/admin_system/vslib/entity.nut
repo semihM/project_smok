@@ -4584,6 +4584,69 @@ function VSLib::Entity::IsCarryingItem()
 /*
  * @authors rhino
  */
+function VSLib::Entity::IsUseable()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	
+	return "PS_CurrentPointUseEntity" in GetScriptScope() && GetScriptScope()["PS_CurrentPointUseEntity"] != null && GetScriptScope()["PS_CurrentPointUseEntity"].IsEntityValid();
+}
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::RemoveUseAbility()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	if(IsUseable())
+	{
+		GetScriptScope()["PS_CurrentPointUseEntity"].Kill()
+		GetScriptScope()["PS_CurrentPointUseEntity"] = null
+		return true
+	}
+	else
+		return false
+}
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::IsLootable()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	
+	return "PS_LootPlaced" in GetScriptScope() && GetScriptScope()["PS_LootPlaced"];
+}
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::RemoveLootAbility()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	if(IsLootable())
+	{
+		GetScriptScope()["PS_LootPlaced"] = false
+		return true
+	}
+	else
+		return false
+}
+/*
+ * @authors rhino
+ */
 function VSLib::Entity::HasRagdollPresent()
 {
 	if (!IsEntityValid())
@@ -4660,6 +4723,25 @@ function VSLib::Entity::IsGrabable()
 /*
  * @authors rhino
  */
+function VSLib::Entity::RemoveDriveAbility()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	if(HasDrivingAbility())
+	{
+		GetScriptScope()["PS_HAS_DRIVE_ABILITY"] <- false
+		return true
+	}
+	else
+		return false
+}
+
+/*
+ * @authors rhino
+ */
 function VSLib::Entity::HasDriver()
 {
 	if (!IsEntityValid())
@@ -4669,6 +4751,26 @@ function VSLib::Entity::HasDriver()
 	}
 	
 	return ("PS_HAS_DRIVER" in GetScriptScope()) && (GetScriptScope()["PS_HAS_DRIVER"])
+}
+
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::HasPassenger()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	
+	foreach(survivor in Players.AliveSurvivors())
+	{
+		local v = survivor.GetPassengerVehicle()
+		if(v && v.GetEntityHandle() == GetEntityHandle())
+			return true
+	}
+	return false
 }
 
 /*
