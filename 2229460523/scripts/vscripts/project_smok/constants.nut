@@ -5,7 +5,7 @@
 {
 	Version = 
 	{
-		Number = "v1.7.0"
+		Number = "v1.7.1"
 		Date = "29.04.2021"
 		Source = "https://github.com/semihM/project_smok"
 	}
@@ -112,6 +112,8 @@
 	PhysConverter = "project_smok_phys_converter"
 
 	SodaCan = "project_smok_soda_can_"
+
+	RCProp = "project_smok_rcprop_"
 }
 
 /*************************\
@@ -144,6 +146,8 @@
     CarPush = "CarPushSingle_"
 
 	RagdollControl = "RagdollControl_"
+
+	RCPropControl = "RCPropControl_"
 }
 
 /*************\
