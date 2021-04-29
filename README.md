@@ -1186,12 +1186,29 @@
    Console Syntax | scripted_user_func *pitch,speed*  
    ------------- | -------------
     
-   Menu Sequence | _6->5->5->1, 6->5->5->2, 6->5->5->3, 6->5->5->4 AND 6->5->5->6_
+   Menu Sequence | _6->5->1, 6->5->2, 6->5->3, 6->5->4 AND 6->5->6_
    ------------- | -------------
 ```cpp 
        //Overloads:
        // speed: Talking speed, default is 1.0
        pitch {speed: float}
+```
+---
+#### **perma_pitch**
+- Change the pitch(talking speed) of voice lines you speak automatically. Works similar to **pitch** except this doesn't require the player to be currently speaking.
+
+   Chat Syntax | (!,/,?)perma_pitch *speed*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *perma_pitch,speed*  
+   ------------- | -------------
+    
+   Menu Sequence | _6->5->7->1, 6->5->7->2, 6->5->7->3, 6->5->7->4 AND 6->5->7->6_
+   ------------- | -------------
+```cpp 
+       //Overloads:
+       // speed: Talking speed, default is 1.0
+       perma_pitch {speed: float}
 ```
 ---
 #### **randomline_save_last**
