@@ -1393,6 +1393,17 @@
                     )
                 return cmd.Describe();
             }
+            perma_pitch = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "perma_pitch",
+                    [
+                        CMDParam("speedfactor","Speed factor-> 1.0 normal, 0.5 half the speed, 2.0 twice as fast etc.",true,"uses 1.0(resets)")
+                    ],
+                    "Change your talking speed permanently"
+                    )
+                return cmd.Describe();
+            }
             sound = function(player,args)
             {
                 local cmd = CMDDocs(
@@ -1696,6 +1707,17 @@
                     )
                 return cmd.Describe();
             }
+            rc_prop = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "rc_prop",
+                    [
+                        CMDParam("target","targetname, !picker for aimed object",true,"stop currently controlled prop")
+                    ],
+                    "Start remote controlling a prop"
+                    )
+                return cmd.Describe();
+            }
             start_driving = function(player,args)
             {
                 local cmd = CMDDocs(
@@ -1735,7 +1757,7 @@
                         CMDParam("axis","Axis name:(x,y,z)"),
                         CMDParam("units","How many inches to move")
                     ],
-                    "Change your current driving seat position relative to driving direction of the driven vehicle"
+                    "Change your current driving seat position relative to driving direction of the driven vehicle\rCan be used for remote control prop views too"
                     )
                 return cmd.Describe();
             }
@@ -2358,6 +2380,18 @@
                         CMDParam("value","Value to match flags with",true,"prints all flags/constants starting with given prefix")
                     ],
                     "Lookup flags starting with a prefix or get flags representing given value starting with given prefix"
+                    )
+                return cmd.Describe();
+            }
+            change_ragdoll_view = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "change_ragdoll_view",
+                    [
+                        CMDParam("axis","Axis name:(x,y,z)"),
+                        CMDParam("units","How many inches to move")
+                    ],
+                    "Change your current ragdoll viewing position relative to your eye angles"
                     )
                 return cmd.Describe();
             }
