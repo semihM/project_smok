@@ -129,6 +129,7 @@ if(!("DriveParameters" in getroottable()))
         foreach(e in createdent.slice(1,createdent.len()))
         {
             e.Input("setparent","#"+parentent.GetIndex(),0);
+			e.SetNetProp("m_CollisionGroup",10)
         }
         parentent.Input("RunScriptCode","_dropit(Entity("+parentent.GetIndex()+"))",0);
         
@@ -587,6 +588,11 @@ if(!("DriveParameters" in getroottable()))
 			return
 	}
 	
+	if(vehicle.IsLootable())
+	{
+		vehicle.RemoveLootAbility()
+	}
+
     local bbox = vehicle.GetNetProp("m_Collision")
 
 	local fullmdl = vehicle.GetModel()
@@ -643,9 +649,12 @@ if(!("DriveParameters" in getroottable()))
 	bsrc["Duration"] <- duration
 	bsrc["FinishStartProcess"] <- function()
 	{
+		if(!("LastPlayer" in self.GetScriptScope()))
+			return;
+			
 		local player = self.GetScriptScope().LastPlayer
 		
-		if(!::AdminSystem.IsPrivileged(player))
+		if(!::AdminSystem.IsPrivileged(player,true))
 			return
 
 		if(player.IsDriving())
@@ -688,11 +697,17 @@ if(!("DriveParameters" in getroottable()))
 			{
 				if( player.GetEntityHandle() == user )
 				{
-					self.GetScriptScope()["LastPlayer"] <- ::VSLib.Player(player)
-					if(!AdminSystem.IsPrivileged(self.GetScriptScope()["LastPlayer"],true))
+					local p = ::VSLib.Player(player)
+					if(!AdminSystem.IsPrivileged(p,true))
 					{
 						self.StopUse()
-						Messages.ThrowPlayer(self.GetScriptScope()["LastPlayer"],"Sorry, only admins can drive vehicles!")
+						Messages.ThrowPlayer(p,"Sorry, only admins can drive vehicles!")
+						Messages.InformPlayer(p,"You can use '!get_in' and '!get_out' commands to get into driveable vehicles as a passenger")
+						Messages.InformPlayer(p,"As a passenger you can use '!change_passenger_seat_position {axis:x,y,z} {units}' command format to move your seat\r as a passenger")
+					}
+					else
+					{
+						self.GetScriptScope()["LastPlayer"] <- p
 					}
 					return
 				}
@@ -711,6 +726,7 @@ if(!("DriveParameters" in getroottable()))
 	vehicle.SetGlowColor(params.GlowR,params.GlowG,params.GlowB,params.GlowA)
 	vehicle.Input("SetGlowRange",params.GlowRange.tostring())
 	vehicle.Input("StartGlowing","")
+	vehicle.GetScriptScope()["PS_CurrentPointUseEntity"] <- pscr
 
 	local ch = vehicle.FirstMoveChild()
 	while(ch)
