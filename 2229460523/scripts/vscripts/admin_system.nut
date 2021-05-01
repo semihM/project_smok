@@ -6565,7 +6565,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	target.SetNetProp("m_CollisionGroup",0)
 	target.GetScriptScope()["PS_OWNER_ORIGIN"] <- localorg
 
+	player.GetScriptScope()["PS_CG_BEFORE_RCPROP"] <- player.GetNetProp("m_CollisionGroup")
 	player.SetNetProp("m_CollisionGroup",12)
+
+	player.GetScriptScope()["PS_MC_BEFORE_RCPROP"] <- player.GetNetProp("m_MoveCollide")
 	player.SetNetProp("m_MoveCollide",0)
 
 	target.SetEFlags(EFL_IN_SKYBOX|EFL_HAS_PLAYER_CHILD)
@@ -6725,6 +6728,8 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		player.GetScriptScope()["PS_VEHICLE_ENT"] <- null
 	}
 	DoEntFire("!self","RunScriptCode","RecoverRagdollPost("+en+")",0.05,null,player.GetBaseEntity())
+	player.SetNetProp("m_CollisionGroup",player.GetScriptScope()["PS_CG_BEFORE_RCPROP"])
+	player.SetNetProp("m_MoveCollide",player.GetScriptScope()["PS_MC_BEFORE_RCPROP"])
 }
 
 ::AdminSystem.LoadVehicles <- function(reload=false)
@@ -6817,19 +6822,36 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	{
 		::DriveMainFunctions.RemoveListeners(player)
 
-		::DriveMainFunctions.RestoreDriver(player)
+		player.GetScriptScope()["PS_VEHICLE_VALID"] <- false
+        if(player.GetScriptScope()["PS_VEHICLE_ENT"] != null && player.GetScriptScope()["PS_VEHICLE_ENT"].GetScriptScope() != null)
+        {
+            player.GetScriptScope()["PS_VEHICLE_ENT"].GetScriptScope()["PS_HAS_DRIVE_ABILITY"] <- false
+            player.GetScriptScope()["PS_VEHICLE_ENT"].GetScriptScope()["PS_HAS_DRIVER"] <- false
+            player.GetScriptScope()["PS_VEHICLE_ENT"] <- null
+        }
 	}
 	
 	if(!player.SetPassengerVehicle(ent))
 		return
+	
+	local idx = player.GetIndex();
+	AdminSystem.Vars.IsGodEnabled[idx] <- true;
+	AdminSystem.Vars.IsNoclipEnabled[idx] <- false;
+	AdminSystem.Vars.IsFreezeEnabled[idx] <- false;
 
-    player.SetNetProp("m_CollisionGroup",12)
-    player.SetNetProp("m_MoveCollide",0)
+	player.GetScriptScope()["PS_CG_BEFORE_PASSENGER"] <- player.GetNetProp("m_CollisionGroup")
+	player.SetNetProp("m_CollisionGroup",12)
+
+	player.GetScriptScope()["PS_MC_BEFORE_PASSENGER"] <- player.GetNetProp("m_MoveCollide")
+	player.SetNetProp("m_MoveCollide",0)
+
     player.SetMoveType(MOVETYPE_CUSTOM)
 
-    player.SetNetProp("m_stunTimer.m_timestamp",Time()+99999)
-    player.SetNetProp("m_stunTimer.m_duration",99999)
+	player.SetNetProp("m_stunTimer.m_timestamp",Time()+99999)
+	player.SetNetProp("m_stunTimer.m_duration",99999)
 
+	player.SetVelocity(Vector(0,0,0))	
+	
 	if(ent.GetParent() != null)
 	{
 		ent.Input("clearparent","",0);
@@ -6842,7 +6864,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		player.Input("setparent","#"+ent.GetIndex(),0)
 		player.Input("runscriptcode","self.SetLocalOrigin(Vector("+p_org.x+","+p_org.y+","+p_org.z+"))",0.1)
 	}
+	player.Input("runscriptcode","self.SnapEyeAngles(QAngle(0,0,0))",0.2)
+	player.GetScriptScope()["PS_VEHICLE_PASSENGER_OFFSET"] <- p_org;
 
+	::DriveMainFunctions.CreateListenersPassenger(player);
 }
 
 ::AdminSystem.GetOutAsPassenger <- function(player,args)
@@ -6877,13 +6902,13 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		switch(axis)
 		{
 			case "x":
-				player.SetLocalOrigin(RotatePosition(Vector(0,0,0),dir,Vector(units,0,0)) + player.GetLocalOrigin())
+				player.GetScriptScope()["PS_VEHICLE_PASSENGER_OFFSET"] <- RotatePosition(Vector(0,0,0),dir,Vector(units,0,0)) + player.GetScriptScope()["PS_VEHICLE_PASSENGER_OFFSET"]
 				break
 			case "y":
-				player.SetLocalOrigin(RotatePosition(Vector(0,0,0),dir,Vector(0,units,0)) + player.GetLocalOrigin())
+				player.GetScriptScope()["PS_VEHICLE_PASSENGER_OFFSET"] <- RotatePosition(Vector(0,0,0),dir,Vector(0,units,0)) + player.GetScriptScope()["PS_VEHICLE_PASSENGER_OFFSET"]
 				break
 			case "z":
-				player.SetLocalOrigin(RotatePosition(Vector(0,0,0),dir,Vector(0,0,units)) + player.GetLocalOrigin())
+				player.GetScriptScope()["PS_VEHICLE_PASSENGER_OFFSET"] <- RotatePosition(Vector(0,0,0),dir,Vector(0,0,units)) + player.GetScriptScope()["PS_VEHICLE_PASSENGER_OFFSET"]
 				break
 		}
 	}
@@ -8410,6 +8435,13 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 					if(p.IsDriving() || p.IsPassenger() || p.HasRagdollPresent())
 					{
 						::Messages.ThrowPlayer(p,"You can't loot while driving or ragdolling!")
+						self.StopUse()
+						return;
+					}
+					if(::VSLib.Entity(self.GetUseModelName()).GetParent() != null)
+					{
+						::Messages.ThrowPlayer(p,"You can't loot a prop that's being grabbed by someone!")
+						self.StopUse()
 						return;
 					}
 					self.GetScriptScope()["LastPlayer"] <- p
@@ -11280,6 +11312,31 @@ function Notifications::OnChargerChargeEnd::_GetOutOfTheVehicle(charger,args)
 		::DriveMainFunctions.RestoreDriver(victim)
 	}
 }
+// Perma pitch
+/*
+ * @authors rhino
+ */
+function Notifications::OnBotReplacedPlayer::ResetPermaPitch(player,bot,args)
+{
+	local timername = "PS_PERMA_PITCH_SHIFT_"+player.GetCharacterNameLower()
+	if(timername in ::Quix.Table)
+	{
+		::Quix.Remove(timername);
+	}
+
+	local s = player.GetBaseEntity().GetCurrentScene()
+	if(s!=null)		
+		DoEntFire("!self","PitchShift","1",0,null,s)
+}
+
+function Notifications::OnDeath::ResetPermaPitch(victim,attacker,args)
+{
+	local timername = "PS_PERMA_PITCH_SHIFT_"+victim.GetCharacterNameLower()
+	if(timername in ::Quix.Table)
+	{
+		::Quix.Remove(timername);
+	}
+}
 
 // Model restoration
 /*
@@ -11306,26 +11363,23 @@ function Notifications::OnHurt::_HitByTankRock(player,attacker,args)
 		return;
 	if(args.weapon != "tank_rock")
 		return;
-	else
+	else if(AdminSystem.Vars._RockThrow.pushenabled)
 	{
-		if(AdminSystem.Vars._RockThrow.pushenabled)
-		{
-			if(::VSLib.EasyLogic.Objects.OfClassname("tank_rock").len() != 1)
-			{	// TO-DO: Maybe add origin kv to name and get it from there ?
-				//printl("Too many rocks, not pushing")
-				return;
-			}
-			local pushvec = player.GetEyePosition() - AdminSystem.Vars._RockThrow.rockorigin ;
-			pushvec = pushvec.Scale( AdminSystem.Vars._RockThrow.rockpushspeed / pushvec.Length());
-			
-			Timers.AddTimer(0.1,false,_pushPlayer,
-			{
-				player=player,
-				pushvec=pushvec,
-				raise=AdminSystem.Vars._RockThrow.raise,
-				friction=AdminSystem.Vars._RockThrow.friction
-			})	
+		if(::VSLib.EasyLogic.Objects.OfClassname("tank_rock").len() != 1)
+		{	// TO-DO: Maybe add origin kv to name and get it from there ?
+			//printl("Too many rocks, not pushing")
+			return;
 		}
+		local pushvec = player.GetEyePosition() - AdminSystem.Vars._RockThrow.rockorigin ;
+		pushvec = pushvec.Scale( AdminSystem.Vars._RockThrow.rockpushspeed / pushvec.Length());
+		
+		Timers.AddTimer(0.1,false,_pushPlayer,
+		{
+			player=player,
+			pushvec=pushvec,
+			raise=AdminSystem.Vars._RockThrow.raise,
+			friction=AdminSystem.Vars._RockThrow.friction
+		})	
 	}
 }
 
@@ -23837,7 +23891,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if (!AdminSystem.IsPrivileged( player ))
 		return;
 	
-	local ent = player.GetLookingEntity();
+	local ent = player.GetLookingEntity(GRAB_YEET_TRACE_MASK);
 	if( ent == null)
 		return;
 
@@ -23952,30 +24006,6 @@ if ( Director.GetGameMode() == "holdout" )
 		return;
 
 	local ent = null
-	if(args != null)
-	{
-		if((typeof args) == "table" )
-		{
-			if(("_fromlistener" in args))
-			{
-				ent = args._fromlistener;
-				local playerEyeLoc = player.GetEyePosition();
-				local angles = player.GetEyeAngles();
-				local newanglesF = QAngle(0,angles.Yaw(),angles.Roll()).Forward();
-				local holdingLoc = playerEyeLoc + newanglesF.Scale(100/newanglesF.Length());
-				holdingLoc.z = playerEyeLoc.z - 40;
-				ent.SetOrigin(holdingLoc);
-				local entind = ent.GetIndex().tostring();
-				player.AttachOther(ent,false,0,null);
-				//player.SetAttachmentPoint(ent,tbl_heldEnt.grabAttachPos,true,0.1);
-
-				//printB(player.GetCharacterName(),"Grabbed #"+entind,true,"info",true,true)
-
-				AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = entind;
-				return;
-			}
-		}
-	}
 	local tbl_heldEnt = AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()];
 	local baseent = null;
 	if(tbl_heldEnt.entid != "")	// Already holding something, validate it
@@ -24002,9 +24032,9 @@ if ( Director.GetGameMode() == "holdout" )
 		// 
 	}
 	
-	if(player.IsDriving())
+	if(player.IsDriving() || player.IsPassenger())
 	{
-		Messages.ThrowPlayer(player,"You can't grab things while you are driving!")
+		::Messages.ThrowPlayer(player,"You can't grab things while you are driving!")
 		return
 	}
 
