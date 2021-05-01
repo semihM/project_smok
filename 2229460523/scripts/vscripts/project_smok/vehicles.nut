@@ -144,7 +144,6 @@ if(!("DriveParameters" in getroottable()))
         local v_tbl = ::DriveableCarModels[cartype]
         local driver_origin = v_tbl.driver_origin
 
-
         player.SetNetProp("m_CollisionGroup",v_tbl.player_collision)
         player.SetNetProp("m_MoveCollide",v_tbl.player_movecollide)
         player.SetMoveType(v_tbl.player_movetype)
@@ -215,6 +214,15 @@ if(!("DriveParameters" in getroottable()))
                             PS_WHEN_PRESSED)
     }
 
+	CreateListenersPassenger = function(player)
+	{
+		::Quix.AddListener("PASSENGER_ORIGIN_KEEP_"+player.GetCharacterNameLower()+"_"+player.GetScriptScope()["PS_VEHICLE_TYPE"],
+							player.GetIndex(),
+							0,
+							::PassengerDirectiFunctions.origin_keep,
+							PS_WHILE_UNPRESSED)
+	}
+
 	RemoveListeners = function(player)
 	{
         if(player.GetScriptScope() == null)
@@ -230,6 +238,14 @@ if(!("DriveParameters" in getroottable()))
 		::Quix.Remove("DRIVE_LOOKAHEAD_"+cname+"_"+car)
 		::Quix.Remove("DRIVE_N2O_"+cname+"_"+car)
 		::Quix.Remove("DRIVE_JUMP_"+cname+"_"+car)
+	}
+
+	RemoveListenersPassenger = function(player)
+	{
+        if(player.GetScriptScope() == null)
+            return
+    
+		::Quix.Remove("PASSENGER_ORIGIN_KEEP_"+player.GetCharacterNameLower()+"_"+player.GetScriptScope()["PS_VEHICLE_TYPE"])
 	}
 
     RestoreDriver = function(player)
@@ -382,6 +398,22 @@ if(!("DriveParameters" in getroottable()))
 	}
 }
 
+::PassengerDirectiFunctions <-
+{
+	origin_keep = function(player,t_tbl)
+	{
+		local vehicle = player.GetPassengerVehicle()
+		if(vehicle == false || !vehicle.IsEntityValid())
+		{
+			::GetOutAsPassenger(player)
+		}
+		else
+		{	
+			player.SetLocalOrigin(player.GetScriptScope()["PS_VEHICLE_PASSENGER_OFFSET"])
+        	player.SetMoveType(MOVETYPE_CUSTOM)
+		}
+	}
+}
 ::DriveDirectiFunctions <-
 {
 	jump = function(player,t_tbl)
@@ -758,8 +790,13 @@ if(!("DriveParameters" in getroottable()))
 				player.GetScriptScope()["PS_VEHICLE_ENT"] <- null
 			}
 		}
-
+		
+		AdminSystem.Vars.IsGodEnabled[player.GetIndex()] <- false;
 		local corner = player.GetScriptScope()["PS_IN_PASSENGER_CAR"].GetNetProp("m_Collision")
+
+		player.SetNetProp("m_CollisionGroup",player.GetScriptScope()["PS_CG_BEFORE_PASSENGER"])
+		player.SetNetProp("m_MoveCollide",player.GetScriptScope()["PS_MC_BEFORE_PASSENGER"])
+
 		player.GetScriptScope()["PS_IN_PASSENGER_CAR"] <- null
 		player.SetNetProp("m_stunTimer.m_timestamp",Time()+0.5)
 		player.SetNetProp("m_stunTimer.m_duration",0.5)
@@ -768,5 +805,7 @@ if(!("DriveParameters" in getroottable()))
 		player.Input("RunScriptCode","_dropit(Player("+player.GetIndex()+"))",0.15);
 		player.Input("RunScriptCode","Player("+player.GetIndex()+").SetNetProp(\"m_CollisionGroup\",5)",0.2);
 		player.SetMoveType(MOVETYPE_WALK);
+
+		::DriveMainFunctions.RemoveListenersPassenger(player)
 	}
 }
