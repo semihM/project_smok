@@ -11331,6 +11331,9 @@ function Notifications::OnBotReplacedPlayer::ResetPermaPitch(player,bot,args)
 
 function Notifications::OnDeath::ResetPermaPitch(victim,attacker,args)
 {
+	if(!victim.IsSurvivor())
+		return
+	victim = Player(victim.GetIndex())
 	local timername = "PS_PERMA_PITCH_SHIFT_"+victim.GetCharacterNameLower()
 	if(timername in ::Quix.Table)
 	{
