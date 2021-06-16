@@ -2209,6 +2209,20 @@ function VSLib::Entity::SetOrigin(vec)
 	_ent.SetOrigin(vec);
 }
 
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::MoveOrigin(vec)
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return;
+	}
+	
+	_ent.SetOrigin(_ent.GetOrigin() + vec);
+}
+
 /**
  * Sets the entity's origin relative to its parent if it has one.
  */
@@ -3068,6 +3082,23 @@ function VSLib::Entity::GetLocalAngles()
 		return _ent.GetAngles();
 
 	return _ent.GetLocalAngles();
+}
+
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::MoveAngles(x, y = 0.0, z = 0.0)
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return;
+	}
+	
+	if ( typeof x == "QAngle" )
+		return _ent.SetAngles(_ent.GetAngles() + x);
+	else
+		return _ent.SetAngles(_ent.GetAngles() + QAngle(x,y,z));
 }
 
 /**

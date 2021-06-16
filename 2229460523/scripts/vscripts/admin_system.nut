@@ -4086,6 +4086,36 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.RemoveDisabledCommandCmd(player,args);
 			break;
 		}
+		case "switch_hud_element":
+		{
+			AdminSystem.SwitchHudElement(player,args);
+			break;
+		}
+		case "selfie":
+		{
+			AdminSystem.SelfieViewCmd(player,args);
+			break;
+		}
+		case "create_camera":
+		{
+			AdminSystem.CreateCameraCmd(player,args);
+			break;
+		}
+		case "camera_setting":
+		{
+			AdminSystem.CameraSettingCmd(player,args);
+			break;
+		}
+		case "change_camera":
+		{
+			AdminSystem.ChangeCameraCmd(player,args);
+			break;
+		}
+		case "last_camera_info":
+		{
+			AdminSystem.LastCameraInfoCmd(player,args);
+			break;
+		}
 		default:
 		{
 			if(cleanBaseCmd in ::ChatTriggers)
@@ -4102,6 +4132,370 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	}
 }
 
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.SwitchHudElement <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local element = GetArgument(1)
+	switch(element)
+	{
+		case "all":
+		{
+			player.SetNetProp("m_Local.m_iHideHUD", player.GetNetProp("m_Local.m_iHideHUD") ^ (HIDEHUD_WEAPONSELECTION|(1<<6)|HIDEHUD_CHAT|HIDEHUD_CROSSHAIR))
+			break;
+		}
+		case "weapon_selection":
+		{
+			player.SetNetProp("m_Local.m_iHideHUD", player.GetNetProp("m_Local.m_iHideHUD") ^ HIDEHUD_WEAPONSELECTION)
+			break;
+		}
+		case "menu":
+		case "healthbars":
+		case "healthbar":
+		case "health":
+		{
+			player.SetNetProp("m_Local.m_iHideHUD", player.GetNetProp("m_Local.m_iHideHUD") ^ (1<<6))
+			Messages.InformPlayerConsole(player,"MENU IS CURRENTLY HIDDEN, TO RESTORE: !switch_hud_element menu")
+			break;
+		}
+		case "chat":
+		{
+			player.SetNetProp("m_Local.m_iHideHUD", player.GetNetProp("m_Local.m_iHideHUD") ^ HIDEHUD_CHAT)
+			break;
+		}
+		case "crosshair":
+		{
+			player.SetNetProp("m_Local.m_iHideHUD", player.GetNetProp("m_Local.m_iHideHUD") ^ HIDEHUD_CROSSHAIR)
+			break;
+		}
+	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.SelfieViewCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	//TO-DO
+}
+
+::LastCreatedCameras <- ::AdminSystem.Vars.RepeatValueForSurvivors(-1);
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.CreateCameraCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+	
+    local angletarget = null
+	local keyvals =
+	{
+		classname = "point_viewcontrol"
+		origin = player.GetLookingLocation()
+		spawnflags = 24
+	}
+
+	local angles = GetArgument(1);
+	if(!angles)
+		keyvals.angles <- player.GetEyeAngles();
+	else if(angles == "!self")
+		keyvals.angles <- RotateOrientation(player.GetEyeAngles(),QAngle(180,0,0)) - QAngle(0,0,-180);
+	else
+		keyvals.angles <- CastCustomSetting(player,["angles","ang|"+angles])
+
+	local followercam = false;
+	local follow = GetArgument(2);
+	if(follow)
+	{
+		if(follow == "!self")
+			follow = "#" + player.GetIndex()
+		else if(follow == "!picker" && player.GetLookingEntity() != null)
+            follow = "#" + player.GetLookingEntity().GetIndex()
+		keyvals.target <- follow
+		followercam = true;
+	}
+
+	local cam = Utils.CreateEntityWithTable(keyvals);
+	cam.SetName("PS_VIEWCONTROL")
+	cam.GetScriptScope()["PS_CAM_FOLLOWS"] <- followercam
+
+	::Messages.InformPlayer(player,CmdMessages.Prop.Success("camera",cam));
+	::LastCreatedCameras[player.GetCharacterNameLower()] <- cam.GetIndex()
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.LastCameraInfoCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local camera = null
+	if(::LastCreatedCameras[player.GetCharacterNameLower()] == -1)
+		::Messages.ThrowPlayer(player,"No cameras found created by you.")
+	else if((camera = Entity(::LastCreatedCameras[player.GetCharacterNameLower()])) && camera.IsEntityValid())
+		::Messages.InformPlayer(player,TXTCLR.BG("ID: ") + TXTCLR.OG("#" + camera.GetIndex()) + "\n" + TXTCLR.BG("Distance: ") + TXTCLR.OG((player.GetOrigin() - camera.GetOrigin()).Length()));
+	else if(::LastCreatedCameras[player.GetCharacterNameLower()] = -1)
+		::Messages.WarnPlayer(player,"Last camera created was removed.");
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.ChangeCameraCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local target = GetArgument(1);
+	local hascam = "PS_CUSTOM_POINT_VIEWCONTROL" in player.GetScriptScope()	&& player.GetScriptScope()["PS_CUSTOM_POINT_VIEWCONTROL"] != null;
+	if(!target)
+	{
+		if(hascam)
+		{
+			DoEntFire("!self","disable","",0,player.GetBaseEntity(), player.GetScriptScope()["PS_CUSTOM_POINT_VIEWCONTROL"].GetBaseEntity());
+			player.GetScriptScope()["PS_CUSTOM_POINT_VIEWCONTROL"].GetScriptScope()["PS_CURRENT_VIEWER"] <- null
+		}
+		return;
+	}
+
+	if(target == "!last")
+	{
+		target = ::LastCreatedCameras[player.GetCharacterNameLower()]
+	}
+
+	target = Entity(target)
+	if(!target || !target.IsEntityValid() || target.GetClassname() != "point_viewcontrol")
+		return
+
+	if("PS_CURRENT_VIEWER" in target.GetScriptScope() && target.GetScriptScope()["PS_CURRENT_VIEWER"] != null)
+	{
+		Messages.ThrowPlayer(player,"This camera is being viewed by '"+player.GetName()+"'. Multiple viewers for a single camera is not currently supported!");
+		return;
+	}
+
+	if(hascam)
+	{
+		DoEntFire("!self","disable","",0,player.GetBaseEntity(), player.GetScriptScope()["PS_CUSTOM_POINT_VIEWCONTROL"].GetBaseEntity());
+		player.GetScriptScope()["PS_CUSTOM_POINT_VIEWCONTROL"].GetScriptScope()["PS_CURRENT_VIEWER"] <- null
+	}
+
+	player.GetScriptScope()["PS_CUSTOM_POINT_VIEWCONTROL"] <- target;
+	target.GetScriptScope()["PS_CURRENT_VIEWER"] <- player
+	DoEntFire("!self","enable","",0.1,player.GetBaseEntity(), target.GetBaseEntity());
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.CameraSettingCmd <- function(player,args)
+{
+	if (!AdminSystem.IsPrivileged( player ))
+		return;
+
+	local target = GetArgument(1);
+	if(target == "!last")
+		target = ::LastCreatedCameras[player.GetCharacterNameLower()]
+		
+	target = Entity(target)
+	if(!target || !target.IsEntityValid() || target.GetClassname() != "point_viewcontrol")
+		return
+
+	local setting = GetArgument(2);
+	local value = GetArgument(3);
+	local value2 = GetArgument(4);
+	value2 = value2 == null ? "" : value2;
+
+	switch(setting)
+	{
+		case "angles":
+		case "angle":
+		{
+			if(value == "!self")
+				value = (player.GetEyeAngles() + QAngle(0, 180, 0));
+			else
+				value = CastCustomSetting(player,["angles","ang|"+value])
+			
+			if(target.GetParent() != null)
+				target.SetLocalAngles(value);
+			else
+				target.SetAngles(value);
+			break;
+		}
+		case "+angles":
+		case "+angle":
+		{
+			value = CastCustomSetting(player,["angles","ang|"+value])
+			
+			if(target.GetParent() != null)
+				target.SetLocalAngles(target.GetLocalAngles() + value);
+			else
+				target.SetAngles(target.GetAngles() + value);
+			break;
+		}
+		case "origin":
+		{
+			if(value == "!self")
+				value = player.GetOrigin();
+			else
+				value = CastCustomSetting(player,["vector","pos|"+value])
+
+			if("PS_CAMERA_ATTACH_POS" in target.GetScriptScope() 
+				&& target.GetScriptScope()["PS_CAMERA_ATTACH_POS"] != null)
+				{
+					target.GetScriptScope()["PS_CAMERA_ATTACH_POS"] = value
+				}
+			
+			if(target.GetParent() != null)
+				target.SetLocalOrigin(value);
+			else
+				target.SetOrigin(value);
+			break;
+		}
+		case "+origin":
+		{
+			value = CastCustomSetting(player,["vector","pos|"+value])
+			if("PS_CAMERA_ATTACH_POS" in target.GetScriptScope() 
+				&& target.GetScriptScope()["PS_CAMERA_ATTACH_POS"] != null)
+				{
+					target.GetScriptScope()["PS_CAMERA_ATTACH_POS"] += value
+				}
+				
+			if(target.GetParent() != null)
+				target.SetLocalOrigin(target.GetLocalOrigin() + value);
+			else
+				target.SetOrigin(target.GetOrigin() + value);
+			break;
+		}
+		case "rorigin":
+		{
+			value = CastCustomSetting(player,["vector","pos|"+value])
+			if("PS_CAMERA_ATTACH_POS" in target.GetScriptScope() 
+				&& target.GetScriptScope()["PS_CAMERA_ATTACH_POS"] != null)
+				{
+					target.GetScriptScope()["PS_CAMERA_ATTACH_POS"] += value
+				}
+				
+			if(target.GetParent() != null)
+				target.SetLocalOrigin(target.GetLocalOrigin() + value);
+			else
+				target.SetOrigin(target.GetOrigin() + GetPositionRelativeToPlayer(player,value))
+			break;
+		}
+		case "detach":
+		{
+			if(target.GetParent())
+			{
+				DoEntFire("!self","clearparent","",0,null,target.GetBaseEntity());
+				DoEntFire("!self","runscriptcode","self.SetVelocity(Vector(0,0,0))",0.05,null,target.GetBaseEntity());
+			}
+			
+			if(target.GetScriptScope()["PS_CAM_FOLLOWS"])
+			{
+				::Quix.Remove("PS_CAMERA_"+target.GetIndex()+"_ATTACHER")
+				target.GetScriptScope()["PS_CAMERA_ATTACH_ENABLED"] = false
+			}
+			target.GetScriptScope()["PS_CAMERA_ATTACH_POS"] <- null
+			break;
+		}
+		case "attach":
+		{
+			local parent;
+			if(value == "!self")
+				parent = player
+			else if(value == "!picker")
+				parent = player.GetLookingEntity();
+			else
+				parent = Entity(value);
+
+			if(!parent || !parent.IsEntityValid())
+				return
+			
+			if(target.GetScriptScope()["PS_CAM_FOLLOWS"])
+			{	
+				if("PS_CAMERA_ATTACH_POS" in target.GetScriptScope() 
+					&& target.GetScriptScope()["PS_CAMERA_ATTACH_POS"] != null)
+					{
+						Messages.ThrowPlayer(player,"Camera(#"+target.GetIndex()+") is already attached(to #"+target.GetScriptScope()["PS_CAMERA_ATTACH"].GetIndex()+")")
+						return
+					}
+				
+				local posvec = target.GetOrigin() - parent.GetOrigin()
+				target.GetScriptScope()["PS_CAMERA_ATTACH"] <- parent
+				target.GetScriptScope()["PS_CAMERA_ATTACH_POS"] <- posvec
+                target.GetScriptScope()["PS_CAMERA_ATTACH_ENABLED"] <- true
+				local tindex = target.GetIndex()
+
+				if(target.GetNetProp("m_hTarget") != null && Entity(target.GetNetProp("m_hTarget")).GetEntityHandle() == parent.GetEntityHandle())
+				{
+					DoEntFire("!self","setparent","#"+parent.GetIndex(),0,null,target.GetBaseEntity());
+					if(value2 == "")
+					{
+						value2 = "forward"
+					}
+                    DoEntFire("!self","setparentattachmentmaintainoffset",value2,0.05,null,target.GetBaseEntity());
+					break;
+				}
+
+				function AttachChecker(c,a)
+				{
+					if(a.parent == null || !a.parent.IsEntityValid() || !a.camera.GetScriptScope()["PS_CAMERA_ATTACH_ENABLED"])
+					{
+						::Quix.Remove("PS_CAMERA_"+tindex+"_ATTACHER")
+						a.camera.GetScriptScope()["PS_CAMERA_ATTACH_POS"] = null
+                        a.camera.GetScriptScope()["PS_CAMERA_ATTACH_ENABLED"] = false
+						a.parent = null
+						return false
+					}
+					else
+					{
+						return true
+					}
+				}
+				function Attacher(c,s,a)
+				{
+					a.camera.SetOrigin(a.parent.GetOrigin() + a.camera.GetScriptScope()["PS_CAMERA_ATTACH_POS"]);
+				}
+
+				::Quix.AddUnlimited("PS_CAMERA_"+tindex+"_ATTACHER",
+									AttachChecker,
+									Attacher,
+									{camera=target,parent=parent},
+									{camera=target,parent=parent});
+			}
+			else
+			{
+				if(target.GetParent() != null)
+				{
+					Messages.ThrowPlayer(player,"Camera(#"+target.GetIndex()+") is already attached(to #"+target.GetParent().GetIndex()+")")
+					return
+				}
+				DoEntFire("!self","setparent","#"+parent.GetIndex(),0,null,target.GetBaseEntity());
+				if(value2 != "")
+				{
+					DoEntFire("!self","setparentattachmentmaintainoffset",value2,0.05,null,target.GetBaseEntity());
+				}
+			}
+			break;
+		}
+	}
+}
+
+// Configurations
+// !create_camera !self !self
+//		!camera_setting #camera attach #player
+//		!camera_setting #camera angles 0|0|0
+//	 	!camera_setting #camera origin -70|-10|20
 /*
  * @authors rhino
  * For debugging in-game
@@ -4816,9 +5210,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 ::GivePhysicsToEntity <- function(ent)
 {
 	local entclass = ent.GetClassname()
-	if(entclass.find("physics") != null || entclass == "prop_car_alarm") // physics entity
+	if(entclass.find("physics") != null || entclass in ::_LetGoDropYeetSpecialClasses) // physics entity
 	{
-		if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics" || entclass == "prop_car_alarm")
+		if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics" || entclass in ::_LetGoDropYeetSpecialClasses)
 		{	
 			local flags = ent.GetFlags();
 			local effects = ent.GetNetProp("m_fEffects")
@@ -5529,13 +5923,13 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	}
 	else
 	{
-		player.SetRenderMode(RENDER_NONE);
 		rag = Utils.SpawnPhysicsMProp(mdl,org,ang);
 		if(rag==null)
 		{
 			Messages.ThrowPlayer(player,"Can't ragdoll as model: "+ShortenModelName(mdl));
 			return
 		}
+		player.SetRenderMode(RENDER_NONE);
 	}
 
 	AdminSystem.Vars.IsGodEnabled[idx] <- true;
@@ -7721,18 +8115,10 @@ enum __
 		
 	local expdmgmin = metargs.expdmgmin;	
 	
-	local debug = metargs.debug;
-
 	// Spawn base and ceiling calculations
 	local ceiling = _FindRandomValidCeilingPoint(surv,metargs.minspawnheight,metargs.maxradius)
 	if(ceiling == null)
 		return;
-
-	if(debug == 1)
-	{
-		DebugDrawText(ceiling,"***------CEILING FOUND------***",false,5);
-		ClientPrint(null,DirectorScript.HUD_PRINTTALK,"\x04"+"Spawned meteor at: "+ceiling.x+","+ceiling.y+","+ceiling.z)
-	}
 
 	// Create the meteor
 	local meteor = _CreateAndPushMeteor(metargs.meteormodelpick,ceiling,minspeed,(metargs.maxspeed - minspeed),true)
@@ -7896,11 +8282,6 @@ enum __
 ::_MeteorExplosion <- function(met)
 {
 	local argtable = AdminSystem._meteor_shower_args;
-	local debugstr = "";
-
-	if(argtable.debug == 1)
-		debugstr += "\x05"+"0:"+"\x03"+"meteor #"+met
-	
 	local meteor = Ent("#"+met)
 
 	local prtc = null
@@ -7918,22 +8299,16 @@ enum __
 			case "ambient_generic":
 			{
 				explosionsnd = Ent("#"+child.GetEntityIndex());
-				if(argtable.debug == 1)
-					debugstr += "\x05"+", "+i+":"+"\x03"+"expsound #"+child.GetEntityIndex()
 				break;
 			}
 			case "info_particle_system":
 			{
 				prtc = Ent("#"+child.GetEntityIndex());
-				if(argtable.debug == 1)
-					debugstr += "\x05"+", "+i+":"+"\x03"+"particle #"+child.GetEntityIndex()
 				break;
 			}
 			case "env_explosion":
 			{
 				explosion = Ent("#"+child.GetEntityIndex());
-				if(argtable.debug == 1)
-					debugstr += "\x05"+", "+i+":"+"\x03"+"exp #"+child.GetEntityIndex()
 				break;
 			}
 			default:
@@ -7994,9 +8369,6 @@ enum __
 		DoEntFire("!self", "Stop", "", 0.0, null, prtc);
 	if(meteor != null && meteor.IsValid())	
 		DoEntFire("!self", "Kill", "", 0.3, null, meteor);
-
-	if(argtable.debug == 1)
-		ClientPrint(null,3,debugstr);
 }
 
 function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
@@ -8483,7 +8855,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 	blood_spill =
 	[
 		"blood_bleedout",
-		"blood_bleedout_2",
 		"blood_bleedout_3"
 	]
 	ground_blood_min = 3
@@ -8505,6 +8876,8 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 
 ::TriggerLootRandomEvent <- function(loot_ent,looter,event_name)
 {
+	if(!loot_ent.IsEntityValid())
+		return;
 	switch(event_name)
 	{
 		case "lootget":
@@ -8909,10 +9282,8 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 	if (!AdminSystem.IsPrivileged( player ) || !player.IsServerHost())
 		return;
 
-	AdminSystem._meteor_shower_args.debug = 1 - AdminSystem._meteor_shower_args.debug;
-	
-	Printer(player,"[Meteor_Shower-Debug] Meteor shower debug state :"+( AdminSystem._meteor_shower_args.debug == 1 ? " Enabled":" Disabled"));
-	AdminSystem.SaveShowerSettings();
+	Messages.WarnPlayer(player,"Meteor shower debugging has been deprecated since v.1.7.3")
+	return 
 }
 
 /* @authors rhino
@@ -9164,33 +9535,31 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 	local expent = null;
 	local expsoundent = null;
 
-	local pushedents = {};
-	local brokenents = {};
-	local useddoors = {};
-	local lockeddoors = {};
-	local damagedents = {};
-	local animatedents = {};
-	local explosions = {};
-
-	local debug = apocargs.debug;
-
-	if(debug == 1)
-	{
-		foreach(id,ent in enttbl)
+	foreach(id,ent in enttbl)
+	{	
+		if((rand().tofloat()/RAND_MAX) < prob )
 		{	
-			if((rand().tofloat()/RAND_MAX) < prob )
-			{	
-				if(!ent.IsEntityValid())
-				{
-					continue;
-				}
+			if(!ent.IsEntityValid())
+			{
+				continue;
+			}
 
-				entclass = ent.GetClassname();
-				entmodel = ent.GetModel();
-				entindex = ent.GetIndex();
+			entclass = ent.GetClassname();
+			entmodel = ent.GetModel();
 
+			switch(entclass)
+			{
 				// Anything with physics
-				if(entclass == "prop_physics" || entclass == "prop_physics_multiplayer"  || entclass == "prop_car_alarm" || entclass == "prop_vehicle" || entclass == "prop_physics_override" || entclass == "func_physbox" ||  entclass == "func_physbox_multiplayer" || entclass == "prop_ragdoll" || entclass == "simple_physics_prop")
+				case "prop_physics":
+				case "prop_physics_multiplayer":
+				case "prop_physics_override":
+				case "prop_car_alarm":
+				case "prop_vehicle":
+				case "prop_ragdoll":
+				case "simple_physics_prop":
+				case "prop_fuel_barrel":
+				case "func_physbox":
+				case "func_physbox_multiplayer":
 				{ 	
 					//Damage
 					if((rand().tofloat()/RAND_MAX) < dmgprob)
@@ -9198,7 +9567,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 						if(ent.GetHealth() > 0)
 						{
 							ent.Hurt(mindmg+rand()%maxdmg);
-							damagedents[entindex] <- entclass+", "+entmodel;
 						}
 					}
 
@@ -9212,7 +9580,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 							expsoundent.Input("ToggleSound","",0.2);
 							expent.Input("Explode","",0.25);
 							expsoundent.Input("Kill","",3.0);
-							explosions[entindex] <- entclass+", "+entmodel;
 						}
 					}
 					
@@ -9222,7 +9589,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 						if((rand().tofloat()/RAND_MAX) < breakprob)
 						{
 							ent.Break();
-							brokenents[entindex] <- entclass+", "+entmodel;
 						}
 					}
 
@@ -9231,10 +9597,13 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 					pushvec = pushvec.Scale((minspeed+rand()%maxspeed).tofloat()/pushvec.Length())
 					
 					ent.Push(pushvec);
-					
-					pushedents[entindex] <- entclass+", "+entmodel;
+					break;
 				}
-				else if(entclass == "func_breakable" || entclass == "func_breakable_surf" || entclass == "prop_wall_breakable" ) //Any breakable surface
+
+				//Any breakable surface
+				case "func_breakable":
+				case "func_breakable_surf":
+				case "prop_wall_breakable":
 				{	
 					//Damage
 					if((rand().tofloat()/RAND_MAX) < dmgprob)
@@ -9242,7 +9611,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 						if(ent.GetHealth() > 0)
 						{
 							ent.Hurt(mindmg+rand()%maxdmg);
-							damagedents[entindex] <- entclass+", "+entmodel;
 						}
 					}
 					
@@ -9256,7 +9624,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 							expsoundent.Input("ToggleSound","",0.2);
 							expent.Input("Explode","",0.25);
 							expsoundent.Input("Kill","",3.0);
-							explosions[entindex] <- entclass+", "+entmodel;
 						}
 					}
 
@@ -9264,10 +9631,13 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 					if((rand().tofloat()/RAND_MAX) < breakprob)
 					{
 						ent.Break();
-						brokenents[entindex] <- entclass+", "+entmodel;
 					}
+					break;
 				}
-				else if(entclass == "move_rope" || entclass == "keyframe_rope")		//Cables and ropes
+
+				//Cables and ropes
+				case "move_rope":
+				case "keyframe_rope":
 				{	
 					//Explosion
 					if((rand().tofloat()/RAND_MAX) < expprob)
@@ -9279,7 +9649,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 							expsoundent.Input("ToggleSound","",0.2);
 							expent.Input("Explode","",0.25);
 							expsoundent.Input("Kill","",3.0);
-							explosions[entindex] <- entclass+", "+entmodel;
 						}
 					}
 
@@ -9287,17 +9656,22 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 					if((rand().tofloat()/RAND_MAX) < ropebreakprob)
 					{
 						ent.Break();
-						brokenents[entindex] <- entclass+", "+entmodel;
-					}	
+					}
+					break;
 				}
-				else if(entclass == "prop_door_rotating" || entclass == "func_door" || entclass == "func_door_rotating" || entclass == "func_rotating") //Any door except saferoom's
-				{	//Damage
+
+				//Any door except saferoom's
+				case "prop_door_rotating":
+				case "func_door":
+				case "func_door_rotating":
+				case "func_rotating":
+				{	
+					//Damage
 					if((rand().tofloat()/RAND_MAX) < dmgprob)
 					{
 						if(ent.GetHealth() > 0)
 						{
 							ent.Hurt(mindmg+rand()%maxdmg);
-							damagedents[entindex] <- entclass+", "+entmodel;
 						}
 					}
 					
@@ -9311,7 +9685,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 							expsoundent.Input("ToggleSound","",0.2);
 							expent.Input("Explode","",0.25);
 							expsoundent.Input("Kill","",3.0);
-							explosions[entindex] <- entclass+", "+entmodel;
 						}
 					}
 
@@ -9320,243 +9693,35 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 					{	
 						ent.Input("close","");
 						ent.Input("lock","",0.5);
-						lockeddoors[entindex] <- entclass+", "+entmodel;
 					}
 					else //Open or Close
 					{
 						ent.Input("toggle","");
-						useddoors[entindex] <- entclass+", "+entmodel;
 					}
+					break;
 				}
-				else if(entclass == "prop_door_rotating_checkpoint")	//Saferoom door
+
+				//Saferoom door
+				case "prop_door_rotating_checkpoint":
 				{	
 					//Open or Close	
 					ent.Input("toggle","");
-					useddoors[entindex] <- entclass+", "+entmodel;
+					break;
 				}
-				else if(entclass == "prop_health_cabinet")	//Health cabinet
+				
+				//Health cabinet
+				case "prop_health_cabinet":	
 				{	
 					//Open or Close animation
 					if((rand().tofloat()/RAND_MAX) < 0.5)
 						ent.Input("setanimation","idle");	
 					else
 						ent.Input("setanimation","open");
-
-					animatedents[entindex] <- entclass+", "+entmodel;
-				}
-			}
-		}
-
-		printl("---------------------------------------------");
-		if(pushedents.len() != 0)
-			{printl("PUSHED\n");Utils.PrintTable(pushedents);}
-
-		if(brokenents.len() != 0)
-			{printl("BROKEN\n");Utils.PrintTable(brokenents);}
-
-		if(useddoors.len() != 0)
-			{printl("OPENED/CLOSED\n");Utils.PrintTable(useddoors);}
-
-		if(lockeddoors.len() != 0)
-			{printl("LOCKED\n");Utils.PrintTable(lockeddoors);}
-
-		if(damagedents.len() != 0)
-			{printl("DAMAGED\n");Utils.PrintTable(damagedents);}
-
-		if(explosions.len() != 0)
-			{printl("EXPLODED\n");Utils.PrintTable(explosions);}
-
-	}
-	else
-	{
-		foreach(id,ent in enttbl)
-		{	
-			if((rand().tofloat()/RAND_MAX) < prob )
-			{	
-				if(!ent.IsEntityValid())
-				{
-					continue;
-				}
-
-				entclass = ent.GetClassname();
-				entmodel = ent.GetModel();
-
-				switch(entclass)
-				{
-					// Anything with physics
-					case "prop_physics":
-					case "prop_physics_multiplayer":
-					case "prop_car_alarm":
-					case "prop_vehicle":
-					case "prop_physics_override":
-					case "func_physbox":
-					case "func_physbox_multiplayer":
-					case "prop_ragdoll":
-					case "simple_physics_prop":
-					{ 	
-						//Damage
-						if((rand().tofloat()/RAND_MAX) < dmgprob)
-						{
-							if(ent.GetHealth() > 0)
-							{
-								ent.Hurt(mindmg+rand()%maxdmg);
-							}
-						}
-
-						//Explosion
-						if((rand().tofloat()/RAND_MAX) < expprob)
-						{
-							if(ent.GetHealth() > 0)
-							{	
-								expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
-								expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
-								expsoundent.Input("ToggleSound","",0.2);
-								expent.Input("Explode","",0.25);
-								expsoundent.Input("Kill","",3.0);
-							}
-						}
-						
-						//Break
-						if(entmodel.find("forklift") != null)
-						{
-							if((rand().tofloat()/RAND_MAX) < breakprob)
-							{
-								ent.Break();
-							}
-						}
-
-						//Push
-						pushvec = QAngle(rand()%360,rand()%360,rand()%360).Forward();
-						pushvec = pushvec.Scale((minspeed+rand()%maxspeed).tofloat()/pushvec.Length())
-						
-						ent.Push(pushvec);
-						break;
-					}
-
-					//Any breakable surface
-					case "func_breakable":
-					case "func_breakable_surf":
-					case "prop_wall_breakable":
-					{	
-						//Damage
-						if((rand().tofloat()/RAND_MAX) < dmgprob)
-						{	
-							if(ent.GetHealth() > 0)
-							{
-								ent.Hurt(mindmg+rand()%maxdmg);
-							}
-						}
-						
-						//Explosion
-						if((rand().tofloat()/RAND_MAX) < expprob)
-						{
-							if(ent.GetHealth() > 0)
-							{	
-								expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
-								expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
-								expsoundent.Input("ToggleSound","",0.2);
-								expent.Input("Explode","",0.25);
-								expsoundent.Input("Kill","",3.0);
-							}
-						}
-
-						//Break
-						if((rand().tofloat()/RAND_MAX) < breakprob)
-						{
-							ent.Break();
-						}
-						break;
-					}
-
-					//Cables and ropes
-					case "move_rope":
-					case "keyframe_rope":
-					{	
-						//Explosion
-						if((rand().tofloat()/RAND_MAX) < expprob)
-						{
-							if(ent.GetHealth() > 0)
-							{	
-								expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
-								expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
-								expsoundent.Input("ToggleSound","",0.2);
-								expent.Input("Explode","",0.25);
-								expsoundent.Input("Kill","",3.0);
-							}
-						}
-
-						//Break
-						if((rand().tofloat()/RAND_MAX) < ropebreakprob)
-						{
-							ent.Break();
-						}
-						break;
-					}
-
-					//Any door except saferoom's
-					case "prop_door_rotating":
-					case "func_door":
-					case "func_door_rotating":
-					case "func_rotating":
-					{	
-						//Damage
-						if((rand().tofloat()/RAND_MAX) < dmgprob)
-						{
-							if(ent.GetHealth() > 0)
-							{
-								ent.Hurt(mindmg+rand()%maxdmg);
-							}
-						}
-						
-						//Explosion
-						if((rand().tofloat()/RAND_MAX) < expprob)
-						{
-							if(ent.GetHealth() > 0)
-							{	
-								expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
-								expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
-								expsoundent.Input("ToggleSound","",0.2);
-								expent.Input("Explode","",0.25);
-								expsoundent.Input("Kill","",3.0);
-							}
-						}
-
-						//Close and Lock
-						if((rand().tofloat()/RAND_MAX) < doorlockprob)
-						{	
-							ent.Input("close","");
-							ent.Input("lock","",0.5);
-						}
-						else //Open or Close
-						{
-							ent.Input("toggle","");
-						}
-						break;
-					}
-
-					//Saferoom door
-					case "prop_door_rotating_checkpoint":
-					{	
-						//Open or Close	
-						ent.Input("toggle","");
-						break;
-					}
-					
-					//Health cabinet
-					case "prop_health_cabinet":	
-					{	
-						//Open or Close animation
-						if((rand().tofloat()/RAND_MAX) < 0.5)
-							ent.Input("setanimation","idle");	
-						else
-							ent.Input("setanimation","open");
-						break;
-					}
+					break;
 				}
 			}
 		}
 	}
-	
 } 
 
 /* @authors rhino
@@ -9661,10 +9826,8 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 	if (!AdminSystem.IsPrivileged( player ) || !player.IsServerHost())
 		return;
 
-	AdminSystem._propageddon_args.debug = 1 - AdminSystem._propageddon_args.debug;
-
-	Printer(player,"[Apocalypse-Debug] Apocalypse debug state :"+( AdminSystem._propageddon_args.debug == 1 ? " Enabled":" Disabled"));
-	AdminSystem.SaveApocalypseSettings();
+	Messages.WarnPlayer(player,"Apocalypse event debugging has been deprecated since v.1.7.3")
+	return 
 }
 
 /*
@@ -12666,6 +12829,83 @@ function ChatTriggers::change_grab_method(player,args,text)
 ::ChatTriggerDocs.change_grab_method <- @(player,args) AdminSystem.IsPrivileged(player) && "change_grab_method" in CmdDocs
 					? Messages.DocCmdPlayer(player,CmdDocs.change_grab_method(player,args))
 					: null
+// Camera		
+function ChatTriggers::switch_hud_element( player, args, text )
+{
+	AdminSystem.SwitchHudElement( player, args );
+}
+::ChatTriggerDocs.switch_hud_element <- @(player,args) AdminSystem.IsPrivileged(player) && "switch_hud_element" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.switch_hud_element(player,args))
+					: null		
+function ChatTriggers::selfie( player, args, text )
+{
+	AdminSystem.SelfieViewCmd( player, args );
+}
+::ChatTriggerDocs.selfie <- @(player,args) AdminSystem.IsPrivileged(player) && "selfie" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.selfie(player,args))
+					: null
+function ChatTriggers::create_camera( player, args, text )
+{
+	AdminSystem.CreateCameraCmd( player, args );
+}
+::ChatTriggerDocs.create_camera <- @(player,args) AdminSystem.IsPrivileged(player) && "create_camera" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.create_camera(player,args))
+					: null
+function ChatTriggers::camera_setting( player, args, text )
+{
+	AdminSystem.CameraSettingCmd( player, args );
+}
+::ChatTriggerDocs.camera_setting <- @(player,args) AdminSystem.IsPrivileged(player) && "camera_setting" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.camera_setting(player,args))
+					: null
+function ChatTriggers::change_camera( player, args, text )
+{
+	AdminSystem.ChangeCameraCmd( player, args );
+}
+::ChatTriggerDocs.change_camera <- @(player,args) AdminSystem.IsPrivileged(player) && "change_camera" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.change_camera(player,args))
+					: null
+function ChatTriggers::last_camera_info( player, args, text )
+{
+	AdminSystem.LastCameraInfoCmd( player, args );
+}
+::ChatTriggerDocs.last_camera_info <- @(player,args) AdminSystem.IsPrivileged(player) && "last_camera_info" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.last_camera_info(player,args))
+					: null
+//
+
+function ChatTriggers::command_ban( player, args, text )
+{
+	AdminSystem.AddCommandBanCmd( player, args );
+}
+::ChatTriggerDocs.command_ban <- @(player,args) AdminSystem.IsPrivileged(player) && "command_ban" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.command_ban(player,args))
+					: null
+
+function ChatTriggers::command_unban( player, args, text )
+{
+	AdminSystem.RemoveCommandBanCmd( player, args );
+}
+::ChatTriggerDocs.command_unban <- @(player,args) AdminSystem.IsPrivileged(player) && "command_unban" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.command_unban(player,args))
+					: null
+
+function ChatTriggers::disable_command( player, args, text )
+{
+	AdminSystem.AddDisabledCommandCmd( player, args );
+}
+::ChatTriggerDocs.disable_command <- @(player,args) AdminSystem.IsPrivileged(player) && "disable_command" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.disable_command(player,args))
+					: null
+
+function ChatTriggers::enable_command( player, args, text )
+{
+	AdminSystem.RemoveDisabledCommandCmd( player, args );
+}
+::ChatTriggerDocs.enable_command <- @(player,args) AdminSystem.IsPrivileged(player) && "enable_command" in CmdDocs
+					? Messages.DocCmdPlayer(player,CmdDocs.enable_command(player,args))
+					: null
+
 function ChatTriggers::stop_car_alarms( player, args, text )
 {
 	AdminSystem.StopCarAlarmsCmd( player, args );
@@ -13591,38 +13831,6 @@ function ChatTriggers::gun( player, args, text )
 }
 ::ChatTriggerDocs.gun <- @(player,args) AdminSystem.IsPrivileged(player) && "gun" in CmdDocs
 					? Messages.DocCmdPlayer(player,CmdDocs.gun(player,args))
-					: null
-
-function ChatTriggers::command_ban( player, args, text )
-{
-	AdminSystem.AddCommandBanCmd( player, args );
-}
-::ChatTriggerDocs.command_ban <- @(player,args) AdminSystem.IsPrivileged(player) && "command_ban" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.command_ban(player,args))
-					: null
-
-function ChatTriggers::command_unban( player, args, text )
-{
-	AdminSystem.RemoveCommandBanCmd( player, args );
-}
-::ChatTriggerDocs.command_unban <- @(player,args) AdminSystem.IsPrivileged(player) && "command_unban" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.command_unban(player,args))
-					: null
-
-function ChatTriggers::disable_command( player, args, text )
-{
-	AdminSystem.AddDisabledCommandCmd( player, args );
-}
-::ChatTriggerDocs.disable_command <- @(player,args) AdminSystem.IsPrivileged(player) && "disable_command" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.disable_command(player,args))
-					: null
-
-function ChatTriggers::enable_command( player, args, text )
-{
-	AdminSystem.RemoveDisabledCommandCmd( player, args );
-}
-::ChatTriggerDocs.enable_command <- @(player,args) AdminSystem.IsPrivileged(player) && "enable_command" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.enable_command(player,args))
 					: null
 
 if ( Director.GetGameMode() == "holdout" )
@@ -16771,7 +16979,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	foreach(ent in ents)
 	{	
-		if (ent.GetOrigin() == null || !ent.GetOrigin())
+		if (!ent.IsEntityValid() || ent.GetParent() != null)
 			continue;
 
 		distvec = ent.GetOrigin()-exporigin;
@@ -17481,7 +17689,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	local ent = Utils.CreateEntity(classname,pos,ang,keyvals);
 
-	Printer(player,CmdMessages.Ent.EntityCreate(ent.GetIndex(),Utils.GetTableString(keyvals)));
+	Printer(player,CmdMessages.Ent.EntityCreate(ent.GetIndex(),ent.GetClassname(),Utils.GetTableString(keyvals)));
 	
 }
 
@@ -24219,7 +24427,7 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 
 		player.AttachOther(ent,false,0,null);
-		player.SetAttachmentPoint(ent,tbl_heldEnt.grabAttachPos,true,0.05);
+		player.SetAttachmentPoint(ent,tbl_heldEnt.grabAttachPos,true,0.035);
 		
 		AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = entind;
 	}
@@ -24309,8 +24517,15 @@ if ( Director.GetGameMode() == "holdout" )
 
 }
 
+::_LetGoDropYeetSpecialClasses <-
+{
+	prop_fuel_barrel = true
+	prop_car_alarm = true
+}
+
 ::_LetGoAndDropOrYeet <- function(ent,name,func,extra_arg="")
 {
+	
 	ent.Input("ClearParent","",0);
 	local entclass = ent.GetClassname();
 
@@ -24330,9 +24545,9 @@ if ( Director.GetGameMode() == "holdout" )
 			ent.Input("RunScriptCode",func+"(Entity("+ent.GetIndex()+")"+extra_arg+")",0);
 		}
 	}
-	else if(entclass.find("physics") != null || entclass == "prop_car_alarm") // physics entity
+	else if(entclass.find("physics") != null || entclass in ::_LetGoDropYeetSpecialClasses) // physics entity
 	{
-		if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics" || entclass == "prop_car_alarm")
+		if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics" || entclass in ::_LetGoDropYeetSpecialClasses)
 		{	
 			local flags = ent.GetFlags();
 			local effects = ent.GetNetProp("m_fEffects")
@@ -24556,15 +24771,28 @@ if ( Director.GetGameMode() == "holdout" )
 	ent.SetMoveType(movetype);
 	ent.SetOrigin(a);
 	ent.SetVelocity(Vector(0,0,0));
-	ent.Push(Vector(0,0,10))
+	if(ent.GetParent() != null)
+	{
+		DoEntFire("!self","clearparent","",0,null,ent.GetBaseEntity())
+		DoEntFire("!self","runscriptcode","self.ApplyAbsVelocityImpulse(Vector(0,0,1))",0.04,null,ent.GetBaseEntity())
+		return false
+	}
+	else
+		ent.Push(Vector(0,0,1))
+	return true;
 }
 ::_yeetit <- function(ent,p)
 {	
-	_dropit(ent);
 	local fwvec = RotateOrientation(p.GetEyeAngles(),QAngle(AdminSystem.Vars._heldEntity[p.GetCharacterNameLower()].yeetPitch,0,0)).Forward();
 	fwvec = fwvec.Scale(AdminSystem.Vars._heldEntity[p.GetCharacterNameLower()].yeetSpeed/fwvec.Length());
-	ent.Push(fwvec)
-	//DoEntFire("!self","RunScriptCode","self.ApplyAbsVelocityImpulse(Vector("+fwvec.x+","+fwvec.y+","+fwvec.z+"))",0.03,null,ent.GetBaseEntity());
+	if(_dropit(ent))
+	{
+		ent.Push(fwvec)
+	}
+	else
+	{
+		DoEntFire("!self","runscriptcode","self.ApplyAbsVelocityImpulse(Vector("+fwvec.x+","+fwvec.y+","+fwvec.z+"))",0.05,null,ent.GetBaseEntity())
+	}
 }
 ::deltimer <- function(name)
 {

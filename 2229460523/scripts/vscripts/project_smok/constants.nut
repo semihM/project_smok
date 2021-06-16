@@ -180,7 +180,7 @@
 // IT IS NOT RECOMMENDED TO USE THE EXAMPLE FILE FOR NEW HOOKS 
 // !!!!!!!!!!!!!!
 
-//example_hook_file // This will make project_smok look for ""example_hook_file.nut"" and read it if it exists! Write any additional files below this line..."
+//example_hook_file // This will make project_smok look for ""example_hook_file.nut"" and read it if it exists! Write any additional files below this line..." + "\n\r\n\r\n\r\n\r\n\r"
 
 ::Constants.CustomHookDefaults <-
 @"// All files in this directory will be read as strings and then get compiled, so be careful with the formatting!
@@ -258,7 +258,7 @@
 // IT IS NOT RECOMMENDED TO USE THE EXAMPLE FILES FOR NEW COMMANDS 
 // !!!!!!!!!!!!!!
 
-//example_command_file // This will make project_smok look for ""example_command_file.nut"" and read it if it exists! Write any additional files below this line..."
+//example_command_file // This will make project_smok look for ""example_command_file.nut"" and read it if it exists! Write any additional files below this line..." + "\n\r\n\r\n\r\n\r\n\r"
 
 ::Constants.CommandScriptDefaults <-
 @"// All files in this directory will be read as strings and then get compiled, so be careful with the formatting!
@@ -358,7 +358,7 @@
 // IT IS NOT RECOMMENDED TO USE THE EXAMPLE FILES FOR NEW ALIASES
 // !!!!!!!!!!!!!!
 
-//example_alias_file // This will make project_smok look for ""example_alias_file.txt"" and read it if it exists! Write any additional files below this line..."
+//example_alias_file // This will make project_smok look for ""example_alias_file.txt"" and read it if it exists! Write any additional files below this line..." + "\n\r\n\r\n\r\n\r\n\r"
 
 ::Constants.CommandAliasesDefaults <-
 {
@@ -600,7 +600,7 @@
 // IT IS NOT RECOMMENDED TO USE THE EXAMPLE FILES FOR NEW SPECIAL PROPS
 // !!!!!!!!!!!!!!
 
-//example_entity_file // This will make project_smok look for ""example_entity_file.nut"" and read it if it exists! Write any additional files below this line..."+ "\n\r"
+//example_entity_file // This will make project_smok look for ""example_entity_file.nut"" and read it if it exists! Write any additional files below this line..." + "\n\r\n\r\n\r\n\r\n\r"
 
 ::Constants.CustomPropsDefaults <-
 {
@@ -1085,7 +1085,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 // IT IS NOT RECOMMENDED TO USE THE EXAMPLE FILES FOR NEW BINDS
 // !!!!!!!!!!!!!!
 
-//example_bind_file // This will make project_smok look for ""example_bind_file.nut"" and read it if it exists! Write any additional files below this line..."
+//example_bind_file // This will make project_smok look for ""example_bind_file.nut"" and read it if it exists! Write any additional files below this line..." + "\n\r\n\r\n\r\n\r\n\r"
 
 ::Constants.CustomBindsTableDefaults <-
 {
@@ -1386,7 +1386,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 // WARNING: If this is the first time this file is being edited, there is an invisible character at the end of this file which stops the rest of the file's reading process
 //				make sure to remove any trailing spaces/invisible characters after the example line below
 
-//example_vehicle_file // This will make project_smok look for ""example_vehicle_file.nut"" and read it if it exists! Write any additional files above this line..."
+//example_vehicle_file // This will make project_smok look for ""example_vehicle_file.nut"" and read it if it exists! Write any additional files above this line..." + "\n\r\n\r\n\r\n\r\n\r"
 
 ::Constants.CustomVehicleDefaults <-
 {
