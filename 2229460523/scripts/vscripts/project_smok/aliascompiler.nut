@@ -50,6 +50,8 @@
         {
             if(paramreg.match(key) && key in params)
             {   
+                local pinfo = null
+                local pno = key.slice(paramreg.search(key).end - 1).tointeger()
                 if(typeof info == "table")
                 {
                     local name = key
@@ -61,19 +63,24 @@
                         name = info.name
 
                     if("when_null" in info)
-                        paramarr.append(CMDParam(name,docs,true,info.when_null))
+                        pinfo = CMDParam(name,docs,true,info.when_null)
                     else if(params[key] != null)
-                        paramarr.append(CMDParam(name,docs,true,params[key]))
+                        pinfo = CMDParam(name,docs,true,params[key])
                     else
-                        paramarr.append(CMDParam(key,info))
+                        pinfo = CMDParam(key,info)
                 }
                 else
                 {
                     if(params[key] != null)
-                        paramarr.append(CMDParam(key,info,true,params[key]))
+                        pinfo = CMDParam(key,info,true,params[key])
                     else
-                        paramarr.append(CMDParam(key,info))
+                        pinfo = CMDParam(key,info)
                 }
+
+                if(paramarr.len() < pno)
+                    paramarr.resize(pno);
+
+                paramarr[pno - 1] = pinfo
             }
         }
     }
@@ -83,6 +90,9 @@
         {
             if(paramreg.match(key))
             {  
+                local pinfo = null
+                local pno = key.slice(paramreg.search(key).end - 1).tointeger()
+
                 local name = key
                 local docs = "Unknown..."
 
@@ -92,9 +102,14 @@
                     name = info.name
 
                 if("when_null" in info)
-                    paramarr.append(CMDParam(name,docs,true,info.when_null))
+                    pinfo = CMDParam(name,docs,true,info.when_null)
                 else
-                    paramarr.append(CMDParam(key,info))
+                    pinfo = CMDParam(key,info)
+                    
+                if(paramarr.len() < pno)
+                    paramarr.resize(pno);
+
+                paramarr[pno - 1] = pinfo
             }
         }
     }
