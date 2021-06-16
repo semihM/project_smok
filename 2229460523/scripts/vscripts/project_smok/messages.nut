@@ -862,7 +862,7 @@
 
             Ent =
             {
-                EntityCreate = function(id,classname,pos,ang,keyvals)
+                EntityCreate = function(id,classname,keyvals)
                 {
                     return "Created entity(" + COLOR_BRIGHT_GREEN + "#" + id + COLOR_DEFAULT + ") with table-> \n" + keyvals;
                 }
@@ -1957,7 +1957,7 @@
                     "ent",
                     [
                         CMDParam("class_name","Class name for entity"),
-                        CMDParam("keyvals","Key-values formatted as key_1>cast|value_1&key_2>cast|value_2...\n\t Single-value casts->int|float|flg\n\t Multi-value casts->str|ang|pos|flg\n\t ",true,"uses aimed point as origin")
+                        CMDParam("keyvals","Key-values with optional casting, formatted as: key_1>value_1&key_2>cast|value_2...\n\t Single-value casts->int|float|flg\n\t Multi-value casts->str|ang|pos|flg\n\t Example cast("+"\x01"+"QAngle(0,90,0)"+"\x03"+"):"+"\x04"+" ang|0|90|0\n\t Example cast("+"\x01"+"\"255 0 122\""+"\x03"+"):"+"\x04"+" str|255|0|122\n\t ",true,"uses aimed point as origin")
                     ],
                     "Create an entity of given class with given key-value pairs"
                     )
