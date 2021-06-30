@@ -370,10 +370,6 @@
       <SubType>Content</SubType>
       <Link>2229460523\scripts\vscripts\admin_system\vslib\utils.nut</Link>
     </Content>
-    <Content Include="2229460523\scripts\vscripts\coop.nut">
-      <SubType>Content</SubType>
-      <Link>2229460523\scripts\vscripts\coop.nut</Link>
-    </Content>
     <Content Include="2229460523\scripts\vscripts\director_base.nut">
       <SubType>Content</SubType>
       <Link>2229460523\scripts\vscripts\director_base.nut</Link>
@@ -398,6 +394,10 @@
       <SubType>Content</SubType>
       <Link>2229460523\scripts\vscripts\project_smok\physicslimits.nut</Link>
     </Content>
+    <Content Include="2229460523\scripts\vscripts\project_smok\privileges.nut">
+      <SubType>Content</SubType>
+      <Link>2229460523\scripts\vscripts\project_smok\privileges.nut</Link>
+    </Content>
     <Content Include="2229460523\scripts\vscripts\project_smok\quicktimers.nut">
       <SubType>Content</SubType>
       <Link>2229460523\scripts\vscripts\project_smok\quicktimers.nut</Link>
@@ -408,10 +408,6 @@
     <Content Include="2229460523\scripts\vscripts\project_smok\vehicles.nut">
       <SubType>Content</SubType>
       <Link>2229460523\scripts\vscripts\project_smok\vehicles.nut</Link>
-    </Content>
-    <Content Include="2229460523\scripts\vscripts\realism.nut">
-      <SubType>Content</SubType>
-      <Link>2229460523\scripts\vscripts\realism.nut</Link>
     </Content>
     <Content Include="2229460523\scripts\vscripts\resource_tables\entitydetailtables.nut">
       <SubType>Content</SubType>
@@ -469,21 +465,9 @@
       <SubType>Content</SubType>
       <Link>2229460523\scripts\vscripts\resource_tables\survivorlines_paths\teengirl.nut</Link>
     </Content>
-    <Content Include="2229460523\scripts\vscripts\scavenge.nut">
-      <SubType>Content</SubType>
-      <Link>2229460523\scripts\vscripts\scavenge.nut</Link>
-    </Content>
     <Content Include="2229460523\scripts\vscripts\scriptedmode.nut">
       <SubType>Content</SubType>
       <Link>2229460523\scripts\vscripts\scriptedmode.nut</Link>
-    </Content>
-    <Content Include="2229460523\scripts\vscripts\survival.nut">
-      <SubType>Content</SubType>
-      <Link>2229460523\scripts\vscripts\survival.nut</Link>
-    </Content>
-    <Content Include="2229460523\scripts\vscripts\versus.nut">
-      <SubType>Content</SubType>
-      <Link>2229460523\scripts\vscripts\versus.nut</Link>
     </Content>
     <Content Include="2229460523\sound\piano\a2.wav">
       <SubType>Content</SubType>
