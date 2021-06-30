@@ -1975,7 +1975,9 @@ g_MapScript.ScriptMode_AddCriteria <- function ( )
 ::VSLib.EasyLogic.Events.OnGameEvent_player_left_checkpoint <- function (params)
 {
 	local ents = ::VSLib.EasyLogic.GetPlayersFromEvent(params);
-	
+	if(ents.entity == null)
+		return;
+
 	if ( !::VSLib.EasyLogic.ScriptStarted )
 		VSLibScriptStart();
 	
@@ -4657,19 +4659,14 @@ function VSLib::EasyLogic::RemoveInterceptChat(func)
  */
 function VSLib::EasyLogic::CheckCommandAvailability(player,cleanBaseCmd,quiet=false)
 {
-	// Check if its an alias, do necessary checks
-	if(cleanBaseCmd in ::AliasCompiler.Tables)
+	
+	if(!player.HasPrivilege(::PrivilegeRequirements[cleanBaseCmd]))
 	{
-		local alias = ::AliasCompiler.Tables[cleanBaseCmd]
-		if(alias._hostOnly && !player.IsServerHost())
-		{
-			ClientPrint(player.GetBaseEntity(),3,COLOR_ORANGE+cleanBaseCmd+COLOR_DEFAULT+" command can only be used by the host!")
-			return false;
-		}
-		else if(alias._authOnly && !::AdminSystem.HasScriptAuth(player))
-			return false;
+		if(!quiet)
+			::Messages.ThrowPlayer(player,TXTCLR.OG(cleanBaseCmd) + " command requires " + ::UserLevelNames[::PrivilegeRequirements[cleanBaseCmd]] + " privilege or above")
+		return false;
 	}
-
+	
 	// Check if disabled for the session
 	if(cleanBaseCmd in ::VSLib.EasyLogic.DisabledCommands)
 	{
@@ -4812,12 +4809,25 @@ if (!("InterceptChat" in getroottable()))
 					hidden = true;
 				}
 
+				local player = ::VSLib.Player(srcEnt);
+
 				// Separate the commands and arguments
 				local arr = split(text, " ");
 				
 				// Identify the command
-				local cmd = arr[0];
-				
+				local target, cmd = arr[0];
+				if(cmd.find(">") != null)
+				{
+					local tname = strip(cmd.slice(cmd.find(">") + 1))
+					if(tname == "self" || tname == "!self")
+						target = player
+					
+					if(target != null || (tname != "" && ((target = Entity(tname)).IsEntityValid() || (target = Utils.GetPlayerFromName(tname) != null))))
+						cmd = cmd.slice(0, cmd.find(">"))
+				}
+
+				player.GetScriptScope().PS_ONETIME_TARGET <- target;
+
 				// Build an argument array
 				local args = {};
 				local idx = 0;
@@ -4830,9 +4840,8 @@ if (!("InterceptChat" in getroottable()))
 					}
 				}
 				
-				local player = ::VSLib.Player(srcEnt);
 
-				if(::AdminSystem.Vars.CompileHexAndSpecialsInArguments && ::AdminSystem.HasScriptAuth(player,true))
+				if(::AdminSystem.Vars.CompileHexAndSpecialsInArguments && player.HasPrivilege(PS_USER_SCRIPTER))
 				{
 					args = ::VSLib.EasyLogic.TryToFixArguments(args)
 				}
@@ -5068,7 +5077,7 @@ if (!("UserConsoleCommand" in getroottable()))
 
 		local player = ::VSLib.Player(playerScript);
 
-		if(::AdminSystem.Vars.CompileHexAndSpecialsInArguments && ::AdminSystem.HasScriptAuth(player,true))
+		if(::AdminSystem.Vars.CompileHexAndSpecialsInArguments && player.HasPrivilege(PS_USER_SCRIPTER))
 		{
 			args = ::VSLib.EasyLogic.TryToFixArguments(args)
 		}

@@ -3381,6 +3381,11 @@ function VSLib::Entity::GetLookingEntity(mask = 33579137)
 		return;
 	}
 	
+	if("PS_ONETIME_TARGET" in GetScriptScope() && GetScriptScope().PS_ONETIME_TARGET != null && GetScriptScope().PS_ONETIME_TARGET.IsEntityValid())
+	{
+		return GetScriptScope().PS_ONETIME_TARGET
+	}
+
 	if (!("EyeAngles" in _ent))
 	{
 		printl("VSLib Warning: Entity " + _idx + " does not have Eye Angles.");
@@ -4705,6 +4710,21 @@ function VSLib::Entity::GetRagdollEntity()
 /*
  * @authors rhino
  */
+function VSLib::Entity::HasKnownModel()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	
+	local mdl = ::ShortenModelName(GetModel())
+	return mdl in ::ModelDetails;
+}
+
+/*
+ * @authors rhino
+ */
 function VSLib::Entity::HasMassDefined()
 {
 	if (!IsEntityValid())
@@ -4714,8 +4734,8 @@ function VSLib::Entity::HasMassDefined()
 	}
 	
 	local mdl = ::ShortenModelName(GetModel())
-	return ("mass" in ::ModelDetails[mdl]) 
-			|| ("totalmass" in ::ModelDetails[mdl]);
+	return HasKnownModel() && (("mass" in ::ModelDetails[mdl]) 
+			|| ("totalmass" in ::ModelDetails[mdl]));
 }
 
 /*
