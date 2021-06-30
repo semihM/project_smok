@@ -1,6 +1,6 @@
 ::Quix <- 
 {
-    Interval = 0.003
+    Interval = 0.033
     TimerName = "PS_QUIX_TIMER_"
     Table = {}
 }
@@ -16,10 +16,11 @@
  * @param [count <int> = 1] : Maximum amount of successful checks to stop the process
  * @param [cond_params <variable> = null] : Arguments to pass to condition function's 2nd parameter 
  * @param [call_params <variable> = null]: Arguments to pass to callback function's 3rd parameter 
+ * @param [override_interval <float> = null]: Interval to call 'condition' function, if null uses Quix.Interval
  *
  * @return the created condition checker
  */
-::Quix.AddLimited <- function(name,condition,callback,count=1,cond_params=null,call_params=null)
+::Quix.AddLimited <- function(name,condition,callback,count=1,cond_params=null,call_params=null,override_interval=null)
 {
     if(name in ::Quix.Table)
     {
@@ -33,7 +34,7 @@
 	
 	::Quix.Table[name] <- e
 
-    local interval = ::Quix.Interval
+    local interval = override_interval ? override_interval : ::Quix.Interval
 	local scp = e.GetScriptScope()
 	
     scp["name"] <- name
@@ -83,10 +84,11 @@
  * @param callback <function> : Callback function, first parameter is check count, second parameter is successful condition count (incremented by 1 after every successful @condition call), third parameter is given arguments
  * @param [cond_params <variable> = null] : Arguments to pass to condition function's 2nd parameter 
  * @param [call_params <variable> = null]: Arguments to pass to callback function's 3rd parameter 
+ * @param [override_interval <float> = null]: Interval to call 'condition' function, if null uses Quix.Interval
  *
  * @return the created condition checker
  */
-::Quix.AddUnlimited <- function(name,condition,callback,cond_params=null,call_params=null)
+::Quix.AddUnlimited <- function(name,condition,callback,cond_params=null,call_params=null,override_interval=null)
 {
     if(name in ::Quix.Table)
     {
@@ -100,7 +102,7 @@
 	
 	::Quix.Table[name] <- e
 
-    local interval = ::Quix.Interval
+    local interval = override_interval ? override_interval : ::Quix.Interval
 	local scp = e.GetScriptScope()
 	
     scp["name"] <- name
