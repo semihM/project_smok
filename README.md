@@ -19,6 +19,8 @@
 
 - [**Bot Abilites and Trading**](#bot-abilites-and-trading)
 
+- [**User Levels System**](#user-levels-system)
+
 - [**Commands**](#commands)
 
     - [**Using commands**](#using-commands)
@@ -52,8 +54,12 @@
         - [**Console limitations**](#using-scripts)
 
         - [**Runtime character compilation**](#runtime-character-compilation)
+
+        - [**Target specific command format**](#target-specific-command-format)
     
 - [**Command Categories**](#command-categories)
+
+    - [**User and Command Privileges**](#user-and-command-privileges)
 
     - [**Entities/Objects**](#entities)
 
@@ -154,6 +160,20 @@
      3. Players can **exchange** their grenades and packs with a bot while holding the grenade or the pack
   
      4. Players can **give** each other grenades and packs by **holding the reload button (R) and shoving** with the grenade or the pack
+---
+
+# User Levels System
+ - project_smok v2.0.0 introduces a new user-level system to easily change privileges required for certain commands and features. This system provides **5 user levels**. These levels are from least privileged to most:
+
+     1. **PS_USER_NONE** : No special privilege, can only use commands which are allowed for everyone. This level is assumed for new players. 
+     
+     2. **PS_USER_BASIC** : A guest user privilege, can only use handful of commands which are allowed for guest players. This level can be given to a player with [**user_level**](#user_level) command. 
+     
+     3. **PS_USER_ADMIN** : An admin user privilege(equivelant of previous versions' *admin* role), can use commands which are not capable of running custom scripts in the server console. This level can be given to a player with [**user_level**](#user_level) command. 
+  
+     4. **PS_USER_SCRIPTER** : A scripter user privilege(equivelant of previous versions' *script auth* role), can use all commands except the ones which are only usable by the host. This level can be given to a player with [**user_level**](#user_level) command. 
+
+     5. **PS_USER_HOST** : A host privilege, can use all commands. This level should not be given to more than one player. This level can only be given to a player through configuration files. 
 ---
 
 # Commands
@@ -285,8 +305,7 @@
    
    Option | Data Type | Description
    ------------ | ------------- | -------------
-   HostOnly | _*bool*_ | _*true*_: Only allow host to use the alias; _*false*_: Allow everyone to use the alias 
-   ScriptAuthOnly | _*bool*_ | _*true*_: Only allow admins with script authorization to use the alias; _*false*_: Allow everyone to use the alias
+   MinimumUserLevel | _*userlevel*_ | _*PS_USER_NONE*_: Minimum user level required to use the alias, check out [**user levels system**](#user-levels-system) 
    Help | _*table*_ | Documentation table of the alias, [check the example](#alias-file-format) 
    Parameters | _*table*_ | Parameters table of the alias, uses **param_{x}** format for **{x}th** parameter
    Commands | _*table*_ | Commands table of the alias, uses **arg_{x}** format for **{x}th** argument in command tables. Has options for repetation, [check the example](#alias-file-format)
@@ -301,11 +320,8 @@
 	// Alias name
 	my_alias_1 =
 	{	
-		// Restrict to server host
-		HostOnly = false 
-		
-		// Restrict to admins with script authorization
-		ScriptAuthOnly = true 
+		// Restrict to admins
+		MinimumUserLevel = PS_USER_ADMIN 
 		
 		// Documentation for this alias
 		Help =
@@ -428,10 +444,12 @@
 		 1) Decide for a name
   	 
 		 2) Initialize a table with the decided name
+
+       3) Decide the minimum user level required for the command with **MinimumUserLevel**
      
-		 3) Add documentations under a table named **Help**
+		 4) Add documentations under a table named **Help**
      
-		 4) Add the actual command function, taking 3 parameters, as a function named **Main** 
+		 5) Add the actual command function, taking 3 parameters, as a function named **Main** 
     
    6. Launch the game and check if the new command was registered
     
@@ -444,6 +462,7 @@
    
    Option | Data Type | Description
    ------------ | ------------- | -------------
+   MinimumUserLevel | _*userlevel*_ | _*PS_USER_NONE*_: Minimum user level required to use the command, check out [user levels system](#user-levels-system) 
    Help | _*table*_ | Documentation table of the command, [check the example](#script-file-format) 
    Main | _*function*_ | A function which takes **3** arguments, [check the example](#script-file-format)  
    
@@ -482,10 +501,18 @@
 // -> If "my_command_1" already exists, this will overwrite it!
 ::PS_Scripts.my_command_1 <- {}
 
+// Decide the minimum user level required, if not declared, uses PS_USER_NONE to let anyone use the command
+//    PS_USER_NONE : Allow access for anyone
+//    PS_USER_BASIC : Allow guest/basic user privileges
+//    PS_USER_ADMIN : Allow admin user privileges
+//    PS_USER_SCRIPTER : Allow scripter user privileges
+//    PS_USER_HOST : Allow access for host only
+::PS_Scripts.my_command_1.MinimumUserLevel <- PS_USER_ADMIN
+
 // Documentation for the command under the Help table
 // -> This information can be accessed in-game using:
-//	?my_command_1
-//	!help my_command_1
+//	   ?my_command_1
+//	   !help my_command_1
 ::PS_Scripts.my_command_1.Help <- 
 {
     // Information about the command
@@ -510,19 +537,13 @@
 // 	3. The chat or console message caused this call, as a string
 ::PS_Scripts.my_command_1.Main <- function(player,args,text)
 {
-	// Adding restrictions
-	// -> Only allow admins
-	if(!AdminSystem.IsPrivileged(player))
-		return;
-		
-	// -> Only allow admins with script authorizations
-	if(!AdminSystem.HasScriptAuth(player))
-		return;
-
 	// Accessing arguments easily
+   // - Assume the following call:
+   //    !my_command_1 argument_1 argument_2 argument_3 ...
 	// This is same as args[0], but it is fail-safe, returns null if no argument is passed
 	// But GetArgument method uses a copy of arguments stored in ::VSLib.EasyLogic.LastArgs, which only gets updated when the command is called from chat/console
 	// If you expect the command to be called within a compilestring function, make sure to check args in here too!
+   
 	local argument_1 = GetArgument(1)	
 	local argument_2 = GetArgument(2)	
 	local argument_3 = GetArgument(3)	
@@ -531,7 +552,7 @@
 	// Write the rest of the instructions here...
 	
 	// At the end, print out a message for the player(s) if needed, prints to wherever the given player has his output state set to
-	::Printer(player,"Put the message here!")
+	::Printer(player,"Put the success message here!")
 }
 ```
 
@@ -544,7 +565,10 @@
 
    - Sometimes problematic with commands which needs to compile the sent message when there are semi-colons **;** in the message
 
-   - Not sanitized well: **";command_name** will try to execute the *command_name* in console, it will work if *command_name* has a *user* flag defined
+   - Not sanitized well: 
+      - **";command_name** will try to execute the *command_name* in console, it will work if *command_name* has a *user* flag defined
+
+      - **//text after** will _comment out_ the *text after* itself, making the *text after* it unusable
 
 ### Console limitations
    - Maximum command length: **255**
@@ -622,12 +646,134 @@
 
          - **From chat**: !rainbow $[Player("!bill").GetHealth()>50?33:99]
 
+### Target specific command format
+   - Most of the commands use a function that decides the object aimed by the player and then run the instructions on that object.
+
+   - A new *target specific* command format was introduced to solve the issues in cases where the player is not be in a condition to aim at an object of which they want to run commands on
+
+   - Using this format, players can call commands specifiying their target instead of needing to aim at the target.
+
+   - This *target specific* format is used as follows:
+
+   Chat Format | (!,/)_command_**>**_targetname_ *argument ...* 
+   ------------- | -------------
+
+   Console Format | scripted_user_func *_command_**>**_targetname_,*argument*, *...*
+   ------------- | -------------
+
+   - Following this format will let the command act as if player was aiming at the object referenced by given *targetname*
+
+   - *targetname* allows survivor character names = (bill,zoey, ...), self reference = (!self,self) entity indices = (#idx), entity names = (name)
+
+   - **WARNING**: Beware that using *self* as *targetname* may cause crashes or unexpected behavior in some commands
+
+   - Some example uses from chat are given below for *target specific* commands 
+
+   ```cpp
+      // Push yourself up using 15000 inch/s impulse:
+      !ent_push>self 15000 up
+
+      // Change render color of entity at index 59 to rgb(255,0,125):
+      !color>#59 255 0 125
+
+      //  - Some commands allow !picker through their arguments, but in almost all cases these
+      //    commands already allow entity references in place of the !picker argument
+      //    It allows alternative ways of calling commands but may require to use the expected !picker argument.
+      // Make entity at index 102 lootable if possible
+      !create_loot_sources>#102 !picker
+
+   ```  
+
 ## Command Categories
+---
+### User Levels
+
+#### **user_level**
+- Change user levels of players to allow/disallow them to use certain features/commands.
+
+   Minimim User Level | **PS_USER_SCRIPTER**
+   ------------- | -------------
+
+   Chat Syntax | (!,/,?)user_level *character level*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *user_level,character,level*
+   ------------- | -------------
+    
+   Menu Sequence | _1->\[1,2,3,4,5,6,7,8\]_
+   ------------- | -------------
+```cpp
+       //Overloads:
+       // - Available user levels
+       //   PS_USER_NONE : (Default)Allow access to commands available for anyone (example: help)
+       //   PS_USER_BASIC : Allow access to most basic commands (example: get_in, get_out etc.)
+       //   PS_USER_ADMIN : Allow access to generic commands which doesn't let the player run script codes (most of the commands)
+       //   PS_USER_SCRIPTER : Allow access to most of the commands if not all (example: cvar, script, out etc.)
+       // - There is also a role for host, but it can't be used with this command
+       //   > PS_USER_HOST : Allow access to all commands (NOT RECOMMENDED TO BE USED FOR MORE THAN ONE PLAYER)
+       user_level {character} {level: (PS_USER_NONE|PS_USER_BASIC|PS_USER_ADMIN|PS_USER_SCRIPTER)}
+
+       // Example: Give the player playing as Bill admin privileges
+       user_level bill PS_USER_ADMIN
+    
+       // Example: Take the player playing as Zoey's all special privileges away
+       user_level zoey PS_USER_NONE
+```
+---
+#### **command_privilege**
+- Change the minimum user level required for commands. This command's minimum user level **CAN NOT** be changed.
+
+   Minimim User Level | **PS_USER_HOST**
+   ------------- | -------------
+
+   Chat Syntax | (!,/,?)command_privilege *command_name minimum_level*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *command_privilege,command_name,minimum_level*
+   ------------- | -------------
+    
+   Menu Sequence | _NOT IN THE MENU_
+   ------------- | -------------
+```cpp
+       //Overloads:
+       // - Available user levels
+       //   PS_USER_NONE : Allow access for anyone
+       //   PS_USER_BASIC : Require at least guest/basic user privilege
+       //   PS_USER_ADMIN : Require at admin user privilege
+       //   PS_USER_SCRIPTER : Require at least scripter user privilege
+       //   PS_USER_HOST : Allow access for host only
+       command_privilege {command_name} {minimum_level: (PS_USER_NONE|PS_USER_BASIC|PS_USER_ADMIN|PS_USER_SCRIPTER|PS_USER_HOST)}
+
+       // Example: Give the player playing as Bill admin privileges
+       command_privilege grab PS_USER_ADMIN
+    
+       // Example: They won't say no, because of the implication
+       command_privilege get_out PS_USER_HOST
+```
+---
+#### **reload_command_privileges**
+- Reload command privilege overrides from *admin system/command\_privileges.txt* file
+
+   Minimim User Level | **PS_USER_HOST**
+   ------------- | -------------
+
+   Chat Syntax | (!,/,?)reload_command_privileges
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *reload_command_privileges* 
+   ------------- | -------------
+    
+   Menu Sequence | _Not in the menu_
+   ------------- | -------------
+   
 ---
 ### Entities
 
 #### **prop**
 -  Create a prop of the given type with given model
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)prop *type model_path origin_offset angles mass_scale*
    ------------- | -------------
@@ -674,6 +820,9 @@
 #### **ent**
 -  Create an entity of the given class with given key-values
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)ent *classname key_1>val_1&key_2>val_2...*
    ------------- | -------------
 
@@ -701,6 +850,9 @@
 ---
 #### **search_model**
 - Search all models with a pattern or a keyword and print one or more names.
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)search_model *pattern limit*
    ------------- | -------------
@@ -732,6 +884,9 @@
 #### **random_model**
 - Print random model names with or without a pattern or a keyword and print one or more names. Works similar to **search_model**
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)random_model *limit pattern*
    ------------- | -------------
 
@@ -760,6 +915,9 @@
 #### **random_phys_model**
 - Print random physics model names with or without a pattern or a keyword and print one or more names. Works similar to **random_model**
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)random_phys_model *limit pattern*
    ------------- | -------------
 
@@ -782,6 +940,9 @@
 #### **save_model**
 - Save a model with a class to be spawn a prop easily
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)save_model *classname modelpath*
    ------------- | -------------
 
@@ -802,6 +963,9 @@
 #### **random_model_save_state**
 - Update the state of saving the last randomly spawned prop
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)random_model_save_state
    ------------- | -------------
 
@@ -814,6 +978,9 @@
 ---
 #### **spawn_model_saved**
 - Spawn a prop with saved model and class 
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)spawn_model_saved
    ------------- | -------------
@@ -828,6 +995,9 @@
 #### **display_saved_model**
 - Display the saved model information if there is any
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)display_saved_model
    ------------- | -------------
 
@@ -840,6 +1010,9 @@
 ---
 #### **ent_rotate**
 - Rotate the targeted entity
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)ent_rotate *axis degrees*
    ------------- | -------------
@@ -859,6 +1032,9 @@
 #### **ent_push**
 - Push the targeted entity in given direction
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)ent_push *speed direction pitch*
    ------------- | -------------
 
@@ -875,6 +1051,9 @@
 ---
 #### **ent_move**
 - Move(by teleporting) the targeted entity in given direction
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)ent_move *scale direction*
    ------------- | -------------
@@ -894,6 +1073,9 @@
 #### **ent_teleport**
 - Teleport the entity with the given name/ID to aimed location ("#" should be while using ID)
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)ent_teleport *ID_OR_NAME*
    ------------- | -------------
 
@@ -910,6 +1092,9 @@
 ---
 #### **rainbow**
 - Apply rainbow effect to targeted entity 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)rainbow *total_duration each_color_duration*
    ------------- | -------------
 
@@ -927,6 +1112,9 @@
 #### **grab**
 - Grabs aimed entity, also lets go if player is grabbing an entity
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)grab
    ------------- | -------------
 
@@ -938,6 +1126,9 @@
 ---    
 #### **letgo**
 - Drops the held entity
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)letgo
    ------------- | -------------
@@ -951,6 +1142,9 @@
 #### **yeet**
 - YEEEEEET
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)yeet
    ------------- | -------------
 
@@ -962,6 +1156,9 @@
 ---    
 #### **show_yeet_settings**
 - Shows grabbing settings in console
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)show_yeet_settings
    ------------- | -------------
@@ -986,6 +1183,9 @@
 ---
 #### **yeet_setting**
 - Change a grabbing setting
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)yeet_setting *setting_name value*
    ------------- | -------------
@@ -1017,6 +1217,9 @@
 #### **change_grab_method**
 - Change grabbing method between "Grab by aimed point" and "Grab by center"(basically hug the entity, some entity cause player to get stuck)
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)change_grab_method
    ------------- | -------------
 
@@ -1029,6 +1232,9 @@
 ---
 #### **model**
 - Change the model of an entity
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)model *target* *model_path*
    ------------- | -------------
@@ -1056,6 +1262,9 @@
 #### **model_scale**
 - Change the model scale of an entity, only works with a few of the models
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)model_scale *target* *scale*
    ------------- | -------------
 
@@ -1077,6 +1286,9 @@
 #### **disguise**
 - Disguise as targeted object (change your model to it's model)
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)disguise
    ------------- | -------------
 
@@ -1089,6 +1301,9 @@
 ---
 #### **restore_model**
 - Restore the original model of a player
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)restore_model *target*
    ------------- | -------------
@@ -1113,6 +1328,9 @@
 ---
 #### **prop_spawn_setting**
 - Update default settings used for spawning props of a certain class. Check **prop_defaults.txt** for details
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)prop_spawn_setting *classname,setting,subsetting,newvalue*
    ------------- | -------------
@@ -1156,6 +1374,9 @@
 #### **randomline**
 - Speak a line. Last line gets saved by default, use **randomline_save_last** to change state
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)randomline *speaker line_source* 
    ------------- | -------------
 
@@ -1180,6 +1401,9 @@
 #### **pitch**
 - Change the pitch(talking speed) of voice line currently being spoken
 
+   Minimim User Level | **PS_USER_BASIC**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)pitch *speed*
    ------------- | -------------
 
@@ -1196,6 +1420,9 @@
 ---
 #### **perma_pitch**
 - Change the pitch(talking speed) of voice lines you speak automatically. Works similar to **pitch** except this doesn't require the player to be currently speaking.
+
+   Minimim User Level | **PS_USER_BASIC**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)perma_pitch *speed*
    ------------- | -------------
@@ -1214,6 +1441,9 @@
 #### **randomline_save_last**
 - Change state of saving the last random line spoken
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)randomline_save_last 
    ------------- | -------------
 
@@ -1226,6 +1456,9 @@
 ---
 #### **save_line**
 - Save the given speaker and line path
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)save_line *speaker path_to_line* 
    ------------- | -------------
@@ -1246,6 +1479,9 @@
 #### **display_saved_line**
 - Display saved line information 
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)display_saved_line 
    ------------- | -------------
 
@@ -1258,6 +1494,9 @@
 ---
 #### **speak_saved**
 - Speak the saved line
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)speak_saved 
    ------------- | -------------
 
@@ -1272,6 +1511,9 @@
 
 #### **particle**
 - Spawn a particle. Last random particle is saved by default, use **randomparticle_save_state** to change it.
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)particle *particle_name* 
    ------------- | -------------
@@ -1288,6 +1530,9 @@
 ---
 #### **search_particle**
 - Search particle effects with a pattern or a keyword 
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)search_particle *pattern limit*
    ------------- | -------------
@@ -1310,6 +1555,9 @@
 ---
 #### **random_particle**
 - Print random particle effects with or without a pattern or a keyword 
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)random_particle *limit pattern*
    ------------- | -------------
@@ -1334,6 +1582,9 @@
 #### **spawn_particle_saved**
 - Spawn the saved particle
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)attach_particle *particle_name duration*
    ------------- | -------------
 
@@ -1346,6 +1597,9 @@
 ---
 #### **attach_particle**
 - Attach a particle to targeted entity. Last random particles are saved by default, use **randomparticle_save_state** to change it.
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)attach_particle *particle_name duration*
    ------------- | -------------
@@ -1365,6 +1619,9 @@
 #### **attach_particle_saved**
 - Attach the saved particle to targeted entity
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)attach_particle_saved
    ------------- | -------------
 
@@ -1376,6 +1633,9 @@
 ---
 #### **update_attachment_preference**
 - Change preferred attachment duration
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)update_attachment_preference *duration*
    ------------- | -------------
@@ -1393,6 +1653,9 @@
 #### **attach_to_targeted_position**
 - Change attachment position of particles between **aimed point** and **base** of the entity
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)attach_to_targeted_position 
    ------------- | -------------
 
@@ -1405,6 +1668,9 @@
 ---
 #### **randomparticle_save_state**
 - Change state of saving the last randomly spawned particle
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)randomparticle_save_state 
    ------------- | -------------
@@ -1419,6 +1685,9 @@
 #### **display_saved_particle**
 - Display information about saved particle
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)display_saved_particle
    ------------- | -------------
 
@@ -1430,6 +1699,9 @@
 ---
 #### **save_particle**
 - Save the given particle
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)save_particle *particle_name duration*
    ------------- | -------------
@@ -1449,6 +1721,9 @@
 
 #### **sound**
 - Play a sound script or a file on players or objects
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)sound *sound target,soundname* 
    ------------- | -------------
@@ -1472,6 +1747,9 @@
 #### **sound_script_info**
 - Get information about a sound script
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)sound_script_info *script_name* 
    ------------- | -------------
 
@@ -1487,6 +1765,9 @@
 ---
 #### **random_sound_script_name**
 - Get one or more random sound script name(s) using patterns/keywords
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)random_sound_script_name *pattern limit* 
    ------------- | -------------
@@ -1514,6 +1795,9 @@
 #### **search_sound_script_name**
 - Get one or more sound script name(s) using patterns/keywords, works similar to **random_sound_script_name** but requires a pattern
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)search_sound_script_name *pattern limit* 
    ------------- | -------------
 
@@ -1539,6 +1823,9 @@
 ---
 #### **find_sound_in_scripts**
 - Get one or more sound script name(s) searching over **sound file names** inside scripts
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)find_sound_in_scripts *file limit pattern* 
    ------------- | -------------
@@ -1569,6 +1856,9 @@
 #### **speak_test**
 - Speak given line for given time
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)speak_test *speaker line duration*
    ------------- | -------------
 
@@ -1585,6 +1875,9 @@
 ---
 #### **create_seq**
 - Create and save a sequence of lines with given delays
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)create_seq *speaker sequence_name line_1 delay_1 line_2 delay_2...*
    ------------- | -------------
@@ -1630,6 +1923,9 @@
 #### **speak_custom**
 - Execute a saved custom sequence
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)speak_custom *speaker sequence*
    ------------- | -------------
 
@@ -1648,6 +1944,9 @@
 ---
 #### **delete_seq**
 - Delete a saved custom sequence
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)delete_seq *speaker sequence*
    ------------- | -------------
@@ -1668,6 +1967,9 @@
 #### **show_custom_sequences**
 - Print out the saved custom sequences to console
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)show_custom_sequences *speaker*
    ------------- | -------------
 
@@ -1684,6 +1986,9 @@
 ---
 #### **loop**
 - Start a loop of sequences and lines (">" is needed before sequence names)
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)loop *character sequence_or_line loop_length*
    ------------- | -------------
 
@@ -1707,6 +2012,9 @@
 #### **loop_stop**
 - Stop looping for given character
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)loop_stop *character*
    ------------- | -------------
 
@@ -1726,6 +2034,9 @@
 ---
 #### **seq_info**
 - Get scene and delay info about a custom sequence
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)seq_info *character sequence*
    ------------- | -------------
 
@@ -1741,6 +2052,9 @@
 ---
 #### **seq_edit**
 - Edit custom sequences ( ">" is needed if indices are used !)
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)seq_edit *character sequence scene_or_index setting new_value*
    ------------- | -------------
 
@@ -1766,6 +2080,9 @@
 #### **start_the_apocalypse**
 - Uh oh
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)start_the_apocalypse
    ------------- | -------------
 
@@ -1779,6 +2096,9 @@
 #### **pause_the_apocalypse**
 - Let the world have a break from the madness
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)pause_the_apocalypse
    ------------- | -------------
 
@@ -1791,6 +2111,9 @@
 ---
 #### **show_apocalypse_settings**
 -  Show apocalypse event's settings and values. Probabilities normalized: (0 = 0% , 1 = 100%)
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)show_apocalypse_settings
    ------------- | -------------
@@ -1826,6 +2149,9 @@
 #### **apocalypse_setting**
 - Change apocalypse event settings, updates **apocalypse_settings.txt** file
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)apocalypse_setting *setting new_value*
    ------------- | -------------
 
@@ -1851,6 +2177,9 @@
 #### **start_ghost_zombies**
 - Zombies AS ghosts ?!
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)start_ghost_zombies
    ------------- | -------------
 
@@ -1864,6 +2193,9 @@
 #### **pause_ghost_zombies**
 - Get rid of the ghosts
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)pause_ghost_zombies
    ------------- | -------------
 
@@ -1876,6 +2208,9 @@
 ---
 #### **show_ghost_zombies_settings**
 -  Show ghost zombies event's settings and values. Probabilities normalized: (0 = 0% , 1 = 100%)
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)show_ghost_zombies_settings
    ------------- | -------------
@@ -1899,6 +2234,9 @@
 --- 
 #### **ghost_zombies_setting**
 - Change ghost zombies event settings, updates **ghost_zombies_settings.txt** file
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)ghost_zombies_setting *setting new_value*
    ------------- | -------------
@@ -1927,6 +2265,9 @@
 #### **start_the_shower**
 - Not the greatest shower you'll have
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)start_the_shower
    ------------- | -------------
 
@@ -1940,6 +2281,9 @@
 #### **pause_the_shower**
 - Take a break
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)pause_the_shower
    ------------- | -------------
 
@@ -1952,6 +2296,9 @@
 ---
 #### **show_meteor_shower_settings**
 - Show meteor shower event's settings and values. Probabilities normalized: (0 = 0% , 1 = 100%)
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)show_meteor_shower_settings
    ------------- | -------------
@@ -1987,6 +2334,9 @@
 #### **meteor_shower_setting**
 - Change apocalypse event settings, updates **meteor_shower_settings.txt** file
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)meteor_shower_setting *setting new_value*
    ------------- | -------------
 
@@ -2012,6 +2362,9 @@
 #### **stop_time**
 - Freezes all currently spawned zombies and objects in time
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)stop_time *target_type*
    ------------- | -------------
 
@@ -2035,6 +2388,9 @@
 ---
 #### **resume_time**
 - Resumes time for objects
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)resume_time *target_type*
    ------------- | -------------
@@ -2062,6 +2418,9 @@
 #### **piano_keys**
 - Place 25 piano keys starting at looked location placing them to the right
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)piano_keys
    ------------- | -------------
 
@@ -2074,6 +2433,9 @@
 ---
 #### **remove_piano_keys**
 - Removes all piano key spawns
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)remove_piano_keys
    ------------- | -------------
@@ -2088,6 +2450,9 @@
 
 #### **microphone**
 - Create an entity to be used as microphone, check console for its index and name 
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)microphone *effect hearing_range speaker_to_connect*
    ------------- | -------------
@@ -2109,6 +2474,9 @@
 #### **speaker**
 - Creates an entity to be used as a speaker, check console for its index and name
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)speaker
    ------------- | -------------
 
@@ -2120,6 +2488,9 @@
 ---
 #### **display_mics_speakers**
 - Get index,name and distance information about spawned mics and speakers
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)display_mics_speakers
    ------------- | -------------
@@ -2133,6 +2504,9 @@
 ---
 #### **speaker2mic**
 - Connect a speaker to a microphone ( "#" is needed before indices !)
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)speaker2mic *speaker_ID_OR_NAME microphone_ID_OR_NAME*
    ------------- | -------------
@@ -2158,6 +2532,9 @@
 #### **explosion**
 - Create a delayed explosion or a meteor strike at aimed location, with a particle effect until explosion
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)explosion _option_
    ------------- | -------------
 
@@ -2179,6 +2556,9 @@
 ---
 #### **show_explosion_settings**
 - Show current *explosion* command settings in console
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)show_explosion_settings
    ------------- | -------------
@@ -2204,6 +2584,9 @@
 #### **explosion_setting**
 - Update *explosion* command settings
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)explosion_setting *setting new_value*
    ------------- | -------------
 
@@ -2227,6 +2610,9 @@
 #### **go_ragdoll**
 - Start ragdolling with controls, hold **mouse1** to ascend, **mouse2** to descend. 
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)go_ragdoll
    ------------- | -------------
 
@@ -2240,6 +2626,9 @@
 #### **recover_ragdoll**
 - Recover your ragdoll 
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)recover_ragdoll
    ------------- | -------------
 
@@ -2252,6 +2641,9 @@
 ---
 #### **change_ragdoll_view**
 - Change your viewing position while ragdolling
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)change_ragdoll_view *axis units*
    ------------- | -------------
@@ -2275,6 +2667,9 @@
 ---
 #### **rc_prop**
 - Start/stop remote controlling a prop with ragdoll controls
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)rc_prop *target*
    ------------- | -------------
@@ -2303,6 +2698,9 @@
 #### **start_driving**
 - Start driving a built-in vehicle, a custom vehicle or a prop with the given model. Movement: WASD; Aim forward: MOUSE2; N2O: SHIFT; BOUNCE: SPACE
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)start_driving *vehicle_type*
    ------------- | -------------
 
@@ -2328,6 +2726,9 @@
 #### **stop_driving**
 - Stop driving your current car
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)stop_driving
    ------------- | -------------
 
@@ -2341,6 +2742,9 @@
 #### **make_driveable**
 - Try and make aimed object driveable. 
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)make_driveable
    ------------- | -------------
 
@@ -2353,6 +2757,9 @@
 ---
 #### **change_seat_position**
 - Change your seat position while driving or the viewing position while remote controlling
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)change_seat_position *axis units*
    ------------- | -------------
@@ -2377,6 +2784,9 @@
 #### **set_default_seat_position**
 - Change the default driver seat location of currently driven vehicle to your current seat position
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)set_default_seat_position
    ------------- | -------------
 
@@ -2389,6 +2799,9 @@
 ---
 #### **change_drive_direction**
 - Change the driving direction of currently driven vehicle type. This helps with models with weird angles
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)change_drive_direction *direction*
    ------------- | -------------
@@ -2408,7 +2821,10 @@
 ```    
 ---
 #### **get_in**
-- Get into the aimed vehicle as a passenger if possible.  Allowed for non-admins by default
+- Get into the aimed vehicle as a passenger if possible.
+
+   Minimim User Level | **PS_USER_BASIC**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)get_in
    ------------- | -------------
@@ -2421,7 +2837,10 @@
  
 ---
 #### **get_out**
-- Get out of the current vehicle you are a passenger of. Allowed for non-admins by default
+- Get out of the current vehicle you are a passenger of.
+
+   Minimim User Level | **PS_USER_BASIC**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)get_out
    ------------- | -------------
@@ -2434,7 +2853,10 @@
                    
 ---
 #### **change_passenger_seat_position**
-- Change your seat position as a passenger. Allowed for non-admins by default
+- Change your seat position as a passenger.
+
+   Minimim User Level | **PS_USER_BASIC**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)change_passenger_seat_position *axis units*
    ------------- | -------------
@@ -2459,6 +2881,9 @@
 #### **reload_vehicles**
 - Reload vehicle table files from *admin system/vehicles/* directory
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)reload_vehicles
    ------------- | -------------
 
@@ -2473,6 +2898,9 @@
 
 #### **decal**
 - Place a decal(texture) at aimed point
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)decal *decal_path*
    ------------- | -------------
@@ -2498,6 +2926,9 @@
 #### **search_decal**
 - Search decal names with a pattern or a keyword 
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)search_decal *pattern limit*
    ------------- | -------------
 
@@ -2519,6 +2950,9 @@
 ---
 #### **random_decal**
 - Print random decal names with or without a pattern or a keyword 
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)random_decal *limit pattern*
    ------------- | -------------
@@ -2544,6 +2978,9 @@
 
 #### **set_animation**
 - Start a animation or a sequence on the aimed object or the given target 
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)set_animation *sequence_name_or_id targetname*
    ------------- | -------------
@@ -2575,6 +3012,9 @@
 #### **search_animation**
 - Search animation names of aimed object or given target with a pattern or a keyword 
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)search_animation *pattern limit targetname*
    ------------- | -------------
 
@@ -2597,6 +3037,9 @@
 ---
 #### **random_animation**
 - Print random animation names of aimed object or given target with or without a pattern or a keyword 
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)random_animation *limit pattern targetname*
    ------------- | -------------
@@ -2623,6 +3066,9 @@
 
 #### **create_loot_sources**
 - Make props lootable, dropping items when they are used
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)create_loot_sources *category*
    ------------- | -------------
@@ -2653,6 +3099,9 @@
 ---
 #### **show_looting_settings**
 - Show current *create_loot_sources* command settings in console
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)show_looting_settings
    ------------- | -------------
@@ -2686,6 +3135,9 @@
 #### **looting_setting**
 - Update *create_loot_sources* command settings
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)looting_setting *setting new_value*
    ------------- | -------------
 
@@ -2707,6 +3159,9 @@
 #### **reload_loots**
 - Reload loot tables from **admin system/loot_tables.txt**
 
+   Minimim User Level | **PS_USER_SCRIPTER**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)reload_loots
    ------------- | -------------
 
@@ -2721,6 +3176,9 @@
 
 #### **wear_hat**
 - _Wear_ aimed object like a hat
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)wear_hat extra_height
    ------------- | -------------
@@ -2743,6 +3201,9 @@
 #### **take_off_hat**
 - Take off currently worn hat and drop it at aimed point
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)take_off_hat
    ------------- | -------------
 
@@ -2755,6 +3216,9 @@
 ---
 #### **hat_position**
 - Change hat position to given attachment point name
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)hat_position *attachment_point*
    ------------- | -------------
@@ -2772,6 +3236,9 @@
 ---
 #### **point_light**
 - Create a point light source pointing at objects at the moment of spawning
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)point_light *light_color light_fov extra_height*
    ------------- | -------------
@@ -2799,6 +3266,9 @@
 #### **point_light_follow**
 - Create a point light source pointing at objects all times.
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)point_light_follow *light_color target light_fov extra_height*
    ------------- | -------------
 
@@ -2825,6 +3295,9 @@
 ---
 #### **spawn_point_light**
 - Create a point light source pointing at objects using console variables. Works similar to **point_light** when used with no arguments, **point_light_follow** if a target is given.
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)spawn_point_light *target*
    ------------- | -------------
@@ -2856,6 +3329,9 @@
 #### **remove_lights**
 - Remove certain spawned point light sources.
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)remove_lights *target*
    ------------- | -------------
 
@@ -2878,6 +3354,9 @@
 
 #### **give_physics**
 - Enable physics on object(s) around a radius or of which aimed at
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)give_physics *radius*
    ------------- | -------------
@@ -2906,6 +3385,9 @@
 #### **zero_g**
 - Disable gravitational forces on objects
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)zero_g *targets*
    ------------- | -------------
 
@@ -2928,13 +3410,16 @@
 #### **invisible_walls**
 - Enable/Disable **most if not all** of the invisible walls around. Some of them can not be disabled.
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)invisible_walls *state apply_to_all*
    ------------- | -------------
 
    Console Syntax | scripted_user_func *invisible_walls,state,apply_to_all* 
    ------------- | -------------
     
-   Menu Sequence | _6->9->9->6_
+   Menu Sequence | _6->9->2_
    ------------- | -------------
 ```cpp
        //Overloads:
@@ -2946,6 +3431,9 @@
 ---
 #### **ladder_team**
 - Change the teams of ladders
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)ladder_team *team*
    ------------- | -------------
@@ -2965,6 +3453,9 @@
 #### **stop_car_alarms**
 - Stops all car alarms playing
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)stop_car_alarms
    ------------- | -------------
 
@@ -2978,6 +3469,9 @@
 #### **remove_fall_cams**
 - Remove falling follower cameras which lock movement and view. Example: Views on the No Mercy rooftop while falling
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)remove_fall_cams
    ------------- | -------------
 
@@ -2990,6 +3484,9 @@
 ---
 #### **hurt_triggers**
 - Remove falling follower cameras which lock movement and view. Example: Views on the No Mercy rooftop while falling
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)hurt_triggers *state*
    ------------- | -------------
@@ -3012,6 +3509,9 @@
 #### **soda_can**
 - Spawn a drinkable soda which recovers health for players
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)soda_can *recover*
    ------------- | -------------
 
@@ -3033,6 +3533,9 @@
 #### **update_aimed_ent_direction**
 - Make aimed object face the same way as you
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)update_aimed_ent_direction
    ------------- | -------------
 
@@ -3047,6 +3550,9 @@
 
 #### **help**
 - Print out the built-in documentation for given command if it there is any.
+
+   Minimim User Level | **PS_USER_NONE**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)help *command_name*
    ------------- | -------------
@@ -3069,6 +3575,9 @@
 #### **script**
 - Compiles given string. Requires script authorization and is a very dangerous command since gives access to everything in the global scope
 
+   Minimim User Level | **PS_USER_SCRIPTER**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)script *code*
    ------------- | -------------
 
@@ -3088,6 +3597,9 @@
 ---
 #### **out**
 - Compiles given string and prints the output. Output only visible to caller. Works same as **script** command
+
+   Minimim User Level | **PS_USER_SCRIPTER**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)out *code*
    ------------- | -------------
@@ -3114,6 +3626,9 @@
 ---
 #### **wiki**
 - Print sections from entity class wikis, using headers: link, description, flags, keyvalues, inputs, outputs. Gets updated with every minor update. 
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)wiki *classname_OR_reference header*
    ------------- | -------------
@@ -3154,6 +3669,9 @@
 #### **update_print_output_state**
 - Display output messages in chat or in console. Almost all of the messages in chat are only visible to the player.
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)update_print_output_state
    ------------- | -------------
 
@@ -3164,44 +3682,11 @@
    ------------- | -------------
     
 ---
-#### **add_script_auth**
-- Give authorization to an admin to use commands which can compile texts, and to use runtime compilable arguments
-
-   Chat Syntax | (!,/,?)add_script_auth *character*
-   ------------- | -------------
-
-   Console Syntax | scripted_user_func *add_script_auth,character*
-   ------------- | -------------
-    
-   Menu Sequence | _6->9->2->1_
-   ------------- | -------------
-```cpp
-       //Overloads:
-       // ONLY THE HOST can give script authority to others
-       add_script_auth {character}
-    
-```
----
-#### **remove_script_auth**
-- Take away the authorization from admin to use "script" command
-
-   Chat Syntax | (!,/,?)remove_script_auth *character*
-   ------------- | -------------
-
-   Console Syntax | scripted_user_func *remove_script_auth,character*
-   ------------- | -------------
-    
-   Menu Sequence | _6->9->2->2_
-   ------------- | -------------
-```cpp
-       //Overloads:
-       // Host's script authority can not be taken away
-       remove_script_auth {character}
-    
-```
----
 #### **disable_command**
 - Disable a command for the current game session (doesn't stop the host from using the command)
+
+   Minimim User Level | **PS_USER_SCRIPTER**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)disable_command *command_name*
    ------------- | -------------
@@ -3222,6 +3707,9 @@
 #### **enable_command**
 - Re-enable a command for the current game session
 
+   Minimim User Level | **PS_USER_SCRIPTER**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)enable_command *command_name*
    ------------- | -------------
 
@@ -3240,6 +3728,9 @@
 ---
 #### **command_ban**
 - Ban a command's usage for an admin, can be used to ban all commands too. Ban's are bound to steamid of the target player and any remaining ban gets reset after closing the server.
+
+   Minimim User Level | **PS_USER_SCRIPTER**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)command_ban *character command_name duration*
    ------------- | -------------
@@ -3266,6 +3757,9 @@
 #### **command_unban**
 - Unban a command's usage for an admin
 
+   Minimim User Level | **PS_USER_SCRIPTER**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)command_unban *character command_name*
    ------------- | -------------
 
@@ -3288,6 +3782,9 @@
 ---
 #### **hex_string**
 - Get a "argument-ready" version of given text, which can be used as an argument later
+
+   Minimim User Level | **PS_USER_SCRIPTER**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)hex_string *text*
    ------------- | -------------
@@ -3314,6 +3811,9 @@
 #### **enum_string**
 - Get a "evaluation-ready" version of given text, which can be used in _$[expression]_ later. **hex_string** is generally more preferable in most cases over this command.
 
+   Minimim User Level | **PS_USER_SCRIPTER**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)enum_string *text*
    ------------- | -------------
 
@@ -3335,6 +3835,9 @@
 #### **ents_around**
 - Get entity indices and classes around the aimed point
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)ents_around *radius*
    ------------- | -------------
 
@@ -3352,6 +3855,9 @@
 ---
 #### **wnet**
 - Add a watch to a netprop of an entity or all netprops defined under given class, checks netprop of the given entity and only show a message when it changes
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)wnet *netprop_or_baseclass,check_rate,NAME_OR_ID*
    ------------- | -------------
@@ -3391,6 +3897,9 @@
 #### **stop_wnet**
 - Stop watching a netprop or class members of an entity
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)stop_wnet *netprop_name NAME_OR_ID*
    ------------- | -------------
 
@@ -3424,6 +3933,9 @@
 #### **update_custom_response_preference**
 - Enable/Disable custom responses
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)update_custom_response_preference
    ------------- | -------------
 
@@ -3436,6 +3948,9 @@
 ---
 #### **update_tank_rock_launch_preference**
 - Enable/Disable push effect when hit by a tank's rock(only works if only 1 rock was present)
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)update_tank_rock_launch_preference
    ------------- | -------------
@@ -3450,6 +3965,9 @@
 #### **update_tank_rock_random_preference**
 - Enable/Disable random models for tank's rocks
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)update_tank_rock_random_preference
    ------------- | -------------
 
@@ -3462,6 +3980,9 @@
 ---
 #### **update_tank_rock_spawn_preference**
 - Enable/Disable spawning tank's rocks as physics objects (which wont be destroyed on hit)
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)update_tank_rock_spawn_preference
    ------------- | -------------
@@ -3476,6 +3997,9 @@
 #### **update_jockey_preference**
 - Get rid of or bring back the little jockey bastards
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)update_jockey_preference
    ------------- | -------------
 
@@ -3488,6 +4012,9 @@
 ---
 #### **update_model_preference**
 - Enable/Disable wheter to keep last model used for survivors between chapters
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)update_model_preference
    ------------- | -------------
@@ -3502,6 +4029,9 @@
 #### **update_custom_sharing_preference**
 - Enable/Disable sharing grenades and packs by holding reload "R" button
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)update_custom_sharing_preference
    ------------- | -------------
 
@@ -3514,6 +4044,9 @@
 ---
 #### **update_bots_sharing_preference**
 - Enable/Disable automatic sharing grenades and packs for bots
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)update_bots_sharing_preference
    ------------- | -------------
@@ -3528,6 +4061,9 @@
 #### **kind_bots**
 - Enable ability for bots to look for and share grenades and packs
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)kind_bots
    ------------- | -------------
 
@@ -3541,6 +4077,9 @@
 #### **selfish_bots**
 - Disable ability for bots to look for and share grenades and packs
 
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)selfish_bots
    ------------- | -------------
 
@@ -3553,6 +4092,9 @@
 ---
 #### **debug_info**
 - Dump information about objects
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)debug_info *get_player_info*
    ------------- | -------------
@@ -3573,6 +4115,9 @@
 ---
 #### **flag_lookup**
 - Check what flags/constants are defined with a given prefix or check what flags/constants correspond to a given integer value
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)flag_lookup *prefix value*
    ------------- | -------------
@@ -3598,6 +4143,9 @@
 
 #### **create_alias**
 - Create an alias for existing commands. Only usable by players with script authorization
+
+   Minimim User Level | **PS_USER_SCRIPTER**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)create_alias *table_contents*
    ------------- | -------------
@@ -3632,6 +4180,9 @@
 #### **replace_alias**
 - Replace an existing alias, check create_alias command's format.
 
+   Minimim User Level | **PS_USER_SCRIPTER**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)replace_alias *table_contents*
    ------------- | -------------
 
@@ -3644,6 +4195,9 @@
 ---
 #### **reload_aliases**
 - Reload custom alias files from **admin system/aliases/**
+
+   Minimim User Level | **PS_USER_SCRIPTER**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)reload_aliases
    ------------- | -------------
@@ -3658,6 +4212,9 @@
 #### **reload_scripts**
 - Reload custom script files from **admin system/scripts/**
 
+   Minimim User Level | **PS_USER_SCRIPTER**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)reload_scripts
    ------------- | -------------
 
@@ -3671,6 +4228,9 @@
 #### **reload_ent_groups**
 - Reload custom entity group tables from **admin system/entitygroups/**
 
+   Minimim User Level | **PS_USER_SCRIPTER**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)reload_ent_groups
    ------------- | -------------
 
@@ -3683,6 +4243,9 @@
 ---
 #### **detach_hook**
 - Detach a custom hook function from an event
+
+   Minimim User Level | **PS_USER_SCRIPTER**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)detach_hook *event hook*
    ------------- | -------------
@@ -3702,6 +4265,9 @@
 ---
 #### **attach_hook**
 - Attach a custom hook function from an event back
+
+   Minimim User Level | **PS_USER_SCRIPTER**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)attach_hook *event hook*
    ------------- | -------------
@@ -3723,6 +4289,9 @@
 #### **reload_hooks**
 - Reload custom hook files from **admin system/hooks/**
 
+   Minimim User Level | **PS_USER_SCRIPTER**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)reload_hooks
    ------------- | -------------
 
@@ -3736,6 +4305,9 @@
 #### **reload_binds**
 - Reload bind table files from **admin system/binds/**
 
+   Minimim User Level | **PS_USER_SCRIPTER**
+   ------------- | -------------
+
    Chat Syntax | (!,/,?)reload_binds
    ------------- | -------------
 
@@ -3748,6 +4320,9 @@
 --- 
 #### **bind**
 - Re-bind a unbound command/function
+
+   Minimim User Level | **PS_USER_SCRIPTER**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)bind *target key_name cmd_func_name*
    ------------- | -------------
@@ -3771,6 +4346,9 @@
 ---
 #### **unbind**
 - Unbind a command/function bound to a key via *admin system/binds* tables
+
+   Minimim User Level | **PS_USER_SCRIPTER**
+   ------------- | -------------
 
    Chat Syntax | (!,/,?)unbind *target key_name cmd_func_name*
    ------------- | -------------
@@ -4135,17 +4713,17 @@ ExampleGnome =
 // -> This function will display new non-admin players a welcome message
 ::PS_Hooks.OnPlayerConnected.VeryCoolHook <- function(player,args)
 {
-	// Check admin status, in this case make sure second parameter(quiet) is true, so no other message will be displayed 
-	if(!AdminSystem.IsPrivileged(player,true))	
+	// Check if the player is a new/guest player (has less than admin privileges)
+	if(!player.HasPrivilege(PS_USER_ADMIN))	
 		::Messages.InformPlayer(player,"Welcome! This is a modded server and the admins are very reasonable people :) Enjoy the madness!") 
 }
 
 // -> This function will display everyone a message telling an admin has connected 
 ::PS_Hooks.OnPlayerConnected.AnotherCoolHook <- function(player,args)
 {
-	// Check admin status, in this case make sure second parameter(quiet) is true, so no other message will be displayed
-	// -> Player's name will be colored orange, rest will be white
-	if(AdminSystem.IsPrivileged(player,true))
+	// Check if the player has admin privileges or more
+	// -> In the message, player's name will be colored orange, rest will be white
+	if(player.HasPrivilege(PS_USER_ADMIN))
 		::Messages.InformAll(COLOR_ORANGE + player.GetName() + COLOR_DEFAULT + " is here to smok- some boomers!");	
 } 
 ```
@@ -4189,8 +4767,6 @@ ExampleGnome =
       - **_file\_list.txt_**: List of file names to read as custom vehicle tables
 
       - **_example\_vehicle\_file.nut_**: An example file containing information about how to create vehicle tables
-      
-   + **_admins.txt_** : Admins
 
    + **_apocalypse\_settings.txt_** : Apocalypse event custom settings
 
@@ -4199,6 +4775,8 @@ ExampleGnome =
    + **_botparams.txt_** : Bots' sharing/looting parameters
 
    + **_command\_limits_.txt_** : Restrictions to apply to admins for certain commands
+
+   + **_command\_privileges_.txt_** : List of command names to override their minimum user levels required for access
 
    + **_custom\_responses.json_** : Custom responses, doesn't include built-in ones
 
@@ -4214,9 +4792,9 @@ ExampleGnome =
 
    + **_prop\_defaults.txt_** : Default prop spawning settings
 
-   + **_settings.txt_** : Admin system settings
+   + **_settings.txt_** : Admin system settings. Outdated, may have unused setting names.
 
-   + **_scriptauths.txt_** : Script authorizations
+   + **_user\_levels_.txt_** : User levels for players
 
 - These files can all be edited manually with any text editor.
    + [VS Code](https://code.visualstudio.com/) is recommended for editing, especially for the **.nut** Squirrel scripting language files. Helpful add-ons:
@@ -4232,6 +4810,8 @@ ExampleGnome =
    + **Solution 2**: Remove the contents of the file, write the file names after cleaning  
 
 #### Extra Notes
+- **"_user\_levels_.txt_"** file is important for deciding the host of the server, first user with **PS_USER_HOST** user level in this file is assumed to be the server host.
+
 - **"custom_responses.json"** file can be opened with a text editor and new custom sequences can be defined  for each admin's steam ID with the example format given in the file.
 
 - **"defaults.txt"** file contains most of the customizable settings in the **project_smok**. Follow the instructions given in the file to start editing!
