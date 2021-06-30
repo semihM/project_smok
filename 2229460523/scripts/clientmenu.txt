@@ -6,8 +6,8 @@
 
 		"1"
 		{
-			"command"	 "play buttons/button14;show_menu AddAdmins"
-			"label"		 " Manage Admins" 
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelMain"
+			"label"		 " Manage User Levels" 
 		}
 		"2"
 		{
@@ -14492,19 +14492,49 @@
 		}
 	}	
 
-	"AddAdmins"
+	"ChangeUserLevelMain"
 	{
-		"Title"			"Manage Admins"
+		"Title"			"Character to change user level of, check ?user_level"
 
 		"1"
 		{
-			"command"	 "play buttons/button14;show_menu AddAdminsAdd"
-			"label"		 " Add Admin"
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelBill"
+			"label"		 " Bill"
 		}
 		"2"
 		{
-			"command"	 "play buttons/button14;show_menu AddAdminsRemove"
-			"label"		 " Remove Admin"
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelZoey"
+			"label"		 " Zoey"
+		}
+		"3"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelLouis"
+			"label"		 " Louis"
+		}
+		"4"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelFrancis"
+			"label"		 " Francis"
+		}
+		"5"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelNick"
+			"label"		 " Nick"
+		}
+		"6"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelRochelle"
+			"label"		 " Rochelle"
+		}
+		"7"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelCoach"
+			"label"		 " Coach"
+		}
+		"8"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelEllis"
+			"label"		 " Ellis"
 		}
 		"8"
 		{
@@ -14517,54 +14547,33 @@
 			"label"		 " Exit"
 		}
 	}
-	
-	"AddAdminsAdd"
+	"ChangeUserLevelBill"
 	{
-		"Title"			"Add Admin"
+		"Title"			"Select user level, check ?user_level"
 
 		"1"
 		{
-			"command"	 "play buttons/button14;scripted_user_func add_admin,bill;show_menu AddAdminsAdd"
-			"label"		 " Bill"
+			"command"	 "play buttons/button14;scripted_user_func user_level,bill,PS_USER_NONE;show_menu ChangeUserLevelBill"
+			"label"		 " PS_USER_NONE: Disallow all commands"
 		}
 		"2"
 		{
-			"command"	 "play buttons/button14;scripted_user_func add_admin,zoey;show_menu AddAdminsAdd"
-			"label"		 " Zoey"
+			"command"	 "play buttons/button14;scripted_user_func user_level,bill,PS_USER_BASIC;show_menu ChangeUserLevelBill"
+			"label"		 " PS_USER_BASIC: Allow basic commands (get_in, get_out etc.)"
 		}
 		"3"
 		{
-			"command"	 "play buttons/button14;scripted_user_func add_admin,louis;show_menu AddAdminsAdd"
-			"label"		 " Louis"
+			"command"	 "play buttons/button14;scripted_user_func user_level,bill,PS_USER_ADMIN;show_menu ChangeUserLevelBill"
+			"label"		 " PS_USER_ADMIN: Allow most of the generic commands"
 		}
 		"4"
 		{
-			"command"	 "play buttons/button14;scripted_user_func add_admin,francis;show_menu AddAdminsAdd"
-			"label"		 " Francis"
-		}
-		"5"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_admin,nick;show_menu AddAdminsAdd"
-			"label"		 " Nick"
-		}
-		"6"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_admin,rochelle;show_menu AddAdminsAdd"
-			"label"		 " Rochelle"
-		}
-		"7"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_admin,coach;show_menu AddAdminsAdd"
-			"label"		 " Coach"
+			"command"	 "play buttons/button14;scripted_user_func user_level,bill,PS_USER_SCRIPTER;show_menu ChangeUserLevelBill"
+			"label"		 " PS_USER_SCRIPTER: Allow almost all commands"
 		}
 		"8"
 		{
-			"command"	 "play buttons/button14;scripted_user_func add_admin,ellis;show_menu AddAdminsAdd"
-			"label"		 " Ellis"
-		}
-		"9"
-		{
-			"command"	 "play buttons/button14;show_menu AddAdmins"
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelMain"
 			"label"		 " << Back"
 		}
 		"0"
@@ -14573,54 +14582,33 @@
 			"label"		 " Exit"
 		}
 	}
-
-	"AddAdminsRemove"
+	"ChangeUserLevelZoey"
 	{
-		"Title"			"Remove Admin"
+		"Title"			"Select user level, check ?user_level"
 
 		"1"
 		{
-			"command"	 "play buttons/button14;scripted_user_func remove_admin,bill;show_menu AddAdminsRemove"
-			"label"		 " Bill"
+			"command"	 "play buttons/button14;scripted_user_func user_level,zoey,PS_USER_NONE;show_menu ChangeUserLevelZoey"
+			"label"		 " PS_USER_NONE: Disallow all commands"
 		}
 		"2"
 		{
-			"command"	 "play buttons/button14;scripted_user_func remove_admin,zoey;show_menu AddAdminsRemove"
-			"label"		 " Zoey"
+			"command"	 "play buttons/button14;scripted_user_func user_level,zoey,PS_USER_BASIC;show_menu ChangeUserLevelZoey"
+			"label"		 " PS_USER_BASIC: Allow basic commands (get_in, get_out etc.)"
 		}
 		"3"
 		{
-			"command"	 "play buttons/button14;scripted_user_func remove_admin,louis;show_menu AddAdminsRemove"
-			"label"		 " Louis"
+			"command"	 "play buttons/button14;scripted_user_func user_level,zoey,PS_USER_ADMIN;show_menu ChangeUserLevelZoey"
+			"label"		 " PS_USER_ADMIN: Allow most of the generic commands"
 		}
 		"4"
 		{
-			"command"	 "play buttons/button14;scripted_user_func remove_admin,francis;show_menu AddAdminsRemove"
-			"label"		 " Francis"
-		}
-		"5"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_admin,nick;show_menu AddAdminsRemove"
-			"label"		 " Nick"
-		}
-		"6"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_admin,rochelle;show_menu AddAdminsRemove"
-			"label"		 " Rochelle"
-		}
-		"7"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_admin,coach;show_menu AddAdminsRemove"
-			"label"		 " Coach"
+			"command"	 "play buttons/button14;scripted_user_func user_level,zoey,PS_USER_SCRIPTER;show_menu ChangeUserLevelZoey"
+			"label"		 " PS_USER_SCRIPTER: Allow almost all commands"
 		}
 		"8"
 		{
-			"command"	 "play buttons/button14;scripted_user_func remove_admin,ellis;show_menu AddAdminsRemove"
-			"label"		 " Ellis"
-		}
-		"9"
-		{
-			"command"	 "play buttons/button14;show_menu AddAdmins"
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelMain"
 			"label"		 " << Back"
 		}
 		"0"
@@ -14629,7 +14617,216 @@
 			"label"		 " Exit"
 		}
 	}
-	
+	"ChangeUserLevelLouis"
+	{
+		"Title"			"Select user level, check ?user_level"
+
+		"1"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,louis,PS_USER_NONE;show_menu ChangeUserLevelLouis"
+			"label"		 " PS_USER_NONE: Disallow all commands"
+		}
+		"2"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,louis,PS_USER_BASIC;show_menu ChangeUserLevelLouis"
+			"label"		 " PS_USER_BASIC: Allow basic commands (get_in, get_out etc.)"
+		}
+		"3"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,louis,PS_USER_ADMIN;show_menu ChangeUserLevelLouis"
+			"label"		 " PS_USER_ADMIN: Allow most of the generic commands"
+		}
+		"4"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,louis,PS_USER_SCRIPTER;show_menu ChangeUserLevelLouis"
+			"label"		 " PS_USER_SCRIPTER: Allow almost all commands"
+		}
+		"8"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelMain"
+			"label"		 " << Back"
+		}
+		"0"
+		{
+			"command"	 "play buttons/button14"
+			"label"		 " Exit"
+		}
+	}
+	"ChangeUserLevelFrancis"
+	{
+		"Title"			"Select user level, check ?user_level"
+
+		"1"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,francis,PS_USER_NONE;show_menu ChangeUserLevelFrancis"
+			"label"		 " PS_USER_NONE: Disallow all commands"
+		}
+		"2"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,francis,PS_USER_BASIC;show_menu ChangeUserLevelFrancis"
+			"label"		 " PS_USER_BASIC: Allow basic commands (get_in, get_out etc.)"
+		}
+		"3"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,francis,PS_USER_ADMIN;show_menu ChangeUserLevelFrancis"
+			"label"		 " PS_USER_ADMIN: Allow most of the generic commands"
+		}
+		"4"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,francis,PS_USER_SCRIPTER;show_menu ChangeUserLevelFrancis"
+			"label"		 " PS_USER_SCRIPTER: Allow almost all commands"
+		}
+		"8"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelMain"
+			"label"		 " << Back"
+		}
+		"0"
+		{
+			"command"	 "play buttons/button14"
+			"label"		 " Exit"
+		}
+	}
+	"ChangeUserLevelNick"
+	{
+		"Title"			"Select user level, check ?user_level"
+
+		"1"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,nick,PS_USER_NONE;show_menu ChangeUserLevelNick"
+			"label"		 " PS_USER_NONE: Disallow all commands"
+		}
+		"2"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,nick,PS_USER_BASIC;show_menu ChangeUserLevelNick"
+			"label"		 " PS_USER_BASIC: Allow basic commands (get_in, get_out etc.)"
+		}
+		"3"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,nick,PS_USER_ADMIN;show_menu ChangeUserLevelNick"
+			"label"		 " PS_USER_ADMIN: Allow most of the generic commands"
+		}
+		"4"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,nick,PS_USER_SCRIPTER;show_menu ChangeUserLevelNick"
+			"label"		 " PS_USER_SCRIPTER: Allow almost all commands"
+		}
+		"8"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelMain"
+			"label"		 " << Back"
+		}
+		"0"
+		{
+			"command"	 "play buttons/button14"
+			"label"		 " Exit"
+		}
+	}
+	"ChangeUserLevelRochelle"
+	{
+		"Title"			"Select user level, check ?user_level"
+
+		"1"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,rochelle,PS_USER_NONE;show_menu ChangeUserLevelRochelle"
+			"label"		 " PS_USER_NONE: Disallow all commands"
+		}
+		"2"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,rochelle,PS_USER_BASIC;show_menu ChangeUserLevelRochelle"
+			"label"		 " PS_USER_BASIC: Allow basic commands (get_in, get_out etc.)"
+		}
+		"3"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,rochelle,PS_USER_ADMIN;show_menu ChangeUserLevelRochelle"
+			"label"		 " PS_USER_ADMIN: Allow most of the generic commands"
+		}
+		"4"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,rochelle,PS_USER_SCRIPTER;show_menu ChangeUserLevelRochelle"
+			"label"		 " PS_USER_SCRIPTER: Allow almost all commands"
+		}
+		"8"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelMain"
+			"label"		 " << Back"
+		}
+		"0"
+		{
+			"command"	 "play buttons/button14"
+			"label"		 " Exit"
+		}
+	}
+	"ChangeUserLevelCoach"
+	{
+		"Title"			"Select user level, check ?user_level"
+
+		"1"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,coach,PS_USER_NONE;show_menu ChangeUserLevelCoach"
+			"label"		 " PS_USER_NONE: Disallow all commands"
+		}
+		"2"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,coach,PS_USER_BASIC;show_menu ChangeUserLevelCoach"
+			"label"		 " PS_USER_BASIC: Allow basic commands (get_in, get_out etc.)"
+		}
+		"3"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,coach,PS_USER_ADMIN;show_menu ChangeUserLevelCoach"
+			"label"		 " PS_USER_ADMIN: Allow most of the generic commands"
+		}
+		"4"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,coach,PS_USER_SCRIPTER;show_menu ChangeUserLevelCoach"
+			"label"		 " PS_USER_SCRIPTER: Allow almost all commands"
+		}
+		"8"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelMain"
+			"label"		 " << Back"
+		}
+		"0"
+		{
+			"command"	 "play buttons/button14"
+			"label"		 " Exit"
+		}
+	}
+	"ChangeUserLevelEllis"
+	{
+		"Title"			"Select user level, check ?user_level"
+
+		"1"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,ellis,PS_USER_NONE;show_menu ChangeUserLevelEllis"
+			"label"		 " PS_USER_NONE: Disallow all commands"
+		}
+		"2"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,ellis,PS_USER_BASIC;show_menu ChangeUserLevelEllis"
+			"label"		 " PS_USER_BASIC: Allow basic commands (get_in, get_out etc.)"
+		}
+		"3"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,ellis,PS_USER_ADMIN;show_menu ChangeUserLevelEllis"
+			"label"		 " PS_USER_ADMIN: Allow most of the generic commands"
+		}
+		"4"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,ellis,PS_USER_SCRIPTER;show_menu ChangeUserLevelEllis"
+			"label"		 " PS_USER_SCRIPTER: Allow almost all commands"
+		}
+		"8"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelMain"
+			"label"		 " << Back"
+		}
+		"0"
+		{
+			"command"	 "play buttons/button14"
+			"label"		 " Exit"
+		}
+	}
 	"KickPlayer"
 	{
 		"Title"			"Kick player"
@@ -17724,7 +17921,7 @@
 		"3"
 		{
 			"command"	 "play buttons/button14;show_menu ent_fire_menu1"
-			"label"		 " Entity commands"
+			"label"		 " Manipulate objects"
 		}
 		"4"
 		{
@@ -17744,7 +17941,7 @@
 		"7"
 		{
 				"command"    "play buttons/button14;show_menu cleanup_smok_menu"
-				"label"      " Remove all"
+				"label"      " Remove spawned entities"
         }
 		"8"
 		{
@@ -17883,12 +18080,12 @@
 			"1"
 			{
 				"command"	 "play buttons/button14;show_menu prop_menu_start1"
-				"label"		 " Dynamic props"
+				"label"		 " Dynamic props (Animateable, non-physics)"
 			}
 			"2"
 			{
 				"command"	 "play buttons/button14;show_menu phys_prop_menu_start1"
-				"label"		 " Physics props"
+				"label"		 " Physics props (Non-animateable, physics)"
 			}
 			"3"
 			{
@@ -17898,12 +18095,12 @@
 			"4"
 			{
 				"command"		 "play buttons/button14;scripted_user_func random_model;show_menu smok_menu_prop_main1"
-				"label"			 " Get a random model"
+				"label"			 " Print a random model path"
 			}
 			"5"
 			{
 				"command"		 "play buttons/button14;scripted_user_func random_phys_model;show_menu smok_menu_prop_main1"
-				"label"			 " Get a random physics model"
+				"label"			 " Print a random physics model path"
 			}
 			"6"
 			{
@@ -17950,7 +18147,7 @@
 
 	"smok_menu_prop_sodacans1"
 	{
-			"Title"     "Soda cans"
+			"Title"     "Soda cans (check ?soda_can)"
 			
 			"1"
 			{
@@ -18010,8 +18207,8 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;show_menu smok_script_auth_GT"
-					"label"		 " Give/Take away script authorization"
+				"command"		 "play buttons/button14;show_menu invwalls1"
+				"label"			" Enable/Disable most of the invisible walls"
 			}
 			"3"
 			{
@@ -18883,144 +19080,6 @@
 					"command"    "play buttons/button14"
 					"label"      " Exit"
 			}	
-	}
-	
-	"smok_script_auth_GT"
-	{
-			"Title"		"Give/Take away script authorization"
-			"1"
-			{
-				"command"	 "play buttons/button14;show_menu smok_script_auth_give"
-				"label"		 " Give authorization"
-			}
-			"2"
-			{
-				"command"	 "play buttons/button14;show_menu smok_script_auth_take"
-				"label"		 " Take away authorization"
-			}
-			"8"
-			{
-					"command"	 "play buttons/button14;show_menu smok_menu2"
-					"label"		 " << Back"
-			}
-			"0"
-			{
-					"command"    "play buttons/button14"
-					"label"      " Exit"
-			}
-
-	}
-
-	"smok_script_auth_give"
-	{
-		"Title"			"Give script authorization to"
-
-		"1"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_script_auth,bill;show_menu smok_script_auth_give"
-			"label"		 " Bill"
-		}
-		"2"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_script_auth,zoey;show_menu smok_script_auth_give"
-			"label"		 " Zoey"
-		}
-		"3"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_script_auth,louis;show_menu smok_script_auth_give"
-			"label"		 " Louis"
-		}
-		"4"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_script_auth,francis;show_menu smok_script_auth_give"
-			"label"		 " Francis"
-		}
-		"5"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_script_auth,nick;show_menu smok_script_auth_give"
-			"label"		 " Nick"
-		}
-		"6"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_script_auth,rochelle;show_menu smok_script_auth_give"
-			"label"		 " Rochelle"
-		}
-		"7"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_script_auth,coach;show_menu smok_script_auth_give"
-			"label"		 " Coach"
-		}
-		"8"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_script_auth,ellis;show_menu smok_script_auth_give"
-			"label"		 " Ellis"
-		}
-		"9"
-		{
-			"command"	 "play buttons/button14;show_menu smok_script_auth_GT"
-			"label"		 " << Back"
-		}
-		"0"
-		{
-			"command"	 "play buttons/button14"
-			"label"		 " Exit"
-		}
-	}
-
-	"smok_script_auth_take"
-	{
-		"Title"			"Take away script authorization from"
-
-		"1"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,bill;show_menu smok_script_auth_take"
-			"label"		 " Bill"
-		}
-		"2"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,zoey;show_menu smok_script_auth_take"
-			"label"		 " Zoey"
-		}
-		"3"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,louis;show_menu smok_script_auth_take"
-			"label"		 " Louis"
-		}
-		"4"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,francis;show_menu smok_script_auth_take"
-			"label"		 " Francis"
-		}
-		"5"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,nick;show_menu smok_script_auth_take"
-			"label"		 " Nick"
-		}
-		"6"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,rochelle;show_menu smok_script_auth_take"
-			"label"		 " Rochelle"
-		}
-		"7"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,coach;show_menu smok_script_auth_take"
-			"label"		 " Coach"
-		}
-		"8"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,ellis;show_menu smok_script_auth_take"
-			"label"		 " Ellis"
-		}
-		"9"
-		{
-			"command"	 "play buttons/button14;show_menu smok_script_auth_GT"
-			"label"		 " << Back"
-		}
-		"0"
-		{
-			"command"	 "play buttons/button14"
-			"label"		 " Exit"
-		}
 	}
 
 	"random_line_menu"
@@ -20246,27 +20305,27 @@
 			"1"
 			{
 				"command"		 "play buttons/button14;show_menu ent_set_state1"
-				"label"			" Set state"
+				"label"			" Change object states"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;show_menu ent_set_animation1"
-				"label"			" Set animation"
+				"command"		 "play buttons/button14;show_menu ent_fire_animations1"
+				"label"			 " Animate objects"
 			}
 			"3"
 			{
 				"command"		 "play buttons/button14;show_menu ent_set_speed1"
-				"label"			" Set speed"
+				"label"			" Change door speed"
 			}
 			"4"
 			{
 				"command"		 "play buttons/button14;show_menu ent_color1"
-				"label"			" Set Color/Skin"
+				"label"			" Change Color/Skin"
 			}
 			"5"
 			{
 				"command"		 "play buttons/button14;show_menu ent_forces_menu1"
-				"label"			" Apply Forces"
+				"label"			" Move/Rotate/Push objects"
 			}
 			"6"
 			{
@@ -20275,8 +20334,8 @@
 			}
 			"7"
 			{
-				"command"    "play buttons/button14;show_menu ent_grab_yeet"
-				"label"		 " Grab/Throw props"
+				"command"    	"play buttons/button14;show_menu ent_grab_yeet"
+				"label"		 	" Grab/Throw objects"
 			}
 			"8"
 			{
@@ -20307,17 +20366,7 @@
 			"2"
 			{
 				"command"		 "play buttons/button14;show_menu ent_fire_decals1"
-				"label"			 " Place decals(textures)"
-			}
-			"3"
-			{
-				"command"		 "play buttons/button14;show_menu ent_fire_animations1"
-				"label"			 " Animate objects"
-			}
-			"4"
-			{
-				"command"		 "play buttons/button14;show_menu ent_fire_lootables1"
-				"label"			 " Make objects lootable"
+				"label"			 " Place decals"
 			}
 			"8"
 			{
@@ -20402,10 +20451,14 @@
 				"command"		 "play buttons/button14;show_menu ent_fire_animations1"
 				"label"			 " Get help: ?set_animation , ?random_animation , ?search_animation"
 			}
-
+			"5"
+			{
+				"command"		 "play buttons/button14;show_menu ent_set_animation1"
+				"label"			" Some common animations for objects"
+			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu ent_fire_menu2"
+					"command"    "play buttons/button14;show_menu ent_fire_menu1"
 					"label"      " << Back"
 			}
 			"0"
@@ -21451,7 +21504,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu ent_fire_menu1"
+					"command"    "play buttons/button14;show_menu ent_fire_animations1"
 					"label"      " << Back"
 			}
 			"9"
@@ -22989,32 +23042,32 @@
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,255,0,0;show_menu ent_color1"
+				"command"		 "play buttons/button14;scripted_user_func color,255,0,0;show_menu ent_color1"
 				"label"			" Red"
 			}
 			"3"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,0,255,0;show_menu ent_color1"
+				"command"		 "play buttons/button14;scripted_user_func color,0,255,0;show_menu ent_color1"
 				"label"			" Green"
 			}
 			"4"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,0,0,255;show_menu ent_color1"
+				"command"		 "play buttons/button14;scripted_user_func color,0,0,255;show_menu ent_color1"
 				"label"			" Blue"
 			}
 			"5"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,255,255,0;show_menu ent_color1"
+				"command"		 "play buttons/button14;scripted_user_func color,255,255,0;show_menu ent_color1"
 				"label"			" Yellow"
 			}
 			"6"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,255,0,255;show_menu ent_color1"
+				"command"		 "play buttons/button14;scripted_user_func color,255,0,255;show_menu ent_color1"
 				"label"			" Purple"
 			}
 			"7"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,0,255,255;show_menu ent_color1"
+				"command"		 "play buttons/button14;scripted_user_func color,0,255,255;show_menu ent_color1"
 				"label"			" Cyan"
 			}
 			"8"
@@ -23039,30 +23092,35 @@
 			"Title"		 "Colors 2"
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,0,0,0;show_menu ent_color2"
+				"command"		 "play buttons/button14;scripted_user_func color,0,0,0;show_menu ent_color2"
 				"label"			" Black"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,70,70,70;show_menu ent_color2"
+				"command"		 "play buttons/button14;scripted_user_func color,70,70,70;show_menu ent_color2"
 				"label"			" Dark gray"
 			}
 			"3"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,140,140,140;show_menu ent_color2"
+				"command"		 "play buttons/button14;scripted_user_func color,140,140,140;show_menu ent_color2"
 				"label"			" Gray"
 			}
 			"4"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,210,210,210;show_menu ent_color2"
+				"command"		 "play buttons/button14;scripted_user_func color,210,210,210;show_menu ent_color2"
 				"label"			" Light gray"
 			}
 			"5"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,255,255,255;show_menu ent_color2"
+				"command"		 "play buttons/button14;scripted_user_func color,255,255,255;show_menu ent_color2"
 				"label"			" White/Default"
 			}
 			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func color,!random,!random,!random;show_menu ent_color2"
+				"label"			" Random color"
+			}
+			"7"
 			{
 				"command"		 "play buttons/button14;show_menu ent_skin_menu1"
 				"label"			" Skin #"
@@ -26412,7 +26470,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_furniture6"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -26557,7 +26615,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_lighting1"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -26871,7 +26929,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_debris2"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -26984,7 +27042,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_barrels2"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -27160,7 +27218,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_flowerbarrelmenu2"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -27764,7 +27822,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_plants12"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -27932,7 +27990,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_urban3"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -28195,7 +28253,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_mall_mannequin2"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -28996,7 +29054,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_wasteland1"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -29242,7 +29300,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_brickpalletmenu"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -29536,7 +29594,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_tree_trunkmenu2"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -30321,7 +30379,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_swamp"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -30379,7 +30437,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_junk1"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -30600,7 +30658,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props4"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -30654,7 +30712,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_lab1"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -30897,7 +30955,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_doors2"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -30958,7 +31016,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_shacks1"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -31013,7 +31071,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_deadbodies1"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -31079,7 +31137,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_infected1"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -31125,7 +31183,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_vents1"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -31285,7 +31343,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_unique3"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -31981,7 +32039,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_vehicles6"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -33140,7 +33198,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_furniture6"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -33284,7 +33342,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_lighting1"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -33598,7 +33656,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_props_debris2"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -33711,7 +33769,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_barrels2"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -33887,7 +33945,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_flowerbarrelmenu2"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -34491,7 +34549,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_plants12"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -34659,7 +34717,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_urban3"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -34922,7 +34980,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_mall_mannequin2"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -35722,7 +35780,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_wasteland1"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -35968,7 +36026,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_brickpalletmenu"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -36262,7 +36320,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_tree_trunkmenu2"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -37050,7 +37108,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_swamp"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -37108,7 +37166,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_junk1"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -37329,7 +37387,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props4"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -37383,7 +37441,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_lab1"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -37626,7 +37684,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_doors2"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -37687,7 +37745,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_shacks1"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -37742,7 +37800,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_deadbodies1"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -37808,7 +37866,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_infected1"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -37854,7 +37912,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_vents1"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -38014,7 +38072,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_unique3"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -38709,7 +38767,7 @@
 			"7"
 			{
 					"command"    "play buttons/button14;show_menu cleanup_phys_props_vehicles6"
-					"label"      " Remove all"
+					"label"      " Remove spawned entities"
 			}
 			"8"
 			{
@@ -38865,11 +38923,6 @@
 			}
 			"6"
 			{
-				"command"		 "play buttons/button14;show_menu invwalls1"
-				"label"			" Enable/Disable most of the invisible walls"
-			}
-			"7"
-			{
 				"command"		 "play buttons/button14;show_menu ladderteams1"
 				"label"			" Change ladders' team"
 			}
@@ -38926,11 +38979,402 @@
 			"7"
 			{
 				"command"		 "play buttons/button14;show_menu pointlights1"
-				"label"			" Create point light sources (Experimental)"
+				"label"			" [EXPERIMENTAL] Create point light sources"
 			}
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu smok_menu3"
+					"label"      " << Back"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu smok_menu5"
+					"label"      " >> Next"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"smok_menu5"
+	{
+			"Title"		"Smok Menu 5"
+			"1"
+			{
+				"command"		 "play buttons/button14;show_menu ps_cameras1"
+				"label"			 "[EXPERIMENTAL] Create and view cameras"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;show_menu ps_selfie_cameras1"
+				"label"			 "[EXPERIMENTAL] Selfie views"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu smok_menu4"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ps_selfie_cameras1"
+	{
+			"Title"		"Create/view/edit cameras"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func selfie,1,0.5;wait 45;screenshot;show_menu ps_selfie_cameras1"
+				"label"			 " Take a selfie"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func selfie,3,0.5;wait 60;screenshot;wait 60;screenshot;wait 60;screenshot;show_menu ps_selfie_cameras1"
+				"label"			 " Take selfies from 3 different angles"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;screenshot;show_menu ps_selfie_cameras1"
+				"label"			 " Take a screenshot"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func selfie,1,-1;show_menu ps_selfie_cameras1"
+				"label"			 " Change into a random selfie camera"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func selfie,reset;show_menu ps_selfie_cameras1"
+				"label"			 " Reset camera view back to normal"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;show_menu ps_selfie_cameras_huds1"
+				"label"			 " Hide/Show hud elements (Dangerous!)"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu smok_menu5"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"ps_selfie_cameras_huds1"
+	{
+			"Title"		"Hide/Show hud elements, Check ?switch_hud_element"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func switch_hud_element,weapon_selection;show_menu ps_selfie_cameras_huds1"
+				"label"			 " Weapon Selection On/Off"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func switch_hud_element,health;show_menu ps_selfie_cameras_huds1"
+				"label"			 " Health Bars AND THIS MENU On/Off(Be careful!!!)"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func switch_hud_element,chat;show_menu ps_selfie_cameras_huds1"
+				"label"			 " Chat On/Off(Be careful, can prevent ESC!)"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func switch_hud_element,crosshair;show_menu ps_selfie_cameras_huds1"
+				"label"			 " Non-weapon Crosshair On/Off"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;crosshair 1;show_menu ps_selfie_cameras_huds1"
+				"label"			 " Weapon Crosshair On"
+				"ignorevar"
+				{
+					"cvar"	"crosshair"
+					"value"	"1"
+				}
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;crosshair 0;show_menu ps_selfie_cameras_huds1"
+				"label"			 " Weapon Crosshair Off"
+				"ignorevar"
+				{
+					"cvar"	"crosshair"
+					"value"	"0"
+				}
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ps_selfie_cameras1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ps_cameras1"
+	{
+			"Title"		"Create/view/edit cameras"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func create_camera;show_menu ps_cameras1"
+				"label"			 " Create a camera facing the direction you're facing at start"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func create_camera,!self;show_menu ps_cameras1"
+				"label"			 " Create a camera facing you at start"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func create_camera,!self,!self;show_menu ps_cameras1"
+				"label"			 " Create a camera facing you all times"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_camera,!last;show_menu ps_cameras1"
+				"label"			 " View last created camera"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func change_camera;show_menu ps_cameras1"
+				"label"			 " Reset your view back to default"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func last_camera_info;show_menu ps_cameras1"
+				"label"			 " Print #ID and your distance to the last created camera"
+			}
+			"7"
+			{
+				"command"		 "play buttons/button14;show_menu ps_cameras_settings1"
+				"label"			 " Move/Rotate/Attach last created camera"
+			}
+			"8"
+			{
+				"command"		 "play buttons/button14;show_menu ps_cameras_huds1"
+				"label"			 " Hide/Show hud elements (Dangerous!)"
+			}
+			"9"
+			{
+					"command"    "play buttons/button14;show_menu smok_menu5"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ps_cameras_huds1"
+	{
+			"Title"		"Hide/Show hud elements, Check ?switch_hud_element"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func switch_hud_element,weapon_selection;show_menu ps_cameras_huds1"
+				"label"			 " Weapon Selection On/Off"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func switch_hud_element,health;show_menu ps_cameras_huds1"
+				"label"			 " Health Bars AND THIS MENU On/Off(Be careful!!!)"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func switch_hud_element,chat;show_menu ps_cameras_huds1"
+				"label"			 " Chat On/Off(Be careful, can prevent ESC!)"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func switch_hud_element,crosshair;show_menu ps_cameras_huds1"
+				"label"			 " Non-weapon Crosshair On/Off"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;crosshair 1;show_menu ps_cameras_huds1"
+				"label"			 " Weapon Crosshair On"
+				"ignorevar"
+				{
+					"cvar"	"crosshair"
+					"value"	"1"
+				}
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;crosshair 0;show_menu ps_cameras_huds1"
+				"label"			 " Weapon Crosshair Off"
+				"ignorevar"
+				{
+					"cvar"	"crosshair"
+					"value"	"0"
+				}
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ps_cameras1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+
+	"ps_cameras_settings1"
+	{
+			"Title"		"Camera settings for the last one created"
+			"1"
+			{
+				"command"		 "play buttons/button14;show_menu ps_cameras_settings_attach1"
+				"label"			 " Attach/detach it to/from something"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;show_menu ps_cameras_settings_movep1"
+				"label"			 " Move it relative to you or it's attachment"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;show_menu ps_cameras_settings_rotate1"
+				"label"			 " Rotate it relative to itself"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ps_cameras1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ps_cameras_settings_attach1"
+	{
+			"Title"		"Attach/Detach the camera to/from an object"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func camera_setting,!last,attach,!self;show_menu ps_cameras_settings_attach1"
+				"label"			 " Attach to yourself"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func camera_setting,!last,attach,!picker;show_menu ps_cameras_settings_attach1"
+				"label"			 " Attach to aimed object"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func camera_setting,!last,detach;show_menu ps_cameras_settings_attach1"
+				"label"			 " Detach from currently attached object"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ps_cameras_settings1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ps_cameras_settings_movep1"
+	{
+			"Title"		"Move it relative to you(or its attachment if there's any)"
+			"1"
+			{
+				"command"		 "scripted_user_func camera_setting,!last,rorigin,1|0|0;show_menu ps_cameras_settings_movep1"
+				"label"			 " Forward 1 inch"
+			}
+			"2"
+			{
+				"command"		 "scripted_user_func camera_setting,!last,rorigin,-1|0|0;show_menu ps_cameras_settings_movep1"
+				"label"			 " Backward 1 inch"
+			}
+			"3"
+			{
+				"command"		 "scripted_user_func camera_setting,!last,rorigin,0|1|0;show_menu ps_cameras_settings_movep1"
+				"label"			 " Left 1 inch"
+			}
+			"4"
+			{
+				"command"		 "scripted_user_func camera_setting,!last,rorigin,0|-1|0;show_menu ps_cameras_settings_movep1"
+				"label"			 " Right 1 inch"
+			}
+			"5"
+			{
+				"command"		 "scripted_user_func camera_setting,!last,rorigin,0|0|1;show_menu ps_cameras_settings_movep1"
+				"label"			 " Up 1 inch"
+			}
+			"6"
+			{
+				"command"		 "scripted_user_func camera_setting,!last,rorigin,0|0|-1;show_menu ps_cameras_settings_movep1"
+				"label"			 " Down 1 inch"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ps_cameras_settings1"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ps_cameras_settings_rotate1"
+	{
+			"Title"		"Rotate it relative to itself"
+			"1"
+			{
+				"command"		 "scripted_user_func camera_setting,!last,+angles,-1|0|0;show_menu ps_cameras_settings_rotate1"
+				"label"			 " (X) Pitch up 1 degree"
+			}
+			"2"
+			{
+				"command"		 "scripted_user_func camera_setting,!last,+angles,1|0|0;show_menu ps_cameras_settings_rotate1"
+				"label"			 " (X) Pitch down 1 degree"
+			}
+			"3"
+			{
+				"command"		 "scripted_user_func camera_setting,!last,+angles,0|-1|0;show_menu ps_cameras_settings_rotate1"
+				"label"			 " (Y) Yaw clockwise 1 degree"
+			}
+			"4"
+			{
+				"command"		 "scripted_user_func camera_setting,!last,+angles,0|1|0;show_menu ps_cameras_settings_rotate1"
+				"label"			 " (Y) Yaw anti-clockwise 1 degree"
+			}
+			"5"
+			{
+				"command"		 "scripted_user_func camera_setting,!last,+angles,0|0|1;show_menu ps_cameras_settings_rotate1"
+				"label"			 " (Z) Roll clockwise 1 degree"
+			}
+			"6"
+			{
+				"command"		 "scripted_user_func camera_setting,!last,+angles,0|0|-1;show_menu ps_cameras_settings_rotate1"
+				"label"			 " (Z) Roll anti-clockwise 1 degree"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ps_cameras_settings1"
 					"label"      " << Back"
 			}
 			"0"
@@ -40256,17 +40700,12 @@
 			"2"
 			{
 				"command"		 "play buttons/button14;scripted_user_func show_meteor_shower_settings;show_menu meteor_shower1"
-				"label"			 " Show settings (use show_meteor_shower_settings)"
+				"label"			 " Show settings"
 			}
 			"3"
 			{
 				"command"		 "play buttons/button10;show_menu meteor_shower1"
-				"label"			 " Change settings (In works...)(use meteor_shower_setting setting value)"
-			}
-			"4"
-			{
-				"command"		 "play buttons/button14;scripted_user_func meteor_shower_debug;show_menu meteor_shower1"
-				"label"			 " Enable/Disable debug messages"
+				"label"			 " To change settings: ?meteor_shower_setting)"
 			}
 			"8"
 			{
@@ -40291,17 +40730,12 @@
 			"2"
 			{
 				"command"		 "play buttons/button14;scripted_user_func show_apocalypse_settings;show_menu apocalypse1"
-				"label"			 " Show settings (use show_apocalypse_settings)"
+				"label"			 " Show settings"
 			}
 			"3"
 			{
 				"command"		 "play buttons/button10;show_menu apocalypse1"
-				"label"			 " Change settings (In works...)(use apocalypse_setting setting value)"
-			}
-			"4"
-			{
-				"command"		 "play buttons/button14;scripted_user_func apocalypse_debug;show_menu apocalypse1"
-				"label"			 " Enable/Disable debug messages"
+				"label"			 " To change settings: ?apocalypse_setting)"
 			}
 			"8"
 			{
@@ -40326,12 +40760,12 @@
 			"2"
 			{
 				"command"		 "play buttons/button14;scripted_user_func show_ghost_zombies_settings;show_menu ghost_zombies1"
-				"label"			 " Show settings (use show_ghost_zombies_settings)"
+				"label"			 " Show settings"
 			}
 			"3"
 			{
 				"command"		 "play buttons/button10;show_menu ghost_zombies1"
-				"label"			 " Change settings (In works...)(use ghost_zombies_setting setting value)"
+				"label"			 " To change settings: ?ghost_zombies_setting)"
 			}
 			"8"
 			{
@@ -40646,7 +41080,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu smok_menu3"
+					"command"    "play buttons/button14;show_menu smok_menu2"
 					"label"      " << Back"
 			}
 			"0"

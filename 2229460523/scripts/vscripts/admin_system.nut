@@ -32,6 +32,8 @@ IncludeScript("Resource_tables/ModelDetails");
 ::ModelNamesArray <- Utils.TableKeys(::ModelDetails)
 ::PhysicsAvailableModels <- Utils.TableKeys(Utils.TableFilterByValue(::ModelDetails,@(v) "mass" in v))
 
+// Include the command privileges
+IncludeScript("Project_smok/Privileges");
 // Include the Message Class
 IncludeScript("Project_smok/Messages");
 // Include String Constants
@@ -91,10 +93,13 @@ Convars.SetValue( "precache_all_survivors", "1" );
 // The admin list
 ::AdminSystem <-
 {
+	UserLevels = {}
+
 	Admins = {}
-	BannedPlayers = {}
-	HostPlayer = {}
 	ScriptAuths = {}
+	HostPlayer = {}
+
+	BannedPlayers = {}
 	SoundName = {}
 	AdminsOnly = true
 	DisplayMsgs = true
@@ -153,12 +158,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
  * @authors rhino
  */
 ::AdminSystem.AttachHook <- function(player,args)
-{
-	if(!AdminSystem.IsPrivileged(player) || !AdminSystem.HasScriptAuth(player))
-	{
-		return;
-	}
-	
+{	
 	local event = GetArgument(1)
 	local hookname = GetArgument(2)
 	if(hookname == null)
@@ -191,12 +191,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
  * @authors rhino
  */
 ::AdminSystem.DetachHook <- function(player,args)
-{
-	if(!AdminSystem.IsPrivileged(player) || !AdminSystem.HasScriptAuth(player))
-	{
-		return;
-	}
-	
+{	
 	local event = GetArgument(1)
 	local hookname = GetArgument(2)
 	if(hookname == null)
@@ -365,19 +360,28 @@ Convars.SetValue( "precache_all_survivors", "1" );
 			{
 				printl("[Command-Reload] "+cmdname+" already exists! Overwriting it...")
 			}
+			local prv = PS_USER_NONE
+			if("MinimumUserLevel" in cmdtable && typeof cmdtable.MinimumUserLevel == "integer")
+			{
+				prv = cmdtable.MinimumUserLevel
+				if(prv < PS_USER_NONE || prv > ::UserLevelNames.len())
+				{
+					printl("[Command-User-Level-Error] "+cmdname+" command's minimum user level is unknown! Allowing it's use for everyone");
+					prv = PS_USER_NONE
+				}
+			}
 
 			if("Main" in cmdtable && typeof cmdtable.Main == "function")
 			{
 				i += 1
 				loaded[i] <- cmdname
 				::ChatTriggers[cmdname] <- cmdtable.Main
+				::PrivilegeRequirements[cmdname] <- prv
 			}
 
 			if("Help" in cmdtable && typeof cmdtable.Help == "table")
 			{
-				::ChatTriggerDocs[cmdname] <- @(player,args) AdminSystem.IsPrivileged(player)
-					? Messages.DocCmdPlayer(player,::AliasCompiler.CreateDocsFunction(cmdname,cmdtable.Help,null)[0](player,args))
-					: null
+				::ChatTriggerDocs[cmdname] <- @(player,args) Messages.DocCmdPlayer(player,::AliasCompiler.CreateDocsFunction(cmdname,cmdtable.Help,null)[0](player,args))
 			}
 
 			::PS_PreviousScriptsNames[cmdname] <- cmdtable
@@ -398,8 +402,6 @@ Convars.SetValue( "precache_all_survivors", "1" );
  */
 ::AdminSystem.CreateAliasCommandCmd <- function(player,args,text)
 {
-	if(!AdminSystem.HasScriptAuth(player))
-		return;
 	
 	local alias = GetArgument(1);
 	if(alias == null)
@@ -426,8 +428,6 @@ Convars.SetValue( "precache_all_survivors", "1" );
  */
 ::AdminSystem.ReplaceAliasCommandCmd <- function(player,args,text)
 {
-	if(!AdminSystem.HasScriptAuth(player))
-		return;
 	
 	local alias = GetArgument(1);
 	if(alias == null)
@@ -608,8 +608,6 @@ Convars.SetValue( "precache_all_survivors", "1" );
  */
 ::AdminSystem.BindWithQuixCmd <- function(player,args)
 {
-	if(!AdminSystem.HasScriptAuth(player))
-		return;
 	
 	local target = GetArgument(1)
 	local keyv = GetArgument(2)
@@ -639,7 +637,6 @@ Convars.SetValue( "precache_all_survivors", "1" );
 
 	if("CustomBindsTable" in AdminSystem)
 	{
-
 		if("all" in AdminSystem.CustomBindsTable)
 		{
 			foreach(key,keytbl in AdminSystem.CustomBindsTable.all)
@@ -672,8 +669,6 @@ Convars.SetValue( "precache_all_survivors", "1" );
  */
 ::AdminSystem.UnbindWithQuixCmd <- function(player,args)
 {
-	if(!AdminSystem.HasScriptAuth(player))
-		return;
 	
 	local target = GetArgument(1)
 	local keyv = GetArgument(2)
@@ -703,7 +698,7 @@ Convars.SetValue( "precache_all_survivors", "1" );
 
 function Notifications::OnPlayerConnected::ProcessQuixBinds(player,args)
 {
-	if(!AdminSystem.IsPrivileged(player,true))
+	if(!player || !player.HasPrivilege(PS_USER_ADMIN))
 		return;
 
 	local steamid = player.GetSteamID()
@@ -730,7 +725,7 @@ function Notifications::OnPlayerConnected::ProcessQuixBinds(player,args)
 
 function Notifications::OnPlayerLeft::RemoveQuixBinds(player, name, steamID, params)
 {
-	if(player == null || !AdminSystem.IsPrivileged(player,true))
+	if(!player || !player.HasPrivilege(PS_USER_ADMIN))
 		return;
 
 	if("CustomBindsTable" in AdminSystem)
@@ -766,7 +761,7 @@ function Notifications::OnPlayerLeft::RemoveQuixBinds(player, name, steamID, par
  */
 function Notifications::OnPlayerReplacedBot::ProcessQuixBinds(player,bot,args)
 {
-	if(!AdminSystem.IsPrivileged(player,true))
+	if(!player || !bot || !player.HasPrivilege(PS_USER_ADMIN))
 		return;
 
 	local steamid = player.GetSteamID()
@@ -796,7 +791,7 @@ function Notifications::OnPlayerReplacedBot::ProcessQuixBinds(player,bot,args)
  */
 function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 {
-	if(AdminSystem.IsPrivileged(player,true))
+	if(player.HasPrivilege(PS_USER_ADMIN))
 	{
 		if("CustomBindsTable" in AdminSystem)
 		{
@@ -916,7 +911,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 		{
 			foreach(surv in Players.AliveSurvivors())
 			{
-				if (surv.GetSteamID() == "BOT" || !AdminSystem.IsPrivileged(surv,true))
+				if (surv.GetSteamID() == "BOT" || !surv.HasPrivilege(PS_USER_ADMIN))
 					continue;
 									
 				foreach(key,keytbl in keys)
@@ -1015,11 +1010,6 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
  */
 ::AdminSystem.AddDisabledCommandCmd <- function(player,args)
 {
-	if(!AdminSystem.IsPrivileged(player) || !AdminSystem.HasScriptAuth(player))
-	{
-		return;
-	}
-
 	local cmd = GetArgument(1);
 	if(cmd != null && cmd in ::ChatTriggers && !(cmd in ::VSLib.EasyLogic.DisabledCommands))
 	{
@@ -1034,11 +1024,6 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
  */
 ::AdminSystem.RemoveDisabledCommandCmd <- function(player,args)
 {
-	if(!AdminSystem.IsPrivileged(player) || !AdminSystem.HasScriptAuth(player))
-	{
-		return;
-	}
-
 	local cmd = GetArgument(1);
 	if(cmd != null && cmd in ::ChatTriggers && cmd in ::VSLib.EasyLogic.DisabledCommands)
 	{
@@ -1107,11 +1092,6 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
  */
 ::AdminSystem.AddCommandBanCmd <- function(player,args)
 {
-	if(!AdminSystem.IsPrivileged(player) || !AdminSystem.HasScriptAuth(player))
-	{
-		return;
-	}
-
 	local character = GetArgument(1);
 	if(character == null)
 		return;
@@ -1172,11 +1152,6 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
  */
 ::AdminSystem.RemoveCommandBanCmd <- function(player,args)
 {
-	if(!AdminSystem.IsPrivileged(player) || !AdminSystem.HasScriptAuth(player))
-	{
-		return;
-	}
-
 	local character = GetArgument(1);
 	if(character == null)
 		return;
@@ -1222,6 +1197,70 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 /*
  * @authors rhino
  */
+::AdminSystem.ChangeCmdPrivileges <- function (player, args)
+{
+	local lvl, cmd = GetArgument(1);
+	
+	if(!(cmd in ::PrivilegeRequirements) || cmd == "command_privilege")
+	{
+		Printer(player,"Invalid command name: "+cmd,"error")
+		return
+	}
+
+	if(!(lvl = ::UserLevelUtils.ValidateLevel(player, GetArgument(2), false)))
+		return
+	
+	::PrivilegeRequirements[cmd] <- getconsttable()[lvl]
+	::Messages.InformAll("Changed "+cmd+" command's minimum user level to: "+lvl)
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.LoadCmdPrivileges <- function ()
+{
+	local fileContents = FileToString(Constants.Directories.CommandPrivileges);
+	if(fileContents == null)
+	{
+		printl("[Command-Privileges] Creating command_privileges.txt for the first time...")
+		StringToFile(Constants.Directories.CommandPrivileges,Constants.CommandPrivilegesDefault + "\r\n\r\n\r\n\r\n\r\n\r\n\r\n");
+		fileContents = FileToString(Constants.Directories.CommandPrivileges);
+	}
+	
+	local rows = split(fileContents, "\r\n");
+	
+	foreach (row in rows)
+	{
+		row = strip(row)
+		if(row.find("//") == 0 || row == "")
+			continue
+		
+		if(row.find("//") != null)
+			row = rstrip(Utils.StringReplace(row, "//" + ".*", ""));
+
+		local splt = split(row, "=")
+		if(splt.len() != 2)
+			continue;
+		local command = strip(splt[0])
+		local level = strip(splt[1])
+		if (!(command in ::PrivilegeRequirements) )
+		{
+			printl("\t[PRIVILEGE-COMMAND-ERROR] Command: '"+splt[0]+"' is not recognized")
+			continue
+		}
+		if(Utils.GetIDFromArray(::UserLevelNames,level) == -1)
+		{
+			printl("\t[PRIVILEGE-LEVEL-ERROR] Privilege level: '"+splt[1]+"' is not recognized for command: "+splt[0])
+			continue
+		}
+		
+		::PrivilegeRequirements[command] = getconsttable()[level];
+	}
+}
+
+/*
+ * @authors rhino
+ */
 ::AdminSystem.LoadCommandRestrictions <- function ()
 {
 	local fileContents = FileToString(Constants.Directories.CommandRestrictions);
@@ -1239,14 +1278,16 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 	::VSLib.EasyLogic.CommandRestrictions <- tbl
 }
 
-::AdminSystem.LoadAdmins <- function ()
+::AdminSystem.LoadAdmins <- function (searchForHost = true)
 {
 	local fileContents = FileToString(Constants.Directories.Admins);
 	local admins = split(fileContents, "\r\n");
-	local searchForHost = true;
 	
 	foreach (admin in admins)
 	{
+		if( strip(admin) == ::Constants.Deprecate.Admins )
+			return
+			
 		if ( admin.find("//") != null )
 		{
 			admin = Utils.StringReplace(admin, "//" + ".*", "");
@@ -1257,12 +1298,57 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 		if ( admin != "" )
 			::AdminSystem.Admins[admin] <- true;
 		
-		if ( searchForHost == true )
+		if ( searchForHost == true && AdminSystem.HostPlayer.len() == 0)
 		{
+			printl("[HOST-DECIDER] New host is "+admin)
 			AdminSystem.HostPlayer[admin] <- true;
 			searchForHost = false;
 		}
 	}
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.LoadUserLevels <- function ()
+{
+	local fileContents = FileToString(Constants.Directories.UserLevels);
+	local rows = split(fileContents, "\r\n");
+	
+	foreach (row in rows)
+	{
+		row = strip(row)
+		if(row.find("//") == 0 || row == "")
+			continue
+		
+		if(row.find("//") != null)
+			row = rstrip(Utils.StringReplace(row, "//" + ".*", ""));
+
+		local splt = split(row, "=")
+		if(splt.len() != 2)
+			continue;
+		local user = strip(splt[0])
+		local level = strip(splt[1])
+		if(Utils.GetIDFromArray(::UserLevelNames,level) == -1)
+		{
+			level = "PS_USER_NONE";
+			printl("[USER-LEVEL-ERROR] User level: '"+splt[1]+"' is not recognized for user: "+splt[0])
+		}
+		
+		if ( user.find("STEAM_0") != null )
+			user = Utils.StringReplace(user, "STEAM_0", "STEAM_1");
+
+		if ( user != "" )
+			::AdminSystem.UserLevels[user] <- level;
+			
+		if(::AdminSystem.HostPlayer.len() == 0 && level == "PS_USER_HOST")
+		{
+			printl("[HOST-DECIDER] New host is "+user)
+			::AdminSystem.HostPlayer[user] <- true
+		}
+	}
+
+	AdminSystem.LoadCustomSequences();
 }
 
 /*
@@ -1535,16 +1621,15 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 
 ::AdminSystem.IsPrivileged <- function ( player, silent = false)
 {
+	printl("[DEPRECATION-WARNING] 'AdminSystem.IsPrivileged(player,silent)' function has been deprecated! Use 'player.HasPrivilege(PS_USER_ADMIN)' in your functions!")
 	if ( Director.IsSinglePlayerGame() || player.IsServerHost() )
 		return true;
 	
 	local steamid = player.GetSteamID();
-	if (!steamid) return false;
-
-	if ( !AdminSystem.AdminsOnly )
-		AdminSystem.Vars.AllowAdminsOnly = false;
+	if (!steamid) 
+		return false;
 	
-	if ( !(steamid in ::AdminSystem.Admins) && AdminSystem.Vars.AllowAdminsOnly )
+	if ( !(player.HasPrivilege(PS_USER_ADMIN)) )
 	{
 		if ( AdminSystem.DisplayMsgs && !silent )
 			Messages.BIM.IsPrivileged.NoAccess(player);
@@ -1562,7 +1647,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 	local steamid = player.GetSteamID();
 	if (!steamid) return false;
 
-	if ( !(steamid in ::AdminSystem.Admins) )
+	if ( !(player.HasPrivilege(PS_USER_ADMIN)) )
 	{
 		if ( AdminSystem.DisplayMsgs )
 			Messages.BIM.IsAdmin.NoAccess(player);
@@ -1575,17 +1660,18 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 /*
  * @authors rhino
  */
-::AdminSystem.HasScriptAuth <- function ( player , quiet = false)
+::AdminSystem.HasScriptAuth <- function ( player , silent = false)
 {
+	printl("[DEPRECATION-WARNING] 'AdminSystem.HasScriptAuth(player,silent)' function has been deprecated! Use 'player.HasPrivilege(PS_USER_SCRIPTER)' in your functions!")
 	if ( Director.IsSinglePlayerGame() || player.IsServerHost() )
 		return true;
 	
 	local steamid = player.GetSteamID();
 	if (!steamid) return false;
 
-	if ( !(steamid in ::AdminSystem.ScriptAuths) )
+	if ( !(player.HasPrivilege(PS_USER_SCRIPTER)) )
 	{
-		if ( AdminSystem.DisplayMsgs && !quiet)
+		if ( AdminSystem.DisplayMsgs && !silent)
 			Messages.BIM.HasScriptAuth.NoAccess(player);
 		return false;
 	}
@@ -1658,8 +1744,12 @@ function EasyLogic::OnShutdown::AdminSaveData( reason, nextmap )
 
 function Notifications::OnRoundStart::AdminLoadFiles()
 {
+	// Deprecated
 	local adminList = FileToString(Constants.Directories.Admins);
 	local scriptauthList = FileToString(Constants.Directories.ScriptAuths);
+
+	local userLevelList = FileToString(Constants.Directories.UserLevels);
+
 	local banList = FileToString(Constants.Directories.Banned);
 	local settingList = FileToString(Constants.Directories.Settings);
 
@@ -1679,7 +1769,9 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	
 	AdminSystem.LoadDisabledCommands()
 	AdminSystem.LoadCommandRestrictions()
+	AdminSystem.LoadCmdPrivileges()
 
+	// Deprecated
 	if ( adminList != null )
 	{
 		MessageTable.LoadAdmins();
@@ -1690,6 +1782,13 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 		MessageTable.LoadScriptAuths();
 		AdminSystem.LoadScriptAuths();
 	}
+
+	if ( userLevelList != null )
+	{
+		MessageTable.LoadUserLevels();
+		AdminSystem.LoadUserLevels();
+	}
+
 	if ( banList != null )
 	{
 		MessageTable.LoadBanned();
@@ -2235,9 +2334,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 
 ::AdminSystem.RestoreModels <- function(player)
 {
-	if(!("Vars" in AdminSystem))
-		return;
-	if(!("RestoreModelsOnJoin" in AdminSystem.Vars))
+	if(!("Vars" in AdminSystem) || !("RestoreModelsOnJoin" in AdminSystem.Vars))
 		return;
 
 	if(AdminSystem.Vars.RestoreModelsOnJoin)
@@ -2312,34 +2409,13 @@ function Notifications::OnPlayerJoined::AdminBanCheck( player, name, IPAddress, 
 	}
 }
 
-function Notifications::OnPlayerJoined::AdminCheck( player, name, IPAddress, SteamID, params )
-{
-	local adminList = FileToString(Constants.Directories.Admins);
-	if ( adminList != null )
-		return;
-	
-	if ( player )
-	{
-		if ( player.IsBot() || !player.IsServerHost() )
-			return;
-		
-		local admins = FileToString(Constants.Directories.Admins);
-		local steamid = player.GetSteamID();
-		if ( steamid == "" || steamid == "BOT" )
-			return;
-		admins = steamid + " //" + player.GetName();
-		StringToFile(Constants.Directories.Admins, admins);
-		AdminSystem.LoadAdmins();
-	}
-}
-
 /*
  * @authors rhino
  */
-function Notifications::OnPlayerJoined::ScriptAuthCheck( player, name, IPAddress, SteamID, params )
+function Notifications::OnPlayerJoined::UserLevelCheck( player, name, IPAddress, SteamID, params )
 {
-	local authList = FileToString(Constants.Directories.ScriptAuths);
-	if ( authList != null )
+	local lvls = FileToString(Constants.Directories.UserLevels);
+	if ( lvls != null )
 		return;
 	
 	if ( player )
@@ -2347,13 +2423,70 @@ function Notifications::OnPlayerJoined::ScriptAuthCheck( player, name, IPAddress
 		if ( player.IsBot() || !player.IsServerHost() )
 			return;
 		
-		local auths = FileToString(Constants.Directories.ScriptAuths);
+		local users = FileToString(Constants.Directories.UserLevels);
 		local steamid = player.GetSteamID();
 		if ( steamid == "" || steamid == "BOT" )
 			return;
-		auths = steamid + " //" + player.GetName();
-		StringToFile(Constants.Directories.ScriptAuths, auths);
-		AdminSystem.LoadScriptAuths();
+		
+		local tbl = {}
+		users = ::Constants.UserLevelExplain 
+			+ steamid + " = " + ::UserLevelNames[PS_USER_HOST] + " // " + player.GetName() + "\r\n";
+		
+		// Deprecate admins if exists
+		local admins = FileToString(Constants.Directories.Admins);
+		if(admins != null)
+		{
+			AdminSystem.LoadAdmins(false);
+			local admin_rows = split(admins, "\r\n")
+			local rn = admin_rows.len()
+			for(local i = 0; i < rn; i++)
+			{
+				local row = strip(admin_rows[i]);
+				local index = row.find("//")
+				if(index != null && index > 0)
+				{
+					local _steamid = strip(row.slice(0, index))
+					local _name = strip(row.slice(index + 2))
+					if(i == 0 && AdminSystem.HostPlayer.len() == 0)
+					{
+						printl("[HOST-DECIDER] New host is "+_steamid)
+						tbl[_steamid] <- [PS_USER_HOST,_name];
+						::AdminSystem.HostPlayer[_steamid] <- true
+					}
+					else
+						tbl[_steamid] <- [PS_USER_ADMIN,_name];
+				}
+			}
+			StringToFile(Constants.Directories.Admins, ::Constants.Deprecate.Admins);
+		}
+		
+		// Deprecate script auths if exists
+		local authList = FileToString(Constants.Directories.ScriptAuths);
+		if(authList != null)
+		{
+			AdminSystem.LoadScriptAuths();
+			local auth_rows = split(authList, "\r\n")
+			foreach(row in auth_rows)
+			{
+				row = strip(row);
+				local index = row.find("//")
+				if(index != null && index > 0)
+				{
+					local _steamid = strip(row.slice(0, index))
+					local _name = strip(row.slice(index + 2))
+					if(_steamid in ::AdminSystem.HostPlayer)
+						continue;
+					tbl[_steamid] <- [PS_USER_SCRIPTER,_name];
+				}
+			}
+			StringToFile(Constants.Directories.ScriptAuths, ::Constants.Deprecate.ScriptAuths);
+		}
+		
+		foreach(sid,lis in tbl)
+			users += sid + " = " + ::UserLevelNames[lis[0]] + " // " + lis[1] + "\r\n";
+		
+		StringToFile(Constants.Directories.UserLevels, users + "\r\n\r\n\r\n");
+		AdminSystem.LoadUserLevels();
 	}
 }
 
@@ -2466,10 +2599,10 @@ function Notifications::OnPlayerReplacedBot::LetGoHeldPlayer(player,bot,args)
 	local botparent = bot.GetParent();
 	if(botparent != null)
 	{
-		if(AdminSystem.IsPrivileged(botparent,true))
+		if(typeof botparent == "VSLIB_PLAYER" && botparent.HasPrivilege(PS_USER_ADMIN))
 			AdminSystem.LetgoCmd(botparent,null);
-		bot.Input("ClearParent","",0);
-		_dropit(bot);
+		bot.Input("clearparent","",0);
+		bot.Input("runscriptcode","_dropit(Entity(self))",0.05)
 	}
 }
 
@@ -2480,7 +2613,7 @@ function Notifications::OnBotReplacedPlayer::LetGoHeldPlayer(player,bot,args)
 {
 	//printl("Player #"+player.GetIndex()+" was replaced with Bot #"+bot.GetIndex())
 	
-	if(AdminSystem.IsPrivileged(player,true))
+	if(player.HasPrivilege(PS_USER_ADMIN))
 		AdminSystem.LetgoCmd(player,null);
 
 	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+player.GetIndex())
@@ -2501,13 +2634,13 @@ function Notifications::OnBotReplacedPlayer::LetGoHeldPlayer(player,bot,args)
 
 function Notifications::OnBotReplacedPlayer::AdminStartIdleKickTimer( player, bot, params )
 {
-	if ( AdminSystem.EnableIdleKick && !(player.GetSteamID() in ::AdminSystem.Admins) )
+	if ( AdminSystem.EnableIdleKick && !player.HasPrivilege(PS_USER_ADMIN) )
 		Timers.AddTimerByName( "KickTimer" + AdminSystem.GetID( player ).tostring(), AdminSystem.IdleKickTime, false, AdminSystem.KickPlayer, player );
 }
 
 function Notifications::OnPlayerReplacedBot::AdminStopIdleKickTimer( player, bot, params )
 {
-	if ( AdminSystem.EnableIdleKick && !(player.GetSteamID() in ::AdminSystem.Admins) )
+	if ( AdminSystem.EnableIdleKick && !player.HasPrivilege(PS_USER_ADMIN) )
 		Timers.RemoveTimerByName( "KickTimer" + AdminSystem.GetID( player ).tostring() );
 }
 
@@ -2593,16 +2726,25 @@ if ( ( SessionState.MapName == "c2m5_concert" ) && ( SessionState.ModeName == "c
 
 function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 {
+	player.GetScriptScope().PS_ONETIME_TARGET <- null;
+
 	local Command = GetArgument(0);
-	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 
-	local cleanBaseCmd = null 
-
+	local cleanBaseCmd = null
+	local target = null
 	if(Command != null)
 	{	
 		Command = strip(Command);
+		if(Command.find(">") != null)
+		{
+			local tname = strip(Command.slice(Command.find(">") + 1))
+			if(tname == "self" || tname == "!self")
+				target = player
+			else if(tname != "" && ((target = Entity(tname)).IsEntityValid() || (target = Utils.GetPlayerFromName(tname) != null)))
+				Command = Command.slice(0, Command.find(">"))
+			else
+				target = null
+		}
 		cleanBaseCmd = Command in ::ChatTriggers
 							? Command
 							: Command.tolower() in ::ChatTriggers
@@ -2615,17 +2757,13 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	{
 		if(!player.IsServerHost())	// Only check for non-host players
 		{
-			// Check if its an alias, do necessary checks
-			if(cleanBaseCmd in ::AliasCompiler.Tables)
+			if(cleanBaseCmd in ::PrivilegeRequirements)
 			{
-				local alias = ::AliasCompiler.Tables[cleanBaseCmd]
-				if(alias._hostOnly && !player.IsServerHost())
+				if(!player.HasPrivilege(::PrivilegeRequirements[cleanBaseCmd]))
 				{
-					ClientPrint(player.GetBaseEntity(),3,COLOR_ORANGE+cleanBaseCmd+COLOR_DEFAULT+" command can only be used by the host!")
+					::Messages.ThrowPlayer(player,TXTCLR.OG(cleanBaseCmd) + " command requires " + ::UserLevelNames[::PrivilegeRequirements[cleanBaseCmd]] + " privilege or above")
 					return false;
 				}
-				else if(alias._authOnly && !::AdminSystem.HasScriptAuth(player))
-					return false;
 			}
 			if(cleanBaseCmd in ::VSLib.EasyLogic.DisabledCommands)
 			{
@@ -2696,12 +2834,23 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		return false;
 	}
 
+	if(target)
+		player.GetScriptScope().PS_ONETIME_TARGET <- target;
+
 	switch ( cleanBaseCmd )
 	{
+		case "command_privilege":
+		{
+			AdminSystem.ChangeCmdPrivileges(player,args);
+			break;
+		}
+		case "reload_command_privileges":
+		{
+			AdminSystem.LoadCmdPrivileges();
+			break;
+		}
 		case "reload_vehicles":
 		{
-			if(!AdminSystem.HasScriptAuth(player))
-				return;
 			AdminSystem.LoadVehicles(true);
 			break;
 		}
@@ -2717,22 +2866,16 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		}
 		case "reload_binds":
 		{
-			if(!AdminSystem.HasScriptAuth(player))
-				return;
 			AdminSystem.LoadQuixBinds(true);
 			break;
 		}
 		case "reload_scripts":
 		{
-			if(!AdminSystem.HasScriptAuth(player))
-				return;
 			AdminSystem.LoadCustomScripts();
 			break;
 		}
 		case "reload_hooks":
 		{
-			if(!AdminSystem.HasScriptAuth(player))
-				return;
 			AdminSystem.LoadCustomHooks();
 			break;
 		}
@@ -2748,67 +2891,51 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		}
 		case "reload_loots":
 		{
-			if(!AdminSystem.HasScriptAuth(player))
-				return;
 			AdminSystem.LoadLootTables();
 			break;
 		}
 		case "reload_ent_groups":
 		{
-			if(!AdminSystem.HasScriptAuth(player))
-				return;
 			AdminSystem.LoadEntityGroups(true);
 			break;
 		}
 		case "reload_aliases":
 		{
-			if(!AdminSystem.HasScriptAuth(player))
-				return;
 			AdminSystem.LoadAliasedCommands(true);
 			break;
 		}
 		case "replace_alias":
 		{
-			if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
-				return;
-			
 			AdminSystem.ReplaceAliasCommandCmd(player,args,text);
 		}
 		case "create_alias":
 		{
-			if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
-				return;
-			
 			AdminSystem.CreateAliasCommandCmd(player,args,text);
 			break;
 		}
 		case "hex_string":
 		{
-			if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
-				return;
-			
 			local Code = strip(Utils.StringReplace(text, "hex_string,", ""));
 			Printer(player,::AdminSystem._GetHexString(Code));
 			break;
 		}
 		case "enum_string":
 		{
-			if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
-				return;
-			
 			local Code = strip(Utils.StringReplace(text, "enum_string,", ""));
 			Printer(player,::AdminSystem._GetEnumString(Code));
 			break;
 		}
 		case "out":
 		{
-			if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
-				return;
-			
 			local Code = Utils.StringReplace(text, "out,", "");
 			Code = Utils.StringReplace(Code, "'", "\""); //"
 			local res = compilestring("local __tempvar__="+Code+";return __tempvar__;")();
 			::AdminSystem.out(res,player);
+			break;
+		}
+		case "user_level":
+		{
+			AdminSystem.ChangeUserLevelCmd( player, args );
 			break;
 		}
 		case "adminmode":
@@ -3550,8 +3677,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		}
 		case "script":
 		{	
-			if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
-				return;
 			local Code = Utils.StringReplace(text, "script,", "");
 			Code = Utils.StringReplace(Code, "'", "\""); //"
 			local compiledscript = compilestring(Code);
@@ -3738,7 +3863,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 					if ( !Target )
 					{
 						Say(null, Text, false);
-						return;
+						break;
 					}
 					Target.Say(Text);
 				}
@@ -3763,7 +3888,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 						Text = Utils.StringReplace(Text, "say,", "");
 						Text = Utils.StringReplace(Text, ",", " ");
 						Say(null, Text, false);
-						return;
+						break;
 					}
 					
 					Text = Utils.StringReplace(Text, "say," + Entity + ",", "");
@@ -3776,24 +3901,27 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		case "password":
 		{
 			if ( AdminSystem.AdminPassword == "" )
-				return;
+				break;
 			
 			local Password = GetArgument(1);
 			
 			if ( Password == AdminSystem.AdminPassword )
 			{
-				local admins = FileToString(Constants.Directories.Admins);
+				local levels = FileToString(Constants.Directories.UserLevels);
 				local steamid = player.GetSteamID();
 				if ( steamid == "BOT" )
-					return;
-				if ( (steamid in ::AdminSystem.Admins) )
-					return;
-				if ( admins == null )
-					admins = steamid + " //" + player.GetName();
+					break;
+				if ( (steamid in ::AdminSystem.UserLevels) )
+					break;
+				if ( levels == null )
+					levels = ::Constants.UserLevelExplain + steamid + " = PS_USER_HOST //" + player.GetName();
 				else
-					admins += "\r\n" + steamid + " //" + player.GetName();
-				StringToFile(Constants.Directories.Admins, admins);
-				AdminSystem.LoadAdmins();
+				{
+					levels = ChangeUserLevel(player, steamid, levels)
+					if(!levels)	break
+				}
+				StringToFile(Constants.Directories.UserLevels, levels);
+				AdminSystem.LoadUserLevels();
 			}
 			
 			break;
@@ -4086,6 +4214,36 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			AdminSystem.RemoveDisabledCommandCmd(player,args);
 			break;
 		}
+		case "switch_hud_element":
+		{
+			AdminSystem.SwitchHudElement(player,args);
+			break;
+		}
+		case "selfie":
+		{
+			AdminSystem.SelfieViewCmd(player,args);
+			break;
+		}
+		case "create_camera":
+		{
+			AdminSystem.CreateCameraCmd(player,args);
+			break;
+		}
+		case "camera_setting":
+		{
+			AdminSystem.CameraSettingCmd(player,args);
+			break;
+		}
+		case "change_camera":
+		{
+			AdminSystem.ChangeCameraCmd(player,args);
+			break;
+		}
+		case "last_camera_info":
+		{
+			AdminSystem.LastCameraInfoCmd(player,args);
+			break;
+		}
 		default:
 		{
 			if(cleanBaseCmd in ::ChatTriggers)
@@ -4100,8 +4258,586 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			}
 		}
 	}
+
 }
 
+::ChangeUserLevel <- function(player, steamid, levels, lvlname = "PS_USER_ADMIN")
+{
+	local start;
+	if((start = levels.find(steamid)) != -1)
+	{
+		local first_part = rstrip(levels.slice(0, start))
+		local second_part = levels.slice(start)
+
+		local secondpartlines = split(second_part,"\r\n")
+		local matching = secondpartlines[0]
+		local re = regexp(steamid+@"[\t ]*=[\t ]*(PS_USER_(NONE|BASIC|ADMIN|SCRIPTER|HOST))[\t ]*(//.*)?")
+		if(re.match(matching))
+		{
+			secondpartlines[0] = "\r\n" + steamid + " = "+lvlname+" // " + player.GetName() 
+			foreach(lineidx, line in secondpartlines)
+			{
+				first_part += line + "\r\n"
+			}
+			levels = first_part + "\r\n\r\n"
+		}
+		else
+		{
+			::Messages.ThrowPlayer(player,"Something is wrong with the user_level.txt, let the host know!")
+			return;
+		}
+	}
+	else
+	{
+		levels = rstrip(levels)
+		levels += "\r\n" + steamid + " = PS_USER_ADMIN //" + player.GetName() + "\r\n\r\n\r\n";
+	}
+	return levels
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.SwitchHudElement <- function(player,args)
+{
+	local element = GetArgument(1)
+	switch(element)
+	{
+		case "all":
+		{
+			player.SetNetProp("m_Local.m_iHideHUD", player.GetNetProp("m_Local.m_iHideHUD") ^ (HIDEHUD_WEAPONSELECTION|(1<<6)|HIDEHUD_CHAT|HIDEHUD_CROSSHAIR))
+			break;
+		}
+		case "weapon_selection":
+		{
+			player.SetNetProp("m_Local.m_iHideHUD", player.GetNetProp("m_Local.m_iHideHUD") ^ HIDEHUD_WEAPONSELECTION)
+			break;
+		}
+		case "menu":
+		case "healthbars":
+		case "healthbar":
+		case "health":
+		{
+			player.SetNetProp("m_Local.m_iHideHUD", player.GetNetProp("m_Local.m_iHideHUD") ^ (1<<6))
+			if((player.GetNetProp("m_Local.m_iHideHUD") >> 6) % 2 == 0)
+				Messages.InformPlayerConsole(player,">>>>>> MENU IS CURRENTLY HIDDEN, TO RESTORE: !switch_hud_element menu  <<<<<<")
+			break;
+		}
+		case "chat":
+		{
+			player.SetNetProp("m_Local.m_iHideHUD", player.GetNetProp("m_Local.m_iHideHUD") ^ HIDEHUD_CHAT)
+			break;
+		}
+		case "crosshair":
+		{
+			player.SetNetProp("m_Local.m_iHideHUD", player.GetNetProp("m_Local.m_iHideHUD") ^ HIDEHUD_CROSSHAIR)
+			break;
+		}
+	}
+}
+
+// Utility functions
+/*
+ * @authors rhino
+ */
+::PS_UTILS <- {}
+
+::PS_UTILS.map <- function(func, arr)
+{
+	local n = arr.len()
+	local a = array(n)
+	for(local i = 0; i < n; i++)
+	{
+		a[i] = func(arr[i])
+	}
+	return a
+}
+
+::PS_UTILS.filter <- function(func, arr)
+{
+	local n = arr.len()
+	local a = array(0)
+	for(local i = 0; i < n; i++)
+	{
+		if(func(arr[i]))
+			a.append(arr[i])
+	}
+	return a
+}
+
+::PS_UTILS.first <- function(func, arr)
+{
+	local n = arr.len()
+	for(local i = 0; i < n; i++)
+	{
+		if(func(arr[i]))
+			return arr[i]
+	}
+	return null
+}
+
+::PS_UTILS.any <- function(func, arr)
+{
+	local n = arr.len()
+	for(local i = 0; i < n; i++)
+	{
+		if(func(arr[i]))
+			return true
+	}
+	return false
+}
+
+::PS_UTILS.all <- function(func, arr)
+{
+	local n = arr.len()
+	for(local i = 0; i < n; i++)
+	{
+		if(!func(arr[i]))
+			return false
+	}
+	return n > 0
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.SelfieViewCmd <- function(player,args)
+{
+	function CreateSelfieCameraFromPair(player, pair)
+	{
+		local keyvals =
+		{
+			classname = "point_viewcontrol"
+			origin = player.GetOrigin()
+			angles = pair[2]
+			spawnflags = 8 + 16
+		}
+		local cam = Utils.CreateEntityWithTable(keyvals);
+		local tindex = cam.GetIndex();
+		cam.SetName("PS_VIEWCONTROL_SELFIE>" + pair[0]);
+		cam.GetScriptScope()["PS_CAMERA_ATTACH_POS"] <- pair[1];
+		cam.GetScriptScope()["PS_CAMERA_ATTACH_ANG"] <- pair[2];
+		cam.GetScriptScope()["PS_CAMERA_ATTACH_ENABLED"] <- true;
+
+		function AttachChecker(c,a)
+		{
+			if(a.parent == null || !a.parent.IsEntityValid() || !a.camera.GetScriptScope()["PS_CAMERA_ATTACH_ENABLED"])
+			{
+				::Quix.Remove("PS_CAMERA_"+tindex+"_ATTACHER_1")
+				a.camera.GetScriptScope()["PS_CAMERA_ATTACH_POS"] = null
+				a.camera.GetScriptScope()["PS_CAMERA_ATTACH_ANG"] = null
+				a.camera.GetScriptScope()["PS_CAMERA_ATTACH_ENABLED"] = false
+				a.parent = null
+				return false
+			}
+			else
+			{
+				return true
+			}
+		}
+		function Attacher(c,s,a)
+		{
+			a.camera.SetOrigin(a.parent.GetOrigin() + GetPositionRelativeToPlayer(player,a.camera.GetScriptScope()["PS_CAMERA_ATTACH_POS"]));
+			a.camera.SetAngles(RotateOrientation(player.GetEyeAngles(),QAngle(180,0,180)) - a.camera.GetScriptScope()["PS_CAMERA_ATTACH_ANG"])
+		}
+
+		::Printer(player,"Created selfie camera #"+tindex);
+
+		::Quix.AddUnlimited("PS_SELFIECAM_"+tindex+"_ATTACHER_1",
+							AttachChecker,
+							Attacher,
+							{camera=cam,parent=player},
+							{camera=cam,parent=player});
+							
+		return cam
+	}
+
+	function ChangeIntoCameraTemp(player, camera, i, interval, keep = false)
+	{
+		DoEntFire("!self","enable","", i*interval, player.GetBaseEntity(), camera.GetBaseEntity())
+		DoEntFire("!self","runscriptcode","self.GetScriptScope().PS_CURRENT_SELFIE_CAM <- Entity("+camera.GetIndex()+")", i*interval, null, player.GetBaseEntity())
+		if(!keep)
+			DoEntFire("!self","disable","", (i+1)*interval, player.GetBaseEntity(), camera.GetBaseEntity())
+	}
+
+	local selfiepairs =
+	[
+		[0,  Vector(70,20,50),  QAngle(10,20,0)],
+		[1,  Vector(50,-25,60), QAngle(-10,20,0)],
+		[2,  Vector(40,5,60),   QAngle(-5,20,0)]
+	]
+	
+	local count = GetArgument(1)
+	local intervals = GetArgument(2)
+
+	if("PS_CURRENT_SELFIE_CAM" in player.GetScriptScope() 
+		&& player.GetScriptScope()["PS_CURRENT_SELFIE_CAM"] != null
+		&& player.GetScriptScope()["PS_CURRENT_SELFIE_CAM"].IsEntityValid())
+	{
+		DoEntFire("!self","disable","", 0, player.GetBaseEntity(), player.GetScriptScope()["PS_CURRENT_SELFIE_CAM"].GetBaseEntity())
+		player.GetScriptScope()["PS_CURRENT_SELFIE_CAM"] = null
+		
+	}
+    if(count == "reset")
+        return
+	player.GetScriptScope()["PS_CURRENT_SELFIE_CAM"] <- null
+
+	local had_cam = "PS_SELFIE_VIEWS" in player.GetScriptScope();
+	if(had_cam)
+		player.GetScriptScope()["PS_SELFIE_VIEWS"] = PS_UTILS.filter(@(ent) ent != null && ent.IsEntityValid(), player.GetScriptScope()["PS_SELFIE_VIEWS"])
+		
+	local has_cam = had_cam && player.GetScriptScope()["PS_SELFIE_VIEWS"].len() > 0
+	
+	if(!count)
+		count = 1
+	else
+		count = (count = count.tointeger()) > 0 ? (count < 4 ? count : selfiepairs.len()) : 1
+
+	if(!intervals)
+		intervals = 1
+	else
+		intervals = intervals.tofloat()
+
+	if(!has_cam)
+	{
+		player.GetScriptScope()["PS_SELFIE_VIEWS"] <- []
+		local pairs = Utils.GetNRandValueFromArray(selfiepairs, count)
+
+		foreach(pair in pairs)
+		{
+			player.GetScriptScope()["PS_SELFIE_VIEWS"].append(CreateSelfieCameraFromPair(player, pair))
+		}
+	}
+	else if(count > player.GetScriptScope()["PS_SELFIE_VIEWS"].len())
+	{
+		local total = selfiepairs.len()
+		local cams = PS_UTILS.map(@(ent) split(ent.GetName(),">")[1].tointeger(), player.GetScriptScope()["PS_SELFIE_VIEWS"])
+
+		for(local i = 0; i < total; i++)
+		{
+			if(Utils.GetIDFromArray(cams, i) == -1)
+			{
+				player.GetScriptScope()["PS_SELFIE_VIEWS"].append(CreateSelfieCameraFromPair(player, selfiepairs[i]))
+			}
+		}
+	}
+	
+	local camarr = Utils.GetNRandValueFromArray(player.GetScriptScope()["PS_SELFIE_VIEWS"], count)
+	if(intervals < 0)
+	{
+		for(local i = 0; i < count; i++)
+		{
+			ChangeIntoCameraTemp(player, camarr[i], i, -intervals, i == count - 1)
+		}
+	}
+	else
+	{
+		for(local i = 0; i < count; i++)
+		{
+			ChangeIntoCameraTemp(player, camarr[i], i, intervals)
+		}
+		DoEntFire("!self","runscriptcode","self.GetScriptScope().PS_CURRENT_SELFIE_CAM <- Entity("+camarr[count - 1].GetIndex()+")", count*intervals, null, player.GetBaseEntity())
+	}
+}
+::LastCreatedCameras <- ::AdminSystem.Vars.RepeatValueForSurvivors(-1);
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.CreateCameraCmd <- function(player,args)
+{
+	
+    local angletarget = null
+	local keyvals =
+	{
+		classname = "point_viewcontrol"
+		origin = player.GetLookingLocation()
+		spawnflags = 24
+	}
+
+	local angles = GetArgument(1);
+	if(!angles)
+		keyvals.angles <- player.GetEyeAngles();
+	else if(angles == "!self")
+		keyvals.angles <- RotateOrientation(player.GetEyeAngles(),QAngle(180,0,0)) - QAngle(0,0,-180);
+	else
+		keyvals.angles <- CastCustomSetting(player,["angles","ang|"+angles])
+
+	local followercam = false;
+	local follow = GetArgument(2);
+	if(follow)
+	{
+		if(follow == "!self")
+			follow = "#" + player.GetIndex()
+		else if(follow == "!picker" && player.GetLookingEntity(GRAB_YEET_TRACE_MASK) != null)
+            follow = "#" + player.GetLookingEntity(GRAB_YEET_TRACE_MASK).GetIndex()
+		keyvals.target <- follow
+		followercam = true;
+	}
+
+	local cam = Utils.CreateEntityWithTable(keyvals);
+	cam.SetName("PS_VIEWCONTROL")
+	cam.GetScriptScope()["PS_CAM_FOLLOWS"] <- followercam
+
+	::Messages.InformPlayer(player,CmdMessages.Prop.Success("camera",cam));
+	::LastCreatedCameras[player.GetCharacterNameLower()] <- cam.GetIndex()
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.LastCameraInfoCmd <- function(player,args)
+{
+	local camera = null
+	if(::LastCreatedCameras[player.GetCharacterNameLower()] == -1)
+		::Messages.ThrowPlayer(player,"No cameras found created by you.")
+	else if((camera = Entity(::LastCreatedCameras[player.GetCharacterNameLower()])) && camera.IsEntityValid())
+		::Messages.InformPlayer(player,TXTCLR.BG("ID: ") + TXTCLR.OG("#" + camera.GetIndex()) + "\n" + TXTCLR.BG("Distance: ") + TXTCLR.OG((player.GetOrigin() - camera.GetOrigin()).Length()));
+	else if(::LastCreatedCameras[player.GetCharacterNameLower()] = -1)
+		::Messages.WarnPlayer(player,"Last camera created was removed.");
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.ChangeCameraCmd <- function(player,args)
+{
+	local target = GetArgument(1);
+	local hascam = "PS_CUSTOM_POINT_VIEWCONTROL" in player.GetScriptScope()	&& player.GetScriptScope()["PS_CUSTOM_POINT_VIEWCONTROL"] != null;
+	if(!target)
+	{
+		if(hascam)
+		{
+			DoEntFire("!self","disable","",0,player.GetBaseEntity(), player.GetScriptScope()["PS_CUSTOM_POINT_VIEWCONTROL"].GetBaseEntity());
+			player.GetScriptScope()["PS_CUSTOM_POINT_VIEWCONTROL"].GetScriptScope()["PS_CURRENT_VIEWER"] <- null
+		}
+		return;
+	}
+
+	if(target == "!last")
+	{
+		target = ::LastCreatedCameras[player.GetCharacterNameLower()]
+	}
+
+	target = Entity(target)
+	if(!target || !target.IsEntityValid() || target.GetClassname() != "point_viewcontrol")
+		return
+
+	if("PS_CURRENT_VIEWER" in target.GetScriptScope() && target.GetScriptScope()["PS_CURRENT_VIEWER"] != null)
+	{
+		Messages.ThrowPlayer(player,"This camera is being viewed by '"+player.GetName()+"'. Multiple viewers for a single camera is not currently supported!");
+		return;
+	}
+
+	if(hascam)
+	{
+		DoEntFire("!self","disable","",0,player.GetBaseEntity(), player.GetScriptScope()["PS_CUSTOM_POINT_VIEWCONTROL"].GetBaseEntity());
+		player.GetScriptScope()["PS_CUSTOM_POINT_VIEWCONTROL"].GetScriptScope()["PS_CURRENT_VIEWER"] <- null
+	}
+
+	player.GetScriptScope()["PS_CUSTOM_POINT_VIEWCONTROL"] <- target;
+	target.GetScriptScope()["PS_CURRENT_VIEWER"] <- player
+	DoEntFire("!self","enable","",0.1,player.GetBaseEntity(), target.GetBaseEntity());
+}
+
+/*
+ * @authors rhino
+ */
+::AdminSystem.CameraSettingCmd <- function(player,args)
+{
+	local target = GetArgument(1);
+	if(target == "!last")
+		target = ::LastCreatedCameras[player.GetCharacterNameLower()]
+		
+	target = Entity(target)
+	if(!target || !target.IsEntityValid() || target.GetClassname() != "point_viewcontrol")
+		return
+
+	local setting = GetArgument(2);
+	local value = GetArgument(3);
+	local value2 = GetArgument(4);
+	value2 = value2 == null ? "" : value2;
+
+	switch(setting)
+	{
+		case "angles":
+		case "angle":
+		{
+			if(value == "!self")
+				value = (player.GetEyeAngles() + QAngle(0, 180, 0));
+			else
+				value = CastCustomSetting(player,["angles","ang|"+value])
+			
+			if(target.GetParent() != null)
+				target.SetLocalAngles(value);
+			else
+				target.SetAngles(value);
+			break;
+		}
+		case "+angles":
+		case "+angle":
+		{
+			value = CastCustomSetting(player,["angles","ang|"+value])
+			
+			if(target.GetParent() != null)
+				target.SetLocalAngles(target.GetLocalAngles() + value);
+			else
+				target.SetAngles(target.GetAngles() + value);
+			break;
+		}
+		case "origin":
+		{
+			if(value == "!self")
+				value = player.GetOrigin();
+			else
+				value = CastCustomSetting(player,["vector","pos|"+value])
+
+			if("PS_CAMERA_ATTACH_POS" in target.GetScriptScope() 
+				&& target.GetScriptScope()["PS_CAMERA_ATTACH_POS"] != null)
+				{
+					target.GetScriptScope()["PS_CAMERA_ATTACH_POS"] = value
+				}
+			
+			if(target.GetParent() != null)
+				target.SetLocalOrigin(value);
+			else
+				target.SetOrigin(value);
+			break;
+		}
+		case "+origin":
+		{
+			value = CastCustomSetting(player,["vector","pos|"+value])
+			if("PS_CAMERA_ATTACH_POS" in target.GetScriptScope() 
+				&& target.GetScriptScope()["PS_CAMERA_ATTACH_POS"] != null)
+				{
+					target.GetScriptScope()["PS_CAMERA_ATTACH_POS"] += value
+				}
+				
+			if(target.GetParent() != null)
+				target.SetLocalOrigin(target.GetLocalOrigin() + value);
+			else
+				target.SetOrigin(target.GetOrigin() + value);
+			break;
+		}
+		case "rorigin":
+		{
+			value = CastCustomSetting(player,["vector","pos|"+value])
+			if("PS_CAMERA_ATTACH_POS" in target.GetScriptScope() 
+				&& target.GetScriptScope()["PS_CAMERA_ATTACH_POS"] != null)
+				{
+					target.GetScriptScope()["PS_CAMERA_ATTACH_POS"] += value
+				}
+				
+			if(target.GetParent() != null)
+				target.SetLocalOrigin(target.GetLocalOrigin() + value);
+			else
+				target.SetOrigin(target.GetOrigin() + GetPositionRelativeToPlayer(player,value))
+			break;
+		}
+		case "detach":
+		{
+			if(target.GetParent())
+			{
+				DoEntFire("!self","clearparent","",0,null,target.GetBaseEntity());
+				DoEntFire("!self","runscriptcode","self.SetVelocity(Vector(0,0,0))",0.05,null,target.GetBaseEntity());
+			}
+			
+			if(target.GetScriptScope()["PS_CAM_FOLLOWS"])
+			{
+				::Quix.Remove("PS_CAMERA_"+target.GetIndex()+"_ATTACHER")
+				target.GetScriptScope()["PS_CAMERA_ATTACH_ENABLED"] = false
+			}
+			target.GetScriptScope()["PS_CAMERA_ATTACH_POS"] <- null
+			break;
+		}
+		case "attach":
+		{
+			local parent;
+			if(value == "!self")
+				parent = player
+			else if(value == "!picker")
+				parent = player.GetLookingEntity(GRAB_YEET_TRACE_MASK);
+			else
+				parent = Entity(value);
+
+			if(!parent || !parent.IsEntityValid())
+				return
+			
+			if(target.GetScriptScope()["PS_CAM_FOLLOWS"])
+			{	
+				if("PS_CAMERA_ATTACH_POS" in target.GetScriptScope() 
+					&& target.GetScriptScope()["PS_CAMERA_ATTACH_POS"] != null)
+					{
+						Messages.ThrowPlayer(player,"Camera(#"+target.GetIndex()+") is already attached(to #"+target.GetScriptScope()["PS_CAMERA_ATTACH"].GetIndex()+")")
+						return
+					}
+				
+				local posvec = target.GetOrigin() - parent.GetOrigin()
+				target.GetScriptScope()["PS_CAMERA_ATTACH"] <- parent
+				target.GetScriptScope()["PS_CAMERA_ATTACH_POS"] <- posvec
+                target.GetScriptScope()["PS_CAMERA_ATTACH_ENABLED"] <- true
+				local tindex = target.GetIndex()
+
+				if(target.GetNetProp("m_hTarget") != null && Entity(target.GetNetProp("m_hTarget")).GetEntityHandle() == parent.GetEntityHandle())
+				{
+					DoEntFire("!self","setparent","#"+parent.GetIndex(),0,null,target.GetBaseEntity());
+					if(value2 == "")
+					{
+						value2 = "forward"
+					}
+                    DoEntFire("!self","setparentattachmentmaintainoffset",value2,0.05,null,target.GetBaseEntity());
+					break;
+				}
+
+				function AttachChecker(c,a)
+				{
+					if(a.parent == null || !a.parent.IsEntityValid() || !a.camera.GetScriptScope()["PS_CAMERA_ATTACH_ENABLED"])
+					{
+						::Quix.Remove("PS_CAMERA_"+tindex+"_ATTACHER")
+						a.camera.GetScriptScope()["PS_CAMERA_ATTACH_POS"] = null
+                        a.camera.GetScriptScope()["PS_CAMERA_ATTACH_ENABLED"] = false
+						a.parent = null
+						return false
+					}
+					else
+					{
+						return true
+					}
+				}
+				function Attacher(c,s,a)
+				{
+					a.camera.SetOrigin(a.parent.GetOrigin() + a.camera.GetScriptScope()["PS_CAMERA_ATTACH_POS"]);
+				}
+
+				::Quix.AddUnlimited("PS_CAMERA_"+tindex+"_ATTACHER",
+									AttachChecker,
+									Attacher,
+									{camera=target,parent=parent},
+									{camera=target,parent=parent});
+			}
+			else
+			{
+				if(target.GetParent() != null)
+				{
+					Messages.ThrowPlayer(player,"Camera(#"+target.GetIndex()+") is already attached(to #"+target.GetParent().GetIndex()+")")
+					return
+				}
+				DoEntFire("!self","setparent","#"+parent.GetIndex(),0,null,target.GetBaseEntity());
+				if(value2 != "")
+				{
+					DoEntFire("!self","setparentattachmentmaintainoffset",value2,0.05,null,target.GetBaseEntity());
+				}
+			}
+			break;
+		}
+	}
+}
+
+// Configurations
+// !create_camera !self !self
+//		!camera_setting #camera attach #player
+//		!camera_setting #camera angles 0|0|0
+//	 	!camera_setting #camera origin -70|-10|20
 /*
  * @authors rhino
  * For debugging in-game
@@ -4195,9 +4931,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
  */
 ::AdminSystem.StopTimeCmd <- function(player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local targetclasses = ["all","special","common","physics",null];
 	local target = GetArgument(1);
 
@@ -4233,7 +4966,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		}
 		default:
 		{
-			local ent = player.GetLookingEntity()
+			local ent = player.GetLookingEntity(GRAB_YEET_TRACE_MASK)
 			if(ent == null || !ent.IsEntityValid() || ent.GetParent() != null)
 			{
 				return;
@@ -4492,9 +5225,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
  */
 ::AdminSystem.ResumeTimeCmd <- function(player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local targetclasses = ["all","special","common","physics",null];
 	local target = GetArgument(1);
 
@@ -4530,7 +5260,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		}
 		default:
 		{
-			local ent = player.GetLookingEntity()
+			local ent = player.GetLookingEntity(GRAB_YEET_TRACE_MASK)
 			if(ent == null || !ent.IsEntityValid())
 			{
 				return;
@@ -4681,7 +5411,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 				/*
 				if(obj.GetModel() == tbl.model)
 				{
-
 					obj.SetHealth(tbl.health);
 					obj.SetMoveType(tbl.movetype);
 
@@ -4816,9 +5545,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 ::GivePhysicsToEntity <- function(ent)
 {
 	local entclass = ent.GetClassname()
-	if(entclass.find("physics") != null || entclass == "prop_car_alarm") // physics entity
+	if(entclass.find("physics") != null || entclass in ::_LetGoDropYeetSpecialClasses) // physics entity
 	{
-		if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics" || entclass == "prop_car_alarm")
+		if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics" || entclass in ::_LetGoDropYeetSpecialClasses)
 		{	
 			local flags = ent.GetFlags();
 			local effects = ent.GetNetProp("m_fEffects")
@@ -5161,8 +5890,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
  */
 ::AdminSystem.GivePhysicsCmd <- function(player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	if(!::LongProcessIterAvailability.zero_g || !::LongProcessIterAvailability.give_physics)
 	{
@@ -5173,7 +5900,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 	if(rad == "!picker")
 	{
-		local looked = player.GetLookingEntity();
+		local looked = player.GetLookingEntity(GRAB_YEET_TRACE_MASK);
 		if(looked == null || looked.GetParent() != null)
 			return;
 		if(looked.GetClassname() == "player")
@@ -5380,9 +6107,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 ::AdminSystem.ChangeRagdollViewPositionCmd <- function(player,args)
 {
-	if(!::AdminSystem.IsPrivileged(player))
-		return
-
 	if(player.HasRagdollPresent())
 	{
 		local axis = GetArgument(1)
@@ -5498,9 +6222,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 ::AdminSystem.GoRagdollCmd <- function(player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	if(::VSLib.EasyLogic.NextMapContinues)
 		return;
 
@@ -5529,13 +6250,13 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	}
 	else
 	{
-		player.SetRenderMode(RENDER_NONE);
 		rag = Utils.SpawnPhysicsMProp(mdl,org,ang);
 		if(rag==null)
 		{
 			Messages.ThrowPlayer(player,"Can't ragdoll as model: "+ShortenModelName(mdl));
 			return
 		}
+		player.SetRenderMode(RENDER_NONE);
 	}
 
 	AdminSystem.Vars.IsGodEnabled[idx] <- true;
@@ -5634,8 +6355,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 ::AdminSystem.RecoverRagdollCmd <- function(player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 		
 	local rag = player.GetRagdollEntity()
 
@@ -5758,9 +6477,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 ::AdminSystem.Update_bots_sharing_preferenceCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local newstate = !::AdminSystem.Vars.AllowAutomatedSharing;
 	::AdminSystem.Vars.AllowAutomatedSharing = newstate;
 
@@ -6068,10 +6784,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
  * @authors rhino
  */
 ::AdminSystem._EnableKindnessCmd <- function(player,args)
-{
-	if (!::AdminSystem.IsPrivileged( player ))
-		return;
-	
+{	
 	local found = Objects.AnyOfName("think_adder_base_entity")
 	if(found != null)
 	{
@@ -6094,10 +6807,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
  * @authors rhino
  */
 ::AdminSystem._DisableKindnessCmd <- function(player,args)
-{
-	if (!::AdminSystem.IsPrivileged( player ))
-		return;
-	
+{	
 	local name = player.GetCharacterNameLower();
 	local ent = null
 	local found = false
@@ -6490,9 +7200,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 // TO-DO: Make optional driving mechanics
 ::AdminSystem.RemoteControlCmd <- function(player,args)
 {
-	if(!::AdminSystem.IsPrivileged(player))
-		return
-
 	local target = GetArgument(1)
 	if(target == null)
 	{
@@ -6802,9 +7509,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 ::AdminSystem.GetInAsPassenger <- function(player,args)
 {
-	//if(!::AdminSystem.IsPrivileged(player))
-	//	return
-
     local ent = player.GetLookingEntity(GRAB_YEET_TRACE_MASK)
     if(!ent)
         return
@@ -6872,17 +7576,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 ::AdminSystem.GetOutAsPassenger <- function(player,args)
 {
-	//if(!::AdminSystem.IsPrivileged(player))
-	//	return
-
 	::GetOutAsPassenger(player)
 }
 
 ::AdminSystem.ChangePassengerSeatPositionCmd <- function(player,args)
 {
-	//if(!::AdminSystem.IsPrivileged(player))
-	//	return
-
 	if(player.IsPassenger())
 	{
 		local axis = GetArgument(1)
@@ -6916,9 +7614,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 ::AdminSystem.StopDriveCmd <- function(player,args)
 {
-	if(!::AdminSystem.IsPrivileged(player))
-		return
-
 	if(!player.IsDriving() || player.IsDrivingRCProp())
 		return
 
@@ -6930,9 +7625,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 ::AdminSystem.StartDriveCmd <- function(player,args)
 {
-	if(!::AdminSystem.IsPrivileged(player))
-		return
-
 	if(player.IsDriving() || player.IsPassenger())
 		return
 
@@ -6992,9 +7684,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 ::AdminSystem.ChangeDriveDirectionCmd <- function(player,args)
 {
-	if(!::AdminSystem.IsPrivileged(player))
-		return
-
 	if(!player.IsDriving() || player.IsDrivingRCProp())
 		return
 
@@ -7018,9 +7707,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 ::AdminSystem.ChangeSeatPositionCmd <- function(player,args)
 {
-	if(!::AdminSystem.IsPrivileged(player))
-		return
-
 	if(!player.IsDriving())
 		return
 
@@ -7068,9 +7754,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 ::AdminSystem.SetDefaultSeatPositionCmd <- function(player,args)
 {
-	if(!::AdminSystem.IsPrivileged(player))
-		return
-
 	if(!player.IsDriving() || player.IsDrivingRCProp())
 		return
 
@@ -7080,9 +7763,6 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 ::AdminSystem.MakeDriveableCmd <- function(player,args)
 {
-	if(!::AdminSystem.IsPrivileged(player))
-		return
-
 	local vehicle = ::ValidateDrivableEntity(player.GetLookingEntity(GRAB_YEET_TRACE_MASK))
 	if(typeof vehicle == "string" || vehicle)
 	{
@@ -7390,9 +8070,6 @@ enum __
  */
 ::AdminSystem.Admin_varCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ) &&  !(player.GetSteamID() in ::AdminSystem.ScriptAuths))
-		return;
-
 	local varname = GetArgument(1); 
 	if(varname == null)
 		return;
@@ -7471,9 +8148,6 @@ enum __
  */
 ::AdminSystem.BlockerStateCmd <- function (player,arg)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local state = GetArgument(1);
 	local applytoPhysicsBlocker = GetArgument(2);
 
@@ -7511,9 +8185,6 @@ enum __
  */
 ::AdminSystem.Ladder_teamCmd <- function (player,arg)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local team = GetArgument(1);
 	if(team==null)
 		return;
@@ -7616,9 +8287,6 @@ enum __
  */
 ::AdminSystem.Meteor_shower_settingCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local setting = GetArgument(1);
 	local val = GetArgument(2);
 	if(val == null)
@@ -7649,9 +8317,6 @@ enum __
  */
 ::AdminSystem.Show_meteor_shower_settingsCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	AdminSystem.LoadShowerSettings();
 
 	local comments = Constants.GetMeteorShowerSettingsComments();
@@ -7721,18 +8386,10 @@ enum __
 		
 	local expdmgmin = metargs.expdmgmin;	
 	
-	local debug = metargs.debug;
-
 	// Spawn base and ceiling calculations
 	local ceiling = _FindRandomValidCeilingPoint(surv,metargs.minspawnheight,metargs.maxradius)
 	if(ceiling == null)
 		return;
-
-	if(debug == 1)
-	{
-		DebugDrawText(ceiling,"***------CEILING FOUND------***",false,5);
-		ClientPrint(null,DirectorScript.HUD_PRINTTALK,"\x04"+"Spawned meteor at: "+ceiling.x+","+ceiling.y+","+ceiling.z)
-	}
 
 	// Create the meteor
 	local meteor = _CreateAndPushMeteor(metargs.meteormodelpick,ceiling,minspeed,(metargs.maxspeed - minspeed),true)
@@ -7877,7 +8534,7 @@ enum __
 		iRadiusOverride = rand()%expmaxradius
 	}
 	local explosion = Utils.CreateEntityWithTable(explosion_table);
-	local explosion_sound = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = spawnpos});
+	local explosion_sound = Utils.CreateEntityWithTable({classname="ambient_generic", message = ::GetExplosionSoundScriptName(), spawnflags = 32, origin = spawnpos});
 
 	meteor.AttachOther(explosion,false,0,null);
 	meteor.AttachOther(explosion_sound,false,0,null);
@@ -7896,11 +8553,6 @@ enum __
 ::_MeteorExplosion <- function(met)
 {
 	local argtable = AdminSystem._meteor_shower_args;
-	local debugstr = "";
-
-	if(argtable.debug == 1)
-		debugstr += "\x05"+"0:"+"\x03"+"meteor #"+met
-	
 	local meteor = Ent("#"+met)
 
 	local prtc = null
@@ -7918,22 +8570,16 @@ enum __
 			case "ambient_generic":
 			{
 				explosionsnd = Ent("#"+child.GetEntityIndex());
-				if(argtable.debug == 1)
-					debugstr += "\x05"+", "+i+":"+"\x03"+"expsound #"+child.GetEntityIndex()
 				break;
 			}
 			case "info_particle_system":
 			{
 				prtc = Ent("#"+child.GetEntityIndex());
-				if(argtable.debug == 1)
-					debugstr += "\x05"+", "+i+":"+"\x03"+"particle #"+child.GetEntityIndex()
 				break;
 			}
 			case "env_explosion":
 			{
 				explosion = Ent("#"+child.GetEntityIndex());
-				if(argtable.debug == 1)
-					debugstr += "\x05"+", "+i+":"+"\x03"+"exp #"+child.GetEntityIndex()
 				break;
 			}
 			default:
@@ -7992,11 +8638,6 @@ enum __
 
 	if(prtc != null && prtc.IsValid())	
 		DoEntFire("!self", "Stop", "", 0.0, null, prtc);
-	if(meteor != null && meteor.IsValid())	
-		DoEntFire("!self", "Kill", "", 0.3, null, meteor);
-
-	if(argtable.debug == 1)
-		ClientPrint(null,3,debugstr);
 }
 
 function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
@@ -8112,16 +8753,12 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 			local hurt_prob = lparams.hurt_prob
 			local explosion_prob = lparams.explosion_prob
 
-			// THERE IS BLOOD IN THE BOX
-			local lootget_prob = ::THEREISBLOODINTHEBOX
-
 			local events = 
 			{
 				"ambush" : ambush_prob
 				"horde" : horde_prob
 				"hurt" : hurt_prob
 				"explosion" : explosion_prob
-				"lootget" : lootget_prob
 			}
 
 			foreach(e_name,e_prob in events)
@@ -8390,16 +9027,12 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 			local hurt_prob = lparams.hurt_prob
 			local explosion_prob = lparams.explosion_prob
 
-			// THERE IS BLOOD IN THE BOX
-			local lootget_prob = ::THEREISBLOODINTHEBOX
-
 			local events = 
 			{
 				"ambush" : ambush_prob
 				"horde" : horde_prob
 				"hurt" : hurt_prob
 				"explosion" : explosion_prob
-				"lootget" : lootget_prob
 			}
 
 			foreach(e_name,e_prob in events)
@@ -8483,7 +9116,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 	blood_spill =
 	[
 		"blood_bleedout",
-		"blood_bleedout_2",
 		"blood_bleedout_3"
 	]
 	ground_blood_min = 3
@@ -8503,49 +9135,126 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 	horde_alarm_sound_length = 9
 }
 
+::BackUpExplosionSoundScriptNames <- 
+[
+	"explode_1",
+	"explode_2",
+	"explode_3",
+	"BaseGrenade.Explode"
+]
+
+::BackUpPianoKeySoundScriptNames <- 
+[
+	"Piano.TwangHit0",
+	"Piano.TwangHit1",
+	"Piano.TwangHit2",
+	"Piano.TwangHit3"
+]
+
+::GetExplosionSoundScriptName <- function()
+{
+	return ::IsCurrentMapAnOfficialMap() ? "randomexplosion" : Utils.GetRandValueFromArray(::BackUpExplosionSoundScriptNames)
+}
+
+::GetPianoKeySoundScriptName <- function()
+{
+	return Utils.GetRandValueFromArray(::BackUpPianoKeySoundScriptNames)
+}
+
+::IsCurrentMapAnOfficialMap <- function()
+{
+	switch(SessionState.MapName)
+	{
+		case "c1m1_hotel":
+		case "c1m2_streets":
+		case "c1m3_mall":
+		case "c1m4_atrium":
+
+		case "c2m1_highway":
+		case "c2m2_fairgrounds":
+		case "c2m3_coaster":
+		case "c2m4_barns":
+		case "c2m5_concert":
+
+		case "c3m1_plankcountry":
+		case "c3m2_swamp":
+		case "c3m3_shantytown":
+		case "c3m4_plantation":
+
+		case "c4m1_milltown_a":
+		case "c4m2_sugarmill_a":
+		case "c4m3_sugarmill_b":
+		case "c4m4_milltown_b":
+		case "c4m5_milltown_escape":
+
+		case "c5m1_waterfront":
+		case "c5m1_waterfront_sndscape":
+		case "c5m2_park":
+		case "c5m3_cemetery":
+		case "c5m4_quarter":
+		case "c5m5_bridge":
+
+		case "c6m1_riverbank":
+		case "c6m2_bedlam":
+		case "c6m3_port":
+		
+		case "c7m1_docks":
+		case "c7m2_barge":
+		case "c7m3_port":
+
+		case "c8m1_apartment":
+		case "c8m2_subway":
+		case "c8m3_sewers":
+		case "c8m4_interior":
+		case "c8m5_rooftop":
+
+		case "c9m1_alleys":
+		case "c9m2_lots":
+
+		case "c10m1_caves":
+		case "c10m2_drainage":
+		case "c10m3_ranchhouse":
+		case "c10m4_mainstreet":
+		case "c10m5_houseboat":
+
+		case "c11m1_greenhouse":
+		case "c11m2_offices":
+		case "c11m3_garage":
+		case "c11m4_terminal":
+		case "c11m5_runway":
+
+		case "c12m1_hilltop":
+		case "c12m2_traintunnel":
+		case "c12m3_bridge":
+		case "c12m4_barn":
+		case "c12m5_cornfield":
+
+		case "c13m1_alpinecreek":
+		case "c13m2_southpinestream":
+		case "c13m3_memorialbridge":
+		case "c13m4_cutthroatcreek":
+
+		case "c14m1_junkyard":
+		case "c14m2_lighthouse":
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 ::TriggerLootRandomEvent <- function(loot_ent,looter,event_name)
 {
+	if(!loot_ent.IsEntityValid())
+		return;
 	switch(event_name)
 	{
-		case "lootget":
-		{
-			if(!looter)
-				return;
-
-			local blood_splatter = ::LootingRandomEventParams.blood_splatter
-			local blood_spill = ::LootingRandomEventParams.blood_spill
-
-			local clr = looter.GetNetProp("m_clrRender");
-			looter.InputColor(255, 0, 0, 0);
-			Timers.AddTimer(15, false, ColorResetWrap, {ent=looter,clr=clr});
-			
-			loot_ent.EmitSound("loot_get")
-			looter.Speak(Utils.GetRandValueFromArray(::Survivorlines.DeathScream[looter.GetCharacterNameLower()]));
-			
-			local screen_b_count = RandomInt(::LootingRandomEventParams.screen_blood_min,::LootingRandomEventParams.screen_blood_max)
-			local b_out_count = RandomInt(::LootingRandomEventParams.ground_blood_min,::LootingRandomEventParams.ground_blood_max)
-			local looter_org = looter.GetOrigin()
-			for(local i=0;i<screen_b_count;i++)
-			{
-				g_ModeScript.CreateParticleSystemAt( null, looter_org, Utils.GetRandValueFromArray(blood_splatter), true );
-			}
-			for(local i=0;i<b_out_count;i++)
-			{
-				g_ModeScript.CreateParticleSystemAt( null, looter_org+RotatePosition(looter_org,QAngle(0,30*i,0),looter.GetForwardVector()).Scale(25), Utils.GetRandValueFromArray(blood_spill), true );
-			}
-			
-			if(!looter.IsBot())
-				::Printer(looter,"LOOTGET!")
-			else
-				::Messages.InformAll(TXTCLR.OG(looter.GetCharacterName())+" FOUND BLOOD IN THE BOX!")
-			break;
-		}
 		case "explosion":
 		{
 			local rad = ::LootingRandomEventParams.expradius
 			local l_org = loot_ent.GetOrigin()
 			local expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = l_org, iRadiusOverride = rad });
-			local expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = l_org});
+			local expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = ::GetExplosionSoundScriptName(), spawnflags = 32, origin = l_org});
 			
 			_explosionPush({ents=_RemoveNonPhysicsFromTable(Objects.AroundRadius(l_org,rad),l_org,rad),pushspeed=::LootingRandomEventParams.pushspeed,origin=l_org,explosion=expent,explosion_sound=expsoundent})
 			
@@ -8635,16 +9344,11 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 	}
 }
 
-::THEREISBLOODINTHEBOX <- 0.02
-
 /* 
  * @authors rhino
  */
 ::AdminSystem.CreateLootSourcesCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	if(!::LongProcessIterAvailability.create_loot_sources)
 	{
 		Printer(player,"You can't use this command while a create_loot_sources process is still running!")
@@ -8673,7 +9377,7 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 	}
 	else if(category == "!picker")
 	{
-		local looked = player.GetLookingEntity()
+		local looked = player.GetLookingEntity(GRAB_YEET_TRACE_MASK)
 		if(!looked)
 			return
 
@@ -8807,8 +9511,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.Show_loot_settingsCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterNameLower()])
 	{
@@ -8834,8 +9536,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.Loot_settingCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local name = player.GetCharacterName();
 	local setting = GetArgument(1);
@@ -8870,9 +9570,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.Start_the_showerCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	if(AdminSystem.Vars._meteor_shower_state == 0)
 	{	
 		AdminSystem.LoadShowerSettings();
@@ -8892,9 +9589,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.Pause_the_showerCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	if(AdminSystem.Vars._meteor_shower_state == 1)
 	{
 		AdminSystem.Vars._meteor_shower_state = 0;
@@ -8906,13 +9600,8 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.Meteor_shower_debugCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ) || !player.IsServerHost())
-		return;
-
-	AdminSystem._meteor_shower_args.debug = 1 - AdminSystem._meteor_shower_args.debug;
-	
-	Printer(player,"[Meteor_Shower-Debug] Meteor shower debug state :"+( AdminSystem._meteor_shower_args.debug == 1 ? " Enabled":" Disabled"));
-	AdminSystem.SaveShowerSettings();
+	Messages.WarnPlayer(player,"Meteor shower debugging has been deprecated since v.1.7.3")
+	return 
 }
 
 /* @authors rhino
@@ -8920,9 +9609,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.StartGhostZombiesCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	if(AdminSystem.Vars._ghost_zombies_state == 0)
 	{	
 		AdminSystem.LoadGhostZombiesSettings();
@@ -8942,9 +9628,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.PauseGhostZombiesCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	if(AdminSystem.Vars._ghost_zombies_state == 1)
 	{
 		AdminSystem.Vars._ghost_zombies_state = 0;
@@ -8956,9 +9639,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.ShowGhostZombiesSettingsCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	AdminSystem.LoadGhostZombiesSettings();
 	local comments = Constants.GetGhostZombiesSettingsComments();
 
@@ -8985,9 +9665,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.GhostZombiesSettingCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local setting = GetArgument(1);
 	local val = GetArgument(2);
 	if(!(setting in AdminSystem._ghost_zombies))
@@ -9164,33 +9841,31 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 	local expent = null;
 	local expsoundent = null;
 
-	local pushedents = {};
-	local brokenents = {};
-	local useddoors = {};
-	local lockeddoors = {};
-	local damagedents = {};
-	local animatedents = {};
-	local explosions = {};
-
-	local debug = apocargs.debug;
-
-	if(debug == 1)
-	{
-		foreach(id,ent in enttbl)
+	foreach(id,ent in enttbl)
+	{	
+		if((rand().tofloat()/RAND_MAX) < prob )
 		{	
-			if((rand().tofloat()/RAND_MAX) < prob )
-			{	
-				if(!ent.IsEntityValid())
-				{
-					continue;
-				}
+			if(!ent.IsEntityValid())
+			{
+				continue;
+			}
 
-				entclass = ent.GetClassname();
-				entmodel = ent.GetModel();
-				entindex = ent.GetIndex();
+			entclass = ent.GetClassname();
+			entmodel = ent.GetModel();
 
+			switch(entclass)
+			{
 				// Anything with physics
-				if(entclass == "prop_physics" || entclass == "prop_physics_multiplayer"  || entclass == "prop_car_alarm" || entclass == "prop_vehicle" || entclass == "prop_physics_override" || entclass == "func_physbox" ||  entclass == "func_physbox_multiplayer" || entclass == "prop_ragdoll" || entclass == "simple_physics_prop")
+				case "prop_physics":
+				case "prop_physics_multiplayer":
+				case "prop_physics_override":
+				case "prop_car_alarm":
+				case "prop_vehicle":
+				case "prop_ragdoll":
+				case "simple_physics_prop":
+				case "prop_fuel_barrel":
+				case "func_physbox":
+				case "func_physbox_multiplayer":
 				{ 	
 					//Damage
 					if((rand().tofloat()/RAND_MAX) < dmgprob)
@@ -9198,7 +9873,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 						if(ent.GetHealth() > 0)
 						{
 							ent.Hurt(mindmg+rand()%maxdmg);
-							damagedents[entindex] <- entclass+", "+entmodel;
 						}
 					}
 
@@ -9208,11 +9882,10 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 						if(ent.GetHealth() > 0)
 						{	
 							expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
-							expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
+							expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = ::GetExplosionSoundScriptName(), spawnflags = 32, origin = ent.GetOrigin()});
 							expsoundent.Input("ToggleSound","",0.2);
 							expent.Input("Explode","",0.25);
 							expsoundent.Input("Kill","",3.0);
-							explosions[entindex] <- entclass+", "+entmodel;
 						}
 					}
 					
@@ -9222,7 +9895,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 						if((rand().tofloat()/RAND_MAX) < breakprob)
 						{
 							ent.Break();
-							brokenents[entindex] <- entclass+", "+entmodel;
 						}
 					}
 
@@ -9231,10 +9903,13 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 					pushvec = pushvec.Scale((minspeed+rand()%maxspeed).tofloat()/pushvec.Length())
 					
 					ent.Push(pushvec);
-					
-					pushedents[entindex] <- entclass+", "+entmodel;
+					break;
 				}
-				else if(entclass == "func_breakable" || entclass == "func_breakable_surf" || entclass == "prop_wall_breakable" ) //Any breakable surface
+
+				//Any breakable surface
+				case "func_breakable":
+				case "func_breakable_surf":
+				case "prop_wall_breakable":
 				{	
 					//Damage
 					if((rand().tofloat()/RAND_MAX) < dmgprob)
@@ -9242,7 +9917,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 						if(ent.GetHealth() > 0)
 						{
 							ent.Hurt(mindmg+rand()%maxdmg);
-							damagedents[entindex] <- entclass+", "+entmodel;
 						}
 					}
 					
@@ -9252,11 +9926,10 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 						if(ent.GetHealth() > 0)
 						{	
 							expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
-							expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
+							expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = ::GetExplosionSoundScriptName(), spawnflags = 32, origin = ent.GetOrigin()});
 							expsoundent.Input("ToggleSound","",0.2);
 							expent.Input("Explode","",0.25);
 							expsoundent.Input("Kill","",3.0);
-							explosions[entindex] <- entclass+", "+entmodel;
 						}
 					}
 
@@ -9264,10 +9937,13 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 					if((rand().tofloat()/RAND_MAX) < breakprob)
 					{
 						ent.Break();
-						brokenents[entindex] <- entclass+", "+entmodel;
 					}
+					break;
 				}
-				else if(entclass == "move_rope" || entclass == "keyframe_rope")		//Cables and ropes
+
+				//Cables and ropes
+				case "move_rope":
+				case "keyframe_rope":
 				{	
 					//Explosion
 					if((rand().tofloat()/RAND_MAX) < expprob)
@@ -9275,11 +9951,10 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 						if(ent.GetHealth() > 0)
 						{	
 							expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
-							expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
+							expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = ::GetExplosionSoundScriptName(), spawnflags = 32, origin = ent.GetOrigin()});
 							expsoundent.Input("ToggleSound","",0.2);
 							expent.Input("Explode","",0.25);
 							expsoundent.Input("Kill","",3.0);
-							explosions[entindex] <- entclass+", "+entmodel;
 						}
 					}
 
@@ -9287,17 +9962,22 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 					if((rand().tofloat()/RAND_MAX) < ropebreakprob)
 					{
 						ent.Break();
-						brokenents[entindex] <- entclass+", "+entmodel;
-					}	
+					}
+					break;
 				}
-				else if(entclass == "prop_door_rotating" || entclass == "func_door" || entclass == "func_door_rotating" || entclass == "func_rotating") //Any door except saferoom's
-				{	//Damage
+
+				//Any door except saferoom's
+				case "prop_door_rotating":
+				case "func_door":
+				case "func_door_rotating":
+				case "func_rotating":
+				{	
+					//Damage
 					if((rand().tofloat()/RAND_MAX) < dmgprob)
 					{
 						if(ent.GetHealth() > 0)
 						{
 							ent.Hurt(mindmg+rand()%maxdmg);
-							damagedents[entindex] <- entclass+", "+entmodel;
 						}
 					}
 					
@@ -9307,11 +9987,10 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 						if(ent.GetHealth() > 0)
 						{	
 							expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
-							expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
+							expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = ::GetExplosionSoundScriptName(), spawnflags = 32, origin = ent.GetOrigin()});
 							expsoundent.Input("ToggleSound","",0.2);
 							expent.Input("Explode","",0.25);
 							expsoundent.Input("Kill","",3.0);
-							explosions[entindex] <- entclass+", "+entmodel;
 						}
 					}
 
@@ -9320,243 +9999,35 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 					{	
 						ent.Input("close","");
 						ent.Input("lock","",0.5);
-						lockeddoors[entindex] <- entclass+", "+entmodel;
 					}
 					else //Open or Close
 					{
 						ent.Input("toggle","");
-						useddoors[entindex] <- entclass+", "+entmodel;
 					}
+					break;
 				}
-				else if(entclass == "prop_door_rotating_checkpoint")	//Saferoom door
+
+				//Saferoom door
+				case "prop_door_rotating_checkpoint":
 				{	
 					//Open or Close	
 					ent.Input("toggle","");
-					useddoors[entindex] <- entclass+", "+entmodel;
+					break;
 				}
-				else if(entclass == "prop_health_cabinet")	//Health cabinet
+				
+				//Health cabinet
+				case "prop_health_cabinet":	
 				{	
 					//Open or Close animation
 					if((rand().tofloat()/RAND_MAX) < 0.5)
 						ent.Input("setanimation","idle");	
 					else
 						ent.Input("setanimation","open");
-
-					animatedents[entindex] <- entclass+", "+entmodel;
-				}
-			}
-		}
-
-		printl("---------------------------------------------");
-		if(pushedents.len() != 0)
-			{printl("PUSHED\n");Utils.PrintTable(pushedents);}
-
-		if(brokenents.len() != 0)
-			{printl("BROKEN\n");Utils.PrintTable(brokenents);}
-
-		if(useddoors.len() != 0)
-			{printl("OPENED/CLOSED\n");Utils.PrintTable(useddoors);}
-
-		if(lockeddoors.len() != 0)
-			{printl("LOCKED\n");Utils.PrintTable(lockeddoors);}
-
-		if(damagedents.len() != 0)
-			{printl("DAMAGED\n");Utils.PrintTable(damagedents);}
-
-		if(explosions.len() != 0)
-			{printl("EXPLODED\n");Utils.PrintTable(explosions);}
-
-	}
-	else
-	{
-		foreach(id,ent in enttbl)
-		{	
-			if((rand().tofloat()/RAND_MAX) < prob )
-			{	
-				if(!ent.IsEntityValid())
-				{
-					continue;
-				}
-
-				entclass = ent.GetClassname();
-				entmodel = ent.GetModel();
-
-				switch(entclass)
-				{
-					// Anything with physics
-					case "prop_physics":
-					case "prop_physics_multiplayer":
-					case "prop_car_alarm":
-					case "prop_vehicle":
-					case "prop_physics_override":
-					case "func_physbox":
-					case "func_physbox_multiplayer":
-					case "prop_ragdoll":
-					case "simple_physics_prop":
-					{ 	
-						//Damage
-						if((rand().tofloat()/RAND_MAX) < dmgprob)
-						{
-							if(ent.GetHealth() > 0)
-							{
-								ent.Hurt(mindmg+rand()%maxdmg);
-							}
-						}
-
-						//Explosion
-						if((rand().tofloat()/RAND_MAX) < expprob)
-						{
-							if(ent.GetHealth() > 0)
-							{	
-								expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
-								expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
-								expsoundent.Input("ToggleSound","",0.2);
-								expent.Input("Explode","",0.25);
-								expsoundent.Input("Kill","",3.0);
-							}
-						}
-						
-						//Break
-						if(entmodel.find("forklift") != null)
-						{
-							if((rand().tofloat()/RAND_MAX) < breakprob)
-							{
-								ent.Break();
-							}
-						}
-
-						//Push
-						pushvec = QAngle(rand()%360,rand()%360,rand()%360).Forward();
-						pushvec = pushvec.Scale((minspeed+rand()%maxspeed).tofloat()/pushvec.Length())
-						
-						ent.Push(pushvec);
-						break;
-					}
-
-					//Any breakable surface
-					case "func_breakable":
-					case "func_breakable_surf":
-					case "prop_wall_breakable":
-					{	
-						//Damage
-						if((rand().tofloat()/RAND_MAX) < dmgprob)
-						{	
-							if(ent.GetHealth() > 0)
-							{
-								ent.Hurt(mindmg+rand()%maxdmg);
-							}
-						}
-						
-						//Explosion
-						if((rand().tofloat()/RAND_MAX) < expprob)
-						{
-							if(ent.GetHealth() > 0)
-							{	
-								expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
-								expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
-								expsoundent.Input("ToggleSound","",0.2);
-								expent.Input("Explode","",0.25);
-								expsoundent.Input("Kill","",3.0);
-							}
-						}
-
-						//Break
-						if((rand().tofloat()/RAND_MAX) < breakprob)
-						{
-							ent.Break();
-						}
-						break;
-					}
-
-					//Cables and ropes
-					case "move_rope":
-					case "keyframe_rope":
-					{	
-						//Explosion
-						if((rand().tofloat()/RAND_MAX) < expprob)
-						{
-							if(ent.GetHealth() > 0)
-							{	
-								expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
-								expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
-								expsoundent.Input("ToggleSound","",0.2);
-								expent.Input("Explode","",0.25);
-								expsoundent.Input("Kill","",3.0);
-							}
-						}
-
-						//Break
-						if((rand().tofloat()/RAND_MAX) < ropebreakprob)
-						{
-							ent.Break();
-						}
-						break;
-					}
-
-					//Any door except saferoom's
-					case "prop_door_rotating":
-					case "func_door":
-					case "func_door_rotating":
-					case "func_rotating":
-					{	
-						//Damage
-						if((rand().tofloat()/RAND_MAX) < dmgprob)
-						{
-							if(ent.GetHealth() > 0)
-							{
-								ent.Hurt(mindmg+rand()%maxdmg);
-							}
-						}
-						
-						//Explosion
-						if((rand().tofloat()/RAND_MAX) < expprob)
-						{
-							if(ent.GetHealth() > 0)
-							{	
-								expent = Utils.CreateEntityWithTable({classname = "env_explosion", spawnflags = 0, origin = ent.GetOrigin(), iMagnitude = expdmgmin+(rand()%expdmgmax), iRadiusOverride = rand()%expmaxradius });
-								expsoundent = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = ent.GetOrigin()});
-								expsoundent.Input("ToggleSound","",0.2);
-								expent.Input("Explode","",0.25);
-								expsoundent.Input("Kill","",3.0);
-							}
-						}
-
-						//Close and Lock
-						if((rand().tofloat()/RAND_MAX) < doorlockprob)
-						{	
-							ent.Input("close","");
-							ent.Input("lock","",0.5);
-						}
-						else //Open or Close
-						{
-							ent.Input("toggle","");
-						}
-						break;
-					}
-
-					//Saferoom door
-					case "prop_door_rotating_checkpoint":
-					{	
-						//Open or Close	
-						ent.Input("toggle","");
-						break;
-					}
-					
-					//Health cabinet
-					case "prop_health_cabinet":	
-					{	
-						//Open or Close animation
-						if((rand().tofloat()/RAND_MAX) < 0.5)
-							ent.Input("setanimation","idle");	
-						else
-							ent.Input("setanimation","open");
-						break;
-					}
+					break;
 				}
 			}
 		}
 	}
-	
 } 
 
 /* @authors rhino
@@ -9564,9 +10035,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.Start_the_apocalypseCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	if(AdminSystem.Vars._propageddon_state == 0)
 	{	
 		AdminSystem.LoadApocalypseSettings();
@@ -9586,9 +10054,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.Pause_the_apocalypseCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	if(AdminSystem.Vars._propageddon_state == 1)
 	{
 		AdminSystem.Vars._propageddon_state = 0;
@@ -9600,9 +10065,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.Apocalypse_settingCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local setting = GetArgument(1);
 	local val = GetArgument(2);
 	if(!(setting in AdminSystem._propageddon_args))
@@ -9626,9 +10088,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.Show_apocalypse_settingsCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	AdminSystem.LoadApocalypseSettings();
 	local comments = Constants.GetApocalypseSettingsComments();
 
@@ -9658,13 +10117,8 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.Apocalypse_debugCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ) || !player.IsServerHost())
-		return;
-
-	AdminSystem._propageddon_args.debug = 1 - AdminSystem._propageddon_args.debug;
-
-	Printer(player,"[Apocalypse-Debug] Apocalypse debug state :"+( AdminSystem._propageddon_args.debug == 1 ? " Enabled":" Disabled"));
-	AdminSystem.SaveApocalypseSettings();
+	Messages.WarnPlayer(player,"Apocalypse event debugging has been deprecated since v.1.7.3")
+	return 
 }
 
 /*
@@ -9678,8 +10132,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.Speak_testCmd <- function (player,args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 
 	local character = GetArgument(1);
 	if(character==null)
@@ -9723,8 +10175,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.Speak_customCmd <- function (player,args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 
 	local character = GetArgument(1);
 	local seq_name = GetArgument(2);
@@ -9790,8 +10240,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.Speak_loop_stopCmd <- function (player,args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 
 	local character = GetArgument(1);
 	if(character==null)
@@ -9825,8 +10273,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.Speak_loopCmd <- function (player,args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	local arguments = ::VSLib.EasyLogic.LastArgs;
 	local arglen = arguments.len();
 
@@ -9934,8 +10380,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.Show_custom_sequencesCmd <- function (player,args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local character = GetArgument(1);
 	local seqnames = "";
@@ -10062,8 +10506,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.Sequence_infoCmd <- function (player,args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local character = GetArgument(1);
 	if(character==null)
@@ -10121,8 +10563,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.Sequence_editCmd <- function (player,args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local character = GetArgument(1);
 	if(character==null)
@@ -10244,21 +10684,21 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
 	{	
 		CmdMessages.CustomSequences.CreatingFile();
 		contents = "{";
-		foreach(admin,val in AdminSystem.Admins)
+		foreach(admin,val in AdminSystem.UserLevels)
 		{
-			if(val)
+			if(val > PS_USER_BASIC)
 				contents += "\n\t\""+admin+"\":\n\t{\n\t\t\"character_name\":\n\t\t{\n\t\t\t\"sequence_name\":\n\t\t\t{\n\t\t\t\t\"scenes\":[\"blank\"],\n\t\t\t\t\"delays\":[0]\n\t\t\t}\n\t\t}\n\t}"; 
 		}
 		contents += "\n}";
 		StringToFile(Constants.Directories.CustomResponses, contents);
 	}
 
-	local responsetable = compilestring( "return " + contents )();
-
+	local responsetable = compilestring( "local __tempvar__ = " + contents + "\r\n;return __tempvar__")();
+	
 	// Check admins
-	foreach(admin,val in AdminSystem.Admins)
+	foreach(admin,val in AdminSystem.UserLevels)
 	{	
-		if(!(admin in responsetable))
+		if(!(admin in responsetable) && (Utils.GetIDFromArray(::UserLevelNames,val) != -1) && (getconsttable()[val] > PS_USER_BASIC))
 		{
 			CmdMessages.CustomSequences.AddingMissingAdminTables(admin);
 			responsetable[admin] <- {character_name={sequence_name={scenes=["blank"],delays=[0]}}};
@@ -10299,8 +10739,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.CreateSequenceCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 
 	local arguments = ::VSLib.EasyLogic.LastArgs;
 	local arglen = arguments.len();
@@ -10406,8 +10844,6 @@ function Notifications::OnBrokeProp::_DropLootOnBreak(player, prop, params)
  */
 ::AdminSystem.DeleteSequenceCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local character = GetArgument(1);
 	if(character==null)
@@ -11539,16 +11975,10 @@ function Notifications::OnAbilityUsed::_TankRockSpawning(player,ability,args)
 function ChatTriggers::say( player, args, text )
 {
 }
-::ChatTriggerDocs.say <- @(player,args) AdminSystem.IsPrivileged(player) && "say" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.say(player,args))
-					: null
 
 function ChatTriggers::password( player, args, text )
 {
 }
-::ChatTriggerDocs.password <- @(player,args) AdminSystem.IsPrivileged(player) && "password" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.password(player,args))
-					: null
 
 
 /*
@@ -11559,73 +11989,46 @@ function ChatTriggers::loop( player, args, text )
 {
 	AdminSystem.Speak_loopCmd( player, args );
 }
-::ChatTriggerDocs.loop <- @(player,args) AdminSystem.IsPrivileged(player) && "loop" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.loop(player,args))
-					: null
 
 function ChatTriggers::loop_stop( player, args, text )
 {
 	AdminSystem.Speak_loop_stopCmd( player, args );
 }
-::ChatTriggerDocs.loop_stop <- @(player,args) AdminSystem.IsPrivileged(player) && "loop_stop" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.loop_stop(player,args))
-					: null
 
 function ChatTriggers::speak_test( player, args, text )
 {
 	AdminSystem.Speak_testCmd( player, args );
 }
-::ChatTriggerDocs.speak_test <- @(player,args) AdminSystem.IsPrivileged(player) && "speak_test" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.speak_test(player,args))
-					: null
 
 function ChatTriggers::speak_custom( player, args, text )
 {
 	AdminSystem.Speak_customCmd( player, args );
 }
-::ChatTriggerDocs.speak_custom <- @(player,args) AdminSystem.IsPrivileged(player) && "speak_custom" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.speak_custom(player,args))
-					: null
 
 function ChatTriggers::show_custom_sequences( player, args, text )
 {
 	AdminSystem.Show_custom_sequencesCmd( player, args );
 }
-::ChatTriggerDocs.show_custom_sequences <- @(player,args) AdminSystem.IsPrivileged(player) && "show_custom_sequences" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.show_custom_sequences(player,args))
-					: null
 
 function ChatTriggers::seq_info( player, args, text )
 {
 	AdminSystem.Sequence_infoCmd( player, args );
 }
-::ChatTriggerDocs.seq_info <- @(player,args) AdminSystem.IsPrivileged(player) && "seq_info" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.seq_info(player,args))
-					: null
 
 function ChatTriggers::seq_edit( player, args, text )
 {
 	AdminSystem.Sequence_editCmd( player, args );
 }
-::ChatTriggerDocs.seq_edit <- @(player,args) AdminSystem.IsPrivileged(player) && "seq_edit" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.seq_edit(player,args))
-					: null
 
 function ChatTriggers::create_seq( player, args, text )
 {
 	AdminSystem.CreateSequenceCmd( player, args );
 }
-::ChatTriggerDocs.create_seq <- @(player,args) AdminSystem.IsPrivileged(player) && "create_seq" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.create_seq(player,args))
-					: null
 
 function ChatTriggers::delete_seq( player, args, text )
 {
 	AdminSystem.DeleteSequenceCmd( player, args );
 }
-::ChatTriggerDocs.delete_seq <- @(player,args) AdminSystem.IsPrivileged(player) && "delete_seq" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.delete_seq(player,args))
-					: null
 
 /*
  * @authors rhino
@@ -11636,41 +12039,26 @@ function ChatTriggers::start_the_shower( player, args, text )
 {
 	AdminSystem.Start_the_showerCmd( player, args );
 }
-::ChatTriggerDocs.start_the_shower <- @(player,args) AdminSystem.IsPrivileged(player) && "start_the_shower" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.start_the_shower(player,args))
-					: null
 
 function ChatTriggers::pause_the_shower( player, args, text )
 {
 	AdminSystem.Pause_the_showerCmd( player, args );
 }
-::ChatTriggerDocs.pause_the_shower <- @(player,args) AdminSystem.IsPrivileged(player) && "pause_the_shower" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.pause_the_shower(player,args))
-					: null
 
 function ChatTriggers::show_meteor_shower_settings( player, args, text )
 {
 	AdminSystem.Show_meteor_shower_settingsCmd( player, args );
 }
-::ChatTriggerDocs.show_meteor_shower_settings <- @(player,args) AdminSystem.IsPrivileged(player) && "show_meteor_shower_settings" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.show_meteor_shower_settings(player,args))
-					: null
 
 function ChatTriggers::meteor_shower_setting( player, args, text )
 {
 	AdminSystem.Meteor_shower_settingCmd( player, args );
 }
-::ChatTriggerDocs.meteor_shower_setting <- @(player,args) AdminSystem.IsPrivileged(player) && "meteor_shower_setting" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.meteor_shower_setting(player,args))
-					: null
 
 function ChatTriggers::meteor_shower_debug( player, args, text )
 {
 	AdminSystem.Meteor_shower_debugCmd( player, args );
 }
-::ChatTriggerDocs.meteor_shower_debug <- @(player,args) AdminSystem.IsPrivileged(player) && "meteor_shower_debug" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.meteor_shower_debug(player,args))
-					: null
 
 /*
  * @authors rhino
@@ -11681,41 +12069,26 @@ function ChatTriggers::start_the_apocalypse( player, args, text )
 {
 	AdminSystem.Start_the_apocalypseCmd( player, args );
 }
-::ChatTriggerDocs.start_the_apocalypse <- @(player,args) AdminSystem.IsPrivileged(player) && "start_the_apocalypse" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.start_the_apocalypse(player,args))
-					: null
 
 function ChatTriggers::pause_the_apocalypse( player, args, text )
 {
 	AdminSystem.Pause_the_apocalypseCmd( player, args );
 }
-::ChatTriggerDocs.pause_the_apocalypse <- @(player,args) AdminSystem.IsPrivileged(player) && "pause_the_apocalypse" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.pause_the_apocalypse(player,args))
-					: null
 
 function ChatTriggers::apocalypse_debug( player, args, text )
 {
 	AdminSystem.Apocalypse_debugCmd( player, args );
 }
-::ChatTriggerDocs.apocalypse_debug <- @(player,args) AdminSystem.IsPrivileged(player) && "apocalypse_debug" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.apocalypse_debug(player,args))
-					: null
 
 function ChatTriggers::show_apocalypse_settings( player, args, text )
 {
 	AdminSystem.Show_apocalypse_settingsCmd( player, args );
 }
-::ChatTriggerDocs.show_apocalypse_settings <- @(player,args) AdminSystem.IsPrivileged(player) && "show_apocalypse_settings" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.show_apocalypse_settings(player,args))
-					: null
 
 function ChatTriggers::apocalypse_setting( player, args, text )
 {
 	AdminSystem.Apocalypse_settingCmd( player, args );
 }
-::ChatTriggerDocs.apocalypse_setting <- @(player,args) AdminSystem.IsPrivileged(player) && "apocalypse_setting" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.apocalypse_setting(player,args))
-					: null
 
 /*
  * @authors rhino
@@ -11726,33 +12099,21 @@ function ChatTriggers::ghost_zombies_setting( player, args, text )
 {
 	AdminSystem.GhostZombiesSettingCmd( player, args );
 }
-::ChatTriggerDocs.ghost_zombies_setting <- @(player,args) AdminSystem.IsPrivileged(player) && "ghost_zombies_setting" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.ghost_zombies_setting(player,args))
-					: null
 					
 function ChatTriggers::show_ghost_zombies_settings( player, args, text )
 {
 	AdminSystem.ShowGhostZombiesSettingsCmd( player, args );
 }
-::ChatTriggerDocs.show_ghost_zombies_settings <- @(player,args) AdminSystem.IsPrivileged(player) && "show_ghost_zombies_settings" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.show_ghost_zombies_settings(player,args))
-					: null
 
 function ChatTriggers::start_ghost_zombies( player, args, text )
 {
 	AdminSystem.StartGhostZombiesCmd( player, args );
 }
-::ChatTriggerDocs.start_ghost_zombies <- @(player,args) AdminSystem.IsPrivileged(player) && "start_ghost_zombies" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.start_ghost_zombies(player,args))
-					: null
 
 function ChatTriggers::pause_ghost_zombies( player, args, text )
 {
 	AdminSystem.PauseGhostZombiesCmd( player, args );
 }
-::ChatTriggerDocs.pause_ghost_zombies <- @(player,args) AdminSystem.IsPrivileged(player) && "pause_ghost_zombies" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.pause_ghost_zombies(player,args))
-					: null
 /*
  * @authors rhino
  */
@@ -11760,551 +12121,345 @@ function ChatTriggers::pause_ghost_zombies( player, args, text )
 
 function ChatTriggers::out( player, args, text )
 {
-	if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
-		return;
 	if(args.len() == 0)
 		return;
 
 	local res = compilestring("local __tempvar__="+Utils.CombineArray(args)+";return __tempvar__;")();
 	::AdminSystem.out(res,player);
 }
-::ChatTriggerDocs.out <- @(player,args) AdminSystem.IsPrivileged(player) && "out" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.out(player,args))
-					: null
 
 function ChatTriggers::enum_string( player, args, text )
 {
-	if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
-		return;
-
 	Printer(player,::AdminSystem._GetEnumString(strip(Utils.CombineArray(args))));
 }
-::ChatTriggerDocs.enum_string <- @(player,args) AdminSystem.IsPrivileged(player) && "enum_string" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.enum_string(player,args))
-					: null
 
 function ChatTriggers::hex_string( player, args, text )
 {
-	if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
-		return;
-
 	Printer(player,::AdminSystem._GetHexString(strip(Utils.CombineArray(args))));
 }
-::ChatTriggerDocs.hex_string <- @(player,args) AdminSystem.IsPrivileged(player) && "hex_string" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.hex_string(player,args))
-					: null
+
+function ChatTriggers::command_privilege( player, args, text )
+{
+	AdminSystem.ChangeCmdPrivileges(player, args);
+}
+function ChatTriggers::reload_command_privileges( player, args, text )
+{
+	AdminSystem.LoadCmdPrivileges();
+}
 
 function ChatTriggers::reload_vehicles( player, args, text )
 {
-	if(!AdminSystem.HasScriptAuth(player))
-		return;
 	AdminSystem.LoadVehicles(true);
 }
-::ChatTriggerDocs.reload_vehicles <- @(player,args) AdminSystem.IsPrivileged(player) && "reload_vehicles" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.reload_vehicles(player,args))
-					: null
 
 function ChatTriggers::create_alias( player, args, text )
 {
-	if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
-		return;
 	
 	AdminSystem.CreateAliasCommandCmd(player,args,text);
 }
-::ChatTriggerDocs.create_alias <- @(player,args) AdminSystem.IsPrivileged(player) && "create_alias" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.create_alias(player,args))
-					: null
 
 function ChatTriggers::replace_alias( player, args, text )
 {
-	if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
-		return;
 	
 	AdminSystem.ReplaceAliasCommandCmd(player,args,text);
 }
-::ChatTriggerDocs.replace_alias <- @(player,args) AdminSystem.IsPrivileged(player) && "replace_alias" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.replace_alias(player,args))
-					: null
 
 function ChatTriggers::unbind( player, args, text )
 {
 	AdminSystem.UnbindWithQuixCmd(player,args);
 }
-::ChatTriggerDocs.unbind <- @(player,args) AdminSystem.IsPrivileged(player) && "unbind" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.unbind(player,args))
-					: null
 
 function ChatTriggers::bind( player, args, text )
 {
 	AdminSystem.BindWithQuixCmd(player,args);
 }
-::ChatTriggerDocs.bind <- @(player,args) AdminSystem.IsPrivileged(player) && "bind" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.bind(player,args))
-					: null
 
 function ChatTriggers::reload_binds( player, args, text )
 {
-	if(!AdminSystem.HasScriptAuth(player))
-		return;
 	AdminSystem.LoadQuixBinds(true);
 }
-::ChatTriggerDocs.reload_binds <- @(player,args) AdminSystem.IsPrivileged(player) && "reload_binds" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.reload_binds(player,args))
-					: null
 
 function ChatTriggers::reload_ent_groups( player, args, text )
 {
-	if(!AdminSystem.HasScriptAuth(player))
-		return;
 	AdminSystem.LoadEntityGroups(true);
 }
-::ChatTriggerDocs.reload_ent_groups <- @(player,args) AdminSystem.IsPrivileged(player) && "reload_ent_groups" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.reload_ent_groups(player,args))
-					: null
 
 function ChatTriggers::reload_loots( player, args, text )
 {
-	if(!AdminSystem.HasScriptAuth(player))
-		return;
 	AdminSystem.LoadLootTables();
 }
-::ChatTriggerDocs.reload_loots <- @(player,args) AdminSystem.IsPrivileged(player) && "reload_loots" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.reload_loots(player,args))
-					: null
 
 
 function ChatTriggers::reload_aliases( player, args, text )
 {
-	if(!AdminSystem.HasScriptAuth(player))
-		return;
 	AdminSystem.LoadAliasedCommands(true);
 }
-::ChatTriggerDocs.reload_aliases <- @(player,args) AdminSystem.IsPrivileged(player) && "reload_aliases" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.reload_aliases(player,args))
-					: null
 
 function ChatTriggers::reload_scripts( player, args, text )
 {
-	if(!AdminSystem.HasScriptAuth(player))
-		return;
 	AdminSystem.LoadCustomScripts();
 }
-::ChatTriggerDocs.reload_scripts <- @(player,args) AdminSystem.IsPrivileged(player) && "reload_scripts" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.reload_scripts(player,args))
-					: null
 
 function ChatTriggers::reload_hooks( player, args, text )
 {
-	if(!AdminSystem.HasScriptAuth(player))
-		return;
 	AdminSystem.LoadCustomHooks();
 }
-::ChatTriggerDocs.reload_hooks <- @(player,args) AdminSystem.IsPrivileged(player) && "reload_hooks" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.reload_hooks(player,args))
-					: null
 
 function ChatTriggers::detach_hook( player, args, text )
 {
 	AdminSystem.DetachHook(player,args);
 }
-::ChatTriggerDocs.detach_hook <- @(player,args) AdminSystem.IsPrivileged(player) && "detach_hook" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.detach_hook(player,args))
-					: null
 
 function ChatTriggers::attach_hook( player, args, text )
 {
 	AdminSystem.AttachHook(player,args);
 }
-::ChatTriggerDocs.attach_hook <- @(player,args) AdminSystem.IsPrivileged(player) && "attach_hook" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.attach_hook(player,args))
-					: null
 
 function ChatTriggers::update_print_output_state(player,args,text)
 {
 	AdminSystem.Update_print_output_stateCmd(player, args);
 }
-::ChatTriggerDocs.update_print_output_state <- @(player,args) AdminSystem.IsPrivileged(player) && "update_print_output_state" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.update_print_output_state(player,args))
-					: null
 
 function ChatTriggers::help(player,args,text)
 {
 	AdminSystem.HelpCmd(player, args);
 }
-::ChatTriggerDocs.help <- @(player,args) AdminSystem.IsPrivileged(player) && "help" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.help(player,args))
-					: null
 
 function ChatTriggers::attach_to_targeted_position(player,args,text)
 {
 	AdminSystem.Attach_to_targeted_positionCmd(player, args);
 }
-::ChatTriggerDocs.attach_to_targeted_position <- @(player,args) AdminSystem.IsPrivileged(player) && "attach_to_targeted_position" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.attach_to_targeted_position(player,args))
-					: null
 
 function ChatTriggers::randomparticle_save_state(player,args,text)
 {
 	AdminSystem.Randomparticle_save_stateCmd(player, args);
 }
-::ChatTriggerDocs.randomparticle_save_state <- @(player,args) AdminSystem.IsPrivileged(player) && "randomparticle_save_state" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.randomparticle_save_state(player,args))
-					: null
 
 function ChatTriggers::update_attachment_preference(player,args,text)
 {
 	AdminSystem.Update_attachment_preferenceCmd(player, args);
 }
-::ChatTriggerDocs.update_attachment_preference <- @(player,args) AdminSystem.IsPrivileged(player) && "update_attachment_preference" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.update_attachment_preference(player,args))
-					: null
 
 function ChatTriggers::display_saved_particle(player,args,text)
 {
 	AdminSystem.Display_saved_particleCmd(player, args);
 }
-::ChatTriggerDocs.display_saved_particle <- @(player,args) AdminSystem.IsPrivileged(player) && "display_saved_particle" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.display_saved_particle(player,args))
-					: null
 
 function ChatTriggers::admin_var( player, args, text )
 {
 	AdminSystem.Admin_varCmd( player, args );
 }
-::ChatTriggerDocs.admin_var <- @(player,args) AdminSystem.IsPrivileged(player) && "admin_var" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.admin_var(player,args))
-					: null
 
 function ChatTriggers::add_script_auth( player, args, text )
 {
 	AdminSystem.AddScriptAuthCmd( player, args );
 }
-::ChatTriggerDocs.add_script_auth <- @(player,args) AdminSystem.IsPrivileged(player) && "add_script_auth" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.add_script_auth(player,args))
-					: null
 
 function ChatTriggers::remove_script_auth( player, args, text )
 {
 	AdminSystem.RemoveScriptAuthCmd( player, args );
 }
-::ChatTriggerDocs.remove_script_auth <- @(player,args) AdminSystem.IsPrivileged(player) && "remove_script_auth" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.remove_script_auth(player,args))
-					: null
+
+function ChatTriggers::user_level( player, args, text )
+{
+	AdminSystem.ChangeUserLevelCmd( player, args );
+}
 
 function ChatTriggers::server_exec(player,args,text)
 {
 	AdminSystem.Server_execCmd(player, args);
 }
-::ChatTriggerDocs.server_exec <- @(player,args) AdminSystem.IsPrivileged(player) && "server_exec" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.server_exec(player,args))
-					: null
 
 function ChatTriggers::script( player, args, text )
 {
-	if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
-		return;
 	local compiledscript = compilestring(Utils.CombineArray(args));
 	compiledscript();
 }
-::ChatTriggerDocs.script <- @(player,args) AdminSystem.IsPrivileged(player) && "script" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.script(player,args))
-					: null
 
 function ChatTriggers::setkeyval(player,args,text)
 {
 	AdminSystem.SetkeyvalCmd(player, args);
 }
-::ChatTriggerDocs.setkeyval <- @(player,args) AdminSystem.IsPrivileged(player) && "setkeyval" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.setkeyval(player,args))
-					: null
 
 function ChatTriggers::update_svcheats(player,args,text)
 {
 	AdminSystem.Update_svcheatsCmd(player, args);
 }
-::ChatTriggerDocs.update_svcheats <- @(player,args) AdminSystem.IsPrivileged(player) && "update_svcheats" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.update_svcheats(player,args))
-					: null
 
 function ChatTriggers::prop_spawn_setting(player,args,text)
 {
 	AdminSystem.Update_prop_spawn_settingCmd(player, args);
 }
-::ChatTriggerDocs.prop_spawn_setting <- @(player,args) AdminSystem.IsPrivileged(player) && "prop_spawn_setting" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.prop_spawn_setting(player,args))
-					: null
 function ChatTriggers::update_prop_spawn_setting(player,args,text)
 {
 	AdminSystem.Update_prop_spawn_settingCmd(player, args);
 }
-::ChatTriggerDocs.update_prop_spawn_setting <- @(player,args) AdminSystem.IsPrivileged(player) && "prop_spawn_setting" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.prop_spawn_setting(player,args))
-					: null
 
 function ChatTriggers::update_prop_spawn_menu_type(player,args,text)
 {
 	AdminSystem.Update_prop_spawn_menu_typeCmd(player, args);
 }
-::ChatTriggerDocs.update_prop_spawn_menu_type <- @(player,args) AdminSystem.IsPrivileged(player) && "update_prop_spawn_menu_type" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.update_prop_spawn_menu_type(player,args))
-					: null
 
 function ChatTriggers::display_prop_spawn_settings(player,args,text)
 {
 	AdminSystem.Display_prop_spawn_settingsCmd(player, args);
 }
-::ChatTriggerDocs.display_prop_spawn_settings <- @(player,args) AdminSystem.IsPrivileged(player) && "display_prop_spawn_settings" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.display_prop_spawn_settings(player,args))
-					: null
 
 function ChatTriggers::update_custom_response_preference(player,args,text)
 {
 	AdminSystem.Update_custom_response_preferenceCmd(player, args);
 }
-::ChatTriggerDocs.update_custom_response_preference <- @(player,args) AdminSystem.IsPrivileged(player) && "update_custom_response_preference" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.update_custom_response_preference(player,args))
-					: null
 
 function ChatTriggers::update_custom_sharing_preference(player,args,text)
 {
 	AdminSystem.Update_custom_sharing_preferenceCmd(player, args);
 }
-::ChatTriggerDocs.update_custom_sharing_preference <- @(player,args) AdminSystem.IsPrivileged(player) && "update_custom_sharing_preference" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.update_custom_sharing_preference(player,args))
-					: null
 
 function ChatTriggers::explosion( player, args, text )
 {
 	AdminSystem._AimedExplosionCmd( player, args );
 }
-::ChatTriggerDocs.explosion <- @(player,args) AdminSystem.IsPrivileged(player) && "explosion" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.explosion(player,args))
-					: null
 
 function ChatTriggers::show_explosion_settings( player, args, text )
 {
 	AdminSystem.Show_explosion_settingsCmd( player, args );
 }
-::ChatTriggerDocs.show_explosion_settings <- @(player,args) AdminSystem.IsPrivileged(player) && "show_explosion_settings" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.show_explosion_settings(player,args))
-					: null
 
 function ChatTriggers::explosion_setting( player, args, text )
 {
 	AdminSystem.Explosion_settingCmd( player, args );
 }
-::ChatTriggerDocs.explosion_setting <- @(player,args) AdminSystem.IsPrivileged(player) && "explosion_setting" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.explosion_setting(player,args))
-					: null
 
 function ChatTriggers::update_jockey_preference( player, args, text )
 {
 	AdminSystem.UpdateJockeyPreferenceCmd( player, args );
 }
-::ChatTriggerDocs.update_jockey_preference <- @(player,args) AdminSystem.IsPrivileged(player) && "update_jockey_preference" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.update_jockey_preference(player,args))
-					: null
 
 function ChatTriggers::update_tank_rock_launch_preference( player, args, text )
 {
 	AdminSystem.UpdateTankRockPreferenceCmd( player, args );
 }
-::ChatTriggerDocs.update_tank_rock_launch_preference <- @(player,args) AdminSystem.IsPrivileged(player) && "update_tank_rock_launch_preference" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.update_tank_rock_launch_preference(player,args))
-					: null
 
 function ChatTriggers::update_tank_rock_random_preference( player, args, text )
 {
 	AdminSystem.UpdateTankRockRandomPreferenceCmd( player, args );
 }
-::ChatTriggerDocs.update_tank_rock_random_preference <- @(player,args) AdminSystem.IsPrivileged(player) && "update_tank_rock_random_preference" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.update_tank_rock_random_preference(player,args))
-					: null
 
 function ChatTriggers::update_tank_rock_respawn_preference( player, args, text )
 {
 	AdminSystem.UpdateTankRockSpawnAfterPreferenceCmd( player, args );
 }
-::ChatTriggerDocs.update_tank_rock_respawn_preference <- @(player,args) AdminSystem.IsPrivileged(player) && "update_tank_rock_respawn_preference" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.update_tank_rock_respawn_preference(player,args))
-					: null
 
 function ChatTriggers::update_model_preference( player, args, text )
 {
 	AdminSystem.UpdateModelPreferenceCmd( player, args );
 }
-::ChatTriggerDocs.update_model_preference <- @(player,args) AdminSystem.IsPrivileged(player) && "update_model_preference" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.update_model_preference(player,args))
-					: null
 
 function ChatTriggers::restore_model( player, args, text )
 {
 	AdminSystem.RestoreModelCmd( player, args );
 }
-::ChatTriggerDocs.restore_model <- @(player,args) AdminSystem.IsPrivileged(player) && "restore_model" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.restore_model(player,args))
-					: null
 
 function ChatTriggers::set_animation( player, args, text )
 {
 	AdminSystem.SetAnimationCmd( player, args );
 }
-::ChatTriggerDocs.set_animation <- @(player,args) AdminSystem.IsPrivileged(player) && "set_animation" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.set_animation(player,args))
-					: null
 
 function ChatTriggers::random_animation( player, args, text )
 {
 	AdminSystem.RandomAnimationCmd( player, args );
 }
-::ChatTriggerDocs.random_animation <- @(player,args) AdminSystem.IsPrivileged(player) && "random_animation" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.random_animation(player,args))
-					: null
 					
 function ChatTriggers::search_animation( player, args, text )
 {
 	AdminSystem.SearchAnimationCmd( player, args );
 }
-::ChatTriggerDocs.search_animation <- @(player,args) AdminSystem.IsPrivileged(player) && "search_animation" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.search_animation(player,args))
-					: null
 
 function ChatTriggers::random_phys_model( player, args, text )
 {
 	AdminSystem.RandomPhysModelCmd( player, args );
 }
-::ChatTriggerDocs.random_phys_model <- @(player,args) AdminSystem.IsPrivileged(player) && "random_phys_model" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.random_phys_model(player,args))
-					: null
 
 function ChatTriggers::random_model( player, args, text )
 {
 	AdminSystem.RandomModelCmd( player, args );
 }
-::ChatTriggerDocs.random_model <- @(player,args) AdminSystem.IsPrivileged(player) && "random_model" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.random_model(player,args))
-					: null
 
 function ChatTriggers::search_model( player, args, text )
 {
 	AdminSystem.SearchModelCmd( player, args );
 }
-::ChatTriggerDocs.search_model <- @(player,args) AdminSystem.IsPrivileged(player) && "search_model" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.search_model(player,args))
-					: null
 	
 function ChatTriggers::rc_prop( player, args, text )
 {
 	AdminSystem.RemoteControlCmd( player, args );
 }
-::ChatTriggerDocs.rc_prop <- @(player,args) AdminSystem.IsPrivileged(player) && "rc_prop" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.rc_prop(player,args))
-					: null
 
 function ChatTriggers::drive( player, args, text )
 {
 	AdminSystem.out(TXTCLR.OG("drive")+" command has been "+TXTCLR.OG("deprecated")+"! Use "+TXTCLR.BG("start_driving")+" and "+TXTCLR.BG("stop_driving")+" instead",player)
 	AdminSystem.StartDriveCmd(player,args);
 }
-::ChatTriggerDocs.drive <- @(player,args) AdminSystem.IsPrivileged(player) && "drive" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.drive(player,args))
-					: null
 
 function ChatTriggers::start_driving( player, args, text )
 {
 	AdminSystem.StartDriveCmd( player, args );
 }
-::ChatTriggerDocs.start_driving <- @(player,args) AdminSystem.IsPrivileged(player) && "start_driving" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.start_driving(player,args))
-					: null
 
 function ChatTriggers::stop_driving( player, args, text )
 {
 	AdminSystem.StopDriveCmd( player, args );
 }
-::ChatTriggerDocs.stop_driving <- @(player,args) AdminSystem.IsPrivileged(player) && "stop_driving" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.stop_driving(player,args))
-					: null
 
 function ChatTriggers::get_in( player, args, text )
 {
 	AdminSystem.GetInAsPassenger( player, args );
 }
-::ChatTriggerDocs.get_in <- @(player,args) AdminSystem.IsPrivileged(player) && "get_in" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.get_in(player,args))
-					: null
 
 function ChatTriggers::get_out( player, args, text )
 {
 	AdminSystem.GetOutAsPassenger( player, args );
 }
-::ChatTriggerDocs.get_out <- @(player,args) AdminSystem.IsPrivileged(player) && "get_out" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.get_out(player,args))
-					: null
 
 function ChatTriggers::change_passenger_seat_position( player, args, text )
 {
 	AdminSystem.ChangePassengerSeatPositionCmd( player, args );
 }
-::ChatTriggerDocs.change_passenger_seat_position <- @(player,args) AdminSystem.IsPrivileged(player) && "change_passenger_seat_position" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.change_passenger_seat_position(player,args))
-					: null
 
 function ChatTriggers::make_driveable( player, args, text )
 {
 	AdminSystem.MakeDriveableCmd( player, args );
 }
-::ChatTriggerDocs.make_driveable <- @(player,args) AdminSystem.IsPrivileged(player) && "make_driveable" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.make_driveable(player,args))
-					: null
 
 function ChatTriggers::change_drive_direction( player, args, text )
 {
 	AdminSystem.ChangeDriveDirectionCmd( player, args );
 }
-::ChatTriggerDocs.change_drive_direction <- @(player,args) AdminSystem.IsPrivileged(player) && "change_drive_direction" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.change_drive_direction(player,args))
-					: null
 
 function ChatTriggers::change_seat_position( player, args, text )
 {
 	AdminSystem.ChangeSeatPositionCmd( player, args );
 }
-::ChatTriggerDocs.change_seat_position <- @(player,args) AdminSystem.IsPrivileged(player) && "change_seat_position" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.change_seat_position(player,args))
-					: null
 
 function ChatTriggers::set_default_seat_position( player, args, text )
 {
 	AdminSystem.SetDefaultSeatPositionCmd( player, args );
 }
-::ChatTriggerDocs.set_default_seat_position <- @(player,args) AdminSystem.IsPrivileged(player) && "set_default_seat_position" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.set_default_seat_position(player,args))
-					: null
 
 function ChatTriggers::kind_bots( player, args, text )
 {
 	AdminSystem._EnableKindnessCmd( player, args );
 }
-::ChatTriggerDocs.kind_bots <- @(player,args) AdminSystem.IsPrivileged(player) && "kind_bots" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.kind_bots(player,args))
-					: null
 
 function ChatTriggers::selfish_bots( player, args, text )
 {
 	AdminSystem._DisableKindnessCmd( player, args );
 }
-::ChatTriggerDocs.selfish_bots <- @(player,args) AdminSystem.IsPrivileged(player) && "selfish_bots" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.selfish_bots(player,args))
-					: null
 
 function ChatTriggers::update_bots_sharing_preference( player, args, text )
 {
 	AdminSystem.Update_bots_sharing_preferenceCmd( player, args );
 }
-::ChatTriggerDocs.update_bots_sharing_preference <- @(player,args) AdminSystem.IsPrivileged(player) && "update_bots_sharing_preference" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.update_bots_sharing_preference(player,args))
-					: null
 
 /*
  * @authors rhino
@@ -12315,49 +12470,31 @@ function ChatTriggers::piano_keys( player, args, text )
 {
 	AdminSystem.Piano_keysCmd( player, args );
 }
-::ChatTriggerDocs.piano_keys <- @(player,args) AdminSystem.IsPrivileged(player) && "piano_keys" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.piano_keys(player,args))
-					: null
 
 function ChatTriggers::remove_piano_keys( player, args, text )
 {
 	AdminSystem.Remove_piano_keysCmd( player, args );
 }
-::ChatTriggerDocs.remove_piano_keys <- @(player,args) AdminSystem.IsPrivileged(player) && "remove_piano_keys" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.remove_piano_keys(player,args))
-					: null
 
 function ChatTriggers::display_mics_speakers( player, args, text )
 {
 	AdminSystem.Display_mics_speakersCmd( player, args );
 }
-::ChatTriggerDocs.display_mics_speakers <- @(player,args) AdminSystem.IsPrivileged(player) && "display_mics_speakers" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.display_mics_speakers(player,args))
-					: null
 
 function ChatTriggers::speaker2mic( player, args, text )
 {
 	AdminSystem.Speaker2micCmd( player, args );
 }
-::ChatTriggerDocs.speaker2mic <- @(player,args) AdminSystem.IsPrivileged(player) && "speaker2mic" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.speaker2mic(player,args))
-					: null
 
 function ChatTriggers::speaker( player, args, text )
 {
 	AdminSystem.SpeakerCmd( player, args );
 }
-::ChatTriggerDocs.speaker <- @(player,args) AdminSystem.IsPrivileged(player) && "speaker" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.speaker(player,args))
-					: null
 
 function ChatTriggers::microphone( player, args, text )
 {
 	AdminSystem.MicrophoneCmd( player, args );
 }
-::ChatTriggerDocs.microphone <- @(player,args) AdminSystem.IsPrivileged(player) && "microphone" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.microphone(player,args))
-					: null
 
 /*
  * @authors rhino
@@ -12368,67 +12505,43 @@ function ChatTriggers::pitch( player, args, text )
 {
 	AdminSystem.PitchShiftCmd( player, args );
 }
-::ChatTriggerDocs.pitch <- @(player,args) AdminSystem.IsPrivileged(player) && "pitch" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.pitch(player,args))
-					: null
 
 
 function ChatTriggers::perma_pitch( player, args, text )
 {
 	AdminSystem.PermaPitchShiftCmd( player, args );
 }
-::ChatTriggerDocs.perma_pitch <- @(player,args) AdminSystem.IsPrivileged(player) && "perma_pitch" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.perma_pitch(player,args))
-					: null
 
 
 function ChatTriggers::randomline(player,args,text)
 {
 	AdminSystem.RandomlineCmd(player, args);
 }
-::ChatTriggerDocs.randomline <- @(player,args) AdminSystem.IsPrivileged(player) && "randomline" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.randomline(player,args))
-					: null
 
 function ChatTriggers::randomline_save_last(player,args,text)
 {
 	AdminSystem.Randomline_save_lastCmd(player, args);
 }
-::ChatTriggerDocs.randomline_save_last <- @(player,args) AdminSystem.IsPrivileged(player) && "randomline_save_last" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.randomline_save_last(player,args))
-					: null
 
 function ChatTriggers::speak_saved(player,args,text)
 {
 	AdminSystem.Speak_savedCmd(player, args);
 }
-::ChatTriggerDocs.speak_saved <- @(player,args) AdminSystem.IsPrivileged(player) && "speak_saved" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.speak_saved(player,args))
-					: null
 
 function ChatTriggers::display_saved_line(player,args,text)
 {
 	AdminSystem.Display_saved_lineCmd(player, args);
 }
-::ChatTriggerDocs.display_saved_line <- @(player,args) AdminSystem.IsPrivileged(player) && "display_saved_line" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.display_saved_line(player,args))
-					: null
 
 function ChatTriggers::save_line(player,args,text)
 {
 	AdminSystem.Save_lineCmd(player, args);
 }
-::ChatTriggerDocs.save_line <- @(player,args) AdminSystem.IsPrivileged(player) && "save_line" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.save_line(player,args))
-					: null
 
 function ChatTriggers::save_particle(player,args,text)
 {
 	AdminSystem.Save_particleCmd(player, args);
 }
-::ChatTriggerDocs.save_particle <- @(player,args) AdminSystem.IsPrivileged(player) && "save_particle" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.save_particle(player,args))
-					: null
 
 /*
  * @authors rhino
@@ -12439,1191 +12552,765 @@ function ChatTriggers::create_loot_sources( player, args, text )
 {
 	AdminSystem.CreateLootSourcesCmd( player, args );
 }
-::ChatTriggerDocs.create_loot_sources <- @(player,args) AdminSystem.IsPrivileged(player) && "create_loot_sources" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.create_loot_sources(player,args))
-					: null
 
 function ChatTriggers::show_looting_settings( player, args, text )
 {
 	AdminSystem.Show_loot_settingsCmd( player, args );
 }
-::ChatTriggerDocs.show_looting_settings <- @(player,args) AdminSystem.IsPrivileged(player) && "show_looting_settings" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.show_looting_settings(player,args))
-					: null
 
 function ChatTriggers::looting_setting( player, args, text )
 {
 	AdminSystem.Loot_settingCmd( player, args );
 }
-::ChatTriggerDocs.looting_setting <- @(player,args) AdminSystem.IsPrivileged(player) && "looting_setting" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.looting_setting(player,args))
-					: null
 
 function ChatTriggers::ent( player, args, text )
 {
 	AdminSystem.EntityWithTableCmd( player, args );
 }
-::ChatTriggerDocs.ent <- @(player,args) AdminSystem.IsPrivileged(player) && "ent" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.ent(player,args))
-					: null
 
 function ChatTriggers::entcvar( player, args, text )
 {
 	AdminSystem.EntCvarCmd( player, args );
 }
-::ChatTriggerDocs.entcvar <- @(player,args) AdminSystem.IsPrivileged(player) && "entcvar" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.entcvar(player,args))
-					: null
 
 function ChatTriggers::ent_rotate( player, args, text )
 {
 	AdminSystem.EntRotateCmd( player, args );
 }
-::ChatTriggerDocs.ent_rotate <- @(player,args) AdminSystem.IsPrivileged(player) && "ent_rotate" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.ent_rotate(player,args))
-					: null
 
 function ChatTriggers::ladder_team( player, args, text )
 {
 	AdminSystem.Ladder_teamCmd( player, args );
 }
-::ChatTriggerDocs.ladder_team <- @(player,args) AdminSystem.IsPrivileged(player) && "ladder_team" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.ladder_team(player,args))
-					: null
 
 function ChatTriggers::invisible_walls( player, args, text )
 {
 	AdminSystem.BlockerStateCmd( player, args );
 }
-::ChatTriggerDocs.invisible_walls <- @(player,args) AdminSystem.IsPrivileged(player) && "invisible_walls" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.invisible_walls(player,args))
-					: null
 
 function ChatTriggers::ent_push( player, args, text )
 {
 	AdminSystem.EntPushCmd( player, args );
 }
-::ChatTriggerDocs.ent_push <- @(player,args) AdminSystem.IsPrivileged(player) && "ent_push" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.ent_push(player,args))
-					: null
 
 function ChatTriggers::ent_move( player, args, text )
 {
 	AdminSystem.EntMoveCmd( player, args );
 }
-::ChatTriggerDocs.ent_move <- @(player,args) AdminSystem.IsPrivileged(player) && "ent_move" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.ent_move(player,args))
-					: null
 
 function ChatTriggers::ent_spin( player, args, text )
 {
 	AdminSystem.EntSpinCmd( player, args );
 }
-::ChatTriggerDocs.ent_spin <- @(player,args) AdminSystem.IsPrivileged(player) && "ent_spin" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.ent_spin(player,args))
-					: null
 
 function ChatTriggers::ent_teleport( player, args, text )
 {
 	AdminSystem.EntTeleportCmd( player, args );
 }
-::ChatTriggerDocs.ent_teleport <- @(player,args) AdminSystem.IsPrivileged(player) && "ent_teleport" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.ent_teleport(player,args))
-					: null
 
 function ChatTriggers::rainbow(player,args,text)
 {
 	AdminSystem.RainbowCmd(player, args);
 }
-::ChatTriggerDocs.rainbow <- @(player,args) AdminSystem.IsPrivileged(player) && "rainbow" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.rainbow(player,args))
-					: null
 
 function ChatTriggers::color(player,args,text)
 {
 	AdminSystem.ColorCmd(player, args);
 }
-::ChatTriggerDocs.color <- @(player,args) AdminSystem.IsPrivileged(player) && "color" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.color(player,args))
-					: null
 
 function ChatTriggers::model(player,args,text)
 {
 	AdminSystem.ModelCmd(player, args);
 }
-::ChatTriggerDocs.model <- @(player,args) AdminSystem.IsPrivileged(player) && "model" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.model(player,args))
-					: null
 
 function ChatTriggers::model_scale(player,args,text)
 {
 	AdminSystem.ModelScaleCmd(player, args);
 }
-::ChatTriggerDocs.model_scale <- @(player,args) AdminSystem.IsPrivileged(player) && "model_scale" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.model_scale(player,args))
-					: null
 
 function ChatTriggers::disguise(player,args,text)
 {
 	AdminSystem.DisguiseCmd(player, args);
 }
-::ChatTriggerDocs.disguise <- @(player,args) AdminSystem.IsPrivileged(player) && "disguise" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.disguise(player,args))
-					: null
 
 function ChatTriggers::attach_particle(player,args,text)
 {
 	AdminSystem.Attach_particleCmd(player, args);
 }
-::ChatTriggerDocs.attach_particle <- @(player,args) AdminSystem.IsPrivileged(player) && "attach_particle" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.attach_particle(player,args))
-					: null
 
 function ChatTriggers::spawn_particle_saved(player,args,text)
 {
 	AdminSystem.Spawn_particle_savedCmd(player, args);
 }
-::ChatTriggerDocs.spawn_particle_saved <- @(player,args) AdminSystem.IsPrivileged(player) && "spawn_particle_saved" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.spawn_particle_saved(player,args))
-					: null
 
 function ChatTriggers::attach_particle_saved(player,args,text)
 {
 	AdminSystem.Attach_particle_savedCmd(player, args);
 }
-::ChatTriggerDocs.attach_particle_saved <- @(player,args) AdminSystem.IsPrivileged(player) && "attach_particle_saved" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.attach_particle_saved(player,args))
-					: null
 
 function ChatTriggers::hat_position(player,args,text)
 {
 	AdminSystem._HatPosition(player, args);
 }
-::ChatTriggerDocs.hat_position <- @(player,args) AdminSystem.IsPrivileged(player) && "hat_position" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.hat_position(player,args))
-					: null
 function ChatTriggers::update_aimed_ent_direction(player,args,text)
 {
 	AdminSystem.UpdateAimedEntityDirection(player, args);
 }
-::ChatTriggerDocs.update_aimed_ent_direction <- @(player,args) AdminSystem.IsPrivileged(player) && "update_aimed_ent_direction" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.update_aimed_ent_direction(player,args))
-					: null
 function ChatTriggers::take_off_hat(player,args,text)
 {
 	AdminSystem._TakeOffHatCmd(player, args);
 }
-::ChatTriggerDocs.take_off_hat <- @(player,args) AdminSystem.IsPrivileged(player) && "take_off_hat" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.take_off_hat(player,args))
-					: null
 function ChatTriggers::wear_hat(player,args,text)
 {
 	AdminSystem._WearHatCmd(player, args);
 }
-::ChatTriggerDocs.wear_hat <- @(player,args) AdminSystem.IsPrivileged(player) && "wear_hat" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.wear_hat(player,args))
-					: null
 
 function ChatTriggers::grab(player,args,text)
 {
 	AdminSystem.GrabCmd(player, args);
 }
-::ChatTriggerDocs.grab <- @(player,args) AdminSystem.IsPrivileged(player) && "grab" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.grab(player,args))
-					: null
 function ChatTriggers::letgo(player,args,text)
 {
 	AdminSystem.LetgoCmd(player, args);
 }
-::ChatTriggerDocs.letgo <- @(player,args) AdminSystem.IsPrivileged(player) && "letgo" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.letgo(player,args))
-					: null
 function ChatTriggers::yeet(player,args,text)
 {
 	AdminSystem.YeetCmd(player, args);
 }
-::ChatTriggerDocs.yeet <- @(player,args) AdminSystem.IsPrivileged(player) && "yeet" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.yeet(player,args))
-					: null
 function ChatTriggers::show_yeet_settings(player,args,text)
 {
 	AdminSystem.ShowYeetSettingsCmd(player, args);
 }
-::ChatTriggerDocs.show_yeet_settings <- @(player,args) AdminSystem.IsPrivileged(player) && "show_yeet_settings" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.show_yeet_settings(player,args))
-					: null
 function ChatTriggers::yeet_setting(player,args,text)
 {
 	AdminSystem.YeetSettingCmd(player, args);
 }
-::ChatTriggerDocs.yeet_setting <- @(player,args) AdminSystem.IsPrivileged(player) && "yeet_setting" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.yeet_setting(player,args))
-					: null
 function ChatTriggers::change_grab_method(player,args,text)
 {
 	AdminSystem.GrabMethodCmd(player, args);
 }
-::ChatTriggerDocs.change_grab_method <- @(player,args) AdminSystem.IsPrivileged(player) && "change_grab_method" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.change_grab_method(player,args))
-					: null
+// Camera		
+function ChatTriggers::switch_hud_element( player, args, text )
+{
+	AdminSystem.SwitchHudElement( player, args );
+}
+function ChatTriggers::selfie( player, args, text )
+{
+	AdminSystem.SelfieViewCmd( player, args );
+}
+function ChatTriggers::create_camera( player, args, text )
+{
+	AdminSystem.CreateCameraCmd( player, args );
+}
+function ChatTriggers::camera_setting( player, args, text )
+{
+	AdminSystem.CameraSettingCmd( player, args );
+}
+function ChatTriggers::change_camera( player, args, text )
+{
+	AdminSystem.ChangeCameraCmd( player, args );
+}
+function ChatTriggers::last_camera_info( player, args, text )
+{
+	AdminSystem.LastCameraInfoCmd( player, args );
+}
+//
+
+function ChatTriggers::command_ban( player, args, text )
+{
+	AdminSystem.AddCommandBanCmd( player, args );
+}
+
+function ChatTriggers::command_unban( player, args, text )
+{
+	AdminSystem.RemoveCommandBanCmd( player, args );
+}
+
+function ChatTriggers::disable_command( player, args, text )
+{
+	AdminSystem.AddDisabledCommandCmd( player, args );
+}
+
+function ChatTriggers::enable_command( player, args, text )
+{
+	AdminSystem.RemoveDisabledCommandCmd( player, args );
+}
+
 function ChatTriggers::stop_car_alarms( player, args, text )
 {
 	AdminSystem.StopCarAlarmsCmd( player, args );
 }
-::ChatTriggerDocs.stop_car_alarms <- @(player,args) AdminSystem.IsPrivileged(player) && "stop_car_alarms" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.stop_car_alarms(player,args))
-					: null
 function ChatTriggers::remove_fall_cams( player, args, text )
 {
 	AdminSystem.RemoveFallCamsCmd( player, args );
 }
-::ChatTriggerDocs.remove_fall_cams <- @(player,args) AdminSystem.IsPrivileged(player) && "remove_fall_cams" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.remove_fall_cams(player,args))
-					: null
 
 function ChatTriggers::hurt_triggers( player, args, text )
 {
 	AdminSystem.HurtTriggersCmd( player, args );
 }
-::ChatTriggerDocs.hurt_triggers <- @(player,args) AdminSystem.IsPrivileged(player) && "hurt_triggers" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.hurt_triggers(player,args))
-					: null
 
 function ChatTriggers::debug_info(player,args,text)
 {
 	AdminSystem.Debug_infoCmd(player, args);
 }
-::ChatTriggerDocs.debug_info <- @(player,args) AdminSystem.IsPrivileged(player) && "debug_info" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.debug_info(player,args))
-					: null
 
 function ChatTriggers::zero_g(player,args,text)
 {
 	AdminSystem.ZeroGCmd(player, args);
 }
-::ChatTriggerDocs.zero_g <- @(player,args) AdminSystem.IsPrivileged(player) && "zero_g" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.zero_g(player,args))
-					: null
 
 function ChatTriggers::stop_time( player, args, text )
 {
 	AdminSystem.StopTimeCmd( player, args );
 }
-::ChatTriggerDocs.stop_time <- @(player,args) AdminSystem.IsPrivileged(player) && "stop_time" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.stop_time(player,args))
-					: null
 function ChatTriggers::resume_time( player, args, text )
 {
 	AdminSystem.ResumeTimeCmd( player, args );
 }
-::ChatTriggerDocs.resume_time <- @(player,args) AdminSystem.IsPrivileged(player) && "resume_time" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.resume_time(player,args))
-					: null
 					
 function ChatTriggers::wiki( player, args, text )
 {
 	AdminSystem.WikiCmd( player, args );
 }
-::ChatTriggerDocs.wiki <- @(player,args) AdminSystem.IsPrivileged(player) && "wiki" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.wiki(player,args))
-					: null
 function ChatTriggers::ents_around( player, args, text )
 {
 	AdminSystem.EntitiesAroundCmd( player, args );
 }
-::ChatTriggerDocs.ents_around <- @(player,args) AdminSystem.IsPrivileged(player) && "ents_around" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.ents_around(player,args))
-					: null
 function ChatTriggers::wnet( player, args, text )
 {
 	AdminSystem.WatchNetPropCmd( player, args );
 }
-::ChatTriggerDocs.wnet <- @(player,args) AdminSystem.IsPrivileged(player) && "wnet" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.wnet(player,args))
-					: null
 function ChatTriggers::stop_wnet( player, args, text )
 {
 	AdminSystem.StopWatchNetPropCmd( player, args );
 }
-::ChatTriggerDocs.stop_wnet <- @(player,args) AdminSystem.IsPrivileged(player) && "stop_wnet" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.stop_wnet(player,args))
-					: null
 
 function ChatTriggers::flag_lookup( player, args, text )
 {
 	AdminSystem.FlagLookUpCmd( player, args );
 }
-::ChatTriggerDocs.flag_lookup <- @(player,args) AdminSystem.IsPrivileged(player) && "flag_lookup" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.flag_lookup(player,args))
-					: null
 
 function ChatTriggers::change_ragdoll_view( player, args, text )
 {
 	AdminSystem.ChangeRagdollViewPositionCmd( player, args );
 }
-::ChatTriggerDocs.change_ragdoll_view <- @(player,args) AdminSystem.IsPrivileged(player) && "change_ragdoll_view" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.change_ragdoll_view(player,args))
-					: null
 
 function ChatTriggers::go_ragdoll( player, args, text )
 {
 	AdminSystem.GoRagdollCmd( player, args );
 }
-::ChatTriggerDocs.go_ragdoll <- @(player,args) AdminSystem.IsPrivileged(player) && "go_ragdoll" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.go_ragdoll(player,args))
-					: null
 function ChatTriggers::recover_ragdoll( player, args, text )
 {
 	AdminSystem.RecoverRagdollCmd( player, args );
 }
-::ChatTriggerDocs.recover_ragdoll <- @(player,args) AdminSystem.IsPrivileged(player) && "recover_ragdoll" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.recover_ragdoll(player,args))
-					: null
 
 function ChatTriggers::give_physics( player, args, text )
 {
 	AdminSystem.GivePhysicsCmd( player, args );
 }
-::ChatTriggerDocs.give_physics <- @(player,args) AdminSystem.IsPrivileged(player) && "give_physics" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.give_physics(player,args))
-					: null
 
 function ChatTriggers::soda_can( player, args, text )
 {
 	AdminSystem.SodaCanCmd( player, args );
 }
-::ChatTriggerDocs.soda_can <- @(player,args) AdminSystem.IsPrivileged(player) && "soda_can" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.soda_can(player,args))
-					: null
 
 function ChatTriggers::fire_ex( player, args, text )
 {
 	AdminSystem.FireExtinguisherCmd( player, args );
 }
-::ChatTriggerDocs.fire_ex <- @(player,args) AdminSystem.IsPrivileged(player) && "fire_ex" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.fire_ex(player,args))
-					: null
 function ChatTriggers::fire_extinguisher( player, args, text )
 {
 	AdminSystem.FireExtinguisherCmd( player, args );
 }
-::ChatTriggerDocs.fire_extinguisher <- @(player,args) AdminSystem.IsPrivileged(player) && "fire_ex" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.fire_ex(player,args))
-					: null
 /////////////////////////others/////////////////////////////
 
 function ChatTriggers::adminmode( player, args, text )
 {
 	AdminSystem.AdminModeCmd( player, args );
 }
-::ChatTriggerDocs.adminmode <- @(player,args) AdminSystem.IsPrivileged(player) && "adminmode" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.adminmode(player,args))
-					: null
 
 function ChatTriggers::add_admin( player, args, text )
 {
 	AdminSystem.AddAdminCmd( player, args );
 }
-::ChatTriggerDocs.add_admin <- @(player,args) AdminSystem.IsPrivileged(player) && "add_admin" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.add_admin(player,args))
-					: null
 
 function ChatTriggers::remove_admin( player, args, text )
 {
 	AdminSystem.RemoveAdminCmd( player, args );
 }
-::ChatTriggerDocs.remove_admin <- @(player,args) AdminSystem.IsPrivileged(player) && "remove_admin" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.remove_admin(player,args))
-					: null
 
 function ChatTriggers::kick( player, args, text )
 {
 	AdminSystem.KickCmd( player, args );
 }
-::ChatTriggerDocs.kick <- @(player,args) AdminSystem.IsPrivileged(player) && "kick" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.kick(player,args))
-					: null
 
 function ChatTriggers::ban( player, args, text )
 {
 	AdminSystem.BanCmd( player, args );
 }
-::ChatTriggerDocs.ban <- @(player,args) AdminSystem.IsPrivileged(player) && "ban" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.ban(player,args))
-					: null
 
 function ChatTriggers::god( player, args, text )
 {
 	AdminSystem.GodCmd( player, args );
 }
-::ChatTriggerDocs.god <- @(player,args) AdminSystem.IsPrivileged(player) && "god" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.god(player,args))
-					: null
 
 function ChatTriggers::bash( player, args, text )
 {
 	AdminSystem.BashCmd( player, args );
 }
-::ChatTriggerDocs.bash <- @(player,args) AdminSystem.IsPrivileged(player) && "bash" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.bash(player,args))
-					: null
 
 function ChatTriggers::freeze( player, args, text )
 {
 	AdminSystem.FreezeCmd( player, args );
 }
-::ChatTriggerDocs.freeze <- @(player,args) AdminSystem.IsPrivileged(player) && "freeze" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.freeze(player,args))
-					: null
 
 function ChatTriggers::noclip( player, args, text )
 {
 	AdminSystem.NoclipCmd( player, args );
 }
-::ChatTriggerDocs.noclip <- @(player,args) AdminSystem.IsPrivileged(player) && "noclip" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.noclip(player,args))
-					: null
 
 function ChatTriggers::speed( player, args, text )
 {
 	AdminSystem.SpeedCmd( player, args );
 }
-::ChatTriggerDocs.speed <- @(player,args) AdminSystem.IsPrivileged(player) && "speed" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.speed(player,args))
-					: null
 
 function ChatTriggers::fly( player, args, text )
 {
 	AdminSystem.FlyCmd( player, args );
 }
-::ChatTriggerDocs.fly <- @(player,args) AdminSystem.IsPrivileged(player) && "fly" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.fly(player,args))
-					: null
 
 function ChatTriggers::infinite_ammo( player, args, text )
 {
 	AdminSystem.InfiniteAmmoCmd( player, args );
 }
-::ChatTriggerDocs.infinite_ammo <- @(player,args) AdminSystem.IsPrivileged(player) && "infinite_ammo" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.infinite_ammo(player,args))
-					: null
 
 function ChatTriggers::unlimited_ammo( player, args, text )
 {
 	AdminSystem.UnlimitedAmmoCmd( player, args );
 }
-::ChatTriggerDocs.unlimited_ammo <- @(player,args) AdminSystem.IsPrivileged(player) && "unlimited_ammo" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.unlimited_ammo(player,args))
-					: null
 
 function ChatTriggers::infinite_upgrade( player, args, text )
 {
 	AdminSystem.InfiniteUpgradeCmd( player, args );
 }
-::ChatTriggerDocs.infinite_upgrade <- @(player,args) AdminSystem.IsPrivileged(player) && "infinite_upgrade" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.infinite_upgrade(player,args))
-					: null
 
 function ChatTriggers::cleanup( player, args, text )
 {
 	AdminSystem.CleanupCmd( player, args );
 }
-::ChatTriggerDocs.cleanup <- @(player,args) AdminSystem.IsPrivileged(player) && "cleanup" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.cleanup(player,args))
-					: null
 
 function ChatTriggers::adrenaline( player, args, text )
 {
 	AdminSystem.AdrenalineCmd( player, args );
 }
-::ChatTriggerDocs.adrenaline <- @(player,args) AdminSystem.IsPrivileged(player) && "adrenaline" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.adrenaline(player,args))
-					: null
 
 function ChatTriggers::move( player, args, text )
 {
 	AdminSystem.MoveCmd( player, args );
 }
-::ChatTriggerDocs.move <- @(player,args) AdminSystem.IsPrivileged(player) && "move" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.move(player,args))
-					: null
 
 function ChatTriggers::chase( player, args, text )
 {
 	AdminSystem.ChaseCmd( player, args );
 }
-::ChatTriggerDocs.chase <- @(player,args) AdminSystem.IsPrivileged(player) && "chase" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.chase(player,args))
-					: null
 
 function ChatTriggers::health( player, args, text )
 {
 	AdminSystem.HealthCmd( player, args );
 }
-::ChatTriggerDocs.health <- @(player,args) AdminSystem.IsPrivileged(player) && "health" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.health(player,args))
-					: null
 
 function ChatTriggers::max_health( player, args, text )
 {
 	AdminSystem.MaxHealthCmd( player, args );
 }
-::ChatTriggerDocs.max_health <- @(player,args) AdminSystem.IsPrivileged(player) && "max_health" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.max_health(player,args))
-					: null
 
 function ChatTriggers::melee( player, args, text )
 {
 	AdminSystem.MeleeCmd( player, args );
 }
-::ChatTriggerDocs.melee <- @(player,args) AdminSystem.IsPrivileged(player) && "melee" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.melee(player,args))
-					: null
 
 function ChatTriggers::random_decal( player, args, text )
 {
 	AdminSystem.RandomDecalCmd( player, args );
 }
-::ChatTriggerDocs.random_decal <- @(player,args) AdminSystem.IsPrivileged(player) && "random_decal" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.random_decal(player,args))
-					: null
 
 function ChatTriggers::search_decal( player, args, text )
 {
 	AdminSystem.SearchDecalCmd( player, args );
 }
-::ChatTriggerDocs.search_decal <- @(player,args) AdminSystem.IsPrivileged(player) && "search_decal" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.search_decal(player,args))
-					: null
 
 function ChatTriggers::decal( player, args, text )
 {
 	AdminSystem.DecalCmd( player, args );
 }
-::ChatTriggerDocs.decal <- @(player,args) AdminSystem.IsPrivileged(player) && "decal" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.decal(player,args))
-					: null
 
 function ChatTriggers::remove_lights( player, args, text )
 {
 	AdminSystem.RemoveLightsCmd( player, args );
 }
-::ChatTriggerDocs.remove_lights <- @(player,args) AdminSystem.IsPrivileged(player) && "remove_lights" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.remove_lights(player,args))
-					: null
 
 function ChatTriggers::spawn_point_light( player, args, text )
 {
 	AdminSystem.SpawnPointLightCmd( player, args );
 }
-::ChatTriggerDocs.spawn_point_light <- @(player,args) AdminSystem.IsPrivileged(player) && "spawn_point_light" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.spawn_point_light(player,args))
-					: null
 
 function ChatTriggers::point_light( player, args, text )
 {
 	AdminSystem.PointLightCmd( player, args );
 }
-::ChatTriggerDocs.point_light <- @(player,args) AdminSystem.IsPrivileged(player) && "point_light" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.point_light(player,args))
-					: null
 
 function ChatTriggers::point_light_follow( player, args, text )
 {
 	AdminSystem.PointLightFollowCmd( player, args );
 }
-::ChatTriggerDocs.point_light_follow <- @(player,args) AdminSystem.IsPrivileged(player) && "point_light_follow" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.point_light_follow(player,args))
-					: null
 
 function ChatTriggers::particle( player, args, text )
 {
 	AdminSystem.ParticleCmd( player, args );
 }
-::ChatTriggerDocs.particle <- @(player,args) AdminSystem.IsPrivileged(player) && "particle" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.particle(player,args))
-					: null
 					
 function ChatTriggers::random_particle( player, args, text )
 {
 	AdminSystem.RandomParticleCmd( player, args );
 }
-::ChatTriggerDocs.random_particle <- @(player,args) AdminSystem.IsPrivileged(player) && "random_particle" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.random_particle(player,args))
-					: null
 					
 function ChatTriggers::search_particle( player, args, text )
 {
 	AdminSystem.SearchParticleCmd( player, args );
 }
-::ChatTriggerDocs.search_particle <- @(player,args) AdminSystem.IsPrivileged(player) && "search_particle" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.search_particle(player,args))
-					: null
 
 function ChatTriggers::barrel( player, args, text )
 {
 	AdminSystem.BarrelCmd( player, args );
 }
-::ChatTriggerDocs.barrel <- @(player,args) AdminSystem.IsPrivileged(player) && "barrel" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.barrel(player,args))
-					: null
 
 function ChatTriggers::gascan( player, args, text )
 {
 	AdminSystem.GascanCmd( player, args );
 }
-::ChatTriggerDocs.gascan <- @(player,args) AdminSystem.IsPrivileged(player) && "gascan" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.gascan(player,args))
-					: null
 
 function ChatTriggers::propanetank( player, args, text )
 {
 	AdminSystem.PropaneTankCmd( player, args );
 }
-::ChatTriggerDocs.propanetank <- @(player,args) AdminSystem.IsPrivileged(player) && "propanetank" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.propanetank(player,args))
-					: null
 
 function ChatTriggers::oxygentank( player, args, text )
 {
 	AdminSystem.OxygenTankCmd( player, args );
 }
-::ChatTriggerDocs.oxygentank <- @(player,args) AdminSystem.IsPrivileged(player) && "oxygentank" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.oxygentank(player,args))
-					: null
 
 function ChatTriggers::fireworkcrate( player, args, text )
 {
 	AdminSystem.FireworkCrateCmd( player, args );
 }
-::ChatTriggerDocs.fireworkcrate <- @(player,args) AdminSystem.IsPrivileged(player) && "fireworkcrate" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.fireworkcrate(player,args))
-					: null
 
 function ChatTriggers::minigun( player, args, text )
 {
 	AdminSystem.MinigunCmd( player, args );
 }
-::ChatTriggerDocs.minigun <- @(player,args) AdminSystem.IsPrivileged(player) && "minigun" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.minigun(player,args))
-					: null
 
 function ChatTriggers::weapon( player, args, text )
 {
 	AdminSystem.WeaponCmd( player, args );
 }
-::ChatTriggerDocs.weapon <- @(player,args) AdminSystem.IsPrivileged(player) && "weapon" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.weapon(player,args))
-					: null
 
 function ChatTriggers::spawn_ammo( player, args, text )
 {
 	AdminSystem.SpawnAmmoCmd( player, args );
 }
-::ChatTriggerDocs.spawn_ammo <- @(player,args) AdminSystem.IsPrivileged(player) && "spawn_ammo" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.spawn_ammo(player,args))
-					: null
 
 function ChatTriggers::dummy( player, args, text )
 {
 	AdminSystem.DummyCmd( player, args );
 }
-::ChatTriggerDocs.dummy <- @(player,args) AdminSystem.IsPrivileged(player) && "dummy" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.dummy(player,args))
-					: null
 
 function ChatTriggers::entity( player, args, text )
 {
 	AdminSystem.EntityCmd( player, args );
 }
-::ChatTriggerDocs.entity <- @(player,args) AdminSystem.IsPrivileged(player) && "entity" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.entity(player,args))
-					: null
 
 function ChatTriggers::prop( player, args, text )
 {
 	AdminSystem.PropCmd( player, args );
 }
-::ChatTriggerDocs.prop <- @(player,args) AdminSystem.IsPrivileged(player) && "prop" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.prop(player,args))
-					: null
 
 function ChatTriggers::door( player, args, text )
 {
 	AdminSystem.DoorCmd( player, args );
 }
-::ChatTriggerDocs.door <- @(player,args) AdminSystem.IsPrivileged(player) && "door" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.door(player,args))
-					: null
 
 function ChatTriggers::spawn_model_saved( player, args, text )
 {
 	AdminSystem.Spawn_saved_modelCmd( player, args );
 }
-::ChatTriggerDocs.spawn_model_saved <- @(player,args) AdminSystem.IsPrivileged(player) && "spawn_model_saved" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.spawn_model_saved(player,args))
-					: null
 function ChatTriggers::display_saved_model( player, args, text )
 {
 	AdminSystem.Display_saved_modelCmd( player, args );
 }
-::ChatTriggerDocs.display_saved_model <- @(player,args) AdminSystem.IsPrivileged(player) && "display_saved_model" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.display_saved_model(player,args))
-					: null
 function ChatTriggers::random_model_save_state( player, args, text )
 {
 	AdminSystem.Randommodel_save_lastCmd( player, args );
 }
-::ChatTriggerDocs.random_model_save_state <- @(player,args) AdminSystem.IsPrivileged(player) && "random_model_save_state" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.random_model_save_state(player,args))
-					: null
 function ChatTriggers::save_model( player, args, text )
 {
 	AdminSystem.Save_modelCmd( player, args );
 }
-::ChatTriggerDocs.save_model <- @(player,args) AdminSystem.IsPrivileged(player) && "save_model" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.save_model(player,args))
-					: null
 
 function ChatTriggers::survivor( player, args, text )
 {
 	AdminSystem.SurvivorCmd( player, args );
 }
-::ChatTriggerDocs.survivor <- @(player,args) AdminSystem.IsPrivileged(player) && "survivor" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.survivor(player,args))
-					: null
 
 function ChatTriggers::l4d1_survivor( player, args, text )
 {
 	AdminSystem.L4D1SurvivorCmd( player, args );
 }
-::ChatTriggerDocs.l4d1_survivor <- @(player,args) AdminSystem.IsPrivileged(player) && "l4d1_survivor" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.l4d1_survivor(player,args))
-					: null
 
 function ChatTriggers::client( player, args, text )
 {
 	AdminSystem.ClientCmd( player, args );
 }
-::ChatTriggerDocs.client <- @(player,args) AdminSystem.IsPrivileged(player) && "client" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.client(player,args))
-					: null
 
 function ChatTriggers::console( player, args, text )
 {
 	AdminSystem.ConsoleCmd( player, args );
 }
-::ChatTriggerDocs.console <- @(player,args) AdminSystem.IsPrivileged(player) && "console" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.console(player,args))
-					: null
 
 function ChatTriggers::cvar( player, args, text )
 {
 	AdminSystem.CvarCmd( player, args );
 }
-::ChatTriggerDocs.cvar <- @(player,args) AdminSystem.IsPrivileged(player) && "cvar" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.cvar(player,args))
-					: null
 
 function ChatTriggers::ent_fire( player, args, text )
 {
 	AdminSystem.EntFireCmd( player, args );
 }
-::ChatTriggerDocs.ent_fire <- @(player,args) AdminSystem.IsPrivileged(player) && "ent_fire" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.ent_fire(player,args))
-					: null
 
 function ChatTriggers::timescale( player, args, text )
 {
 	AdminSystem.TimescaleCmd( player, args );
 }
-::ChatTriggerDocs.timescale <- @(player,args) AdminSystem.IsPrivileged(player) && "timescale" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.timescale(player,args))
-					: null
 
 function ChatTriggers::find_sound_in_scripts( player, args, text )
 {
 	AdminSystem.FindSoundInScriptsCmd( player, args );
 }
-::ChatTriggerDocs.find_sound_in_scripts <- @(player,args) AdminSystem.IsPrivileged(player) && "find_sound_in_scripts" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.find_sound_in_scripts(player,args))
-					: null
 
 function ChatTriggers::search_sound_script_name( player, args, text )
 {
 	AdminSystem.SearchSoundCmd( player, args );
 }
-::ChatTriggerDocs.search_sound_script_name <- @(player,args) AdminSystem.IsPrivileged(player) && "search_sound_script_name" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.search_sound_script_name(player,args))
-					: null
 
 function ChatTriggers::random_sound_script_name( player, args, text )
 {
 	AdminSystem.RandomSoundCmd( player, args );
 }
-::ChatTriggerDocs.random_sound_script_name <- @(player,args) AdminSystem.IsPrivileged(player) && "random_sound_script_name" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.random_sound_script_name(player,args))
-					: null
 					
 function ChatTriggers::sound_script_info( player, args, text )
 {
 	AdminSystem.SoundInfoCmd( player, args );
 }
-::ChatTriggerDocs.sound_script_info <- @(player,args) AdminSystem.IsPrivileged(player) && "sound_script_info" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.sound_script_info(player,args))
-					: null
 
 function ChatTriggers::sound( player, args, text )
 {
 	AdminSystem.SoundCmd( player, args );
 }
-::ChatTriggerDocs.sound <- @(player,args) AdminSystem.IsPrivileged(player) && "sound" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.sound(player,args))
-					: null
 
 function ChatTriggers::give( player, args, text )
 {
 	AdminSystem.GiveCmd( player, args );
 }
-::ChatTriggerDocs.give <- @(player,args) AdminSystem.IsPrivileged(player) && "give" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.give(player,args))
-					: null
 
 function ChatTriggers::remove( player, args, text )
 {
 	AdminSystem.RemoveCmd( player, args );
 }
-::ChatTriggerDocs.remove <- @(player,args) AdminSystem.IsPrivileged(player) && "remove" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.remove(player,args))
-					: null
 
 function ChatTriggers::drop( player, args, text )
 {
 	AdminSystem.DropCmd( player, args );
 }
-::ChatTriggerDocs.drop <- @(player,args) AdminSystem.IsPrivileged(player) && "drop" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.drop(player,args))
-					: null
 
 function ChatTriggers::use( player, args, text )
 {
 	AdminSystem.UseCmd( player, args );
 }
-::ChatTriggerDocs.use <- @(player,args) AdminSystem.IsPrivileged(player) && "use" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.use(player,args))
-					: null
 
 function ChatTriggers::speak( player, args, text )
 {
 	AdminSystem.SpeakCmd( player, args );
 }
-::ChatTriggerDocs.speak <- @(player,args) AdminSystem.IsPrivileged(player) && "speak" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.speak(player,args))
-					: null
 
 function ChatTriggers::revivecount( player, args, text )
 {
 	AdminSystem.ReviveCountCmd( player, args );
 }
-::ChatTriggerDocs.revivecount <- @(player,args) AdminSystem.IsPrivileged(player) && "revivecount" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.revivecount(player,args))
-					: null
 
 function ChatTriggers::revive( player, args, text )
 {
 	AdminSystem.ReviveCmd( player, args );
 }
-::ChatTriggerDocs.revive <- @(player,args) AdminSystem.IsPrivileged(player) && "revive" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.revive(player,args))
-					: null
 
 function ChatTriggers::defib( player, args, text )
 {
 	AdminSystem.DefibCmd( player, args );
 }
-::ChatTriggerDocs.defib <- @(player,args) AdminSystem.IsPrivileged(player) && "defib" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.defib(player,args))
-					: null
 
 function ChatTriggers::rescue( player, args, text )
 {
 	AdminSystem.RescueCmd( player, args );
 }
-::ChatTriggerDocs.rescue <- @(player,args) AdminSystem.IsPrivileged(player) && "rescue" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.rescue(player,args))
-					: null
 
 function ChatTriggers::incap( player, args, text )
 {
 	AdminSystem.IncapCmd( player, args );
 }
-::ChatTriggerDocs.incap <- @(player,args) AdminSystem.IsPrivileged(player) && "incap" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.incap(player,args))
-					: null
 
 function ChatTriggers::kill( player, args, text )
 {
 	AdminSystem.KillCmd( player, args );
 }
-::ChatTriggerDocs.kill <- @(player,args) AdminSystem.IsPrivileged(player) && "kill" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.kill(player,args))
-					: null
 
 function ChatTriggers::hurt( player, args, text )
 {
 	AdminSystem.HurtCmd( player, args );
 }
-::ChatTriggerDocs.hurt <- @(player,args) AdminSystem.IsPrivileged(player) && "hurt" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.hurt(player,args))
-					: null
 
 function ChatTriggers::respawn( player, args, text )
 {
 	AdminSystem.RespawnCmd( player, args );
 }
-::ChatTriggerDocs.respawn <- @(player,args) AdminSystem.IsPrivileged(player) && "respawn" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.respawn(player,args))
-					: null
 
 function ChatTriggers::extinguish( player, args, text )
 {
 	AdminSystem.ExtinguishCmd( player, args );
 }
-::ChatTriggerDocs.extinguish <- @(player,args) AdminSystem.IsPrivileged(player) && "extinguish" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.extinguish(player,args))
-					: null
 
 function ChatTriggers::ignite( player, args, text )
 {
 	AdminSystem.IgniteCmd( player, args );
 }
-::ChatTriggerDocs.ignite <- @(player,args) AdminSystem.IsPrivileged(player) && "ignite" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.ignite(player,args))
-					: null
 
 function ChatTriggers::vomit( player, args, text )
 {
 	AdminSystem.VomitCmd( player, args );
 }
-::ChatTriggerDocs.vomit <- @(player,args) AdminSystem.IsPrivileged(player) && "vomit" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.vomit(player,args))
-					: null
 
 function ChatTriggers::stagger( player, args, text )
 {
 	AdminSystem.StaggerCmd( player, args );
 }
-::ChatTriggerDocs.stagger <- @(player,args) AdminSystem.IsPrivileged(player) && "stagger" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.stagger(player,args))
-					: null
 
 function ChatTriggers::warp( player, args, text )
 {
 	AdminSystem.WarpCmd( player, args );
 }
-::ChatTriggerDocs.warp <- @(player,args) AdminSystem.IsPrivileged(player) && "warp" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.warp(player,args))
-					: null
 
 function ChatTriggers::warp_here( player, args, text )
 {
 	AdminSystem.WarpHereCmd( player, args );
 }
-::ChatTriggerDocs.warp_here <- @(player,args) AdminSystem.IsPrivileged(player) && "warp_here" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.warp_here(player,args))
-					: null
 
 function ChatTriggers::warp_saferoom( player, args, text )
 {
 	AdminSystem.WarpSaferoomCmd( player, args );
 }
-::ChatTriggerDocs.warp_saferoom <- @(player,args) AdminSystem.IsPrivileged(player) && "warp_saferoom" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.warp_saferoom(player,args))
-					: null
 
 function ChatTriggers::ammo( player, args, text )
 {
 	AdminSystem.AmmoCmd( player, args );
 }
-::ChatTriggerDocs.ammo <- @(player,args) AdminSystem.IsPrivileged(player) && "ammo" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.ammo(player,args))
-					: null
 
 function ChatTriggers::upgrade_add( player, args, text )
 {
 	AdminSystem.UpgradeAddCmd( player, args );
 }
-::ChatTriggerDocs.upgrade_add <- @(player,args) AdminSystem.IsPrivileged(player) && "upgrade_add" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.upgrade_add(player,args))
-					: null
 
 function ChatTriggers::upgrade_remove( player, args, text )
 {
 	AdminSystem.UpgradeRemoveCmd( player, args );
 }
-::ChatTriggerDocs.upgrade_remove <- @(player,args) AdminSystem.IsPrivileged(player) && "upgrade_remove" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.upgrade_remove(player,args))
-					: null
 
 function ChatTriggers::netprop( player, args, text )
 {
 	AdminSystem.NetPropCmd( player, args );
 }
-::ChatTriggerDocs.netprop <- @(player,args) AdminSystem.IsPrivileged(player) && "netprop" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.netprop(player,args))
-					: null
 
 function ChatTriggers::friction( player, args, text )
 {
 	AdminSystem.FrictionCmd( player, args );
 }
-::ChatTriggerDocs.friction <- @(player,args) AdminSystem.IsPrivileged(player) && "friction" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.friction(player,args))
-					: null
 
 function ChatTriggers::gravity( player, args, text )
 {
 	AdminSystem.GravityCmd( player, args );
 }
-::ChatTriggerDocs.gravity <- @(player,args) AdminSystem.IsPrivileged(player) && "gravity" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.gravity(player,args))
-					: null
 
 function ChatTriggers::velocity( player, args, text )
 {
 	AdminSystem.VelocityCmd( player, args );
 }
-::ChatTriggerDocs.velocity <- @(player,args) AdminSystem.IsPrivileged(player) && "velocity" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.velocity(player,args))
-					: null
 
 function ChatTriggers::drop_fire( player, args, text )
 {
 	AdminSystem.DropFireCmd( player, args );
 }
-::ChatTriggerDocs.drop_fire <- @(player,args) AdminSystem.IsPrivileged(player) && "drop_fire" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.drop_fire(player,args))
-					: null
 
 function ChatTriggers::drop_spit( player, args, text )
 {
 	AdminSystem.DropSpitCmd( player, args );
 }
-::ChatTriggerDocs.drop_spit <- @(player,args) AdminSystem.IsPrivileged(player) && "drop_spit" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.drop_spit(player,args))
-					: null
 
 function ChatTriggers::director( player, args, text )
 {
 	AdminSystem.DirectorCmd( player, args );
 }
-::ChatTriggerDocs.director <- @(player,args) AdminSystem.IsPrivileged(player) && "director" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.director(player,args))
-					: null
 
 function ChatTriggers::finale( player, args, text )
 {
 	AdminSystem.FinaleCmd( player, args );
 }
-::ChatTriggerDocs.finale <- @(player,args) AdminSystem.IsPrivileged(player) && "finale" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.finale(player,args))
-					: null
 
 function ChatTriggers::restart( player, args, text )
 {
 	AdminSystem.RestartCmd( player, args );
 }
-::ChatTriggerDocs.restart <- @(player,args) AdminSystem.IsPrivileged(player) && "restart" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.restart(player,args))
-					: null
 
 function ChatTriggers::limit( player, args, text )
 {
 	AdminSystem.LimitCmd( player, args );
 }
-::ChatTriggerDocs.limit <- @(player,args) AdminSystem.IsPrivileged(player) && "limit" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.limit(player,args))
-					: null
 
 function ChatTriggers::zombie( player, args, text )
 {
 	AdminSystem.ZombieCmd( player, args );
 }
-::ChatTriggerDocs.zombie <- @(player,args) AdminSystem.IsPrivileged(player) && "zombie" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.zombie(player,args))
-					: null
 
 function ChatTriggers::z_spawn( player, args, text )
 {
 	AdminSystem.ZSpawnCmd( player, args );
 }
-::ChatTriggerDocs.z_spawn <- @(player,args) AdminSystem.IsPrivileged(player) && "z_spawn" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.z_spawn(player,args))
-					: null
 
 function ChatTriggers::exec( player, args, text )
 {
 	AdminSystem.ExecCmd( player, args );
 }
-::ChatTriggerDocs.exec <- @(player,args) AdminSystem.IsPrivileged(player) && "exec" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.exec(player,args))
-					: null
 
 function ChatTriggers::endgame( player, args, text )
 {
 	AdminSystem.EndGameCmd( player, args );
 }
-::ChatTriggerDocs.endgame <- @(player,args) AdminSystem.IsPrivileged(player) && "endgame" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.endgame(player,args))
-					: null
 
 function ChatTriggers::alarmcar( player, args, text )
 {
 	AdminSystem.AlarmCarCmd( player, args );
 }
-::ChatTriggerDocs.alarmcar <- @(player,args) AdminSystem.IsPrivileged(player) && "alarmcar" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.alarmcar(player,args))
-					: null
 
 function ChatTriggers::gun( player, args, text )
 {
 	AdminSystem.GunCmd( player, args );
 }
-::ChatTriggerDocs.gun <- @(player,args) AdminSystem.IsPrivileged(player) && "gun" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.gun(player,args))
-					: null
-
-function ChatTriggers::command_ban( player, args, text )
-{
-	AdminSystem.AddCommandBanCmd( player, args );
-}
-::ChatTriggerDocs.command_ban <- @(player,args) AdminSystem.IsPrivileged(player) && "command_ban" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.command_ban(player,args))
-					: null
-
-function ChatTriggers::command_unban( player, args, text )
-{
-	AdminSystem.RemoveCommandBanCmd( player, args );
-}
-::ChatTriggerDocs.command_unban <- @(player,args) AdminSystem.IsPrivileged(player) && "command_unban" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.command_unban(player,args))
-					: null
-
-function ChatTriggers::disable_command( player, args, text )
-{
-	AdminSystem.AddDisabledCommandCmd( player, args );
-}
-::ChatTriggerDocs.disable_command <- @(player,args) AdminSystem.IsPrivileged(player) && "disable_command" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.disable_command(player,args))
-					: null
-
-function ChatTriggers::enable_command( player, args, text )
-{
-	AdminSystem.RemoveDisabledCommandCmd( player, args );
-}
-::ChatTriggerDocs.enable_command <- @(player,args) AdminSystem.IsPrivileged(player) && "enable_command" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.enable_command(player,args))
-					: null
 
 if ( Director.GetGameMode() == "holdout" )
 {
@@ -13631,30 +13318,89 @@ if ( Director.GetGameMode() == "holdout" )
 	{
 		AdminSystem.ResourceCmd( player, args );
 	}
-	::ChatTriggerDocs.resource <- @(player,args) AdminSystem.IsPrivileged(player) && "resource" in CmdDocs
-					? Messages.DocCmdPlayer(player,CmdDocs.resource(player,args))
-					: null
+}
+
+foreach(cmdname,cmdtrigger in ::ChatTriggers)
+{
+	compilestring("::ChatTriggerDocs[\""+cmdname+"\"] <- @(player,args) \""+cmdname+"\" in CmdDocs ? Messages.DocCmdPlayer(player,CmdDocs[\""+cmdname+"\"](player,args)) : null")()
 }
 
 ::AdminSystem.AdminModeCmd <- function ( player, args )
 {
-	local AdminsOnly = GetArgument(1);
+	Messages.WarnPlayer(player, "adminmode command has been deprecated! Use user_level and command_privilege commands to allow players use commands!");
+}
 
-	if (!AdminSystem.IsAdmin( player ))
-		return;
-	
-	if ( !AdminSystem.Vars.AllowAdminsOnly && (AdminsOnly == "enable" || AdminsOnly == "true" || AdminsOnly == "on") )
+::UserLevelUtils <-
+{
+	GetValidateChangeTarget = function(player, targetname)
 	{
-		AdminSystem.Vars.AllowAdminsOnly = true;
-		if ( AdminSystem.DisplayMsgs )
-			Messages.BIM.AdminMode.Enabled();
+		local Target = Utils.GetPlayerFromName(GetArgument(1));
+		
+		if ( !Target )
+			return false;
+
+		if ( Target.IsBot() && Target.IsHumanSpectating() )
+			Target = Target.GetHumanSpectator();
+		
+		if ( Target.HasPrivilege(PS_USER_HOST) )
+		{
+			if(!player.HasPrivilege(PS_USER_HOST))
+				::Messages.ThrowPlayer(player,"Host's user level can't be changed!")
+			return false
+		}
+		local steamid = Target.GetSteamID();
+		if ( steamid == "BOT" )
+			return false;
+		return Target
 	}
-	else if ( AdminSystem.Vars.AllowAdminsOnly && (AdminsOnly == "disable" || AdminsOnly == "false" || AdminsOnly == "off") )
+
+	ValidateLevel = function(player, lvlname, user = true)
 	{
-		AdminSystem.Vars.AllowAdminsOnly = false;
-		if ( AdminSystem.DisplayMsgs )
-			Messages.BIM.AdminMode.Disabled();
+		if(Utils.GetIDFromArray(::UserLevelNames,lvlname) == -1)
+		{
+			::Printer(player,"Unknown user level: "+lvlname,"error");
+			return false
+		}
+		else if(user && lvlname == "PS_USER_HOST")
+		{
+			if(!player.HasPrivilege(PS_USER_HOST))
+				::Messages.ThrowPlayer(player,"Can't give host privilages to other players!")
+			return false
+		}
+		return lvlname
 	}
+
+	Finalize = function(player, target, lvlname)
+	{
+		local levels = FileToString(Constants.Directories.UserLevels);
+		if ( levels == null )
+			return Messages.ThrowPlayer(player,"user_levels.txt doesn't exist, restart the chapter!!!");
+		else
+			levels = ChangeUserLevel(target, target.GetSteamID(), levels, lvlname)
+		if(!levels)
+		{
+			::Messages.ThrowPlayer(player,"Failed to change user-level of "+target.GetName()+", check user_level.txt file format!");
+			return
+		}
+
+		StringToFile(Constants.Directories.UserLevels, levels);
+		AdminSystem.LoadUserLevels();
+
+		if ( AdminSystem.DisplayMsgs )
+			Messages.BIM.UserLevels.Changed(target.GetName(), lvlname);
+	}
+}
+/*
+ * @authors rhino
+ */
+::AdminSystem.ChangeUserLevelCmd <- function ( player, args )
+{	
+	local target, lvlname;
+	if(!(target = ::UserLevelUtils.GetValidateChangeTarget(player, GetArgument(1)))
+		|| !(lvlname = ::UserLevelUtils.ValidateLevel(player, GetArgument(2), false)))
+		return
+
+	::UserLevelUtils.Finalize(player, target, lvlname);
 }
 
 /*
@@ -13662,47 +13408,14 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.AddScriptAuthCmd <- function ( player, args )
 {	
-	if(!(player.GetSteamID() in ::AdminSystem.HostPlayer))
-	{
-		if ( AdminSystem.DisplayMsgs )
-			Messages.BIM.ScriptAuth.HostOnly();
-		return;
-	}
+	local target, lvlname;
+	if(!(target = ::UserLevelUtils.GetValidateChangeTarget(player, GetArgument(1)))
+		|| !(lvlname = ::UserLevelUtils.ValidateLevel(player, "PS_USER_SCRIPTER")))
+		return
 
-	local Target = Utils.GetPlayerFromName(GetArgument(1));
-	
-	if ( !Target )
-		return;
+	::UserLevelUtils.Finalize(player, target, lvlname);
 
-	if ( Target.IsBot() && Target.IsHumanSpectating() )
-		Target = Target.GetHumanSpectator();
-	
-	local authList = FileToString(Constants.Directories.ScriptAuths);
-	if ( authList != null )
-	{
-		if (!AdminSystem.HasScriptAuth( player ))
-			return;
-	}
-	
-	local auths = FileToString(Constants.Directories.ScriptAuths);
-	local steamid = Target.GetSteamID();
-	if ( steamid == "BOT" )
-		return;
-	if ( (steamid in ::AdminSystem.ScriptAuths) )
-	{
-		if ( AdminSystem.DisplayMsgs )
-			Messages.BIM.ScriptAuth.AlreadyAuthed(Target.GetName());
-		return;
-	}
-	if ( auths == null )
-		auths = steamid + " //" + Target.GetName();
-	else
-		auths += "\r\n" + steamid + " //" + Target.GetName();
-	if ( AdminSystem.DisplayMsgs )
-		Messages.BIM.ScriptAuth.Given(Target.GetName());
-
-	StringToFile(Constants.Directories.ScriptAuths, auths);
-	AdminSystem.LoadScriptAuths();
+	::Printer(player,"Script auth commands are deprecated, use user_level command instead!","warning");
 }
 
 /*
@@ -13710,115 +13423,30 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.RemoveScriptAuthCmd <- function ( player, args )
 {
-	if(!(player.GetSteamID() in ::AdminSystem.HostPlayer))
-	{
-		if ( AdminSystem.DisplayMsgs )
-			Messages.BIM.ScriptAuth.HostOnly();
-		return;
-	}
-
-	local Target = Utils.GetPlayerFromName(GetArgument(1));
-	
-	if (!Target || !AdminSystem.HasScriptAuth( player ))
-		return;
-	
-	if ( Target.IsBot() && Target.IsHumanSpectating() )
-		Target = Target.GetHumanSpectator();
-	
-	local auths = FileToString(Constants.Directories.ScriptAuths);
-	local steamid = Target.GetSteamID();
-
-	if ( (steamid in ::AdminSystem.HostPlayer) && (player.GetSteamID() in ::AdminSystem.HostPlayer) )
-		return;
-	
-	if ( !(steamid in ::AdminSystem.ScriptAuths))
-	{
-		if ( AdminSystem.DisplayMsgs )
-			Messages.BIM.ScriptAuth.AlreadyNone(Target.GetName());
-		return;
-	}
-
-	if ( auths == null )
-		return;
-
-	auths = Utils.StringReplace(auths, steamid, "");
-	::AdminSystem.ScriptAuths = {};
-	if ( AdminSystem.DisplayMsgs )
-		Messages.BIM.ScriptAuth.Taken(Target.GetName());
-	StringToFile(Constants.Directories.ScriptAuths, auths);
-	AdminSystem.LoadScriptAuths();	
+	::Printer(player,"Script auth commands are deprecated, use user_level command instead!","error");
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.AddAdminCmd <- function ( player, args )
 {
-	local Target = Utils.GetPlayerFromName(GetArgument(1));
-	
-	if ( !Target )
-		return;
+	local target, lvlname;
+	if(!(target = ::UserLevelUtils.GetValidateChangeTarget(player, GetArgument(1)))
+		|| !(lvlname = ::UserLevelUtils.ValidateLevel(player, "PS_USER_ADMIN")))
+		return
 
-	if ( Target.IsBot() && Target.IsHumanSpectating() )
-		Target = Target.GetHumanSpectator();
-	
-	local adminList = FileToString(Constants.Directories.Admins);
-	if ( adminList != null )
-	{
-		if (!AdminSystem.IsAdmin( player ))
-			return;
-	}
-	
-	local admins = FileToString(Constants.Directories.Admins);
-	local steamid = Target.GetSteamID();
-	if ( steamid == "BOT" )
-		return;
-	if ( (steamid in ::AdminSystem.Admins) )
-	{
-		if ( AdminSystem.DisplayMsgs )
-			Messages.BIM.Admin.AlreadyAdmin(Target.GetName());
-		return;
-	}
-	if ( admins == null )
-		admins = steamid + " //" + Target.GetName();
-	else
-		admins += "\r\n" + steamid + " //" + Target.GetName();
-	if ( AdminSystem.DisplayMsgs )
-			Messages.BIM.Admin.Add(Target.GetName());
-	StringToFile(Constants.Directories.Admins, admins);
-	AdminSystem.LoadAdmins();
-	AdminSystem.LoadCustomSequences();
+	::UserLevelUtils.Finalize(player, target, lvlname);
+
+	::Printer(player,"Admin add/remove commands are deprecated, use user_level command instead!","warning");
 }
 
+/*
+ * @authors rhino
+ */
 ::AdminSystem.RemoveAdminCmd <- function ( player, args )
 {
-	local Target = Utils.GetPlayerFromName(GetArgument(1));
-	
-	if (!Target || !AdminSystem.IsAdmin( player ))
-		return;
-	
-	if ( Target.IsBot() && Target.IsHumanSpectating() )
-		Target = Target.GetHumanSpectator();
-	
-	local admins = FileToString(Constants.Directories.Admins);
-	local steamid = Target.GetSteamID();
-
-	if ( (steamid in ::AdminSystem.Admins) && !(player.GetSteamID() in ::AdminSystem.HostPlayer) )
-	{
-		if ( AdminSystem.DisplayMsgs )
-			Messages.BIM.Admin.HostOnlyRemoval();
-		return;
-	}
-	if ( (steamid in ::AdminSystem.HostPlayer) && (player.GetSteamID() in ::AdminSystem.HostPlayer) )
-	{
-		return;
-	}
-
-	if ( admins == null )
-		return;
-	admins = Utils.StringReplace(admins, steamid, "");
-	::AdminSystem.Admins = {};
-	if ( AdminSystem.DisplayMsgs )
-		Messages.BIM.Admin.Remove(Target.GetName());
-	StringToFile(Constants.Directories.Admins, admins);
-	AdminSystem.LoadAdmins();
+	::Printer(player,"Admin add/remove commands are deprecated, use user_level command instead!","error");
 }
 
 ::AdminSystem.KickCmd <- function ( player, args )
@@ -13834,7 +13462,7 @@ if ( Director.GetGameMode() == "holdout" )
 	
 	local steamid = Target.GetSteamID();
 	
-	if ( (steamid in ::AdminSystem.Admins) && !(player.GetSteamID() in ::AdminSystem.HostPlayer) )
+	if ( player.HasPrivilege(PS_USER_ADMIN|PS_USER_SCRIPTER|PS_USER_HOST) && !(player.GetSteamID() in ::AdminSystem.HostPlayer) )
 	{
 		if ( AdminSystem.DisplayMsgs )
 			Messages.BIM.KickPlayer.NoAdminKick();
@@ -13880,7 +13508,7 @@ if ( Director.GetGameMode() == "holdout" )
 	if ( !steamid || steamid == "BOT" )
 		return;
 	
-	if ( (steamid in ::AdminSystem.Admins) && !(player.GetSteamID() in ::AdminSystem.HostPlayer) )
+	if ( player.HasPrivilege(PS_USER_ADMIN|PS_USER_SCRIPTER|PS_USER_HOST) && !(player.GetSteamID() in ::AdminSystem.HostPlayer) )
 	{
 		if ( AdminSystem.DisplayMsgs )
 			Messages.BIM.BanPlayer.NoAdminBan();
@@ -13917,9 +13545,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Type = GetArgument(1);
 	local ID = AdminSystem.GetID( player );
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	if ( Type )
 	{
@@ -14026,9 +13651,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local ID = AdminSystem.GetID( player );
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
 
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Type )
 	{
 		if ( Type == "enable" )
@@ -14139,9 +13761,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local ID = AdminSystem.GetID( player );
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
 
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Type )
 	{
 		if ( Type == "all" )
@@ -14220,10 +13839,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Type = GetArgument(1);
 	local ID = AdminSystem.GetID( player );
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Type )
 	{
 		if ( Type == "all" )
@@ -14304,10 +13919,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Value = GetArgument(2);
 	local LookingPlayer = player.GetLookingEntity();
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	Survivor = Survivor.tolower();
 	
 	if ( Value )
@@ -14357,10 +13968,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Type = GetArgument(1);
 	local ID = AdminSystem.GetID( player );
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Type )
 	{
 		if ( Type == "all" )
@@ -14442,10 +14049,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Survivor = GetArgument(1);
 	local ID = AdminSystem.GetID( player );
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Survivor )
 	{
 		if ( Survivor == "all" )
@@ -14547,10 +14150,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Survivor = GetArgument(1);
 	local ID = AdminSystem.GetID( player );
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Survivor )
 	{
 		if ( Survivor == "all" )
@@ -14653,10 +14252,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Type = GetArgument(2);
 	local ID = AdminSystem.GetID( player );
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Type )
 	{
 		if ( Type == "incendiary_ammo" )
@@ -14901,8 +14496,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.StopCarAlarmsCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local objects = ::VSLib.EasyLogic.Objects.OfClassname("ambient_generic");
 	if(objects != null)
@@ -14929,8 +14522,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.RemoveFallCamsCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local objects = Objects.OfClassname("point_deathfall_camera");
 	if(objects.len() != 0)
@@ -14949,8 +14540,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.HurtTriggersCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local state = GetArgument(1)
 	switch(state)
@@ -15001,9 +14590,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.CleanupCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local killmodels = 
 	[
 		"models/props_industrial/barrel_fuel_parta.mdl",
@@ -15042,10 +14628,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Survivor = GetArgument(1);
 	local Duration = GetArgument(2);
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	Survivor = Survivor.tolower();
 	if ( Duration )
 	{
@@ -15086,10 +14668,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Entity = GetArgument(1);
 	local EyePosition = player.GetLookingLocation();
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Entity )
 	{
 		Entity = Entity.tolower();
@@ -15196,10 +14774,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local EyePosition = player.GetLookingLocation();
 	local InfectedChase = null;
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	function RemoveInfectedChase()
 	{
 		while( ( InfectedChase = Entities.FindByName( InfectedChase, "admin_chase" ) ) != null )
@@ -15247,10 +14821,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Survivor = GetArgument(1);
 	local Type = GetArgument(2);
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	Survivor = Survivor.tolower();
 	
 	if ( Type )
@@ -15288,10 +14858,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Entity = GetArgument(1);
 	local Amount = GetArgument(2);
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	Entity = Entity.tolower();
 	
 	if ( Entity == "all" )
@@ -15404,10 +14970,6 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	local Melee = GetArgument(1);
 	local EyePosition = player.GetLookingLocation();
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	EyePosition.z += 2;
 	g_ModeScript.SpawnMeleeWeapon( Melee, EyePosition, Vector(0,0,90) );
 }
@@ -15438,9 +15000,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.SetAnimationCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local ent = null
 	local target = GetArgument(2)
 	if(target != null && target != "!picker")
@@ -15541,8 +15100,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.RandomAnimationCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	local ent = null
 	local target = GetArgument(3)
 	if(target != null && target != "!picker")
@@ -15631,9 +15188,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.SearchAnimationCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local pattern = GetArgument(1)
 	if(!pattern)
 		return
@@ -15721,9 +15275,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.RandomPhysModelCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local limit = GetArgument(1)
 	local pattern = GetArgument(2)
 	if(!limit)
@@ -15749,9 +15300,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.RandomModelCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local limit = GetArgument(1)
 	local pattern = GetArgument(2)
 	if(!limit)
@@ -15777,9 +15325,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.SearchModelCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local pattern = GetArgument(1)
 	local limit = GetArgument(2)
 	if(!limit)
@@ -15802,8 +15347,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.ModelCmd <- function ( player, args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	if(::VSLib.EasyLogic.NextMapContinues)
 		return;
@@ -15870,8 +15413,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.ModelScaleCmd <- function ( player, args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local ent = GetArgument(1);
 	if(ent == "!picker")
@@ -15908,8 +15449,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.DisguiseCmd <- function ( player, args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	if(::VSLib.EasyLogic.NextMapContinues)
 		return;
@@ -15963,9 +15502,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.RandomDecalCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local limit = GetArgument(1)
 	local pattern = GetArgument(2)
 	if(!limit)
@@ -15991,9 +15527,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.SearchDecalCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local pattern = GetArgument(1)
 	local limit = GetArgument(2)
 	if(!limit)
@@ -16016,8 +15549,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.DecalCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 
 	local name = player.GetCharacterNameLower();
 	local decal = GetArgument(1);
@@ -16051,9 +15582,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.RandomParticleCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local limit = GetArgument(1)
 	local pattern = GetArgument(2)
 	if(!limit)
@@ -16079,9 +15607,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.SearchParticleCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local pattern = GetArgument(1)
 	local limit = GetArgument(2)
 	if(!limit)
@@ -16104,8 +15629,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.ParticleCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 
 	local name = player.GetCharacterNameLower();
 	local Particle = GetArgument(1);
@@ -16130,8 +15653,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.RemoveLightsCmd <- function(player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local target = GetArgument(1)
 	if(!target)
@@ -16189,9 +15710,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.SpawnPointLightCmd <- function(player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local colors =
 	{
 		white = "255 255 255 200"
@@ -16311,8 +15829,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.PointLightCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 
 	local color = GetArgument(1);
 	local colors =
@@ -16392,8 +15908,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.PointLightFollowCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 
 	local playeridx = player.GetIndex()
 	local color = GetArgument(1);
@@ -16527,8 +16041,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Show_explosion_settingsCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterNameLower()])
 	{
@@ -16554,8 +16066,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Explosion_settingCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local name = player.GetCharacterName();
 	local setting = GetArgument(1);
@@ -16620,8 +16130,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem._AimedExplosionCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local meteorshower = GetArgument(1)
 	local name = player.GetCharacterNameLower();
@@ -16697,7 +16205,7 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else
 	{
-		local explosion_sound = Utils.CreateEntityWithTable({classname="ambient_generic", message = "randomexplosion", spawnflags = 32, origin = aimedlocation});
+		local explosion_sound = Utils.CreateEntityWithTable({classname="ambient_generic", message = ::GetExplosionSoundScriptName(), spawnflags = 32, origin = aimedlocation});
 
 		local explosion_table =
 		{
@@ -16765,13 +16273,13 @@ if ( Director.GetGameMode() == "holdout" )
 	local distvec = null;
 	local dist = null;
 
-	tbl.explosion_sound.Input("ToggleSound","",0.1);
-	tbl.explosion.Input("Explode","",0.1);
-	tbl.explosion_sound.Input("Kill","",0.25);
+	tbl.explosion_sound.Input("ToggleSound","",0.033);
+	tbl.explosion.Input("Explode","",0.033);
+	tbl.explosion_sound.Input("runscriptcode","if(Entity(self).GetParent() != null) Entity(self).GetParent().Input(\"KillHierarchy\") else Entity(self).Kill()",0.066);
 
 	foreach(ent in ents)
 	{	
-		if (ent.GetOrigin() == null || !ent.GetOrigin())
+		if (!ent.IsEntityValid() || ent.GetParent() != null)
 			continue;
 
 		distvec = ent.GetOrigin()-exporigin;
@@ -16786,8 +16294,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.RestoreModelCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local target = GetArgument(1);
 	local name = player.GetCharacterNameLower();
@@ -16824,8 +16330,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.UpdateTankRockPreferenceCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	if(AdminSystem.Vars._RockThrow.pushenabled)
 	{
@@ -16844,8 +16348,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.UpdateTankRockRandomPreferenceCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	if(AdminSystem.Vars._RockThrow.randomized)
 	{
@@ -16864,8 +16366,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.UpdateTankRockSpawnAfterPreferenceCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	if(AdminSystem.Vars._RockThrow.spawn_prop_after)
 	{
@@ -16884,8 +16384,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.UpdateJockeyPreferenceCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	if(Convars.GetStr("z_jockey_limit") == "0")
 	{
@@ -16906,8 +16404,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.UpdateModelPreferenceCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	local name = player.GetCharacterNameLower();
 
 	if(AdminSystem.Vars._modelPreference[name].keeplast)
@@ -16942,8 +16438,6 @@ if ( Director.GetGameMode() == "holdout" )
 
 ::AdminSystem.MicrophoneCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local name = player.GetCharacterNameLower();
 
@@ -17017,8 +16511,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.SpeakerCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local name = player.GetCharacterNameLower();
 	
@@ -17044,8 +16536,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Speaker2micCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local name = player.GetCharacterNameLower();
 
@@ -17077,8 +16567,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Display_mics_speakersCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local name = player.GetCharacterNameLower();
 	local pos = player.GetPosition();
@@ -17151,8 +16639,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Remove_piano_keysCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local name = player.GetCharacterNameLower();
 	local entfound = null;
@@ -17176,9 +16662,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Piano_keysCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local name = player.GetCharacterNameLower();
 
 	local lookedloc = player.GetLookingLocation();
@@ -17197,33 +16680,63 @@ if ( Director.GetGameMode() == "holdout" )
 		sounds = 43
 	}
 
-	local startkey = Utils.CreateEntityWithTable(keyvaltable);
-	
-	if(startkey == null)
-	{Messages.ThrowPlayer(player,CmdMessages.Piano.Failed());return;}
-	
-	local entindex = startkey.GetIndex();
-
-	//printl("43(#"+entindex+") pos:"+lookedloc);
-	AdminSystem.Vars._spawnedPianoKeys[entindex] <- startkey.GetName();
-
-	local ent = null;
-	local temp = player.GetEyeAngles().Forward();
-
 	// Unit vector perpendecular to player
+	local temp = player.GetEyeAngles().Forward();
 	eyeforward.x = temp.y;
 	eyeforward.y = -temp.x;
 	eyeforward.z = 0;
 	eyeforward = eyeforward.Scale(1.0/eyeforward.Length());
 
-	foreach(i,key in keys)
-	{	
-		keyvaltable.origin = lookedloc + eyeforward.Scale(horizontal_space*(i+1));
-		keyvaltable.sounds = key
-		ent = Utils.CreateEntityWithTable(keyvaltable);
-		entindex = ent.GetIndex();
+	local ent = null;
+	local startkey = null;
+
+	if(!IsCurrentMapAnOfficialMap())
+	{
+		local nKeys = 6.0;
+		horizontal_space *= 25/nKeys;
+		keyvaltable.sounds = 0
+		keyvaltable.wait = 0.2
+
+		startkey = Utils.CreateEntityWithTable(keyvaltable);
 		
-		AdminSystem.Vars._spawnedPianoKeys[entindex] <- ent.GetName();
+		if(startkey == null)
+		{Messages.ThrowPlayer(player,CmdMessages.Piano.Failed());return;}
+		
+		local entindex = startkey.GetIndex();
+
+		AdminSystem.Vars._spawnedPianoKeys[entindex] <- startkey.GetName();
+		startkey.Input("addoutput","OnPressed !self,runscriptcode,Entity(self).EmitSound(GetPianoKeySoundScriptName()),0,-1");
+
+		for(local i = 0; i < nKeys; i++)
+		{
+			keyvaltable.origin = lookedloc + eyeforward.Scale(horizontal_space*(i+1));
+			ent = Utils.CreateEntityWithTable(keyvaltable);
+			entindex = ent.GetIndex();
+			
+			AdminSystem.Vars._spawnedPianoKeys[entindex] <- ent.GetName();
+			ent.Input("addoutput","OnPressed !self,runscriptcode,Entity(self).EmitSound(GetPianoKeySoundScriptName()),0,-1");
+		}
+	}
+	else
+	{
+		startkey = Utils.CreateEntityWithTable(keyvaltable);
+		
+		if(startkey == null)
+		{Messages.ThrowPlayer(player,CmdMessages.Piano.Failed());return;}
+		
+		local entindex = startkey.GetIndex();
+
+		AdminSystem.Vars._spawnedPianoKeys[entindex] <- startkey.GetName();
+
+		foreach(i,key in keys)
+		{	
+			keyvaltable.origin = lookedloc + eyeforward.Scale(horizontal_space*(i+1));
+			keyvaltable.sounds = key
+			ent = Utils.CreateEntityWithTable(keyvaltable);
+			entindex = ent.GetIndex();
+			
+			AdminSystem.Vars._spawnedPianoKeys[entindex] <- ent.GetName();
+		}
 	}
 	
 	Printer(player,CmdMessages.Piano.Success(startkey));
@@ -17238,11 +16751,7 @@ if ( Director.GetGameMode() == "holdout" )
 		Amount = Amount.tointeger();
 	else
 		Amount = 1;
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
-	for ( local i = 0; i < Amount; i++ )
+		for ( local i = 0; i < Amount; i++ )
 	{
 		Utils.SpawnFuelBarrel(EyePosition);
 	}
@@ -17257,11 +16766,7 @@ if ( Director.GetGameMode() == "holdout" )
 		Amount = Amount.tointeger();
 	else
 		Amount = 1;
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
-	EyePosition.z += 10;
+		EyePosition.z += 10;
 	
 	for ( local i = 0; i < Amount; i++ )
 	{
@@ -17278,11 +16783,7 @@ if ( Director.GetGameMode() == "holdout" )
 		Amount = Amount.tointeger();
 	else
 		Amount = 1;
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
-	EyePosition.z += 10;
+		EyePosition.z += 10;
 	
 	for ( local i = 0; i < Amount; i++ )
 	{
@@ -17299,11 +16800,7 @@ if ( Director.GetGameMode() == "holdout" )
 		Amount = Amount.tointeger();
 	else
 		Amount = 1;
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
-	EyePosition.z += 10;
+		EyePosition.z += 10;
 	
 	for ( local i = 0; i < Amount; i++ )
 	{
@@ -17320,11 +16817,7 @@ if ( Director.GetGameMode() == "holdout" )
 		Amount = Amount.tointeger();
 	else
 		Amount = 1;
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
-	EyePosition.z += 10;
+		EyePosition.z += 10;
 	
 	for ( local i = 0; i < Amount; i++ )
 	{
@@ -17338,10 +16831,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local EyePosition = player.GetLookingLocation();
 	local EyeAngles = player.GetEyeAngles();
 	local GroundPosition = QAngle(0,0,0);
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	GroundPosition.y = EyeAngles.y;
 	
 	if ( Minigun == "l4d1" )
@@ -17357,10 +16846,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local EyePosition = player.GetLookingLocation();
 	local EyeAngles = player.GetEyeAngles();
 	local GroundPosition = QAngle(0,0,90);
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Count )
 		Count = Count.tointeger();
 	else
@@ -17380,10 +16865,6 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	local AmmoModel = GetArgument(1);
 	local EyePosition = player.GetLookingLocation();
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( !AmmoModel )
 		Utils.SpawnAmmo("models/props/terror/ammo_stack.mdl", EyePosition);
 	else
@@ -17403,10 +16884,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local EyePosition = player.GetLookingLocation();
 	local EyeAngles = player.GetEyeAngles();
 	local GroundPosition = QAngle(0,0,0);
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	GroundPosition.y = EyeAngles.y;
 	GroundPosition.y += 180;
 	local ent = null;
@@ -17462,9 +16939,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.EntityCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local name = player.GetCharacterNameLower();
 	local classname = GetArgument(1);
 	local pos = GetArgument(2);
@@ -17481,7 +16955,7 @@ if ( Director.GetGameMode() == "holdout" )
 
 	local ent = Utils.CreateEntity(classname,pos,ang,keyvals);
 
-	Printer(player,CmdMessages.Ent.EntityCreate(ent.GetIndex(),Utils.GetTableString(keyvals)));
+	Printer(player,CmdMessages.Ent.EntityCreate(ent.GetIndex(),ent.GetClassname(),Utils.GetTableString(keyvals)));
 	
 }
 
@@ -17502,9 +16976,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.EntityWithTableCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local cname = GetArgument(1);
 	if(cname == "prop_dynamic")
 	{
@@ -18130,9 +17601,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.PropCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	function PostSettingsManualChanges(raise,yaw,tbl,player)
 	{
 		if(raise != null)
@@ -18273,7 +17741,7 @@ if ( Director.GetGameMode() == "holdout" )
 			local recover_parms = {}
 			if(MDL in AdminSystem.EntityGroupSpawnRestrictions && AdminSystem.EntityGroupSpawnRestrictions[MDL])
 			{
-				if(!AdminSystem.HasScriptAuth(player,true))
+				if(!player.HasPrivilege(PS_USER_SCRIPTER))
 				{
 					Printer(player,"You need script authorization to spawn this entity!")
 					return;
@@ -18359,7 +17827,7 @@ if ( Director.GetGameMode() == "holdout" )
 			createdent = []
 			foreach(mdl in split(MDL,"&"))
 			{
-				local ent = Utils.SpawnPhysicsProp( Utils.CleanColoredString(mdl), origin, angles );
+				local ent = Utils.SpawnPhysicsProp( FixShortModelName(Utils.CleanColoredString(mdl)), origin, angles );
 				if(ent != null && ent.IsEntityValid())
 				{
 					createdent.append(ent);
@@ -18372,7 +17840,7 @@ if ( Director.GetGameMode() == "holdout" )
 						parentfailed = true
 						break;
 					}
-					ent = Utils.SpawnDynamicProp( Utils.CleanColoredString(mdl), origin, angles );
+					ent = Utils.SpawnDynamicProp( FixShortModelName(Utils.CleanColoredString(mdl)), origin, angles );
 					if(ent != null && ent.IsEntityValid())
 					{
 						createdent.append(ent);
@@ -18383,7 +17851,7 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		else
 		{
-			createdent = Utils.SpawnPhysicsProp( Utils.CleanColoredString(MDL), origin, angles );
+			createdent = Utils.SpawnPhysicsProp( FixShortModelName(Utils.CleanColoredString(MDL)), origin, angles );
 			if(createdent == null)
 				singlefailed = true;
 			else if(!raised)
@@ -18400,7 +17868,7 @@ if ( Director.GetGameMode() == "holdout" )
 			createdent = []
 			foreach(mdl in split(MDL,"&"))
 			{
-				local ent = Utils.SpawnPhysicsMProp( Utils.CleanColoredString(mdl), origin, angles, {massScale = massScale} );
+				local ent = Utils.SpawnPhysicsMProp( FixShortModelName(Utils.CleanColoredString(mdl)), origin, angles, {massScale = massScale} );
 				if(ent != null && ent.IsEntityValid())
 				{
 					createdent.append(ent);
@@ -18413,7 +17881,7 @@ if ( Director.GetGameMode() == "holdout" )
 						parentfailed = true
 						break;
 					}
-					ent = Utils.SpawnDynamicProp( Utils.CleanColoredString(mdl), origin, angles );
+					ent = Utils.SpawnDynamicProp( FixShortModelName(Utils.CleanColoredString(mdl)), origin, angles );
 					if(ent != null && ent.IsEntityValid())
 					{
 						createdent.append(ent);
@@ -18424,7 +17892,7 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 		else
 		{
-			createdent = Utils.SpawnPhysicsMProp( Utils.CleanColoredString(MDL), origin, angles, {massScale = massScale} );
+			createdent = Utils.SpawnPhysicsMProp( FixShortModelName(Utils.CleanColoredString(MDL)), origin, angles, {massScale = massScale} );
 			if(createdent == null)
 				singlefailed = true;
 			else if(!raised)
@@ -18490,14 +17958,14 @@ if ( Director.GetGameMode() == "holdout" )
 			createdent = []
 			foreach(mdl in split(MDL,"&"))
 			{
-				local ent = Utils.SpawnDynamicProp( Utils.CleanColoredString(mdl), origin, angles );
+				local ent = Utils.SpawnDynamicProp( FixShortModelName(Utils.CleanColoredString(mdl)), origin, angles );
 				if(ent != null && ent.IsEntityValid())
 					createdent.append(ent);
 			}
 		}
 		else
 		{
-			createdent = Utils.SpawnDynamicProp( Utils.CleanColoredString(MDL), origin, angles );
+			createdent = Utils.SpawnDynamicProp( FixShortModelName(Utils.CleanColoredString(MDL)), origin, angles );
 			if(createdent != null && !raised)
 			{
 				local bbox = createdent.GetNetProp("m_Collision")
@@ -18524,7 +17992,7 @@ if ( Director.GetGameMode() == "holdout" )
 			if(propsettingname == "physics")
 			{
 				
-				local ent = Utils.SpawnDynamicProp( Utils.CleanColoredString(MDL), origin, angles );
+				local ent = Utils.SpawnDynamicProp( FixShortModelName(Utils.CleanColoredString(MDL)), origin, angles );
 				if(ent == null)
 				{
 					Messages.ThrowPlayer(player,CmdMessages.Prop.Failed(typename));
@@ -18532,7 +18000,7 @@ if ( Director.GetGameMode() == "holdout" )
 				}
 				args.ent <- ent
 
-				switch(::CheckPhysicsAvailabilityForModel(Utils.CleanColoredString(MDL),ent,DoDummyConversionProcessProp,args,true))
+				switch(::CheckPhysicsAvailabilityForModel(FixShortModelName(Utils.CleanColoredString(MDL)),ent,DoDummyConversionProcessProp,args,true))
 				{
 					case false:
 						if(AdminSystem.Vars._grabbackupprop.enabled)
@@ -18569,7 +18037,7 @@ if ( Director.GetGameMode() == "holdout" )
 			}
 			else
 			{
-				local ent = Utils.SpawnDynamicProp( Utils.CleanColoredString(MDL), origin, angles );
+				local ent = Utils.SpawnDynamicProp( FixShortModelName(Utils.CleanColoredString(MDL)), origin, angles );
 				if(ent == null)
 				{
 					Messages.ThrowPlayer(player,CmdMessages.Prop.Failed(typename));
@@ -18596,7 +18064,7 @@ if ( Director.GetGameMode() == "holdout" )
 			{
 				mdl = mdlsplit[0]
 			}
-			local ent = Utils.SpawnDynamicProp( Utils.CleanColoredString(mdl), origin, angles );
+			local ent = Utils.SpawnDynamicProp( FixShortModelName(Utils.CleanColoredString(mdl)), origin, angles );
 			if(ent == null)
 			{
 				Messages.ThrowPlayer(player,CmdMessages.Prop.Failed(typename));
@@ -18819,10 +18287,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local GroundPosition = QAngle(0,0,0);
 	local ent = null;
 	local raise = GetArgument(2);
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	GroundPosition.y = EyeAngles.y;
 	
 	if(raise)
@@ -18892,10 +18356,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Weapon = GetArgument(2);
 	local LookingSurvivor = player.GetLookingEntity();
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	Survivor = Survivor.tolower();
 	
 	if ( Survivor == "!picker" )
@@ -18943,10 +18403,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Weapon = GetArgument(2);
 	local LookingSurvivor = player.GetLookingEntity();
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	Survivor = Survivor.tolower();
 	
 	if ( Survivor == "!picker" )
@@ -19022,10 +18478,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Weapon = GetArgument(2);
 	local LookingSurvivor = player.GetLookingEntity();
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Survivor )
 		Survivor = Survivor.tolower();
 	
@@ -19113,10 +18565,6 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	local Survivor = GetArgument(1);
 	local EyePosition = player.GetLookingLocation();
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Survivor )
 		Survivor = Survivor.tolower();
 	else
@@ -19159,10 +18607,6 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	local Survivor = GetArgument(1);
 	local EyePosition = player.GetLookingLocation();
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	Survivor = Survivor.tolower();
 	
 	if ( Survivor == "bill" )
@@ -19186,18 +18630,11 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	local Command = GetArgument(1);
 	local Value = GetArgument(2);
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	Utils.BroadcastClientCommand(Utils.CombineArray(args));
 }
 
 ::AdminSystem.ConsoleCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ) && !AdminSystem.HasScriptAuth(player))
-		return;
-
 	local Command = GetArgument(1);
 	local Value = GetArgument(2);
 
@@ -19210,9 +18647,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.CvarCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
-		return;
-
 	local Cvar = GetArgument(1);
 	local Value = GetArgument(2);
 	
@@ -19272,8 +18706,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.EntCvarCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ) || !AdminSystem.HasScriptAuth(player))
-		return;
 	
 	local ent = GetArgument(1);
 	local Cvar = GetArgument(2);
@@ -19363,9 +18795,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.EntTeleportCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local id = GetArgument(1);
 	local ent = Ent(id);
 
@@ -19381,9 +18810,6 @@ if ( Director.GetGameMode() == "holdout" )
 
 ::AdminSystem.EntFireCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local Entnameid = GetArgument(1);
 	local Action = GetArgument(2);
 	local Value = GetArgument(3);
@@ -19398,8 +18824,11 @@ if ( Director.GetGameMode() == "holdout" )
 	local act = strip(Action.tolower())
 	if(act == "addoutput" || act == "runscriptcode" || act == "runscriptfile")
 	{
-		if(!AdminSystem.HasScriptAuth(player))
+		if(!player.HasPrivilege(PS_USER_SCRIPTER))
+		{
+			Messages.ThrowPlayer(player,"You need PS_USER_SCRIPTER privilege to fire '"+act+"' input on entities!")
 			return;
+		}	
 	}
 
 	local val = "";
@@ -19503,8 +18932,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.EntRotateCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 
 	local axis = GetArgument(1);
 	local val = GetArgument(2);
@@ -19611,8 +19038,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.EntPushCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 
 	local scalefactor = GetArgument(1);
 	local direction = GetArgument(2);
@@ -19704,8 +19129,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.EntMoveCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 
 	local units = GetArgument(1);
 	local direction = GetArgument(2);
@@ -19857,8 +19280,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.EntSpinCmd <- function ( player, args )
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 
 	local scalefactor = GetArgument(1);
 	local direction = GetArgument(2);
@@ -19931,10 +19352,6 @@ if ( Director.GetGameMode() == "holdout" )
 ::AdminSystem.TimescaleCmd <- function ( player, args )
 {
 	local DesiredTimeScale = GetArgument(1);
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( DesiredTimeScale == "slow" )
 	{
 		Utils.ResumeTime();
@@ -19976,10 +19393,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Name = GetArgument(3);
 	local ID = AdminSystem.GetID( player );
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Sound )
 	{
 		if(Sound == "!random")
@@ -20065,9 +19478,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.SoundInfoCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local sname = GetArgument(1)
 	if(!sname)
 		return
@@ -20105,9 +19515,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.SearchSoundCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local pattern = GetArgument(1)
 	local limit = GetArgument(2)
 	if(!limit)
@@ -20128,9 +19535,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.RandomSoundCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local pattern = GetArgument(1)
 	local limit = GetArgument(2)
 	if(!limit)
@@ -20149,9 +19553,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.FindSoundInScriptsCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local file = GetArgument(1)
 	if(!file)
 		return
@@ -20202,10 +19603,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local LookingEntity = player.GetLookingEntity();
 	local ent = null;
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Survivor )
 		Survivor = Survivor.tolower();
 	
@@ -20320,18 +19717,12 @@ if ( Director.GetGameMode() == "holdout" )
 
 ::AdminSystem.PitchShiftCmd <- function(player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local b = player.GetBaseEntity()
 	DoEntFire("!self","PitchShift",GetArgument(1) ? GetArgument(1) : "1",0,null,b.GetCurrentScene())
 }
 
 ::AdminSystem.PermaPitchShiftCmd <- function(player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local timername = "PS_PERMA_PITCH_SHIFT_"+player.GetCharacterNameLower()
 	local p = GetArgument(1)
 	if(timername in ::Quix.Table)
@@ -20375,10 +19766,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Scene = GetArgument(2);
 	local LookingSurvivor = player.GetLookingEntity();
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	Survivor = Survivor.tolower();
 	
 	if ( Survivor == "!picker" )
@@ -20422,10 +19809,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Survivor = GetArgument(1);
 	local ReviveCount = GetArgument(2);
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	Survivor = Survivor.tolower();
 	if ( ReviveCount )
 		ReviveCount = ReviveCount.tointeger();
@@ -20458,10 +19841,6 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	local Survivor = GetArgument(1);
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Survivor )
 		Survivor = Survivor.tolower();
 	
@@ -20493,10 +19872,6 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	local Survivor = GetArgument(1);
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Survivor )
 		Survivor = Survivor.tolower();
 	
@@ -20528,10 +19903,6 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	local Survivor = GetArgument(1);
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Survivor )
 		Survivor = Survivor.tolower();
 	
@@ -20563,10 +19934,6 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	local Survivor = GetArgument(1);
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Survivor )
 		Survivor = Survivor.tolower();
 	
@@ -20629,10 +19996,6 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	local Entity = GetArgument(1);
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Entity )
 		Entity = Entity.tolower();
 	
@@ -20795,10 +20158,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Entity = GetArgument(1);
 	local Amount = GetArgument(2);
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	Entity = Entity.tolower();
 	if ( Amount )
 		Amount = Amount.tointeger();
@@ -20881,10 +20240,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Survivor = GetArgument(1);
 	local Location = player.GetLocation();
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Survivor )
 		Survivor = Survivor.tolower();
 	
@@ -20946,10 +20301,6 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	local Entity = GetArgument(1);
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Entity )
 		Entity = Entity.tolower();
 	
@@ -21026,10 +20377,6 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	local Entity = GetArgument(1);
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Entity )
 		Entity = Entity.tolower();
 	
@@ -21106,10 +20453,6 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	local Survivor = GetArgument(1);
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Survivor )
 	{
 		Survivor = Survivor.tolower();
@@ -21183,10 +20526,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Survivor = GetArgument(1);
 	local Away = GetArgument(2);
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Survivor )
 		Survivor = Survivor.tolower();
 	
@@ -21314,10 +20653,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Location = player.GetLocation();
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
 	local Target2 = Utils.GetPlayerFromName(GetArgument(2));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Survivor )
 	{
 		Survivor = Survivor.tolower();
@@ -21437,10 +20772,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Survivor = GetArgument(1);
 	local EyePosition = player.GetLookingLocation();
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Survivor )
 	{
 		Survivor = Survivor.tolower();
@@ -21514,10 +20845,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Survivor = GetArgument(1);
 	local Saferoom = Utils.GetSaferoomLocation();
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Saferoom == null )
 		return;
 	
@@ -21594,10 +20921,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Survivor = GetArgument(1);
 	local Amount = GetArgument(2);
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	Survivor = Survivor.tolower();
 	if ( Amount )
 		Amount = Amount.tointeger();
@@ -21637,10 +20960,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Upgrade = GetArgument(2);
 	local LookingSurvivor = player.GetLookingEntity();
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	Survivor = Survivor.tolower();
 	if ( Upgrade )
 		Upgrade = Upgrade.tolower();
@@ -21778,10 +21097,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Upgrade = GetArgument(2);
 	local LookingSurvivor = player.GetLookingEntity();
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	Survivor = Survivor.tolower();
 	if ( Upgrade )
 		Upgrade = Upgrade.tolower();
@@ -21918,12 +21233,8 @@ if ( Director.GetGameMode() == "holdout" )
 	local Entity = GetArgument(1);
 	local Property = GetArgument(2);
 	local Value = GetArgument(3);
-	local LookingEntity = player.GetLookingEntity();
+	local LookingEntity = player.GetLookingEntity(GRAB_YEET_TRACE_MASK);
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Value )
 	{
 		if ( Value.tolower() == "true" )
@@ -22018,10 +21329,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Entity = GetArgument(1);
 	local Value = GetArgument(2);
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	Entity = Entity.tolower();
 	if ( Value )
 		Value = Value.tofloat();
@@ -22096,8 +21403,6 @@ if ( Director.GetGameMode() == "holdout" )
 ::AdminSystem.RainbowCmd <- function(player, args)
 {	
 	//// ARGUMENT CHECKS
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 
 	// ARG 1 = duration
 	local duration = GetArgument(1);
@@ -22123,7 +21428,7 @@ if ( Director.GetGameMode() == "holdout" )
 		return;	// too many changes
 
 	// ARG 3 = !picker
-	local entlooked = player.GetLookingEntity();
+	local entlooked = player.GetLookingEntity(GRAB_YEET_TRACE_MASK);
 	if(entlooked == null)	
 		return;
 
@@ -22169,13 +21474,7 @@ if ( Director.GetGameMode() == "holdout" )
  * @authors rhino
  */
 ::AdminSystem.HelpCmd <- function(player, args)
-{	
-	if (!AdminSystem.IsPrivileged(player,true))
-	{
-		Messages.WarnPlayer(player,"Command's can only be used by admins!")
-		return;
-	}
-
+{
 	local cmd = GetArgument(1);
 	if(cmd == null)
 		cmd = "help"
@@ -22191,8 +21490,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Update_print_output_stateCmd <- function(player, args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 
 	local name = player.GetCharacterNameLower();
 	local newstate = !AdminSystem.Vars._outputsEnabled[name];
@@ -22206,8 +21503,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Randomline_save_lastCmd <- function(player, args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 
 	local name = player.GetCharacterNameLower();
 	local newstate = !AdminSystem.Vars._saveLastLine[name];
@@ -22221,8 +21516,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Randommodel_save_lastCmd <- function(player, args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 
 	local name = player.GetCharacterNameLower();
 	local newstate = !AdminSystem.Vars._saveLastModel[name];
@@ -22236,8 +21529,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Save_lineCmd <- function(player, args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local name = player.GetCharacterNameLower();
 	local targetname = GetArgument(1);
@@ -22258,8 +21549,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Save_modelCmd <- function(player, args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local name = player.GetCharacterNameLower();
 	local classname = GetArgument(1);
@@ -22279,8 +21568,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Speak_savedCmd <- function(player, args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local name = player.GetCharacterNameLower();
 	local lineinfo = AdminSystem.Vars._savedLine[name];
@@ -22301,8 +21588,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Spawn_saved_modelCmd <- function(player, args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local name = player.GetCharacterNameLower();
 	local classname = AdminSystem.Vars._savedModel[name].classname;
@@ -22412,8 +21697,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Display_saved_lineCmd <- function(player, args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local name = player.GetCharacterNameLower();
 	if (AdminSystem.Vars._saveLastLine[name])
@@ -22436,8 +21719,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Display_saved_modelCmd <- function(player, args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local name = player.GetCharacterNameLower();
 	if (AdminSystem.Vars._saveLastModel[name])
@@ -22644,8 +21925,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Debug_infoCmd <- function(player, args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 
 	/*	Some dumping commands:
 			blackbox_dump  : vcd and wav info
@@ -22678,9 +21957,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.EntitiesAroundCmd <- function(player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local aimed = player.GetLookingLocation();
 	local radius = GetArgument(1);
 	radius = radius == null ? 50 : radius.tofloat();
@@ -22711,15 +21987,12 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.WikiCmd <- function(player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local classname = GetArgument(1)
 	if(classname == null)
 		return
 	if(classname == "!picker")
 	{
-		local looked = player.GetLookingEntity()
+		local looked = player.GetLookingEntity(GRAB_YEET_TRACE_MASK)
 		if(looked==null)
 			return;
 		else
@@ -22911,11 +22184,9 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.WatchNetPropCmd <- function(player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local entlooked = GetArgument(3) ? GetArgument(3) 
-									 : player.GetLookingEntity();
+									 : player.GetLookingEntity(GRAB_YEET_TRACE_MASK);
 	if(entlooked == null)
 	{	
 		Printer(player,CmdMessages.Debug.WatchNoEntity())
@@ -23139,11 +22410,9 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.StopWatchNetPropCmd <- function(player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local entlooked = GetArgument(2) ? GetArgument(2) 
-									 : player.GetLookingEntity();
+									 : player.GetLookingEntity(GRAB_YEET_TRACE_MASK);
 	if(entlooked == null)
 	{	
 		Printer(player,CmdMessages.Debug.WatchNoEntity())
@@ -23218,8 +22487,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.FlagLookUpCmd <- function(player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local prefix = GetArgument(1);
 	local val = GetArgument(2);
@@ -23277,7 +22544,7 @@ if ( Director.GetGameMode() == "holdout" )
 	{ClientPrint(null,3,"\x04"+Messages.BIM.NotACharacter(character));return;}
 
 	if(startmsg)
-		AdminSystem._Clientbroadcast(character,"echo -----------------SCRIPT_REPORT_START-------------------",1,!reporttohost);
+		AdminSystem._Clientbroadcast(character,"echo ....vvvvvvvvvvvvvvvvvvvv...COMMAND OUTPUT BELOW...vvvvvvvvvvvvvvvvvvvv....",1,!reporttohost);
 
 	// Replace bad characters
 	message = Utils.StringReplace(Utils.StringReplace(message,","," "),":"," ");
@@ -23293,10 +22560,10 @@ if ( Director.GetGameMode() == "holdout" )
 		AdminSystem._Clientbroadcast(character,"echo "+message,1,!reporttohost);
 
 	if(endmsg)
-		AdminSystem._Clientbroadcast(character,"echo ------------------SCRIPT_REPORT_END--------------------",1,!reporttohost,delay_end_msg);
+		AdminSystem._Clientbroadcast(character,"echo ....^^^^^^^^^^^^^^^^^^^^...COMMAND OUTPUT ABOVE...^^^^^^^^^^^^^^^^^^^^....",1,!reporttohost,delay_end_msg);
 
 	if(reporttohost && msgtype!="debug" && !(Utils.GetPlayerFromName(character).GetSteamID() in ::AdminSystem.HostPlayer))
-		printl("[Broadcast] printB for "+character+" with "+msgtype+" message:"+message);
+		printl("[Broadcast] Printed to "+character+" ("+msgtype+"):"+message);
 }
 
 /*
@@ -23305,8 +22572,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Server_execCmd <- function(player, args)
 {	
-	if (!AdminSystem.IsPrivileged( player ) && !AdminSystem.HasScriptAuth(player))
-		return;
 	local cmd = GetArgument(1);
 	local arg1 = GetArgument(2);
 	local arg2 = GetArgument(3);
@@ -23326,8 +22591,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.RandomlineCmd <- function(player, args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 
 	local name = player.GetCharacterNameLower();
 	local targetname = GetArgument(1);
@@ -23365,7 +22628,7 @@ if ( Director.GetGameMode() == "holdout" )
 	}
 	else if(targetname == "picker")
 	{
-		targetname = player.GetLookingEntity();
+		targetname = player.GetLookingEntity(GRAB_YEET_TRACE_MASK);
 
 		if(targetname == null){return;}
 		if(targetname.GetClassname() != "player"){return;}
@@ -23444,10 +22707,8 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.ColorCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
-	local ent = player.GetLookingEntity();
+	local ent = player.GetLookingEntity(GRAB_YEET_TRACE_MASK);
 	if( ent == null)
 		return;
 
@@ -23465,6 +22726,15 @@ if ( Director.GetGameMode() == "holdout" )
 	if (alpha==null)
 		alpha = 255.0;
 
+	if(red == "!random")
+		red = RandomInt(0,255).tostring()
+	if(green == "!random")
+		green = RandomInt(0,255).tostring()
+	if(blue == "!random")
+		blue = RandomInt(0,255).tostring()
+	if(alpha == "!random")
+		alpha = RandomInt(0,255).tostring()
+
 	ent.SetColor(red,green,blue,alpha);
 
 	Printer(player,CmdMessages.Color(red,green,blue,alpha,ent.GetIndex()));
@@ -23475,10 +22745,8 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.SetkeyvalCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
-	local ent = player.GetLookingEntity();
+	local ent = player.GetLookingEntity(GRAB_YEET_TRACE_MASK);
 	if( ent == null)
 		return;
 
@@ -23507,9 +22775,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Update_prop_spawn_settingCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local name = player.GetCharacterNameLower();
 	local typename = GetArgument(1);
 	local setting = GetArgument(2);
@@ -23585,9 +22850,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Update_prop_spawn_menu_typeCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local name = player.GetCharacterNameLower();
 	local typename = GetArgument(1);
 	if (typename != null)
@@ -23606,8 +22868,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Display_prop_spawn_settingsCmd <- function(player, args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local name = player.GetCharacterNameLower();
 	local infostr = "";
@@ -23644,8 +22904,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Save_particleCmd <- function(player, args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local name = player.GetCharacterNameLower();
 	local source = GetArgument(1);
@@ -23666,10 +22924,8 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Attach_particleCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
-	local ent = player.GetLookingEntity();
+	local ent = player.GetLookingEntity(GRAB_YEET_TRACE_MASK);
 	if( ent == null)
 		return;
 
@@ -23711,8 +22967,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Attach_to_targeted_positionCmd <- function(player, args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 
 	local name = player.GetCharacterNameLower();
 	local newstate = !AdminSystem.Vars._attachTargetedLocation[name];
@@ -23726,8 +22980,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Randomparticle_save_stateCmd <- function(player, args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 
 	local name = player.GetCharacterNameLower();
 	local newstate = !AdminSystem.Vars._saveLastParticle[name];
@@ -23741,9 +22993,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Update_attachment_preferenceCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local name = player.GetCharacterNameLower();
 	local duration = GetArgument(1);
 	if (duration == null)
@@ -23765,8 +23014,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Display_saved_particleCmd <- function(player, args)
 {	
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local name = player.GetCharacterNameLower();
 	if (AdminSystem.Vars._saveLastParticle[name])
@@ -23789,8 +23036,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Spawn_particle_savedCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local name = player.GetCharacterNameLower();
 	local particleinfo = AdminSystem.Vars._savedParticle[name];
@@ -23812,10 +23057,8 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Attach_particle_savedCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
-	local ent = player.GetLookingEntity();
+	local ent = player.GetLookingEntity(GRAB_YEET_TRACE_MASK);
 	if( ent == null)
 		return;
 
@@ -23848,9 +23091,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem._TakeOffHatCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local name = player.GetCharacterNameLower()
 	local entid = AdminSystem.Vars._wornHat[name].entid;
 	if(entid == "")
@@ -23891,8 +23131,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem._WearHatCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local ent = player.GetLookingEntity(GRAB_YEET_TRACE_MASK);
 	if( ent == null)
@@ -23976,8 +23214,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem._HatPosition <- function(player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	local pos = GetArgument(1);
 	if(pos == null)
 		return;
@@ -23990,9 +23226,7 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.UpdateAimedEntityDirection <- function(player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	local ent = player.GetLookingEntity();
+	local ent = player.GetLookingEntity(GRAB_YEET_TRACE_MASK);
 	if(ent == null)
 		return;
 
@@ -24005,9 +23239,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.GrabCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local ent = null
 	local tbl_heldEnt = AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()];
 	local baseent = null;
@@ -24219,7 +23450,7 @@ if ( Director.GetGameMode() == "holdout" )
 		}
 
 		player.AttachOther(ent,false,0,null);
-		player.SetAttachmentPoint(ent,tbl_heldEnt.grabAttachPos,true,0.05);
+		player.SetAttachmentPoint(ent,tbl_heldEnt.grabAttachPos,true,0.035);
 		
 		AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = entind;
 	}
@@ -24232,9 +23463,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.LetgoCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local name = player.GetCharacterNameLower();
 
 	if(AdminSystem.Vars._heldEntity[name].entid == "")
@@ -24275,8 +23503,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.YeetCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local name = player.GetCharacterNameLower();
 	if(AdminSystem.Vars._heldEntity[name].entid == "")
@@ -24309,8 +23535,15 @@ if ( Director.GetGameMode() == "holdout" )
 
 }
 
+::_LetGoDropYeetSpecialClasses <-
+{
+	prop_fuel_barrel = true
+	prop_car_alarm = true
+}
+
 ::_LetGoAndDropOrYeet <- function(ent,name,func,extra_arg="")
 {
+	
 	ent.Input("ClearParent","",0);
 	local entclass = ent.GetClassname();
 
@@ -24330,9 +23563,9 @@ if ( Director.GetGameMode() == "holdout" )
 			ent.Input("RunScriptCode",func+"(Entity("+ent.GetIndex()+")"+extra_arg+")",0);
 		}
 	}
-	else if(entclass.find("physics") != null || entclass == "prop_car_alarm") // physics entity
+	else if(entclass.find("physics") != null || entclass in ::_LetGoDropYeetSpecialClasses) // physics entity
 	{
-		if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics" || entclass == "prop_car_alarm")
+		if( entclass == "prop_physics_multiplayer" || entclass == "prop_physics" || entclass in ::_LetGoDropYeetSpecialClasses)
 		{	
 			local flags = ent.GetFlags();
 			local effects = ent.GetNetProp("m_fEffects")
@@ -24556,15 +23789,28 @@ if ( Director.GetGameMode() == "holdout" )
 	ent.SetMoveType(movetype);
 	ent.SetOrigin(a);
 	ent.SetVelocity(Vector(0,0,0));
-	ent.Push(Vector(0,0,10))
+	if(ent.GetParent() != null)
+	{
+		DoEntFire("!self","clearparent","",0,null,ent.GetBaseEntity())
+		DoEntFire("!self","runscriptcode","self.ApplyAbsVelocityImpulse(Vector(0,0,1))",0.04,null,ent.GetBaseEntity())
+		return false
+	}
+	else
+		ent.Push(Vector(0,0,1))
+	return true;
 }
 ::_yeetit <- function(ent,p)
 {	
-	_dropit(ent);
 	local fwvec = RotateOrientation(p.GetEyeAngles(),QAngle(AdminSystem.Vars._heldEntity[p.GetCharacterNameLower()].yeetPitch,0,0)).Forward();
 	fwvec = fwvec.Scale(AdminSystem.Vars._heldEntity[p.GetCharacterNameLower()].yeetSpeed/fwvec.Length());
-	ent.Push(fwvec)
-	//DoEntFire("!self","RunScriptCode","self.ApplyAbsVelocityImpulse(Vector("+fwvec.x+","+fwvec.y+","+fwvec.z+"))",0.03,null,ent.GetBaseEntity());
+	if(_dropit(ent))
+	{
+		ent.Push(fwvec)
+	}
+	else
+	{
+		DoEntFire("!self","runscriptcode","self.ApplyAbsVelocityImpulse(Vector("+fwvec.x+","+fwvec.y+","+fwvec.z+"))",0.05,null,ent.GetBaseEntity())
+	}
 }
 ::deltimer <- function(name)
 {
@@ -24607,8 +23853,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.SodaCanCmd <- function(player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local pscr = null;
 	local looked = player.GetLookingLocation()
@@ -24738,9 +23982,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.FireExtinguisherCmd <- function(player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local typ = GetArgument(1);
 
 	local EyePosition = player.GetLookingLocation();
@@ -24904,9 +24145,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.ShowYeetSettingsCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	if (AdminSystem.Vars._outputsEnabled[player.GetCharacterNameLower()])
 	{
 		Messages.InformPlayer(player,"Yeeting Settings:");
@@ -24931,9 +24169,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.GrabMethodCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local name = player.GetCharacterName();
 	local val = AdminSystem.Vars._heldEntity[name.tolower()].grabByAimedPart;
 	AdminSystem.Vars._heldEntity[name.tolower()].grabByAimedPart = (1-val).tointeger();
@@ -24946,8 +24181,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.YeetSettingCmd <- function (player,args)
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	local name = player.GetCharacterName();
 	local setting = GetArgument(1);
@@ -25008,9 +24241,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Update_svcheatsCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local oldval = Convars.GetFloat("sv_cheats");
 	Convars.SetValue("sv_cheats",(1-oldval).tointeger());
 
@@ -25022,9 +24252,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Update_custom_response_preferenceCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local newstate = !::AdminSystem.Vars.AllowCustomResponses;
 	::AdminSystem.Vars.AllowCustomResponses = newstate;
 
@@ -25036,9 +24263,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.Update_custom_sharing_preferenceCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	local newstate = !::AdminSystem.Vars.AllowCustomSharing;
 	::AdminSystem.Vars.AllowCustomSharing = newstate;
 
@@ -25057,9 +24281,6 @@ if ( Director.GetGameMode() == "holdout" )
  */
 ::AdminSystem.ZeroGCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-
 	if(!::LongProcessIterAvailability.zero_g || !::LongProcessIterAvailability.give_physics)
 	{
 		Printer(player,"You can't use this command while one or both zero_g and give_physics processes are still running!")
@@ -25069,7 +24290,7 @@ if ( Director.GetGameMode() == "holdout" )
 	
 	if(targets == null || targets == "!picker")
 	{
-		local ent = player.GetLookingEntity()
+		local ent = player.GetLookingEntity(GRAB_YEET_TRACE_MASK)
 
 		if(!::ZeroGValidate(ent))
 			return
@@ -25304,10 +24525,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Entity = GetArgument(1);
 	local Value = GetArgument(2);
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	Entity = Entity.tolower();
 	if ( Value )
 		Value = Value.tofloat();
@@ -25383,10 +24600,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Value2 = GetArgument(3);
 	local Value3 = GetArgument(4);
 	local Target = Utils.GetPlayerFromName(GetArgument(1));
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	Entity = Entity.tolower();
 	local val = null;
 	if ( Value3 )
@@ -25461,10 +24674,6 @@ if ( Director.GetGameMode() == "holdout" )
 ::AdminSystem.DropFireCmd <- function ( player, args )
 {
 	local EyePosition = player.GetLookingLocation();
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	EyePosition.z += 16;
 	DropFire( EyePosition );
 }
@@ -25472,10 +24681,6 @@ if ( Director.GetGameMode() == "holdout" )
 ::AdminSystem.DropSpitCmd <- function ( player, args )
 {
 	local EyePosition = player.GetLookingLocation();
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	EyePosition.z += 16;
 	DropSpit( EyePosition );
 }
@@ -25483,10 +24688,6 @@ if ( Director.GetGameMode() == "holdout" )
 ::AdminSystem.DirectorCmd <- function ( player, args )
 {
 	local Command = GetArgument(1);
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( !AdminSystem.Vars.DirectorDisabled && (Command == "stop" || Command == "off" || Command == "disable") )
 	{
 		AdminSystem.Vars.DirectorDisabled = true;
@@ -25517,10 +24718,6 @@ if ( Director.GetGameMode() == "holdout" )
 ::AdminSystem.FinaleCmd <- function ( player, args )
 {
 	local Command = GetArgument(1);
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Command == "start" )
 		Utils.StartFinale();
 	else if ( Command == "rescue" )
@@ -25529,8 +24726,6 @@ if ( Director.GetGameMode() == "holdout" )
 
 ::AdminSystem.RestartCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	Utils.TriggerStage( STAGE_RESULTS, 0 );
 }
@@ -25539,10 +24734,6 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	local Infected = GetArgument(1);
 	local Value = GetArgument(2);
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	Infected = Infected.tolower();
 	Value = Value.tointeger();
 	
@@ -25590,10 +24781,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local EyePosition = player.GetLookingLocation();
 	local MaxDist = 2400;
 	local MinDist = 1200;
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( !ZombieModel )
 		return;
 	
@@ -25692,10 +24879,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local Amount = GetArgument(2);
 	local Auto = GetArgument(3);
 	local EyePosition = player.GetLookingLocation();
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Amount )
 	{
 		if ( Amount == "auto" )
@@ -25892,8 +25075,6 @@ if ( Director.GetGameMode() == "holdout" )
 
 ::AdminSystem.EndGameCmd <- function ( player, args )
 {
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
 	
 	Utils.RollStatsCrawl();
 }
@@ -25905,10 +25086,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local GroundPosition = QAngle(0,0,0);
 
 	GroundPosition.y = EyeAngles.y;
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	IncludeScript("Admin_System/entitygroups/admin_alarmcar_group", g_MapScript);
 	
 	local alarmcarEntityGroup = g_MapScript.GetEntityGroup( "AlarmCar" );
@@ -25923,10 +25100,6 @@ if ( Director.GetGameMode() == "holdout" )
 	local GroundPosition = QAngle(0,0,0);
 
 	GroundPosition.y = EyeAngles.y;
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Type == "rifle" )
 	{
 		IncludeScript("Admin_System/entitygroups/auto_rifle_group", g_MapScript);
@@ -25954,10 +25127,6 @@ if ( Director.GetGameMode() == "holdout" )
 {
 	local Amount = GetArgument(1);
 	local EyePosition = player.GetLookingLocation();
-
-	if (!AdminSystem.IsPrivileged( player ))
-		return;
-	
 	if ( Amount )
 		Amount = Amount.tointeger();
 	else

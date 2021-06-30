@@ -3000,10 +3000,7 @@ function VSLib::Utils::ArrayCopy(arr)
 	{	
 		if(typeof arr[i] == "array")
 		{
-			foreach(val in ArrayCopy(arr[i]))
-			{
-				copy.append(val);
-			}
+			copy.append(ArrayCopy(arr[i]));
 		}
 		else if(typeof arr[i] == "table")
 		{	
@@ -3028,6 +3025,8 @@ function VSLib::Utils::SceneTableToString(tbl)
 {	
 	//"\n\t\""+steamid+"\":\n\t{\n\t\t\"character\":\n\t\t{\n\t\t\t\"seq_name\":\n\t\t\t{\n\t\t\t\t\"scenes\":[\"blank\"],\n\t\t\t\t\"delays\":[0]\n\t\t\t}\n\t\t}\n\t}";
 	local str = "{\n"
+	local nsid = tbl.len() - 1
+	local tn = 0
 	foreach(steamid,chartable in tbl)
 	{	
 		str += "\t\""+steamid+"\":\n\t{";	//steamid
@@ -3038,24 +3037,30 @@ function VSLib::Utils::SceneTableToString(tbl)
 			{	
 				str += "\n\t\t\t\""+seq_name+"\":\n\t\t\t{\n\t\t\t";	 //sequence name
 				str += "\"scenes\":\n\t\t\t\t["; //scenes
-				foreach(scene in seqtable.scenes)
+				local sn = seqtable.scenes.len()
+				for(local s = 0; s < sn; s++)
 				{
-					str+="\n\t\t\t\t\""+scene+"\",";
+					str+="\n\t\t\t\t\""+seqtable.scenes[s]+"\""+(s < sn - 1 ? "," : "");
 				}
-				str += "\n\t\t\t\t]\n\t\t\t"
+
+				str += "\n\t\t\t\t],\n\t\t\t"
 				str += "\"delays\":\n\t\t\t\t["; //delays
-				foreach(delay in seqtable.delays)
+				local dn = seqtable.delays.len()
+				for(local d = 0; d < dn; d++)
 				{
-					str+="\n\t\t\t\t\""+delay+"\",";
+					str+="\n\t\t\t\t\""+seqtable.delays[d]+"\""+(d < dn - 1 ? "," : "");
 				}
 				str += "\n\t\t\t\t]\n\t\t\t}\n\t\t"
 			}
 			str += "\n\t\t}";
 		}
-		str += "\n\t}\n";
+		if(tn++ < nsid)
+			str += "\n\t},\n";
+		else
+			str += "\n\t}\n";
 	}
 
-	str += "\n}";
+	str += "\n}\n//This line is here to fix error caused by the last \\0 character-->";
 
 	return str;
 }

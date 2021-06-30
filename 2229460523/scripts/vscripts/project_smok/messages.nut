@@ -31,11 +31,17 @@
                 {
                     LoadAdmins = function()
                     {
-                        printl("[Admins] Loading admin list...");
+                        //printl("[Admins] Loading admin list...");
+                        printl("\n[DEPRECATION-WARNING] admins.txt IS DEPRECATED. DELETE THE FILE AND USE user_levels.txt FROM NOW ON\n");
                     }
                     LoadScriptAuths = function()
                     {
-                        printl("[Script-auth] Loading script authorization list...");
+                        //printl("[Script-auth] Loading script authorization list...");
+                        printl("\n[DEPRECATION-WARNING] scriptauths.txt IS DEPRECATED. DELETE THE FILE AND USE user_levels.txt FROM NOW ON\n");
+                    }
+                    LoadUserLevels = function()
+                    {
+                        printl("[UserLevels] Loading user levels list...");
                     }
                     LoadBanned = function()
                     {
@@ -198,6 +204,18 @@
             }
         }
 
+        //User Levels
+        UserLevels =
+        {
+            HostOnly = function()
+            {
+                ::VSLib.Utils.PrintToAllDel("Sorry, only the host can change user levels.");
+            }
+            Changed = function(name, lvl)
+            {
+                ::VSLib.Utils.PrintToAllDel("%s has their user level changed to: " + TXTCLR.BG(lvl), name);
+            }
+        }
         //Kick
         KickPlayer = 
         {
@@ -862,7 +880,7 @@
 
             Ent =
             {
-                EntityCreate = function(id,classname,pos,ang,keyvals)
+                EntityCreate = function(id,classname,keyvals)
                 {
                     return "Created entity(" + COLOR_BRIGHT_GREEN + "#" + id + COLOR_DEFAULT + ") with table-> \n" + keyvals;
                 }
@@ -1360,14 +1378,54 @@
                     )
                 return cmd.Describe();
             }
+            command_privilege = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "command_privilege",
+                    [
+                        CMDParam("command_name","character name or in-game name"),
+                        CMDParam("level","one of:\r\t"+TXTCLR.OG("PS_USER_NONE")+": Anyone\r\t"+TXTCLR.OG("PS_USER_BASIC")+": Basic users\r\t"+TXTCLR.OG("PS_USER_ADMIN")+": Admins\r\t"+TXTCLR.OG("PS_USER_SCRIPTER")+": Scripters\r\t"+TXTCLR.OG("PS_USER_HOST")+": Host")
+                    ],
+                    "Change the minimum user level required to use given command."
+                    )
+                return cmd.Describe();
+            }
+            user_level = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "user_level",
+                    [
+                        CMDParam("name","character name or in-game name"),
+                        CMDParam("level","one of:\r\t"+TXTCLR.OG("PS_USER_NONE")+": No commands\r\t"+TXTCLR.OG("PS_USER_BASIC")+": Most basic commands\r\t"+TXTCLR.OG("PS_USER_ADMIN")+": Most of the commands\r\t"+TXTCLR.OG("PS_USER_SCRIPTER")+": Almost all of the commands")
+                    ],
+                    "Change the privileges given player can have."
+                    )
+                return cmd.Describe();
+            }
+            add_admin = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "add_admin",
+                    [],
+                    TXTCLR.OG("add_admin")+" command has been "+TXTCLR.OG("deprecated")+"! Use "+TXTCLR.BG("user_level")+" command instead"
+                    )
+                return cmd.Describe();
+            }
+            remove_admin = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "remove_admin",
+                    [],
+                    TXTCLR.OG("remove_admin")+" command has been "+TXTCLR.OG("deprecated")+"! Use "+TXTCLR.BG("user_level")+" command instead"
+                    )
+                return cmd.Describe();
+            }
             add_script_auth = function(player,args)
             {
                 local cmd = CMDDocs(
                     "add_script_auth",
-                    [
-                        CMDParam("character","Character name of the player")
-                    ],
-                    "Give a player authority to execute scripts"
+                    [],
+                    TXTCLR.OG("add_script_auth")+" command has been "+TXTCLR.OG("deprecated")+"! Use "+TXTCLR.BG("user_level")+" command instead"
                     )
                 return cmd.Describe();
             }
@@ -1375,10 +1433,8 @@
             {
                 local cmd = CMDDocs(
                     "remove_script_auth",
-                    [
-                        CMDParam("character","Character name of the player")
-                    ],
-                    "Take away a player's authority to execute scripts"
+                    [],
+                    TXTCLR.OG("remove_script_auth")+" command has been "+TXTCLR.OG("deprecated")+"! Use "+TXTCLR.BG("user_level")+" command instead"
                     )
                 return cmd.Describe();
             }
@@ -1957,7 +2013,7 @@
                     "ent",
                     [
                         CMDParam("class_name","Class name for entity"),
-                        CMDParam("keyvals","Key-values formatted as key_1>cast|value_1&key_2>cast|value_2...\n\t Single-value casts->int|float|flg\n\t Multi-value casts->str|ang|pos|flg\n\t ",true,"uses aimed point as origin")
+                        CMDParam("keyvals","Key-values with optional casting, formatted as: key_1>value_1&key_2>cast|value_2...\n\t Single-value casts->int|float|flg\n\t Multi-value casts->str|ang|pos|flg\n\t Example cast("+"\x01"+"QAngle(0,90,0)"+"\x03"+"):"+"\x04"+" ang|0|90|0\n\t Example cast("+"\x01"+"\"255 0 122\""+"\x03"+"):"+"\x04"+" str|255|0|122\n\t ",true,"uses aimed point as origin")
                     ],
                     "Create an entity of given class with given key-value pairs"
                     )
@@ -3542,7 +3598,12 @@ class ::CMDDocs
                 paramstr += " " + COLOR_OLIVE_GREEN + (i+1) + "." + COLOR_DEFAULT + p.Describe() + "\n"
             }
         }
-        paramstr = COLOR_BRIGHT_GREEN + _name + COLOR_DEFAULT + ":\n" 
+        local prv = COLOR_DEFAULT
+        if(_name in ::PrivilegeRequirements)
+        {
+            prv += " (minimum level: "+COLOR_ORANGE + ::UserLevelNames[::PrivilegeRequirements[_name]] + COLOR_DEFAULT + ")"
+        }
+        paramstr = COLOR_BRIGHT_GREEN + _name + prv + ":\n" 
                     + COLOR_ORANGE + ">>> " + COLOR_DEFAULT + _desc + "\n" 
                     + paramstr
 

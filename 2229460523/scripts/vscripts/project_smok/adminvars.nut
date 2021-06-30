@@ -15,7 +15,7 @@
     EnabledGodInfected = false
     EnabledGodSI = false
     DirectorDisabled = false
-    AllowAdminsOnly = true
+    AllowAdminsOnly = true      // Deprecated
 }
 
 /*

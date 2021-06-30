@@ -269,6 +269,8 @@ if(!("DriveParameters" in getroottable()))
 
 	GoForward = function(player,vehicle,carparams)
 	{
+		if(vehicle.GetParent() != null)
+			return
         vehicle.OverrideFriction(carparams.friction,0.5)
 		if(vehicle.GetPhysicsVelocity().Length() < carparams.speed_max)
 		{
@@ -278,6 +280,8 @@ if(!("DriveParameters" in getroottable()))
 
 	GoBackward = function(player,vehicle,carparams)
 	{
+		if(vehicle.GetParent() != null)
+			return
         vehicle.OverrideFriction(carparams.friction,0.5)
 		if(vehicle.GetPhysicsVelocity().Length() < carparams.speed_max)
 		{
@@ -287,6 +291,8 @@ if(!("DriveParameters" in getroottable()))
 
 	TurnLeftForward = function(vehicle,carparams,steer_duration)
 	{
+		if(vehicle.GetParent() != null)
+			return
         vehicle.OverrideFriction(carparams.turn_friction,0.5)
 		local yaw = carparams.turn_yaw + carparams.turn_yaw * (steer_duration >= 1.0 ? 1.0 : steer_duration )
 		local speed = vehicle.GetPhysicsVelocity().Length()
@@ -304,6 +310,8 @@ if(!("DriveParameters" in getroottable()))
 
 	TurnLeftBackward = function(vehicle,carparams,steer_duration)
 	{
+		if(vehicle.GetParent() != null)
+			return
         vehicle.OverrideFriction(carparams.turn_friction,0.5)
 		local yaw = carparams.turn_yaw + carparams.turn_yaw * (steer_duration >= 1.0 ? 1.0 : steer_duration )
 		local speed = vehicle.GetPhysicsVelocity().Length()
@@ -316,6 +324,8 @@ if(!("DriveParameters" in getroottable()))
 
 	TurnLeftFree = function(vehicle,carparams,steer_duration)
 	{
+		if(vehicle.GetParent() != null)
+			return
 		local yaw = carparams.turn_yaw + carparams.turn_yaw * (steer_duration >= 1.0 ? 1.0 : steer_duration )
 		local movedir = vehicle.GetPhysicsVelocity()
 		local speed = movedir.Length()
@@ -343,6 +353,8 @@ if(!("DriveParameters" in getroottable()))
 
 	TurnRightForward = function(vehicle,carparams,steer_duration)
 	{
+		if(vehicle.GetParent() != null)
+			return
         vehicle.OverrideFriction(carparams.turn_friction,0.5)
 		local yaw = carparams.turn_yaw + carparams.turn_yaw * (steer_duration >= 1.0 ? 1.0 : steer_duration )
 		local speed = vehicle.GetPhysicsVelocity().Length()
@@ -360,6 +372,8 @@ if(!("DriveParameters" in getroottable()))
 
 	TurnRightBackward = function(vehicle,carparams,steer_duration)
 	{
+		if(vehicle.GetParent() != null)
+			return
         vehicle.OverrideFriction(carparams.turn_friction,0.5)
 		local yaw = carparams.turn_yaw + carparams.turn_yaw * (steer_duration >= 1.0 ? 1.0 : steer_duration )
 		local speed = vehicle.GetPhysicsVelocity().Length()
@@ -372,6 +386,8 @@ if(!("DriveParameters" in getroottable()))
 
 	TurnRightFree = function(vehicle,carparams,steer_duration)
 	{
+		if(vehicle.GetParent() != null)
+			return
 		local yaw = carparams.turn_yaw + carparams.turn_yaw * (steer_duration >= 1.0 ? 1.0 : steer_duration )
 		local movedir = vehicle.GetPhysicsVelocity()
 		local speed = movedir.Length()
@@ -427,7 +443,7 @@ if(!("DriveParameters" in getroottable()))
 			::DriveMainFunctions.RemoveListeners(player)
 			::DriveMainFunctions.RestoreDriver(player)
 		}
-		else
+		else if(vehicle.GetParent() == null)
 		{	
 			vehicle.Push(RotatePosition(Vector(0,0,0),QAngle(RandomInt(-10,10),RandomInt(-10,10),RandomInt(-10,10)),Vector(0,0,300)))
 		}
@@ -500,7 +516,7 @@ if(!("DriveParameters" in getroottable()))
 			::DriveMainFunctions.RemoveListeners(player)
 			::DriveMainFunctions.RestoreDriver(player)
 		}
-		else if((player.GetPressedButtons() & (BUTTON_BACK)) == 0)
+		else if(((player.GetPressedButtons() & (BUTTON_BACK)) == 0) && (vehicle.GetParent() == null))
 		{   
 			::DriveMainFunctions.GoForward(player,vehicle,::DriveParameters[player.GetScriptScope()["PS_VEHICLE_TYPE"]])
 		}
@@ -604,6 +620,9 @@ if(!("DriveParameters" in getroottable()))
 	if(ent.HasBadPhysicsModel() || (entmdl.find("_glass.mdl") != null))
 		return false;
 
+	if(!ent.HasKnownModel())
+		return ::GivePhysicsToEntity(ent)
+
 	if(!ent.HasMassDefined())
 		return false;
 	
@@ -617,10 +636,11 @@ if(!("DriveParameters" in getroottable()))
 	if(typeof vehicle == "string")
 	{
 		vehicle = Entity(vehicle)
-		if(!vehicle || !vehicle.IsEntityValid())
-			return
 	}
 	
+	if(!vehicle || !vehicle.IsEntityValid())
+		return
+
 	if(vehicle.IsLootable())
 	{
 		vehicle.RemoveLootAbility()
@@ -687,7 +707,7 @@ if(!("DriveParameters" in getroottable()))
 			
 		local player = self.GetScriptScope().LastPlayer
 		
-		if(!::AdminSystem.IsPrivileged(player,true))
+		if(!player.HasPrivilege(PS_USER_ADMIN))
 			return
 
 		if(player.IsDriving())
@@ -737,7 +757,7 @@ if(!("DriveParameters" in getroottable()))
 				if( player.GetEntityHandle() == user )
 				{
 					local p = ::VSLib.Player(player)
-					if(!AdminSystem.IsPrivileged(p,true))
+					if(!p.HasPrivilege(PS_USER_ADMIN))
 					{
 						self.StopUse()
 						Messages.ThrowPlayer(p,"Sorry, only admins can drive vehicles!")

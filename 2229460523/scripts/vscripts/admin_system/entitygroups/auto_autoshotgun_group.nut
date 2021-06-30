@@ -74,6 +74,7 @@ AutoAutoShotgun <-
 					StartDisabled = "0"
 					targetname = "Admin_auto_autoshotgun_weaponfire"
 					origin = Vector( -3, 3, -13.0036 )
+					parentname = "Admin_auto_autoshotgun"
 				}
 			}
 		} // SpawnTables

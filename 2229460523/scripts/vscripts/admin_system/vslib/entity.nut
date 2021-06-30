@@ -2209,6 +2209,20 @@ function VSLib::Entity::SetOrigin(vec)
 	_ent.SetOrigin(vec);
 }
 
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::MoveOrigin(vec)
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return;
+	}
+	
+	_ent.SetOrigin(_ent.GetOrigin() + vec);
+}
+
 /**
  * Sets the entity's origin relative to its parent if it has one.
  */
@@ -3070,6 +3084,23 @@ function VSLib::Entity::GetLocalAngles()
 	return _ent.GetLocalAngles();
 }
 
+/*
+ * @authors rhino
+ */
+function VSLib::Entity::MoveAngles(x, y = 0.0, z = 0.0)
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return;
+	}
+	
+	if ( typeof x == "QAngle" )
+		return _ent.SetAngles(_ent.GetAngles() + x);
+	else
+		return _ent.SetAngles(_ent.GetAngles() + QAngle(x,y,z));
+}
+
 /**
  * Sets the angles relative to world's origin.
  */
@@ -3350,6 +3381,11 @@ function VSLib::Entity::GetLookingEntity(mask = 33579137)
 		return;
 	}
 	
+	if("PS_ONETIME_TARGET" in GetScriptScope() && GetScriptScope().PS_ONETIME_TARGET != null && GetScriptScope().PS_ONETIME_TARGET.IsEntityValid())
+	{
+		return GetScriptScope().PS_ONETIME_TARGET
+	}
+
 	if (!("EyeAngles" in _ent))
 	{
 		printl("VSLib Warning: Entity " + _idx + " does not have Eye Angles.");
@@ -4674,6 +4710,21 @@ function VSLib::Entity::GetRagdollEntity()
 /*
  * @authors rhino
  */
+function VSLib::Entity::HasKnownModel()
+{
+	if (!IsEntityValid())
+	{
+		printl("VSLib Warning: Entity " + _idx + " is invalid.");
+		return false;
+	}
+	
+	local mdl = ::ShortenModelName(GetModel())
+	return mdl in ::ModelDetails;
+}
+
+/*
+ * @authors rhino
+ */
 function VSLib::Entity::HasMassDefined()
 {
 	if (!IsEntityValid())
@@ -4683,8 +4734,8 @@ function VSLib::Entity::HasMassDefined()
 	}
 	
 	local mdl = ::ShortenModelName(GetModel())
-	return ("mass" in ::ModelDetails[mdl]) 
-			|| ("totalmass" in ::ModelDetails[mdl]);
+	return HasKnownModel() && (("mass" in ::ModelDetails[mdl]) 
+			|| ("totalmass" in ::ModelDetails[mdl]));
 }
 
 /*
