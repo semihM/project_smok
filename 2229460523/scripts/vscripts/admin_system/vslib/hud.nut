@@ -796,58 +796,15 @@ class ::VSLib.HUD.Countdown extends ::VSLib.HUD.Item
 			return temp;
 		}
 		
-		// Constants
-		const SECONDS_IN_HOUR = 3600;
-		const SECONDS_IN_MINUTE = 60;
-		
-		// Modulated values
-		local bh = 0;
-		local bm = 0;
-		local bs = 0;
-		
-		// Determine the number of seconds left since the start time
-		local seconds = ceil(_runtime - (Time() - _starttime));
-		if (seconds < 0) seconds = 0;
+		local sec = _runtime - (Time() - _starttime)
+		local h = (sec/3600); 
+		local m = (sec -(3600*h.tointeger()))/60;
+		local s = (sec -(3600*h.tointeger())-(m.tointeger()*60));
+        
+        temp = ::VSLib.Utils.StringReplace(temp, "{hrs}", format("%02d",h));
+        temp = ::VSLib.Utils.StringReplace(temp, "{min}", format("%02d",m));
+        temp = ::VSLib.Utils.StringReplace(temp, "{sec}", format("%02d",s));
 
-		// Hours
-		if (seconds >= SECONDS_IN_HOUR)
-		{
-		   bh = ceil(seconds / SECONDS_IN_HOUR);
-		   seconds = seconds % SECONDS_IN_HOUR;
-		}
-		
-		// Minutes
-		if (seconds >= SECONDS_IN_MINUTE)
-		{
-		   bm = ceil(seconds / SECONDS_IN_MINUTE);
-		   seconds = seconds % SECONDS_IN_MINUTE;
-		}
-
-		// Seconds
-		bs = seconds;
-		
-		// Do not count hours if minutes only
-		if (_minonly)
-		{
-			bm += bh * 60;
-			bh = 0;
-		}
-		
-		//
-		// Build the return string
-		// \todo @TODO Use Utils.GetTimeTable() above and use format() to format the 0's below instead of doing it manually
-		//
-		local modtable = [{id = "{hrs}", val = bh }, { id = "{min}", val = bm }, { id = "{sec}", val = bs }];
-		foreach (row in modtable)
-		{
-			if (row.val == 0)
-				temp = ::VSLib.Utils.StringReplace(temp, row.id, "00");
-			else if (row.val < 10)
-				temp = ::VSLib.Utils.StringReplace(temp, row.id, "0" + row.val);
-			else
-				temp = ::VSLib.Utils.StringReplace(temp, row.id, row.val.tostring());
-		}
-		
 		return temp;
 	}
 	 
@@ -1162,8 +1119,7 @@ class ::VSLib.HUD.Menu extends ::VSLib.HUD.Item
 		_autoDetach = autoDetach;
 		
 		if (!_manual) // #shotgunefx - don't add timer if this will be driven manually, only used by subclasses
-			_optimer = ::VSLib.Timers.AddTimer(0.2, 1, @(hudobj) hudobj.Tick(), this);
-		
+			_optimer = ::VSLib.Timers.AddTimer(_tickinterval, 1, @(hudobj) hudobj.Tick(), this);
 		Show(); // show the menu
 	}
 	
@@ -1243,6 +1199,7 @@ class ::VSLib.HUD.Menu extends ::VSLib.HUD.Item
 	_scrollbackbtn = null; // #shotgunefx
 	_sticky = false;
 	_manual = false; // to support manual subclasses
+	_tickinterval = 0.2	// tick interval in seconds
 }
 
 /**
@@ -1476,15 +1433,14 @@ class ::VSLib.HUD.MenuScrollableManual extends ::VSLib.HUD.MenuScrollable
 /**
  * Displays a real-time clock.
  *
- * \todo @TODO L4D2 doesn't have the squirrel date() function. Once it's added, this will work.
  */
 class ::VSLib.HUD.Clock extends ::VSLib.HUD.Item
 {
 	///////////////////////////////////////////////////////////////////
 	// Meta functions
 	///////////////////////////////////////////////////////////////////
-	
-	constructor(formatStr = "{hour}:{min}:{sec} {am_pm}", is12HourFormat = true, isLocalTime = true)
+	// date : {day}/{month}/{year}
+	constructor(formatStr = "{hour}:{minute}:{second} {am_pm}", is12HourFormat = true, isLocalTime = true)
 	{
 		SetFormatString(formatStr);
 		
@@ -1541,7 +1497,8 @@ class ::VSLib.HUD.Clock extends ::VSLib.HUD.Item
 	 */
 	function GetString()
 	{
-		local d = date(time(), _tformat);
+		local d = {}
+		LocalTime(d);
 		
 		if (_12hr)
 		{
@@ -1561,9 +1518,19 @@ class ::VSLib.HUD.Clock extends ::VSLib.HUD.Item
 		
 		local temp = base.GetString();
 		temp = ::VSLib.Utils.StringReplace(temp, "{am_pm}", d.suffix);
-		foreach (idx, val in d)
-			temp = ::VSLib.Utils.StringReplace(temp, "{" + idx + "}", val);
-		
+		if(temp.find("{hour}") != null)
+			temp = ::VSLib.Utils.StringReplace(temp, "{hour}", format("%02s",d.hour.tostring()));
+		if(temp.find("{minute}") != null)
+			temp = ::VSLib.Utils.StringReplace(temp, "{minute}", format("%02s",d.minute.tostring()));
+		if(temp.find("{second}") != null)
+			temp = ::VSLib.Utils.StringReplace(temp, "{second}", format("%02s",d.second.tostring()));
+		if(temp.find("{year}") != null)
+			temp = ::VSLib.Utils.StringReplace(temp, "{year}", format("%04s",d.year.tostring()));
+		if(temp.find("{month}") != null)
+			temp = ::VSLib.Utils.StringReplace(temp, "{month}", format("%02s",d.month.tostring()));
+		if(temp.find("{day}") != null)
+			temp = ::VSLib.Utils.StringReplace(temp, "{day}", format("%02s",d.day.tostring()));
+			
 		return temp;
 	}
 	
