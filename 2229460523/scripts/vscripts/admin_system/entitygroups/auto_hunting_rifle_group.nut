@@ -74,6 +74,7 @@ AutoHuntingRifle <-
 					StartDisabled = "0"
 					targetname = "Admin_auto_hunting_rifle_weaponfire"
 					origin = Vector( -3, 3, -13.0036 )
+					parentname = "Admin_auto_hunting_rifle"
 				}
 			}
 		} // SpawnTables

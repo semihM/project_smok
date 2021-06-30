@@ -64,6 +64,7 @@ AutoRifle <-
 			{
 				SpawnInfo =
 				{
+					parentname = "Admin_auto_rifle"
 					classname = "env_weaponfire"
 					angles = Vector( 0, 0, 0 )
 					DamageMod = "1.0"
