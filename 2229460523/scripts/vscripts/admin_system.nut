@@ -22544,7 +22544,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 	{ClientPrint(null,3,"\x04"+Messages.BIM.NotACharacter(character));return;}
 
 	if(startmsg)
-		AdminSystem._Clientbroadcast(character,"echo vvvvvvvvvvvvvvvvvvvv...COMMAND OUTPUT BELOW...vvvvvvvvvvvvvvvvvvvv",1,!reporttohost);
+		AdminSystem._Clientbroadcast(character,"echo ....vvvvvvvvvvvvvvvvvvvv...COMMAND OUTPUT BELOW...vvvvvvvvvvvvvvvvvvvv....",1,!reporttohost);
 
 	// Replace bad characters
 	message = Utils.StringReplace(Utils.StringReplace(message,","," "),":"," ");
@@ -22560,7 +22560,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 		AdminSystem._Clientbroadcast(character,"echo "+message,1,!reporttohost);
 
 	if(endmsg)
-		AdminSystem._Clientbroadcast(character,"echo ^^^^^^^^^^^^^^^^^^^^...COMMAND OUTPUT ABOVE...^^^^^^^^^^^^^^^^^^^^",1,!reporttohost,delay_end_msg);
+		AdminSystem._Clientbroadcast(character,"echo ....^^^^^^^^^^^^^^^^^^^^...COMMAND OUTPUT ABOVE...^^^^^^^^^^^^^^^^^^^^....",1,!reporttohost,delay_end_msg);
 
 	if(reporttohost && msgtype!="debug" && !(Utils.GetPlayerFromName(character).GetSteamID() in ::AdminSystem.HostPlayer))
 		printl("[Broadcast] Printed to "+character+" ("+msgtype+"):"+message);
