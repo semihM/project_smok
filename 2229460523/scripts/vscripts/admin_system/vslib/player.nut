@@ -61,7 +61,32 @@ getconsttable()["HIDEHUD_VEHICLE_CROSSHAIR"] <- (1 << 9);	// Hide vehicle crossh
 getconsttable()["HIDEHUD_INVEHICLE"] <- (1 << 10);
 getconsttable()["HIDEHUD_BONUS_PROGRESS"] <- (1 << 11);		// Hide bonus progress display (for bonus map challenges)
 
+// PS privilege levels
+::UserLevelNames <- 
+[
+	"PS_USER_NONE",
+	"PS_USER_BASIC",
+	"PS_USER_ADMIN",
+	"PS_USER_SCRIPTER",
+	"PS_USER_HOST"
+]
+foreach(i,name in ::UserLevelNames)
+	getconsttable()[name] <- i;
 
+/**
+ * Check player's privilege level
+ */
+function VSLib::Player::HasPrivilege(level = 3)
+{
+	return IsPlayerEntityValid() 
+			&& (
+				level == PS_USER_NONE 
+				|| (
+					GetSteamID() in ::AdminSystem.UserLevels 
+					&& getconsttable()[::AdminSystem.UserLevels[GetSteamID()]] >= level
+					)
+				);
+}
 
 /**
  * Returns true if the player entity is valid or false otherwise.
