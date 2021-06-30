@@ -158,15 +158,9 @@ class ::AliasCompiler.Alias
         else
             _help = {}
 
-        if("HostOnly" in tbl)
-            _hostOnly = tbl.HostOnly ? true : false
-        else
-            _hostOnly = false
+        if("MinimumUserLevel" in tbl)
+            _userlevel = tbl.MinimumUserLevel
             
-        if("ScriptAuthOnly" in tbl)
-            _authOnly = tbl.ScriptAuthOnly ? true : false
-        else
-            _authOnly = false
     }
 
     function _type()
@@ -178,10 +172,11 @@ class ::AliasCompiler.Alias
     _triggertable = null
     _cmds = null
     _params = null
+    _help = null
+    _userlevel = PS_USER_NONE
+    // Deprecated
     _hostOnly = null
     _authOnly = null
-    _help = null
-
 }
 
 ::AliasCompiler.Evaluate <-
@@ -759,11 +754,12 @@ class ::AliasCompiler.Alias
     local a = ::AliasCompiler.Alias(alias,aliastbl,triggertbl)
 
     getroottable()[triggertbl][alias] <- ::AliasCompiler.AliasTrigger
-    getroottable()[docs][alias] <- @(player,args) AdminSystem.IsPrivileged(player) && typeof a._help == "function"
+    getroottable()[docs][alias] <- @(player,args) typeof a._help == "function"
 					? Messages.DocCmdPlayer(player,a._help(player,args))
 					: null
 
     ::AliasCompiler.Tables[alias] <- a
+    ::PrivilegeRequirements[alias] <- a._userlevel
 
     return a;
 }
