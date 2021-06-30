@@ -6,8 +6,8 @@
 
 		"1"
 		{
-			"command"	 "play buttons/button14;show_menu AddAdmins"
-			"label"		 " Manage Admins" 
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelMain"
+			"label"		 " Manage User Levels" 
 		}
 		"2"
 		{
@@ -14492,19 +14492,49 @@
 		}
 	}	
 
-	"AddAdmins"
+	"ChangeUserLevelMain"
 	{
-		"Title"			"Manage Admins"
+		"Title"			"Character to change user level of, check ?user_level"
 
 		"1"
 		{
-			"command"	 "play buttons/button14;show_menu AddAdminsAdd"
-			"label"		 " Add Admin"
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelBill"
+			"label"		 " Bill"
 		}
 		"2"
 		{
-			"command"	 "play buttons/button14;show_menu AddAdminsRemove"
-			"label"		 " Remove Admin"
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelZoey"
+			"label"		 " Zoey"
+		}
+		"3"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelLouis"
+			"label"		 " Louis"
+		}
+		"4"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelFrancis"
+			"label"		 " Francis"
+		}
+		"5"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelNick"
+			"label"		 " Nick"
+		}
+		"6"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelRochelle"
+			"label"		 " Rochelle"
+		}
+		"7"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelCoach"
+			"label"		 " Coach"
+		}
+		"8"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelEllis"
+			"label"		 " Ellis"
 		}
 		"8"
 		{
@@ -14517,54 +14547,33 @@
 			"label"		 " Exit"
 		}
 	}
-	
-	"AddAdminsAdd"
+	"ChangeUserLevelBill"
 	{
-		"Title"			"Add Admin"
+		"Title"			"Select user level, check ?user_level"
 
 		"1"
 		{
-			"command"	 "play buttons/button14;scripted_user_func add_admin,bill;show_menu AddAdminsAdd"
-			"label"		 " Bill"
+			"command"	 "play buttons/button14;scripted_user_func user_level,bill,PS_USER_NONE;show_menu ChangeUserLevelBill"
+			"label"		 " PS_USER_NONE: Disallow all commands"
 		}
 		"2"
 		{
-			"command"	 "play buttons/button14;scripted_user_func add_admin,zoey;show_menu AddAdminsAdd"
-			"label"		 " Zoey"
+			"command"	 "play buttons/button14;scripted_user_func user_level,bill,PS_USER_BASIC;show_menu ChangeUserLevelBill"
+			"label"		 " PS_USER_BASIC: Allow basic commands (get_in, get_out etc.)"
 		}
 		"3"
 		{
-			"command"	 "play buttons/button14;scripted_user_func add_admin,louis;show_menu AddAdminsAdd"
-			"label"		 " Louis"
+			"command"	 "play buttons/button14;scripted_user_func user_level,bill,PS_USER_ADMIN;show_menu ChangeUserLevelBill"
+			"label"		 " PS_USER_ADMIN: Allow most of the generic commands"
 		}
 		"4"
 		{
-			"command"	 "play buttons/button14;scripted_user_func add_admin,francis;show_menu AddAdminsAdd"
-			"label"		 " Francis"
-		}
-		"5"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_admin,nick;show_menu AddAdminsAdd"
-			"label"		 " Nick"
-		}
-		"6"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_admin,rochelle;show_menu AddAdminsAdd"
-			"label"		 " Rochelle"
-		}
-		"7"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_admin,coach;show_menu AddAdminsAdd"
-			"label"		 " Coach"
+			"command"	 "play buttons/button14;scripted_user_func user_level,bill,PS_USER_SCRIPTER;show_menu ChangeUserLevelBill"
+			"label"		 " PS_USER_SCRIPTER: Allow almost all commands"
 		}
 		"8"
 		{
-			"command"	 "play buttons/button14;scripted_user_func add_admin,ellis;show_menu AddAdminsAdd"
-			"label"		 " Ellis"
-		}
-		"9"
-		{
-			"command"	 "play buttons/button14;show_menu AddAdmins"
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelMain"
 			"label"		 " << Back"
 		}
 		"0"
@@ -14573,54 +14582,33 @@
 			"label"		 " Exit"
 		}
 	}
-
-	"AddAdminsRemove"
+	"ChangeUserLevelZoey"
 	{
-		"Title"			"Remove Admin"
+		"Title"			"Select user level, check ?user_level"
 
 		"1"
 		{
-			"command"	 "play buttons/button14;scripted_user_func remove_admin,bill;show_menu AddAdminsRemove"
-			"label"		 " Bill"
+			"command"	 "play buttons/button14;scripted_user_func user_level,zoey,PS_USER_NONE;show_menu ChangeUserLevelZoey"
+			"label"		 " PS_USER_NONE: Disallow all commands"
 		}
 		"2"
 		{
-			"command"	 "play buttons/button14;scripted_user_func remove_admin,zoey;show_menu AddAdminsRemove"
-			"label"		 " Zoey"
+			"command"	 "play buttons/button14;scripted_user_func user_level,zoey,PS_USER_BASIC;show_menu ChangeUserLevelZoey"
+			"label"		 " PS_USER_BASIC: Allow basic commands (get_in, get_out etc.)"
 		}
 		"3"
 		{
-			"command"	 "play buttons/button14;scripted_user_func remove_admin,louis;show_menu AddAdminsRemove"
-			"label"		 " Louis"
+			"command"	 "play buttons/button14;scripted_user_func user_level,zoey,PS_USER_ADMIN;show_menu ChangeUserLevelZoey"
+			"label"		 " PS_USER_ADMIN: Allow most of the generic commands"
 		}
 		"4"
 		{
-			"command"	 "play buttons/button14;scripted_user_func remove_admin,francis;show_menu AddAdminsRemove"
-			"label"		 " Francis"
-		}
-		"5"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_admin,nick;show_menu AddAdminsRemove"
-			"label"		 " Nick"
-		}
-		"6"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_admin,rochelle;show_menu AddAdminsRemove"
-			"label"		 " Rochelle"
-		}
-		"7"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_admin,coach;show_menu AddAdminsRemove"
-			"label"		 " Coach"
+			"command"	 "play buttons/button14;scripted_user_func user_level,zoey,PS_USER_SCRIPTER;show_menu ChangeUserLevelZoey"
+			"label"		 " PS_USER_SCRIPTER: Allow almost all commands"
 		}
 		"8"
 		{
-			"command"	 "play buttons/button14;scripted_user_func remove_admin,ellis;show_menu AddAdminsRemove"
-			"label"		 " Ellis"
-		}
-		"9"
-		{
-			"command"	 "play buttons/button14;show_menu AddAdmins"
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelMain"
 			"label"		 " << Back"
 		}
 		"0"
@@ -14629,7 +14617,216 @@
 			"label"		 " Exit"
 		}
 	}
-	
+	"ChangeUserLevelLouis"
+	{
+		"Title"			"Select user level, check ?user_level"
+
+		"1"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,louis,PS_USER_NONE;show_menu ChangeUserLevelLouis"
+			"label"		 " PS_USER_NONE: Disallow all commands"
+		}
+		"2"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,louis,PS_USER_BASIC;show_menu ChangeUserLevelLouis"
+			"label"		 " PS_USER_BASIC: Allow basic commands (get_in, get_out etc.)"
+		}
+		"3"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,louis,PS_USER_ADMIN;show_menu ChangeUserLevelLouis"
+			"label"		 " PS_USER_ADMIN: Allow most of the generic commands"
+		}
+		"4"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,louis,PS_USER_SCRIPTER;show_menu ChangeUserLevelLouis"
+			"label"		 " PS_USER_SCRIPTER: Allow almost all commands"
+		}
+		"8"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelMain"
+			"label"		 " << Back"
+		}
+		"0"
+		{
+			"command"	 "play buttons/button14"
+			"label"		 " Exit"
+		}
+	}
+	"ChangeUserLevelFrancis"
+	{
+		"Title"			"Select user level, check ?user_level"
+
+		"1"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,francis,PS_USER_NONE;show_menu ChangeUserLevelFrancis"
+			"label"		 " PS_USER_NONE: Disallow all commands"
+		}
+		"2"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,francis,PS_USER_BASIC;show_menu ChangeUserLevelFrancis"
+			"label"		 " PS_USER_BASIC: Allow basic commands (get_in, get_out etc.)"
+		}
+		"3"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,francis,PS_USER_ADMIN;show_menu ChangeUserLevelFrancis"
+			"label"		 " PS_USER_ADMIN: Allow most of the generic commands"
+		}
+		"4"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,francis,PS_USER_SCRIPTER;show_menu ChangeUserLevelFrancis"
+			"label"		 " PS_USER_SCRIPTER: Allow almost all commands"
+		}
+		"8"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelMain"
+			"label"		 " << Back"
+		}
+		"0"
+		{
+			"command"	 "play buttons/button14"
+			"label"		 " Exit"
+		}
+	}
+	"ChangeUserLevelNick"
+	{
+		"Title"			"Select user level, check ?user_level"
+
+		"1"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,nick,PS_USER_NONE;show_menu ChangeUserLevelNick"
+			"label"		 " PS_USER_NONE: Disallow all commands"
+		}
+		"2"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,nick,PS_USER_BASIC;show_menu ChangeUserLevelNick"
+			"label"		 " PS_USER_BASIC: Allow basic commands (get_in, get_out etc.)"
+		}
+		"3"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,nick,PS_USER_ADMIN;show_menu ChangeUserLevelNick"
+			"label"		 " PS_USER_ADMIN: Allow most of the generic commands"
+		}
+		"4"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,nick,PS_USER_SCRIPTER;show_menu ChangeUserLevelNick"
+			"label"		 " PS_USER_SCRIPTER: Allow almost all commands"
+		}
+		"8"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelMain"
+			"label"		 " << Back"
+		}
+		"0"
+		{
+			"command"	 "play buttons/button14"
+			"label"		 " Exit"
+		}
+	}
+	"ChangeUserLevelRochelle"
+	{
+		"Title"			"Select user level, check ?user_level"
+
+		"1"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,rochelle,PS_USER_NONE;show_menu ChangeUserLevelRochelle"
+			"label"		 " PS_USER_NONE: Disallow all commands"
+		}
+		"2"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,rochelle,PS_USER_BASIC;show_menu ChangeUserLevelRochelle"
+			"label"		 " PS_USER_BASIC: Allow basic commands (get_in, get_out etc.)"
+		}
+		"3"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,rochelle,PS_USER_ADMIN;show_menu ChangeUserLevelRochelle"
+			"label"		 " PS_USER_ADMIN: Allow most of the generic commands"
+		}
+		"4"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,rochelle,PS_USER_SCRIPTER;show_menu ChangeUserLevelRochelle"
+			"label"		 " PS_USER_SCRIPTER: Allow almost all commands"
+		}
+		"8"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelMain"
+			"label"		 " << Back"
+		}
+		"0"
+		{
+			"command"	 "play buttons/button14"
+			"label"		 " Exit"
+		}
+	}
+	"ChangeUserLevelCoach"
+	{
+		"Title"			"Select user level, check ?user_level"
+
+		"1"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,coach,PS_USER_NONE;show_menu ChangeUserLevelCoach"
+			"label"		 " PS_USER_NONE: Disallow all commands"
+		}
+		"2"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,coach,PS_USER_BASIC;show_menu ChangeUserLevelCoach"
+			"label"		 " PS_USER_BASIC: Allow basic commands (get_in, get_out etc.)"
+		}
+		"3"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,coach,PS_USER_ADMIN;show_menu ChangeUserLevelCoach"
+			"label"		 " PS_USER_ADMIN: Allow most of the generic commands"
+		}
+		"4"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,coach,PS_USER_SCRIPTER;show_menu ChangeUserLevelCoach"
+			"label"		 " PS_USER_SCRIPTER: Allow almost all commands"
+		}
+		"8"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelMain"
+			"label"		 " << Back"
+		}
+		"0"
+		{
+			"command"	 "play buttons/button14"
+			"label"		 " Exit"
+		}
+	}
+	"ChangeUserLevelEllis"
+	{
+		"Title"			"Select user level, check ?user_level"
+
+		"1"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,ellis,PS_USER_NONE;show_menu ChangeUserLevelEllis"
+			"label"		 " PS_USER_NONE: Disallow all commands"
+		}
+		"2"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,ellis,PS_USER_BASIC;show_menu ChangeUserLevelEllis"
+			"label"		 " PS_USER_BASIC: Allow basic commands (get_in, get_out etc.)"
+		}
+		"3"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,ellis,PS_USER_ADMIN;show_menu ChangeUserLevelEllis"
+			"label"		 " PS_USER_ADMIN: Allow most of the generic commands"
+		}
+		"4"
+		{
+			"command"	 "play buttons/button14;scripted_user_func user_level,ellis,PS_USER_SCRIPTER;show_menu ChangeUserLevelEllis"
+			"label"		 " PS_USER_SCRIPTER: Allow almost all commands"
+		}
+		"8"
+		{
+			"command"	 "play buttons/button14;show_menu ChangeUserLevelMain"
+			"label"		 " << Back"
+		}
+		"0"
+		{
+			"command"	 "play buttons/button14"
+			"label"		 " Exit"
+		}
+	}
 	"KickPlayer"
 	{
 		"Title"			"Kick player"
@@ -18010,8 +18207,8 @@
 			}
 			"2"
 			{
-					"command"    "play buttons/button14;show_menu smok_script_auth_GT"
-					"label"		 " Give/Take away script authorization"
+				"command"		 "play buttons/button14;show_menu invwalls1"
+				"label"			" Enable/Disable most of the invisible walls"
 			}
 			"3"
 			{
@@ -18883,144 +19080,6 @@
 					"command"    "play buttons/button14"
 					"label"      " Exit"
 			}	
-	}
-	
-	"smok_script_auth_GT"
-	{
-			"Title"		"Give/Take away script authorization"
-			"1"
-			{
-				"command"	 "play buttons/button14;show_menu smok_script_auth_give"
-				"label"		 " Give authorization"
-			}
-			"2"
-			{
-				"command"	 "play buttons/button14;show_menu smok_script_auth_take"
-				"label"		 " Take away authorization"
-			}
-			"8"
-			{
-					"command"	 "play buttons/button14;show_menu smok_menu2"
-					"label"		 " << Back"
-			}
-			"0"
-			{
-					"command"    "play buttons/button14"
-					"label"      " Exit"
-			}
-
-	}
-
-	"smok_script_auth_give"
-	{
-		"Title"			"Give script authorization to"
-
-		"1"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_script_auth,bill;show_menu smok_script_auth_give"
-			"label"		 " Bill"
-		}
-		"2"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_script_auth,zoey;show_menu smok_script_auth_give"
-			"label"		 " Zoey"
-		}
-		"3"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_script_auth,louis;show_menu smok_script_auth_give"
-			"label"		 " Louis"
-		}
-		"4"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_script_auth,francis;show_menu smok_script_auth_give"
-			"label"		 " Francis"
-		}
-		"5"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_script_auth,nick;show_menu smok_script_auth_give"
-			"label"		 " Nick"
-		}
-		"6"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_script_auth,rochelle;show_menu smok_script_auth_give"
-			"label"		 " Rochelle"
-		}
-		"7"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_script_auth,coach;show_menu smok_script_auth_give"
-			"label"		 " Coach"
-		}
-		"8"
-		{
-			"command"	 "play buttons/button14;scripted_user_func add_script_auth,ellis;show_menu smok_script_auth_give"
-			"label"		 " Ellis"
-		}
-		"9"
-		{
-			"command"	 "play buttons/button14;show_menu smok_script_auth_GT"
-			"label"		 " << Back"
-		}
-		"0"
-		{
-			"command"	 "play buttons/button14"
-			"label"		 " Exit"
-		}
-	}
-
-	"smok_script_auth_take"
-	{
-		"Title"			"Take away script authorization from"
-
-		"1"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,bill;show_menu smok_script_auth_take"
-			"label"		 " Bill"
-		}
-		"2"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,zoey;show_menu smok_script_auth_take"
-			"label"		 " Zoey"
-		}
-		"3"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,louis;show_menu smok_script_auth_take"
-			"label"		 " Louis"
-		}
-		"4"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,francis;show_menu smok_script_auth_take"
-			"label"		 " Francis"
-		}
-		"5"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,nick;show_menu smok_script_auth_take"
-			"label"		 " Nick"
-		}
-		"6"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,rochelle;show_menu smok_script_auth_take"
-			"label"		 " Rochelle"
-		}
-		"7"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,coach;show_menu smok_script_auth_take"
-			"label"		 " Coach"
-		}
-		"8"
-		{
-			"command"	 "play buttons/button14;scripted_user_func remove_script_auth,ellis;show_menu smok_script_auth_take"
-			"label"		 " Ellis"
-		}
-		"9"
-		{
-			"command"	 "play buttons/button14;show_menu smok_script_auth_GT"
-			"label"		 " << Back"
-		}
-		"0"
-		{
-			"command"	 "play buttons/button14"
-			"label"		 " Exit"
-		}
 	}
 
 	"random_line_menu"
@@ -20307,12 +20366,7 @@
 			"2"
 			{
 				"command"		 "play buttons/button14;show_menu ent_fire_decals1"
-				"label"			 " Place decals(textures)"
-			}
-			"3"
-			{
-				"command"		 "play buttons/button14;show_menu ent_fire_lootables1"
-				"label"			 " Make objects lootable"
+				"label"			 " Place decals"
 			}
 			"8"
 			{
@@ -22988,32 +23042,32 @@
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,255,0,0;show_menu ent_color1"
+				"command"		 "play buttons/button14;scripted_user_func color,255,0,0;show_menu ent_color1"
 				"label"			" Red"
 			}
 			"3"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,0,255,0;show_menu ent_color1"
+				"command"		 "play buttons/button14;scripted_user_func color,0,255,0;show_menu ent_color1"
 				"label"			" Green"
 			}
 			"4"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,0,0,255;show_menu ent_color1"
+				"command"		 "play buttons/button14;scripted_user_func color,0,0,255;show_menu ent_color1"
 				"label"			" Blue"
 			}
 			"5"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,255,255,0;show_menu ent_color1"
+				"command"		 "play buttons/button14;scripted_user_func color,255,255,0;show_menu ent_color1"
 				"label"			" Yellow"
 			}
 			"6"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,255,0,255;show_menu ent_color1"
+				"command"		 "play buttons/button14;scripted_user_func color,255,0,255;show_menu ent_color1"
 				"label"			" Purple"
 			}
 			"7"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,0,255,255;show_menu ent_color1"
+				"command"		 "play buttons/button14;scripted_user_func color,0,255,255;show_menu ent_color1"
 				"label"			" Cyan"
 			}
 			"8"
@@ -23038,30 +23092,35 @@
 			"Title"		 "Colors 2"
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,0,0,0;show_menu ent_color2"
+				"command"		 "play buttons/button14;scripted_user_func color,0,0,0;show_menu ent_color2"
 				"label"			" Black"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,70,70,70;show_menu ent_color2"
+				"command"		 "play buttons/button14;scripted_user_func color,70,70,70;show_menu ent_color2"
 				"label"			" Dark gray"
 			}
 			"3"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,140,140,140;show_menu ent_color2"
+				"command"		 "play buttons/button14;scripted_user_func color,140,140,140;show_menu ent_color2"
 				"label"			" Gray"
 			}
 			"4"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,210,210,210;show_menu ent_color2"
+				"command"		 "play buttons/button14;scripted_user_func color,210,210,210;show_menu ent_color2"
 				"label"			" Light gray"
 			}
 			"5"
 			{
-				"command"		 "play buttons/button14;scripted_user_func ent_fire,!picker,color,255,255,255;show_menu ent_color2"
+				"command"		 "play buttons/button14;scripted_user_func color,255,255,255;show_menu ent_color2"
 				"label"			" White/Default"
 			}
 			"6"
+			{
+				"command"		 "play buttons/button14;scripted_user_func color,!random,!random,!random;show_menu ent_color2"
+				"label"			" Random color"
+			}
+			"7"
 			{
 				"command"		 "play buttons/button14;show_menu ent_skin_menu1"
 				"label"			" Skin #"
@@ -38864,11 +38923,6 @@
 			}
 			"6"
 			{
-				"command"		 "play buttons/button14;show_menu invwalls1"
-				"label"			" Enable/Disable most of the invisible walls"
-			}
-			"7"
-			{
 				"command"		 "play buttons/button14;show_menu ladderteams1"
 				"label"			" Change ladders' team"
 			}
@@ -38925,7 +38979,7 @@
 			"7"
 			{
 				"command"		 "play buttons/button14;show_menu pointlights1"
-				"label"			" Create point light sources (Experimental)"
+				"label"			" [EXPERIMENTAL] Create point light sources"
 			}
 			"8"
 			{
@@ -38950,11 +39004,116 @@
 			"1"
 			{
 				"command"		 "play buttons/button14;show_menu ps_cameras1"
-				"label"			 " Create and view cameras"
+				"label"			 "[EXPERIMENTAL] Create and view cameras"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;show_menu ps_selfie_cameras1"
+				"label"			 "[EXPERIMENTAL] Selfie views"
 			}
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu smok_menu4"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+
+	"ps_selfie_cameras1"
+	{
+			"Title"		"Create/view/edit cameras"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func selfie,1,0.5;wait 45;screenshot;show_menu ps_selfie_cameras1"
+				"label"			 " Take a selfie"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func selfie,3,0.5;wait 60;screenshot;wait 60;screenshot;wait 60;screenshot;show_menu ps_selfie_cameras1"
+				"label"			 " Take selfies from 3 different angles"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;screenshot;show_menu ps_selfie_cameras1"
+				"label"			 " Take a screenshot"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func selfie,1,-1;show_menu ps_selfie_cameras1"
+				"label"			 " Change into a random selfie camera"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;scripted_user_func selfie,reset;show_menu ps_selfie_cameras1"
+				"label"			 " Reset camera view back to normal"
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;show_menu ps_selfie_cameras_huds1"
+				"label"			 " Hide/Show hud elements (Dangerous!)"
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu smok_menu5"
+					"label"      " << Back"
+			}
+			"0"
+			{
+					"command"    "play buttons/button14"
+					"label"      " Exit"
+			}
+	}
+	
+	"ps_selfie_cameras_huds1"
+	{
+			"Title"		"Hide/Show hud elements, Check ?switch_hud_element"
+			"1"
+			{
+				"command"		 "play buttons/button14;scripted_user_func switch_hud_element,weapon_selection;show_menu ps_selfie_cameras_huds1"
+				"label"			 " Weapon Selection On/Off"
+			}
+			"2"
+			{
+				"command"		 "play buttons/button14;scripted_user_func switch_hud_element,health;show_menu ps_selfie_cameras_huds1"
+				"label"			 " Health Bars AND THIS MENU On/Off(Be careful!!!)"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;scripted_user_func switch_hud_element,chat;show_menu ps_selfie_cameras_huds1"
+				"label"			 " Chat On/Off(Be careful, can prevent ESC!)"
+			}
+			"4"
+			{
+				"command"		 "play buttons/button14;scripted_user_func switch_hud_element,crosshair;show_menu ps_selfie_cameras_huds1"
+				"label"			 " Non-weapon Crosshair On/Off"
+			}
+			"5"
+			{
+				"command"		 "play buttons/button14;crosshair 1;show_menu ps_selfie_cameras_huds1"
+				"label"			 " Weapon Crosshair On"
+				"ignorevar"
+				{
+					"cvar"	"crosshair"
+					"value"	"1"
+				}
+			}
+			"6"
+			{
+				"command"		 "play buttons/button14;crosshair 0;show_menu ps_selfie_cameras_huds1"
+				"label"			 " Weapon Crosshair Off"
+				"ignorevar"
+				{
+					"cvar"	"crosshair"
+					"value"	"0"
+				}
+			}
+			"8"
+			{
+					"command"    "play buttons/button14;show_menu ps_selfie_cameras1"
 					"label"      " << Back"
 			}
 			"0"
@@ -40921,7 +41080,7 @@
 			}
 			"8"
 			{
-					"command"    "play buttons/button14;show_menu smok_menu3"
+					"command"    "play buttons/button14;show_menu smok_menu2"
 					"label"      " << Back"
 			}
 			"0"
