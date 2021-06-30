@@ -620,6 +620,9 @@ if(!("DriveParameters" in getroottable()))
 	if(ent.HasBadPhysicsModel() || (entmdl.find("_glass.mdl") != null))
 		return false;
 
+	if(!ent.HasKnownModel())
+		return ::GivePhysicsToEntity(ent)
+
 	if(!ent.HasMassDefined())
 		return false;
 	
@@ -633,10 +636,11 @@ if(!("DriveParameters" in getroottable()))
 	if(typeof vehicle == "string")
 	{
 		vehicle = Entity(vehicle)
-		if(!vehicle || !vehicle.IsEntityValid())
-			return
 	}
 	
+	if(!vehicle || !vehicle.IsEntityValid())
+		return
+
 	if(vehicle.IsLootable())
 	{
 		vehicle.RemoveLootAbility()
@@ -703,7 +707,7 @@ if(!("DriveParameters" in getroottable()))
 			
 		local player = self.GetScriptScope().LastPlayer
 		
-		if(!::AdminSystem.IsPrivileged(player,true))
+		if(!player.HasPrivilege(PS_USER_ADMIN))
 			return
 
 		if(player.IsDriving())
@@ -753,7 +757,7 @@ if(!("DriveParameters" in getroottable()))
 				if( player.GetEntityHandle() == user )
 				{
 					local p = ::VSLib.Player(player)
-					if(!AdminSystem.IsPrivileged(p,true))
+					if(!p.HasPrivilege(PS_USER_ADMIN))
 					{
 						self.StopUse()
 						Messages.ThrowPlayer(p,"Sorry, only admins can drive vehicles!")
