@@ -31,11 +31,17 @@
                 {
                     LoadAdmins = function()
                     {
-                        printl("[Admins] Loading admin list...");
+                        //printl("[Admins] Loading admin list...");
+                        printl("\n[DEPRECATION-WARNING] admins.txt IS DEPRECATED. DELETE THE FILE AND USE user_levels.txt FROM NOW ON\n");
                     }
                     LoadScriptAuths = function()
                     {
-                        printl("[Script-auth] Loading script authorization list...");
+                        //printl("[Script-auth] Loading script authorization list...");
+                        printl("\n[DEPRECATION-WARNING] scriptauths.txt IS DEPRECATED. DELETE THE FILE AND USE user_levels.txt FROM NOW ON\n");
+                    }
+                    LoadUserLevels = function()
+                    {
+                        printl("[UserLevels] Loading user levels list...");
                     }
                     LoadBanned = function()
                     {
@@ -198,6 +204,18 @@
             }
         }
 
+        //User Levels
+        UserLevels =
+        {
+            HostOnly = function()
+            {
+                ::VSLib.Utils.PrintToAllDel("Sorry, only the host can change user levels.");
+            }
+            Changed = function(name, lvl)
+            {
+                ::VSLib.Utils.PrintToAllDel("%s has their user level changed to: " + TXTCLR.BG(lvl), name);
+            }
+        }
         //Kick
         KickPlayer = 
         {
@@ -1360,14 +1378,54 @@
                     )
                 return cmd.Describe();
             }
+            command_privilege = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "command_privilege",
+                    [
+                        CMDParam("command_name","character name or in-game name"),
+                        CMDParam("level","one of:\r\t"+TXTCLR.OG("PS_USER_NONE")+": Anyone\r\t"+TXTCLR.OG("PS_USER_BASIC")+": Basic users\r\t"+TXTCLR.OG("PS_USER_ADMIN")+": Admins\r\t"+TXTCLR.OG("PS_USER_SCRIPTER")+": Scripters\r\t"+TXTCLR.OG("PS_USER_HOST")+": Host")
+                    ],
+                    "Change the minimum user level required to use given command."
+                    )
+                return cmd.Describe();
+            }
+            user_level = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "user_level",
+                    [
+                        CMDParam("name","character name or in-game name"),
+                        CMDParam("level","one of:\r\t"+TXTCLR.OG("PS_USER_NONE")+": No commands\r\t"+TXTCLR.OG("PS_USER_BASIC")+": Most basic commands\r\t"+TXTCLR.OG("PS_USER_ADMIN")+": Most of the commands\r\t"+TXTCLR.OG("PS_USER_SCRIPTER")+": Almost all of the commands")
+                    ],
+                    "Change the privileges given player can have."
+                    )
+                return cmd.Describe();
+            }
+            add_admin = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "add_admin",
+                    [],
+                    TXTCLR.OG("add_admin")+" command has been "+TXTCLR.OG("deprecated")+"! Use "+TXTCLR.BG("user_level")+" command instead"
+                    )
+                return cmd.Describe();
+            }
+            remove_admin = function(player,args)
+            {
+                local cmd = CMDDocs(
+                    "remove_admin",
+                    [],
+                    TXTCLR.OG("remove_admin")+" command has been "+TXTCLR.OG("deprecated")+"! Use "+TXTCLR.BG("user_level")+" command instead"
+                    )
+                return cmd.Describe();
+            }
             add_script_auth = function(player,args)
             {
                 local cmd = CMDDocs(
                     "add_script_auth",
-                    [
-                        CMDParam("character","Character name of the player")
-                    ],
-                    "Give a player authority to execute scripts"
+                    [],
+                    TXTCLR.OG("add_script_auth")+" command has been "+TXTCLR.OG("deprecated")+"! Use "+TXTCLR.BG("user_level")+" command instead"
                     )
                 return cmd.Describe();
             }
@@ -1375,10 +1433,8 @@
             {
                 local cmd = CMDDocs(
                     "remove_script_auth",
-                    [
-                        CMDParam("character","Character name of the player")
-                    ],
-                    "Take away a player's authority to execute scripts"
+                    [],
+                    TXTCLR.OG("remove_script_auth")+" command has been "+TXTCLR.OG("deprecated")+"! Use "+TXTCLR.BG("user_level")+" command instead"
                     )
                 return cmd.Describe();
             }
@@ -3542,7 +3598,12 @@ class ::CMDDocs
                 paramstr += " " + COLOR_OLIVE_GREEN + (i+1) + "." + COLOR_DEFAULT + p.Describe() + "\n"
             }
         }
-        paramstr = COLOR_BRIGHT_GREEN + _name + COLOR_DEFAULT + ":\n" 
+        local prv = COLOR_DEFAULT
+        if(_name in ::PrivilegeRequirements)
+        {
+            prv += " (minimum level: "+COLOR_ORANGE + ::UserLevelNames[::PrivilegeRequirements[_name]] + COLOR_DEFAULT + ")"
+        }
+        paramstr = COLOR_BRIGHT_GREEN + _name + prv + ":\n" 
                     + COLOR_ORANGE + ">>> " + COLOR_DEFAULT + _desc + "\n" 
                     + paramstr
 

@@ -5,14 +5,15 @@
 {
 	Version = 
 	{
-		Number = "v1.7.2"
-		Date = "01.05.2021"
+		Number = "v2.0.0"
+		Date = "30.06.2021"
 		Source = "https://github.com/semihM/project_smok"
 	}
 
 	AliasExampleVersions =
 	{
 		"v1.1.0" : 1
+		"v2.0.0" : 1
 	}
 
 	EntityGroupsExampleVersions =
@@ -26,11 +27,15 @@
 \************************/
 ::Constants.Directories <-
 {
-    /// Admins list
+    /// (OLD)Admins list	
     Admins = "admin system/admins.txt"
 
-    /// Script authorization list
+    /// (OLD)Script authorization list
     ScriptAuths = "admin system/scriptauths.txt"
+
+    /// User levels and command privileges
+    UserLevels = "admin system/user_levels.txt"
+	CommandPrivileges = "admin system/command_privileges.txt"
 
     /// Dumbarse list
     Banned = "admin system/banned.txt"
@@ -99,6 +104,42 @@
 	CustomVehicle = "admin system/vehicles/file_list.txt"
 	CustomVehicleExample = "admin system/vehicles/example_vehicle_file.nut"
 }
+
+::Constants.Deprecate <-
+{
+	Admins = "DELETE THIS FILE AND USE user_levels.txt INSTEAD!"
+	ScriptAuths = "DELETE THIS FILE AND USE user_levels.txt INSTEAD!"
+}
+::Constants.UserLevelDescriptions <- function(prefix = "//\t")
+{
+	return prefix + "PS_USER_NONE : (Default)Disallow all command access\r\n"
+	+ prefix + "PS_USER_BASIC : Allow access to most basic commands (example: get_in, get_out etc.)\r\n"
+	+ prefix + "PS_USER_ADMIN : Allow access to generic commands which doesn't let the player run script codes (most of the commands)\r\n"
+	+ prefix + "PS_USER_SCRIPTER : Allow access to most of the commands if not all (example: cvar, script, out etc.)\r\n"
+	+ prefix + "PS_USER_HOST : Allow access to all commands (NOT RECOMMENDED TO BE USED FOR MORE THAN ONE PLAYER)\r\n"
+}
+::Constants.UserLevelDescriptionsForCommands <- function(prefix = "//\t")
+{
+	return prefix + "PS_USER_NONE : Allow access for anyone\r\n"
+	+ prefix + "PS_USER_BASIC : Allow guest/basic user privileges\r\n"
+	+ prefix + "PS_USER_ADMIN : Allow admin user privileges\r\n"
+	+ prefix + "PS_USER_SCRIPTER : Allow scripter user privileges\r\n"
+	+ prefix + "PS_USER_HOST : Allow access for host only\r\n"
+}
+
+::Constants.UserLevelExplain <-
+	"// THIS FILE IS USED FOR DECLARING PRIVILEGES OF PLAYERS AS USER LEVELS\r\n"
+	+"// FOLLOWS THE FORMAT: {steam_id} = {user_level}\r\n"
+	+"// USER LEVELS(EACH ALSO HAS THE PRIVILEGES OF ONES BEFORE THEM):\r\n"
+	+ ::Constants.UserLevelDescriptions()
+
+::Constants.CommandPrivilegesDefault <-
+	"// THIS FILE IS FOR OVERRIDING COMMANDS' REQUIRED PRIVILEGE LEVELS\r\n"
+	+"// FOLLOWS THE FORMAT: {command_name} = {minimum_user_level}\r\n"
+	+"// USER LEVELS(EACH ALSO HAS THE PRIVILEGES OF ONES BEFORE THEM):\r\n"
+	+ ::Constants.UserLevelDescriptionsForCommands()
+	+"// Example(make my_command command require SCRIPTER privilege minimum):\r\n"
+	+"// 	my_command = PS_USER_SCRIPTER"
 
 /**************************\
 * ENTITY NAMES USED BY CMDS *
@@ -180,7 +221,7 @@
 // IT IS NOT RECOMMENDED TO USE THE EXAMPLE FILE FOR NEW HOOKS 
 // !!!!!!!!!!!!!!
 
-//example_hook_file // This will make project_smok look for ""example_hook_file.nut"" and read it if it exists! Write any additional files below this line..." + "\n\r\n\r\n\r\n\r\n\r"
+//example_hook_file // This will make project_smok look for ""example_hook_file.nut"" and read it if it exists! Write any additional files below this line..." + "\r\n\r\n\r\n\r\n\r\n"
 
 ::Constants.CustomHookDefaults <-
 @"// All files in this directory will be read as strings and then get compiled, so be careful with the formatting!
@@ -246,7 +287,7 @@
 +::Constants.CustomHookExampleFunction_1 + "\n"
 +::Constants.CustomHookExampleFunction_2
 
-::Constants.CustomScriptExampleFunction <- "::PS_Scripts.CommandName.Main <- function(player,args,text)\n{\n\t// Adding restrictions\n\t// -> Only allow admins (this is already checked in most cases, but better to check twice)\n\tif(!AdminSystem.IsPrivileged(player))\n\t\treturn;\n\t// -> Only allow admins with script authorizations\n\tif(!AdminSystem.HasScriptAuth(player))\n\t\treturn;\n\n\t// Accessing arguments easily\n\tlocal argument_1 = GetArgument(1)	// This is same as args[0], but it is fail-safe, returns null if no argument is passed\n\tlocal argument_2 = GetArgument(2)	// But GetArgument method uses a copy of arguments stored in ::VSLib.EasyLogic.LastArgs, which only gets updated when the command is called from chat/console\n\tlocal argument_3 = GetArgument(3)	// If you expect the command to be called within a compilestring function, make sure to check args in here too!\n\t// ...\n\n\t// Do null checks if you need\n\tif(argument_1 == null)\n\t\treturn;\n\tif(argument_2 == null)\n\t\targument_2 = \"default value for argument 2\";\n\n\t// Write the rest of the instructions however you like!\n\n\t// At the end, print out a message for the player(s) if needed, prints to wherever the given player has his output state set to\n\t::Printer(player,\"Put the message here!\")\n\n\t// Check out some example functions in the source code: https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system.nut \n}"
+::Constants.CustomScriptExampleFunction <- "::PS_Scripts.CommandName.Main <- function(player,args,text)\n{\n\t// Accessing arguments easily\n\tlocal argument_1 = GetArgument(1)	// This is same as args[0], but it is fail-safe, returns null if no argument is passed\n\tlocal argument_2 = GetArgument(2)	// But GetArgument method uses a copy of arguments stored in ::VSLib.EasyLogic.LastArgs, which only gets updated when the command is called from chat/console\n\tlocal argument_3 = GetArgument(3)	// If you expect the command to be called within a compilestring function, make sure to check args in here too!\n\t// ...\n\n\t// Do null checks if you need\n\tif(argument_1 == null)\n\t\treturn;\n\tif(argument_2 == null)\n\t\targument_2 = \"default value for argument 2\";\n\n\t// Write the rest of the instructions however you like!\n\n\t// At the end, print out a message for the player(s) if needed, prints to wherever the given player has his output state set to\n\t::Printer(player,\"Put the message here!\")\n\n\t// Check out some example functions in the source code: https://github.com/semihM/project_smok/blob/master/2229460523/scripts/vscripts/admin_system.nut \n}"
 
 ::Constants.CommandScriptListDefaults <-
 @"// This file contains the files names of the custom commands to make sure they get read
@@ -258,7 +299,7 @@
 // IT IS NOT RECOMMENDED TO USE THE EXAMPLE FILES FOR NEW COMMANDS 
 // !!!!!!!!!!!!!!
 
-//example_command_file // This will make project_smok look for ""example_command_file.nut"" and read it if it exists! Write any additional files below this line..." + "\n\r\n\r\n\r\n\r\n\r"
+//example_command_file // This will make project_smok look for ""example_command_file.nut"" and read it if it exists! Write any additional files below this line..." + "\r\n\r\n\r\n\r\n\r\n"
 
 ::Constants.CommandScriptDefaults <-
 @"// All files in this directory will be read as strings and then get compiled, so be careful with the formatting!
@@ -313,11 +354,12 @@
 // 		1. Name the file however you like
 // 		2. Include it's name in the ""file_list.txt"" to make the project_smok is aware of it's existance
 //		3. Decide for a command name(in these steps MyCommand is used)
-//		4. Prepare the command following the example format given in this file!
+//		4. Decide for the minimum user level required to access the command(check user_levels.txt or user_level command for information about these levels)
+//		5. Prepare the command following the example format given in this file!
 //			o Initialize the table: ::PS_Scripts.MyCommand <- {}
 //			o Write documentation: ::PS_Scripts.MyCommand.Help <- {}
 //			o Write the actual function: ::PS_Scripts.MyCommand.Main <- function(player,args,text){}
-//		5. Command is ready to use via !MyCommand,/MyCommand,?MyCommand or scripted_user_func MyCommand
+//		6. Command is ready to use via !MyCommand, /MyCommand, ?MyCommand or scripted_user_func MyCommand
 //
 // ----BELOW HERE IS HOW THE SCRIPTS SHOULD BE CREATED----
 
@@ -326,6 +368,9 @@
 // -> Initialize a table using the name of your command
 // -> If ""CommandName"" already exists, this will overwrite it!
 ::PS_Scripts.CommandName <- {}
+
+// -> Decide the minimum user level required to call this command
+::PS_Scripts.CommandName.MinimumUserLevel <- PS_USER_ADMIN
 
 // Create some documentation for your command
 // -> This information can be accessed in-game using ?CommandName in chat 
@@ -358,7 +403,7 @@
 // IT IS NOT RECOMMENDED TO USE THE EXAMPLE FILES FOR NEW ALIASES
 // !!!!!!!!!!!!!!
 
-//example_alias_file // This will make project_smok look for ""example_alias_file.txt"" and read it if it exists! Write any additional files below this line..." + "\n\r\n\r\n\r\n\r\n\r"
+//example_alias_file // This will make project_smok look for ""example_alias_file.txt"" and read it if it exists! Write any additional files below this line..." + "\r\n\r\n\r\n\r\n\r\n"
 
 ::Constants.CommandAliasesDefaults <-
 {
@@ -588,6 +633,56 @@
 		}
 	}
 }"
+	v2_0_0 = @"// Examples present in this file includes new features introduced in v2.0.0
+// For detailed documentation check out: https://github.com/semihM/project_smok#user-content-using-aliases
+//
+// What's new ?
+//		- New entry 'MinimumUserLevel' to declare minimum user level required to use the alias(each has the privileges the ones written before it)
+//			+ PS_USER_NONE: 	Anyone can use
+//			+ PS_USER_BASIC: 	Guest/basic players can use
+//			+ PS_USER_ADMIN: 	Admins can use
+//			+ PS_USER_SCRIPTER: 	Scripters can use
+//			+ PS_USER_HOST: 	Only host can use
+//		- 'HostOnly' and 'ScriptAuthOnly' options have been deprecated, will not be supported in the future. Use PS_USER_HOST and PS_USER_SCRIPTER respectively as 'MinimumUserLevel' instead
+// --------------------------------------------------
+// Example: test_alias_1 alias only usable for host, test_alias_2 alias usable for anyone; test_alias_3 usable for admins, scripters, host
+{
+	test_alias_1 =
+	{
+		Help =
+		{
+			docs = ""A host only alias!""
+		}
+		
+		Commands = {}
+		
+		MinimumUserLevel = PS_USER_HOST		// Host privileges
+	}
+
+	test_alias_2 =
+	{
+		Help =
+		{
+			docs = ""Anyone can use this alias!""
+		}
+		
+		Commands = {}
+		
+		MinimumUserLevel = PS_USER_NONE		// If this key-value is not declared, it will default to PS_USER_NONE anyway
+	}
+
+	test_alias_3 =
+	{
+		Help =
+		{
+			docs = ""You need to be an admin at minimum to use this alias!""
+		}
+		
+		Commands = {}
+		
+		MinimumUserLevel = PS_USER_ADMIN	// Admins, scripters, host allowed
+	}
+}"
 }
 
 ::Constants.CustomPropsListDefaults <-
@@ -600,7 +695,7 @@
 // IT IS NOT RECOMMENDED TO USE THE EXAMPLE FILES FOR NEW SPECIAL PROPS
 // !!!!!!!!!!!!!!
 
-//example_entity_file // This will make project_smok look for ""example_entity_file.nut"" and read it if it exists! Write any additional files below this line..." + "\n\r\n\r\n\r\n\r\n\r"
+//example_entity_file // This will make project_smok look for ""example_entity_file.nut"" and read it if it exists! Write any additional files below this line..." + "\r\n\r\n\r\n\r\n\r\n"
 
 ::Constants.CustomPropsDefaults <-
 {
@@ -752,22 +847,55 @@ ExampleGnome =
 					tbl.Parameters <- {}
 				}
 			}
+
+			local lvl = PS_USER_NONE
+			foreach(cmd_name,cmd_tbl in tbl.Commands)
+			{
+				if(cmd_name in ::PrivilegeRequirements && ::PrivilegeRequirements[cmd_name] > lvl)
+					lvl = ::PrivilegeRequirements[cmd_name]
+			}
+			
 			if("ScriptAuthOnly" in tbl)
 			{
+				Messages.WarnPlayer(player,"Alias option 'ScriptAuthOnly' has been deprecated. Use 'MinimumUserLevel' instead with PS_USER_SCRIPTER instead")
+
 				if(typeof tbl.ScriptAuthOnly != "bool")
 				{
-					ClientPrint(player.GetBaseEntity(),3,"ScriptAuthOnly present in the table should be true or false, formatted as: ScriptAuthOnly = requires_script_auth")
+					Messages.WarnPlayer(player,"ScriptAuthOnly present in the table should be true or false, formatted as: ScriptAuthOnly = requires_script_auth")
 					tbl.ScriptAuthOnly <- false
 				}
+				else if(tbl.ScriptAuthOnly)
+					lvl = PS_USER_SCRIPTER
 			}
 			if("HostOnly" in tbl)
 			{
+				Messages.WarnPlayer(player,"Alias option 'HostOnly' has been deprecated. Use 'MinimumUserLevel' instead with PS_USER_HOST instead")
 				if(typeof tbl.HostOnly != "bool")
 				{
-					ClientPrint(player.GetBaseEntity(),3,"HostOnly present in the table should be true or false, formatted as: HostOnly = host_only")
+					Messages.WarnPlayer(player,"HostOnly present in the table should be true or false, formatted as: HostOnly = requires_host")
 					tbl.HostOnly <- false
 				}
+				else if(tbl.ScriptAuthOnly)
+					lvl = PS_USER_HOST
 			}
+			
+			if("MinimumUserLevel" in tbl)
+			{
+				if(typeof tbl.MinimumUserLevel != "integer")
+				{
+					Messages.WarnPlayer(player,"Alias option 'MinimumUserLevel' has to be one of PS_USER_NONE, PS_USER_BASIC, PS_USER_ADMIN, PS_USER_SCRIPTER or PS_USER_HOST");
+					lvl = PS_USER_NONE
+				}
+				else
+				{
+					if(tbl.MinimumUserLevel < PS_USER_NONE || tbl.MinimumUserLevel > ::UserLevelNames.len())
+					{
+						Messages.WarnPlayer(player," Minimum user level is unknown! Allowing it's use for everyone");
+						lvl = PS_USER_NONE
+					}
+				}
+			}
+			tbl.MinimumUserLevel <- lvl
 		}
 			
 		return tbl;
@@ -856,24 +984,58 @@ ExampleGnome =
 						issuesfound = true
 					}
 				}
+				
+				local lvl = PS_USER_NONE
+				foreach(cmd_name,cmd_tbl in tbl[als].Commands)
+				{
+					if(cmd_name in ::PrivilegeRequirements && ::PrivilegeRequirements[cmd_name] > lvl)
+						lvl = ::PrivilegeRequirements[cmd_name]
+				}
+
 				if("ScriptAuthOnly" in valtbl)
 				{
+					printl("\t["+als+"-Warning] Alias option 'ScriptAuthOnly' has been deprecated. Use 'MinimumUserLevel' instead with PS_USER_SCRIPTER instead")
+
 					if(typeof valtbl.ScriptAuthOnly != "bool")
 					{
 						printl("\t["+als+"-Error] ScriptAuthOnly present in the table should be true or false, formatted as: ScriptAuthOnly = requires_script_auth")
 						tbl[als].ScriptAuthOnly <- false
 						issuesfound = true
 					}
+					else if(valtbl.ScriptAuthOnly)
+						lvl = PS_USER_SCRIPTER
 				}
 				if("HostOnly" in valtbl)
 				{
+					printl("\t["+als+"-Error] Alias option 'HostOnly' has been deprecated. Use 'MinimumUserLevel' instead with PS_USER_HOST instead")
 					if(typeof valtbl.HostOnly != "bool")
 					{
-						printl("\t["+als+"-Error] HostOnly present in the table should be true or false, formatted as: HostOnly = host_only")
+						printl("\t["+als+"-Error] HostOnly present in the table should be true or false, formatted as: HostOnly = requires_host")
 						tbl[als].HostOnly <- false
 						issuesfound = true
 					}
+					else if(valtbl.ScriptAuthOnly)
+						lvl = PS_USER_HOST
 				}
+				
+				if("MinimumUserLevel" in valtbl)
+				{
+					if(typeof valtbl.MinimumUserLevel != "integer")
+					{
+						printl("\t["+als+"-Error] Alias option 'MinimumUserLevel' has to be one of PS_USER_NONE, PS_USER_BASIC, PS_USER_ADMIN, PS_USER_SCRIPTER or PS_USER_HOST");
+						lvl = PS_USER_NONE
+						issuesfound = true
+					}
+					else
+					{
+						if(valtbl.MinimumUserLevel < PS_USER_NONE || valtbl.MinimumUserLevel > ::UserLevelNames.len())
+						{
+							printl("\t["+als+"-Error] Minimum user level is unknown! Allowing it's use for everyone");
+							lvl = PS_USER_NONE
+						}
+					}
+				}
+				tbl[als].MinimumUserLevel <- lvl
 			}
 			foreach(i,a in deletes)
 			{
@@ -1085,7 +1247,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 // IT IS NOT RECOMMENDED TO USE THE EXAMPLE FILES FOR NEW BINDS
 // !!!!!!!!!!!!!!
 
-//example_bind_file // This will make project_smok look for ""example_bind_file.nut"" and read it if it exists! Write any additional files below this line..." + "\n\r\n\r\n\r\n\r\n\r"
+//example_bind_file // This will make project_smok look for ""example_bind_file.nut"" and read it if it exists! Write any additional files below this line..." + "\r\n\r\n\r\n\r\n\r\n"
 
 ::Constants.CustomBindsTableDefaults <-
 {
@@ -1386,7 +1548,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 // WARNING: If this is the first time this file is being edited, there is an invisible character at the end of this file which stops the rest of the file's reading process
 //				make sure to remove any trailing spaces/invisible characters after the example line below
 
-//example_vehicle_file // This will make project_smok look for ""example_vehicle_file.nut"" and read it if it exists! Write any additional files above this line..." + "\n\r\n\r\n\r\n\r\n\r"
+//example_vehicle_file // This will make project_smok look for ""example_vehicle_file.nut"" and read it if it exists! Write any additional files above this line..." + "\r\n\r\n\r\n\r\n\r\n"
 
 ::Constants.CustomVehicleDefaults <-
 {
@@ -2112,7 +2274,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
                                 }
                                 ValueComments =
                                 {
-                                    val = "// Height to use with given flags"
+                                    val = "// Height to use with flags: HEIGHT_USE_VAL and HEIGHT_ADD_VAL"
 									min = "// Minimum value for random numbers range to use with flags: HEIGHT_RANDOM_GIVEN and HEIGHT_ADD_RANDOM_GIVEN"
 									max = "// Maximum value for random numbers range to use with flags: HEIGHT_RANDOM_GIVEN and HEIGHT_ADD_RANDOM_GIVEN"
                                     flags = @"// Flags to use with the values in this table, can be combined with ""|"" character.
@@ -2134,7 +2296,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 						// 	HEIGHT_RANDOM_M100_100		Use random height ranged [-100,100]
 						// 	HEIGHT_RANDOM_M250_250		Use random height ranged [-250,250]
 						// 	HEIGHT_RANDOM_M500_500		Use random height ranged [-500,500]
-						// 	HEIGHT_RANDOM_GIVEN		Use random height ranged [min,max], ""min"" and ""val"" from this table
+						// 	HEIGHT_RANDOM_GIVEN		Use random height ranged [min,max], ""min"" and ""max"" from this table
 						// 	HEIGHT_ADD_RANDOM_0_10		Add random height ranged [0,10]
 						// 	HEIGHT_ADD_RANDOM_0_50		Add random height ranged [0,50]
 						// 	HEIGHT_ADD_RANDOM_0_100		Add random height ranged [0,100]
@@ -2147,7 +2309,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 						// 	HEIGHT_ADD_RANDOM_M50_50		Add random height ranged [-50,50]
 						// 	HEIGHT_ADD_RANDOM_M100_100		Add random height ranged [-100,100]
 						// 	HEIGHT_ADD_RANDOM_M250_250		Add random height ranged [-250,250]
-						// 	HEIGHT_ADD_RANDOM_GIVEN		Add random height ranged [min,max], ""min"" and ""val"" from this table
+						// 	HEIGHT_ADD_RANDOM_GIVEN		Add random height ranged [min,max], ""min"" and ""max"" from this table
 						//
 						// Example flag for spawning props above eyelevel ""val"" units:
 						// 		flags = HEIGHT_EYELEVEL|HEIGHT_ADD_VAL"
@@ -2166,7 +2328,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
                                 }
                                 ValueComments =
                                 {
-                                    val = "// Angles to use with given flags. Formatted as \"Pitch Yaw Roll\" in degrees"
+                                    val = "// Angles to use with flags: ANGLE_USE_VAL and ANGLE_ADD_VAL. Formatted as \"Pitch Yaw Roll\" in degrees"
 									min = "// Minimum value for random numbers range to use with flags: ANGLE_RANDOM_GIVEN and ANGLE_ADD_RANDOM_GIVEN"
 									max = "// Maximum value for random numbers range to use with flags: ANGLE_RANDOM_GIVEN and ANGLE_ADD_RANDOM_GIVEN"
                                     flags = @"// Flags to use with the values in this table, can be combined with ""|"" character.
@@ -2196,14 +2358,14 @@ command_name_2 //Take notes by adding // after the command name if needed"
 						// 	ANGLE_RANDOM_M30_30		Use random filled angle ranged [-30,30]
 						// 	ANGLE_RANDOM_M60_60		Use random filled angle ranged [-60,60]
 						// 	ANGLE_RANDOM_M90_90		Use random filled angle ranged [-90,90]
-						// 	ANGLE_RANDOM_GIVEN		Use random filled angle ranged [min,max], ""min"" and ""val"" from this table
+						// 	ANGLE_RANDOM_GIVEN		Use random filled angle ranged [min,max], ""min"" and ""max"" from this table
 						// 	ANGLE_ADD_RANDOM_0_45		Add random filled angle ranged [0,45]
 						// 	ANGLE_ADD_RANDOM_45_90		Add random filled angle ranged [45,90]
 						// 	ANGLE_ADD_RANDOM_M45_0		Add random filled angle ranged [-45,0]
 						// 	ANGLE_ADD_RANDOM_M90_M45		Add random filled angle ranged [-90,-45]
 						// 	ANGLE_ADD_RANDOM_M15_15		Add random filled angle ranged [-15,15]
 						// 	ANGLE_ADD_RANDOM_M45_45		Add random filled angle ranged [-45,45]
-						// 	ANGLE_ADD_RANDOM_GIVEN		Add random filled angle ranged [min,max], ""min"" and ""val"" from this table
+						// 	ANGLE_ADD_RANDOM_GIVEN		Add random filled angle ranged [min,max], ""min"" and ""max"" from this table
 						// 
 						// Example flag for spawning props facing left of the direction player is facing, rolled over:
 						// 		flags = ANGLE_EYES_EXACT|ANGLE_TURN_LEFT|ANGLE_ROLLOVER
@@ -4467,7 +4629,7 @@ if(!("Defaults" in ::Constants))
                 call_amount = 0
                 lastspoken = []
                 enabled = false
-                prob = 0.5
+                prob = 0.33
                 startdelay = 0.1
                 userandom = true
                 randomlinepaths = null
@@ -4497,7 +4659,7 @@ if(!("Defaults" in ::Constants))
                 call_amount = 0
                 lastspoken = []
                 enabled = false
-                prob = 0.2
+                prob = 0.05
                 startdelay = 1.0
                 userandom = true
                 randomlinepaths = null
@@ -4518,7 +4680,7 @@ if(!("Defaults" in ::Constants))
                 call_amount = 0
                 lastspoken = []
                 enabled = true
-                prob = 0.5
+                prob = 0.33
                 startdelay = 0.1
                 userandom = true
                 randomlinepaths = ::Survivorlines.FriendlyFire[survivor]
@@ -4548,7 +4710,7 @@ if(!("Defaults" in ::Constants))
                 call_amount = 0
                 lastspoken = []
                 enabled = true
-                prob = 0.2
+                prob = 0.05
                 startdelay = 1.0
                 userandom = true
                 randomlinepaths = ::Survivorlines.Excited[survivor]
