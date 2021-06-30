@@ -4776,13 +4776,13 @@ ExampleGnome =
 
    + **_command\_limits_.txt_** : Restrictions to apply to admins for certain commands
 
-   + **_command\_privileges_.txt_** : List of command names to override their minimum user levels required for access
+   + **_command\_privileges.txt_** : List of command names to override their minimum user levels required for access
 
    + **_custom\_responses.json_** : Custom responses, doesn't include built-in ones
 
    + **_defaults.txt_** : Default settings and parameters
 
-   + **_disabled\_commands_.txt_** : List of command names to disable 
+   + **_disabled\_commands.txt_** : List of command names to disable 
 
    + **_ghost\_zombies\_settings.txt_** : Ghost zombies event custom settings
 
@@ -4794,7 +4794,7 @@ ExampleGnome =
 
    + **_settings.txt_** : Admin system settings. Outdated, may have unused setting names.
 
-   + **_user\_levels_.txt_** : User levels for players
+   + **_user\_levels.txt_** : User levels for players
 
 - These files can all be edited manually with any text editor.
    + [VS Code](https://code.visualstudio.com/) is recommended for editing, especially for the **.nut** Squirrel scripting language files. Helpful add-ons:
@@ -4810,7 +4810,7 @@ ExampleGnome =
    + **Solution 2**: Remove the contents of the file, write the file names after cleaning  
 
 #### Extra Notes
-- **"_user\_levels_.txt_"** file is important for deciding the host of the server, first user with **PS_USER_HOST** user level in this file is assumed to be the server host.
+- **"_user\_levels.txt_"** file is important for deciding the host of the server, first user with **PS_USER_HOST** user level in this file is assumed to be the server host.
 
 - **"custom_responses.json"** file can be opened with a text editor and new custom sequences can be defined  for each admin's steam ID with the example format given in the file.
 
@@ -4820,11 +4820,11 @@ ExampleGnome =
 
 - **"botparams.txt"** file contains the parameters used for bots' sharing and looting abilities. Probabilistic values are normalized between 0 and 1.
 
-- **"apocalypse_settings.txt"** file contains the settings to use for the _apocalypse_ event. Probabilistic values are normalized between 0 and 1.
+- **"apocalypse\_settings.txt"** file contains the settings to use for the _apocalypse_ event. Probabilistic values are normalized between 0 and 1.
 
-- **"ghost_zombies_settings.txt"** file contains the settings to use for the _ghost zombies_ event. Probabilistic values are normalized between 0 and 1.
+- **"ghost\_zombies\_settings.txt"** file contains the settings to use for the _ghost zombies_ event. Probabilistic values are normalized between 0 and 1.
 
-- **"meteor_shower_settings.txt"** file contains the settings to use for the _meteor shower_ event. Probabilistic values are normalized between 0 and 1.
+- **"meteor\_shower\_settings.txt"** file contains the settings to use for the _meteor shower_ event. Probabilistic values are normalized between 0 and 1.
 
 - **entitygroups/** folder can be used to easily import entity group tables. Follow the instructions in the example file: **_entitygroups/example\_entity\_file.txt_**
 
