@@ -3350,6 +3350,179 @@
        remove_lights !self
 ```
 ---
+#### **create_camera**
+- Create a camera to change your view into after.
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
+   Chat Syntax | (!,/,?)create_camera *angles target*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *create_camera,angles,target*
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->9->1->1_
+   ------------- | -------------
+
+```cpp
+       //Overloads
+       // Using !self as 'angles' argument will point the camera to player
+       create_camera {angles: ({pitch}|{yaw}|{roll}, !self, )} {target: (#{ID} | {targetname} | !self | !picker)}
+       create_camera {angles: ({pitch}|{yaw}|{roll}, !self, )}  // target = null : Keeps aiming the same place
+       create_camera  // angles = null : player's eye angles, target = null : Keeps aiming the same place
+       
+       // Example: Create a camera facing you at aimed place
+       create_camera !self
+       
+       // Example: Create a camera facing and following you at aimed place
+       create_camera !self !self
+       
+       // Example: Create a camera at aimed place with given angles
+       create_camera -10|90|10
+```
+---
+#### **change_camera**
+- Change your view into another camera.
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
+   Chat Syntax | (!,/,?)change_camera *targetname*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *change_camera,targetname*
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->9->1->\[4,5\]_
+   ------------- | -------------
+
+```cpp
+       //Overloads
+       // Using !last as 'targetname' argument will switch to last created camera by the player
+       change_camera {target: (#{ID} | {targetname} | !last | !self)}
+       change_camera  // target: null, reset view back to normal
+       
+       // Example: View last created camera
+       change_camera !last
+       
+       // Example: Reset your view
+       change_camera 
+```
+---
+#### **last_camera_info**
+- View the index and yourr distance to the last camera you created.
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
+   Chat Syntax | (!,/,?)last_camera_info
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *last_camera_info*
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->9->1->6_
+   ------------- | -------------
+
+---
+#### **camera_setting**
+- Change camera positions, angles and attachment settings.
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
+   Chat Syntax | (!,/,?)camera_setting *targetname setting value extra_value*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *camera_setting,targetname,setting,value,extra_value*
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->9->1->7_
+   ------------- | -------------
+
+```cpp
+       //Overloads
+       // Some setting name information:
+       //   - If camera is attached to something, local origin and angles are used
+       //   - angle = angles, +angle = +angles
+       //   - rorigin and +origin settings' only difference is that rorigin uses
+       //	given vector values relative to player if the camera isn't attached 
+       //	to any other object
+       camera_setting {target: (#{ID} | {targetname} | !last | !self)} {setting: (angle|+angle|origin|+origin|rorigin|attach|detach)} {value} {extra_value}
+       camera_setting {target: (#{ID} | {targetname} | !last | !self)} {setting: (angle|+angle|origin|+origin|rorigin|attach|detach)} {value}  // extra_value = null
+       camera_setting {target: (#{ID} | {targetname} | !last | !self)} {setting: (angle|+angle|origin|+origin|rorigin|attach|detach)}  // value = null, extra_value = null
+       
+       // Example: Attach last created camera to yourself
+       camera_setting !last attach !self
+       
+       // Example: Detach camera attached to you(in this case it's last camera)
+       camera_setting !last detach
+       
+       // Example: Attach last created camera to attachment point 'mouth' instead of default 'forward'
+       camera_setting !last attach !self mouth
+       
+       // Example: Move camera #44 20 inches up
+       camera_setting #44 +origin 0|0|20
+       
+```
+---
+#### **selfie**
+- Change your view temporarily into a selfie view, it's recommended to use this command through the **menu** to take screenshots automatically.
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
+   Chat Syntax | (!,/,?)selfie *view_count*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *selfie,view_count*
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->9->2->\[1,2\]_
+   ------------- | -------------
+
+```cpp
+       //Overloads
+       // There are built-in 3 view positions
+       selfie {view_count: (1,2,3)}
+       selfie  // view_count = 1
+       
+       // Example: Change into a selfie view
+       selfie
+       
+       // Example: Change into 3 selfie views, stay on each one about a second
+       selfie 3
+```
+---
+#### **switch_hud_element**
+- **DANGEROUS COMMAND**, Enable/disable hud elements
+
+   Minimim User Level | **PS_USER_ADMIN**
+   ------------- | -------------
+
+   Chat Syntax | (!,/,?)switch_hud_element *element*
+   ------------- | -------------
+
+   Console Syntax | scripted_user_func *switch_hud_element,element*
+   ------------- | -------------
+    
+   Menu Sequence | _6->9->9->9->9->1->8 AND 6->9->9->9->9->2->6_
+   ------------- | -------------
+
+```cpp
+       //Overloads
+       // 'menu' and 'health' are the same element
+       // Hiding chat and menu can behave oddly
+       switch_hud_element {element: (menu,health,chat,weapon_selection,all)}
+       
+       // Example: Switch on/off chat hud element
+       switch_hud_element chat
+       
+       // Example: Switch all elements (on -> off, off -> on)
+       switch_hud_element all
+```
+---
 ### Other
 
 #### **give_physics**
