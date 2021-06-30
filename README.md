@@ -59,7 +59,7 @@
     
 - [**Command Categories**](#command-categories)
 
-    - [**User and Command Privileges**](#user-and-command-privileges)
+    - [**User Levels and Command Privileges**](#user-levels-and-command-privileges)
 
     - [**Entities/Objects**](#entities)
 
@@ -458,7 +458,7 @@
       - You can reload the script files using the **[reload_scripts command](#reload_scripts)**. This allows an easier way to test the commands and check for formatting mistakes
   
   #### Script Options
-   - There are 2 options available for scripts, neither of them are required to initialize a command.
+   - There are 3 options available for scripts, neither of them are required to initialize a command.
    
    Option | Data Type | Description
    ------------ | ------------- | -------------
@@ -686,7 +686,7 @@
 
 ## Command Categories
 ---
-### User Levels
+### User Levels and Command Privileges
 
 #### **user_level**
 - Change user levels of players to allow/disallow them to use certain features/commands.
