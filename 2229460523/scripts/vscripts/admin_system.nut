@@ -79,11 +79,16 @@ foreach(cat,tbls in ::EntityDetailTables)
 
 if ( SessionState.ModeName == "coop" || SessionState.ModeName == "realism" || SessionState.ModeName == "survival" || SessionState.ModeName == "versus" || SessionState.ModeName == "scavenge" )
 {
-	if ( "cm_AggressiveSpecials" in SessionOptions )
-		delete SessionOptions.cm_AggressiveSpecials;
-	
-	if ( "PreferredMobDirection" in SessionOptions )
-		delete SessionOptions.PreferredMobDirection;
+	if("SessionOptions" in getroottable())
+	{
+		if ( "cm_AggressiveSpecials" in ::SessionOptions )
+			delete ::SessionOptions.cm_AggressiveSpecials;
+		
+		if ( "PreferredMobDirection" in ::SessionOptions )
+			delete ::SessionOptions.PreferredMobDirection;
+	}
+	else
+		::SessionOptions <- {}
 }
 
 Utils.PrecacheCSSWeapons();
@@ -21795,12 +21800,11 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 		}
 		
 		printB(playername,"================physics_debug(of aimed object)=================",true,"debug",false,false);
-		AdminSystem._Clientbroadcast(playername,"physics_debug_entity",1,false);
+		AdminSystem._Clientbroadcast(playername,"physics_debug_entity #"+ent.GetIndex(),1,false);
 		if(svcheatsval==1.0)
 		{
 			printB(playername,"==================ent_dump====================",true,"debug",false,false);
-			AdminSystem._Clientbroadcast(playername,"ent_dump !picker",1,false);
-			AdminSystem._Clientbroadcast(playername,"ent_script_dump",1,false);
+			AdminSystem._Clientbroadcast(playername,"ent_dump #"+ent.GetIndex(),1,false);
 		}
 
 		printB(playername,"",false,"",false,true,0.5);
@@ -21836,13 +21840,12 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 		if(player != null)
 		{
 			printB(playername,"================physics_debug=================",true,"debug",false,false);
-			AdminSystem._Clientbroadcast(playername,"physics_debug_entity",1,false);
+			AdminSystem._Clientbroadcast(playername,"physics_debug_entity #"+ent.GetIndex(),1,false);
 
 			if(svcheatsval==1.0)
 			{
 				printB(playername,"=================ent_dump==================",true,"debug",false,false);
-				AdminSystem._Clientbroadcast(playername,"ent_dump !picker",1,false);
-				AdminSystem._Clientbroadcast(playername,"ent_script_dump",1,false);
+				AdminSystem._Clientbroadcast(playername,"ent_dump #"+ent.GetIndex(),1,false);
 			}
 			printB(playername,"",false,"",false,true,0.5);
 		}
@@ -21885,7 +21888,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 		if(svcheatsval==1.0)
 		{	
 			printB(playername,"=================dumpplayer===================",true,"debug",false,false);
-			AdminSystem._Clientbroadcast(playername,"cl_dumpplayer "+player.GetIndex().tostring(),1,false);
+			AdminSystem._Clientbroadcast(playername,"cl_dumpplayer #"+player.GetIndex().tostring(),1,false);
 		}
 
 		printB(playername,"",false,"",false,true,0.5);
