@@ -305,13 +305,13 @@
    
    Option | Data Type | Description
    ------------ | ------------- | -------------
-   MinimumUserLevel | _*userlevel*_ | _*PS_USER_NONE*_: Minimum user level required to use the alias, check out [**user levels system**](#user-levels-system) 
+   MinimumUserLevel | _*userlevel*_ | Minimum user level required to use the alias, check out [**user levels system**](#user-levels-system) 
    Help | _*table*_ | Documentation table of the alias, [check the example](#alias-file-format) 
    Parameters | _*table*_ | Parameters table of the alias, uses **param_{x}** format for **{x}th** parameter
    Commands | _*table*_ | Commands table of the alias, uses **arg_{x}** format for **{x}th** argument in command tables. Has options for repetation, [check the example](#alias-file-format)
    
    #### Alias File Format
-   - Following is an example alias file content including an alias called **my_alias_1** documented, referring to **2** commands and is only available for script authorized admins. Syntax follows the Squirrel Language table data type, but the file should be saved as a text **(.txt)** file at the end.
+   - Following is an example alias file content including an alias called **my_alias_1** documented, referring to **2** commands and. Syntax follows the Squirrel Language table data type, but the file should be saved as a text **(.txt)** file at the end.
    + **WARNING**: While copy-pasting the examples, it will most likely fail while compiling. Some solutions:
       - Remove the comments around and inside the table, anything after **"//"** inclusively, may be the cause of "expected identifier" error messages
       - Re-write the example with better indentation OR no indentation OR single line without comments 
@@ -462,7 +462,7 @@
    
    Option | Data Type | Description
    ------------ | ------------- | -------------
-   MinimumUserLevel | _*userlevel*_ | _*PS_USER_NONE*_: Minimum user level required to use the command, check out [user levels system](#user-levels-system) 
+   MinimumUserLevel | _*userlevel*_ | Minimum user level required to use the command, check out [user levels system](#user-levels-system) 
    Help | _*table*_ | Documentation table of the command, [check the example](#script-file-format) 
    Main | _*function*_ | A function which takes **3** arguments, [check the example](#script-file-format)  
    
@@ -578,7 +578,7 @@
    - Characters which are not allowed to be use as commonly intended: **" "**, **"'"**, **"""**, **";"**, **":"**, **","**, **"("**, **")"**, **"{"**, **"}"**
 
 ### Runtime character compilation
-   - To get around the character limitations, there are some runtime compilation tricks available. These tricks can be used from both console and chat, but they require caller to have [script authorization](#add_script_auth)
+   - To get around the character limitations, there are some runtime compilation tricks available. These tricks can be used from both console and chat, but they require caller to have [PS_USER_SCRIPTER user level](#user-levels-system) 
 
       #### Using hex values
       + Replace the special characters **in arguments** with their respective hex values. Currently available replacements
@@ -658,7 +658,7 @@
    Chat Format | (!,/)_command_**>**_targetname_ *argument ...* 
    ------------- | -------------
 
-   Console Format | scripted_user_func *_command_**>**_targetname_,*argument*, *...*
+   Console Format | scripted_user_func _command_**>**_targetname_,*argument*, *...*
    ------------- | -------------
 
    - Following this format will let the command act as if player was aiming at the object referenced by given *targetname*
@@ -2255,7 +2255,7 @@
        // Example: Change the zombie pick type to special infected only
        ghost_zombies_setting zombie_pick_type 2
        
-       // Example(Script auth only): Change ghost effect to RENDERFX_PULSE_FAST
+       // Example(PS_USER_SCRIPTER only): Change ghost effect to RENDERFX_PULSE_FAST
        // Using $[RENDERFX_PULSE_FAST] is same as using 2
        ghost_zombies_setting zombie_pick_type $[RENDERFX_PULSE_FAST]
 ```
@@ -3746,7 +3746,7 @@
 ```
 ---
 #### **script**
-- Compiles given string. Requires script authorization and is a very dangerous command since gives access to everything in the global scope
+- Compiles given string. It's a very dangerous command since gives access to everything in the global scope
 
    Minimim User Level | **PS_USER_SCRIPTER**
    ------------- | -------------
@@ -3769,7 +3769,7 @@
 ```
 ---
 #### **out**
-- Compiles given string and prints the output. Output only visible to caller. Works same as **script** command
+- Compiles given string and prints the output. Output only visible to caller. Works same as **script** command and is as dangerous. 
 
    Minimim User Level | **PS_USER_SCRIPTER**
    ------------- | -------------
@@ -4315,7 +4315,7 @@
 ### Custom Script Related
 
 #### **create_alias**
-- Create an alias for existing commands. Only usable by players with script authorization
+- Create an alias for existing commands.
 
    Minimim User Level | **PS_USER_SCRIPTER**
    ------------- | -------------
@@ -4786,7 +4786,7 @@ ExampleGnome =
 		} // SpawnTables
 		// Add a table named ReplaceParmDefaults to change values in key-value pairs
 		// Use $[expression] format to evaluate expressions for every single spawn call
-		//  - If $[expression] is used in an entity group, it will require SCRIPT AUTHORIZATION for players to use this entity group
+		//  - If $[expression] is used in an entity group, it will require PS_USER_SCRIPTER level for players to use this entity group
 		//	- With the $[expression] format, you can access to some external variables:
 		//		1. To get the command caller player as VSLib.Player use "player" variable
 		//		2. To get the table of arguments used with the command use "GetArgument(idx)" for idx'th argument
