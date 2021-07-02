@@ -311,7 +311,7 @@
    Commands | _*table*_ | Commands table of the alias, uses **arg_{x}** format for **{x}th** argument in command tables. Has options for repetation, [check the example](#alias-file-format)
    
    #### Alias File Format
-   - Following is an example alias file content including an alias called **my_alias_1** documented, referring to **2** commands and. Syntax follows the Squirrel Language table data type, but the file should be saved as a text **(.txt)** file at the end.
+   - Following is an example alias file content including an alias called **my_alias_1** documented, referring to **2** commands and requiring PS_USER_ADMIN user level at minimum. Syntax follows the Squirrel Language table data type, but the file should be saved as a text **(.txt)** file at the end.
    + **WARNING**: While copy-pasting the examples, it will most likely fail while compiling. Some solutions:
       - Remove the comments around and inside the table, anything after **"//"** inclusively, may be the cause of "expected identifier" error messages
       - Re-write the example with better indentation OR no indentation OR single line without comments 
