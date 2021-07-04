@@ -1305,7 +1305,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 		
 		if ( searchForHost == true && AdminSystem.HostPlayer.len() == 0)
 		{
-			printl("[HOST-DECIDER] New host is "+admin)
+			printl("[HOST-DECIDER-LoadAdmins] New host is "+admin)
 			AdminSystem.HostPlayer[admin] <- true;
 			searchForHost = false;
 		}
@@ -1348,7 +1348,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 			
 		if(::AdminSystem.HostPlayer.len() == 0 && level == "PS_USER_HOST")
 		{
-			printl("[HOST-DECIDER] New host is "+user)
+			printl("[HOST-DECIDER-LoadUserLevels] New host is "+user)
 			::AdminSystem.HostPlayer[user] <- true
 		}
 	}
@@ -2437,6 +2437,8 @@ function Notifications::OnPlayerJoined::UserLevelCheck( player, name, IPAddress,
 		users = ::Constants.UserLevelExplain 
 			+ steamid + " = " + ::UserLevelNames[PS_USER_HOST] + " // " + player.GetName() + "\r\n";
 		
+		local foundHost = false
+
 		// Deprecate admins if exists
 		local admins = FileToString(Constants.Directories.Admins);
 		if(admins != null)
@@ -2454,9 +2456,10 @@ function Notifications::OnPlayerJoined::UserLevelCheck( player, name, IPAddress,
 					local _name = strip(row.slice(index + 2))
 					if(i == 0 && AdminSystem.HostPlayer.len() == 0)
 					{
-						printl("[HOST-DECIDER] New host is "+_steamid)
+						printl("[HOST-DECIDER-OnPlayerJoined] New host is "+_steamid)
 						tbl[_steamid] <- [PS_USER_HOST,_name];
 						::AdminSystem.HostPlayer[_steamid] <- true
+						foundHost = true
 					}
 					else
 						tbl[_steamid] <- [PS_USER_ADMIN,_name];
@@ -2487,6 +2490,12 @@ function Notifications::OnPlayerJoined::UserLevelCheck( player, name, IPAddress,
 			StringToFile(Constants.Directories.ScriptAuths, ::Constants.Deprecate.ScriptAuths);
 		}
 		
+		if(!foundHost)
+		{
+			printl("[HOST-DECIDER-OnPlayerJoined] New host is "+steamid)
+			::AdminSystem.HostPlayer[steamid] <- true
+		}
+
 		foreach(sid,lis in tbl)
 			users += sid + " = " + ::UserLevelNames[lis[0]] + " // " + lis[1] + "\r\n";
 		

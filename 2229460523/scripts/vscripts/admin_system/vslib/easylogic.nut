@@ -4787,236 +4787,234 @@ function VSLib::EasyLogic::TryToFixArguments(args)
 /**
  * Valve forward: Used by EasyLogic to implement chat triggers
  */
-if (!("InterceptChat" in getroottable()))
-{
-	::InterceptChat <- function (str, srcEnt)
-	{	
-		local hidden = false;
-		if (srcEnt != null)
+::InterceptChat <- function (str, srcEnt)
+{	
+	local hidden = false;
+	if (srcEnt != null)
+	{
+		// Strip the name from the chat text
+		local name = srcEnt.GetPlayerName() + ": ";
+		local text = strip(str.slice(str.find(name) + name.len()));
+
+		if (text.find(::VSLib.EasyLogic._triggerStart) == 0 || text.find(::VSLib.EasyLogic._hiddentriggerStart) == 0)
 		{
-			// Strip the name from the chat text
-			local name = srcEnt.GetPlayerName() + ": ";
-			local text = strip(str.slice(str.find(name) + name.len()));
+			local splitter = ::VSLib.EasyLogic._triggerStart
 
-			if (text.find(::VSLib.EasyLogic._triggerStart) == 0 || text.find(::VSLib.EasyLogic._hiddentriggerStart) == 0)
+			// Check if ! or /
+			if(text[0].tochar() == ::VSLib.EasyLogic._hiddentriggerStart)
 			{
-				local splitter = ::VSLib.EasyLogic._triggerStart
+				splitter = ::VSLib.EasyLogic._hiddentriggerStart
+				hidden = true;
+			}
 
-				// Check if ! or /
-				if(text[0].tochar() == ::VSLib.EasyLogic._hiddentriggerStart)
-				{
-					splitter = ::VSLib.EasyLogic._hiddentriggerStart
-					hidden = true;
-				}
+			local player = ::VSLib.Player(srcEnt);
 
-				local player = ::VSLib.Player(srcEnt);
-
-				// Separate the commands and arguments
-				local arr = split(text, " ");
+			// Separate the commands and arguments
+			local arr = split(text, " ");
+			
+			// Identify the command
+			local target, cmd = arr[0];
+			if(cmd.find(">") != null)
+			{
+				local tname = strip(cmd.slice(cmd.find(">") + 1))
+				if(tname == "self" || tname == "!self")
+					target = player
 				
-				// Identify the command
-				local target, cmd = arr[0];
-				if(cmd.find(">") != null)
+				if(target != null || (tname != "" && ((target = Entity(tname)).IsEntityValid() || (target = Utils.GetPlayerFromName(tname) != null))))
+					cmd = cmd.slice(0, cmd.find(">"))
+			}
+
+			player.GetScriptScope().PS_ONETIME_TARGET <- target;
+
+			// Build an argument array
+			local args = {};
+			local idx = 0;
+			foreach (k, v in arr)
+			{
+				if (k != 0 && v != null && v != "")
 				{
-					local tname = strip(cmd.slice(cmd.find(">") + 1))
-					if(tname == "self" || tname == "!self")
-						target = player
-					
-					if(target != null || (tname != "" && ((target = Entity(tname)).IsEntityValid() || (target = Utils.GetPlayerFromName(tname) != null))))
-						cmd = cmd.slice(0, cmd.find(">"))
-				}
-
-				player.GetScriptScope().PS_ONETIME_TARGET <- target;
-
-				// Build an argument array
-				local args = {};
-				local idx = 0;
-				foreach (k, v in arr)
-				{
-					if (k != 0 && v != null && v != "")
-					{
-						args[idx] <- v;
-						idx++;
-					}
-				}
-				
-
-				if(::AdminSystem.Vars.CompileHexAndSpecialsInArguments && player.HasPrivilege(PS_USER_SCRIPTER))
-				{
-					args = ::VSLib.EasyLogic.TryToFixArguments(args)
-				}
-
-				// Store it.
-				::VSLib.EasyLogic.LastArgs <- args;
-
-				// Execute the permanent triggers
-				local baseCmd = split(cmd,splitter);
-				while(0 in baseCmd)
-				{
-					local cleanBaseCmd = baseCmd[0] in ::VSLib.EasyLogic.Triggers
-											? baseCmd[0]
-											: baseCmd[0].tolower() in ::VSLib.EasyLogic.Triggers
-												? baseCmd[0].tolower()
-												: null
-					if (cleanBaseCmd != null)
-					{	
-						if(player.IsServerHost() || ::VSLib.EasyLogic.CheckCommandAvailability(player,cleanBaseCmd,false))
-						{
-							::VSLib.EasyLogic.LastCmd <- cleanBaseCmd
-							// Trigger the function
-							::VSLib.EasyLogic.Triggers[cleanBaseCmd](player, args, text);
-						}
-					}
-					else
-					{
-						::SpellChecker.Levenshtein().PrintBestMatches(srcEnt,baseCmd[0],::VSLib.EasyLogic.Triggers)
-					}
-
-					break;
-				}
-				
-				// Execute the removable trigger (if it is a trigger).
-				foreach (i, trigger in ::VSLib.EasyLogic._itChatTextIndex)
-				{
-					if (trigger == cmd || trigger.tolower() == cmd.tolower())
-					{
-						::VSLib.EasyLogic._itChatFunction[i](player, args, text);
-						break;
-					}
+					args[idx] <- v;
+					idx++;
 				}
 			}
-			else if (text.find(::VSLib.EasyLogic._helpStart) == 0)
+			
+
+			if(::AdminSystem.Vars.CompileHexAndSpecialsInArguments && player.HasPrivilege(PS_USER_SCRIPTER))
 			{
-				hidden = true
-				local len = text.len()
-				// ?* trigger
-				if(len >= 2 && text.slice(0,2) == ::VSLib.EasyLogic._helpSearchStart)
+				args = ::VSLib.EasyLogic.TryToFixArguments(args)
+			}
+
+			// Store it.
+			::VSLib.EasyLogic.LastArgs <- args;
+
+			// Execute the permanent triggers
+			local baseCmd = split(cmd,splitter);
+			while(0 in baseCmd)
+			{
+				local cleanBaseCmd = baseCmd[0] in ::VSLib.EasyLogic.Triggers
+										? baseCmd[0]
+										: baseCmd[0].tolower() in ::VSLib.EasyLogic.Triggers
+											? baseCmd[0].tolower()
+											: null
+				if (cleanBaseCmd != null)
 				{	
-					if(len == 2)
+					if(player.IsServerHost() || ::VSLib.EasyLogic.CheckCommandAvailability(player,cleanBaseCmd,false))
 					{
-						hidden = false
-					}
-					else
-					{
-						local keycmd = text.slice(2,len)
-						local reg = regexp(keycmd)
-						local i = 0
-						foreach(cmd,func in ::VSLib.EasyLogic.TriggerDocs)
-						{
-							if(reg.capture(cmd) != null)
-							{
-								if(i == 0)
-								{
-									Messages.DocCmdPlayer(::VSLib.Player(srcEnt),"List of commands matching "+"\x05"+"\""+"\x04"+keycmd+"\x05"+"\""+"\x01"+":")
-								}
-								i += 1
-								ClientPrint(srcEnt,3,"\x04"+i+"\x01"+". "+cmd)
-							}
-						}
-						if(i == 0)
-						{
-							Messages.DocCmdPlayer(::VSLib.Player(srcEnt),"No command found matching: "+"\x04"+keycmd)
-						}
+						::VSLib.EasyLogic.LastCmd <- cleanBaseCmd
+						// Trigger the function
+						::VSLib.EasyLogic.Triggers[cleanBaseCmd](player, args, text);
 					}
 				}
-				// ? trigger
 				else
 				{
-					if(len == 1)
+					::SpellChecker.Levenshtein().PrintBestMatches(srcEnt,baseCmd[0],::VSLib.EasyLogic.Triggers)
+				}
+
+				break;
+			}
+			
+			// Execute the removable trigger (if it is a trigger).
+			foreach (i, trigger in ::VSLib.EasyLogic._itChatTextIndex)
+			{
+				if (trigger == cmd || trigger.tolower() == cmd.tolower())
+				{
+					::VSLib.EasyLogic._itChatFunction[i](player, args, text);
+					break;
+				}
+			}
+		}
+		else if (text.find(::VSLib.EasyLogic._helpStart) == 0)
+		{
+			hidden = true
+			local len = text.len()
+			// ?* trigger
+			if(len >= 2 && text.slice(0,2) == ::VSLib.EasyLogic._helpSearchStart)
+			{	
+				if(len == 2)
+				{
+					hidden = false
+				}
+				else
+				{
+					local keycmd = text.slice(2,len)
+					local reg = regexp(keycmd)
+					local i = 0
+					foreach(cmd,func in ::VSLib.EasyLogic.TriggerDocs)
 					{
-						hidden = false
-					}
-					else
-					{
-						// Separate the commands and arguments
-						local arr = split(text, " ");
-						
-						// Identify the command
-						local cmd = arr[0];
-						
-						// Build an argument array
-						local args = {};
-						local idx = 0;
-						foreach (k, v in arr)
+						if(reg.capture(cmd) != null)
 						{
-							if (k != 0 && v != null && v != "")
+							if(i == 0)
 							{
-								args[idx] <- v;
-								idx++;
+								Messages.DocCmdPlayer(::VSLib.Player(srcEnt),"List of commands matching "+"\x05"+"\""+"\x04"+keycmd+"\x05"+"\""+"\x01"+":")
 							}
+							i += 1
+							ClientPrint(srcEnt,3,"\x04"+i+"\x01"+". "+cmd)
 						}
-						
-						// Store it.
-						::VSLib.EasyLogic.LastArgs <- args;
-						
-						local player = ::VSLib.Player(srcEnt);
-						
-						// Execute the permanent triggers
-						local baseCmd = split(cmd, ::VSLib.EasyLogic._helpStart);
-						if (0 in baseCmd)
+					}
+					if(i == 0)
+					{
+						Messages.DocCmdPlayer(::VSLib.Player(srcEnt),"No command found matching: "+"\x04"+keycmd)
+					}
+				}
+			}
+			// ? trigger
+			else
+			{
+				if(len == 1)
+				{
+					hidden = false
+				}
+				else
+				{
+					// Separate the commands and arguments
+					local arr = split(text, " ");
+					
+					// Identify the command
+					local cmd = arr[0];
+					
+					// Build an argument array
+					local args = {};
+					local idx = 0;
+					foreach (k, v in arr)
+					{
+						if (k != 0 && v != null && v != "")
 						{
-							if (baseCmd[0] in ::VSLib.EasyLogic.TriggerDocs)
-							{
-								::VSLib.EasyLogic.TriggerDocs[baseCmd[0]](player, args);
-							}
-							else if (baseCmd[0].tolower() in ::VSLib.EasyLogic.TriggerDocs)
-							{
-								::VSLib.EasyLogic.TriggerDocs[baseCmd[0].tolower()](player, args);
-							}
-							else
-							{
-								if(baseCmd[0] != null)
-									::SpellChecker.Levenshtein().PrintBestMatches(srcEnt,baseCmd[0],::VSLib.EasyLogic.TriggerDocs)
-							}
+							args[idx] <- v;
+							idx++;
+						}
+					}
+					
+					// Store it.
+					::VSLib.EasyLogic.LastArgs <- args;
+					
+					local player = ::VSLib.Player(srcEnt);
+					
+					// Execute the permanent triggers
+					local baseCmd = split(cmd, ::VSLib.EasyLogic._helpStart);
+					if (0 in baseCmd)
+					{
+						if (baseCmd[0] in ::VSLib.EasyLogic.TriggerDocs)
+						{
+							::VSLib.EasyLogic.TriggerDocs[baseCmd[0]](player, args);
+						}
+						else if (baseCmd[0].tolower() in ::VSLib.EasyLogic.TriggerDocs)
+						{
+							::VSLib.EasyLogic.TriggerDocs[baseCmd[0].tolower()](player, args);
+						}
+						else
+						{
+							if(baseCmd[0] != null)
+								::SpellChecker.Levenshtein().PrintBestMatches(srcEnt,baseCmd[0],::VSLib.EasyLogic.TriggerDocs)
 						}
 					}
 				}
 			}
 		}
-		
-		local player = null;
-		local text = "";
-		
-		if (srcEnt != null)
+	}
+	
+	local player = null;
+	local text = "";
+	
+	if (srcEnt != null)
+	{
+		local name = srcEnt.GetPlayerName() + ": ";
+		text = strip(str.slice(str.find(name) + name.len()));
+		player = ::VSLib.Player(srcEnt);
+	}
+	else
+	{
+		if ( str.find("Console:") != null )
 		{
-			local name = srcEnt.GetPlayerName() + ": ";
+			local name = "Console: ";
 			text = strip(str.slice(str.find(name) + name.len()));
-			player = ::VSLib.Player(srcEnt);
 		}
 		else
-		{
-			if ( str.find("Console:") != null )
-			{
-				local name = "Console: ";
-				text = strip(str.slice(str.find(name) + name.len()));
-			}
-			else
-				text = str;
-		}
-		
-		// Fire any intercept hooks
-		foreach(v in ::VSLib.EasyLogic._interceptList)
-		{
-			if (v != null)
-				v(str, srcEnt);
-		}
-		foreach(v in ::VSLib.EasyLogic.OnInterceptChat)
-		{
-			if (v != null)
-				v(text, player);
-		}
-		
-		if ( "ModeInterceptChat" in g_ModeScript )
-			ModeInterceptChat(str, srcEnt);
-		if ( "MapInterceptChat" in g_ModeScript )
-			MapInterceptChat(str, srcEnt);
+			text = str;
+	}
+	
+	// Fire any intercept hooks
+	foreach(v in ::VSLib.EasyLogic._interceptList)
+	{
+		if (v != null)
+			v(str, srcEnt);
+	}
+	foreach(v in ::VSLib.EasyLogic.OnInterceptChat)
+	{
+		if (v != null)
+			v(text, player);
+	}
+	
+	if ( "ModeInterceptChat" in g_ModeScript )
+		ModeInterceptChat(str, srcEnt);
+	if ( "MapInterceptChat" in g_ModeScript )
+		MapInterceptChat(str, srcEnt);
 
-		if (hidden)
-		{
-			return false
-		}
+	if (hidden)
+	{
+		return false
 	}
 }
+
 
 if ( ("InterceptChat" in g_ModeScript) && (g_ModeScript.InterceptChat != getroottable().InterceptChat) )
 {
@@ -5056,48 +5054,45 @@ function VSLib::EasyLogic::GetArgument(idx)
 /**
  * Lets you send commands by using scripted_user_func in console
  */
-if (!("UserConsoleCommand" in getroottable()))
+::UserConsoleCommand <- function (playerScript, arg)
 {
-	::UserConsoleCommand <- function (playerScript, arg)
+	// Separate the commands and arguments
+	local arr = split(arg, ",");
+	
+	// Build an argument array
+	local args = {};
+	local idx = -1;
+	foreach (k, v in arr)
 	{
-		// Separate the commands and arguments
-		local arr = split(arg, ",");
-		
-		// Build an argument array
-		local args = {};
-		local idx = -1;
-		foreach (k, v in arr)
+		if (k != -1 && v != null && v != "")
 		{
-			if (k != -1 && v != null && v != "")
-			{
-				args[idx] <- v;
-				idx++;
-			}
+			args[idx] <- v;
+			idx++;
 		}
-
-		local player = ::VSLib.Player(playerScript);
-
-		if(::AdminSystem.Vars.CompileHexAndSpecialsInArguments && player.HasPrivilege(PS_USER_SCRIPTER))
-		{
-			args = ::VSLib.EasyLogic.TryToFixArguments(args)
-		}
-		// Store it.
-		::VSLib.EasyLogic.LastArgs <- args;
-		
-		local argArray = clone args;
-		argArray.rawdelete(-1);
-		
-		foreach(v in ::VSLib.EasyLogic.OnUserCommand)
-		{
-			if (v != null)
-				v(player, argArray, arg);
-		}
-		
-		if ( "ModeUserConsoleCommand" in g_ModeScript )
-			ModeUserConsoleCommand(playerScript, arg);
-		if ( "MapUserConsoleCommand" in g_ModeScript )
-			MapUserConsoleCommand(playerScript, arg);
 	}
+
+	local player = ::VSLib.Player(playerScript);
+
+	if(::AdminSystem.Vars.CompileHexAndSpecialsInArguments && player.HasPrivilege(PS_USER_SCRIPTER))
+	{
+		args = ::VSLib.EasyLogic.TryToFixArguments(args)
+	}
+	// Store it.
+	::VSLib.EasyLogic.LastArgs <- args;
+	
+	local argArray = clone args;
+	argArray.rawdelete(-1);
+	
+	foreach(v in ::VSLib.EasyLogic.OnUserCommand)
+	{
+		if (v != null)
+			v(player, argArray, arg);
+	}
+	
+	if ( "ModeUserConsoleCommand" in g_ModeScript )
+		ModeUserConsoleCommand(playerScript, arg);
+	if ( "MapUserConsoleCommand" in g_ModeScript )
+		MapUserConsoleCommand(playerScript, arg);
 }
 
 if ( ("UserConsoleCommand" in g_ModeScript) && (g_ModeScript.UserConsoleCommand != getroottable().UserConsoleCommand) )
@@ -5114,7 +5109,6 @@ else
 {
 	g_ModeScript.UserConsoleCommand <- getroottable().UserConsoleCommand;
 }
-
 
 
 
