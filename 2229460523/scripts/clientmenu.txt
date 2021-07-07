@@ -19213,6 +19213,11 @@
 				"command"		 "play buttons/button14;scripted_user_func randomline,picker;show_menu random_line_menu_p_p_sp"
 				"label"			" Picker"
 			}
+			"3"
+			{
+				"command"	 "scripted_user_func speak_saved;show_menu random_line_menu_p_p_sp"
+				"label"		 " Speak saved line"
+			}
 			"8"
 			{
 					"command"    "play buttons/button14;show_menu random_line_menu_p_p"
@@ -19372,17 +19377,22 @@
 
 	"random_line_menu_p_o_sp"
 	{
-			"Title"		 "Person source"
+			"Title"		 "Speaker selection"
 
 			"1"
 			{
 				"command"		 "play buttons/button14;show_menu random_line_menu_p_o_sp_self"
-				"label"			" Self"
+				"label"			" Yourself"
 			}
 			"2"
 			{
 				"command"		 "play buttons/button14;show_menu random_line_menu_p_o_sp_picker"
-				"label"			" Picker"
+				"label"			" Person pointed at"
+			}
+			"3"
+			{
+				"command"	 "scripted_user_func speak_saved;show_menu random_line_menu_p_o_sp_picker"
+				"label"		 " Speak saved line"
 			}
 			"8"
 			{
@@ -20124,6 +20134,11 @@
 			{
 				"command"		 "play buttons/button14;scripted_user_func randomline,picker,random;show_menu random_line_menu_p_r_sp"
 				"label"			" Picker"
+			}
+			"3"
+			{
+				"command"	 "scripted_user_func speak_saved;show_menu random_line_menu_p_r_sp"
+				"label"		 " Speak saved line"
 			}
 			"8"
 			{
