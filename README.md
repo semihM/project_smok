@@ -542,7 +542,6 @@
    //    !my_command_1 argument_1 argument_2 argument_3 ...
 	// This is same as args[0], but it is fail-safe, returns null if no argument is passed
 	// But GetArgument method uses a copy of arguments stored in ::VSLib.EasyLogic.LastArgs, which only gets updated when the command is called from chat/console
-	// If you expect the command to be called within a compilestring function, make sure to check args in here too!
    
 	local argument_1 = GetArgument(1)	
 	local argument_2 = GetArgument(2)	
@@ -565,10 +564,10 @@
 
    - Sometimes problematic with commands which needs to compile the sent message when there are semi-colons **;** in the message
 
-   - Not sanitized well: 
+   - Not sanitized well, some known bugs using the chat: 
       - **";command_name** will try to execute the *command_name* in console, it will work if *command_name* has a *user* flag defined
 
-      - **//text after** will _comment out_ the *text after* itself, making the *text after* it unusable
+      - **//text_after** will _comment out_ everything after *//* characters, leaving the *text_after* unusable
 
 ### Console limitations
    - Maximum command length: **255**
@@ -4770,7 +4769,7 @@ ExampleGnome =
 				// Key value pairs for this entity
 				SpawnInfo =
 				{
-					classname = "$classname"
+					classname = "$classname"      // Get from ReplaceParmDefaults table
 					angles = Vector( 0, 180, 0 )
 					glowcolor = "56 150 58"
 					glowrange = "0"
@@ -4841,7 +4840,7 @@ ExampleGnome =
    
    + Details of the game events can be found [here](https://wiki.alliedmods.net/Left_4_dead_2_events)
    
-   + Make sure to use the event names present in the **Notifications** table present in the [first link](https://github.com/semihM/project_smok/blob/c3f631100a80913c6ad5f49fe74a24a772a03f40/2229460523/scripts/vscripts/admin_system/vslib/easylogic.nut#L194)
+   + Make sure to use the event names present in the **Notifications** table from the [first link](https://github.com/semihM/project_smok/blob/c3f631100a80913c6ad5f49fe74a24a772a03f40/2229460523/scripts/vscripts/admin_system/vslib/easylogic.nut#L194). Use the [second link](https://wiki.alliedmods.net/Left_4_dead_2_events) to look up some of the details for the events.
 
    + Follow the example file in **admin system/hooks/** directory to start writing your own functions for game events!
    
@@ -4916,12 +4915,12 @@ ExampleGnome =
       
       - **_example\_alias\_file\_v{Major}\_{Minor}\_{Patch}.txt_**: File containing examples using new features from version v{Major}.{Minor}.{Patch}
 
-   + **_binds_** : Custom bind tables files folder
+   + **_binds_** : Custom bind tables folder
       - **_file\_list.txt_**: List of file names to read as custom bind tables
 
       - **_example\_bind\_file.nut_**: An example file containing information about how to create binds
 
-   + **_entitygroups_** : Custom alias files folder
+   + **_entitygroups_** : Custom entity group tables folder
       - **_file\_list.txt_**: List of file names to read as custom entity group tables
 
       - **_example\_entity\_file.txt_**: An example file containing information about how to create entity groups, version v1.4.0 
