@@ -95,9 +95,18 @@ Utils.PrecacheCSSWeapons();
 
 Convars.SetValue( "precache_all_survivors", "1" );
 
+::date <- function()
+{
+	local t = {};
+	LocalTime(t);
+	return t;
+}
+
 // The admin list
 ::AdminSystem <-
 {
+	StartTime = date()
+
 	UserLevels = {}
 
 	Admins = {}
@@ -1745,6 +1754,13 @@ function EasyLogic::OnShutdown::AdminSaveData( reason, nextmap )
 		SaveTable( "admin_variable_data", ::AdminSystem.Vars );
 	}
 	
+}
+function Notifications::OnRoundStart::RandomSeeding()
+{
+	local t = date()
+	local seed = format("%d%02d%02d%02d%02d",t.month,t.day,t.hour,t.minute,t.second).tointeger();
+	srand(seed)
+	printl("[RANDOM-SEED] Using random seed: "+seed)
 }
 
 function Notifications::OnRoundStart::AdminLoadFiles()
@@ -12138,7 +12154,7 @@ function ChatTriggers::out( player, args, text )
 	if(args.len() == 0)
 		return;
 
-	local res = compilestring("local __tempvar__="+Utils.CombineArray(args)+";return __tempvar__;")();
+	local res = compilestring("local __tempvar__="+text.slice(5)+";return __tempvar__;")();
 	::AdminSystem.out(res,player);
 }
 
