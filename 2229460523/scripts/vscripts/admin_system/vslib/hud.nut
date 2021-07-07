@@ -1086,8 +1086,17 @@ class ::VSLib.HUD.Menu extends ::VSLib.HUD.Item
 	function DisplayMenu(player, attachTo, autoDetach = false,  resize = true)
 	{
 		if (typeof player != "VSLIB_PLAYER")
-			throw "Menu could not be displayed: a non-Player entity was passed; only VSLib.Player entities are supported.";
+		{
+			printl("[HUD-ERROR] Menu could not be displayed: a non-Player entity was passed; only VSLib.Player entities are supported.");
+			return false
+		}
 		
+		if (!player.IsEntityValid())
+		{
+			printl("[HUD-ERROR] Player is not valid.");
+			return false
+		}
+
 		if (_numop <= 0)
 			printf("Warning: Menu will not display-- there are no menu options to display!");
 		
@@ -1110,9 +1119,6 @@ class ::VSLib.HUD.Menu extends ::VSLib.HUD.Item
 		SetTextPosition(TextAlign.Left);
 		CenterVertical();
 		
-		_selectBtn = BUTTON_ATTACK;
-		_switchBtn = BUTTON_SHOVE;
-		
 		if (!_sticky || _curSel == 0)
 			_curSel++;
 		
@@ -1121,6 +1127,7 @@ class ::VSLib.HUD.Menu extends ::VSLib.HUD.Item
 		if (!_manual) // #shotgunefx - don't add timer if this will be driven manually, only used by subclasses
 			_optimer = ::VSLib.Timers.AddTimer(_tickinterval, 1, @(hudobj) hudobj.Tick(), this);
 		Show(); // show the menu
+		return true
 	}
 	
 	/**
@@ -1154,13 +1161,13 @@ class ::VSLib.HUD.Menu extends ::VSLib.HUD.Item
 	 */
 	function Tick()
 	{
-		if (_player.IsPressingButton(_switchBtn))
+		if (!(_player.GetPressedButtons() ^ _switchBtn))
 		{
 			Utils.PlaySoundToAll("Menu.Scroll");
 			if ((++_curSel) > _numop)
 				_curSel = 1;
 		}
-		else if (_player.IsPressingButton(_selectBtn))
+		else if (!(_player.GetPressedButtons() ^ _selectBtn))
 		{
 			Utils.PlaySoundToAll("Menu.Select");
 			
@@ -1171,7 +1178,7 @@ class ::VSLib.HUD.Menu extends ::VSLib.HUD.Item
 			if (_autoDetach)
 				Detach();
 		}
-		else if (_scrollbackbtn && _player.IsPressingButton(_scrollbackbtn) ) /*#shotgunefx*/
+		else if (_scrollbackbtn && !(_player.GetPressedButtons() ^ _scrollbackbtn) ) /*#shotgunefx*/
 		{
 			Utils.PlaySoundToAll("Menu.Scroll");
 			if ((--_curSel) <= 0)
@@ -1194,8 +1201,8 @@ class ::VSLib.HUD.Menu extends ::VSLib.HUD.Item
 	_optimer = -1; // Timer responsible for updating player input
 	_title = null; // What to call the menu
 	_autoDetach = false; // Whether or not to auto-detach
-	_selectBtn = null;
-	_switchBtn = null;
+	_selectBtn = BUTTON_ATTACK;
+	_switchBtn = BUTTON_SHOVE;
 	_scrollbackbtn = null; // #shotgunefx
 	_sticky = false;
 	_manual = false; // to support manual subclasses
@@ -1340,11 +1347,11 @@ class ::VSLib.HUD.MenuScrollable extends ::VSLib.HUD.Menu
 	 */
 	function Tick()
 	{
-		if (_player.IsPressingButton(_switchBtn))
+		if (!(_player.GetPressedButtons() ^ _switchBtn))
 		{
 			Scroll();
 		}
-		else if (_player.IsPressingButton(_selectBtn))
+		else if (!(_player.GetPressedButtons() ^ _selectBtn))
 		{
 			Utils.PlaySoundToAll("Menu.Select");
 			
@@ -1355,7 +1362,7 @@ class ::VSLib.HUD.MenuScrollable extends ::VSLib.HUD.Menu
 			if (_autoDetach)
 				Detach();
 		}
-		else if (_scrollbackbtn && _player.IsPressingButton(_scrollbackbtn) ) /*#shotgunefx*/
+		else if (_scrollbackbtn && !(_player.GetPressedButtons() ^ _scrollbackbtn) ) /*#shotgunefx*/
 		{
 			ScrollBack();
 		}
