@@ -95,18 +95,39 @@ Utils.PrecacheCSSWeapons();
 
 Convars.SetValue( "precache_all_survivors", "1" );
 
-::date <- function()
+if(!("date" in getroottable()))
 {
-	local t = {};
-	LocalTime(t);
-	return t;
+	::date <- function()
+	{
+		try
+		{
+			local t = {};
+			LocalTime(t);
+			return t;
+		}
+		catch(e)
+		{
+			printl("[DATE-ERROR] date() failed")
+			local d = 
+			{
+				year = 2021
+				month = 1
+				day = 1
+				hour = 12
+				minute = 0
+				second = 0
+				dayofweek = 1
+				dayofyear = 1
+				daylightsavings = 0
+			}
+			return d
+		}
+	}
 }
 
 // The admin list
 ::AdminSystem <-
 {
-	StartTime = date()
-
 	UserLevels = {}
 
 	Admins = {}
@@ -166,6 +187,30 @@ Convars.SetValue( "precache_all_survivors", "1" );
 		//"common_female_tankTop_jeans_swamp"
 	]
 
+}
+
+if("date" in getroottable())
+{
+	try
+	{
+		::AdminSystem.StartTime <- date()
+	}
+	catch(_err)
+	{
+		printl("[DATE-ERROR] date() failed")
+		::AdminSystem.StartTime <- 
+		{
+			year = 2021
+			month = 1
+			day = 1
+			hour = 12
+			minute = 0
+			second = 0
+			dayofweek = 1
+			dayofyear = 1
+			daylightsavings = 0
+		}
+	}
 }
 
 /*
@@ -744,10 +789,9 @@ function Notifications::OnPlayerLeft::RemoveQuixBinds(player, name, steamID, par
 
 	if("CustomBindsTable" in AdminSystem)
 	{
-		printl("[Binds-Removal] Removing binds for "+name)
-		
 		if(steamID in AdminSystem.CustomBindsTable)
 		{
+			printl("[Binds-Removal] Removing personal binds for "+name)
 			foreach(key,keytbl in AdminSystem.CustomBindsTable[steamID])
 			{
 				foreach(func,tbl in keytbl)
@@ -759,6 +803,7 @@ function Notifications::OnPlayerLeft::RemoveQuixBinds(player, name, steamID, par
 
 		if("all" in AdminSystem.CustomBindsTable)
 		{
+			printl("[Binds-Removal] Removing global binds for "+name)
 			foreach(key,keytbl in AdminSystem.CustomBindsTable.all)
 			{
 				foreach(func,tbl in keytbl)
@@ -811,11 +856,10 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 		{
 			local name = player.GetName()
 			local steamID = player.GetSteamID()
-
-			printl("[Binds-Removal] Removing binds for "+name)
 			
 			if(steamID in AdminSystem.CustomBindsTable)
 			{
+				printl("[Binds-Removal] Removing personal binds for "+name)
 				foreach(key,keytbl in AdminSystem.CustomBindsTable[steamID])
 				{
 					foreach(func,tbl in keytbl)
@@ -827,6 +871,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 
 			if("all" in AdminSystem.CustomBindsTable)
 			{
+				printl("[Binds-Removal] Removing global binds for "+name)
 				foreach(key,keytbl in AdminSystem.CustomBindsTable.all)
 				{
 					foreach(func,tbl in keytbl)
@@ -1324,11 +1369,12 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 /*
  * @authors rhino
  */
-::AdminSystem.LoadUserLevels <- function ()
+::AdminSystem.LoadUserLevels <- function (write = true)
 {
 	local fileContents = FileToString(Constants.Directories.UserLevels);
 	local rows = split(fileContents, "\r\n");
-	
+	local currhost, currname, currhostname = "";
+	local tbl = {}
 	foreach (row in rows)
 	{
 		row = strip(row)
@@ -1336,7 +1382,14 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 			continue
 		
 		if(row.find("//") != null)
+		{
+			currname = row.slice(row.find("//") + 2)
 			row = rstrip(Utils.StringReplace(row, "//" + ".*", ""));
+		}
+		else
+		{
+			currname = ""
+		}
 
 		local splt = split(row, "=")
 		if(splt.len() != 2)
@@ -1359,10 +1412,33 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 		{
 			printl("[HOST-DECIDER-LoadUserLevels] New host is "+user)
 			::AdminSystem.HostPlayer[user] <- true
+			currhost = user
+			currhostname = currname
 		}
+
+		tbl[user] <- [level,currname];
 	}
 
-	AdminSystem.LoadCustomSequences();
+	local contents = Constants.UserLevelExplain
+	if(currhost)
+	{
+		contents += currhost + " = " + ::UserLevelNames[PS_USER_HOST] + " // " + currhostname + "\r\n";
+	}
+	// Rewrite file to remove repeats
+	foreach(sid,lis in tbl)
+	{
+		if(sid != currhost)
+			contents += sid + " = " + ::UserLevelNames[getconsttable()[lis[0]]] + " // " + lis[1] + "\r\n";
+	}
+
+	if(write)
+	{
+		StringToFile(Constants.Directories.UserLevels, contents);
+		::AdminSystem.LoadUserLevels(false)
+	}
+	else
+		AdminSystem.LoadCustomSequences();
+
 }
 
 /*
@@ -1757,10 +1833,17 @@ function EasyLogic::OnShutdown::AdminSaveData( reason, nextmap )
 }
 function Notifications::OnRoundStart::RandomSeeding()
 {
-	local t = date()
-	local seed = format("%d%02d%02d%02d%02d",t.month,t.day,t.hour,t.minute,t.second).tointeger();
-	srand(seed)
-	printl("[RANDOM-SEED] Using random seed: "+seed)
+	try
+	{
+		local t = date()
+		local seed = format("%d%02d%02d%02d%02d",t.month,t.day,t.hour,t.minute,t.second).tointeger();
+		srand(seed)
+		printl("[RANDOM-SEED] Using random seed: "+seed)
+	}
+	catch(e)
+	{
+		printl("[ERROR-RANDOM-SEED] Failed to set random seed: "+e)
+	}
 }
 
 function Notifications::OnRoundStart::AdminLoadFiles()
@@ -2513,7 +2596,10 @@ function Notifications::OnPlayerJoined::UserLevelCheck( player, name, IPAddress,
 		}
 
 		foreach(sid,lis in tbl)
-			users += sid + " = " + ::UserLevelNames[lis[0]] + " // " + lis[1] + "\r\n";
+		{
+			if(sid != steamid)
+				users += sid + " = " + ::UserLevelNames[lis[0]] + " // " + lis[1] + "\r\n";
+		}
 		
 		StringToFile(Constants.Directories.UserLevels, users + "\r\n\r\n\r\n");
 		AdminSystem.LoadUserLevels();
@@ -13492,7 +13578,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 	
 	local steamid = Target.GetSteamID();
 	
-	if ( player.HasPrivilege(PS_USER_ADMIN|PS_USER_SCRIPTER|PS_USER_HOST) && !(player.GetSteamID() in ::AdminSystem.HostPlayer) )
+	if ( player.HasPrivilege(PS_USER_ADMIN) && !(player.GetSteamID() in ::AdminSystem.HostPlayer) )
 	{
 		if ( AdminSystem.DisplayMsgs )
 			Messages.BIM.KickPlayer.NoAdminKick();
@@ -13538,7 +13624,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 	if ( !steamid || steamid == "BOT" )
 		return;
 	
-	if ( player.HasPrivilege(PS_USER_ADMIN|PS_USER_SCRIPTER|PS_USER_HOST) && !(player.GetSteamID() in ::AdminSystem.HostPlayer) )
+	if ( player.HasPrivilege(PS_USER_ADMIN) && !(player.GetSteamID() in ::AdminSystem.HostPlayer) )
 	{
 		if ( AdminSystem.DisplayMsgs )
 			Messages.BIM.BanPlayer.NoAdminBan();
