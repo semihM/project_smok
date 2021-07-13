@@ -186,6 +186,9 @@ class ::AliasCompiler.Alias
     EVERY_CALL = 2
 }
 
+::AliasCompiler.CommandOptionsOrder <-
+[ "start_delay", "repeat", "delay_between", "specific_target", "skip_expression"]
+
 ::AliasCompiler.CommandOptions <-
 {
     repeat = 
@@ -208,6 +211,20 @@ class ::AliasCompiler.Alias
         expected_type = "float"
         evaluate = AliasCompiler.Evaluate.AT_START
         minvalue = 0
+    }
+    specific_target = 
+    {
+        default_value = ""
+        expected_type = "string"
+        evaluate = AliasCompiler.Evaluate.EVERY_CALL
+        minvalue = ""
+    }
+    skip_expression = 
+    {
+        default_value = "$[false]"
+        expected_type = "boolean"
+        evaluate = AliasCompiler.Evaluate.EVERY_CALL
+        minvalue = ""
     }
 }
 
@@ -236,6 +253,9 @@ class ::AliasCompiler.Alias
 
     caller_target = @"(\$caller_target)"
     caller_target_replace = @"\$caller_target"
+    
+    specific_target = @"(\$specific_target)"
+    specific_target_replace = @"\$specific_target"
 }
 
 ::AliasCompiler.CompileExpressionPattern <- @"(?:^\$\[(.*)\]$)"
@@ -319,27 +339,45 @@ class ::AliasCompiler.Alias
                 local req_cmp_arg = {}
                 local req_cmp_opt = {}
                 local opts = ::VSLib.Utils.TableCopy(options)
-                foreach(opt,cmdval in options)
+                // Missing defaults
+                foreach(optn,otbl in ::AliasCompiler.CommandOptions)
+                {
+                    if(!(optn in opts))
+                    {
+                        opts[optn] <- ::AliasCompiler.CommandOptions[optn].default_value
+                    }
+                }
+
+                local argopts = {}
+                local basicopts = {}
+                foreach(opt,cmdval in opts)
                 {
                     local argcapture = areg.capture(opt)
                     if(argcapture != null && argcapture.len() == 2)  // Argument
                     {   
-                        ::AliasCompiler.EvaluateCommandArgument(argcapture,cmdval,cmdargs,opt,req_cmp_arg,parameters)
+                        argopts[opt] <- [argcapture,cmdval]
                     }
                     else if(opt in ::AliasCompiler.CommandOptions)  // Option
                     {
-                        ::AliasCompiler.EvaluateCommandOption(cmdval,opt,opts,req_cmp_opt,parameters,player)
+                        basicopts[opt] <- cmdval
                     }
                 }
 
-                if(!("repeat" in opts))
+                foreach(idx,opname in ::AliasCompiler.CommandOptionsOrder)
                 {
-                    opts.repeat <- 1
+                    if(opname in basicopts)
+                    {
+                        ::AliasCompiler.EvaluateCommandOption(basicopts[opname],opname,opts,req_cmp_opt,parameters,player)
+                    }
                 }
 
+                foreach(argn,ls in argopts)
+                {
+                    ::AliasCompiler.EvaluateCommandArgument(ls[0],ls[1],cmdargs,argn,req_cmp_arg,parameters)
+                }
+                
                 ::AliasCompiler.CommandCallStarter(triggertable[cmdname],player,cmdargs,req_cmp_arg,text,opts,req_cmp_opt)
             }
-
         }
     }
 }
@@ -430,7 +468,8 @@ class ::AliasCompiler.Alias
                                 caller_id = player.GetIndex()
                                 caller_char = player.GetCharacterName()
                                 caller_name = player.GetName()
-                                caller_target = player.GetLookingEntity()
+                                caller_target = player.GetLookingEntity(GRAB_YEET_TRACE_MASK, true)
+                                specific_target = player.GetLookingEntity(GRAB_YEET_TRACE_MASK)
                             }
                             if(opt != "repeat")
                             {
@@ -471,34 +510,33 @@ class ::AliasCompiler.Alias
 
 ::AliasCompiler.OptionValueFinalize <- function(cmdval,opt)
 {
-    switch(AliasCompiler.CommandOptions[opt].expected_type)
+    try
     {
-        case "integer":
+        switch(AliasCompiler.CommandOptions[opt].expected_type)
         {
-            try
+            case "integer":
             {
                 cmdval = cmdval.tointeger();
                 break;
             }
-            catch(e)
-            {
-                return AliasCompiler.CommandOptions[opt].default_value
-            }
-        }
-        case "float":
-        {
-            try
+            case "float":
             {
                 cmdval = cmdval.tofloat();
                 break;
             }
-            catch(e)
+            case "string":
             {
-                return AliasCompiler.CommandOptions[opt].default_value
+                return (cmdval = cmdval.tostring());
+            }
+            case "boolean":
+            {
+                return (cmdval = ((cmdval != "false" && cmdval) ? true : false));
             }
         }
-        default:
-            return cmdval;
+    }
+    catch(e)
+    {
+        return AliasCompiler.CommandOptions[opt].default_value
     }
     return cmdval < AliasCompiler.CommandOptions[opt].minvalue ? AliasCompiler.CommandOptions[opt].default_value : cmdval
 }
@@ -507,36 +545,51 @@ class ::AliasCompiler.Alias
 {
     if(args.repeats_left >= 1)
     {
-        local lookuptbl = 
-        {
-            last_call_time = args.last_call_time,
-            repeat_id = args.repeat_id,
-            repeats_left = args.repeats_left,
-            caller_id = args.caller_id,
-            caller_char = args.caller_char,
-            caller_name = args.caller_name,
-            caller_ent = args.caller_ent,
-            caller_target = args.caller_target
-        }
-
-        args.last_call_time = Time()    // Get before possibly time consuming stuff begins
-
-        if(args.req_cmp_arg.len() > 0)
-        {
-            ::AliasCompiler.SpecialReferenceCompiler(args.cmdargs,args.req_cmp_arg,lookuptbl)
-        }
-
-        if(args.req_cmp_opt.len() > 0)
-        {
-            ::AliasCompiler.SpecialReferenceCompiler(args.opts,args.req_cmp_opt,lookuptbl)
-        }
-
-        ::AliasCompiler.CommandOptionConstrain(args.opts,false)
+        args.repeats_left--
         
-        ::AliasCompiler.CommandCall(args.func,args.player,args.cmdargs,args.text)
+        if(args.repeat_id != 1)
+        {
+            local lookuptbl = 
+            {
+                last_call_time = args.last_call_time,
+                repeat_id = args.repeat_id,
+                repeats_left = args.repeats_left,
+                caller_id = args.caller_id,
+                caller_char = args.caller_char,
+                caller_name = args.caller_name,
+                caller_ent = args.caller_ent,
+                caller_target = args.caller_target,
+                specific_target = args.specific_target
+            }
 
-        args.repeats_left -= 1
-        args.repeat_id += 1
+            args.last_call_time = Time()
+            
+            if(args.req_cmp_opt.len() > 0)
+            {
+                ::AliasCompiler.SpecialReferenceCompiler(args.opts,args.req_cmp_opt,lookuptbl)
+            }
+            
+            ::AliasCompiler.CommandOptionConstrain(args.opts,false)
+            ::AliasCompiler.SetSpecificTarget(args.caller_ent, args.opts.specific_target)
+
+            // TO-DO put into func
+            args.specific_target = args.caller_ent.GetLookingEntity(GRAB_YEET_TRACE_MASK)
+            lookuptbl.specific_target = args.specific_target;
+            
+            if(args.req_cmp_arg.len() > 0)
+            {
+                ::AliasCompiler.SpecialReferenceCompiler(args.cmdargs,args.req_cmp_arg,lookuptbl)
+            }
+
+        }
+        
+        if(!args.opts.skip_expression)
+        {
+            ::AliasCompiler.CommandCall(args.func,args.player,args.cmdargs,args.text)
+        }
+
+        args.repeat_id++
+
         ::VSLib.Timers.AddTimer(args.opts.delay_between,false,::AliasCompiler.AliasRepeater,args)
     }
 }
@@ -562,16 +615,29 @@ class ::AliasCompiler.Alias
 
         delete ::VSLib.EasyLogic.LastArgs
     }
+}
 
+::AliasCompiler.SetSpecificTarget <- function(player, targetname)
+{
+    local target;
+
+    if(targetname == "self" || targetname == "!self")
+        target = Utils.GetEntityOrPlayer(player.GetBaseEntity());
+    
+    if(target != null 
+        || (targetname != "" && ((target = Entity(targetname)).IsEntityValid() || (target = Utils.GetPlayerFromName(targetname)) != null)))
+        target = Utils.GetEntityOrPlayer(target.GetBaseEntity());
+    else
+        target = null
+
+    player.GetScriptScope().PS_ONETIME_TARGET <- target
 }
 
 ::AliasCompiler.CommandCallWrapper <- function(args)
 {   
-    ::AliasCompiler.CommandCall(args.func,args.player,args.cmdargs,args.text)
-
-    if(args.opts.repeat > 1)
+    if(args.opts.repeat >= 1)
     {
-        ::VSLib.Timers.AddTimer(args.opts.delay_between,false,::AliasCompiler.AliasRepeater,
+        ::AliasCompiler.AliasRepeater(
             {
                 func = args.func,
                 player = args.player,
@@ -580,21 +646,23 @@ class ::AliasCompiler.Alias
                 text = args.text,
                 opts = args.opts,
                 req_cmp_opt = args.req_cmp_opt,
-                repeats_left = args.lookuptbl.repeats_left-1,
-                repeat_id = args.lookuptbl.repeat_id+1,
+                repeats_left = args.lookuptbl.repeats_left,
+                repeat_id = args.lookuptbl.repeat_id,
                 last_call_time = args.lookuptbl.last_call_time,
                 caller_id = args.lookuptbl.caller_id,
                 caller_char = args.lookuptbl.caller_char,
                 caller_name = args.lookuptbl.caller_name,
                 caller_ent = args.lookuptbl.caller_ent,
                 caller_target = args.lookuptbl.caller_target
-            }
-        )
+                specific_target = args.lookuptbl.specific_target
+            })
     }
 }
 
 ::AliasCompiler.CommandCallStarter <- function(func,player,cmdargs,req_cmp_arg,text,opts,req_cmp_opt)
 {   
+    ::AliasCompiler.SetSpecificTarget(player, opts.specific_target)
+
     local lookuptbl = 
     {
         last_call_time = Time(),
@@ -604,7 +672,8 @@ class ::AliasCompiler.Alias
         caller_char = player.GetCharacterName()
         caller_name = player.GetName()
         caller_ent = player
-        caller_target = player.GetLookingEntity()
+        caller_target = player.GetLookingEntity(GRAB_YEET_TRACE_MASK, true)
+        specific_target = player.GetLookingEntity(GRAB_YEET_TRACE_MASK)
     }
 
     if(req_cmp_opt.len() > 0)
@@ -718,7 +787,6 @@ class ::AliasCompiler.Alias
         if(compcapture.len() == 2)   // arg_x = $[exp]
         {   
             local compile_part = cmdval.slice(compcapture[1].begin,compcapture[1].end)
-            //::AdminSystem.out("compile: "+compile_part)
             if(optionals != null)
             {
                 local cstr = ""
