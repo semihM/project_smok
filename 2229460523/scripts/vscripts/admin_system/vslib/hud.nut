@@ -1087,13 +1087,13 @@ class ::VSLib.HUD.Menu extends ::VSLib.HUD.Item
 	{
 		if (typeof player != "VSLIB_PLAYER")
 		{
-			printl("[HUD-ERROR] Menu could not be displayed: a non-Player entity was passed; only VSLib.Player entities are supported.");
+			printR("[HUD-ERROR] Menu could not be displayed: a non-Player entity was passed; only VSLib.Player entities are supported.");
 			return false
 		}
 		
 		if (!player.IsEntityValid())
 		{
-			printl("[HUD-ERROR] Player is not valid.");
+			printR("[HUD-ERROR] Player is not valid.");
 			return false
 		}
 
