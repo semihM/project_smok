@@ -723,12 +723,16 @@
        // - There is also a role for host, but it can't be used with this command
        //   > PS_USER_HOST : Allow access to all commands (NOT RECOMMENDED TO BE USED FOR MORE THAN ONE PLAYER)
        user_level {character} {level: (PS_USER_NONE|PS_USER_BASIC|PS_USER_ADMIN|PS_USER_SCRIPTER)}
+       user_level {character} {level: (none|basic|admin|scripter)}
 
        // Example: Give the player playing as Bill admin privileges
        user_level bill PS_USER_ADMIN
     
+       // Example: Give the player playing as Nick scripter privileges
+       user_level nick scripter
+
        // Example: Take the player playing as Zoey's all special privileges away
-       user_level zoey PS_USER_NONE
+       user_level zoey none
 ```
 ---
 #### **command_privilege**
@@ -754,12 +758,13 @@
        //   PS_USER_SCRIPTER : Require at least scripter user privilege
        //   PS_USER_HOST : Allow access for host only
        command_privilege {command_name} {minimum_level: (PS_USER_NONE|PS_USER_BASIC|PS_USER_ADMIN|PS_USER_SCRIPTER|PS_USER_HOST)}
+       command_privilege {command_name} {level: (none|basic|admin|scripter|host)}
 
-       // Example: Give the player playing as Bill admin privileges
-       command_privilege grab PS_USER_ADMIN
+       // Example: Make grab command scripter and host only
+       command_privilege grab PS_USER_SCRIPTER
     
        // Example: They won't say no, because of the implication
-       command_privilege get_out PS_USER_HOST
+       command_privilege get_out host
 ```
 ---
 #### **reload_command_privileges**
