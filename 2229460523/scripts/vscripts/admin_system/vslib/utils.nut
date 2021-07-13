@@ -317,7 +317,7 @@ function VSLib::Utils::PrintTable(debugTable, prefix = "")
 		if ( typeof(debugTable) == "table" )
 			printl("{")
 		else if ( typeof(debugTable) == "array" )
-			printl("[")
+			printR("[")
 		prefix = "   "
 	}
 	foreach (idx, val in debugTable)

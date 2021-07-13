@@ -299,6 +299,7 @@
    $caller_char | _*string*_ | command caller's character name, first letter capitalized
    $caller_name | _*string*_ | command caller's in-game name
    $caller_target | _*VSLib.Entity or null*_ | entity the command caller is aiming at as a **VSLib.Entity** object or **null**
+   $specific_target | _*VSLib.Entity, VSLib.Player or null*_ | specified target by specific_target option or same as **$caller_target** if no target was given in specific_target
    
    #### Alias Options
    - There are 5 options available for aliases, none of them are required to initialize an alias.
@@ -397,6 +398,14 @@
 				//  -> Example: 4 second waiting after odd numbered repeats, 8 for even numbered ones
 				delay_between = "$[$repeat_id % 2 == 1 ? 4 : 8]"
 				
+            // Evaluate an expression to decide wheter to skip this command call
+            //  -> Example: Dont call command_2 if caller is not alive
+            skip_expression = "$[$caller_ent.IsDead()]"
+
+            // Overwrite aimed target to make the command act like you are aiming at something you are not
+            //  -> Example: Make the command act like you are aiming at yourself
+            specific_target = "self"
+
 				// Use command's caller's character name
 				arg_1 = "$caller_char"	
 				
@@ -408,6 +417,9 @@
 				
 				// Use aimed entity, if there is a valid aimed object: use it's origin vector; else: use null
 				arg_4 = "$[$caller_target ? $caller_target.GetOrigin() : null]"	
+
+				// Use target specific in specific_target option, if it's not valid use null
+				arg_5 = "$[$specific_target ? $specific_target.GetCharacterName() : null]"
 			}
 		}
 	}
@@ -711,12 +723,16 @@
        // - There is also a role for host, but it can't be used with this command
        //   > PS_USER_HOST : Allow access to all commands (NOT RECOMMENDED TO BE USED FOR MORE THAN ONE PLAYER)
        user_level {character} {level: (PS_USER_NONE|PS_USER_BASIC|PS_USER_ADMIN|PS_USER_SCRIPTER)}
+       user_level {character} {level: (none|basic|admin|scripter)}
 
        // Example: Give the player playing as Bill admin privileges
        user_level bill PS_USER_ADMIN
     
+       // Example: Give the player playing as Nick scripter privileges
+       user_level nick scripter
+
        // Example: Take the player playing as Zoey's all special privileges away
-       user_level zoey PS_USER_NONE
+       user_level zoey none
 ```
 ---
 #### **command_privilege**
@@ -742,12 +758,13 @@
        //   PS_USER_SCRIPTER : Require at least scripter user privilege
        //   PS_USER_HOST : Allow access for host only
        command_privilege {command_name} {minimum_level: (PS_USER_NONE|PS_USER_BASIC|PS_USER_ADMIN|PS_USER_SCRIPTER|PS_USER_HOST)}
+       command_privilege {command_name} {level: (none|basic|admin|scripter|host)}
 
-       // Example: Give the player playing as Bill admin privileges
-       command_privilege grab PS_USER_ADMIN
+       // Example: Make grab command scripter and host only
+       command_privilege grab PS_USER_SCRIPTER
     
        // Example: They won't say no, because of the implication
-       command_privilege get_out PS_USER_HOST
+       command_privilege get_out host
 ```
 ---
 #### **reload_command_privileges**
@@ -2607,7 +2624,7 @@
 ### Ragdoll
 
 #### **go_ragdoll**
-- Start ragdolling with controls, hold **mouse1** to ascend, **mouse2** to descend. 
+- Start(or stop) ragdolling with controls, hold **mouse1** to ascend, **mouse2** to descend. 
 
    Minimim User Level | **PS_USER_ADMIN**
    ------------- | -------------
@@ -3075,7 +3092,7 @@
    Console Syntax | scripted_user_func *create_loot_sources,category* 
    ------------- | -------------
     
-   Menu Sequence | _6->3->9->4_
+   Menu Sequence | _6->3->9->3_
    ------------- | -------------
 ```cpp
        //Overloads:
@@ -3108,7 +3125,7 @@
    Console Syntax | scripted_user_func *show_looting_settings* 
    ------------- | -------------
     
-   Menu Sequence | _6->3->9->4->5_
+   Menu Sequence | _6->3->9->3->5_
    ------------- | -------------
 
     Setting | Default Value | Description
@@ -3143,7 +3160,7 @@
    Console Syntax | scripted_user_func *looting_setting,setting,new_value* 
    ------------- | -------------
     
-   Menu Sequence | _Command hinted at 6->3->9->4->6_
+   Menu Sequence | _Command hinted at 6->3->9->3->6_
    ------------- | -------------
 
 ```cpp
@@ -4953,6 +4970,10 @@ ExampleGnome =
    + **_custom\_responses.json_** : Custom responses, doesn't include built-in ones
 
    + **_defaults.txt_** : Default settings and parameters
+
+   + **_disable\_chat\_triggers.txt_** : Create an empty file with this name to disable **chat** triggers (**!**, **/**, **?** and **?\*** triggers are disabled)
+
+   + **_disable\_console\_commands.txt_** : Create an empty file with this name to disable **console** and **menu** commands (**scripted_user_func** console command is disabled)
 
    + **_disabled\_commands.txt_** : List of command names to disable 
 

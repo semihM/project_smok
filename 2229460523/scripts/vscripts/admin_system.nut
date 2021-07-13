@@ -1,5 +1,6 @@
 //-----------------------------------------------------
-printl("Activating Admin System - project_smok");
+Msg("Activating Admin System - ");
+error("project_smok\n")
 
 /**
  * Admin System by Rayman1103
@@ -51,9 +52,15 @@ IncludeScript("Project_smok/QuickTimers");
 // Include the vehicle scripts
 IncludeScript("Project_smok/Vehicles");
 
-printl("|-------------------------------------------|")
-printl(format("| project_smok %s , Date: %s",::Constants.Version.Number,::Constants.Version.Date))
-printl("|-------------------------------------------|")
+error("|")
+Msg("-----------------------------------------------")
+error("|\n|")
+Msg(" project_smok ")
+error(::Constants.Version.Number)
+Msg(" , Version Date ")
+error(format("%s |\n|",::Constants.Version.Date))
+Msg("-----------------------------------------------")
+error("|\n")
 
 // Messages
 ::CmdMessages <- ::Messages.BIM.CMD;
@@ -107,7 +114,7 @@ if(!("date" in getroottable()))
 		}
 		catch(e)
 		{
-			printl("[DATE-ERROR] date() failed")
+			printR("[DATE-ERROR] date() failed")
 			local d = 
 			{
 				year = 2021
@@ -197,7 +204,7 @@ if("date" in getroottable())
 	}
 	catch(_err)
 	{
-		printl("[DATE-ERROR] date() failed")
+		printR("[DATE-ERROR] date() failed")
 		::AdminSystem.StartTime <- 
 		{
 			year = 2021
@@ -288,7 +295,7 @@ if("date" in getroottable())
 	local filelist = FileToString(Constants.Directories.CustomHooks);	// List of files
 	if(filelist == null)
 	{
-		printl("[Custom-Hooks] Creating "+Constants.Directories.CustomHooks+" for the first time...")
+		printR("[Custom-Hooks] Creating "+Constants.Directories.CustomHooks+" for the first time...")
 		StringToFile(Constants.Directories.CustomHooks,Constants.CustomHookListDefaults);
 		filelist = FileToString(Constants.Directories.CustomHooks);
 	}
@@ -296,7 +303,7 @@ if("date" in getroottable())
 	local example = FileToString(Constants.Directories.CustomHooksExample);	// Example
 	if(example == null)
 	{
-		printl("[Custom-Hooks] Creating "+Constants.Directories.CustomHooksExample+" for the first time...")
+		printR("[Custom-Hooks] Creating "+Constants.Directories.CustomHooksExample+" for the first time...")
 		StringToFile(Constants.Directories.CustomHooksExample,Constants.CustomHookDefaults);
 		example = FileToString(Constants.Directories.CustomHooksExample);
 	}
@@ -330,13 +337,13 @@ if("date" in getroottable())
 	{
 		if(!(eventname in ::VSLib.EasyLogic.Notifications))
 		{
-			printl("[Event-Hook-Unknown] "+eventname+" is unknown! Consider checking given links in the example file!")
+			printR("[Event-Hook-Unknown] "+eventname+" is unknown! Consider checking given links in the example file!")
 		}
 		else
 		{
 			if(typeof funcs != "table")
 			{
-				printl("[Event-Hook-Error] Event hooks for "+eventname+ " were formatted incorrectly! Format is-> PS_Hooks.On{GameEvent}.{FunctionName}<-function(param_1,param_2,...){}")
+				printR("[Event-Hook-Error] Event hooks for "+eventname+ " were formatted incorrectly! Format is-> PS_Hooks.On{GameEvent}.{FunctionName}<-function(param_1,param_2,...){}")
 			}
 			else
 			{
@@ -348,7 +355,7 @@ if("date" in getroottable())
 			}
 		}
 	}
-	printl("[Custom-Hooks] Found "+::PS_Hooks.len()+" events and a total of "+total+" hooks")
+	printR("[Custom-Hooks] Found "+::PS_Hooks.len()+" events and a total of "+total+" hooks")
 	printl("---------------------------------------------------------")
 }
 
@@ -361,7 +368,7 @@ if("date" in getroottable())
 	local filelist = FileToString(Constants.Directories.CommandScripts);	// List of files
 	if(filelist == null)
 	{
-		printl("[Custom-Scripts] Creating "+Constants.Directories.CommandScripts+" for the first time...")
+		printR("[Custom-Scripts] Creating "+Constants.Directories.CommandScripts+" for the first time...")
 		StringToFile(Constants.Directories.CommandScripts,Constants.CommandScriptListDefaults);
 		filelist = FileToString(Constants.Directories.CommandScripts);
 	}
@@ -369,7 +376,7 @@ if("date" in getroottable())
 	local example = FileToString(Constants.Directories.CommandScriptsExample);	// Example
 	if(example == null)
 	{
-		printl("[Custom-Scripts] Creating "+Constants.Directories.CommandScriptsExample+" for the first time...")
+		printR("[Custom-Scripts] Creating "+Constants.Directories.CommandScriptsExample+" for the first time...")
 		StringToFile(Constants.Directories.CommandScriptsExample,Constants.CommandScriptDefaults);
 		example = FileToString(Constants.Directories.CommandScriptsExample);
 	}
@@ -398,26 +405,26 @@ if("date" in getroottable())
 		compilestring(fileContents)();
 	}
 
-	printl("[Custom-Scripts] Reading custom command files...")
+	printR("[Custom-Scripts] Reading custom command files...")
 	local loaded = {}
 	local i = 0
 	foreach(cmdname, cmdtable in ::PS_Scripts)
 	{	
 		if(cmdname in ::AliasCompiler.ForbiddenAliasNames)	// Forbidden named
 		{
-			printl("[Forbidden-Name] Command name can not be "+cmdname+". Consider changing it!")
+			printR("[Forbidden-Name] Command name can not be "+cmdname+". Consider changing it!")
 			continue;
 		}
 		if(cmdname in ::ChatTriggers && !(cmdname in ::AliasCompiler.Tables || cmdname in ::PS_PreviousScriptsNames)) // Already a built-in trigger and wasn't custom alias or command
 		{
-			printl("[Command-Duplicate] Command name can not be "+cmdname+". Consider changing it!")
+			printR("[Command-Duplicate] Command name can not be "+cmdname+". Consider changing it!")
 			continue;
 		}
 		else
 		{
 			if(cmdname in ::AliasCompiler.Tables) // Was custom command or alias
 			{
-				printl("[Command-Reload] "+cmdname+" already exists! Overwriting it...")
+				printR("[Command-Reload] "+cmdname+" already exists! Overwriting it...")
 			}
 			local prv = PS_USER_NONE
 			if("MinimumUserLevel" in cmdtable && typeof cmdtable.MinimumUserLevel == "integer")
@@ -425,7 +432,7 @@ if("date" in getroottable())
 				prv = cmdtable.MinimumUserLevel
 				if(prv < PS_USER_NONE || prv > ::UserLevelNames.len())
 				{
-					printl("[Command-User-Level-Error] "+cmdname+" command's minimum user level is unknown! Allowing it's use for everyone");
+					printR("[Command-User-Level-Error] "+cmdname+" command's minimum user level is unknown! Allowing it's use for everyone");
 					prv = PS_USER_NONE
 				}
 			}
@@ -448,7 +455,7 @@ if("date" in getroottable())
 	}
 
 	if(loaded.len() > 0)
-		printl("[Custom-Commands] Loaded "+loaded.len()+" custom commands:")
+		printR("[Custom-Commands] Loaded "+loaded.len()+" custom commands:")
 	foreach(i,name in loaded)
 	{
 		printl("\t["+i+"] "+name)
@@ -528,7 +535,7 @@ if("date" in getroottable())
 	local filelist = FileToString(Constants.Directories.CommandAliases);	// List of files
 	if(filelist == null)
 	{
-		printl("[Custom-Aliases] Creating "+Constants.Directories.CommandAliases+" for the first time...")
+		printR("[Custom-Aliases] Creating "+Constants.Directories.CommandAliases+" for the first time...")
 		StringToFile(Constants.Directories.CommandAliases,Constants.CommandAliasesListDefaults);
 		filelist = FileToString(Constants.Directories.CommandAliases);
 	}
@@ -536,7 +543,7 @@ if("date" in getroottable())
 	local example = FileToString(Constants.Directories.CommandAliasesExample);	// Example v100
 	if(example == null)
 	{
-		printl("[Alias-Examples] Creating v1.0.0 examples in "+Constants.Directories.CommandAliasesExample+" for the first time...")
+		printR("[Alias-Examples] Creating v1.0.0 examples in "+Constants.Directories.CommandAliasesExample+" for the first time...")
 		StringToFile(Constants.Directories.CommandAliasesExample,Constants.CommandAliasesDefaults.v1_0_0);
 		example = FileToString(Constants.Directories.CommandAliasesExample);
 	}
@@ -549,7 +556,7 @@ if("date" in getroottable())
 		local ex = FileToString(pth);
 		if(ex == null)
 		{
-			printl("[Alias-Examples] Creating "+count+" new examples from version "+vers+" in "+pth+" for the first time...")
+			printR("[Alias-Examples] Creating "+count+" new examples from version "+vers+" in "+pth+" for the first time...")
 			StringToFile(pth,Constants.CommandAliasesDefaults[cleanvers]);
 			ex = FileToString(pth);
 		}
@@ -580,7 +587,7 @@ if("date" in getroottable())
 	}
 	
 	printl("---------------------------------------------------------")
-	printl("[Custom-Aliases] Aliased commands for this session ("+::AliasCompiler.Tables.len()+")")
+	printR("[Custom-Aliases] Aliased commands for this session ("+::AliasCompiler.Tables.len()+")")
 	local i = 0;
 	foreach(name,al in ::AliasCompiler.Tables)
 	{
@@ -598,7 +605,7 @@ if("date" in getroottable())
 	local fileContents = FileToString(Constants.Directories.LootTables);
 	if(fileContents == null)
 	{
-		printl("[Loot-Tables] Creating "+Constants.Directories.LootTables+" for the first time...")
+		printR("[Loot-Tables] Creating "+Constants.Directories.LootTables+" for the first time...")
 		StringToFile(Constants.Directories.LootTables,strip(Constants.LootSourcesLootTablesDefaults));
 		fileContents = FileToString(Constants.Directories.LootTables);
 	}
@@ -609,26 +616,26 @@ if("date" in getroottable())
 	}
 	catch(e)
 	{
-		printl("[Loot-Tables-Error] File format was invalid, using default loots! Error: "+e)
+		printR("[Loot-Tables-Error] File format was invalid, using default loots! Error: "+e)
 		::AdminSystem.LootSourcesLootTables <- null
 		return null;
 	}
 
 	if(arr == null || typeof arr != "array")
 	{
-		printl("[Loot-Tables-Error] File format was invalid, using default loots!")
+		printR("[Loot-Tables-Error] File format was invalid, using default loots!")
 		::AdminSystem.LootSourcesLootTables <- null
 		return null;
 	}
 	else
 	{
 		local valid_arr = []
-		printl("[Loot-Tables-Checks] Doing loot table checks...")
+		printR("[Loot-Tables-Checks] Doing loot table checks...")
 		foreach(i,tbl in arr)
 		{
 			if(typeof tbl != "table")
 			{
-				printl("[Loot-Tables-Error] File should contain tables seperated with commas! Using default loots!")
+				printR("[Loot-Tables-Error] File should contain tables seperated with commas! Using default loots!")
 				::AdminSystem.LootSourcesLootTables <- null
 				return null;
 			}
@@ -636,12 +643,12 @@ if("date" in getroottable())
 			{
 				if(!("ent" in tbl))
 				{
-					printl("[Loot-Tables-Warning] There is a table missing \"ent\" entry, skipping the table")
+					printR("[Loot-Tables-Warning] There is a table missing \"ent\" entry, skipping the table")
 					continue
 				}
 				if(!("prob" in tbl))
 				{
-					printl("[Loot-Tables-Warning] There is a table missing \"prob\" entry, skipping the table")
+					printR("[Loot-Tables-Warning] There is a table missing \"prob\" entry, skipping the table")
 					continue
 				}
 				if(!("ammo" in tbl))
@@ -658,7 +665,7 @@ if("date" in getroottable())
 			}
 		}
 		::AdminSystem.LootSourcesLootTables <- valid_arr
-		printl("[Loot-Tables-Checks] Completed checks and loaded the loot tables")
+		printR("[Loot-Tables-Checks] Completed checks and loaded the loot tables")
 	}
 }
 
@@ -763,7 +770,7 @@ function Notifications::OnPlayerConnected::ProcessQuixBinds(player,args)
 	local steamid = player.GetSteamID()
 	if("CustomBindsTable" in AdminSystem)
 	{
-		printl("[Binds-Process] Processing binds for "+player.GetName()+format("(%s)",steamid))
+		printR("[Binds-Process] Processing binds for "+player.GetName()+format("(%s)",steamid))
 		if(steamid in AdminSystem.CustomBindsTable)
 		{
 			foreach(key,keytbl in AdminSystem.CustomBindsTable[steamid])
@@ -791,7 +798,7 @@ function Notifications::OnPlayerLeft::RemoveQuixBinds(player, name, steamID, par
 	{
 		if(steamID in AdminSystem.CustomBindsTable)
 		{
-			printl("[Binds-Removal] Removing personal binds for "+name)
+			printR("[Binds-Removal] Removing personal binds for "+name)
 			foreach(key,keytbl in AdminSystem.CustomBindsTable[steamID])
 			{
 				foreach(func,tbl in keytbl)
@@ -803,7 +810,7 @@ function Notifications::OnPlayerLeft::RemoveQuixBinds(player, name, steamID, par
 
 		if("all" in AdminSystem.CustomBindsTable)
 		{
-			printl("[Binds-Removal] Removing global binds for "+name)
+			printR("[Binds-Removal] Removing global binds for "+name)
 			foreach(key,keytbl in AdminSystem.CustomBindsTable.all)
 			{
 				foreach(func,tbl in keytbl)
@@ -826,7 +833,7 @@ function Notifications::OnPlayerReplacedBot::ProcessQuixBinds(player,bot,args)
 	local steamid = player.GetSteamID()
 	if("CustomBindsTable" in AdminSystem)
 	{
-		printl("[Binds-Process] Processing binds for "+player.GetName()+format("(%s)",steamid))
+		printR("[Binds-Process] Processing binds for "+player.GetName()+format("(%s)",steamid))
 		if(steamid in AdminSystem.CustomBindsTable)
 		{
 			foreach(key,keytbl in AdminSystem.CustomBindsTable[steamid])
@@ -859,7 +866,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 			
 			if(steamID in AdminSystem.CustomBindsTable)
 			{
-				printl("[Binds-Removal] Removing personal binds for "+name)
+				printR("[Binds-Removal] Removing personal binds for "+name)
 				foreach(key,keytbl in AdminSystem.CustomBindsTable[steamID])
 				{
 					foreach(func,tbl in keytbl)
@@ -871,7 +878,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 
 			if("all" in AdminSystem.CustomBindsTable)
 			{
-				printl("[Binds-Removal] Removing global binds for "+name)
+				printR("[Binds-Removal] Removing global binds for "+name)
 				foreach(key,keytbl in AdminSystem.CustomBindsTable.all)
 				{
 					foreach(func,tbl in keytbl)
@@ -892,7 +899,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 	local filelist = FileToString(Constants.Directories.CustomBinds);	// List of files
 	if(filelist == null)
 	{
-		printl("[Custom-Binds] Creating "+Constants.Directories.CustomBinds+" for the first time...")
+		printR("[Custom-Binds] Creating "+Constants.Directories.CustomBinds+" for the first time...")
 		StringToFile(Constants.Directories.CustomBinds,strip(Constants.CustomBindsListDefaults));
 		filelist = FileToString(Constants.Directories.CustomBinds);
 	}
@@ -900,7 +907,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 	local example = FileToString(Constants.Directories.CustomBindsExample);	// Example v150
 	if(example == null)
 	{
-		printl("[Binds-Examples] Creating v1.5.0 examples in "+Constants.Directories.CustomBindsExample+" for the first time...")
+		printR("[Binds-Examples] Creating v1.5.0 examples in "+Constants.Directories.CustomBindsExample+" for the first time...")
 		StringToFile(Constants.Directories.CustomBindsExample,strip(Constants.CustomBindsTableDefaults.v1_5_0));
 		example = FileToString(Constants.Directories.CustomBindsExample);
 	}
@@ -913,7 +920,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 	// 	local ex = FileToString(pth);
 	// 	if(ex == null)
 	// 	{
-	// 		printl("[Binds-Examples] Creating "+count+" new examples from version "+vers+" in "+pth+" for the first time...")
+	// 		printR("[Binds-Examples] Creating "+count+" new examples from version "+vers+" in "+pth+" for the first time...")
 	// 		StringToFile(pth,Constants.CustomBindsTableDefaults[cleanvers]);
 	// 		ex = FileToString(pth);
 	// 	}
@@ -1001,7 +1008,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 	local filelist = FileToString(Constants.Directories.CustomProps);	// List of files
 	if(filelist == null)
 	{
-		printl("[Custom-Entity_Groups] Creating "+Constants.Directories.CustomProps+" for the first time...")
+		printR("[Custom-Entity_Groups] Creating "+Constants.Directories.CustomProps+" for the first time...")
 		StringToFile(Constants.Directories.CustomProps,strip(Constants.CustomPropsListDefaults));
 		filelist = FileToString(Constants.Directories.CustomProps);
 	}
@@ -1009,7 +1016,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 	local example = FileToString(Constants.Directories.CustomPropsExample);	// Example v140
 	if(example == null)
 	{
-		printl("[Entity_Groups-Examples] Creating v1.4.0 examples in "+Constants.Directories.CustomPropsExample+" for the first time...")
+		printR("[Entity_Groups-Examples] Creating v1.4.0 examples in "+Constants.Directories.CustomPropsExample+" for the first time...")
 		StringToFile(Constants.Directories.CustomPropsExample,strip(Constants.CustomPropsDefaults.v1_4_0));
 		example = FileToString(Constants.Directories.CustomPropsExample);
 	}
@@ -1022,7 +1029,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 		local ex = FileToString(pth);
 		if(ex == null)
 		{
-			printl("[Alias-Examples] Creating "+count+" new examples from version "+vers+" in "+pth+" for the first time...")
+			printR("[Alias-Examples] Creating "+count+" new examples from version "+vers+" in "+pth+" for the first time...")
 			StringToFile(pth,Constants.CustomPropsDefaults[cleanvers]);
 			ex = FileToString(pth);
 		}
@@ -1100,7 +1107,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 	local fileContents = FileToString(Constants.Directories.DisabledCommands);
 	if(fileContents == null)
 	{
-		printl("[Command-Limits] Creating disabled_commands.txt for the first time...")
+		printR("[Command-Limits] Creating disabled_commands.txt for the first time...")
 		StringToFile(Constants.Directories.DisabledCommands,Constants.DisabledCommandsDefaults);
 		fileContents = FileToString(Constants.Directories.DisabledCommands);
 	}
@@ -1126,7 +1133,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 			if(!missingfound)
 			{
 				missingfound = true
-				printl("[Command-Limits] Found unknown command names in the disabled_commands.txt, consider removing them to save space:")
+				printR("[Command-Limits] Found unknown command names in the disabled_commands.txt, consider removing them to save space:")
 			}
 			printl("\t[Row "+(i+1)+"] "+cmd)
 		}
@@ -1135,7 +1142,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 	if(::VSLib.EasyLogic.DisabledCommands.len() > 0)
 	{	
 		printl("---------------------------------------------------------")
-		printl("[Command-Limits] Disabled commands for this session ("+::VSLib.EasyLogic.DisabledCommands.len()+"):")
+		printR("[Command-Limits] Disabled commands for this session ("+::VSLib.EasyLogic.DisabledCommands.len()+"):")
 		local i = 0;
 		foreach(cmd,_v in ::VSLib.EasyLogic.DisabledCommands)
 		{
@@ -1266,7 +1273,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 		return
 	}
 
-	if(!(lvl = ::UserLevelUtils.ValidateLevel(player, GetArgument(2), false)))
+	if(!(lvl = ::UserLevelUtils.ValidateLevel(player, GetArgument(2), false, true)))
 		return
 	
 	::PrivilegeRequirements[cmd] <- getconsttable()[lvl]
@@ -1281,7 +1288,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 	local fileContents = FileToString(Constants.Directories.CommandPrivileges);
 	if(fileContents == null)
 	{
-		printl("[Command-Privileges] Creating command_privileges.txt for the first time...")
+		printR("[Command-Privileges] Creating command_privileges.txt for the first time...")
 		StringToFile(Constants.Directories.CommandPrivileges,Constants.CommandPrivilegesDefault + "\r\n\r\n\r\n\r\n\r\n\r\n\r\n");
 		fileContents = FileToString(Constants.Directories.CommandPrivileges);
 	}
@@ -1325,7 +1332,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 	local fileContents = FileToString(Constants.Directories.CommandRestrictions);
 	if(fileContents == null)
 	{
-		printl("[Command-Limits] Creating command_limits.txt for the first time...")
+		printR("[Command-Limits] Creating command_limits.txt for the first time...")
 		StringToFile(Constants.Directories.CommandRestrictions,Constants.CommandRestrictionsDefault);
 		fileContents = FileToString(Constants.Directories.CommandRestrictions);
 	}
@@ -1359,7 +1366,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 		
 		if ( searchForHost == true && AdminSystem.HostPlayer.len() == 0)
 		{
-			printl("[HOST-DECIDER-LoadAdmins] New host is "+admin)
+			printR("[HOST-DECIDER-LoadAdmins] New host is "+admin)
 			AdminSystem.HostPlayer[admin] <- true;
 			searchForHost = false;
 		}
@@ -1399,7 +1406,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 		if(Utils.GetIDFromArray(::UserLevelNames,level) == -1)
 		{
 			level = "PS_USER_NONE";
-			printl("[USER-LEVEL-ERROR] User level: '"+splt[1]+"' is not recognized for user: "+splt[0])
+			printR("[USER-LEVEL-ERROR] User level: '"+splt[1]+"' is not recognized for user: "+splt[0])
 		}
 		
 		if ( user.find("STEAM_0") != null )
@@ -1410,7 +1417,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 			
 		if(::AdminSystem.HostPlayer.len() == 0 && level == "PS_USER_HOST")
 		{
-			printl("[HOST-DECIDER-LoadUserLevels] New host is "+user)
+			printR("[HOST-DECIDER-LoadUserLevels] New host is "+user)
 			::AdminSystem.HostPlayer[user] <- true
 			currhost = user
 			currhostname = currname
@@ -1626,7 +1633,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 					}
 					else
 					{
-						printl("[Meteor-Shower-Error] Failed to load the meteor_shower_settings.txt, delete the file to fix the issue.");
+						printR("[Meteor-Shower-Error] Failed to load the meteor_shower_settings.txt, delete the file to fix the issue.");
 						AdminSystem._meteor_shower_args <- Constants.GetMeteorShowerSettingsDefaults();
 						return;
 					}
@@ -1711,7 +1718,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 
 ::AdminSystem.IsPrivileged <- function ( player, silent = false)
 {
-	printl("[DEPRECATION-WARNING] 'AdminSystem.IsPrivileged(player,silent)' function has been deprecated! Use 'player.HasPrivilege(PS_USER_ADMIN)' in your functions!")
+	printR("[DEPRECATION-WARNING] 'AdminSystem.IsPrivileged(player,silent)' function has been deprecated! Use 'player.HasPrivilege(PS_USER_ADMIN)' in your functions!")
 	if ( Director.IsSinglePlayerGame() || player.IsServerHost() )
 		return true;
 	
@@ -1752,7 +1759,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
  */
 ::AdminSystem.HasScriptAuth <- function ( player , silent = false)
 {
-	printl("[DEPRECATION-WARNING] 'AdminSystem.HasScriptAuth(player,silent)' function has been deprecated! Use 'player.HasPrivilege(PS_USER_SCRIPTER)' in your functions!")
+	printR("[DEPRECATION-WARNING] 'AdminSystem.HasScriptAuth(player,silent)' function has been deprecated! Use 'player.HasPrivilege(PS_USER_SCRIPTER)' in your functions!")
 	if ( Director.IsSinglePlayerGame() || player.IsServerHost() )
 		return true;
 	
@@ -1838,11 +1845,136 @@ function Notifications::OnRoundStart::RandomSeeding()
 		local t = date()
 		local seed = format("%d%02d%02d%02d%02d",t.month,t.day,t.hour,t.minute,t.second).tointeger();
 		srand(seed)
-		printl("[RANDOM-SEED] Using random seed: "+seed)
+		printR("[RANDOM-SEED] Using random seed: "+seed)
 	}
 	catch(e)
 	{
-		printl("[ERROR-RANDOM-SEED] Failed to set random seed: "+e)
+		printR("[ERROR-RANDOM-SEED] Failed to set random seed: "+e)
+	}
+}
+
+function Notifications::OnRoundStart::ColorfulVehicles()
+{
+	if(IsCurrentMapAnOfficialMap() && ::AdminSystem.Vars.ColorfulVehiclesState)
+	{
+		printR("[ColorfulVehicles] Setting random colors to props...")
+		local low = split(::AdminSystem.Vars.ColorfulVehiclesRanges.darkest," ")
+		local high = split(::AdminSystem.Vars.ColorfulVehiclesRanges.brightest," ")
+		if(low.len() != 3)
+		{
+			printR("[COLORFUL_VEHICLES-ERROR] Darkest color range format is wrong!")
+			return
+		}
+		if(high.len() != 3)
+		{
+			printR("[COLORFUL_VEHICLES-ERROR] Brightest color range format is wrong!")
+			return
+		}
+		try
+		{
+			low = low.map(@(x) x.tointeger())
+			high = high.map(@(x) x.tointeger())
+		}
+		catch(e)
+		{
+			printR("[COLORFUL_VEHICLES-ERROR] Color range has non-numeric values!")
+			return
+		}
+
+		local valid_vehicle_classes =
+		{
+			prop_dynamic = true
+			prop_dynamic_override = true
+			prop_car_alarm = true
+			prop_vehicle = true
+			prop_physics_override = true
+			prop_physics = true
+		}
+
+		local valid_vehicle_models =
+		{
+			"models/props_vehicles/cara_69sedan.mdl" : true
+			"models/props_vehicles/cara_84sedan.mdl" : true
+			"models/props_vehicles/cara_95sedan.mdl" : true
+			"models/props_vehicles/cara_82hatchback.mdl" : true
+			"models/props_vehicles/sailboat.mdl" : true
+			"models/lostcoast/props_wasteland/boat_fishing01a.mdl" : true
+			"models/props_vehicles/boat_fishing02_static.mdl" : true
+			"models/lostcoast/props_wasteland/boat_drydock01a.mdl" : true
+			"models/props_urban/boat001.mdl" : true
+			"models/props_urban/boat002.mdl" : true
+			"models/props_vehicles/boat_ski.mdl" : true
+			"models/props_vehicles/boat_smash.mdl" : true
+			"models/lostcoast/props_wasteland/boat_wooden01a.mdl" : true
+			"models/lostcoast/props_wasteland/boat_wooden02a.mdl" : true
+			"models/lostcoast/props_wasteland/boat_wooden03a.mdl" : true
+			"models/props_canal/boat001a.mdl" : true
+			"models/props_vehicles/train_enginecar.mdl" : true
+			"models/props_vehicles/train_engine_military.mdl" : true
+			"models/props_vehicles/train_box.mdl" : true
+			"models/props_vehicles/train_box_open.mdl" : true
+			"models/props_vehicles/train_box_small.mdl" : true
+			"models/props_vehicles/train_boxwreck.mdl" : true
+			"models/props_vehicles/boxcar_tanktrap_exterior.mdl" : true
+			"models/props_vehicles/boxcar_tanktrap_interior.mdl" : true
+			"models/props_vehicles/boxcar_tanktrap_door.mdl" : true
+			"models/props_vehicles/train_orecar.mdl" : true
+			"models/props_vehicles/train_flatcar.mdl" : true
+			"models/props_vehicles/train_flatcar_small.mdl" : true
+			"models/props_vehicles/train_tank.mdl" : true
+			"models/props_vehicles/train_tank_small.mdl" : true
+			"models/props_trainstation/train_transporter.mdl" : true
+			"models/props_unique/subwaycar_all_onetexture.mdl" : true
+			"models/props_vehicles/cara_95sedan_wrecked.mdl" : true
+			"models/props_vehicles/cara_82hatchback_wrecked.mdl" : true
+			"models/props_vehicles/news_van.mdl" : true
+			"models/props_vehicles/van_cab_controls.mdl" : true
+			"models/props_vehicles/longnose_truck.mdl" : true
+			"models/props_vehicles/flatnose_truck.mdl" : true
+			"models/props_vehicles/semi_truck3.mdl" : true
+			"models/props_vehicles/pickup_truck_78.mdl" : true
+			"models/props_vehicles/pickup_truck_2004.mdl" : true
+			"models/props_vehicles/police_car_rural.mdl" : true
+			"models/props_vehicles/suv_2001.mdl" : true
+			"models/props_vehicles/taxi_cab.mdl" : true
+			"models/props_vehicles/police_car_city.mdl" : true
+			"models/props_vehicles/front_loader01_rear.mdl" : true
+			"models/props_vehicles/front_loader01_front_down.mdl" : true
+			"models/props_vehicles/van.mdl" : true
+			"models/props_vehicles/van_cab_controls.mdl" : true
+			"models/props_vehicles/boat_cabin35ft.mdl" : true
+			"models/props_vehicles/boat_trailer35ft.mdl" : true
+			"models/props_vehicles/utility_truck.mdl" : true
+			"models/props_vehicles/utility_truck_windows.mdl" : true
+			"models/props/de_nuke/truck_nuke.mdl" : true
+			"models/props_vehicles/radio_generator.mdl" : true
+			"models/props_vehicles/generatortrailer01.mdl" : true
+			"models/props_vehicles/m119howitzer_01.mdl" : true
+			"models/props_vehicles/deliveryvan_armored.mdl" : true
+			"models/props_vehicles/floodlight_generator_nolight.mdl" : true
+			"models/props_vehicles/airport_baggage_tractor.mdl" : true
+			"models/props_vehicles/airport_baggage_cart2.mdl" : true
+			"models/props_vehicles/airliner_finale_left.mdl" : true
+			"models/props_vehicles/airliner_finale_right.mdl" : true
+			"models/props_fairgrounds/bumpercar.mdl" : true
+			"models/props_fairgrounds/coaster_car01.mdl" : true
+			"models/props_waterfront/tour_bus.mdl" : true
+			"models/props_vehicles/helicopter_rescue.mdl" : true
+			"models/props_vehicles/racecar_damaged.mdl" : true
+			"models/props_vehicles/bus01.mdl" : true
+			"models/props_vehicles/bus01_2.mdl" : true
+			"models/props_vehicles/church_bus01.mdl" : true
+			"models/props_vehicles/c130.mdl" : true
+		}
+
+		foreach(classname,st in valid_vehicle_classes)
+		{
+			foreach(ent in Objects.OfClassname(classname))
+			{
+				if(ent.GetModel() in valid_vehicle_models)
+					ent.SetColor(RandomInt(low[0],high[0]).tostring(),RandomInt(low[1],high[1]).tostring(),RandomInt(low[2],high[2]).tostring(),"255");
+			}
+		}
 	}
 }
 
@@ -1982,73 +2114,73 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	// Have to do this because squirrel is restoring "coach" as "Coach"
 	if("Coach" in AdminSystem.Vars._outputsEnabled)
 	{
-		//printl("[Custom-Fix] Applying fixes to outputs table...");
+		//printR("[Custom-Fix] Applying fixes to outputs table...");
 		AdminSystem.Vars._outputsEnabled.coach <- AdminSystem.Vars._outputsEnabled.Coach;
 		delete AdminSystem.Vars._outputsEnabled.Coach;
 	}
 	if("Coach" in AdminSystem.Vars._saveLastLine)
 	{
-		//printl("[Custom-Fix] Applying fixes to LastLine table...");
+		//printR("[Custom-Fix] Applying fixes to LastLine table...");
 		AdminSystem.Vars._saveLastLine.coach <- AdminSystem.Vars._saveLastLine.Coach;
 		delete AdminSystem.Vars._saveLastLine.Coach;
 	}
 	if("Coach" in AdminSystem.Vars._savedLine)
 	{
-		//printl("[Custom-Fix] Applying fixes to SavedLine table...");
+		//printR("[Custom-Fix] Applying fixes to SavedLine table...");
 		AdminSystem.Vars._savedLine.coach <- Utils.TableCopy(AdminSystem.Vars._savedLine.Coach);
 		delete AdminSystem.Vars._savedLine.Coach;
 	}
 	if("Coach" in AdminSystem.Vars._saveLastModel)
 	{
-		//printl("[Custom-Fix] Applying fixes to LastModel table...");
+		//printR("[Custom-Fix] Applying fixes to LastModel table...");
 		AdminSystem.Vars._saveLastModel.coach <- AdminSystem.Vars._saveLastModel.Coach;
 		delete AdminSystem.Vars._saveLastModel.Coach;
 	}
 	if("Coach" in AdminSystem.Vars._savedModel)
 	{
-		//printl("[Custom-Fix] Applying fixes to SavedModel table...");
+		//printR("[Custom-Fix] Applying fixes to SavedModel table...");
 		AdminSystem.Vars._savedModel.coach <- Utils.TableCopy(AdminSystem.Vars._savedModel.Coach);
 		delete AdminSystem.Vars._savedModel.Coach;
 	}
 	if("Coach" in AdminSystem.Vars._savedParticle)
 	{
-		//printl("[Custom-Fix] Applying fixes to SavedParticle table...");
+		//printR("[Custom-Fix] Applying fixes to SavedParticle table...");
 		AdminSystem.Vars._savedParticle.coach <- Utils.TableCopy(AdminSystem.Vars._savedParticle.Coach);
 		delete AdminSystem.Vars._savedParticle.Coach;
 	}
 	if("Coach" in AdminSystem.Vars._saveLastParticle)
 	{
-		//printl("[Custom-Fix] Applying fixes to LastParticle table...");
+		//printR("[Custom-Fix] Applying fixes to LastParticle table...");
 		AdminSystem.Vars._saveLastParticle.coach <- AdminSystem.Vars._saveLastParticle.Coach;
 		delete AdminSystem.Vars._saveLastParticle.Coach;
 	}
 	if("Coach" in AdminSystem.Vars._preferred_duration)
 	{
-		//printl("[Custom-Fix] Applying fixes to preferred_duration table...");
+		//printR("[Custom-Fix] Applying fixes to preferred_duration table...");
 		AdminSystem.Vars._preferred_duration.coach <- AdminSystem.Vars._preferred_duration.Coach;
 		delete AdminSystem.Vars._preferred_duration.Coach;
 	}
 	if("Coach" in AdminSystem.Vars._prop_spawn_settings_menu_type)
 	{
-		//printl("[Custom-Fix] Applying fixes to prop_spawn_settings_menu_type table...");
+		//printR("[Custom-Fix] Applying fixes to prop_spawn_settings_menu_type table...");
 		AdminSystem.Vars._prop_spawn_settings_menu_type.coach <- AdminSystem.Vars._prop_spawn_settings_menu_type.Coach;
 		delete AdminSystem.Vars._prop_spawn_settings_menu_type.Coach;
 	}
 	if("Coach" in AdminSystem.Vars._prop_spawn_settings)
 	{
-		//printl("[Custom-Fix] Applying fixes to prop_spawn_settings table...");
+		//printR("[Custom-Fix] Applying fixes to prop_spawn_settings table...");
 		AdminSystem.Vars._prop_spawn_settings.coach <- Utils.TableCopy(AdminSystem.Vars._prop_spawn_settings.Coach);
 		delete AdminSystem.Vars._prop_spawn_settings.Coach;
 	}
 	if("Coach" in AdminSystem.Vars._explosion_settings)
 	{
-		//printl("[Custom-Fix] Applying fixes to explosion_settings table...");
+		//printR("[Custom-Fix] Applying fixes to explosion_settings table...");
 		AdminSystem.Vars._explosion_settings.coach <- Utils.TableCopy(AdminSystem.Vars._explosion_settings.Coach);
 		delete AdminSystem.Vars._explosion_settings.Coach;
 	}
 	if("Coach" in AdminSystem.Vars._heldEntity)
 	{
-		//printl("[Custom-Fix] Applying fixes to HeldEntity table...");
+		//printR("[Custom-Fix] Applying fixes to HeldEntity table...");
 		AdminSystem.Vars._heldEntity.coach <- Utils.TableCopy(AdminSystem.Vars._heldEntity.Coach);
 		delete AdminSystem.Vars._heldEntity.Coach;
 		AdminSystem.Vars._heldEntity.bill.entid = "";
@@ -2062,7 +2194,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	}
 	if("Coach" in AdminSystem.Vars._wornHat)
 	{
-		//printl("[Custom-Fix] Applying fixes to WornHat table...");
+		//printR("[Custom-Fix] Applying fixes to WornHat table...");
 		AdminSystem.Vars._wornHat.coach <- Utils.TableCopy(AdminSystem.Vars._wornHat.Coach);
 		delete AdminSystem.Vars._wornHat.Coach;
 		AdminSystem.Vars._wornHat.bill.entid = "";
@@ -2076,14 +2208,14 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	}
 	if("Coach" in AdminSystem.Vars._modelPreference)
 	{
-		//printl("[Custom-Fix] Applying fixes to model preference table...");
+		//printR("[Custom-Fix] Applying fixes to model preference table...");
 		AdminSystem.Vars._modelPreference.coach <- Utils.TableCopy(AdminSystem.Vars._modelPreference.Coach);
 		delete AdminSystem.Vars._modelPreference.Coach;
 	}
 	local skip = false;
 	if("Coach" in AdminSystem.Vars._CustomResponseOptions)
 	{	
-		//printl("[Custom-Fix] Applying fixes to CustomResponse table...");
+		//printR("[Custom-Fix] Applying fixes to CustomResponse table...");
 		AdminSystem.Vars._CustomResponseOptions.coach <- Utils.TableCopy(AdminSystem.Vars._CustomResponseOptions.Coach);
 		delete AdminSystem.Vars._CustomResponseOptions.Coach;
 		AdminSystem.Vars._CustomResponse.coach <- Utils.TableCopy(AdminSystem.Vars._CustomResponse.Coach);
@@ -2094,7 +2226,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 		// Apply options created by admins
 		AdminSystem.LoadCustomSequences();
 		//throw("No need for fixes in CustomRespose tables");
-		//printl("[OnRoundStart-Info] No need for fixes in CustomRespose tables");
+		//printR("[OnRoundStart-Info] No need for fixes in CustomRespose tables");
 		skip = true;
 	}
 
@@ -2386,9 +2518,9 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	}
 		
 	//}
-	//catch(e){printl("[OnRoundStart-AdminLoadFiles] "+e);}
+	//catch(e){printR("[OnRoundStart-AdminLoadFiles] "+e);}
 	
-	printl("[Custom] Loaded custom responses created by admins");
+	printR("[Custom] Loaded custom responses created by admins");
 	
 	if(AdminSystem.Vars._ghost_zombies_state == 1)
 	{
@@ -2414,7 +2546,7 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	}
 	else
 	{
-		printl("[Bot-Thinker] Disabled looting/sharing thinking for bots ");
+		printR("[Bot-Thinker] Disabled looting/sharing thinking for bots ");
 	}
 
 	//Restore models if necessary
@@ -2429,11 +2561,11 @@ function Notifications::OnRoundStart::AdminLoadFiles()
 	local found = Objects.AnyOfName("think_adder_base_entity")
 	if(found != null)
 	{
-		printl("[Bot-Thinker] Bot looting/sharing thinking already enabled via adder #"+found.GetIndex());
+		printR("[Bot-Thinker] Bot looting/sharing thinking already enabled via adder #"+found.GetIndex());
 		return;
 	}
 	local tadd = _CreateLootThinker();
-	printl("[Bot-Thinker] Enabled looting/sharing thinking for bots via adder #"+tadd.GetIndex());
+	printR("[Bot-Thinker] Enabled looting/sharing thinking for bots via adder #"+tadd.GetIndex());
 }
 
 ::AdminSystem.RestoreModels <- function(player)
@@ -2555,7 +2687,7 @@ function Notifications::OnPlayerJoined::UserLevelCheck( player, name, IPAddress,
 					local _name = strip(row.slice(index + 2))
 					if(i == 0 && AdminSystem.HostPlayer.len() == 0)
 					{
-						printl("[HOST-DECIDER-OnPlayerJoined] New host is "+_steamid)
+						printR("[HOST-DECIDER-OnPlayerJoined] New host is "+_steamid)
 						tbl[_steamid] <- [PS_USER_HOST,_name];
 						::AdminSystem.HostPlayer[_steamid] <- true
 						foundHost = true
@@ -2591,7 +2723,7 @@ function Notifications::OnPlayerJoined::UserLevelCheck( player, name, IPAddress,
 		
 		if(!foundHost)
 		{
-			printl("[HOST-DECIDER-OnPlayerJoined] New host is "+steamid)
+			printR("[HOST-DECIDER-OnPlayerJoined] New host is "+steamid)
 			::AdminSystem.HostPlayer[steamid] <- true
 		}
 
@@ -2855,11 +2987,14 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		{
 			local tname = strip(Command.slice(Command.find(">") + 1))
 			if(tname == "self" || tname == "!self")
-				target = player
-			else if(tname != "" && ((target = Entity(tname)).IsEntityValid() || (target = Utils.GetPlayerFromName(tname) != null)))
+				target = Utils.GetEntityOrPlayer(player.GetBaseEntity());
+			else if(tname != "" && ((target = Entity(tname)).IsEntityValid() || ((target = Utils.GetPlayerFromName(tname)) != null)))
 				Command = Command.slice(0, Command.find(">"))
 			else
 				target = null
+				
+			if(target)
+				target = Utils.GetEntityOrPlayer(target.GetBaseEntity())
 		}
 		cleanBaseCmd = Command in ::ChatTriggers
 							? Command
@@ -2951,7 +3086,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	}
 
 	if(target)
-		player.GetScriptScope().PS_ONETIME_TARGET <- target;
+		player.GetScriptScope().PS_ONETIME_TARGET <- Utils.GetEntityOrPlayer(target);
 
 	switch ( cleanBaseCmd )
 	{
@@ -4896,12 +5031,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 				if(target.GetNetProp("m_hTarget") != null && Entity(target.GetNetProp("m_hTarget")).GetEntityHandle() == parent.GetEntityHandle())
 				{
-					DoEntFire("!self","setparent","#"+parent.GetIndex(),0,null,target.GetBaseEntity());
 					if(value2 == "")
-					{
 						value2 = "forward"
-					}
-                    DoEntFire("!self","setparentattachmentmaintainoffset",value2,0.05,null,target.GetBaseEntity());
+
+					target.SetNetProp("m_pParent",parent.GetBaseEntity())
+					DoEntFire("!self", "setparentattachmentmaintainoffset", value2, 0, null, target.GetBaseEntity());
 					break;
 				}
 
@@ -4938,10 +5072,12 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 					Messages.ThrowPlayer(player,"Camera(#"+target.GetIndex()+") is already attached(to #"+target.GetParent().GetIndex()+")")
 					return
 				}
-				DoEntFire("!self","setparent","#"+parent.GetIndex(),0,null,target.GetBaseEntity());
-				if(value2 != "")
+				if(value2 == "")
+					DoEntFire("!self","setparent","#"+parent.GetIndex(),0,null,target.GetBaseEntity());
+				else
 				{
-					DoEntFire("!self","setparentattachmentmaintainoffset",value2,0.05,null,target.GetBaseEntity());
+					target.SetNetProp("m_pParent",parent.GetBaseEntity())
+					DoEntFire("!self", "setparentattachmentmaintainoffset", value2, 0, null, target.GetBaseEntity());
 				}
 			}
 			break;
@@ -5923,15 +6059,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		if(entclass == "player")
 			continue;
 
-		if(entmdl.find("*") != null)
-			continue;
+		if(ent.HasBadPhysicsModel())
+			continue
 		
-		if((entmdl.find("hybridphysx") != null)) // Animation props etc ignored
-			continue;
-
-		if((entmdl.find("skybox") != null)) // Skybox stuff
-			continue;
-
 		if(SessionState.MapName in ::GivePhysicsMapSpecificBans)
 		{ 
 		  if((ent.GetName() in ::GivePhysicsMapSpecificBans[SessionState.MapName].entities
@@ -6045,16 +6175,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		}
 		else if(!AdminSystem.Vars._grabAvailable[entclass])
 			return
-			
-		if(looked.GetModel().find("*") != null)
-			return;
-
-		if((looked.GetModel().find("hybridphysx") != null)) // Animation props etc ignored
-			return;
-
-		if((looked.GetModel().find("skybox") != null)) // Skybox stuff
-			return;
-			
+		
+		if(looked.HasBadPhysicsModel())
+			return
+		
 		::GivePhysicsToEntity(looked)
 	}
 	else if(rad == "all")
@@ -6088,15 +6212,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			if(entclass == "player")
 				continue;
 			
-			if(entmdl.find("*") != null)
-				continue;
+			if(ent.HasBadPhysicsModel())
+				continue
 			
-			if((entmdl.find("hybridphysx") != null)) // Animation props etc ignored
-				continue;
-
-			if((entmdl.find("skybox") != null)) // Skybox stuff
-				continue;
-				
 			if(SessionState.MapName in ::GivePhysicsMapSpecificBans)
 			{ 
 				if((ent.GetName() in ::GivePhysicsMapSpecificBans[SessionState.MapName].entities
@@ -6200,17 +6318,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			else if(!AdminSystem.Vars._grabAvailable[entclass])
 				continue
 			
-			local entmdl = ent.GetModel()
-			if(entmdl.find("*") != null)
-				continue;
-			
-			if((entmdl.find("hybridphysx") != null)) // Animation props etc ignored
-				continue;
-			
-			if((entmdl.find("skybox") != null)) // Skybox stuff
-				continue;
+			if(ent.HasBadPhysicsModel())
+				continue
 
-			if(!::CheckPhysicsAvailabilityForModel(entmdl,ent,GivePhysicsToEntity))
+			if(!::CheckPhysicsAvailabilityForModel(ent.GetModel(),ent,GivePhysicsToEntity))
 				continue
 
 			::GivePhysicsToEntity(ent)	
@@ -6336,20 +6447,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	}
 }
 
-::AdminSystem.GoRagdollCmd <- function(player,args)
+::StartRagdolling <- function(args)
 {
-	if(::VSLib.EasyLogic.NextMapContinues)
-		return;
-
-	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+player.GetIndex())
-	if(rag != null && rag.IsEntityValid())
-		return;
-	
-	if(RagdollStateCheck(player))
-		return;
+	local rag, player = args.player
 	
 	local idx = player.GetIndex();
-
 
 	local ang = QAngle(0,player.GetEyeAngles().Yaw(),0);
 	local org = player.GetOrigin();
@@ -6361,7 +6463,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
     local is_ragdoll_mdl = RagdollOrPhysicsDecider(player.GetModel()) == "prop_ragdoll"
 	if(is_ragdoll_mdl)
 	{
-		rag = Utils.SpawnRagdoll(mdl,org,ang,{spawnflags=32772}); // TO-DO: Find a way to do this without a secondary ragdoll
+		rag = Utils.SpawnRagdoll(mdl,org,ang,{spawnflags=32772});
 		rag.SetRenderMode(RENDER_NONE);
 	}
 	else
@@ -6395,11 +6497,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 	if(is_ragdoll_mdl)
 	{
-	    player.Input("setparent","#"+rag.GetIndex(),0.08)
+	    player.Input("setparent","#"+rag.GetIndex() + ",bleedout",0.09)
 		rag.GetScriptScope()["PS_OWNER_ORIGIN"] <- Vector(0,0,0)
 
 		player.SetRenderEffects(RENDERFX_RAGDOLL);
-	    player.Input("setparentattachment","bleedout",0.11)
 		rag.SetNetProp("m_CollisionGroup",2)
 		if(RagParams.useseq)
 		{
@@ -6469,14 +6570,41 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	::RagdollControls.Initialize(player,rag,is_ragdoll_mdl);
 }
 
+::AdminSystem.GoRagdollCmd <- function(player,args)
+{
+	if(::VSLib.EasyLogic.NextMapContinues)
+		return;
+
+	if(RagdollStateCheck(player))
+		return;
+
+	if("PS_RAGDOLL_PROCESSING_STATE" in player.GetScriptScope() 
+		&& player.GetScriptScope()["PS_RAGDOLL_PROCESSING_STATE"])
+		return
+
+    player.GetScriptScope()["PS_RAGDOLL_PROCESSING_STATE"] <- true
+
+	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+player.GetIndex())
+	if(rag != null && rag.IsEntityValid())
+		RecoverRagdollInitial(rag);
+	else
+		::StartRagdolling({player=player})
+    
+    // Prevent spam
+    player.Input("runscriptcode","self.GetScriptScope().PS_RAGDOLL_PROCESSING_STATE <- false",0.2)
+}
+
 ::AdminSystem.RecoverRagdollCmd <- function(player,args)
 {
-		
 	local rag = player.GetRagdollEntity()
 
 	if(rag == null)
 		return;
 	
+	if("PS_RAGDOLL_PROCESSING_STATE" in player.GetScriptScope() 
+		&& player.GetScriptScope()["PS_RAGDOLL_PROCESSING_STATE"])
+		return
+
 	RecoverRagdollInitial(rag);
 }
 
@@ -6573,7 +6701,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	
 	if(fileContents == null)
 	{
-		printl("[Bot-Params] Creating bot share/loot settings file for the first time...");
+		printR("[Bot-Params] Creating bot share/loot settings file for the first time...");
 		StringToFile(::Constants.Directories.BotSettings,::Constants.GetBotShareLootSettings());
 		fileContents = FileToString(::Constants.Directories.BotSettings);
 	}
@@ -7560,7 +7688,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	local filelist = FileToString(Constants.Directories.CustomVehicle);	// List of files
 	if(filelist == null)
 	{
-		printl("[Custom-Vehicle] Creating "+Constants.Directories.CustomVehicle+" for the first time...")
+		printR("[Custom-Vehicle] Creating "+Constants.Directories.CustomVehicle+" for the first time...")
 		StringToFile(Constants.Directories.CustomVehicle,strip(Constants.CustomVehicleListDefaults));
 		filelist = FileToString(Constants.Directories.CustomVehicle);
 	}
@@ -7568,7 +7696,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	local example = FileToString(Constants.Directories.CustomVehicleExample);	// Example v150
 	if(example == null)
 	{
-		printl("[Vehicle-Examples] Creating v1.6.0 examples in "+Constants.Directories.CustomVehicleExample+" for the first time...")
+		printR("[Vehicle-Examples] Creating v1.6.0 examples in "+Constants.Directories.CustomVehicleExample+" for the first time...")
 		StringToFile(Constants.Directories.CustomVehicleExample,strip(Constants.CustomVehicleDefaults.v1_6_0));
 		example = FileToString(Constants.Directories.CustomVehicleExample);
 	}
@@ -7581,7 +7709,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	// 	local ex = FileToString(pth);
 	// 	if(ex == null)
 	// 	{
-	// 		printl("[Binds-Examples] Creating "+count+" new examples from version "+vers+" in "+pth+" for the first time...")
+	// 		printR("[Binds-Examples] Creating "+count+" new examples from version "+vers+" in "+pth+" for the first time...")
 	// 		StringToFile(pth,Constants.CustomBindsTableDefaults[cleanvers]);
 	// 		ex = FileToString(pth);
 	// 	}
@@ -8670,6 +8798,7 @@ enum __
 {
 	local argtable = AdminSystem._meteor_shower_args;
 	local meteor = Ent("#"+met)
+	meteor.SetVelocity(Vector(0,0,0))
 
 	local prtc = null
 	local explosion = null
@@ -12240,7 +12369,7 @@ function ChatTriggers::out( player, args, text )
 	if(args.len() == 0)
 		return;
 
-	local res = compilestring("local __tempvar__="+text.slice(5)+";return __tempvar__;")();
+	local res = compilestring("local __tempvar__="+Utils.CombineArray(args," ")+";return __tempvar__;")();
 	::AdminSystem.out(res,player);
 }
 
@@ -13470,14 +13599,46 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 		return Target
 	}
 
-	ValidateLevel = function(player, lvlname, user = true)
+	ValidateLevel = function(player, lvlname, user = true, allow_alt = false)
 	{
 		if(Utils.GetIDFromArray(::UserLevelNames,lvlname) == -1)
 		{
-			::Printer(player,"Unknown user level: "+lvlname,"error");
-			return false
+			local valid = false
+			if(allow_alt)
+			{
+				switch(strip(lvlname.tolower()))
+				{
+					case "none":
+						lvlname = "PS_USER_NONE";
+						valid = true;
+						break;
+					case "basic": 
+						lvlname = "PS_USER_BASIC";
+						valid = true;
+						break;
+					case "admin": 
+						lvlname = "PS_USER_ADMIN";
+						valid = true;
+						break;
+					case "scripter": 
+						lvlname = "PS_USER_SCRIPTER";
+						valid = true;
+						break;
+					case "host": 
+						lvlname = "PS_USER_HOST";
+						valid = true;
+						break;
+				}
+			}
+
+			if(!valid)
+			{
+				::Printer(player,"Unknown user level: "+lvlname,"error");
+				return false
+			}
 		}
-		else if(user && lvlname == "PS_USER_HOST")
+		
+		if(user && lvlname == "PS_USER_HOST")
 		{
 			if(!player.HasPrivilege(PS_USER_HOST))
 				::Messages.ThrowPlayer(player,"Can't give host privilages to other players!")
@@ -13513,7 +13674,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 {	
 	local target, lvlname;
 	if(!(target = ::UserLevelUtils.GetValidateChangeTarget(player, GetArgument(1)))
-		|| !(lvlname = ::UserLevelUtils.ValidateLevel(player, GetArgument(2), false)))
+		|| !(lvlname = ::UserLevelUtils.ValidateLevel(player, GetArgument(2), false, true)))
 		return
 
 	::UserLevelUtils.Finalize(player, target, lvlname);
@@ -17354,7 +17515,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 				}
 				catch(e)
 				{
-					printl("[Defaults-Error] Formatting of spawn_angles.val in Tables.PropSpawn is wrong, using QAngle(0,0,0) instead...")
+					printR("[Defaults-Error] Formatting of spawn_angles.val in Tables.PropSpawn is wrong, using QAngle(0,0,0) instead...")
 				}
 				break;
 			}
@@ -17366,20 +17527,20 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 				}
 				catch(e)
 				{
-					printl("[Defaults-Error] Formatting of spawn_angles.val in Tables.PropSpawn is wrong, using QAngle(0,0,0) instead...")
+					printR("[Defaults-Error] Formatting of spawn_angles.val in Tables.PropSpawn is wrong, using QAngle(0,0,0) instead...")
 				}
 				break;
 			}
 			default:
 			{
-				printl("[Defaults-Error] Formatting of spawn_angles.val in Tables.PropSpawn is wrong, using QAngle(0,0,0) instead...")
+				printR("[Defaults-Error] Formatting of spawn_angles.val in Tables.PropSpawn is wrong, using QAngle(0,0,0) instead...")
 				break;
 			}
 		}
 	}
 	else if(typeof tbl.val != "QAngle")
 	{
-		printl("[Defaults-Error] Formatting of spawn_angles in Tables.PropSpawn is wrong, using QAngle(0,0,0) instead...")
+		printR("[Defaults-Error] Formatting of spawn_angles in Tables.PropSpawn is wrong, using QAngle(0,0,0) instead...")
 	}
 	else
 	{
@@ -22645,7 +22806,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 		point_clientcommand.Input("Kill","",delay.tofloat()+0.5);	// Kill it afterwards
 
 	if(report2host && !target_is_host)
-		printl("[Client-broadcast]Executing client command on "+client_character+"->"+command);	
+		printR("[Client-broadcast]Executing client command on "+client_character+"->"+command);	
 }
 
 /*
@@ -22677,7 +22838,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 		AdminSystem._Clientbroadcast(character,"echo ....^^^^^^^^^^^^^^^^^^^^...COMMAND OUTPUT ABOVE...^^^^^^^^^^^^^^^^^^^^....",1,!reporttohost,delay_end_msg);
 
 	if(reporttohost && msgtype!="debug" && !(Utils.GetPlayerFromName(character).GetSteamID() in ::AdminSystem.HostPlayer))
-		printl("[Broadcast] Printed to "+character+" ("+msgtype+"):"+message);
+		printR("[Broadcast] Printed to "+character+" ("+msgtype+"):"+message);
 }
 
 /*
@@ -22722,43 +22883,56 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 	}
 
 	// Line source is random
-	if(linesource == "random")
+	if(linesource == "!random" || linesource == "random")
 	{
 		linesource = Utils.GetRandValueFromArray(AdminSystem.Vars.CharacterNamesLower);
 		while(linesource == "" || linesource == "survivor")
 			linesource = Utils.GetRandValueFromArray(AdminSystem.Vars.CharacterNamesLower);
 	}
+	else if(linesource == "self" || linesource == "!self")
+		linesource = null
 
 	// Speaker selection
-	if(targetname == "random")
-	{	
-		targetname = Utils.GetRandValueFromArray(Players.AliveSurvivors()).GetCharacterNameLower();
-		speaker = Utils.GetPlayerFromName(targetname);
-	}
-	else if(targetname == "self")
+	switch(targetname)
 	{
-		targetname = name;
-		speaker = player;
-	}
-	else if(targetname == "picker")
-	{
-		targetname = player.GetLookingEntity(GRAB_YEET_TRACE_MASK);
+		case "!random":
+		case "random":
+		{	
+			targetname = Utils.GetRandValueFromArray(Players.AliveSurvivors()).GetCharacterNameLower();
+			speaker = Utils.GetPlayerFromName(targetname);
+			break;
+		}
+		case "!self":
+		case "self":
+		{
+			targetname = name;
+			speaker = player;
+			break;
+		}
+		case "!picker":
+		case "picker":
+		{
+			targetname = player.GetLookingEntity(GRAB_YEET_TRACE_MASK);
 
-		if(targetname == null){return;}
-		if(targetname.GetClassname() != "player"){return;}
-	
-		targetname = targetname.GetCharacterNameLower();
-		speaker = Utils.GetPlayerFromName(targetname);
-	}
-	else if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,targetname) == -1)
-	{
-		Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(GetArgument(1)));
-		::SpellChecker.Levenshtein(3,3,"character name").PrintBestMatches(player.GetBaseEntity(),GetArgument(1),Utils.ArrayToTable(AdminSystem.Vars.CharacterNamesLower.slice(0,8)))
-		return;
-	}
-	else
-	{
-		speaker = Player("!"+targetname);
+			if(targetname == null){return;}
+			if(targetname.GetClassname() != "player"){return;}
+		
+			targetname = targetname.GetCharacterNameLower();
+			speaker = Utils.GetPlayerFromName(targetname);
+			break;
+		}
+		default:
+		{
+			if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,targetname) == -1)
+			{
+				Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(GetArgument(1)));
+				::SpellChecker.Levenshtein(3,3,"character name").PrintBestMatches(player.GetBaseEntity(),GetArgument(1),Utils.ArrayToTable(AdminSystem.Vars.CharacterNamesLower.slice(0,8)))
+				return;
+			}
+			else
+				speaker = Player("!"+targetname);
+			break;
+		}
 	}
 
 	if(speaker==null)
@@ -23261,7 +23435,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 
 	local entclass = ent.GetClassname();
 
-	if(entclass == "player")
+	if(entclass == "player" || entclass == "witch")
 		return;
 	// Not in table, in the table but disabled
 	if(!(entclass in AdminSystem.Vars._grabAvailable))
@@ -23273,14 +23447,8 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 	else if(!AdminSystem.Vars._grabAvailable[entclass])
 		return
 
-	if(ent.GetModel().find("*") != null)
-		return;
-
-	if((ent.GetModel().find("hybridphysx") != null))
-		return;
-
-	if((ent.GetModel().find("skybox") != null)) // Skybox stuff
-		return;
+	if(ent.HasBadPhysicsModel())
+		return
 
 	local ind = ent.GetIndex();
 
@@ -23306,10 +23474,10 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 	//ent.SetForwardVector(player.GetForwardVector());
 	
 	ent.SetNetProp("m_CollisionGroup",1);
-	ent.Input("setparent","#"+player.GetIndex(),0);
+	ent.SetNetProp("m_pParent",player.GetBaseEntity())	// Hack
+	DoEntFire("!self", "setparentattachmentmaintainoffset", pos, 0, null, ent.GetBaseEntity());
 	ent.SetOrigin(player.GetEyePosition()+vec+survivorfw);
 	ent.SetAngles(RotateOrientation(player.GetEyeAngles(),QAngle(HatParameters.pitch,HatParameters.yaw,HatParameters.roll)))	
-	ent.Input("setparentattachmentmaintainoffset",pos,0.1);
 }
 
 ::HatParameters <- 
@@ -23422,15 +23590,9 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 				}
 				else if(!AdminSystem.Vars._grabAvailable[entclass])
 					continue
-					
-				if(entmodel.find("*") != null)
-					continue;
-
-				if((entmodel.find("hybridphysx") != null)) // Animation props etc ignored
-					continue;
 				
-				if((entmodel.find("skybox") != null)) // Skybox stuff
-					continue;
+				if(obj.HasBadPhysicsModel())
+					continue
 
 				entind = obj.GetIndex().tostring();
 
@@ -23512,15 +23674,9 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 		}
 		else if(!AdminSystem.Vars._grabAvailable[entclass])
 			return
-			
-		if(ent.GetModel().find("*") != null)
-			return;
 		
-		if((ent.GetModel().find("hybridphysx") != null))
-			return;
-
-		if((ent.GetModel().find("skybox") != null)) // Skybox stuff
-			return;
+		if(ent.HasBadPhysicsModel())
+			return	
 
 		entind = ent.GetIndex().tostring();
 	}
@@ -23562,10 +23718,10 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 			ent.SetOrigin(Vector(entpos.x+fwvec.x,entpos.y+fwvec.y,entpos.z+fwvec.z));
 
 		}
-
-		player.AttachOther(ent,false,0,null);
-		player.SetAttachmentPoint(ent,tbl_heldEnt.grabAttachPos,true,0.035);
-		
+        
+        // Hack: Helps getting rid of delay
+        ent.SetNetProp("m_pParent",player.GetBaseEntity())
+		DoEntFire("!self", "setparentattachmentmaintainoffset", tbl_heldEnt.grabAttachPos, 0, null, ent.GetBaseEntity());
 		AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = entind;
 	}
 	
@@ -23664,7 +23820,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 	if(entclass == "player")
 	{
 		ent.SetMoveType(MOVETYPE_WALK);
-		ent.Input("RunScriptCode",func+"(Entity("+ent.GetIndex()+")"+extra_arg+")",0);
+		ent.Input("RunScriptCode",func+"(Entity("+ent.GetIndex()+")"+extra_arg+")",0.033);
 	}
 	else if(entclass.find("weapon_") != null) // a weapon spawner or a weapon
 	{
@@ -23674,7 +23830,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 			{
 				ent.SetSpawnFlags(ent.GetSpawnFlags()-1);
 			}
-			ent.Input("RunScriptCode",func+"(Entity("+ent.GetIndex()+")"+extra_arg+")",0);
+			ent.Input("RunScriptCode",func+"(Entity("+ent.GetIndex()+")"+extra_arg+")",0.033);
 		}
 	}
 	else if(entclass.find("physics") != null || entclass in ::_LetGoDropYeetSpecialClasses) // physics entity
@@ -23695,7 +23851,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 			ent.Input("EnableMotion","",0);
 			ent.SetEffects(effects);
 		}
-		ent.Input("RunScriptCode",func+"(Entity("+ent.GetIndex()+")"+extra_arg+")",0);
+		ent.Input("RunScriptCode",func+"(Entity("+ent.GetIndex()+")"+extra_arg+")",0.033);
 	}
 	else // non physics, try creating entity with its model
 	{
@@ -23719,7 +23875,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 			local color = ent.GetNetProp("m_clrRender");
 			local scale = ent.GetModelScale();
 			RecreateHierarchy(ent,new_ent,{color=color,skin=skin,scale=scale,name=ent.GetName()});
-			new_ent.Input("RunScriptCode",func+"(Entity("+new_ent.GetIndex()+")"+extra_arg+")",0);
+			new_ent.Input("RunScriptCode",func+"(Entity("+new_ent.GetIndex()+")"+extra_arg+")",0.033);
 		}
 		else
 		{
@@ -23752,7 +23908,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 								local color = ent.GetNetProp("m_clrRender");
 								local scale = ent.GetModelScale();
 								RecreateHierarchy(ent,new_ent,{color=color,skin=skin,scale=scale,name=ent.GetName()});
-								new_ent.Input("RunScriptCode",func+"(Entity("+new_ent.GetIndex()+")"+extra_arg+")",0);
+								new_ent.Input("RunScriptCode",func+"(Entity("+new_ent.GetIndex()+")"+extra_arg+")",0.033);
 								Printer(Player("!"+name),CmdMessages.Prop.Success("physicsM",new_ent));
 								ent.Kill()
 							}
@@ -23889,7 +24045,14 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 
 ::_dropit <- function(ent)
 {
-	local movetype = ent.GetClassname() == "player" ? MOVETYPE_WALK : MOVETYPE_VPHYSICS
+	local movetype;
+	switch(ent.GetClassname()) 
+	{
+		case "player": movetype = MOVETYPE_WALK; break;
+		case "witch": movetype = MOVETYPE_ZOMBIE_DEFAULT; break;
+		default: movetype = MOVETYPE_VPHYSICS; break;
+	} 
+
 	local a=ent.GetOrigin();
 	if(ent.GetBaseEntity() != null && "ResetSequence" in ent.GetBaseEntity())
 	{
@@ -24494,15 +24657,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 	if(entcls.find("_spawn") != null)
 		return false
 		
-	local entmdl = ent.GetModel().tolower();
-
-	if(entmdl.find("*") != null)
-		return false
-
-	if(entmdl.find("hybridphysx") != null)
-		return false
-
-	if((entmdl.find("skybox") != null)) // Skybox stuff
+	if(ent.HasBadPhysicsModel())
 		return false
 
 	if(SessionState.MapName in ::ZeroGMapSpecificBans
@@ -24514,7 +24669,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 			)
 			||
 			(
-				entmdl in ::ZeroGMapSpecificBans[SessionState.MapName].models 
+				ent.GetModel().tolower() in ::ZeroGMapSpecificBans[SessionState.MapName].models 
 			)
 		  )
 		)

@@ -4,6 +4,34 @@
 
 printl( "Initializing Director's script" );
 
+/* Mix red and blue colors for a better looking console message
+ * @authors rhino
+ * @param msg <string> : Message to colored print red and blue in host's console
+ * 		Expected format: [category] message
+ *			Output: {]}(BLUE) {category}(RED) {> message}(BLUE)
+ *		If format not matched: 
+ *			Output: {>>> }(RED) {message}(BLUE)
+*/
+::printR <- function(msg)
+{
+	local match = regexp(@"\[(.*)](?:.*)").search(msg)
+	if(match && match.begin == 0)
+	{
+		msg = strip(msg.slice(1))
+		local cat = msg.slice(0, msg.find("]"))
+		msg = strip(msg.slice(msg.find("]") + 1))
+		Msg("] ")
+		error(cat)
+		Msg(" > ")
+		printl(msg);
+	}
+	else
+	{
+		error(">>> ")
+		printl(msg)
+	}
+}
+
 // Include the Admin System
 IncludeScript( "admin_system" );
 

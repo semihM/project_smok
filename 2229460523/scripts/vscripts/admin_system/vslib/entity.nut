@@ -310,6 +310,7 @@ getconsttable()["MOVETYPE_NOCLIP"] <- 8;		/**< No gravity, no collisions, still 
 getconsttable()["MOVETYPE_LADDER"] <- 9;		/**< Used by players only when going onto a ladder */
 getconsttable()["MOVETYPE_OBSERVER"] <- 9;		/**< Observer movement, depends on player's observer mode */
 getconsttable()["MOVETYPE_CUSTOM"] <- 10;		/**< Allows the entity to describe its own physics */
+getconsttable()["MOVETYPE_ZOMBIE_DEFAULT"] <- 11;		/** Commons' and Witch's movetype */
 
 // Flags to be used with the m_fFlags network property values
 getconsttable()["FL_ONGROUND"] <- (1 << 0);		/**< At rest / on the ground */
@@ -3373,7 +3374,7 @@ function VSLib::Entity::GetEyePosition()
  *
  * @authors shotgunefx, added optional track mask
  */
-function VSLib::Entity::GetLookingEntity(mask = 33579137)
+function VSLib::Entity::GetLookingEntity(mask = 33579137, skip_onetime_target = false)
 {
 	if (!IsEntityValid())
 	{
@@ -3381,7 +3382,7 @@ function VSLib::Entity::GetLookingEntity(mask = 33579137)
 		return;
 	}
 	
-	if("PS_ONETIME_TARGET" in GetScriptScope() && GetScriptScope().PS_ONETIME_TARGET != null && GetScriptScope().PS_ONETIME_TARGET.IsEntityValid())
+	if(!skip_onetime_target && "PS_ONETIME_TARGET" in GetScriptScope() && GetScriptScope().PS_ONETIME_TARGET != null && GetScriptScope().PS_ONETIME_TARGET.IsEntityValid())
 	{
 		return GetScriptScope().PS_ONETIME_TARGET
 	}
@@ -4752,8 +4753,8 @@ function VSLib::Entity::HasBadPhysicsModel()
 	local mdl = GetModel()
 	return ( mdl == null
 			|| mdl.find("*") != null) 
-			|| (mdl.find("hybridphysx") != null)
-			|| (mdl.find("skybox") != null)
+			|| mdl.find("hybridphysx") != null
+			|| mdl.find("skybox") != null
 }
 
 /*

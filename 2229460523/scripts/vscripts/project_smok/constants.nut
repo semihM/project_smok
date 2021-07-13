@@ -5,8 +5,8 @@
 {
 	Version = 
 	{
-		Number = "v2.0.4"
-		Date = "09.07.2021"
+		Number = "v2.1.0"
+		Date = "13.07.2021"
 		Source = "https://github.com/semihM/project_smok"
 	}
 
@@ -14,6 +14,7 @@
 	{
 		"v1.1.0" : 1
 		"v2.0.0" : 1
+		"v2.1.0" : 1
 	}
 
 	EntityGroupsExampleVersions =
@@ -683,6 +684,96 @@
 		MinimumUserLevel = PS_USER_ADMIN	// Admins, scripters, host allowed
 	}
 }"
+
+v2_1_0 = @"// Examples present in this file includes new features introduced in v2.1.0
+// For detailed documentation check out: https://github.com/semihM/project_smok#user-content-using-aliases
+//
+// What's new ?
+//		- specific_target key for command tables to override aimed object returned by 'GetLookingEntity' method.
+//			+ This key expects a targetname, a valid reference to a valid object as a string value
+//			+ This key accepts expressional values and gets re-evaluated before every call
+//			> Example(Make the command act like you are aiming at yourself): 
+//					specific_target = ""self""
+//			> Example(Change target between 'bill' and 'francis' depending on repeat #):
+//					specific_target = ""$[($repeat_id % 2) ? \""bill\"" : \""francis\""]""
+//
+//		- $specific_target parameter for access to the target specified by specific_target
+//			+ This can be used alongside $caller_target to check if player is aiming at a specific target
+//			> Example(Use ""yep"" or ""nope"" result decided by wheter you're aiming at specific_target):
+//					arg_1 = ""$[$specific_target == $caller_target ? : \""yep\"" : \""nope\""]""
+// --------------------------------------------------
+// Example: test_alias_1 alias only usable for host, test_alias_2 alias usable for anyone; test_alias_3 usable for admins, scripters, host
+{
+	specific_targeted_alias_1 =
+	{
+		MinimumUserLevel = PS_USER_SCRIPTER
+		Help =
+		{
+			docs = ""Give yourself rainbow effect for 20 seconds""
+		}
+		Commands = 
+		{
+			rainbow = 
+			{
+				specific_target = ""self""
+
+				arg_1 = ""20""
+			}
+		}
+	}
+
+	specific_targeted_alias_2 =
+	{
+		MinimumUserLevel = PS_USER_SCRIPTER
+		Help =
+		{
+			docs = ""Make bill and francis speak random lines in order with delays""
+		}
+		Commands = 
+		{
+			randomline = 	// This is just to show how it works, same thing can be done without specific_target
+			{
+				// Repeat 5 times
+				repeat = 5
+				// Set speaking targets: francis, bill, francis, bill, francis
+				specific_target = ""$[($repeat_id % 2 == 0) ? \""bill\"" : \""francis\""]""
+				// Delay between 2.5 and 4 seconds random
+				delay_between = ""$[RandomFloat(2.5, 4)]""
+
+				// Check specific_target's existance, use caller as backup
+				arg_1 = ""$[$specific_target ? $specific_target.GetCharacterNameLower() : \""self\""]""
+				// Line source: speaker's self
+				arg_2 = ""self""
+			}
+		}
+	}
+	
+	specific_targeted_alias_3 =
+	{
+		MinimumUserLevel = PS_USER_SCRIPTER
+		Help =
+		{
+			docs = ""Give pain pills if your HP is under 30""
+			param_1 = ""Item to give""
+		}
+		Parameters =
+		{
+			param_1 = ""pain_pills""
+		}
+		Commands = 
+		{
+			give =
+			{
+				// Skip if HP is above 30
+				skip_expression = ""$[$caller_ent.GetHealth() > 30]""
+				// Set target to $caller_char character name
+				arg_1 = ""$caller_char""
+				// Set item name to $param_1 item name
+				arg_2 = ""$param_1""
+			}
+		}
+	}
+}"
 }
 
 ::Constants.CustomPropsListDefaults <-
@@ -893,6 +984,8 @@ ExampleGnome =
 						Messages.WarnPlayer(player," Minimum user level is unknown! Allowing it's use for everyone");
 						lvl = PS_USER_NONE
 					}
+					else
+						lvl = tbl.MinimumUserLevel
 				}
 			}
 			tbl.MinimumUserLevel <- lvl
@@ -909,13 +1002,13 @@ ExampleGnome =
 	{
 		tbl = compilestring("local __tempvar__="+strip(fileContents)+";return __tempvar__;")()
 	}
-	catch(e){printl("[Alias-Compile-Error] Failed to compile "+filename+". Error: "+e)}
+	catch(e){printR("[Alias-Compile-Error] Failed to compile "+filename+". Error: "+e)}
 
 	if(tbl == null || typeof tbl != "table")
 	{
 		local badformat = filename.slice(0,filename.find(".txt"))+"_bad_format.txt";
-		printl("[Alias-Error] "+filename+" was formatted incorrectly, check {} and \"\" characters!")
-		printl("[Alias-Error] Keeping incorrectly formatted file named as "+badformat+" and replacing it with the v1.0.0 examples...")
+		printR("[Alias-Error] "+filename+" was formatted incorrectly, check {} and \"\" characters!")
+		printR("[Alias-Error] Keeping incorrectly formatted file named as "+badformat+" and replacing it with the v1.0.0 examples...")
 
 		StringToFile(badformat,fileContents);
 
@@ -931,7 +1024,7 @@ ExampleGnome =
 			local deletes = []
 			local issuesfound = false
 			if(first)
-				printl("[Alias-Checks] Doing alias table checks...")
+				printR("[Alias-Checks] Doing alias table checks...")
 
 			foreach(als,valtbl in tbl)
 			{
@@ -946,7 +1039,7 @@ ExampleGnome =
 					}
 					else
 					{
-						printl("[Alias-Duplicate] "+als+" is already created! Consider removing the duplicate one.")
+						printR("[Alias-Duplicate] "+als+" is already created! Consider removing the duplicate one.")
 						deletes.append(als)
 						issuesfound = true
 						continue;
@@ -1033,6 +1126,8 @@ ExampleGnome =
 							printl("\t["+als+"-Error] Minimum user level is unknown! Allowing it's use for everyone");
 							lvl = PS_USER_NONE
 						}
+						else
+							lvl = valtbl.MinimumUserLevel
 					}
 				}
 				tbl[als].MinimumUserLevel <- lvl
@@ -1043,16 +1138,16 @@ ExampleGnome =
 			}
 			
 			if(issuesfound)
-				printl("[Alias-Checks] Applied fixes to current session, consider checking "+filename+" file to correct the mistakes.")
+				printR("[Alias-Checks] Applied fixes to current session, consider checking "+filename+" file to correct the mistakes.")
 			else
-				printl("[Alias-Checks] No issues found for "+filename)
+				printR("[Alias-Checks] No issues found for "+filename)
 			
 			if(news.len() > 0)
 			{	
 				if(reload)
-					printl("[Alias-Table] New aliases after reloading "+filename+" ("+news.len()+"):")
+					printR("[Alias-Table] New aliases after reloading "+filename+" ("+news.len()+"):")
 				else
-					printl("[Alias-Table] Aliases loaded from "+filename+" ("+news.len()+"):")
+					printR("[Alias-Table] Aliases loaded from "+filename+" ("+news.len()+"):")
 
 				foreach(al,vl in news)
 				{
@@ -1062,9 +1157,9 @@ ExampleGnome =
 			else 
 			{
 				if(reload)
-					printl("[Alias-Table] No new valid aliases were loaded from "+filename)
+					printR("[Alias-Table] No new valid aliases were loaded from "+filename)
 				else
-					printl("[Alias-Table] No valid aliases were loaded from "+filename)
+					printR("[Alias-Table] No valid aliases were loaded from "+filename)
 			}
 
 		}
@@ -1080,13 +1175,13 @@ ExampleGnome =
 	{
 		tbl = compilestring("local __tempvar__=\n{"+strip(fileContents)+"\n}\n;return __tempvar__;")()
 	}
-	catch(e){printl("[Entity_Group-Compile-Error] Failed to compile "+filename+". Error: "+e)}
+	catch(e){printR("[Entity_Group-Compile-Error] Failed to compile "+filename+". Error: "+e)}
 
 	if(tbl == null || typeof tbl != "table")
 	{
 		local badformat = filename.slice(0,filename.find(".nut"))+"_bad_format.nut";
-		printl("[Entity_Group-Error] "+filename+" was formatted incorrectly, check {} and \"\" characters!")
-		printl("[Entity_Group-Error] Keeping incorrectly formatted file named as "+badformat+" and replacing it with the v1.4.0 examples...")
+		printR("[Entity_Group-Error] "+filename+" was formatted incorrectly, check {} and \"\" characters!")
+		printR("[Entity_Group-Error] Keeping incorrectly formatted file named as "+badformat+" and replacing it with the v1.4.0 examples...")
 
 		StringToFile(badformat,fileContents);
 
@@ -1101,31 +1196,31 @@ ExampleGnome =
 		{	
 			local deletes = []
 			if(first)
-				printl("[Entity_Group-Checks] Doing entity group table checks...")
+				printR("[Entity_Group-Checks] Doing entity group table checks...")
 
 			foreach(EG_name,main_tbl in tbl)
 			{
 				if(!("GetPrecacheList" in main_tbl))
 				{
-					printl("[Entity_Group-Error] GetPrecacheList is missing in "+EG_name+" group... skipping")
+					printR("[Entity_Group-Error] GetPrecacheList is missing in "+EG_name+" group... skipping")
 					deletes.append(EG_name)
 					continue;
 				}
 				if(!("GetSpawnList" in main_tbl))
 				{
-					printl("[Entity_Group-Error] GetSpawnList is missing in "+EG_name+" group... skipping")
+					printR("[Entity_Group-Error] GetSpawnList is missing in "+EG_name+" group... skipping")
 					deletes.append(EG_name)
 					continue;
 				}
 				if(!("GetEntityGroup" in main_tbl))
 				{
-					printl("[Entity_Group-Error] GetEntityGroup is missing in "+EG_name+" group... skipping")
+					printR("[Entity_Group-Error] GetEntityGroup is missing in "+EG_name+" group... skipping")
 					deletes.append(EG_name)
 					continue;
 				}
 				if(!("EntityGroup" in main_tbl))
 				{
-					printl("[Entity_Group-Error] EntityGroup is missing in "+EG_name+" group... skipping")
+					printR("[Entity_Group-Error] EntityGroup is missing in "+EG_name+" group... skipping")
 					deletes.append(EG_name)
 					continue;
 				}
@@ -1133,7 +1228,7 @@ ExampleGnome =
 				{
 					if(!("SpawnTables" in main_tbl.EntityGroup))
 					{
-						printl("[Entity_Group-Error] EntityGroup.SpawnTables is missing in "+EG_name+" group... skipping")
+						printR("[Entity_Group-Error] EntityGroup.SpawnTables is missing in "+EG_name+" group... skipping")
 						deletes.append(EG_name)
 						continue;
 					}
@@ -1159,7 +1254,7 @@ ExampleGnome =
 
 					if(g_MapScript.GetEntityGroup( EG_name ) == null)
 					{
-						printl("[Entity_Group-Error] Failed to register "+EG_name)
+						printR("[Entity_Group-Error] Failed to register "+EG_name)
 						deletes.append(EG_name)
 						delete news[EG_name]
 					}
@@ -1177,9 +1272,9 @@ ExampleGnome =
 			if(news.len() > 0)
 			{	
 				if(reload)
-					printl("[Entity_Group-Table] New aliases after reloading "+filename+" ("+news.len()+"):")
+					printR("[Entity_Group-Table] New aliases after reloading "+filename+" ("+news.len()+"):")
 				else
-					printl("[Entity_Group-Table] Entity groups registered from "+filename+" ("+news.len()+"):")
+					printR("[Entity_Group-Table] Entity groups registered from "+filename+" ("+news.len()+"):")
 
 				foreach(al,vl in news)
 				{
@@ -1189,9 +1284,9 @@ ExampleGnome =
 			else 
 			{
 				if(reload)
-					printl("[Entity_Group-Table] No new valid entity groups were loaded from "+filename)
+					printR("[Entity_Group-Table] No new valid entity groups were loaded from "+filename)
 				else
-					printl("[Entity_Group-Table] No valid entity groups were registered from "+filename)
+					printR("[Entity_Group-Table] No valid entity groups were registered from "+filename)
 			}
 
 		}
@@ -1354,13 +1449,13 @@ command_name_2 //Take notes by adding // after the command name if needed"
 	{
 		tbl = compilestring("local __tempvar__=\n{"+strip(fileContents)+"\n}\n;return __tempvar__;")()
 	}
-	catch(e){printl("[Binds-Compile-Error] Failed to compile "+filename+". Error: "+e)}
+	catch(e){printR("[Binds-Compile-Error] Failed to compile "+filename+". Error: "+e)}
 
 	if(tbl == null || typeof tbl != "table")
 	{
 		local badformat = filename.slice(0,filename.find(".nut"))+"_bad_format.nut";
-		printl("[Binds-Error] "+filename+" was formatted incorrectly, check {} and \"\" characters!")
-		printl("[Binds-Error] Keeping incorrectly formatted file named as "+badformat+" and replacing it with the v1.5.0 examples...")
+		printR("[Binds-Error] "+filename+" was formatted incorrectly, check {} and \"\" characters!")
+		printR("[Binds-Error] Keeping incorrectly formatted file named as "+badformat+" and replacing it with the v1.5.0 examples...")
 
 		StringToFile(badformat,fileContents);
 
@@ -1374,7 +1469,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 		if(tbl.len() != 0)
 		{	
 			if(first)
-				printl("[Binds-Checks] Doing bind table checks...")
+				printR("[Binds-Checks] Doing bind table checks...")
 
 			foreach(steamID,keystbl in Utils.TableCopy(tbl))
 			{
@@ -1389,7 +1484,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 						{
 							if(!("BUTTON_"+key in getconsttable()))
 							{
-								printl("[Binds-Key-Error] Key name "+key+" is unknown... skipping")
+								printR("[Binds-Key-Error] Key name "+key+" is unknown... skipping")
 								valid = false
 								break;
 							}
@@ -1406,7 +1501,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 					}
 					else if(!("BUTTON_"+keyname in getconsttable()))
 					{
-						printl("[Binds-Key-Error] Key name "+keyname+" is unknown... skipping")
+						printR("[Binds-Key-Error] Key name "+keyname+" is unknown... skipping")
 						delete tbl[steamID][keyname]
 						continue
 					}
@@ -1425,7 +1520,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 							local func_real_name = funcname.slice(1) 
 							if(!(func_real_name in ::ChatTriggers))
 							{
-								printl("[Binds-Command-Error] Command name "+func_real_name+" is unknown... skipping")
+								printR("[Binds-Command-Error] Command name "+func_real_name+" is unknown... skipping")
 								delete tbl[steamID][keyname][funcname]
 								continue
 							}
@@ -1433,23 +1528,23 @@ command_name_2 //Take notes by adding // after the command name if needed"
 							{
 								if(!("Usage" in deftbl))
 								{
-									printl("[Binds-Command-Warning] Command usage for "+func_real_name+" is unknown... using PS_WHEN_PRESSED")
+									printR("[Binds-Command-Warning] Command usage for "+func_real_name+" is unknown... using PS_WHEN_PRESSED")
 									tbl[steamID][keyname][funcname].Usage <- PS_WHEN_PRESSED
 								}
 								else if(typeof deftbl.Usage != "integer")
 								{
-									printl("[Binds-Command-Warning] Command usage for "+func_real_name+" is not a known constant! Using PS_WHEN_PRESSED instead...")
+									printR("[Binds-Command-Warning] Command usage for "+func_real_name+" is not a known constant! Using PS_WHEN_PRESSED instead...")
 									tbl[steamID][keyname][funcname].Usage = PS_WHEN_PRESSED
 								}
 
 								if(!("Arguments" in deftbl))
 								{
-									printl("[Binds-Command-Warning] Command arguments table for "+func_real_name+" is unknown... using empty arguments table")
+									printR("[Binds-Command-Warning] Command arguments table for "+func_real_name+" is unknown... using empty arguments table")
 									tbl[steamID][keyname][funcname].Arguments <- {}
 								}
 								else if(typeof deftbl.Arguments != "table")
 								{
-									printl("[Binds-Command-Warning] Command arguments table for "+func_real_name+" is not a table! Using empty arguments table instead...")
+									printR("[Binds-Command-Warning] Command arguments table for "+func_real_name+" is not a table! Using empty arguments table instead...")
 									tbl[steamID][keyname][funcname].Arguments = {}
 								}
 
@@ -1460,23 +1555,23 @@ command_name_2 //Take notes by adding // after the command name if needed"
 						{
 							if(!("Usage" in deftbl))
 							{
-								printl("[Binds-Function-Warning] Function usage for "+funcname+" is unknown... using PS_WHEN_PRESSED")
+								printR("[Binds-Function-Warning] Function usage for "+funcname+" is unknown... using PS_WHEN_PRESSED")
 								tbl[steamID][keyname][funcname].Usage <- PS_WHEN_PRESSED
 							}
 							else if(typeof deftbl.Usage != "integer")
 							{
-								printl("[Binds-Function-Warning] Function usage for "+funcname+" is not a known constant! Using PS_WHEN_PRESSED instead...")
+								printR("[Binds-Function-Warning] Function usage for "+funcname+" is not a known constant! Using PS_WHEN_PRESSED instead...")
 								tbl[steamID][keyname][funcname].Usage = PS_WHEN_PRESSED
 							}
 
 							if(!("Function" in deftbl))
 							{
-								printl("[Binds-Function-Error] Function key for "+funcname+" is unknown... skipping the function")
+								printR("[Binds-Function-Error] Function key for "+funcname+" is unknown... skipping the function")
 								delete tbl[steamID][keyname][funcname]
 							}
 							else if(typeof deftbl.Function != "function")
 							{
-								printl("[Binds-Function-Error] Function key for "+funcname+" is not a function! Skipping it...")
+								printR("[Binds-Function-Error] Function key for "+funcname+" is not a function! Skipping it...")
 								delete tbl[steamID][keyname][funcname]
 							}
 						}
@@ -1505,9 +1600,9 @@ command_name_2 //Take notes by adding // after the command name if needed"
 			if(news.len() > 0)
 			{	
 				if(reload)
-					printl("[Binds-Table] New binds after reloading "+filename+":")
+					printR("[Binds-Table] New binds after reloading "+filename+":")
 				else
-					printl("[Binds-Table] Valid binds found in "+filename+":")
+					printR("[Binds-Table] Valid binds found in "+filename+":")
 
 				foreach(steamid,keyns in news)
 				{
@@ -1525,9 +1620,9 @@ command_name_2 //Take notes by adding // after the command name if needed"
 			else 
 			{
 				if(reload)
-					printl("[Binds-Table] No new valid binds were loaded from "+filename)
+					printR("[Binds-Table] No new valid binds were loaded from "+filename)
 				else
-					printl("[Binds-Table] No valid binds were registered from "+filename)
+					printR("[Binds-Table] No valid binds were registered from "+filename)
 			}
 
 		}
@@ -1623,13 +1718,13 @@ command_name_2 //Take notes by adding // after the command name if needed"
 	{
 		tbl = compilestring("local __tempvar__=\n{"+strip(fileContents)+"\n}\n;return __tempvar__;")()
 	}
-	catch(e){printl("[Vehicle-Compile-Error] Failed to compile "+filename+". Error: "+e)}
+	catch(e){printR("[Vehicle-Compile-Error] Failed to compile "+filename+". Error: "+e)}
 
 	if(tbl == null || typeof tbl != "table")
 	{
 		local badformat = filename.slice(0,filename.find(".txt"))+"_bad_format.txt";
-		printl("[Vehicle-Error] "+filename+" was formatted incorrectly, check {} and \"\" characters!")
-		printl("[Vehicle-Error] Keeping incorrectly formatted file named as "+badformat+" and replacing it with the v1.5.0 examples...")
+		printR("[Vehicle-Error] "+filename+" was formatted incorrectly, check {} and \"\" characters!")
+		printR("[Vehicle-Error] Keeping incorrectly formatted file named as "+badformat+" and replacing it with the v1.5.0 examples...")
 
 		StringToFile(badformat,fileContents);
 
@@ -1643,7 +1738,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 		if(tbl.len() != 0)
 		{	
 			if(first)
-				printl("[Vehicle-Checks] Doing vehicle table checks...")
+				printR("[Vehicle-Checks] Doing vehicle table checks...")
 
 			foreach(vehicle_name,v_tbl in Utils.TableCopy(tbl))
 			{
@@ -1651,36 +1746,36 @@ command_name_2 //Take notes by adding // after the command name if needed"
 
 				if(!("MDL" in v_tbl))
 				{
-					printl("[Vehicle-Command-Error] Vehicle "+vehicle_name+" needs a model... skipping the table")
+					printR("[Vehicle-Command-Error] Vehicle "+vehicle_name+" needs a model... skipping the table")
 					delete tbl[vehicle_name]
 					continue
 				}
 				else if(typeof v_tbl.MDL != "string")
 				{
-					printl("[Vehicle-Command-Error] Vehicle "+vehicle_name+" has a non-string model... skipping the table")
+					printR("[Vehicle-Command-Error] Vehicle "+vehicle_name+" has a non-string model... skipping the table")
 					delete tbl[vehicle_name]
 					continue
 				}
 				if(("driver_origin" in v_tbl) && typeof v_tbl.driver_origin != "Vector")
 				{
-					printl("[Vehicle-Command-Warning] Vehicle "+vehicle_name+" has a non-vector driver origin... not using it")
+					printR("[Vehicle-Command-Warning] Vehicle "+vehicle_name+" has a non-vector driver origin... not using it")
 					delete tbl[vehicle_name].driver_origin
 				}
 
 				if(("getting_out_point" in v_tbl) && typeof v_tbl.getting_out_point != "Vector")
 				{
-					printl("[Vehicle-Command-Warning] Vehicle "+vehicle_name+" has a non-vector getting out point... not using it")
+					printR("[Vehicle-Command-Warning] Vehicle "+vehicle_name+" has a non-vector getting out point... not using it")
 					delete tbl[vehicle_name].getting_out_point
 				}
 
 				if(!("parameters" in v_tbl))
 				{
-					printl("[Vehicle-Parameters-Warning] Driving parameters for "+vehicle_name+" is unknown... using default parameters")
+					printR("[Vehicle-Parameters-Warning] Driving parameters for "+vehicle_name+" is unknown... using default parameters")
 					tbl[vehicle_name].parameters <- ::DefaultDrivingParameters()
 				}
 				else if(typeof v_tbl.parameters != "table")
 				{
-					printl("[Vehicle-Parameters-Warning] Driving parameters for "+vehicle_name+" is not a table... using default parameters")
+					printR("[Vehicle-Parameters-Warning] Driving parameters for "+vehicle_name+" is not a table... using default parameters")
 					tbl[vehicle_name].parameters <- ::DefaultDrivingParameters()
 				}
 				else
@@ -1691,12 +1786,12 @@ command_name_2 //Take notes by adding // after the command name if needed"
 					{
 						if(!(key in tblparams))
 						{
-							printl("[Vehicle-Parameters-Warning] Driving parameter "+key+" is missing for "+vehicle_name+". Using default value "+val)
+							printR("[Vehicle-Parameters-Warning] Driving parameter "+key+" is missing for "+vehicle_name+". Using default value "+val)
 							tbl[vehicle_name].parameters[key] <- val
 						}
 						else if(!ValidateSimilarTyp(tblparams,defaults,key))
 						{
-							printl("[Vehicle-Parameters-Warning] Driving parameter "+key+" is not the right type for "+vehicle_name+". Using default value "+val)
+							printR("[Vehicle-Parameters-Warning] Driving parameter "+key+" is not the right type for "+vehicle_name+". Using default value "+val)
 							tbl[vehicle_name].parameters[key] = val
 						}
 					}
@@ -1707,9 +1802,9 @@ command_name_2 //Take notes by adding // after the command name if needed"
 			if(news.len() > 0)
 			{	
 				if(reload)
-					printl("[Vehicle-Table] New vehicles after reloading "+filename+":")
+					printR("[Vehicle-Table] New vehicles after reloading "+filename+":")
 				else
-					printl("[Vehicle-Table] Valid vehicles found in "+filename+":")
+					printR("[Vehicle-Table] Valid vehicles found in "+filename+":")
 
 				foreach(vehicle_name,tbls in news)
 				{
@@ -1719,9 +1814,9 @@ command_name_2 //Take notes by adding // after the command name if needed"
 			else 
 			{
 				if(reload)
-					printl("[Vehicle-Table] No new valid vehicles were loaded from "+filename)
+					printR("[Vehicle-Table] No new valid vehicles were loaded from "+filename)
 				else
-					printl("[Vehicle-Table] No valid vehicles were registered from "+filename)
+					printR("[Vehicle-Table] No valid vehicles were registered from "+filename)
 			}
 
 		}
@@ -1996,6 +2091,30 @@ command_name_2 //Take notes by adding // after the command name if needed"
             }
         }
         
+        ColorfulVehicles = 	
+        {
+			Title = "\t\t/// Random colors for vehicles in official maps(which were spawned with the map)"
+            State =
+            {
+                Value = true
+                Comment = "// true: Randomize vehicle colors at start, false: Don't change any colors"
+            }
+			ColorRanges =
+			{
+				Value =
+				{
+					darkest = "88 88 88"
+					brightest = "255 255 255"
+				}
+				ValueComments =
+				{
+					darkest = "// Darkest RGB values seperated by a space"
+					brightest = "// Brightest RGB values seperated by a space"
+				}
+				Comment = "// Dark-Bright RGB range to pick random colors from"
+			}
+        }
+
         GrabYeet =
         {
             Title = "\t\t/// Grab-yeet basic settings"
@@ -2709,6 +2828,42 @@ command_name_2 //Take notes by adding // after the command name if needed"
 		return s;
 	}
 }
+::__StringifyColorfulVehiclesSettings <- function(tblref=null)
+{
+	if(tblref == null)
+	{
+		local s = ""
+		local maintbl = ::Constants.DefaultsDetailed.Tables.ColorfulVehicles;
+
+		s += __SingleValWithComment(maintbl,"State") + "\n\r";
+		
+		s += "\t\t\tColorRanges = " + maintbl.ColorRanges.Comment + "\n\r\t\t\t{\n\r"
+		foreach(setting,val in maintbl.ColorRanges.Value)
+		{
+			s += "\t\t\t\t" + setting + " = " + ((typeof val == "string") ? "\""+val+"\"": val) + "\t" + maintbl.ColorRanges.ValueComments[setting] + "\n\r"
+		}
+		s += "\t\t\t}\n\r"
+
+		return s;
+	}
+	else
+	{
+		local s = ""
+		local maintbl = ::Constants.DefaultsDetailed.Tables.ColorfulVehicles;
+		local maintblref = tblref.Tables.ColorfulVehicles
+
+		s += __SingleValWithComment(maintbl,"State",maintblref) + "\n\r";
+		
+		s += "\t\t\tColorRanges = " + maintbl.ColorRanges.Comment + "\n\r\t\t\t{\n\r"
+		foreach(setting,val in maintbl.ColorRanges.Value)
+		{
+			s += "\t\t\t\t" + setting + " = " + ((typeof maintblref.ColorRanges[setting] == "string") ? "\""+maintblref.ColorRanges[setting]+"\"": maintblref.ColorRanges[setting]) + "\t" + maintbl.ColorRanges.ValueComments[setting] + "\n\r"
+		}
+		s += "\t\t\t}\n\r"
+
+		return s;
+	}
+}
 ::__StringifyGrabYeetSettings <- function(tblref=null)
 {
 	if(tblref == null)
@@ -3226,6 +3381,11 @@ command_name_2 //Take notes by adding // after the command name if needed"
 		+ __StringifyOutputSettings(tbl)
 		+ "\n\r\t\t}\n\r"
 
+		+ Constants.DefaultsDetailed.Tables.ColorfulVehicles.Title + "\n\r\t\t"
+		+ "ColorfulVehicles =\n\r\t\t{\n\r"
+		+ __StringifyColorfulVehiclesSettings(tbl)
+		+ "\n\r\t\t}\n\r"
+
 		+ Constants.DefaultsDetailed.Tables.GrabYeet.Title + "\n\r\t\t"
 		+ "GrabYeet =\n\r\t\t{\n\r"
 		+ __StringifyGrabYeetSettings(tbl)
@@ -3429,6 +3589,39 @@ command_name_2 //Take notes by adding // after the command name if needed"
 			{
 				fixapplied.append("Tables.Outputs.State")
 				tbl.Tables.Outputs.State <- correcttbl.Tables.Outputs.State
+			}
+		}
+
+		// Colorful maps
+		if(!ValidateTbl(tbl.Tables,"ColorfulVehicles"))
+		{
+			fixapplied.append("Re-create default Tables.ColorfulVehicles")
+			tbl.Tables.ColorfulVehicles <- correcttbl.Tables.ColorfulVehicles
+		}
+		else
+		{
+			if(!ValidateTbl(tbl.Tables.ColorfulVehicles,"State","bool"))
+			{
+				fixapplied.append("Re-create default Tables.ColorfulVehicles.State")
+				tbl.Tables.ColorfulVehicles.State <- correcttbl.Tables.ColorfulVehicles.State
+			}
+
+			if(!ValidateTbl(tbl.Tables.ColorfulVehicles,"ColorRanges"))
+			{
+				fixapplied.append("Re-create default Tables.ColorfulVehicles.ColorRanges")
+				tbl.Tables.ColorfulVehicles.ColorRanges <- correcttbl.Tables.ColorfulVehicles.ColorRanges
+			}
+			else
+			{
+				foreach(setting,val in correcttbl.Tables.ColorfulVehicles.ColorRanges)
+				{
+					if(!ValidateTbl(tbl.Tables.ColorfulVehicles.ColorRanges,setting,false) 
+					|| !ValidateSimilarTyp(tbl.Tables.ColorfulVehicles.ColorRanges,correcttbl.Tables.ColorfulVehicles.ColorRanges,setting))
+					{
+						fixapplied.append("Use default Tables.ColorfulVehicles.ColorRanges."+setting)
+						tbl.Tables.ColorfulVehicles.ColorRanges[setting] <- correcttbl.Tables.ColorfulVehicles.ColorRanges[setting]
+					}
+				}
 			}
 		}
 
@@ -3814,7 +4007,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 	if(fixapplied.len() != 0)
 	{
 		printl("---------------------------------------------------------")
-		printl("[Default-Fix-List] Defaults table has had the following fixes applied:")
+		printR("[Default-Fix-List] Defaults table has had the following fixes applied:")
 		foreach(i,fix in fixapplied)
 		{
 			printl("\t[*] "+fix)
@@ -3955,7 +4148,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 	if(fixapplied.len() != 0)
 	{
 		printl("---------------------------------------------------------")
-		printl("[Default-PropSpawn-Fix-List] PropSpawn table fixed following values:")
+		printR("[Default-PropSpawn-Fix-List] PropSpawn table fixed following values:")
 		foreach(i,fix in fixapplied)
 		{
 			printl("\t[*] "+fix)
@@ -3978,11 +4171,11 @@ command_name_2 //Take notes by adding // after the command name if needed"
     {  
 		if(defs == null)
 		{
-			printl("[Defaults] Creating defaults.txt for the first time...");
+			printR("[Defaults] Creating defaults.txt for the first time...");
 		}
 		else
 		{
-			printl("[Defaults] Creating prop_defaults.txt for the first time...");
+			printR("[Defaults] Creating prop_defaults.txt for the first time...");
 		}
 
         ::Constants.GetFullDefaultTable(null,defs==null,propdefs==null)
@@ -4029,7 +4222,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 
 		if(df == null || typeof df != "table")
 		{
-			printl("[Defaults-Error] File defaults.txt is formatted completely wrong, recreating the file...")
+			printR("[Defaults-Error] File defaults.txt is formatted completely wrong, recreating the file...")
 			printl("\t[Warning] Keeping incorrectly formatted file named in "+::Constants.Directories.CustomizedDefaultsBadFormat)
 			if(err != "")
 				printl("\t\t[Error] "+err)
@@ -4038,16 +4231,16 @@ command_name_2 //Take notes by adding // after the command name if needed"
 		}
         else if(!::Constants.ValidateDefaultsTable(df))
         {
-			printl("[Defaults-Fix] File defaults.txt had missing or incorrect values, fixed the errors");
+			printR("[Defaults-Fix] File defaults.txt had missing or incorrect values, fixed the errors");
         }
 		else
 		{
-			printl("[Defaults] Applying default settings...")
+			printR("[Defaults] Applying default settings...")
 		}
 			
 		if(props == null || typeof props != "table")
 		{
-			printl("[Defaults-Error] File prop_defaults.txt is formatted completely wrong, recreating the file...")
+			printR("[Defaults-Error] File prop_defaults.txt is formatted completely wrong, recreating the file...")
 			printl("\t[Warning] Keeping incorrectly formatted file named in "+::Constants.Directories.CustomizedPropSpawnDefaultsBadFormat)
 			if(perr != "")
 				printl("\t\t[Error] "+perr)
@@ -4056,11 +4249,11 @@ command_name_2 //Take notes by adding // after the command name if needed"
 		}
         else if(!::Constants.ValidatePropDefaultsTable(props))
         {
-			printl("[Defaults-Fix] File prop_defaults.txt had missing or incorrect values, fixed the errors");
+			printR("[Defaults-Fix] File prop_defaults.txt had missing or incorrect values, fixed the errors");
         }
 		else
 		{
-			printl("[Defaults] Applying default prop spawn settings...")
+			printR("[Defaults] Applying default prop spawn settings...")
 		}
 		
     }
@@ -4088,8 +4281,8 @@ command_name_2 //Take notes by adding // after the command name if needed"
 {
 	if(typeof tbl != "table")
 	{
-		printl("[Commands-Error] command_limits.txt was formatted entirely wrong, do NOT remove { and } characters at the start and the end of the file!...")
-		printl("[Commands-Error] Keeping incorrectly formatted file named differently and replacing it with the default one...")
+		printR("[Commands-Error] command_limits.txt was formatted entirely wrong, do NOT remove { and } characters at the start and the end of the file!...")
+		printR("[Commands-Error] Keeping incorrectly formatted file named differently and replacing it with the default one...")
 
 		StringToFile(Constants.Directories.CommandRestrictionsBadFormat,fileContents);
 
@@ -4103,7 +4296,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 		if(tbl.len() != 0)
 		{	
 			local issuesfound = false
-			printl("[Command-Checks] Doing command limit table checks...")
+			printR("[Command-Checks] Doing command limit table checks...")
 			foreach(cmd,valtbl in tbl)
 			{
 				if(cmd == "command_name_1" || cmd == "command_name_2")
@@ -4146,9 +4339,9 @@ command_name_2 //Take notes by adding // after the command name if needed"
 				}
 			}
 			if(issuesfound)
-				printl("[Command-Checks] Applied fixes to current session, consider checking command_limits.txt file to correct the mistakes.")
+				printR("[Command-Checks] Applied fixes to current session, consider checking command_limits.txt file to correct the mistakes.")
 			else
-				printl("[Command-Checks] No issues found for command restrictions.")
+				printR("[Command-Checks] No issues found for command restrictions.")
 		}
 		return tbl;
 	}
@@ -4156,7 +4349,7 @@ command_name_2 //Take notes by adding // after the command name if needed"
 
 if(!("Defaults" in ::Constants))
 {
-    printl("[Defaults-Error] FAILED TO READ DEFAULTS.TXT, USING BACK-UP TABLE. CONSIDER CHECKING THE FORMAT OR REMOVING THE FILE");
+    printR("[Defaults-Error] FAILED TO READ DEFAULTS.TXT, USING BACK-UP TABLE. CONSIDER CHECKING THE FORMAT OR REMOVING THE FILE");
     
 	::Constants.Defaults <- ::Constants.GetFullDefaultTable();
 

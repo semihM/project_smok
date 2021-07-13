@@ -31,65 +31,65 @@
                 {
                     LoadAdmins = function()
                     {
-                        //printl("[Admins] Loading admin list...");
-                        printl("\n[DEPRECATION-WARNING] admins.txt IS DEPRECATED. DELETE THE FILE AND USE user_levels.txt FROM NOW ON\n");
+                        //printR("[Admins] Loading admin list...");
+                        printR("[DEPRECATION-WARNING] admins.txt IS DEPRECATED. DELETE THE FILE AND USE user_levels.txt FROM NOW ON\n");
                     }
                     LoadScriptAuths = function()
                     {
-                        //printl("[Script-auth] Loading script authorization list...");
-                        printl("\n[DEPRECATION-WARNING] scriptauths.txt IS DEPRECATED. DELETE THE FILE AND USE user_levels.txt FROM NOW ON\n");
+                        //printR("[Script-auth] Loading script authorization list...");
+                        printR("[DEPRECATION-WARNING] scriptauths.txt IS DEPRECATED. DELETE THE FILE AND USE user_levels.txt FROM NOW ON\n");
                     }
                     LoadUserLevels = function()
                     {
-                        printl("[UserLevels] Loading user levels list...");
+                        printR("[UserLevels] Loading user levels list...");
                     }
                     LoadBanned = function()
                     {
-                        printl("[Banned] Loading ban list...");
+                        printR("[Banned] Loading ban list...");
                     }
                     LoadSettings = function()
                     {
-                        printl("[Settings] Loading settings...");
+                        printR("[Settings] Loading settings...");
                     }
                     CreateSettings = function()
                     {
-                        printl("[Settings] Creating the settings file for the first time...");
+                        printR("[Settings] Creating the settings file for the first time...");
                     }
                     LoadApocalypseSettings = function()
                     {
-                        printl("[Apocalypse-Settings] Loading apocalypse settings...");
+                        printR("[Apocalypse-Settings] Loading apocalypse settings...");
                     }
                     CreateApocalypseSettings = function()
                     {
-                        printl("[Apocalypse-Settings] Creating the setting file for the first time...");
+                        printR("[Apocalypse-Settings] Creating the setting file for the first time...");
                     }
 					LoadGhostZombiesSettings = function()
                     {
-                        printl("[Ghost_Zombies-Settings] Loading ghost zombies settings...");
+                        printR("[Ghost_Zombies-Settings] Loading ghost zombies settings...");
                     }
                     CreateGhostZombiesSettings = function()
                     {
-                        printl("[Ghost_Zombies-Settings] Creating the setting file for the first time...");
+                        printR("[Ghost_Zombies-Settings] Creating the setting file for the first time...");
                     }
                     LoadMeteorShowerSettings = function()
                     {
-                        printl("[Meteor_Shower-Settings] Loading meteor shower settings...");
+                        printR("[Meteor_Shower-Settings] Loading meteor shower settings...");
                     }
                     CreateMeteorShowerSettings = function()
                     {
-                        printl("[Meteor_Shower-Settings] Creating the setting file for the first time...");
+                        printR("[Meteor_Shower-Settings] Creating the setting file for the first time...");
                     }
                     CreateVars = function()
                     {
-                        printl("[Vars] Creating new vars table...");
+                        printR("[Vars] Creating new vars table...");
                     }
                     RestoreVars = function()
                     {
-                        printl("[Vars] Restoring existing vars table...");
+                        printR("[Vars] Restoring existing vars table...");
                     }
                     EnableSpecAndOther = function()
                     {
-                        printl("[Spectators] Enabling commands for spectator admins...");
+                        printR("[Spectators] Enabling commands for spectator admins...");
                     }
                 }
             }
@@ -100,11 +100,11 @@
                 {
                     RestoringLast = function(name,mdl)
                     {
-                        printl("[Models] Restoring last model of " + name + " to " + mdl)
+                        printR("[Models] Restoring last model of " + name + " to " + mdl)
                     }
                     RestoringOrg = function(name)
                     {
-                        printl("[Models] Restoring original model of " + name);
+                        printR("[Models] Restoring original model of " + name);
                     }
                 }
             }
@@ -404,7 +404,7 @@
             {
                 Cache = function()
                 {
-                    printl("[Cache] Caching ladder teams...");
+                    printR("[Cache] Caching ladder teams...");
                 }
 
                 Reset = function()
@@ -531,11 +531,11 @@
                 }
                 CreatingFile = function()
                 {
-                    printl("[Custom] Creating custom response file for the first time...");
+                    printR("[Custom] Creating custom response file for the first time...");
                 }
                 AddingMissingAdminTables = function(admin)
                 {
-                    printl("[Custom] Creating default response table for new admin -> " + admin);
+                    printR("[Custom] Creating default response table for new admin -> " + admin);
                 }
             }
 
@@ -735,7 +735,7 @@
 
                 FailedParticle = function()
                 {
-                    printl("[Explosion-Warning] Could not create info_particle_system entity.");
+                    printR("[Explosion-Warning] Could not create info_particle_system entity.");
                 }
 
                 FireworkLength = function()

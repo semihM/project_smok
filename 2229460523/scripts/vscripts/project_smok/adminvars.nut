@@ -130,6 +130,14 @@
     tbl._outputsEnabled <- AdminVars.RepeatValueForSurvivors(::Constants.Defaults.Tables.Outputs.State);
 }
 
+// Colorful vehicles state
+::AdminVars.SetDefaultColorfulVehiclesSettings <- function(tbl)
+{
+    tbl.ColorfulVehiclesState <- ::Constants.Defaults.Tables.ColorfulVehicles.State;
+
+    tbl.ColorfulVehiclesRanges <- ::VSLib.Utils.TableCopy(::Constants.Defaults.Tables.ColorfulVehicles.ColorRanges);
+}
+
 // Parameters for grabbing, letting go, yeeting entities
 ::AdminVars.SetDefaultGrabYeetSettings <- function(tbl)
 {
@@ -373,6 +381,8 @@
     tbl.SetDefaultParticleSettings <- ref.SetDefaultParticleSettings;
     tbl.SetDefaultExplosionSettings <- ref.SetDefaultExplosionSettings;
 
+    tbl.SetDefaultColorfulVehiclesSettings <- ref.SetDefaultColorfulVehiclesSettings;
+
     tbl.SetDefaultGrabYeetSettings <- ref.SetDefaultGrabYeetSettings;
 
     tbl.SetUpLootMakerSettings <- ref.SetUpLootMakerSettings;
@@ -411,6 +421,8 @@
 
 ::AdminVars.SetDefaultParticleSettings(::AdminVars);
 ::AdminVars.SetDefaultExplosionSettings(::AdminVars);
+
+::AdminVars.SetDefaultColorfulVehiclesSettings(::AdminVars);
 
 ::AdminVars.SetDefaultGrabYeetSettings(::AdminVars);
 
