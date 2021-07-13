@@ -48,4 +48,4 @@ IncludeScript("Admin_System/VSLib/ResponseRules.nut");
 IncludeScript("Admin_System/VSLib/RandomItemSpawner.nut");
 
 if ( __VSLIB_NOTIFY_VERSION__ )
-	printf( "Loaded VSLib version %f", __VSLIB_VERSION__ );
+	printf( "Loaded VSLib version %f - project_smok", __VSLIB_VERSION__ );
