@@ -1,5 +1,6 @@
 //-----------------------------------------------------
-printl("Activating Admin System - project_smok");
+Msg("Activating Admin System - ");
+error("project_smok\n")
 
 /**
  * Admin System by Rayman1103
@@ -51,9 +52,15 @@ IncludeScript("Project_smok/QuickTimers");
 // Include the vehicle scripts
 IncludeScript("Project_smok/Vehicles");
 
-printl("|-------------------------------------------|")
-printl(format("| project_smok %s , Date: %s",::Constants.Version.Number,::Constants.Version.Date))
-printl("|-------------------------------------------|")
+error("|")
+Msg("-----------------------------------------------")
+error("|\n|")
+Msg(" project_smok ")
+error(::Constants.Version.Number)
+Msg(" , Version Date ")
+error(format("%s |\n|",::Constants.Version.Date))
+Msg("-----------------------------------------------")
+error("|\n")
 
 // Messages
 ::CmdMessages <- ::Messages.BIM.CMD;
@@ -1846,6 +1853,131 @@ function Notifications::OnRoundStart::RandomSeeding()
 	}
 }
 
+function Notifications::OnRoundStart::ColorfulVehicles()
+{
+	if(::AdminSystem.Vars.ColorfulVehiclesState)
+	{
+		printl("[ColorfulVehicles] Setting random colors to props...")
+		local low = split(::AdminSystem.Vars.ColorfulVehiclesRanges.darkest," ")
+		local high = split(::AdminSystem.Vars.ColorfulVehiclesRanges.brightest," ")
+		if(low.len() != 3)
+		{
+			printl("[COLORFUL_VEHICLES-ERROR] Darkest color range format is wrong!")
+			return
+		}
+		if(high.len() != 3)
+		{
+			printl("[COLORFUL_VEHICLES-ERROR] Brightest color range format is wrong!")
+			return
+		}
+		try
+		{
+			low = low.map(@(x) x.tointeger())
+			high = high.map(@(x) x.tointeger())
+		}
+		catch(e)
+		{
+			printl("[COLORFUL_VEHICLES-ERROR] Color range has non-numeric values!")
+			return
+		}
+
+		local valid_vehicle_classes =
+		{
+			prop_dynamic = true
+			prop_dynamic_override = true
+			prop_car_alarm = true
+			prop_vehicle = true
+			prop_physics_override = true
+			prop_physics = true
+		}
+
+		local valid_vehicle_models =
+		{
+			"models/props_vehicles/cara_69sedan.mdl" : true
+			"models/props_vehicles/cara_84sedan.mdl" : true
+			"models/props_vehicles/cara_95sedan.mdl" : true
+			"models/props_vehicles/cara_82hatchback.mdl" : true
+			"models/props_vehicles/sailboat.mdl" : true
+			"models/lostcoast/props_wasteland/boat_fishing01a.mdl" : true
+			"models/props_vehicles/boat_fishing02_static.mdl" : true
+			"models/lostcoast/props_wasteland/boat_drydock01a.mdl" : true
+			"models/props_urban/boat001.mdl" : true
+			"models/props_urban/boat002.mdl" : true
+			"models/props_vehicles/boat_ski.mdl" : true
+			"models/props_vehicles/boat_smash.mdl" : true
+			"models/lostcoast/props_wasteland/boat_wooden01a.mdl" : true
+			"models/lostcoast/props_wasteland/boat_wooden02a.mdl" : true
+			"models/lostcoast/props_wasteland/boat_wooden03a.mdl" : true
+			"models/props_canal/boat001a.mdl" : true
+			"models/props_vehicles/train_enginecar.mdl" : true
+			"models/props_vehicles/train_engine_military.mdl" : true
+			"models/props_vehicles/train_box.mdl" : true
+			"models/props_vehicles/train_box_open.mdl" : true
+			"models/props_vehicles/train_box_small.mdl" : true
+			"models/props_vehicles/train_boxwreck.mdl" : true
+			"models/props_vehicles/boxcar_tanktrap_exterior.mdl" : true
+			"models/props_vehicles/boxcar_tanktrap_interior.mdl" : true
+			"models/props_vehicles/boxcar_tanktrap_door.mdl" : true
+			"models/props_vehicles/train_orecar.mdl" : true
+			"models/props_vehicles/train_flatcar.mdl" : true
+			"models/props_vehicles/train_flatcar_small.mdl" : true
+			"models/props_vehicles/train_tank.mdl" : true
+			"models/props_vehicles/train_tank_small.mdl" : true
+			"models/props_trainstation/train_transporter.mdl" : true
+			"models/props_unique/subwaycar_all_onetexture.mdl" : true
+			"models/props_vehicles/cara_95sedan_wrecked.mdl" : true
+			"models/props_vehicles/cara_82hatchback_wrecked.mdl" : true
+			"models/props_vehicles/news_van.mdl" : true
+			"models/props_vehicles/van_cab_controls.mdl" : true
+			"models/props_vehicles/longnose_truck.mdl" : true
+			"models/props_vehicles/flatnose_truck.mdl" : true
+			"models/props_vehicles/semi_truck3.mdl" : true
+			"models/props_vehicles/pickup_truck_78.mdl" : true
+			"models/props_vehicles/pickup_truck_2004.mdl" : true
+			"models/props_vehicles/police_car_rural.mdl" : true
+			"models/props_vehicles/suv_2001.mdl" : true
+			"models/props_vehicles/taxi_cab.mdl" : true
+			"models/props_vehicles/police_car_city.mdl" : true
+			"models/props_vehicles/front_loader01_rear.mdl" : true
+			"models/props_vehicles/front_loader01_front_down.mdl" : true
+			"models/props_vehicles/van.mdl" : true
+			"models/props_vehicles/van_cab_controls.mdl" : true
+			"models/props_vehicles/boat_cabin35ft.mdl" : true
+			"models/props_vehicles/boat_trailer35ft.mdl" : true
+			"models/props_vehicles/utility_truck.mdl" : true
+			"models/props_vehicles/utility_truck_windows.mdl" : true
+			"models/props/de_nuke/truck_nuke.mdl" : true
+			"models/props_vehicles/radio_generator.mdl" : true
+			"models/props_vehicles/generatortrailer01.mdl" : true
+			"models/props_vehicles/m119howitzer_01.mdl" : true
+			"models/props_vehicles/deliveryvan_armored.mdl" : true
+			"models/props_vehicles/floodlight_generator_nolight.mdl" : true
+			"models/props_vehicles/airport_baggage_tractor.mdl" : true
+			"models/props_vehicles/airport_baggage_cart2.mdl" : true
+			"models/props_vehicles/airliner_finale_left.mdl" : true
+			"models/props_vehicles/airliner_finale_right.mdl" : true
+			"models/props_fairgrounds/bumpercar.mdl" : true
+			"models/props_fairgrounds/coaster_car01.mdl" : true
+			"models/props_waterfront/tour_bus.mdl" : true
+			"models/props_vehicles/helicopter_rescue.mdl" : true
+			"models/props_vehicles/racecar_damaged.mdl" : true
+			"models/props_vehicles/bus01.mdl" : true
+			"models/props_vehicles/bus01_2.mdl" : true
+			"models/props_vehicles/church_bus01.mdl" : true
+			"models/props_vehicles/c130.mdl" : true
+		}
+
+		foreach(classname,st in valid_vehicle_classes)
+		{
+			foreach(ent in Objects.OfClassname(classname))
+			{
+				if(ent.GetModel() in valid_vehicle_models)
+					ent.SetColor(RandomInt(low[0],high[0]).tostring(),RandomInt(low[1],high[1]).tostring(),RandomInt(low[2],high[2]).tostring(),"255");
+			}
+		}
+	}
+}
+
 function Notifications::OnRoundStart::AdminLoadFiles()
 {
 	// Deprecated
@@ -2855,11 +2987,14 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		{
 			local tname = strip(Command.slice(Command.find(">") + 1))
 			if(tname == "self" || tname == "!self")
-				target = player
-			else if(tname != "" && ((target = Entity(tname)).IsEntityValid() || (target = Utils.GetPlayerFromName(tname) != null)))
+				target = Utils.GetEntityOrPlayer(player.GetBaseEntity());
+			else if(tname != "" && ((target = Entity(tname)).IsEntityValid() || ((target = Utils.GetPlayerFromName(tname)) != null)))
 				Command = Command.slice(0, Command.find(">"))
 			else
 				target = null
+				
+			if(target)
+				target = Utils.GetEntityOrPlayer(target.GetBaseEntity())
 		}
 		cleanBaseCmd = Command in ::ChatTriggers
 							? Command
@@ -2951,7 +3086,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	}
 
 	if(target)
-		player.GetScriptScope().PS_ONETIME_TARGET <- target;
+		player.GetScriptScope().PS_ONETIME_TARGET <- Utils.GetEntityOrPlayer(target);
 
 	switch ( cleanBaseCmd )
 	{
@@ -4896,12 +5031,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 				if(target.GetNetProp("m_hTarget") != null && Entity(target.GetNetProp("m_hTarget")).GetEntityHandle() == parent.GetEntityHandle())
 				{
-					DoEntFire("!self","setparent","#"+parent.GetIndex(),0,null,target.GetBaseEntity());
 					if(value2 == "")
-					{
 						value2 = "forward"
-					}
-                    DoEntFire("!self","setparentattachmentmaintainoffset",value2,0.05,null,target.GetBaseEntity());
+
+					target.SetNetProp("m_pParent",parent.GetBaseEntity())
+					DoEntFire("!self", "setparentattachmentmaintainoffset", value2, 0, null, target.GetBaseEntity());
 					break;
 				}
 
@@ -4938,10 +5072,12 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 					Messages.ThrowPlayer(player,"Camera(#"+target.GetIndex()+") is already attached(to #"+target.GetParent().GetIndex()+")")
 					return
 				}
-				DoEntFire("!self","setparent","#"+parent.GetIndex(),0,null,target.GetBaseEntity());
-				if(value2 != "")
+				if(value2 == "")
+					DoEntFire("!self","setparent","#"+parent.GetIndex(),0,null,target.GetBaseEntity());
+				else
 				{
-					DoEntFire("!self","setparentattachmentmaintainoffset",value2,0.05,null,target.GetBaseEntity());
+					target.SetNetProp("m_pParent",parent.GetBaseEntity())
+					DoEntFire("!self", "setparentattachmentmaintainoffset", value2, 0, null, target.GetBaseEntity());
 				}
 			}
 			break;
@@ -5923,15 +6059,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		if(entclass == "player")
 			continue;
 
-		if(entmdl.find("*") != null)
-			continue;
+		if(ent.HasBadPhysicsModel())
+			continue
 		
-		if((entmdl.find("hybridphysx") != null)) // Animation props etc ignored
-			continue;
-
-		if((entmdl.find("skybox") != null)) // Skybox stuff
-			continue;
-
 		if(SessionState.MapName in ::GivePhysicsMapSpecificBans)
 		{ 
 		  if((ent.GetName() in ::GivePhysicsMapSpecificBans[SessionState.MapName].entities
@@ -6045,16 +6175,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 		}
 		else if(!AdminSystem.Vars._grabAvailable[entclass])
 			return
-			
-		if(looked.GetModel().find("*") != null)
-			return;
-
-		if((looked.GetModel().find("hybridphysx") != null)) // Animation props etc ignored
-			return;
-
-		if((looked.GetModel().find("skybox") != null)) // Skybox stuff
-			return;
-			
+		
+		if(looked.HasBadPhysicsModel())
+			return
+		
 		::GivePhysicsToEntity(looked)
 	}
 	else if(rad == "all")
@@ -6088,15 +6212,9 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			if(entclass == "player")
 				continue;
 			
-			if(entmdl.find("*") != null)
-				continue;
+			if(ent.HasBadPhysicsModel())
+				continue
 			
-			if((entmdl.find("hybridphysx") != null)) // Animation props etc ignored
-				continue;
-
-			if((entmdl.find("skybox") != null)) // Skybox stuff
-				continue;
-				
 			if(SessionState.MapName in ::GivePhysicsMapSpecificBans)
 			{ 
 				if((ent.GetName() in ::GivePhysicsMapSpecificBans[SessionState.MapName].entities
@@ -6200,17 +6318,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 			else if(!AdminSystem.Vars._grabAvailable[entclass])
 				continue
 			
-			local entmdl = ent.GetModel()
-			if(entmdl.find("*") != null)
-				continue;
-			
-			if((entmdl.find("hybridphysx") != null)) // Animation props etc ignored
-				continue;
-			
-			if((entmdl.find("skybox") != null)) // Skybox stuff
-				continue;
+			if(ent.HasBadPhysicsModel())
+				continue
 
-			if(!::CheckPhysicsAvailabilityForModel(entmdl,ent,GivePhysicsToEntity))
+			if(!::CheckPhysicsAvailabilityForModel(ent.GetModel(),ent,GivePhysicsToEntity))
 				continue
 
 			::GivePhysicsToEntity(ent)	
@@ -6336,20 +6447,11 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	}
 }
 
-::AdminSystem.GoRagdollCmd <- function(player,args)
+::StartRagdolling <- function(args)
 {
-	if(::VSLib.EasyLogic.NextMapContinues)
-		return;
-
-	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+player.GetIndex())
-	if(rag != null && rag.IsEntityValid())
-		return;
-	
-	if(RagdollStateCheck(player))
-		return;
+	local rag, player = args.player
 	
 	local idx = player.GetIndex();
-
 
 	local ang = QAngle(0,player.GetEyeAngles().Yaw(),0);
 	local org = player.GetOrigin();
@@ -6361,7 +6463,7 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
     local is_ragdoll_mdl = RagdollOrPhysicsDecider(player.GetModel()) == "prop_ragdoll"
 	if(is_ragdoll_mdl)
 	{
-		rag = Utils.SpawnRagdoll(mdl,org,ang,{spawnflags=32772}); // TO-DO: Find a way to do this without a secondary ragdoll
+		rag = Utils.SpawnRagdoll(mdl,org,ang,{spawnflags=32772});
 		rag.SetRenderMode(RENDER_NONE);
 	}
 	else
@@ -6395,11 +6497,10 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 
 	if(is_ragdoll_mdl)
 	{
-	    player.Input("setparent","#"+rag.GetIndex(),0.08)
+	    player.Input("setparent","#"+rag.GetIndex() + ",bleedout",0.09)
 		rag.GetScriptScope()["PS_OWNER_ORIGIN"] <- Vector(0,0,0)
 
 		player.SetRenderEffects(RENDERFX_RAGDOLL);
-	    player.Input("setparentattachment","bleedout",0.11)
 		rag.SetNetProp("m_CollisionGroup",2)
 		if(RagParams.useseq)
 		{
@@ -6469,14 +6570,41 @@ function EasyLogic::OnUserCommand::AdminCommands(player, args, text)
 	::RagdollControls.Initialize(player,rag,is_ragdoll_mdl);
 }
 
+::AdminSystem.GoRagdollCmd <- function(player,args)
+{
+	if(::VSLib.EasyLogic.NextMapContinues)
+		return;
+
+	if(RagdollStateCheck(player))
+		return;
+
+	if("PS_RAGDOLL_PROCESSING_STATE" in player.GetScriptScope() 
+		&& player.GetScriptScope()["PS_RAGDOLL_PROCESSING_STATE"])
+		return
+
+    player.GetScriptScope()["PS_RAGDOLL_PROCESSING_STATE"] <- true
+
+	local rag = Objects.AnyOfName(Constants.Targetnames.Ragdoll+player.GetIndex())
+	if(rag != null && rag.IsEntityValid())
+		RecoverRagdollInitial(rag);
+	else
+		::StartRagdolling({player=player})
+    
+    // Prevent spam
+    player.Input("runscriptcode","self.GetScriptScope().PS_RAGDOLL_PROCESSING_STATE <- false",0.2)
+}
+
 ::AdminSystem.RecoverRagdollCmd <- function(player,args)
 {
-		
 	local rag = player.GetRagdollEntity()
 
 	if(rag == null)
 		return;
 	
+	if("PS_RAGDOLL_PROCESSING_STATE" in player.GetScriptScope() 
+		&& player.GetScriptScope()["PS_RAGDOLL_PROCESSING_STATE"])
+		return
+
 	RecoverRagdollInitial(rag);
 }
 
@@ -8670,6 +8798,7 @@ enum __
 {
 	local argtable = AdminSystem._meteor_shower_args;
 	local meteor = Ent("#"+met)
+	meteor.SetVelocity(Vector(0,0,0))
 
 	local prtc = null
 	local explosion = null
@@ -12240,7 +12369,7 @@ function ChatTriggers::out( player, args, text )
 	if(args.len() == 0)
 		return;
 
-	local res = compilestring("local __tempvar__="+text.slice(5)+";return __tempvar__;")();
+	local res = compilestring("local __tempvar__="+Utils.CombineArray(args," ")+";return __tempvar__;")();
 	::AdminSystem.out(res,player);
 }
 
@@ -22722,43 +22851,56 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 	}
 
 	// Line source is random
-	if(linesource == "random")
+	if(linesource == "!random" || linesource == "random")
 	{
 		linesource = Utils.GetRandValueFromArray(AdminSystem.Vars.CharacterNamesLower);
 		while(linesource == "" || linesource == "survivor")
 			linesource = Utils.GetRandValueFromArray(AdminSystem.Vars.CharacterNamesLower);
 	}
+	else if(linesource == "self" || linesource == "!self")
+		linesource = null
 
 	// Speaker selection
-	if(targetname == "random")
-	{	
-		targetname = Utils.GetRandValueFromArray(Players.AliveSurvivors()).GetCharacterNameLower();
-		speaker = Utils.GetPlayerFromName(targetname);
-	}
-	else if(targetname == "self")
+	switch(targetname)
 	{
-		targetname = name;
-		speaker = player;
-	}
-	else if(targetname == "picker")
-	{
-		targetname = player.GetLookingEntity(GRAB_YEET_TRACE_MASK);
+		case "!random":
+		case "random":
+		{	
+			targetname = Utils.GetRandValueFromArray(Players.AliveSurvivors()).GetCharacterNameLower();
+			speaker = Utils.GetPlayerFromName(targetname);
+			break;
+		}
+		case "!self":
+		case "self":
+		{
+			targetname = name;
+			speaker = player;
+			break;
+		}
+		case "!picker":
+		case "picker":
+		{
+			targetname = player.GetLookingEntity(GRAB_YEET_TRACE_MASK);
 
-		if(targetname == null){return;}
-		if(targetname.GetClassname() != "player"){return;}
-	
-		targetname = targetname.GetCharacterNameLower();
-		speaker = Utils.GetPlayerFromName(targetname);
-	}
-	else if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,targetname) == -1)
-	{
-		Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(GetArgument(1)));
-		::SpellChecker.Levenshtein(3,3,"character name").PrintBestMatches(player.GetBaseEntity(),GetArgument(1),Utils.ArrayToTable(AdminSystem.Vars.CharacterNamesLower.slice(0,8)))
-		return;
-	}
-	else
-	{
-		speaker = Player("!"+targetname);
+			if(targetname == null){return;}
+			if(targetname.GetClassname() != "player"){return;}
+		
+			targetname = targetname.GetCharacterNameLower();
+			speaker = Utils.GetPlayerFromName(targetname);
+			break;
+		}
+		default:
+		{
+			if(Utils.GetIDFromArray(AdminSystem.Vars.CharacterNamesLower,targetname) == -1)
+			{
+				Messages.ThrowPlayer(player,Messages.BIM.NotACharacter(GetArgument(1)));
+				::SpellChecker.Levenshtein(3,3,"character name").PrintBestMatches(player.GetBaseEntity(),GetArgument(1),Utils.ArrayToTable(AdminSystem.Vars.CharacterNamesLower.slice(0,8)))
+				return;
+			}
+			else
+				speaker = Player("!"+targetname);
+			break;
+		}
 	}
 
 	if(speaker==null)
@@ -23261,7 +23403,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 
 	local entclass = ent.GetClassname();
 
-	if(entclass == "player")
+	if(entclass == "player" || entclass == "witch")
 		return;
 	// Not in table, in the table but disabled
 	if(!(entclass in AdminSystem.Vars._grabAvailable))
@@ -23273,14 +23415,8 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 	else if(!AdminSystem.Vars._grabAvailable[entclass])
 		return
 
-	if(ent.GetModel().find("*") != null)
-		return;
-
-	if((ent.GetModel().find("hybridphysx") != null))
-		return;
-
-	if((ent.GetModel().find("skybox") != null)) // Skybox stuff
-		return;
+	if(ent.HasBadPhysicsModel())
+		return
 
 	local ind = ent.GetIndex();
 
@@ -23306,10 +23442,10 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 	//ent.SetForwardVector(player.GetForwardVector());
 	
 	ent.SetNetProp("m_CollisionGroup",1);
-	ent.Input("setparent","#"+player.GetIndex(),0);
+	ent.SetNetProp("m_pParent",player.GetBaseEntity())	// Hack
+	DoEntFire("!self", "setparentattachmentmaintainoffset", pos, 0, null, ent.GetBaseEntity());
 	ent.SetOrigin(player.GetEyePosition()+vec+survivorfw);
 	ent.SetAngles(RotateOrientation(player.GetEyeAngles(),QAngle(HatParameters.pitch,HatParameters.yaw,HatParameters.roll)))	
-	ent.Input("setparentattachmentmaintainoffset",pos,0.1);
 }
 
 ::HatParameters <- 
@@ -23422,15 +23558,9 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 				}
 				else if(!AdminSystem.Vars._grabAvailable[entclass])
 					continue
-					
-				if(entmodel.find("*") != null)
-					continue;
-
-				if((entmodel.find("hybridphysx") != null)) // Animation props etc ignored
-					continue;
 				
-				if((entmodel.find("skybox") != null)) // Skybox stuff
-					continue;
+				if(obj.HasBadPhysicsModel())
+					continue
 
 				entind = obj.GetIndex().tostring();
 
@@ -23512,15 +23642,9 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 		}
 		else if(!AdminSystem.Vars._grabAvailable[entclass])
 			return
-			
-		if(ent.GetModel().find("*") != null)
-			return;
 		
-		if((ent.GetModel().find("hybridphysx") != null))
-			return;
-
-		if((ent.GetModel().find("skybox") != null)) // Skybox stuff
-			return;
+		if(ent.HasBadPhysicsModel())
+			return	
 
 		entind = ent.GetIndex().tostring();
 	}
@@ -23562,10 +23686,10 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 			ent.SetOrigin(Vector(entpos.x+fwvec.x,entpos.y+fwvec.y,entpos.z+fwvec.z));
 
 		}
-
-		player.AttachOther(ent,false,0,null);
-		player.SetAttachmentPoint(ent,tbl_heldEnt.grabAttachPos,true,0.035);
-		
+        
+        // Hack: Helps getting rid of delay
+        ent.SetNetProp("m_pParent",player.GetBaseEntity())
+		DoEntFire("!self", "setparentattachmentmaintainoffset", tbl_heldEnt.grabAttachPos, 0, null, ent.GetBaseEntity());
 		AdminSystem.Vars._heldEntity[player.GetCharacterNameLower()].entid = entind;
 	}
 	
@@ -23664,7 +23788,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 	if(entclass == "player")
 	{
 		ent.SetMoveType(MOVETYPE_WALK);
-		ent.Input("RunScriptCode",func+"(Entity("+ent.GetIndex()+")"+extra_arg+")",0);
+		ent.Input("RunScriptCode",func+"(Entity("+ent.GetIndex()+")"+extra_arg+")",0.033);
 	}
 	else if(entclass.find("weapon_") != null) // a weapon spawner or a weapon
 	{
@@ -23674,7 +23798,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 			{
 				ent.SetSpawnFlags(ent.GetSpawnFlags()-1);
 			}
-			ent.Input("RunScriptCode",func+"(Entity("+ent.GetIndex()+")"+extra_arg+")",0);
+			ent.Input("RunScriptCode",func+"(Entity("+ent.GetIndex()+")"+extra_arg+")",0.033);
 		}
 	}
 	else if(entclass.find("physics") != null || entclass in ::_LetGoDropYeetSpecialClasses) // physics entity
@@ -23695,7 +23819,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 			ent.Input("EnableMotion","",0);
 			ent.SetEffects(effects);
 		}
-		ent.Input("RunScriptCode",func+"(Entity("+ent.GetIndex()+")"+extra_arg+")",0);
+		ent.Input("RunScriptCode",func+"(Entity("+ent.GetIndex()+")"+extra_arg+")",0.033);
 	}
 	else // non physics, try creating entity with its model
 	{
@@ -23719,7 +23843,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 			local color = ent.GetNetProp("m_clrRender");
 			local scale = ent.GetModelScale();
 			RecreateHierarchy(ent,new_ent,{color=color,skin=skin,scale=scale,name=ent.GetName()});
-			new_ent.Input("RunScriptCode",func+"(Entity("+new_ent.GetIndex()+")"+extra_arg+")",0);
+			new_ent.Input("RunScriptCode",func+"(Entity("+new_ent.GetIndex()+")"+extra_arg+")",0.033);
 		}
 		else
 		{
@@ -23752,7 +23876,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 								local color = ent.GetNetProp("m_clrRender");
 								local scale = ent.GetModelScale();
 								RecreateHierarchy(ent,new_ent,{color=color,skin=skin,scale=scale,name=ent.GetName()});
-								new_ent.Input("RunScriptCode",func+"(Entity("+new_ent.GetIndex()+")"+extra_arg+")",0);
+								new_ent.Input("RunScriptCode",func+"(Entity("+new_ent.GetIndex()+")"+extra_arg+")",0.033);
 								Printer(Player("!"+name),CmdMessages.Prop.Success("physicsM",new_ent));
 								ent.Kill()
 							}
@@ -23889,7 +24013,14 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 
 ::_dropit <- function(ent)
 {
-	local movetype = ent.GetClassname() == "player" ? MOVETYPE_WALK : MOVETYPE_VPHYSICS
+	local movetype;
+	switch(ent.GetClassname()) 
+	{
+		case "player": movetype = MOVETYPE_WALK; break;
+		case "witch": movetype = MOVETYPE_ZOMBIE_DEFAULT; break;
+		default: movetype = MOVETYPE_VPHYSICS; break;
+	} 
+
 	local a=ent.GetOrigin();
 	if(ent.GetBaseEntity() != null && "ResetSequence" in ent.GetBaseEntity())
 	{
@@ -24494,15 +24625,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 	if(entcls.find("_spawn") != null)
 		return false
 		
-	local entmdl = ent.GetModel().tolower();
-
-	if(entmdl.find("*") != null)
-		return false
-
-	if(entmdl.find("hybridphysx") != null)
-		return false
-
-	if((entmdl.find("skybox") != null)) // Skybox stuff
+	if(ent.HasBadPhysicsModel())
 		return false
 
 	if(SessionState.MapName in ::ZeroGMapSpecificBans
@@ -24514,7 +24637,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 			)
 			||
 			(
-				entmdl in ::ZeroGMapSpecificBans[SessionState.MapName].models 
+				ent.GetModel().tolower() in ::ZeroGMapSpecificBans[SessionState.MapName].models 
 			)
 		  )
 		)
