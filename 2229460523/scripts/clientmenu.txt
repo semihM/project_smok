@@ -19102,7 +19102,7 @@
 			}
 			"4"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,random;show_menu random_line_menu"
+				"command"		 "scripted_user_func randomline,random;show_menu random_line_menu"
 				"label"			" Random person, own lines"
 			}
 			"5"
@@ -19112,7 +19112,7 @@
 			}
 			"6"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,random,random;show_menu random_line_menu"
+				"command"		 "scripted_user_func randomline,random,random;show_menu random_line_menu"
 				"label"			" Random person, random lines"
 			}
 			"7"
@@ -19138,7 +19138,7 @@
 			
 			"1"
 			{
-				"command"	 "play buttons/button14;scripted_user_func randomline_save_last;show_menu random_line_settings_menu"
+				"command"	 "scripted_user_func randomline_save_last;show_menu random_line_settings_menu"
 				"label"		 " Enable/Disable saving last random line"
 			}
 			"2"
@@ -19205,12 +19205,12 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,self;show_menu random_line_menu_p_p_sp"
+				"command"		 "scripted_user_func randomline,self;show_menu random_line_menu_p_p_sp"
 				"label"			" Self"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,picker;show_menu random_line_menu_p_p_sp"
+				"command"		 "scripted_user_func randomline,picker;show_menu random_line_menu_p_p_sp"
 				"label"			" Picker"
 			}
 			"3"
@@ -19236,12 +19236,12 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,nick;show_menu random_line_menu_p_p_nb"
+				"command"		 "scripted_user_func randomline,nick;show_menu random_line_menu_p_p_nb"
 				"label"			" Nick"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,bill;show_menu random_line_menu_p_p_nb"
+				"command"		 "scripted_user_func randomline,bill;show_menu random_line_menu_p_p_nb"
 				"label"			" Bill"
 			}
 			"8"
@@ -19262,12 +19262,12 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,ellis;show_menu random_line_menu_p_p_ef"
+				"command"		 "scripted_user_func randomline,ellis;show_menu random_line_menu_p_p_ef"
 				"label"			" Ellis"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,francis;show_menu random_line_menu_p_p_ef"
+				"command"		 "scripted_user_func randomline,francis;show_menu random_line_menu_p_p_ef"
 				"label"			" Francis"
 			}
 			"8"
@@ -19288,12 +19288,12 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,rochelle;show_menu random_line_menu_p_p_rz"
+				"command"		 "scripted_user_func randomline,rochelle;show_menu random_line_menu_p_p_rz"
 				"label"			" Rochelle"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,zoey;show_menu random_line_menu_p_p_rz"
+				"command"		 "scripted_user_func randomline,zoey;show_menu random_line_menu_p_p_rz"
 				"label"			" Zoey"
 			}
 			"8"
@@ -19314,12 +19314,12 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,coach;show_menu random_line_menu_p_p_cl"
+				"command"		 "scripted_user_func randomline,coach;show_menu random_line_menu_p_p_cl"
 				"label"			" Coach"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,louis;show_menu random_line_menu_p_p_cl"
+				"command"		 "scripted_user_func randomline,louis;show_menu random_line_menu_p_p_cl"
 				"label"			" Louis"
 			}
 			"8"
@@ -19412,42 +19412,42 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,self,bill;show_menu random_line_menu_p_o_sp_self"
+				"command"		 "scripted_user_func randomline,self,bill;show_menu random_line_menu_p_o_sp_self"
 				"label"			" Bill"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,self,nick;show_menu random_line_menu_p_o_sp_self"
+				"command"		 "scripted_user_func randomline,self,nick;show_menu random_line_menu_p_o_sp_self"
 				"label"			" Nick"
 			}
 			"3"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,self,francis;show_menu random_line_menu_p_o_sp_self"
+				"command"		 "scripted_user_func randomline,self,francis;show_menu random_line_menu_p_o_sp_self"
 				"label"			" Francis"
 			}
 			"4"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,self,ellis;show_menu random_line_menu_p_o_sp_self"
+				"command"		 "scripted_user_func randomline,self,ellis;show_menu random_line_menu_p_o_sp_self"
 				"label"			" Ellis"
 			}
 			"5"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,self,louis;show_menu random_line_menu_p_o_sp_self"
+				"command"		 "scripted_user_func randomline,self,louis;show_menu random_line_menu_p_o_sp_self"
 				"label"			" Louis"
 			}
 			"6"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,self,coach;show_menu random_line_menu_p_o_sp_self"
+				"command"		 "scripted_user_func randomline,self,coach;show_menu random_line_menu_p_o_sp_self"
 				"label"			" Coach"
 			}
 			"7"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,self,zoey;show_menu random_line_menu_p_o_sp_self"
+				"command"		 "scripted_user_func randomline,self,zoey;show_menu random_line_menu_p_o_sp_self"
 				"label"			" Zoey"
 			}
 			"8"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,self,rochelle;show_menu random_line_menu_p_o_sp_self"
+				"command"		 "scripted_user_func randomline,self,rochelle;show_menu random_line_menu_p_o_sp_self"
 				"label"			" Rochelle"
 			}
 			"9"
@@ -19469,42 +19469,42 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,picker,bill;show_menu random_line_menu_p_o_sp_picker"
+				"command"		 "scripted_user_func randomline,picker,bill;show_menu random_line_menu_p_o_sp_picker"
 				"label"			" Bill"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,picker,nick;show_menu random_line_menu_p_o_sp_picker"
+				"command"		 "scripted_user_func randomline,picker,nick;show_menu random_line_menu_p_o_sp_picker"
 				"label"			" Nick"
 			}
 			"3"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,picker,francis;show_menu random_line_menu_p_o_sp_picker"
+				"command"		 "scripted_user_func randomline,picker,francis;show_menu random_line_menu_p_o_sp_picker"
 				"label"			" Francis"
 			}
 			"4"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,picker,ellis;show_menu random_line_menu_p_o_sp_picker"
+				"command"		 "scripted_user_func randomline,picker,ellis;show_menu random_line_menu_p_o_sp_picker"
 				"label"			" Ellis"
 			}
 			"5"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,picker,louis;show_menu random_line_menu_p_o_sp_picker"
+				"command"		 "scripted_user_func randomline,picker,louis;show_menu random_line_menu_p_o_sp_picker"
 				"label"			" Louis"
 			}
 			"6"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,picker,coach;show_menu random_line_menu_p_o_sp_picker"
+				"command"		 "scripted_user_func randomline,picker,coach;show_menu random_line_menu_p_o_sp_picker"
 				"label"			" Coach"
 			}
 			"7"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,picker,zoey;show_menu random_line_menu_p_o_sp_picker"
+				"command"		 "scripted_user_func randomline,picker,zoey;show_menu random_line_menu_p_o_sp_picker"
 				"label"			" Zoey"
 			}
 			"8"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,picker,rochelle;show_menu random_line_menu_p_o_sp_picker"
+				"command"		 "scripted_user_func randomline,picker,rochelle;show_menu random_line_menu_p_o_sp_picker"
 				"label"			" Rochelle"
 			}
 			"9"
@@ -19552,42 +19552,42 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,nick,bill;show_menu random_line_menu_p_o_nb_nick"
+				"command"		 "scripted_user_func randomline,nick,bill;show_menu random_line_menu_p_o_nb_nick"
 				"label"			" Bill"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,nick,nick;show_menu random_line_menu_p_o_nb_nick"
+				"command"		 "scripted_user_func randomline,nick,nick;show_menu random_line_menu_p_o_nb_nick"
 				"label"			" Nick"
 			}
 			"3"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,nick,francis;show_menu random_line_menu_p_o_nb_nick"
+				"command"		 "scripted_user_func randomline,nick,francis;show_menu random_line_menu_p_o_nb_nick"
 				"label"			" Francis"
 			}
 			"4"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,nick,ellis;show_menu random_line_menu_p_o_nb_nick"
+				"command"		 "scripted_user_func randomline,nick,ellis;show_menu random_line_menu_p_o_nb_nick"
 				"label"			" Ellis"
 			}
 			"5"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,nick,louis;show_menu random_line_menu_p_o_nb_nick"
+				"command"		 "scripted_user_func randomline,nick,louis;show_menu random_line_menu_p_o_nb_nick"
 				"label"			" Louis"
 			}
 			"6"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,nick,coach;show_menu random_line_menu_p_o_nb_nick"
+				"command"		 "scripted_user_func randomline,nick,coach;show_menu random_line_menu_p_o_nb_nick"
 				"label"			" Coach"
 			}
 			"7"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,nick,zoey;show_menu random_line_menu_p_o_nb_nick"
+				"command"		 "scripted_user_func randomline,nick,zoey;show_menu random_line_menu_p_o_nb_nick"
 				"label"			" Zoey"
 			}
 			"8"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,nick,rochelle;show_menu random_line_menu_p_o_nb_nick"
+				"command"		 "scripted_user_func randomline,nick,rochelle;show_menu random_line_menu_p_o_nb_nick"
 				"label"			" Rochelle"
 			}
 			"9"
@@ -19609,42 +19609,42 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,bill,bill;show_menu random_line_menu_p_o_nb_bill"
+				"command"		 "scripted_user_func randomline,bill,bill;show_menu random_line_menu_p_o_nb_bill"
 				"label"			" Bill"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,bill,nick;show_menu random_line_menu_p_o_nb_bill"
+				"command"		 "scripted_user_func randomline,bill,nick;show_menu random_line_menu_p_o_nb_bill"
 				"label"			" Nick"
 			}
 			"3"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,bill,francis;show_menu random_line_menu_p_o_nb_bill"
+				"command"		 "scripted_user_func randomline,bill,francis;show_menu random_line_menu_p_o_nb_bill"
 				"label"			" Francis"
 			}
 			"4"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,bill,ellis;show_menu random_line_menu_p_o_nb_bill"
+				"command"		 "scripted_user_func randomline,bill,ellis;show_menu random_line_menu_p_o_nb_bill"
 				"label"			" Ellis"
 			}
 			"5"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,bill,louis;show_menu random_line_menu_p_o_nb_bill"
+				"command"		 "scripted_user_func randomline,bill,louis;show_menu random_line_menu_p_o_nb_bill"
 				"label"			" Louis"
 			}
 			"6"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,bill,coach;show_menu random_line_menu_p_o_nb_bill"
+				"command"		 "scripted_user_func randomline,bill,coach;show_menu random_line_menu_p_o_nb_bill"
 				"label"			" Coach"
 			}
 			"7"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,bill,zoey;show_menu random_line_menu_p_o_nb_bill"
+				"command"		 "scripted_user_func randomline,bill,zoey;show_menu random_line_menu_p_o_nb_bill"
 				"label"			" Zoey"
 			}
 			"8"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,bill,rochelle;show_menu random_line_menu_p_o_nb_bill"
+				"command"		 "scripted_user_func randomline,bill,rochelle;show_menu random_line_menu_p_o_nb_bill"
 				"label"			" Rochelle"
 			}
 			"9"
@@ -19691,42 +19691,42 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,ellis,bill;show_menu random_line_menu_p_o_ef_ellis"
+				"command"		 "scripted_user_func randomline,ellis,bill;show_menu random_line_menu_p_o_ef_ellis"
 				"label"			" Bill"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,ellis,nick;show_menu random_line_menu_p_o_ef_ellis"
+				"command"		 "scripted_user_func randomline,ellis,nick;show_menu random_line_menu_p_o_ef_ellis"
 				"label"			" Nick"
 			}
 			"3"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,ellis,francis;show_menu random_line_menu_p_o_ef_ellis"
+				"command"		 "scripted_user_func randomline,ellis,francis;show_menu random_line_menu_p_o_ef_ellis"
 				"label"			" Francis"
 			}
 			"4"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,ellis,ellis;show_menu random_line_menu_p_o_ef_ellis"
+				"command"		 "scripted_user_func randomline,ellis,ellis;show_menu random_line_menu_p_o_ef_ellis"
 				"label"			" Ellis"
 			}
 			"5"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,ellis,louis;show_menu random_line_menu_p_o_ef_ellis"
+				"command"		 "scripted_user_func randomline,ellis,louis;show_menu random_line_menu_p_o_ef_ellis"
 				"label"			" Louis"
 			}
 			"6"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,ellis,coach;show_menu random_line_menu_p_o_ef_ellis"
+				"command"		 "scripted_user_func randomline,ellis,coach;show_menu random_line_menu_p_o_ef_ellis"
 				"label"			" Coach"
 			}
 			"7"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,ellis,zoey;show_menu random_line_menu_p_o_ef_ellis"
+				"command"		 "scripted_user_func randomline,ellis,zoey;show_menu random_line_menu_p_o_ef_ellis"
 				"label"			" Zoey"
 			}
 			"8"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,ellis,rochelle;show_menu random_line_menu_p_o_ef_ellis"
+				"command"		 "scripted_user_func randomline,ellis,rochelle;show_menu random_line_menu_p_o_ef_ellis"
 				"label"			" Rochelle"
 			}
 			"9"
@@ -19748,42 +19748,42 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,francis,bill;show_menu random_line_menu_p_o_ef_francis"
+				"command"		 "scripted_user_func randomline,francis,bill;show_menu random_line_menu_p_o_ef_francis"
 				"label"			" Bill"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,francis,nick;show_menu random_line_menu_p_o_ef_francis"
+				"command"		 "scripted_user_func randomline,francis,nick;show_menu random_line_menu_p_o_ef_francis"
 				"label"			" Nick"
 			}
 			"3"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,francis,francis;show_menu random_line_menu_p_o_ef_francis"
+				"command"		 "scripted_user_func randomline,francis,francis;show_menu random_line_menu_p_o_ef_francis"
 				"label"			" Francis"
 			}
 			"4"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,francis,ellis;show_menu random_line_menu_p_o_ef_francis"
+				"command"		 "scripted_user_func randomline,francis,ellis;show_menu random_line_menu_p_o_ef_francis"
 				"label"			" Ellis"
 			}
 			"5"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,francis,louis;show_menu random_line_menu_p_o_ef_francis"
+				"command"		 "scripted_user_func randomline,francis,louis;show_menu random_line_menu_p_o_ef_francis"
 				"label"			" Louis"
 			}
 			"6"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,francis,coach;show_menu random_line_menu_p_o_ef_francis"
+				"command"		 "scripted_user_func randomline,francis,coach;show_menu random_line_menu_p_o_ef_francis"
 				"label"			" Coach"
 			}
 			"7"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,francis,zoey;show_menu random_line_menu_p_o_ef_francis"
+				"command"		 "scripted_user_func randomline,francis,zoey;show_menu random_line_menu_p_o_ef_francis"
 				"label"			" Zoey"
 			}
 			"8"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,francis,rochelle;show_menu random_line_menu_p_o_ef_francis"
+				"command"		 "scripted_user_func randomline,francis,rochelle;show_menu random_line_menu_p_o_ef_francis"
 				"label"			" Rochelle"
 			}
 			"9"
@@ -19831,42 +19831,42 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,rochelle,bill;show_menu random_line_menu_p_o_rz_rochelle"
+				"command"		 "scripted_user_func randomline,rochelle,bill;show_menu random_line_menu_p_o_rz_rochelle"
 				"label"			" Bill"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,rochelle,nick;show_menu random_line_menu_p_o_rz_rochelle"
+				"command"		 "scripted_user_func randomline,rochelle,nick;show_menu random_line_menu_p_o_rz_rochelle"
 				"label"			" Nick"
 			}
 			"3"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,rochelle,francis;show_menu random_line_menu_p_o_rz_rochelle"
+				"command"		 "scripted_user_func randomline,rochelle,francis;show_menu random_line_menu_p_o_rz_rochelle"
 				"label"			" Francis"
 			}
 			"4"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,rochelle,ellis;show_menu random_line_menu_p_o_rz_rochelle"
+				"command"		 "scripted_user_func randomline,rochelle,ellis;show_menu random_line_menu_p_o_rz_rochelle"
 				"label"			" Ellis"
 			}
 			"5"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,rochelle,louis;show_menu random_line_menu_p_o_rz_rochelle"
+				"command"		 "scripted_user_func randomline,rochelle,louis;show_menu random_line_menu_p_o_rz_rochelle"
 				"label"			" Louis"
 			}
 			"6"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,rochelle,coach;show_menu random_line_menu_p_o_rz_rochelle"
+				"command"		 "scripted_user_func randomline,rochelle,coach;show_menu random_line_menu_p_o_rz_rochelle"
 				"label"			" Coach"
 			}
 			"7"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,rochelle,zoey;show_menu random_line_menu_p_o_rz_rochelle"
+				"command"		 "scripted_user_func randomline,rochelle,zoey;show_menu random_line_menu_p_o_rz_rochelle"
 				"label"			" Zoey"
 			}
 			"8"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,rochelle,rochelle;show_menu random_line_menu_p_o_rz_rochelle"
+				"command"		 "scripted_user_func randomline,rochelle,rochelle;show_menu random_line_menu_p_o_rz_rochelle"
 				"label"			" Rochelle"
 			}
 			"9"
@@ -19888,42 +19888,42 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,zoey,bill;show_menu random_line_menu_p_o_rz_zoey"
+				"command"		 "scripted_user_func randomline,zoey,bill;show_menu random_line_menu_p_o_rz_zoey"
 				"label"			" Bill"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,zoey,nick;show_menu random_line_menu_p_o_rz_zoey"
+				"command"		 "scripted_user_func randomline,zoey,nick;show_menu random_line_menu_p_o_rz_zoey"
 				"label"			" Nick"
 			}
 			"3"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,zoey,francis;show_menu random_line_menu_p_o_rz_zoey"
+				"command"		 "scripted_user_func randomline,zoey,francis;show_menu random_line_menu_p_o_rz_zoey"
 				"label"			" Francis"
 			}
 			"4"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,zoey,ellis;show_menu random_line_menu_p_o_rz_zoey"
+				"command"		 "scripted_user_func randomline,zoey,ellis;show_menu random_line_menu_p_o_rz_zoey"
 				"label"			" Ellis"
 			}
 			"5"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,zoey,louis;show_menu random_line_menu_p_o_rz_zoey"
+				"command"		 "scripted_user_func randomline,zoey,louis;show_menu random_line_menu_p_o_rz_zoey"
 				"label"			" Louis"
 			}
 			"6"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,zoey,coach;show_menu random_line_menu_p_o_rz_zoey"
+				"command"		 "scripted_user_func randomline,zoey,coach;show_menu random_line_menu_p_o_rz_zoey"
 				"label"			" Coach"
 			}
 			"7"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,zoey,zoey;show_menu random_line_menu_p_o_rz_zoey"
+				"command"		 "scripted_user_func randomline,zoey,zoey;show_menu random_line_menu_p_o_rz_zoey"
 				"label"			" Zoey"
 			}
 			"8"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,zoey,rochelle;show_menu random_line_menu_p_o_rz_zoey"
+				"command"		 "scripted_user_func randomline,zoey,rochelle;show_menu random_line_menu_p_o_rz_zoey"
 				"label"			" Rochelle"
 			}
 			"9"
@@ -19972,42 +19972,42 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,coach,bill;show_menu random_line_menu_p_o_cl_coach"
+				"command"		 "scripted_user_func randomline,coach,bill;show_menu random_line_menu_p_o_cl_coach"
 				"label"			" Bill"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,coach,nick;show_menu random_line_menu_p_o_cl_coach"
+				"command"		 "scripted_user_func randomline,coach,nick;show_menu random_line_menu_p_o_cl_coach"
 				"label"			" Nick"
 			}
 			"3"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,coach,francis;show_menu random_line_menu_p_o_cl_coach"
+				"command"		 "scripted_user_func randomline,coach,francis;show_menu random_line_menu_p_o_cl_coach"
 				"label"			" Francis"
 			}
 			"4"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,coach,ellis;show_menu random_line_menu_p_o_cl_coach"
+				"command"		 "scripted_user_func randomline,coach,ellis;show_menu random_line_menu_p_o_cl_coach"
 				"label"			" Ellis"
 			}
 			"5"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,coach,louis;show_menu random_line_menu_p_o_cl_coach"
+				"command"		 "scripted_user_func randomline,coach,louis;show_menu random_line_menu_p_o_cl_coach"
 				"label"			" Louis"
 			}
 			"6"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,coach,coach;show_menu random_line_menu_p_o_cl_coach"
+				"command"		 "scripted_user_func randomline,coach,coach;show_menu random_line_menu_p_o_cl_coach"
 				"label"			" Coach"
 			}
 			"7"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,coach,zoey;show_menu random_line_menu_p_o_cl_coach"
+				"command"		 "scripted_user_func randomline,coach,zoey;show_menu random_line_menu_p_o_cl_coach"
 				"label"			" Zoey"
 			}
 			"8"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,coach,rochelle;show_menu random_line_menu_p_o_cl_coach"
+				"command"		 "scripted_user_func randomline,coach,rochelle;show_menu random_line_menu_p_o_cl_coach"
 				"label"			" Rochelle"
 			}
 			"9"
@@ -20029,42 +20029,42 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,louis,bill;show_menu random_line_menu_p_o_cl_louis"
+				"command"		 "scripted_user_func randomline,louis,bill;show_menu random_line_menu_p_o_cl_louis"
 				"label"			" Bill"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,louis,nick;show_menu random_line_menu_p_o_cl_louis"
+				"command"		 "scripted_user_func randomline,louis,nick;show_menu random_line_menu_p_o_cl_louis"
 				"label"			" Nick"
 			}
 			"3"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,louis,francis;show_menu random_line_menu_p_o_cl_louis"
+				"command"		 "scripted_user_func randomline,louis,francis;show_menu random_line_menu_p_o_cl_louis"
 				"label"			" Francis"
 			}
 			"4"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,louis,ellis;show_menu random_line_menu_p_o_cl_louis"
+				"command"		 "scripted_user_func randomline,louis,ellis;show_menu random_line_menu_p_o_cl_louis"
 				"label"			" Ellis"
 			}
 			"5"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,louis,louis;show_menu random_line_menu_p_o_cl_louis"
+				"command"		 "scripted_user_func randomline,louis,louis;show_menu random_line_menu_p_o_cl_louis"
 				"label"			" Louis"
 			}
 			"6"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,louis,coach;show_menu random_line_menu_p_o_cl_louis"
+				"command"		 "scripted_user_func randomline,louis,coach;show_menu random_line_menu_p_o_cl_louis"
 				"label"			" Coach"
 			}
 			"7"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,louis,zoey;show_menu random_line_menu_p_o_cl_louis"
+				"command"		 "scripted_user_func randomline,louis,zoey;show_menu random_line_menu_p_o_cl_louis"
 				"label"			" Zoey"
 			}
 			"8"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,louis,rochelle;show_menu random_line_menu_p_o_cl_louis"
+				"command"		 "scripted_user_func randomline,louis,rochelle;show_menu random_line_menu_p_o_cl_louis"
 				"label"			" Rochelle"
 			}
 			"9"
@@ -20127,12 +20127,12 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,self,random;show_menu random_line_menu_p_r_sp"
+				"command"		 "scripted_user_func randomline,self,random;show_menu random_line_menu_p_r_sp"
 				"label"			" Self"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,picker,random;show_menu random_line_menu_p_r_sp"
+				"command"		 "scripted_user_func randomline,picker,random;show_menu random_line_menu_p_r_sp"
 				"label"			" Picker"
 			}
 			"3"
@@ -20158,12 +20158,12 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,nick,random;show_menu random_line_menu_p_r_nb"
+				"command"		 "scripted_user_func randomline,nick,random;show_menu random_line_menu_p_r_nb"
 				"label"			" Nick"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,bill,random;show_menu random_line_menu_p_r_nb"
+				"command"		 "scripted_user_func randomline,bill,random;show_menu random_line_menu_p_r_nb"
 				"label"			" Bill"
 			}
 			"8"
@@ -20184,12 +20184,12 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,ellis,random;show_menu random_line_menu_p_r_ef"
+				"command"		 "scripted_user_func randomline,ellis,random;show_menu random_line_menu_p_r_ef"
 				"label"			" Ellis"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,francis,random;show_menu random_line_menu_p_r_ef"
+				"command"		 "scripted_user_func randomline,francis,random;show_menu random_line_menu_p_r_ef"
 				"label"			" Francis"
 			}
 			"8"
@@ -20210,12 +20210,12 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,rochelle,random;show_menu random_line_menu_p_r_rz"
+				"command"		 "scripted_user_func randomline,rochelle,random;show_menu random_line_menu_p_r_rz"
 				"label"			" Rochelle"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,zoey,random;show_menu random_line_menu_p_r_rz"
+				"command"		 "scripted_user_func randomline,zoey,random;show_menu random_line_menu_p_r_rz"
 				"label"			" Zoey"
 			}
 			"8"
@@ -20236,12 +20236,12 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,coach,random;show_menu random_line_menu_p_r_cl"
+				"command"		 "scripted_user_func randomline,coach,random;show_menu random_line_menu_p_r_cl"
 				"label"			" Coach"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,louis,random;show_menu random_line_menu_p_r_cl"
+				"command"		 "scripted_user_func randomline,louis,random;show_menu random_line_menu_p_r_cl"
 				"label"			" Louis"
 			}
 			"8"
@@ -20262,42 +20262,42 @@
 
 			"1"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,random,bill;show_menu random_line_menu_r_o"
+				"command"		 "scripted_user_func randomline,random,bill;show_menu random_line_menu_r_o"
 				"label"			" Bill"
 			}
 			"2"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,random,nick;show_menu random_line_menu_r_o"
+				"command"		 "scripted_user_func randomline,random,nick;show_menu random_line_menu_r_o"
 				"label"			" Nick"
 			}
 			"3"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,random,francis;show_menu random_line_menu_r_o"
+				"command"		 "scripted_user_func randomline,random,francis;show_menu random_line_menu_r_o"
 				"label"			" Francis"
 			}
 			"4"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,random,ellis;show_menu random_line_menu_r_o"
+				"command"		 "scripted_user_func randomline,random,ellis;show_menu random_line_menu_r_o"
 				"label"			" Ellis"
 			}
 			"5"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,random,louis;show_menu random_line_menu_r_o"
+				"command"		 "scripted_user_func randomline,random,louis;show_menu random_line_menu_r_o"
 				"label"			" Louis"
 			}
 			"6"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,random,coach;show_menu random_line_menu_r_o"
+				"command"		 "scripted_user_func randomline,random,coach;show_menu random_line_menu_r_o"
 				"label"			" Coach"
 			}
 			"7"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,random,zoey;show_menu random_line_menu_r_o"
+				"command"		 "scripted_user_func randomline,random,zoey;show_menu random_line_menu_r_o"
 				"label"			" Zoey"
 			}
 			"8"
 			{
-				"command"		 "play buttons/button14;scripted_user_func randomline,random,rochelle;show_menu random_line_menu_r_o"
+				"command"		 "scripted_user_func randomline,random,rochelle;show_menu random_line_menu_r_o"
 				"label"			" Rochelle"
 			}
 			"9"
@@ -20382,6 +20382,11 @@
 			{
 				"command"		 "play buttons/button14;show_menu ent_fire_decals1"
 				"label"			 " Place decals"
+			}
+			"3"
+			{
+				"command"		 "play buttons/button14;show_menu ent_fire_lootables1"
+				"label"			 " Make props lootable"
 			}
 			"8"
 			{
@@ -39655,12 +39660,12 @@
 			"1"
 			{
 				"command"		 "play buttons/button14;scripted_user_func go_ragdoll;show_menu ragdolling_menu1"
-				"label"			 " Go ragdolling"
+				"label"			 " Start/stop ragdolling"
 			}
 			"2"
 			{
 				"command"		 "play buttons/button14;scripted_user_func recover_ragdoll;show_menu ragdolling_menu1"
-				"label"			 " Recover from ragdolling"
+				"label"			 " Stop ragdolling"
 			}
 			"3"
 			{
