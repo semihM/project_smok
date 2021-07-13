@@ -1273,7 +1273,7 @@ function Notifications::OnBotReplacedPlayer::RemoveQuixBinds(player,bot,args)
 		return
 	}
 
-	if(!(lvl = ::UserLevelUtils.ValidateLevel(player, GetArgument(2), false)))
+	if(!(lvl = ::UserLevelUtils.ValidateLevel(player, GetArgument(2), false, true)))
 		return
 	
 	::PrivilegeRequirements[cmd] <- getconsttable()[lvl]
@@ -13599,14 +13599,46 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 		return Target
 	}
 
-	ValidateLevel = function(player, lvlname, user = true)
+	ValidateLevel = function(player, lvlname, user = true, allow_alt = false)
 	{
 		if(Utils.GetIDFromArray(::UserLevelNames,lvlname) == -1)
 		{
-			::Printer(player,"Unknown user level: "+lvlname,"error");
-			return false
+			local valid = false
+			if(allow_alt)
+			{
+				switch(strip(lvlname.tolower()))
+				{
+					case "none":
+						lvlname = "PS_USER_NONE";
+						valid = true;
+						break;
+					case "basic": 
+						lvlname = "PS_USER_BASIC";
+						valid = true;
+						break;
+					case "admin": 
+						lvlname = "PS_USER_ADMIN";
+						valid = true;
+						break;
+					case "scripter": 
+						lvlname = "PS_USER_SCRIPTER";
+						valid = true;
+						break;
+					case "host": 
+						lvlname = "PS_USER_HOST";
+						valid = true;
+						break;
+				}
+			}
+
+			if(!valid)
+			{
+				::Printer(player,"Unknown user level: "+lvlname,"error");
+				return false
+			}
 		}
-		else if(user && lvlname == "PS_USER_HOST")
+		
+		if(user && lvlname == "PS_USER_HOST")
 		{
 			if(!player.HasPrivilege(PS_USER_HOST))
 				::Messages.ThrowPlayer(player,"Can't give host privilages to other players!")
@@ -13642,7 +13674,7 @@ foreach(cmdname,cmdtrigger in ::ChatTriggers)
 {	
 	local target, lvlname;
 	if(!(target = ::UserLevelUtils.GetValidateChangeTarget(player, GetArgument(1)))
-		|| !(lvlname = ::UserLevelUtils.ValidateLevel(player, GetArgument(2), false)))
+		|| !(lvlname = ::UserLevelUtils.ValidateLevel(player, GetArgument(2), false, true)))
 		return
 
 	::UserLevelUtils.Finalize(player, target, lvlname);
